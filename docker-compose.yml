@@ -1,12 +1,77 @@
-version: '2'
+version: '3'
 
 services:
-  fact-admin:
-    build:
-      context: .
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
+  shared-db:
+    image: hmctsprivate.azurecr.io/idam/shared-db:latest
     ports:
-      - 3100:3100
+      - 5051:5432
+
+  sidam-api:
+    image: "hmctspublic.azurecr.io/idam/api:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      TESTING_SUPPORT_ENABLED: "true"
+      IDAMHEALTHCHECK_AM_ENABLED: "false"
+      IDAMHEALTHCHECK_IDM_ENABLED: "false"
+      STRATEGIC_ADMIN_URL: http://localhost:8082
+      STRATEGIC_WEBPUBLIC_URL: http://localhost:3501
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
+      SPRING_DATASOURCE_USERNAME: openidm
+      SPRING_DATASOURCE_PASSWORD: openidm
+      SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
+      SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
+      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://localhost:3501/login
+      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://localhost:3501/login
+      IDAM_SPI_FORGEROCK_AM_ROOT: http://fr-am:8080/openam
+      IDAM_SPI_FORGEROCK_AM_TOPLEVELHOST: fr-am
+      IDAM_SPI_FORGEROCK_AM_USERNAME: amadmin
+      IDAM_SPI_FORGEROCK_AM_PASSWORD: Pa55word11
+      IDAM_SPI_FORGEROCK_AM_JWKSURIFOROAUTH2CLIENTS: http://fr-am:8080/openam/oauth2/hmcts/connect/jwk_uri
+      IDAM_SPI_FORGEROCK_IDM_ROOT: http://fr-idm:18080/openidm
+      IDAM_SPI_FORGEROCK_IDM_USERNAME: openidm-admin
+      IDAM_SPI_FORGEROCK_IDM_PASSWORD: openidm-admin
+      APPSETTING_NODE_PATH: es/
+    ports:
+      - 5000:5000
+    depends_on:
+      - fr-am
+      - fr-idm
+      - shared-db
+
+  fr-am:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 2889:8080
+      - 1389:1389
+    depends_on:
+      - shared-db
+
+  fr-idm:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 18080:18080
+      - 9010:9010
+    depends_on:
+      - fr-am
+      - shared-db
+
+  idam-web-public:
+    image: "hmctspublic.azurecr.io/idam/web-public:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      STRATEGIC_SERVICE_URL: http://sidam-api:5000
+      IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS: "false"
+      REFORM_SERVICE_NAME: sidam-api
+      REFORM_TEAM: idam
+      REFORM_ENVIRONMENT: local
+    ports:
+      - 3501:8080
+    links:
+      - sidam-api
+    depends_on:
+      - sidam-api

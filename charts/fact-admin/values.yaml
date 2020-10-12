@@ -1,5 +1,5 @@
 nodejs:
-  applicationPort: 3100
+  applicationPort: 3300
   aadIdentityName: rpe
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/rpe/expressjs-template:latest'

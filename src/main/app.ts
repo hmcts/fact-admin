@@ -11,6 +11,9 @@ import * as path from 'path';
 import favicon from 'serve-favicon';
 import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
+import passport = require('passport');
+
+const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 const { setupDev } = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
@@ -39,6 +42,45 @@ app.use((req, res, next) => {
     'no-cache, max-age=0, must-revalidate, no-store',
   );
   next();
+});
+
+app.use(require('express-session')({
+  secret: 'express-session',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user: any, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  done(null, { id });
+});
+
+passport.use('provider', new OAuth2Strategy(
+  {
+    authorizationURL: 'http://localhost:3501/login',
+    tokenURL: 'http://localhost:5000/o/token',
+    clientID: 'ccd_gateway',
+    clientSecret: 'ccd_gateway_secret',
+    callbackURL: 'http://localhost:3300/oauth2/callback'
+  },
+  function(accessToken: string, refreshToken: string, profile: any, done: Function) {
+    console.log('profile', profile);
+    done(null, { id: 'Bob' });
+  }
+));
+
+app.get('/login', passport.authenticate('provider'));
+app.get('/oauth2/callback', passport.authenticate('provider', { successRedirect: '/secured-page', failureRedirect: '/?failure' }));
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 
 glob.sync(__dirname + '/routes/**/*.+(ts|js)')
