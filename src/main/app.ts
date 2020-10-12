@@ -70,8 +70,15 @@ passport.use('provider', new OAuth2Strategy(
     callbackURL: 'http://localhost:3300/oauth2/callback'
   },
   function(accessToken: string, refreshToken: string, profile: any, done: Function) {
-    console.log('profile', profile);
-    done(null, { id: 'Bob' });
+    try {
+      const jwt = accessToken.split('.')[1];
+      const jsonString = Buffer.from(jwt, 'base64').toString();
+      const json = JSON.parse(jsonString);
+
+      done(null, { id: json.sub });
+    } catch (err) {
+      done(err);
+    }
   }
 ));
 
