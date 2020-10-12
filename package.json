@@ -51,7 +51,7 @@
     "passport-oauth": "^1.0.0",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
-    "ts-node": "^8.6.2",
+    "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.7.5"
   },
