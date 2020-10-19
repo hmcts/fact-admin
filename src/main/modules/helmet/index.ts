@@ -2,7 +2,7 @@ import * as express from 'express';
 import helmet = require('helmet');
 
 export interface HelmetConfig {
-  referrerPolicy: string;
+  referrerPolicy: string
 }
 
 const googleAnalyticsDomain = '*.google-analytics.com';
@@ -32,9 +32,9 @@ export class Helmet {
           imgSrc: [self, googleAnalyticsDomain],
           objectSrc: [self],
           scriptSrc: [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"],
-          styleSrc: [self],
-        },
-      }),
+          styleSrc: [self]
+        }
+      })
     );
   }
 
