@@ -1,6 +1,7 @@
 nodejs:
   applicationPort: 3300
-  aadIdentityName: rpe
+  aadIdentityName: fact
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:
+    FACT_API_URL: "http://fact-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
