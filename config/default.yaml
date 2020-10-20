@@ -1,0 +1,15 @@
+security:
+  referrerPolicy: 'origin'
+port: 3300
+services:
+  api:
+    url: 'http://localhost:8080'
+  idam:
+    authorizationURL: 'http://localhost:3501/login'
+    tokenURL: 'http://localhost:5000/o/token'
+    clientID: 'fact_admin'
+    clientSecret: 'fact_admin_secret'
+    callbackURL: 'http://localhost:3300/oauth2/callback'
+health:
+  timeout: 5000
+  deadline: 15000

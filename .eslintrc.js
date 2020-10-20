@@ -11,7 +11,13 @@ module.exports = {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      "multiline": {
+        "delimiter": "comma",
+        "requireLast": false
+      }
+    }]
   },
   "overrides": [
     {
@@ -38,5 +44,4 @@ module.exports = {
       },
     }
   ]
-
 };

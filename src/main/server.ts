@@ -1,27 +1,60 @@
-#!/usr/bin/env node
-const { Logger } = require('@hmcts/nodejs-logging');
-import * as fs from 'fs';
-import * as https from 'https';
+
+import * as bodyParser from 'body-parser';
+import config from 'config';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import { app } from './app';
+import favicon from 'serve-favicon';
+import { Nunjucks } from './modules/nunjucks';
+import { Passport } from './modules/passport';
+import { Container } from './modules/awilix';
+import { HealthCheck } from './modules/health';
+import addRoutes from './routes';
+import { I18next } from './modules/i18n';
+import { PropertiesVolume } from './modules/properties-volume';
 
+const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
+const { setupDev } = require('./development');
+const env = process.env.NODE_ENV || 'development';
+const developmentMode = env === 'development';
 
-// TODO: set the right port for your application
-const port: number = parseInt(process.env.PORT, 10) || 3300;
+export const server = express();
 
-if (app.locals.ENV === 'development') {
-  const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
-  const sslOptions = {
-    cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
-    key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
-  };
-  const server = https.createServer(sslOptions, app);
-  server.listen(port, () => {
-    logger.info(`Application started: https://localhost:${port}`);
-  });
-} else {
-  app.listen(port, () => {
-    logger.info(`Application started: http://localhost:${port}`);
-  });
-}
+server.locals.ENV = env;
+server.use(Express.accessLogger());
+server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(cookieParser());
+server.use(express.static(path.join(__dirname, 'public')));
+server.use((req, res, next) => {
+  res.setHeader(
+    'Cache-Control',
+    'no-cache, max-age=0, must-revalidate, no-store',
+  );
+  next();
+});
+
+server.use(require('express-session')({
+  secret: 'express-session',
+  resave: true,
+  saveUninitialized: true
+}));
+
+setupDev(server,developmentMode);
+
+new PropertiesVolume().enableFor(server);
+new Container().enableFor(server);
+new Nunjucks(developmentMode).enableFor(server);
+new Helmet(config.get('security')).enableFor(server);
+new I18next().enableFor(server);
+new Passport().enableFor(server);
+new HealthCheck().enableFor(server);
+
+addRoutes(server);
+
+server.listen(config.get('port'), () => {
+  logger.info(`Application started: http://localhost:${config.get('port')}`);
+});
