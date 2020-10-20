@@ -1,9 +1,7 @@
 idam-pr:
   enabled: true
   redirect_uris:
-    "FACT Admin":
-      - https://${SERVICE_FQDN}/oauth2/callback
-    fact_admin:
+    FACT Admin:
       - https://${SERVICE_FQDN}/oauth2/callback
 nodejs:
   # Don't modify below here
