@@ -8,8 +8,8 @@ export class PropertiesVolume {
   enableFor(server: Application) {
     if (server.locals.env !== 'development') {
       propertiesVolume.addTo(config);
-
-      set(config, 'secrets.fact.oauth-client-secret', get(config, 'services.idam.clientSecret'));
+      console.log('idam-secret', get(config, 'secrets.fact.oauth-client-secret'));
+      set(config, 'services.idam.clientSecret', get(config, 'secrets.fact.oauth-client-secret'));
       // set(config, 'secrets.div.AppInsightsInstrumentationKey', get(config, 'applicationInsights.instrumentationKey'));
     }
   }
