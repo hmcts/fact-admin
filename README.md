@@ -43,7 +43,7 @@ docker-compose up
 yarn start:dev
 ```
 
-The setup-idam.sh script will create a user `test@test.com` with a password `Pa55word1` that can be used to log in.
+The setup-idam.sh script will create a user `hmcts.fact@gmail.com` with a password `Pa55word11` that can be used to log in.
 
 ### Code style
 

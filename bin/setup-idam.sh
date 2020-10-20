@@ -14,8 +14,8 @@ curl -XPOST \
  -H "Content-Type: application/json" \
  -d "{ \"activationRedirectUrl\": \"\", \"allowedRoles\": [\"fact-admin\"], \"description\": \"${CLIENT_ID}\", \"label\": \"${CLIENT_ID}\", \"oauth2ClientId\": \"${CLIENT_ID}\", \"oauth2ClientSecret\": \"${CLIENT_SECRET}\", \"oauth2RedirectUris\": [\"${REDIRECT_URI}\" ], \"oauth2Scope\": \"string\", \"onboardingEndpoint\": \"string\", \"onboardingRoles\": [\"fact-admin\"], \"selfRegistrationAllowed\": false}"
 
-email=test@test.com
-password=Pa55word1
+email=hmcts.fact@gmail.com
+password=Pa55word11
 forename=test
 surname=test
 rolesJson='[{"code": "fact-admin"}]'
