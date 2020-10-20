@@ -12,6 +12,7 @@ import { Container } from './modules/awilix';
 import { HealthCheck } from './modules/health';
 import addRoutes from './routes';
 import { I18next } from './modules/i18n';
+import { PropertiesVolume } from './modules/properties-volume';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -44,6 +45,7 @@ server.use(require('express-session')({
 
 setupDev(server,developmentMode);
 
+new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
