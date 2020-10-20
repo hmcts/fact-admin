@@ -6,7 +6,7 @@ import { get, set } from 'lodash';
 export class PropertiesVolume {
 
   enableFor(server: Application) {
-    if (server.locals.env !== 'development') {
+    if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
 
       set(config, 'services.idam.clientSecret', get(config, 'secrets.fact.oauth-client-secret'));
