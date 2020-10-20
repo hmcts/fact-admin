@@ -15,7 +15,7 @@
     "test:coverage": "jest --coverage -c jest.coverage.config.js",
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "echo 'TODO add smoke tests' && exit 1",
+    "test:smoke": "jest -c jest.smoke.config.js",
     "test:functional": "echo 'TODO add functional tests' && exit 1",
     "cichecks": "yarn && yarn build && yarn lint  && yarn test &&  yarn test:a11y"
   },
