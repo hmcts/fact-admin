@@ -3,6 +3,8 @@ idam-pr:
   redirect_uris:
     "FACT Admin":
       - https://${SERVICE_FQDN}/oauth2/callback
+    fact_admin:
+      - https://${SERVICE_FQDN}/oauth2/callback
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
