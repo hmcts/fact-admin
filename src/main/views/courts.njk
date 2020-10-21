@@ -1,6 +1,8 @@
 {% extends "template.njk" %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">You are logged in</h1>
-  <a href="/logout">Log out</a>
+  <h3 class="govuk-heading-m">Logged out</h3>
+  <p class="govuk-body">
+    You have been logged out, click <a id="logout" href="/logout">here</a> to log back in.
+  </p>
 {% endblock %}
