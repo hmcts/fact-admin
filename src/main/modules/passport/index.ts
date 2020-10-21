@@ -38,7 +38,7 @@ export class Passport {
       (req: Request, res: Response) => {
         console.log(req.session);
         req.session.save(() => {
-          res.redirect('/courts');
+          setTimeout(() => res.redirect('/courts'), 5000);
         });
       }
     );
