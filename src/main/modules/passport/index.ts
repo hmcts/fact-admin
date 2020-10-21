@@ -36,6 +36,7 @@ export class Passport {
       '/oauth2/callback',
       passport.authenticate('provider', { failureRedirect: '/error' }),
       (req: Request, res: Response) => {
+        console.log(req.session);
         req.session.save(() => {
           res.redirect('/courts');
         });
