@@ -1,5 +1,6 @@
 import { Application } from 'express';
 import passport from 'passport';
+import { Request, Response } from 'express';
 
 /**
  * Adds the passport middleware to add oauth authentication
@@ -31,10 +32,15 @@ export class Passport {
     // })
 
     server.get('/login', passport.authenticate('provider'));
-    server.get('/oauth2/callback', passport.authenticate('provider', {
-      successRedirect: '/courts',
-      failureRedirect: '/error'
-    }));
+    server.get(
+      '/oauth2/callback',
+      passport.authenticate('provider', { failureRedirect: '/error' }),
+      (req: Request, res: Response) => {
+        req.session.save(() => {
+          res.redirect('/courts');
+        });
+      }
+    );
 
     server.get('/logout', function(req, res){
       req.logout();
