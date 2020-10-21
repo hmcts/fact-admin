@@ -1,8 +1,9 @@
 import { Application } from 'express';
 import session, { MemoryStore } from 'express-session';
 import ConnectRedis from 'connect-redis';
-import * as redis from 'redis';
+// import * as redis from 'redis';
 import config from 'config';
+import IORedis from 'ioredis';
 
 const RedisStore = ConnectRedis(session);
 
@@ -26,11 +27,20 @@ export class SessionStorage {
     return !config.get('session.redis.host')
       ? new MemoryStore()
       : new RedisStore({
-        client: redis.createClient({
-          host: config.get('session.redis.host') as string,
-          password: config.get('session.redis.key') as string,
+        // client: redis.createClient({
+        //   host: config.get('session.redis.host') as string,
+        //   password: config.get('session.redis.key') as string,
+        //   port: 6380,
+        //   tls: true
+        // })
+        client: new IORedis({
           port: 6380,
-          tls: true
+          host: config.get('session.redis.host') as string,
+          tls: {
+            port: 6380,
+            host: config.get('session.redis.host') as string
+          },
+          password: config.get('session.redis.key') as string
         })
       });
   }
