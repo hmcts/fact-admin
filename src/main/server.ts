@@ -20,8 +20,7 @@ const logger = Logger.getLogger('server');
 const { setupDev } = require('./development');
 const env = process.env.NODE_ENV || 'development';
 const developmentMode = env === 'development';
-
-export const server = express();
+const server = express();
 
 server.locals.ENV = env;
 server.use(Express.accessLogger());
@@ -51,6 +50,6 @@ new HealthCheck().enableFor(server);
 
 addRoutes(server);
 
-server.listen(config.get('port'), () => {
+export const app = server.listen(config.get('port'), () => {
   logger.info(`Application started: http://localhost:${config.get('port')}`);
 });

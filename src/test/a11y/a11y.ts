@@ -2,9 +2,10 @@ import { fail } from 'assert';
 
 const pa11y = require('pa11y');
 import * as supertest from 'supertest';
-import { server } from '../../main/server';
+process.env.NODE_ENV = 'development';
+import { app } from '../../main/server';
 
-const agent = supertest.agent(server);
+const agent = supertest.agent(app);
 
 class Pa11yResult {
   documentTitle: string;
