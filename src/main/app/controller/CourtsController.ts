@@ -9,12 +9,7 @@ export class CourtsController {
    * GET /courts
    */
   public get(req: AuthedRequest, res: Response): void {
-    // todo make annotation?
-    if (!req.isAuthenticated()) {
-      res.redirect('/login');
-    } else {
-      res.render('courts', req.i18n.getDataByLanguage(req.lng).courts);
-    }
+    res.render('courts', req.i18n.getDataByLanguage(req.lng).courts);
   }
 
 }

@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import passport from 'passport';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Adds the passport middleware to add oauth authentication
@@ -49,6 +49,13 @@ export class Passport {
 
   }
 
+}
+
+export function isAuthed(req: Request, res: Response, next: NextFunction) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
 }
 
 export type AuthedUser = {
