@@ -10,8 +10,8 @@ export class SessionStorage {
 
   public enableFor(server: Application) {
     server.use(session({
-      resave: true,
-      saveUninitialized: true,
+      resave: false,
+      saveUninitialized: false,
       secret: config.get('session.secret'),
       cookie: {
         httpOnly: true,
