@@ -26,9 +26,6 @@ export class SessionStorage {
     return !config.get('session.redis.host')
       ? new MemoryStore()
       : new RedisStore({
-        host: config.get('session.redis.host') as string,
-        port: 6380,
-        pass: config.get('session.redis.key') as string,
         client: redis.createClient({
           host: config.get('session.redis.host') as string,
           password: config.get('session.redis.key') as string,
