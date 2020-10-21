@@ -6,6 +6,7 @@ nodejs:
       resourceGroup: fact
       secrets:
         - oauth-client-secret
+        - redis-access-key
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:
@@ -13,5 +14,6 @@ nodejs:
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token"
     OAUTH_CLIENT_REDIRECT: "https://fact-admin.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
+    REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
 idam-pr:
   enabled: false

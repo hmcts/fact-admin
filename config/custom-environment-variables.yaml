@@ -8,3 +8,6 @@ services:
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
 port: PORT
+session:
+  redis:
+    host: REDIS_HOST

@@ -10,6 +10,8 @@ export class PropertiesVolume {
       propertiesVolume.addTo(config);
 
       set(config, 'services.idam.clientSecret', get(config, 'secrets.fact.oauth-client-secret'));
+      set(config, 'session.redis.key', get(config, 'secrets.fact.redis-access-key'));
+      set(config, 'session.secret', get(config, 'secrets.fact.redis-access-key'));
       // set(config, 'applicationInsights.instrumentationKey', get(config, 'secrets.div.AppInsightsInstrumentationKey'));
     }
   }

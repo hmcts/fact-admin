@@ -13,6 +13,7 @@ import { HealthCheck } from './modules/health';
 import addRoutes from './routes';
 import { I18next } from './modules/i18n';
 import { PropertiesVolume } from './modules/properties-volume';
+import { SessionStorage } from './modules/session';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -37,16 +38,11 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use(require('express-session')({
-  secret: 'express-session',
-  resave: true,
-  saveUninitialized: true
-}));
-
 setupDev(server,developmentMode);
 
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
+new SessionStorage().enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new I18next().enableFor(server);
