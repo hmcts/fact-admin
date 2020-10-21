@@ -17,7 +17,7 @@
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoke.config.js",
     "test:functional": "cucumber-js  && yarn test:a11y",
-    "cichecks": "yarn && yarn build && yarn lint  && yarn test"
+    "cichecks": "yarn && yarn build && yarn lint && yarn test"
   },
   "dependencies": {
     "@hmcts/info-provider": "^1.0.0",
