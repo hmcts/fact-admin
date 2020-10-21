@@ -17,7 +17,7 @@
     "test:pa11y": "jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoke.config.js",
-    "test:functional": "cucumber-js && yarn test:a11y",
+    "test:functional": "cucumber-js && yarn test:pa11y",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
   },
   "dependencies": {
