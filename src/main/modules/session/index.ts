@@ -19,13 +19,6 @@ export class SessionStorage {
       },
       store: this.getStore()
     }));
-
-    console.log('Session settings', {
-      host: config.get('session.redis.host') as string,
-      password: config.get('session.redis.key') as string,
-      port: 6379,
-      tls: true
-    });
   }
 
   private getStore() {
