@@ -10,7 +10,7 @@ export class CourtsController {
    */
   public get(req: AuthedRequest, res: Response): void {
     // todo make annotation?
-    if (!req.user) {
+    if (!req.isAuthenticated()) {
       res.redirect('/login');
     } else {
       res.render('courts', req.i18n.getDataByLanguage(req.lng).courts);
