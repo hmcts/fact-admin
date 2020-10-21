@@ -1,6 +1,8 @@
 import { fail } from 'assert';
 import Axios from 'axios';
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const pa11y = require('pa11y');
 const axios = Axios.create({ baseURL: process.env.TEST_URL });
 
