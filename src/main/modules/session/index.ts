@@ -11,7 +11,7 @@ export class SessionStorage {
   public enableFor(server: Application) {
     server.use(session({
       resave: true,
-      saveUninitialized: false,
+      saveUninitialized: true,
       secret: config.get('session.secret'),
       cookie: {
         httpOnly: true,
