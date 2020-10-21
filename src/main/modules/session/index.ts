@@ -28,7 +28,7 @@ export class SessionStorage {
         client: redis.createClient({
           host: config.get('session.redis.host') as string,
           password: config.get('session.redis.key') as string,
-          port: 6379,
+          port: 6380,
           tls: true
         })
       });
