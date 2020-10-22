@@ -9,7 +9,7 @@ export class CourtsController {
    * GET /courts
    */
   public get(req: AuthedRequest, res: Response): void {
-    res.render('courts', req.i18n.getDataByLanguage(req.lng).courts);
+    res.render('courts');
   }
 
 }
