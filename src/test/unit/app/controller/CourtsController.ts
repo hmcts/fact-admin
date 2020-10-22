@@ -9,13 +9,6 @@ const i18n = {
 describe('Home Controller', () => {
   const controller = new CourtsController();
 
-  test('Should redirect to the login page', async () => {
-    const req = mockRequest(i18n);
-    const res = mockResponse();
-    await controller.get(req, res);
-    expect(res.redirect).toBeCalledWith('/login');
-  });
-
   test('Should render the courts page', async () => {
     const req = mockRequest(i18n);
     req.user = true;
