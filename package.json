@@ -14,7 +14,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage -c jest.coverage.config.js",
     "test:a11y": "echo 'nope' && exit 0",
-    "test:pa11y": "jest -c jest.a11y.config.js --maxWorkers 15",
+    "test:pa11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoke.config.js",
     "test:functional": "cucumber-js && yarn test:pa11y",
