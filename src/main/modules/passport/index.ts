@@ -48,15 +48,15 @@ export class Passport {
       res.redirect('/');
     });
 
+    server.use((req: Request, res: Response, next: NextFunction) => {
+      if (req.isAuthenticated()) {
+        return next();
+      }
+      res.redirect('/login');
+    });
+
   }
 
-}
-
-export function isAuthed(req: Request, res: Response, next: NextFunction) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
 }
 
 export type AuthedUser = {
