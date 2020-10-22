@@ -1,11 +1,10 @@
 import { fail } from 'assert';
+import Axios from 'axios';
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const pa11y = require('pa11y');
-import * as supertest from 'supertest';
-process.env.NODE_ENV = 'development';
-import { app } from '../../main/server';
-
-const agent = supertest.agent(app);
+const axios = Axios.create({ baseURL: process.env.TEST_URL });
 
 class Pa11yResult {
   documentTitle: string;
@@ -27,16 +26,7 @@ beforeAll((done /* call it or remove it*/) => {
 });
 
 function ensurePageCallWillSucceed(url: string): Promise<void> {
-  return agent.get(url).then((res: supertest.Response) => {
-    if (res.redirect) {
-      throw new Error(
-        `Call to ${url} resulted in a redirect to ${res.get('Location')}`,
-      );
-    }
-    if (res.serverError) {
-      throw new Error(`Call to ${url} resulted in internal server error`);
-    }
-  });
+  return axios.get(url);
 }
 
 function runPally(url: string): Pa11yResult {
@@ -58,7 +48,7 @@ function testAccessibility(url: string): void {
   describe(`Page ${url}`, () => {
     test('should have no accessibility errors', done => {
       ensurePageCallWillSucceed(url)
-        .then(() => runPally(agent.get(url).url))
+        .then(() => runPally(url))
         .then((result: Pa11yResult) => {
           expectNoErrors(result.issues);
           done();

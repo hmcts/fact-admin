@@ -1,7 +1,6 @@
 
 import * as bodyParser from 'body-parser';
 import config from 'config';
-import cookieParser from 'cookie-parser';
 import express from 'express';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
@@ -27,7 +26,6 @@ server.use(Express.accessLogger());
 server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
-server.use(cookieParser());
 server.use(express.static(path.join(__dirname, 'public')));
 server.use((req, res, next) => {
   res.setHeader(

@@ -10,6 +10,7 @@ export class SessionStorage {
 
   public enableFor(server: Application) {
     server.use(session({
+      name: 'fact-session',
       resave: false,
       saveUninitialized: false,
       secret: config.get('session.secret'),
