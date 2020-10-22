@@ -36,9 +36,9 @@ export class Passport {
       '/oauth2/callback',
       passport.authenticate('provider', { failureRedirect: '/error' }),
       (req: Request, res: Response) => {
-        console.log(req.session);
+
         req.session.save(() => {
-          setTimeout(() => res.redirect('/courts'), 5000);
+          res.render('redirect');
         });
       }
     );
