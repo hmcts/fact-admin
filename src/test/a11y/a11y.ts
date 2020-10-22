@@ -1,10 +1,11 @@
 import { fail } from 'assert';
 import Axios from 'axios';
+import { config } from '../config';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const pa11y = require('pa11y');
-const axios = Axios.create({ baseURL: process.env.TEST_URL });
+const axios = Axios.create({ baseURL: config.TEST_URL });
 
 class Pa11yResult {
   documentTitle: string;
@@ -21,7 +22,20 @@ class PallyIssue {
   typeCode: number;
 }
 
+function loginPally(): Pa11yResult {
+  return pa11y(config.TEST_URL + '/login', {
+    hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
+    actions: [
+      'set field #username to hmcts.fact@gmail.com',
+      'set field #password to Pa55word11',
+      'click element .button',
+      'wait for path to be /courts'
+    ]
+  });
+}
+
 beforeAll((done /* call it or remove it*/) => {
+  loginPally();
   done(); // calling it
 });
 
@@ -30,7 +44,7 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
 }
 
 function runPally(url: string): Pa11yResult {
-  return pa11y(url, {
+  return pa11y(config.TEST_URL + url, {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
   });
 }
@@ -61,6 +75,8 @@ function testAccessibility(url: string): void {
 describe('Accessibility', () => {
   // testing accessibility of the home page
   testAccessibility('/');
+  testAccessibility('/courts');
+  testAccessibility('/logout');
 
   // TODO: include each path of your application in accessibility checks
 });
