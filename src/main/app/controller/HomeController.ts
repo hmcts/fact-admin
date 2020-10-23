@@ -1,13 +1,12 @@
-import { Response } from 'express';
-import { I18nRequest } from '../../types/I18nRequest';
+import { Request, Response } from 'express';
 
 export class HomeController {
 
   /**
    * GET /
    */
-  public get(req: I18nRequest, res: Response): void {
-    res.render('home', req.i18n.getDataByLanguage(req.lng).home);
+  public get(req: Request, res: Response): void {
+    res.render('home');
   }
 
 }
