@@ -1,6 +1,11 @@
 import { Application } from 'express';
 import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
+import { asClass, asValue } from 'awilix';
+import Axios from 'axios';
+import config from 'config';
+import { FactApi } from '../../app/fact/FactApi';
+import { AuthedRequest } from '../../types/AuthedRequest';
 
 /**
  * Adds the passport middleware to add oauth authentication
@@ -12,31 +17,20 @@ export class Passport {
     server.use(passport.session());
 
     passport.serializeUser(function(user: AuthedUser, done) {
-      done(null, user.id);
+      done(null, JSON.stringify(user));
     });
 
-    passport.deserializeUser(function(id, done) {
-      done(null, { id });
+    passport.deserializeUser(function(user: string, done: Function) {
+      done(null, JSON.parse(user));
     });
 
     passport.use('provider', server.locals.container.cradle.authProviderFactory.getAuthProvider());
-
-    // TODO
-    // Register some sort of callback that creates an API client with the token pre-attached
-    // // create a scoped container
-    // req.scope = container.createScope()
-    //
-    // // register some request-specific data..
-    // req.scope.register({
-    //   currentUser: asValue(req.user)
-    // })
 
     server.get('/login', passport.authenticate('provider'));
     server.get(
       '/oauth2/callback',
       passport.authenticate('provider', { failureRedirect: '/error' }),
       (req: Request, res: Response) => {
-
         req.session.save(() => {
           res.render('redirect');
         });
@@ -48,8 +42,20 @@ export class Passport {
       res.render('logout');
     });
 
-    server.use((req: Request, res: Response, next: NextFunction) => {
+    server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
       if (req.isAuthenticated()) {
+        req.scope = req.app.locals.container.createScope();
+        req.scope.register({
+          axios: asValue(Axios.create({
+            baseURL: config.get('services.api.url'),
+            headers: {
+              Authorization: 'Bearer ' + req.user.token
+            }
+          })),
+          api: asClass(FactApi),
+          currentUser: asValue(req.user)
+        });
+
         return next();
       }
       res.redirect('/login');
@@ -60,5 +66,6 @@ export class Passport {
 }
 
 export type AuthedUser = {
-  id: string
+  id: string,
+  token: string
 }
