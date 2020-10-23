@@ -22,7 +22,7 @@ export class AuthProviderFactory {
       const jsonString = Buffer.from(jwt, 'base64').toString();
       const json = JSON.parse(jsonString);
 
-      done(null, { id: json.sub });
+      done(null, { id: json.sub, token: accessToken });
     } catch (err) {
       done(err);
     }

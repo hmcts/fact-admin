@@ -1,7 +1,5 @@
 import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
-import Axios from 'axios';
 import config from 'config';
-import { FactApi } from '../../app/fact/FactApi';
 import { HomeController } from '../../app/controller/HomeController';
 import { AuthProviderFactory } from '../../app/auth/AuthProviderFactory';
 import { Application } from 'express';
@@ -20,8 +18,6 @@ export class Container {
 
     server.locals.container = createContainer({ injectionMode: InjectionMode.CLASSIC }).register({
       logger: asValue(logger),
-      axios: asValue(Axios.create({ baseURL: config.get('services.api.url') })),
-      api: asClass(FactApi),
       homeController: asClass(HomeController),
       courtsController: asClass(CourtsController),
       errorController: asClass(ErrorController),
