@@ -4,10 +4,14 @@ import { puppeteerConfig } from '../puppeteer.config';
 
 const scope = require('./scope');
 
+export const launchBrowser = async () => {
+  scope.browser = await puppeteer.launch(puppeteerConfig);
+};
+
 setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
 BeforeAll(async () => {
-  scope.browser = await puppeteer.launch(puppeteerConfig);
+  await launchBrowser();
 });
 
 After(async () => {

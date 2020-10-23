@@ -6,10 +6,10 @@ const i18n = {
   home: {},
 };
 
-describe('Home Controller', () => {
+describe('HomeController', () => {
   const controller = new HomeController();
 
-  test('Should render the search option page', async () => {
+  test('Should render the home page', async () => {
     const req = mockRequest(i18n);
     const res = mockResponse();
     await controller.get(req, res);

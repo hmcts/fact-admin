@@ -45,7 +45,7 @@ export class Passport {
 
     server.get('/logout', function(req, res){
       req.logout();
-      res.redirect('/');
+      res.render('logout');
     });
 
     server.use((req: Request, res: Response, next: NextFunction) => {

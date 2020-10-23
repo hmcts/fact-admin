@@ -4,6 +4,10 @@
   {% include "webpack/css.njk" %}
 {% endblock %}
 
+{% block pageTitle %}
+  Find a court or tribunal - GOV.UK
+{% endblock %}
+
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
   {% include "webpack/js.njk" %}

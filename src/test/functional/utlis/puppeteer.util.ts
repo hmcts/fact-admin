@@ -1,7 +1,14 @@
+import { launchBrowser } from '../support/hooks';
+
 const scope = require('../support/scope');
 
 export const newPage = async () => {
   scope.page = await scope.browser.newPage();
+};
+
+export const newBrowser = async () => {
+  await scope.browser.close();
+  await launchBrowser();
 };
 
 export const goTo = async (url: string) => {
