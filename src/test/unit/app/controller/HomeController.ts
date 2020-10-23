@@ -6,7 +6,7 @@ const i18n = {
   home: {},
 };
 
-describe('Home Controller', () => {
+describe('HomeController', () => {
   const controller = new HomeController();
 
   test('Should render the home page', async () => {

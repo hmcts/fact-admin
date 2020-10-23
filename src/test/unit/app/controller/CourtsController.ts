@@ -6,7 +6,7 @@ const i18n = {
   courts: {},
 };
 
-describe('Home Controller', () => {
+describe('CourtsController', () => {
   const controller = new CourtsController();
 
   test('Should render the courts page', async () => {
