@@ -5,8 +5,8 @@ services:
   api:
     url: 'http://localhost:8080'
   idam:
-    authorizationURL: 'http://localhost:3501/login'
-    tokenURL: 'http://localhost:5000/o/token'
+    authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/login'
+    tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
     clientID: 'fact_admin'
     clientSecret: 'fact_admin_secret'
     callbackURL: 'http://localhost:3300/oauth2/callback'

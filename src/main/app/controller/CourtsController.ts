@@ -8,8 +8,10 @@ export class CourtsController {
   /**
    * GET /courts
    */
-  public get(req: AuthedRequest, res: Response): void {
-    res.render('courts');
+  public async get(req: AuthedRequest, res: Response): Promise<void> {
+    const courts = await req.scope.cradle.api.getCourts();
+
+    res.render('courts', courts);
   }
 
 }
