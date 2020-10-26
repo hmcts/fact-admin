@@ -8,9 +8,9 @@ export class FactApi {
     private readonly logger: Logger
   ) { }
 
-  public search(query: string): Promise<unknown[]> {
+  public getCourts(): Promise<unknown[]> {
     return this.axios
-      .get(`/courts?q=${query}`)
+      .get('/courts/all')
       .then(results => results.data)
       .catch(err => {
         this.logger.error(err);

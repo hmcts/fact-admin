@@ -4,12 +4,16 @@ import { CourtsController } from '../../../../main/app/controller/CourtsControll
 
 describe('CourtsController', () => {
   const controller = new CourtsController();
+  const mockApi = {
+    getCourts: async (): Promise<object[]> => []
+  };
 
   test('Should render the courts page', async () => {
     const req = mockRequest();
-    req.user = true;
+    req.scope.cradle.api = mockApi;
+
     const res = mockResponse();
     await controller.get(req, res);
-    expect(res.render).toBeCalledWith('courts');
+    expect(res.render).toBeCalledWith('courts', []);
   });
 });
