@@ -3,7 +3,7 @@ import { Given, Then, When } from 'cucumber';
 
 import * as I from '../utlis/puppeteer.util';
 
-Given('that I am a logged-out admin or super admin user', async function() {
+Given('that I am a logged-out admin or super admin user', async () => {
   const element = await I.checkElement('#login');
   expect(element).equal(true);
 });
@@ -12,7 +12,7 @@ Given('I click the Login link', async () => {
   await I.click('#login');
 });
 
-Given('I am on the admin portal sign in page', async function() {
+Given('I am on the admin portal sign in page', async () => {
   const element = await I.getElement('h1');
   const text = await I.getElementText(element);
   expect(text).equal('Sign in');
@@ -32,12 +32,12 @@ Given('click the Sign In button', async () => {
   await I.click('.button');
 });
 
-Then('the system will sign me in', async function() {
+Then('the system will sign me in', async () => {
   const element = await I.checkElement('#logout');
   expect(element).equal(true);
 });
 
-Then('an error message is shown', async function() {
+Then('an error message is shown', async () => {
   const element = await I.checkElement('.error-summary');
   expect(element).equal(true);
 });
