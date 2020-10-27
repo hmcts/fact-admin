@@ -18,3 +18,5 @@ session:
   redis:
     host:
     key:
+appInsights:
+  instrumentationKey:
