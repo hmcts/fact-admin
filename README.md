@@ -39,11 +39,10 @@ The applications's home page will be available at https://localhost:3300
 
 ```
 docker-compose up
-./bin/setup-idam.sh # first time only
 yarn start:dev
 ```
 
-The setup-idam.sh script will create a user `hmcts.fact@gmail.com` with a password `Pa55word11` that can be used to log in.
+You can log in with a user `hmcts.fact@gmail.com` and password `Pa55word11`.
 
 ### Code style
 
