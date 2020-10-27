@@ -17,4 +17,14 @@ export class FactApi {
         return [];
       });
   }
+
+  public getCourt(slug: string): Promise<{}> {
+    return this.axios
+      .get(`/courts/${slug}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logger.error(err);
+        return {};
+      });
+  }
 }

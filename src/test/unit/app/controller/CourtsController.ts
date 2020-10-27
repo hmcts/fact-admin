@@ -1,6 +1,6 @@
 import { mockRequest } from '../../utils/mockRequest';
 import { mockResponse } from '../../utils/mockResponse';
-import { CourtsController } from '../../../../main/app/controller/CourtsController';
+import { CourtsController } from '../../../../main/app/controller/courts/CourtsController';
 
 describe('CourtsController', () => {
   const controller = new CourtsController();
