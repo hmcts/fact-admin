@@ -7,6 +7,7 @@ nodejs:
       secrets:
         - oauth-client-secret
         - redis-access-key
+        - AppInsightsInstrumentationKey
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:

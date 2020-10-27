@@ -12,6 +12,7 @@ import { HealthCheck } from './modules/health';
 import addRoutes from './routes';
 import { PropertiesVolume } from './modules/properties-volume';
 import { SessionStorage } from './modules/session';
+import { AppInsights } from './modules/appinsights';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -43,6 +44,7 @@ new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new Passport().enableFor(server);
 new HealthCheck().enableFor(server);
+new AppInsights().enableFor(server);
 
 addRoutes(server);
 

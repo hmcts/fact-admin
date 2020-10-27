@@ -11,3 +11,5 @@ port: PORT
 session:
   redis:
     host: REDIS_HOST
+appInsights:
+  instrumentationKey: APPINSIGHTS_KEY
