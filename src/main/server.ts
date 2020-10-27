@@ -42,9 +42,9 @@ new Container().enableFor(server);
 new SessionStorage().enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
-new Passport().enableFor(server);
 new HealthCheck().enableFor(server);
 new AppInsights().enableFor(server);
+new Passport().enableFor(server);
 
 addRoutes(server);
 
