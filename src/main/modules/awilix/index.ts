@@ -1,7 +1,5 @@
 import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
-import config from 'config';
 import { HomeController } from '../../app/controller/HomeController';
-import { AuthProviderFactory } from '../../app/auth/AuthProviderFactory';
 import { Application } from 'express';
 import { CourtsController } from '../../app/controller/courts/CourtsController';
 import { ErrorController } from '../../app/controller/ErrorController';
@@ -23,8 +21,7 @@ export class Container {
       courtsController: asClass(CourtsController),
       courtDetailsController: asClass(CourtDetailsController),
       errorController: asClass(ErrorController),
-      exposeErrors: asValue(server.locals.env === 'development'),
-      authProviderFactory: asValue(new AuthProviderFactory(config.get('services.idam')))
+      exposeErrors: asValue(server.locals.env === 'development')
     });
   }
 
