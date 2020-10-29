@@ -18,6 +18,7 @@
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoke.config.js",
     "test:functional": "cucumber-js && yarn test:pa11y",
+    "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
   },
   "dependencies": {

@@ -1,0 +1,33 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">You are logged in</h1>
+  <a id="logout" href="/logout">Log out</a>
+
+  <table class="govuk-table" id="courts">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Name</th>
+        <th scope="col" class="govuk-table__header">Last Updated</th>
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+    {% for court in courts | sort(attribute="name") %}
+      <tr class="govuk-table__row">
+        <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
+        <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
+        <td scope="row" class="govuk-table__cell">
+          <a class="govuk-link" href="/court/{{ court.slug }}">view</a>
+        </td>
+        <td scope="row" class="govuk-table__cell">
+          <a class="govuk-link" href="/court/{{ court.slug }}/edit">edit</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -3,7 +3,7 @@ import { Given, Then } from 'cucumber';
 
 import * as I from '../utlis/puppeteer.util';
 
-Given('that I am a logged-in admin or super admin user', async function() {
+Given('that I am a logged-in admin or super admin user', async () => {
   let element = await I.checkElement('#logout');
   if (!element) {
     await I.click('#login');
@@ -16,7 +16,7 @@ Given('I click the Logout link', async () => {
   await I.click('#logout');
 });
 
-Then('the system will log me out', async function() {
+Then('the system will log me out', async () => {
   const element = await I.checkElement('#login');
   expect(element).equal(true);
 });
