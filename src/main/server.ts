@@ -1,18 +1,17 @@
-
 import * as bodyParser from 'body-parser';
 import config from 'config';
 import express from 'express';
-import { Helmet } from './modules/helmet';
+import {Helmet} from './modules/helmet';
 import * as path from 'path';
 import favicon from 'serve-favicon';
-import { Nunjucks } from './modules/nunjucks';
-import { Passport } from './modules/passport';
-import { Container } from './modules/awilix';
-import { HealthCheck } from './modules/health';
+import {Nunjucks} from './modules/nunjucks';
+import {Container} from './modules/awilix';
+import {HealthCheck} from './modules/health';
 import addRoutes from './routes';
-import { PropertiesVolume } from './modules/properties-volume';
-import { SessionStorage } from './modules/session';
-import { AppInsights } from './modules/appinsights';
+import {PropertiesVolume} from './modules/properties-volume';
+import {SessionStorage} from './modules/session';
+import {AppInsights} from './modules/appinsights';
+import {OidcMiddleware} from './modules/passport';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -44,7 +43,7 @@ new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);
 new AppInsights().enableFor(server);
-new Passport().enableFor(server);
+new OidcMiddleware().enableFor(server);
 
 addRoutes(server);
 
