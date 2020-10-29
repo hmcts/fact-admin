@@ -47,7 +47,7 @@ new AppInsights().enableFor(server);
 new Passport().enableFor(server);
 
 addRoutes(server);
-
+console.log(config);
 export const app = server.listen(config.get('port'), () => {
   logger.info(`Application started: http://localhost:${config.get('port')}`);
 });
