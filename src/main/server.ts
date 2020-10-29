@@ -11,7 +11,7 @@ import addRoutes from './routes';
 import {PropertiesVolume} from './modules/properties-volume';
 import {SessionStorage} from './modules/session';
 import {AppInsights} from './modules/appinsights';
-import {OidcMiddleware} from './modules/passport';
+import {OidcMiddleware} from './modules/oidc';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');

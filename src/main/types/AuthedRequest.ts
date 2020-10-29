@@ -1,4 +1,4 @@
-import { AuthedUser } from '../modules/passport';
+import { AuthedUser } from '../modules/oidc';
 import { Request } from 'express';
 import { AwilixContainer } from 'awilix';
 

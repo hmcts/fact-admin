@@ -6,7 +6,7 @@ import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
 
 /**
- * Adds the passport middleware to add oauth authentication
+ * Adds the oidc middleware to add oauth authentication
  */
 export class OidcMiddleware {
 
@@ -43,7 +43,6 @@ export class OidcMiddleware {
     });
 
     server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
-      console.log(req.session);
       if (req.session.user) {
         req.scope = req.app.locals.container.createScope();
         req.scope.register({
