@@ -16,12 +16,31 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click view next to a court', async () => {
-  const elementExist = await I.checkElement('#courts > tbody > tr > td > a');
+  const elementExist = await I.checkElement('#view-abergavenny-magistrates-court');
   expect(elementExist).equal(true);
-  await I.click('#courts > tbody > tr > td > a');
+  await I.click('#view-abergavenny-magistrates-court');
+});
+
+When('I click edit next to {string}', async (courtSlug: string) => {
+  const elementExist = await I.checkElement('#edit-' + courtSlug);
+  expect(elementExist).equal(true);
+  await I.click('#edit-' + courtSlug);
 });
 
 Then('I am directed to the court profile page', async () => {
   const pageTitle = await I.getPageTitle();
   expect(pageTitle).equal('Court Details');
+});
+
+Then('I am redirected to the Edit Court page for the {string}', async (courtName: string) => {
+  const pageTitle = await I.getPageTitle();
+  const editCourtHeading = await I.getElement('#court-name');
+  const editCourtHeadingText = await I.getElementText(editCourtHeading);
+  expect(pageTitle).equal('Edit Court');
+  expect(editCourtHeadingText).equal('Editing - ' + courtName);
+  await I.checkElementIsAnchor('#courts');
+  await I.checkElementIsAnchor('#my-account');
+  await I.checkElementIsAnchor('#logout');
+  await I.checkElementIsAnchor('#view-in-new-window');
+  await I.checkElementIsAnchor('#general');
 });
