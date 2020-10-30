@@ -7,8 +7,8 @@ export class CourtDetailsController {
 
   public async get(req: AuthedRequest, res: Response) {
     const slug: string = req.params.slug as string;
-    const courts = await req.scope.cradle.api.getCourt(slug);
+    const court = await req.scope.cradle.api.getCourt(slug);
 
-    return res.render('courts/court-details', courts);
+    return res.render('courts/court-details', { court });
   }
 }

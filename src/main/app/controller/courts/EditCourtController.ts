@@ -9,6 +9,6 @@ export class EditCourtController {
     const slug: string = req.params.slug as string;
     const court = await req.scope.cradle.api.getCourt(slug);
 
-    return res.render('courts/edit-court', court);
+    return res.render('courts/edit-court', { court });
   }
 }
