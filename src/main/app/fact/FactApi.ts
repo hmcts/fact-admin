@@ -1,5 +1,5 @@
 import { Logger } from '../../types/Logger';
-import { AxiosInstance } from 'axios';
+import {AxiosError, AxiosInstance} from 'axios';
 
 export class FactApi {
 
@@ -12,19 +12,26 @@ export class FactApi {
     return this.axios
       .get('/courts/all')
       .then(results => results.data)
-      .catch(err => {
-        this.logger.error(err);
-        return [];
-      });
+      .catch(this.errorHandler([]));
   }
 
   public getCourt(slug: string): Promise<{}> {
     return this.axios
       .get(`/courts/${slug}`)
       .then(results => results.data)
-      .catch(err => {
-        this.logger.error(err);
-        return {};
-      });
+      .catch(this.errorHandler({}));
+  }
+
+  private errorHandler<T>(defaultValue: T) {
+    return (err: AxiosError) => {
+      this.logger.error(err.message);
+
+      if (err.response) {
+        this.logger.info(err.response.data);
+        this.logger.info(err.response.headers);
+      }
+
+      return defaultValue;
+    };
   }
 }

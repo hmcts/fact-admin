@@ -21,7 +21,6 @@ describe('FactApi', () => {
   });
 
   test('Should return no result and log error from get request', async () => {
-
     const mockAxios = { get: async () => {
       throw new Error('Error');
     }} as any;
@@ -56,13 +55,22 @@ describe('FactApi', () => {
 
   test('Should return no result and log error from getCourt request', async () => {
     const mockAxios = { get: async () => {
-      throw new Error('Error');
+      const error = new Error('Error') as any;
+      error.response = {
+        data: 'something failed',
+        headers: {},
+        status: 403,
+        statusText: 'Failed'
+      };
+
+      throw error;
     }} as any;
     const mockLogger = {
-      error: async (message: string) => message
+      error: (message: string) => message,
+      info: (message: string) => message
     } as any;
 
-    const spy = jest.spyOn(mockLogger, 'error');
+    const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.getCourt('No Slug')).resolves.toEqual({});
