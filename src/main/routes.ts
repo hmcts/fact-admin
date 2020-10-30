@@ -6,6 +6,7 @@ export default function(app: Application): void {
   app.get('/courts', app.locals.container.cradle.courtsController.get);
   app.get('/courts/:slug', app.locals.container.cradle.courtDetailsController.get);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
+  app.post('/courts/:slug/edit', app.locals.container.cradle.editCourtController.post);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);

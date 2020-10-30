@@ -1,4 +1,5 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "template.njk" %}
 
@@ -22,53 +23,60 @@
 {% endblock %}
 
 {% block content %}
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-three-quarters">
-      <h1 id="court-name" class="govuk-heading-l">Editing - {{ court.name }}</h1>
-    </div>
-
-    <div class="govuk-grid-column-one-quarter">
-      <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank" href="">view in new window</a>
-    </div>
-  </div>
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <a id="general" class="govuk-link" href="#">general</a>
-    </div>
-  </div>
-
 <div class="govuk-grid-row">
-  <h1 class="govuk-heading-xl">Editing - {{ court.name }}</h1>
-  <a id="logout" href="/logout">Log out</a>
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+        <h1 id="court-name" class="govuk-heading-l">Editing - {{ court.name }}</h1>
+      </div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-three-quarters">
-      {{ govukCharacterCount({
-        name: "urgent-notice",
-        id: "urgent-notice",
-        maxlength: 250,
-        rows: "3",
-        label: {
-          text: "Urgent notice",
-          classes: "govuk-label--m"
-        },
-        hint: {
-          text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
-        }
-      }) }}
+      <div class="govuk-grid-column-one-quarter">
+        <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank" href="">view in new window</a>
+      </div>
+    </div>
 
-      {{ govukCharacterCount({
-        name: "urgent-notice-welsh",
-        id: "urgent-notice-welsh",
-        maxlength: 250,
-        rows: "3",
-        label: {
-          text: "Urgent notice (Welsh)",
-          classes: "govuk-label--m"
-        }
-      }) }}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <a id="general" class="govuk-link" href="#">general</a>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+        <form method="POST">
+          {{ govukCharacterCount({
+            name: "urgent_message",
+            id: "urgent-notice",
+            maxlength: 250,
+            rows: "3",
+            value: court['urgent_message'],
+            label: {
+              text: "Urgent notice",
+              classes: "govuk-label--m"
+            },
+            hint: {
+              text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
+            }
+          }) }}
+
+          {{ govukCharacterCount({
+            name: "urgent_message_cy",
+            id: "urgent-notice-welsh",
+            maxlength: 250,
+            rows: "3",
+            value: court['urgent_message_cy'],
+            label: {
+              text: "Urgent notice (Welsh)",
+              classes: "govuk-label--m"
+            }
+          }) }}
+
+          {{ govukButton({
+            text: "Update",
+            classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
+          }) }}
+        </form>
+      </div>
     </div>
   </div>
 </div>
