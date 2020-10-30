@@ -12,13 +12,10 @@ export class EditCourtController {
   }
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
-    const updated = req.body;
-
     const slug: string = req.params.slug as string;
-    const court = await req.scope.cradle.api.getCourt(slug);
+    const updated: {} = req.body;
+    const updateCourt = await req.scope.cradle.api.updateCourt(slug, updated);
 
-    const updatedCourt = Object.assign(court, updated);
-
-    res.render('courts/edit-court', { court: updatedCourt });
+    res.render('courts/edit-court', { court: updateCourt, updated: true });
   }
 }

@@ -22,6 +22,13 @@ export class FactApi {
       .catch(this.errorHandler({}));
   }
 
+  public updateCourt(slug: string, body: {}): Promise<{}> {
+    return this.axios
+      .put(`/courts/${slug}`, body)
+      .then(results => results.data)
+      .catch(this.errorHandler({}));
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logger.error(err.message);
