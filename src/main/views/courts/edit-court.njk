@@ -1,3 +1,5 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
 {% extends "template.njk" %}
 
 {% block pageTitle %}
@@ -37,4 +39,37 @@
     </div>
   </div>
 
+<div class="govuk-grid-row">
+  <h1 class="govuk-heading-xl">Editing - {{ court.name }}</h1>
+  <a id="logout" href="/logout">Log out</a>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukCharacterCount({
+        name: "urgent-notice",
+        id: "urgent-notice",
+        maxlength: 250,
+        rows: "3",
+        label: {
+          text: "Urgent notice",
+          classes: "govuk-label--m"
+        },
+        hint: {
+          text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
+        }
+      }) }}
+
+      {{ govukCharacterCount({
+        name: "urgent-notice-welsh",
+        id: "urgent-notice-welsh",
+        maxlength: 250,
+        rows: "3",
+        label: {
+          text: "Urgent notice (Welsh)",
+          classes: "govuk-label--m"
+        }
+      }) }}
+    </div>
+  </div>
+</div>
 {% endblock %}
