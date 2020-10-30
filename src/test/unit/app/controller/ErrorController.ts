@@ -29,4 +29,16 @@ describe('ErrorController', () => {
     expect(res.render).toBeCalledWith('not-found');
   });
 
+  test('Should render error pages but not expose details', async () => {
+    const controller = new ErrorController(logger, false);
+
+    const err = { message: 'Bad request' } as any;
+    const req = mockRequest();
+    const res = mockResponse();
+    await controller.internalServerError(err, req, res);
+
+    expect(res.render).toBeCalledWith('error');
+    expect(res.statusCode).toBe(500);
+  });
+
 });
