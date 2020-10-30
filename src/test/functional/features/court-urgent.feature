@@ -9,6 +9,21 @@ Feature: Homepage
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-  Scenario: Update urgent message for court
+  Scenario: Urgent notice
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
+    When I add an "Urgent Notice" in the field provided
+    And I click the update button
+    Then a message is displayed on the page
+
+  Scenario: No Urgent notice
+    When I click edit next to a chosen court or tribunal
+    Then I am redirected to the Edit Court page for the chosen court
+    When I leave the Urgent Notice field blank
+    Then nothing is displayed on the page
+
+  Scenario: Welsh Translation
+    When I click edit next to a chosen court or tribunal
+    Then I am redirected to the Edit Court page for the chosen court
+    When I have added the "Welsh translation of the urgent notice" in the Urgent Notice Welsh field
+    Then a message is displayed on the page
