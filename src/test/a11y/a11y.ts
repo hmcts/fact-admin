@@ -43,9 +43,10 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
   return axios.get(url);
 }
 
-function runPally(url: string): Pa11yResult {
+function runPallyWith(url: string, actions: string[]): Pa11yResult {
   return pa11y(config.TEST_URL + url, {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
+    actions: actions
   });
 }
 
@@ -58,11 +59,11 @@ function expectNoErrors(messages: PallyIssue[]): void {
   }
 }
 
-function testAccessibility(url: string): void {
+function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
     test('should have no accessibility errors', done => {
       ensurePageCallWillSucceed(url)
-        .then(() => runPally(url))
+        .then(() => runPallyWith(url, actions))
         .then((result: Pa11yResult) => {
           expectNoErrors(result.issues);
           done();
@@ -70,6 +71,11 @@ function testAccessibility(url: string): void {
         .catch((err: Error) => done(err));
     });
   });
+
+}
+
+function testAccessibility(url: string): void {
+  testAccessibilityWithActions(url, []);
 }
 
 describe('Accessibility', () => {
@@ -77,6 +83,7 @@ describe('Accessibility', () => {
   testAccessibility('/');
   testAccessibility('/courts');
   testAccessibility('/logout');
+  testAccessibility('/courts/aberdare-county-court/edit');
 
   // TODO: include each path of your application in accessibility checks
 });

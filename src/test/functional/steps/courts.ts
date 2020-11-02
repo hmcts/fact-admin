@@ -15,13 +15,13 @@ Given('they are in alphabetical order', async () => {
   expect(courts).equals(courts.sort());
 });
 
-When('I click view next to a court', async () => {
-  const elementExist = await I.checkElement('#view-abergavenny-magistrates-court');
+When('I click view next to court with {string}', async (courtSlug: string) => {
+  const elementExist = await I.checkElement('#view-' + courtSlug);
   expect(elementExist).equal(true);
-  await I.click('#view-abergavenny-magistrates-court');
+  await I.click('#view-' + courtSlug);
 });
 
-When('I click edit next to {string}', async (courtSlug: string) => {
+When('I click edit next to court with {string}', async (courtSlug: string) => {
   const elementExist = await I.checkElement('#edit-' + courtSlug);
   expect(elementExist).equal(true);
   await I.click('#edit-' + courtSlug);

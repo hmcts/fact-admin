@@ -11,12 +11,16 @@ Feature: Homepage
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-  Scenario: View a court profile page
-    When I click view next to a court
+  Scenario Outline: View a court profile page
+    When I click view next to court with "<view_court_slug>"
     Then I am directed to the court profile page
 
+    Examples:
+      | view_court_slug                            |
+      | abergavenny-magistrates-court |
+
   Scenario Outline: Navigate to edit a court or tribunal page
-    When I click edit next to "<edit_court_slug>"
+    When I click edit next to court with "<edit_court_slug>"
     Then I am redirected to the Edit Court page for the "<edit_court_name>"
 
     Examples:
