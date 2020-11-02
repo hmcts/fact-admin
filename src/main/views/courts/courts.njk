@@ -2,9 +2,22 @@
 
 {% extends "template.njk" %}
 
+{% block beforeContent %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+    </div>
+
+    <div class="govuk-grid-column-one-quarter">
+      <a id="my-account" class="govuk-link govuk-link--no-visited-state" href="#">my account</a>
+      <a id="logout" class="govuk-link govuk-link--no-visited-state" href="/logout">log out</a>
+    </div>
+  </div>
+
+{% endblock %}
+
 {% block content %}
   <h1 class="govuk-heading-xl">You are logged in</h1>
-  <a id="logout" href="/logout">Log out</a>
 
   <table class="govuk-table" id="courts">
     <thead class="govuk-table__head">
@@ -21,10 +34,10 @@
         <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
         <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
         <td scope="row" class="govuk-table__cell">
-          <a class="govuk-link" href="/court/{{ court.slug }}">view</a>
+          <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
         </td>
         <td scope="row" class="govuk-table__cell">
-          <a class="govuk-link" href="/court/{{ court.slug }}/edit">edit</a>
+          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit">edit</a>
         </td>
       </tr>
     {% endfor %}
