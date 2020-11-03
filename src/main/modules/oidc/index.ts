@@ -4,6 +4,8 @@ import Axios from 'axios';
 import config from 'config';
 import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
+// eslint-disable-next-line @typescript-eslint/camelcase
+import jwt_decode from 'jwt-decode';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -34,6 +36,7 @@ export class OidcMiddleware {
       );
 
       req.session.user = response.data;
+      req.session.user.jwt = jwt_decode(response.data.id_token);
       res.render('redirect');
     });
 
