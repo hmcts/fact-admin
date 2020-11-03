@@ -50,7 +50,7 @@ describe('FactApi', () => {
 
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourt('London')).resolves.toEqual(results.data);
+    await expect(api.getCourtGeneral('London')).resolves.toEqual(results.data);
   });
 
   test('Should return no result and log error from getCourt request', async () => {
@@ -73,7 +73,7 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourt('No Slug')).resolves.toEqual({});
+    await expect(api.getCourtGeneral('No Slug')).resolves.toEqual({});
     await expect(spy).toBeCalled();
 
   });

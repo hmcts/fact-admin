@@ -1,10 +1,10 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
-import {EditCourtController} from '../../../../../main/app/controller/courts/EditCourtController';
+import {EditCourtGeneralController} from '../../../../../main/app/controller/courts/EditCourtGeneralController';
 
 describe('EditCourtController', () => {
   const court: any = {};
-  const controller = new EditCourtController();
+  const controller = new EditCourtGeneralController();
   const mockApi = {getCourt: async (): Promise<{}> => court};
 
   test('Should render the edit court page', async () => {
