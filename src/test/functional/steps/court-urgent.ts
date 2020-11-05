@@ -11,7 +11,7 @@ When('I click edit next to a chosen court or tribunal', async () => {
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.getPageTitle();
-  expect(pageTitle).equal('Court Details');
+  expect(pageTitle).equal('Edit Court');
 });
 
 When('I add an {string} in the field provided', async (message: string) => {

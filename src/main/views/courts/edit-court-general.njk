@@ -51,6 +51,8 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
         <form method="POST">
+          <input type="hidden" name="name" value="{{ court.name }}">
+          <input type="hidden" name="currentUrgent" value="{{ court['urgent_message'] }}">
           {{ govukCharacterCount({
             name: "urgent_message",
             id: "urgent-notice",
@@ -66,6 +68,7 @@
             }
           }) }}
 
+          <input type="hidden" name="currentUrgentCy" value="{{ court['urgent_message_cy'] }}">
           {{ govukCharacterCount({
             name: "urgent_message_cy",
             id: "urgent-notice-welsh",

@@ -1,6 +1,6 @@
-Feature: Homepage
+Feature: Court Update Urgent Message
 
-  Scenario: View the list
+  Background: View the list
     Given I am on new browser
     Given I am on FACT homepage
     And I am on the admin portal sign in page
@@ -26,4 +26,5 @@ Feature: Homepage
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
     When I have added the "Welsh translation of the urgent notice" in the Urgent Notice Welsh field
+    And I click the update button
     Then a message is displayed on the page
