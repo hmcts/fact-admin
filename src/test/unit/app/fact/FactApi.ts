@@ -41,6 +41,25 @@ describe('FactApi', () => {
       data: [{
         name: 'London',
         slug: 'London',
+        address: 'Address Street',
+        'townName': 'AAA',
+        postcode: 'AAA AAA',
+      }],
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourt('London')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getCourtGeneral request', async () => {
+    const results = {
+      data: [{
+        name: 'London',
+        slug: 'London',
         'last_modified': 'Address Street'
       }]
     };
@@ -53,7 +72,7 @@ describe('FactApi', () => {
     await expect(api.getCourtGeneral('London')).resolves.toEqual(results.data);
   });
 
-  test('Should return no result and log error from getCourt request', async () => {
+  test('Should return no result and log error from getCourtGeneral request', async () => {
     const mockAxios = { get: async () => {
       const error = new Error('Error') as any;
       error.response = {

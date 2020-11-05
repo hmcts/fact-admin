@@ -27,15 +27,6 @@ Then('a message is displayed on the page', async () => {
   expect(elementExist).equal(true);
 });
 
-When('I leave the Urgent Notice field blank', async () => {
-  await I.fillField('#urgent-notice', '');
-});
-
-Then('nothing is displayed on the page', async () => {
-  const elementExist = await I.checkElement('#updated-message');
-  expect(elementExist).equal(false);
-});
-
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   await I.fillField('#urgent-notice-welsh', welshMessage);
 });

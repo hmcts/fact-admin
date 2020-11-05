@@ -16,12 +16,6 @@ Feature: Court Update Urgent Message
     And I click the update button
     Then a message is displayed on the page
 
-  Scenario: No Urgent notice
-    When I click edit next to a chosen court or tribunal
-    Then I am redirected to the Edit Court page for the chosen court
-    When I leave the Urgent Notice field blank
-    Then nothing is displayed on the page
-
   Scenario: Welsh Translation
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
