@@ -3,6 +3,8 @@ import {AxiosError, AxiosInstance} from 'axios';
 
 export class FactApi {
 
+  private readonly baseURL = '/courts';
+
   constructor(
     private readonly axios: AxiosInstance,
     private readonly logger: Logger
@@ -10,14 +12,28 @@ export class FactApi {
 
   public getCourts(): Promise<unknown[]> {
     return this.axios
-      .get('/courts/all')
+      .get(`${this.baseURL}/all`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
   }
 
-  public getCourt(slug: string): Promise<{}> {
+  public getCourt(slug: string): Promise<unknown[]> {
     return this.axios
-      .get(`/courts/${slug}`)
+      .get(`${this.baseURL}/court/${slug}`)
+      .then(results => results.data)
+      .catch(this.errorHandler([]));
+  }
+
+  public getCourtGeneral(slug: string): Promise<{}> {
+    return this.axios
+      .get(`${this.baseURL}/${slug}/general`)
+      .then(results => results.data)
+      .catch(this.errorHandler({}));
+  }
+
+  public updateCourtGeneral(slug: string, body: {}): Promise<{}> {
+    return this.axios
+      .put(`${this.baseURL}/${slug}/general`, body)
       .then(results => results.data)
       .catch(this.errorHandler({}));
   }
