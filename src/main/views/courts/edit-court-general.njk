@@ -78,6 +78,32 @@
             }
           }) }}
 
+          {% if isSuperAdmin %}
+            {{ govukCharacterCount({
+              name: "info_message",
+              id: "info",
+              maxlength: 250,
+              rows: "3",
+              value: court['info'],
+              label: {
+                text: "Additional information",
+                classes: "govuk-label--m"
+              }
+            }) }}
+
+            {{ govukCharacterCount({
+              name: "info_message_cy",
+              id: "info-welsh",
+              maxlength: 250,
+              rows: "3",
+              value: court['info_cy'],
+              label: {
+                text: "Additional information (Welsh)",
+                classes: "govuk-label--m"
+              }
+            }) }}
+          {% endif %}
+
           {{ govukButton({
             text: "Update",
             classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
