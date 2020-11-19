@@ -2,6 +2,7 @@ import { Response } from 'express';
 import autobind from 'autobind-decorator';
 import { AuthedRequest } from '../../../types/AuthedRequest';
 import { CourtPageData } from '../../../types/CourtPageData';
+import { isObjectEmpty } from '../../../utils/validation';
 
 @autobind
 export class EditCourtGeneralController {
@@ -22,9 +23,9 @@ export class EditCourtGeneralController {
     const court = req.body;
     const slug: string = req.params.slug as string;
     const updatedCourts = await req.scope.cradle.api.updateCourtGeneral(slug, court);
-    if (updatedCourts) {
-      return res.redirect(`/courts/${slug}/edit/general?updated=true`);
+    if (isObjectEmpty(updatedCourts)) {
+      return res.redirect(`/courts/${slug}/edit/general?updated=false`);
     }
-    return res.redirect(`/courts/${slug}/edit/general?updated=false`);
+    return res.redirect(`/courts/${slug}/edit/general?updated=true`);
   }
 }

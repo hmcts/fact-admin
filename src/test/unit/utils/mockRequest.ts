@@ -6,6 +6,12 @@ export const mockRequest = () => {
       cradle: {
 
       }
+    },
+    query: {},
+    session: {
+      user: {
+        roles: []
+      }
     }
   };
   req.body = jest.fn().mockReturnValue(req);
