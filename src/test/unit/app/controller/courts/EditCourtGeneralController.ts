@@ -20,7 +20,7 @@ describe('EditCourtGeneralController', () => {
     req.params = {
       slug: 'London'
     };
-    req.session.user.roles = ['fact-super-admin'];
+    req.session.user.isSuperAdmin = true;
     req.scope.cradle.api = mockApi;
 
     const expectedResults = {
@@ -38,7 +38,7 @@ describe('EditCourtGeneralController', () => {
     req.params = {
       slug: 'London'
     };
-    req.session.user.roles = ['fact-admin'];
+    req.session.user.isSuperAdmin = false;
     req.scope.cradle.api = mockApi;
 
     const expectedResults = {
@@ -59,7 +59,7 @@ describe('EditCourtGeneralController', () => {
     req.query = {
       updated: 'true'
     };
-    req.session.user.roles = ['fact-admin'];
+    req.session.user.isSuperAdmin = false;
     req.scope.cradle.api = mockApi;
 
     const expectedResults = {

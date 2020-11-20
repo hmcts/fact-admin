@@ -9,7 +9,7 @@ export class EditCourtGeneralController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const updated = req.query.updated === 'true';
     const pageData: CourtPageData = {
-      isSuperAdmin: req.session.user.roles.includes('fact-super-admin'),
+      isSuperAdmin: req.session.user.isSuperAdmin,
       court: {},
       updated: updated
     };

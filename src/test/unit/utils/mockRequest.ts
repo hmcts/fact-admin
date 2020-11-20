@@ -10,7 +10,7 @@ export const mockRequest = () => {
     query: {},
     session: {
       user: {
-        roles: []
+        isSuperAdmin: ''
       }
     }
   };

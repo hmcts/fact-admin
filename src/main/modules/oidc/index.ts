@@ -37,7 +37,7 @@ export class OidcMiddleware {
 
       req.session.user = response.data;
       req.session.user.jwt = jwt_decode(response.data.id_token);
-      req.session.user.roles = req.session.user.jwt.roles;
+      req.session.user.isSuperAdmin = req.session.user.roles.includes('fact-super-admin');
       res.render('redirect');
     });
 
