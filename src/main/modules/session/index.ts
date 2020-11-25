@@ -1,10 +1,12 @@
 import { Application } from 'express';
-import session, { MemoryStore } from 'express-session';
+import session from 'express-session';
 import ConnectRedis from 'connect-redis';
 import * as redis from 'redis';
 import config from 'config';
+import FileStoreFactory from 'session-file-store';
 
 const RedisStore = ConnectRedis(session);
+const FileStore = FileStoreFactory(session);
 
 export class SessionStorage {
 
@@ -24,7 +26,7 @@ export class SessionStorage {
 
   private getStore() {
     return !config.get('session.redis.host')
-      ? new MemoryStore()
+      ? new FileStore({ path: '/tmp' })
       : new RedisStore({
         client: redis.createClient({
           host: config.get('session.redis.host') as string,
