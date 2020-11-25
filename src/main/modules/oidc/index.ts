@@ -59,6 +59,9 @@ export class OidcMiddleware {
           api: asClass(FactApi)
         });
 
+        res.locals.isLoggedIn = true;
+        res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+
         return next();
       }
       res.redirect('/login');

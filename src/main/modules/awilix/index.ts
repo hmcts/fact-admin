@@ -5,6 +5,7 @@ import { CourtsController } from '../../app/controller/courts/CourtsController';
 import { ErrorController } from '../../app/controller/ErrorController';
 import { CourtDetailsController } from '../../app/controller/courts/CourtDetailsController';
 import { EditCourtGeneralController } from '../../app/controller/courts/EditCourtGeneralController';
+import { BulkUpdateController } from '../../app/controller/bulk-update/BulkUpdateController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -19,6 +20,7 @@ export class Container {
     server.locals.container = createContainer({ injectionMode: InjectionMode.CLASSIC }).register({
       logger: asValue(logger),
       homeController: asClass(HomeController),
+      bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
       courtDetailsController: asClass(CourtDetailsController),
       editCourtGeneralController: asClass(EditCourtGeneralController),
