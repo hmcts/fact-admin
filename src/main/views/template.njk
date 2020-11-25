@@ -10,5 +10,6 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
   {% include "webpack/js.njk" %}
 {% endblock %}

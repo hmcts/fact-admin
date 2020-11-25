@@ -79,29 +79,21 @@
           }) }}
 
           {% if isSuperAdmin %}
-            {{ govukCharacterCount({
-              name: "info_message",
-              id: "info",
-              maxlength: 250,
-              rows: "3",
-              value: court['info'],
-              label: {
-                text: "Additional information",
-                classes: "govuk-label--m"
-              }
-            }) }}
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message">
+                Additional information
+              </label>
+              </h1>
+              <textarea class="govuk-textarea rich-editor" id="info_message" name="info" rows="3">{{ court['info'] }}</textarea>
+            </div>
 
-            {{ govukCharacterCount({
-              name: "info_message_cy",
-              id: "info-welsh",
-              maxlength: 250,
-              rows: "3",
-              value: court['info_cy'],
-              label: {
-                text: "Additional information (Welsh)",
-                classes: "govuk-label--m"
-              }
-            }) }}
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
+                Additional information (Welsh)
+              </label>
+              </h1>
+              <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
+            </div>
           {% endif %}
 
           {{ govukButton({
