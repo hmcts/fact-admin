@@ -13,6 +13,7 @@ export class BulkUpdateController {
   }
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
+    console.log(req.body);
     const courts = await req.scope.cradle.api.getCourts();
 
     res.render('bulk-update/index', { courts });
