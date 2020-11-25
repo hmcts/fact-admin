@@ -1,0 +1,66 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% extends "template.njk" %}
+
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Bulk edit of additional information</h1>
+  {{ govukCharacterCount({
+    name: "info_message",
+    id: "info",
+    maxlength: 250,
+    rows: "3",
+    value: court['info'],
+    label: {
+      text: "Additional information",
+      classes: "govuk-label--m"
+    }
+  }) }}
+
+  {{ govukCharacterCount({
+    name: "info_message_cy",
+    id: "info-welsh",
+    maxlength: 250,
+    rows: "3",
+    value: court['info_cy'],
+    label: {
+      text: "Additional information (Welsh)",
+      classes: "govuk-label--m"
+    }
+  }) }}
+
+  {{ govukButton({
+    text: "Update",
+    classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
+  }) }}
+
+  <form method="POST" action="/bulk-edit">
+    <table class="govuk-table" id="courts">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"><input type="checkbox" id="selectAll" /></th>
+          <th scope="col" class="govuk-table__header">Name</th>
+          <th scope="col" class="govuk-table__header">Last Updated</th>
+          <th scope="col" class="govuk-table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for court in courts | sort(attribute="name") %}
+        <tr class="govuk-table__row">
+          <td scope="row" class="govuk-table__cell">
+            <input name="{{ court.slug }}" type="checkbox" />
+          </td>
+          <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
+          <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
+          <td scope="row" class="govuk-table__cell">
+            <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </form>
+{% endblock %}
+
