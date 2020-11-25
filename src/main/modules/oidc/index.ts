@@ -71,6 +71,14 @@ export class OidcMiddleware {
 
 }
 
+export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
+  if (res.locals.isSuperAdmin) {
+    next();
+  } else {
+    res.redirect('/courts');
+  }
+};
+
 export type AuthedUser = {
   id_token: string
 }
