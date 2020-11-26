@@ -12,10 +12,13 @@ export class BulkUpdateController {
     res.render('bulk-update/index', { courts });
   }
 
+  /**
+   * POST /bulk-update
+   */
   public async post(req: AuthedRequest, res: Response): Promise<void> {
-    let error = false;
+    let error = '';
 
-    if (req.body.courts.length > 0) {
+    if (req.body.courts && req.body.courts.length > 0) {
       try {
         await req.scope.cradle.api.updateCourtsInfo({
           'info': req.body.info_message,
@@ -23,11 +26,14 @@ export class BulkUpdateController {
           'courts': typeof req.body.courts === 'string' ? [req.body.courts] : req.body.courts
         });
       } catch (err) {
-        error = true;
+        error = 'There was an error updating the court information.';
       }
+    } else {
+      error = 'Please select one or more courts to update.';
     }
+
     const courts = await req.scope.cradle.api.getCourts();
 
-    res.render('bulk-update/index', { courts, error });
+    res.render('bulk-update/index', { courts, error, updated: !error });
   }
 }
