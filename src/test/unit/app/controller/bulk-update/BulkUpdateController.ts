@@ -49,6 +49,16 @@ describe('BulkUpdateController', () => {
     expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: 'Please select one or more courts to update.', updated: false });
   });
 
+  test('Should show an error if there are no courts are selected', async () => {
+    const req = mockRequest();
+    req.body = { courts: [] };
+    req.scope.cradle.api = mockApi;
+
+    const res = mockResponse();
+    await controller.post(req, res);
+    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: 'Please select one or more courts to update.', updated: false });
+  });
+
   test('Should show an error if the API call fails', async () => {
     const req = mockRequest();
     req.body = {
