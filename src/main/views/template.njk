@@ -9,7 +9,9 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
         <a id="courts" class="govuk-link govuk-link--no-visited-state" href="/courts">courts</a>
-        <a id="bulk-update" class="govuk-link govuk-link--no-visited-state" href="/bulk-update">bulk update</a>
+        {% if isSuperAdmin %}
+          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state" href="/bulk-update">bulk update</a>
+        {% endif %}
       </div>
 
       <div class="govuk-grid-column-one-quarter">
