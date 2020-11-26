@@ -21,8 +21,8 @@ export class BulkUpdateController {
     if (req.body.courts && req.body.courts.length > 0) {
       try {
         await req.scope.cradle.api.updateCourtsInfo({
-          'info': req.body.info_message,
-          'info_cy': req.body.info_message_cy,
+          'info': req.body.info,
+          'info_cy': req.body.info_cy,
           'courts': typeof req.body.courts === 'string' ? [req.body.courts] : req.body.courts
         });
       } catch (err) {
