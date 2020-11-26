@@ -34,7 +34,3 @@ Then('a message is displayed on the page', async () => {
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   await I.fillField('#urgent-notice-welsh', welshMessage);
 });
-
-When('I have added the {string} in the Additional Information Welsh field', async (welshMessage: string) => {
-  await I.fillField('#info-welsh', welshMessage);
-});

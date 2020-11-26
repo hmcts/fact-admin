@@ -19,6 +19,6 @@ Feature: Court Additional Information Message
   Scenario: Welsh Translation
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
-    When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_message"
+    When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_message_cy"
     And I click the update button
     Then a message is displayed on the page
