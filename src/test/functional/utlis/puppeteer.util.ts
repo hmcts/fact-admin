@@ -112,3 +112,13 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
     console.log("The element didn't appear.");
   }
 };
+
+export const clearField = async (selector: string) => {
+  try {
+    const input = await scope.page.$(selector);
+    await input.click({ clickCount: 3 });
+    await scope.page.keyboard.press('Backspace');
+  } catch (error) {
+    console.log("The element didn't appear.");
+  }
+};
