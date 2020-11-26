@@ -18,6 +18,10 @@ When('I add an {string} in the field provided {string}', async (message: string,
   await I.fillField(id, message);
 });
 
+When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
+  await I.fillFieldInIframe(id, message);
+});
+
 Given('I click the update button', async () => {
   await I.click('.govuk-button');
 });

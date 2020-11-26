@@ -4,14 +4,15 @@ import { expect } from 'chai';
 
 
 When('I click bulk update', async () => {
-  await I.goTo('/bulk-update');
+  await I.click('#bulk-update');
 });
 
 Then('I am on the {string} page', async (title: string) => {
-  const pageTitle = await I.getPageTitle();
+  const el = await I.getElement('h1');
+  const pageTitle = await I.getElementText(el);
   expect(pageTitle).equal(title);
 });
 
 When('I select court {string}', async (court: string) => {
-  await I.checkElement(`input[value=${court}]`);
+  await I.click(`input[value="${court}"]`);
 });
