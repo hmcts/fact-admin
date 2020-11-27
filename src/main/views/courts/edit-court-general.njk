@@ -54,29 +54,25 @@
           <form method="POST">
             {% if isSuperAdmin %}
 
-              {{ govukCheckboxes({
-                idPrefix: "checkboxes",
-                name: "checkboxes",
-                fieldset: {
-                  legend: {
-                    text: "",
-                    classes: "govuk-fieldset__legend--l"
-                  }
-                },
-                hint: {
-                  text: ""
-                },
-                items: [
-                  {
-                    value: true,
-                    text: "Open"
-                  },
-                  {
-                    value: true,
-                    text: "Participates in access scheme"
-                  }
-                ]
-              }) }}
+              <div class="govuk-form-group">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="open" name="open" type="checkbox" value="true"
+                         {{-" checked" if court.open }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="open">
+                    Open
+                  </label>
+                </div>
+              </div>
+
+              <div class="govuk-form-group">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="access-scheme" name="access_scheme" type="checkbox" value="true"
+                         {{-" checked" if court['access_scheme'] }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="access-scheme">
+                    Participates in access scheme
+                  </label>
+                </div>
+              </div>
             {% endif %}
 
             {{ govukCharacterCount({
