@@ -23,92 +23,97 @@
 {% endblock %}
 
 {% block content %}
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    {% if updated %}
-      <div class="govuk-panel govuk-panel--confirmation" id="updated-message">
-        <h1 class="govuk-panel__title">
-          Court information updated
-        </h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {% if updated %}
+        <div class="govuk-panel govuk-panel--confirmation" id="updated-message">
+          <h1 class="govuk-panel__title">
+            Court information updated
+          </h1>
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+          <h1 id="court-name" class="govuk-heading-l">Editing - {{ court.name }}</h1>
+        </div>
+
+        <div class="govuk-grid-column-one-quarter">
+          <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank"
+             href="/courts/{{ court.slug }}">view in new window</a>
+        </div>
       </div>
-    {% endif %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-three-quarters">
-        <h1 id="court-name" class="govuk-heading-l">Editing - {{ court.name }}</h1>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <a id="general" class="govuk-link" href="#">general</a>
+        </div>
       </div>
 
-      <div class="govuk-grid-column-one-quarter">
-        <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank" href="/courts/{{ court.slug }}">view in new window</a>
-      </div>
-    </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+          <form method="POST">
+            {{ govukCharacterCount({
+              name: "urgent_message",
+              id: "urgent-notice",
+              maxlength: 250,
+              rows: "3",
+              value: court['urgent_message'],
+              label: {
+                text: "Urgent notice",
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
+              },
+              attributes: {
+                maxlength: 250
+              }
+            }) }}
 
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-        <a id="general" class="govuk-link" href="#">general</a>
-      </div>
-    </div>
+            {{ govukCharacterCount({
+              name: "urgent_message_cy",
+              id: "urgent-notice-welsh",
+              maxlength: 250,
+              rows: "3",
+              value: court['urgent_message_cy'],
+              label: {
+                text: "Urgent notice (Welsh)",
+                classes: "govuk-label--m"
+              },
+              attributes: {
+                maxlength: 250
+              }
+            }) }}
 
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-three-quarters">
-        <form method="POST">
-          {{ govukCharacterCount({
-            name: "urgent_message",
-            id: "urgent-notice",
-            maxlength: 250,
-            rows: "3",
-            value: court['urgent_message'],
-            label: {
-              text: "Urgent notice",
-              classes: "govuk-label--m"
-            },
-            hint: {
-              text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
-            },
-            attributes: {
-              maxlength: 250
-            }
-          }) }}
+            {% if isSuperAdmin %}
+              <div class="govuk-form-group">
+                <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                                       for="info_message">
+                    Coronavirus (COVID-19) Update
+                  </label>
+                </h1>
+                <textarea class="govuk-textarea rich-editor" id="info_message" name="info"
+                          rows="3">{{ court['info'] }}</textarea>
+              </div>
 
-          {{ govukCharacterCount({
-            name: "urgent_message_cy",
-            id: "urgent-notice-welsh",
-            maxlength: 250,
-            rows: "3",
-            value: court['urgent_message_cy'],
-            label: {
-              text: "Urgent notice (Welsh)",
-              classes: "govuk-label--m"
-            },
-            attributes: {
-              maxlength: 250
-            }
-          }) }}
+              <div class="govuk-form-group">
+                <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                                       for="info_message_cy">
+                    Coronavirus (COVID-19) Update (Welsh)
+                  </label>
+                </h1>
+                <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy"
+                          rows="3">{{ court['info_cy'] }}</textarea>
+              </div>
+            {% endif %}
 
-          {% if isSuperAdmin %}
-            <div class="govuk-form-group">
-              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message">
-                Coronavirus (COVID-19) Update
-              </label>
-              </h1>
-              <textarea class="govuk-textarea rich-editor" id="info_message" name="info" rows="3">{{ court['info'] }}</textarea>
-            </div>
-
-            <div class="govuk-form-group">
-              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
-                Coronavirus (COVID-19) Update (Welsh)
-              </label>
-              </h1>
-              <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
-            </div>
-          {% endif %}
-
-          {{ govukButton({
-            text: "Update",
-            classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
-          }) }}
-        </form>
+            {{ govukButton({
+              text: "Update",
+              classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
+            }) }}
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
