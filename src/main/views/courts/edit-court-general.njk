@@ -1,6 +1,6 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% extends "template.njk" %}
 
 {% block pageTitle %}
@@ -52,6 +52,33 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters">
           <form method="POST">
+            {% if isSuperAdmin %}
+
+              {{ govukCheckboxes({
+                idPrefix: "checkboxes",
+                name: "checkboxes",
+                fieldset: {
+                  legend: {
+                    text: "",
+                    classes: "govuk-fieldset__legend--l"
+                  }
+                },
+                hint: {
+                  text: ""
+                },
+                items: [
+                  {
+                    value: true,
+                    text: "Open"
+                  },
+                  {
+                    value: true,
+                    text: "Participates in access scheme"
+                  }
+                ]
+              }) }}
+            {% endif %}
+
             {{ govukCharacterCount({
               name: "urgent_message",
               id: "urgent-notice",
