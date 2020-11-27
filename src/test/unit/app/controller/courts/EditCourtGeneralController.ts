@@ -78,8 +78,12 @@ describe('EditCourtGeneralController', () => {
       slug: 'london-slug'
     };
     req.body = {
+      'open': 'true',
+      'access_scheme': 'true',
       'urgent_message':'London Alert',
-      'urgent_message_cy':'London Alert'
+      'urgent_message_cy':'London Alert',
+      'info_message': '<p>London Info</p>',
+      'info_message_cy': '<p>London Info Welsh</p>',
     };
     req.scope.cradle.api = mockApi;
 
@@ -94,8 +98,12 @@ describe('EditCourtGeneralController', () => {
       slug: 'london-slug'
     };
     req.body = {
+      'open': 'true',
+      'access_scheme': 'true',
       'urgent_message':'London Alert',
-      'urgent_message_cy':'London Alert'
+      'urgent_message_cy':'London Alert',
+      'info_message': '<p>London Info</p>',
+      'info_message_cy': '<p>London Info Welsh</p>',
     };
     mockApi.updateCourtGeneral = async (): Promise<{}> => {
       return {};
