@@ -63,6 +63,9 @@
             },
             hint: {
               text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
+            },
+            attributes: {
+              maxlength: 250
             }
           }) }}
 
@@ -75,8 +78,29 @@
             label: {
               text: "Urgent notice (Welsh)",
               classes: "govuk-label--m"
+            },
+            attributes: {
+              maxlength: 250
             }
           }) }}
+
+          {% if isSuperAdmin %}
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message">
+                Coronavirus (COVID-19) Update
+              </label>
+              </h1>
+              <textarea class="govuk-textarea rich-editor" id="info_message" name="info" rows="3">{{ court['info'] }}</textarea>
+            </div>
+
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
+                Coronavirus (COVID-19) Update (Welsh)
+              </label>
+              </h1>
+              <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
+            </div>
+          {% endif %}
 
           {{ govukButton({
             text: "Update",

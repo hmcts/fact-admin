@@ -38,6 +38,10 @@ export class FactApi {
       .catch(this.errorHandler({}));
   }
 
+  public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
+    return this.axios.put(`${this.baseURL}/info`, body);
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logger.error(err.message);
@@ -50,4 +54,10 @@ export class FactApi {
       return defaultValue;
     };
   }
+}
+
+interface UpdateCourtsInfoRequest {
+  'info': string,
+  'info_cy': string,
+  'courts': string[]
 }

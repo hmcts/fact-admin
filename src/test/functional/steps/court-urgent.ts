@@ -14,8 +14,13 @@ Then('I am redirected to the Edit Court page for the chosen court', async () => 
   expect(pageTitle).equal('Edit Court');
 });
 
-When('I add an {string} in the field provided', async (message: string) => {
-  await I.fillField('#urgent-notice', message);
+When('I add an {string} in the field provided {string}', async (message: string, id: string) => {
+  await I.clearField(id);
+  await I.fillField(id, message);
+});
+
+When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
+  await I.fillFieldInIframe(id, message);
 });
 
 Given('I click the update button', async () => {
@@ -28,5 +33,7 @@ Then('a message is displayed on the page', async () => {
 });
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
-  await I.fillField('#urgent-notice-welsh', welshMessage);
+  const selector = '#urgent-notice-welsh';
+  await I.clearField(selector);
+  await I.fillField(selector, welshMessage);
 });

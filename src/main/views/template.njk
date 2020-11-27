@@ -4,11 +4,30 @@
   {% include "webpack/css.njk" %}
 {% endblock %}
 
+{% block beforeContent %}
+  {% if isLoggedIn %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+        <a id="courts" class="govuk-link govuk-link--no-visited-state" href="/courts">courts</a>
+        {% if isSuperAdmin %}
+          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state" href="/bulk-update">bulk update</a>
+        {% endif %}
+      </div>
+
+      <div class="govuk-grid-column-one-quarter">
+        <a id="my-account" class="govuk-link govuk-link--no-visited-state" href="#">my account</a>
+        <a id="logout" class="govuk-link govuk-link--no-visited-state" href="/logout">log out</a>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
 {% block pageTitle %}
   Find a court or tribunal - GOV.UK
 {% endblock %}
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
   {% include "webpack/js.njk" %}
 {% endblock %}

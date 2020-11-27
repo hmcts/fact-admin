@@ -99,3 +99,26 @@ export const getTextFromList = async (el: any) => {
     return [];
   }
 };
+
+export const fillFieldInIframe = async (selector: string, value: string) => {
+  try {
+    const iframeSelector = `${selector}_ifr`;
+    await scope.page.waitForSelector(iframeSelector);
+    const elementHandle = await scope.page.$(iframeSelector);
+    const frame = await elementHandle.contentFrame();
+
+    await frame.$eval('#tinymce > p', (el: HTMLElement, value: string) => el.innerText = value, value);
+  } catch (error) {
+    console.log("The element didn't appear.");
+  }
+};
+
+export const clearField = async (selector: string) => {
+  try {
+    const input = await scope.page.$(selector);
+    await input.click({ clickCount: 3 });
+    await scope.page.keyboard.press('Backspace');
+  } catch (error) {
+    console.log("The element didn't appear.");
+  }
+};

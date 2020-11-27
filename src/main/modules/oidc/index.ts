@@ -37,6 +37,7 @@ export class OidcMiddleware {
 
       req.session.user = response.data;
       req.session.user.jwt = jwt_decode(response.data.id_token);
+      req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
       res.render('redirect');
     });
 
@@ -58,6 +59,9 @@ export class OidcMiddleware {
           api: asClass(FactApi)
         });
 
+        res.locals.isLoggedIn = true;
+        res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+
         return next();
       }
       res.redirect('/login');
@@ -66,6 +70,14 @@ export class OidcMiddleware {
   }
 
 }
+
+export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
+  if (res.locals.isSuperAdmin) {
+    next();
+  } else {
+    res.redirect('/courts');
+  }
+};
 
 export type AuthedUser = {
   id_token: string
