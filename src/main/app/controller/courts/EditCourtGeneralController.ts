@@ -33,9 +33,13 @@ export class EditCourtGeneralController {
   private convertOpenAndAccessSchemeToBoolean(court: any): void {
     if (court.open) {
       court.open = court.open === 'true';
+    } else {
+      court.open = false;
     }
     if (court['access_scheme']) {
       court['access_scheme'] = court['access_scheme'] === 'true';
+    } else {
+      court['access_scheme'] = false;
     }
   }
 }
