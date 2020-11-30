@@ -37,3 +37,11 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
   await I.clearField(selector);
   await I.fillField(selector, welshMessage);
 });
+
+When('I click the open checkbox', async () => {
+  await I.click('#open');
+});
+
+When('I click the Participates in access scheme checkbox', async () => {
+  await I.click('#access-scheme');
+});

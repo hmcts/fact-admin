@@ -21,11 +21,17 @@ export class EditCourtGeneralController {
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
     const court = req.body;
+    this.convertOpenAndAccessSchemeToBoolean(court);
     const slug: string = req.params.slug as string;
     const updatedCourts = await req.scope.cradle.api.updateCourtGeneral(slug, court);
     if (isObjectEmpty(updatedCourts)) {
       return res.redirect(`/courts/${slug}/edit/general?updated=false`);
     }
     return res.redirect(`/courts/${slug}/edit/general?updated=true`);
+  }
+
+  private convertOpenAndAccessSchemeToBoolean(court: any): void {
+    court.open = court.open === 'true';
+    court['access_scheme'] = court['access_scheme'] === 'true';
   }
 }
