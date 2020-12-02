@@ -83,7 +83,7 @@ describe('Accessibility', () => {
   testAccessibility('/');
   testAccessibility('/courts');
   testAccessibility('/logout');
-  testAccessibility('/courts/aberdare-county-court/edit');
+  testAccessibility('/courts/aberdare-county-court/edit/general');
 
   // TODO: include each path of your application in accessibility checks
 });
