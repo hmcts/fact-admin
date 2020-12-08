@@ -1,0 +1,82 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% if isSuperAdmin %}
+  <div class="govuk-form-group">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="open" name="open" type="checkbox"
+             value="true"
+        {{ " checked" if court.open }}>
+      <label class="govuk-label govuk-checkboxes__label" for="open">
+        Open
+      </label>
+    </div>
+  </div>
+
+  <div class="govuk-form-group">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="access-scheme" name="access_scheme"
+             type="checkbox" value="true"
+        {{ " checked" if court['access_scheme'] }}
+        {{ "" if court['in_person'] === true else "  disabled" }}>
+      <label class="govuk-label govuk-checkboxes__label" for="access-scheme">
+        Participates in access scheme
+      </label>
+    </div>
+  </div>
+{% endif %}
+
+  {{ govukCharacterCount({
+    name: "urgent_message",
+    id: "urgent-notice",
+    maxlength: 250,
+    rows: "3",
+    value: court['urgent_message'],
+    label: {
+      text: "Urgent notice",
+      classes: "govuk-label--m"
+    },
+    hint: {
+      text: "Use this field to display a temporary notice of building closure or temporary disruption to court services. This is limited to 250 characters including spaces."
+    },
+    attributes: {
+      maxlength: 250
+    }
+  }) }}
+
+  {{ govukCharacterCount({
+    name: "urgent_message_cy",
+    id: "urgent-notice-welsh",
+    maxlength: 250,
+    rows: "3",
+    value: court['urgent_message_cy'],
+    label: {
+      text: "Urgent notice (Welsh)",
+      classes: "govuk-label--m"
+    },
+    attributes: {
+      maxlength: 250
+    }
+  }) }}
+
+  {% if isSuperAdmin %}
+    <div class="govuk-form-group">
+      <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                             for="info_message">
+          Coronavirus (COVID-19) Update
+        </label>
+      </h2>
+      <textarea class="govuk-textarea rich-editor" id="info_message" name="info"
+                rows="3">{{ court['info'] }}</textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                             for="info_message_cy">
+          Coronavirus (COVID-19) Update (Welsh)
+        </label>
+      </h2>
+      <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy"
+                rows="3">{{ court['info_cy'] }}</textarea>
+    </div>
+  {% endif %}

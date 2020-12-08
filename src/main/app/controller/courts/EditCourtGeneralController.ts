@@ -1,8 +1,8 @@
-import { Response } from 'express';
+import {Response} from 'express';
 import autobind from 'autobind-decorator';
-import { AuthedRequest } from '../../../types/AuthedRequest';
-import { CourtPageData } from '../../../types/CourtPageData';
-import { isObjectEmpty } from '../../../utils/validation';
+import {AuthedRequest} from '../../../types/AuthedRequest';
+import {CourtPageData} from '../../../types/CourtPageData';
+import {isObjectEmpty} from '../../../utils/validation';
 
 @autobind
 export class EditCourtGeneralController {
@@ -15,13 +15,13 @@ export class EditCourtGeneralController {
     };
     const slug: string = req.params.slug as string;
     pageData.court = await req.scope.cradle.api.getCourtGeneral(slug);
-
     res.render('courts/edit-court-general', pageData);
   }
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
     const court = req.body;
     this.convertOpenAndAccessSchemeToBoolean(court);
+    this.convertOpeningTimes(court);
     const slug: string = req.params.slug as string;
     const updatedCourts = await req.scope.cradle.api.updateCourtGeneral(slug, court);
     if (isObjectEmpty(updatedCourts)) {
@@ -33,5 +33,11 @@ export class EditCourtGeneralController {
   private convertOpenAndAccessSchemeToBoolean(court: any): void {
     court.open = court.open === 'true';
     court['access_scheme'] = court['access_scheme'] === 'true';
+  }
+
+  private convertOpeningTimes(court: any): void {
+    if (court['description']){
+      court['opening_times'] = Object.assign(court['description'].map((k: any, i: string | number) => ({ description: k, hours: court['hours'][i]})));
+    }
   }
 }
