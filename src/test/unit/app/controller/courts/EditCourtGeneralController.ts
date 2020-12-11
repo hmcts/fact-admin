@@ -114,4 +114,68 @@ describe('EditCourtGeneralController', () => {
     await controller.post(req, res);
     expect(res.redirect).toBeCalledWith('/courts/london-slug/edit/general?updated=false');
   });
+
+  test('Should convert open And access_schemeToBoolean', async () => {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const court = { open: 'true', access_scheme: 'true' };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    EditCourtGeneralController.convertOpenAndAccessSchemeToBoolean(court);
+    expect(court.open).toBe(true);
+    expect(court.access_scheme).toBe(true);
+  });
+
+  test('Should remove deleted opening times', async () => {
+    const court = {
+      'description': [
+        'Court open',
+        'Court open',
+        'Court open',
+        ''
+      ],
+      'hours': [
+        '1',
+        '2',
+        '3',
+        ''
+      ],
+      'deleteOpeningHours': '2',
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    EditCourtGeneralController.removeDeletedOpeningTimes(court);
+    expect(court.description.length).toBe(3);
+    expect(court.hours.length).toBe(3);
+  });
+
+
+  test('Should convert opening times', async () => {
+    const court = {
+      'description': [
+        'Court open',
+        'Court open',
+        ''
+      ],
+      'hours': [
+        '1',
+        '2',
+        ''
+      ]
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    EditCourtGeneralController.convertOpeningTimes(court);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    expect(court.opening_times).toStrictEqual([
+      {
+        'description': 'Court open',
+        'hours': '1'
+      },
+      {
+        'description': 'Court open',
+        'hours': '2'
+      }
+    ]);
+  });
 });

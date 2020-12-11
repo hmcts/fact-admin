@@ -22,7 +22,7 @@ export class EditCourtGeneralController {
     const court = req.body;
     EditCourtGeneralController.convertOpenAndAccessSchemeToBoolean(court);
     EditCourtGeneralController.removeDeletedOpeningTimes(court);
-    this.convertOpeningTimes(court);
+    EditCourtGeneralController.convertOpeningTimes(court);
     const slug: string = req.params.slug as string;
     const updatedCourts = await req.scope.cradle.api.updateCourtGeneral(slug, court);
     if (isObjectEmpty(updatedCourts)) {
@@ -41,10 +41,9 @@ export class EditCourtGeneralController {
       court['description'].splice(court.deleteOpeningHours - 1 , 1);
       court['hours'].splice(court.deleteOpeningHours, 1);
     }
-
   }
 
-  private convertOpeningTimes(court: any): void {
+  private static convertOpeningTimes(court: any): void {
     if (court['description']){
       let descriptions = court['description'];
       if(!Array.isArray(descriptions)){
