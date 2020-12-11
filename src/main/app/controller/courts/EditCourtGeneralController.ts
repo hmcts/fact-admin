@@ -20,7 +20,8 @@ export class EditCourtGeneralController {
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
     const court = req.body;
-    this.convertOpenAndAccessSchemeToBoolean(court);
+    EditCourtGeneralController.convertOpenAndAccessSchemeToBoolean(court);
+    EditCourtGeneralController.removeDeletedOpeningTimes(court);
     this.convertOpeningTimes(court);
     const slug: string = req.params.slug as string;
     const updatedCourts = await req.scope.cradle.api.updateCourtGeneral(slug, court);
@@ -30,14 +31,33 @@ export class EditCourtGeneralController {
     return res.redirect(`/courts/${slug}/edit/general?updated=true`);
   }
 
-  private convertOpenAndAccessSchemeToBoolean(court: any): void {
+  private static convertOpenAndAccessSchemeToBoolean(court: any): void {
     court.open = court.open === 'true';
     court['access_scheme'] = court['access_scheme'] === 'true';
   }
 
+  private static removeDeletedOpeningTimes(court: any): void {
+    if(court.deleteOpeningHours){
+      court['description'].splice(court.deleteOpeningHours - 1 , 1);
+      court['hours'].splice(court.deleteOpeningHours, 1);
+    }
+
+  }
+
   private convertOpeningTimes(court: any): void {
     if (court['description']){
-      court['opening_times'] = Object.assign(court['description'].map((k: any, i: string | number) => ({ description: k, hours: court['hours'][i]})));
+      let descriptions = court['description'];
+      if(!Array.isArray(descriptions)){
+        descriptions = [descriptions];
+      }
+      let hours = court['hours'];
+      if(!Array.isArray(hours)){
+        hours = [hours];
+      }
+      court['opening_times'] = Object.assign(descriptions
+        .map((k: any, i: string | number) => ({ description: k, hours: hours[i]}))
+        .filter((o: { description: string; hours: string }) => o.description !== '' && o.hours !== '')
+      );
     }
   }
 }
