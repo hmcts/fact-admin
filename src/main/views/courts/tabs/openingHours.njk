@@ -1,0 +1,62 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th scope="col" class="govuk-table__header">Type</th>
+    <th scope="col" class="govuk-table__header">Hours</th>
+    <th scope="col" class="govuk-table__header">Action</th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  {% for openingTime in court['opening_times'] %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">
+        <div class="govuk-form-group">
+          <select class="govuk-select" id="description-{{ loop.index }}" name="description">
+            <option value="Bailiff office open" {{ "selected" if openingTime.description === "Bailiff office open" }}>Bailiff office open</option>
+            <option value="Telephone enquiries answered" {{ "selected" if openingTime.description === "Telephone enquiries answered" }}>Telephone enquiries answered</option>
+            <option value="Court open" {{ "selected" if openingTime.description === "Court open" }}>Court open</option>
+            <option value="Counter service by appointment only" {{ "selected" if openingTime.description === "Counter service by appointment only" }}>Counter service by appointment only</option>
+            <option value="No counter service available" {{ "selected" if openingTime.description === "No counter service available" }}>No counter service available</option>
+            <option value="Tribunal open" {{ "selected" if openingTime.description === "Tribunal open" }}>Tribunal open</option>
+            <option value="Counter open" {{ "selected" if openingTime.description === "Counter open" }}>Counter open</option>
+          </select>
+        </div>
+      </td>
+      <td class="govuk-table__cell">
+        <input class="govuk-input" type="text" id="hours-{{ loop.index }}" name="hours" value="{{ openingTime.hours }}">
+      </td>
+      <td class="govuk-table__cell">
+        {{ govukButton({
+          text: "Delete",
+          name: "deleteOpeningHours",
+          value: loop.index
+        }) }}
+      </td>
+    </tr>
+  {% endfor %}
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell">
+      <select class="govuk-select" id="description" name="description">
+        <option></option>
+        <option value="Bailiff office open">Bailiff office open</option>
+        <option value="Telephone enquiries answered">Telephone enquiries answered</option>
+        <option value="Court open">Court open</option>
+        <option value="Counter service by appointment only">Counter service by appointment only</option>
+        <option value="No counter service available">No counter service available</option>
+        <option value="Tribunal open">Tribunal open</option>
+        <option value="Counter open"> Counter open</option>
+      </select>
+    </td>
+    <td class="govuk-table__cell">
+      <input class="govuk-input" type="text" id="hours" name="hours">
+    </td>
+    <td class="govuk-table__cell">
+      {{ govukButton({
+        text: "Add"
+      }) }}
+    </td>
+  </tr>
+  </tbody>
+</table>

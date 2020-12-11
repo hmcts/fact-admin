@@ -24,7 +24,7 @@ When('I add an {string} in the rich editor field provided {string}', async (mess
 });
 
 Given('I click the update button', async () => {
-  await I.click('.govuk-button');
+  await I.click('#update');
 });
 
 Then('a message is displayed on the page', async () => {
