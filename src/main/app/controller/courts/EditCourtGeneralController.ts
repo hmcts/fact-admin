@@ -45,18 +45,11 @@ export class EditCourtGeneralController {
 
   private static convertOpeningTimes(court: any): void {
     if (court['description']){
-      let descriptions = court['description'];
-      if(!Array.isArray(descriptions)){
-        descriptions = [descriptions];
-      }
-      let hours = court['hours'];
-      if(!Array.isArray(hours)){
-        hours = [hours];
-      }
-      court['opening_times'] = Object.assign(descriptions
-        .map((k: any, i: string | number) => ({ description: k, hours: hours[i]}))
-        .filter((o: { description: string; hours: string }) => o.description !== '' && o.hours !== '')
-      );
+      const descriptions = Array.isArray(court['description']) ? court['description'] : [court['description']];
+      const hours = Array.isArray(court['hours']) ? court['hours'] : [court['hours']];
+      court['opening_times'] = descriptions
+        .map((k: any, i: number) => ({ description: k, hours: hours[i]}))
+        .filter((o: { description: string; hours: string }) => o.description !== '' && o.hours !== '');
     }
   }
 }
