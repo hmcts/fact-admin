@@ -20,6 +20,25 @@ describe('FactApi', () => {
     await expect(api.getCourts()).resolves.toEqual(results.data);
   });
 
+  test('Should return results from get request', async () => {
+    const results = {
+      data: [{
+        name: 'London',
+        slug: 'London',
+        address: 'Address Street',
+        'townName': 'AAA',
+        postcode: 'AAA AAA',
+      }],
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourts()).resolves.toEqual(results.data);
+  });
+
   test('Should return no result and log error from get request', async () => {
     const mockAxios = { get: async () => {
       throw new Error('Error');
