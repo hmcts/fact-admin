@@ -2,6 +2,8 @@ security:
   referrerPolicy: 'origin'
 port: 3300
 services:
+  frontend:
+    url: 'http://localhost:3100'
   api:
     url: 'http://localhost:8080'
   idam:

@@ -7,6 +7,7 @@ export default function(app: Application): void {
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);
+  app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
   app.get('/courts/:slug', app.locals.container.cradle.courtDetailsController.get);
   app.get('/courts/:slug/edit/general', app.locals.container.cradle.editCourtGeneralController.get);
   app.post('/courts/:slug/edit/general', app.locals.container.cradle.editCourtGeneralController.post);

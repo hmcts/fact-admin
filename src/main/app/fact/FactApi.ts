@@ -17,6 +17,13 @@ export class FactApi {
       .catch(this.errorHandler([]));
   }
 
+  public getDownloadCourts(): Promise<unknown[]> {
+    return this.axios
+      .get(`${this.baseURL}/`)
+      .then(results => results.data)
+      .catch(this.errorHandler([]));
+  }
+
   public getCourt(slug: string): Promise<unknown[]> {
     return this.axios
       .get(`${this.baseURL}/court/${slug}`)

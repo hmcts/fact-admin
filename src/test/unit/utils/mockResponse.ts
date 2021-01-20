@@ -8,6 +8,9 @@ export const mockResponse = () => {
   res.status = (code: number) => {
     res.statusCode = code;
   };
+  res.header = jest.fn().mockReturnValue(res);
+  res.attachment = jest.fn().mockReturnValue(res);
+  res.send = jest.fn().mockReturnValue(res);
 
   return res;
 };

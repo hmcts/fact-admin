@@ -2,6 +2,7 @@ import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
 import { HomeController } from '../../app/controller/HomeController';
 import { Application } from 'express';
 import { CourtsController } from '../../app/controller/courts/CourtsController';
+import { CourtsDownloadController } from '../../app/controller/courts/CourtsDownloadController';
 import { ErrorController } from '../../app/controller/ErrorController';
 import { CourtDetailsController } from '../../app/controller/courts/CourtDetailsController';
 import { EditCourtGeneralController } from '../../app/controller/courts/EditCourtGeneralController';
@@ -22,6 +23,7 @@ export class Container {
       homeController: asClass(HomeController),
       bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
+      courtsDownloadController: asClass(CourtsDownloadController),
       courtDetailsController: asClass(CourtDetailsController),
       editCourtGeneralController: asClass(EditCourtGeneralController),
       errorController: asClass(ErrorController),
