@@ -19,7 +19,7 @@
         <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
         <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
         <td scope="row" class="govuk-table__cell">
-          <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
+          <a id="view-{{ court.slug }}" class="govuk-link" href="{{ frontEndUrl }}/courts/{{ court.slug }}">view</a>
         </td>
         <td scope="row" class="govuk-table__cell">
           <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general">edit</a>
