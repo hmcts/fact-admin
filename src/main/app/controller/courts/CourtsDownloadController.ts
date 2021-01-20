@@ -2,6 +2,7 @@ import autobind from 'autobind-decorator';
 import {Response} from 'express';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Parser} from 'json2csv';
+import config from 'config';
 
 @autobind
 export class CourtsDownloadController {
@@ -12,6 +13,13 @@ export class CourtsDownloadController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const courts = await req.scope.cradle.api.getDownloadCourts();
 
+    const frontEndUrl = config.get('services.frontend.url');
+    console.log(frontEndUrl);
+    const createUrl = (item: any) => ({
+      ...item,
+      url: frontEndUrl + '/courts/' + item.slug
+    });
+    const transforms =  [ createUrl ];
     const fields = [
       {
         label: 'name',
@@ -59,7 +67,7 @@ export class CourtsDownloadController {
       }
     ];
 
-    const json2csv = new Parser({fields});
+    const json2csv = new Parser({fields,transforms});
     const csv = json2csv.parse(courts);
     res.header('Content-Type', 'text/csv');
     const date = new Date();

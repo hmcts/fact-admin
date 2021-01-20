@@ -4,6 +4,7 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+    FRONTEND_URL: "http://fact{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
 idam-pr:
   enabled: true
   redirect_uris:

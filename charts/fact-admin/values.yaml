@@ -16,5 +16,6 @@ nodejs:
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token"
     OAUTH_CLIENT_REDIRECT: "https://fact-admin.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
     REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
+    FRONTEND_URL: https://${SERVICE_FQDN}/
 idam-pr:
   enabled: false

@@ -1,4 +1,6 @@
 services:
+  frontend:
+    url: FRONTEND_URL
   api:
     url: FACT_API_URL
   idam:
