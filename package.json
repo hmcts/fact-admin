@@ -38,7 +38,7 @@
     "@types/helmet": "^0.0.48",
     "@types/jquery": "^3.5.4",
     "@types/json2csv": "^5.0.1",
-    "@types/jwt-decode": "^2.2.1",
+    "@types/jwt-decode": "^3.1.0",
     "@types/lodash": "^4.14.162",
     "@types/node": "^13.7.0",
     "@types/nunjucks": "^3.1.3",
