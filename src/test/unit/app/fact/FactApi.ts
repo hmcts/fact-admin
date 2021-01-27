@@ -20,7 +20,7 @@ describe('FactApi', () => {
     await expect(api.getCourts()).resolves.toEqual(results.data);
   });
 
-  test('Should return results from get request', async () => {
+  test('Should return downloadCourt results from get request ', async () => {
     const results = {
       data: [{
         name: 'London',
@@ -36,7 +36,7 @@ describe('FactApi', () => {
 
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourts()).resolves.toEqual(results.data);
+    await expect(api.getDownloadCourts()).resolves.toEqual(results.data);
   });
 
   test('Should return no result and log error from get request', async () => {

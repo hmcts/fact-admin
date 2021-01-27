@@ -34,12 +34,12 @@ export class CourtsDownloadController {
         value: 'updated'
       },
       {
-        label: 'address',
-        value: 'address'
+        label: 'addresses',
+        value: 'addresses'
       },
       {
         label: 'areas of law',
-        value: 'areas of law'
+        value: 'areas_of_law'
       },
       {
         label: 'court types',
@@ -64,6 +64,18 @@ export class CourtsDownloadController {
       {
         label: 'url',
         value: 'url'
+      },
+      {
+        label: 'emails',
+        value: 'emails'
+      },
+      {
+        label: 'contacts',
+        value: 'contacts'
+      },
+      {
+        label: 'opening times',
+        value: 'opening_times'
       }
     ];
 
