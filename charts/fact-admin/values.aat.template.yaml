@@ -4,7 +4,6 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
-    FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
 idam-pr:
   enabled: false
   redirect_uris:
