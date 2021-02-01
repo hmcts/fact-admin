@@ -5,7 +5,7 @@ const app = express();
 const data = require('./courts.json');
 const courtDetails = require('./court-details.json');
 const port = 8080;
-const baseURL = '/admin/courts';
+const baseURL = '/courts';
 
 app.use(bodyParser.json());
 
