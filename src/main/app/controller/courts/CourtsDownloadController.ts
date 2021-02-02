@@ -83,7 +83,7 @@ export class CourtsDownloadController {
     const csv = json2csv.parse(courts);
     res.header('Content-Type', 'text/csv');
     const date = new Date();
-    const fileName = 'courts-' + date.getFullYear() + '-' + date.getMonth() + 1 + '-' + date.getDate() + '.csv';
+    const fileName = 'courts-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '.csv';
     res.attachment(fileName);
     res.send(csv);
   }
