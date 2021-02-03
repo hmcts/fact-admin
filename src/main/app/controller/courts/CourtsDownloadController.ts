@@ -42,8 +42,8 @@ export class CourtsDownloadController {
         value: 'areas_of_law'
       },
       {
-        label: 'court types',
-        value: 'types'
+        label: 'type',
+        value: 'court_types'
       },
       {
         label: 'crown court code',
@@ -72,6 +72,10 @@ export class CourtsDownloadController {
       {
         label: 'contacts',
         value: 'contacts'
+      },
+      {
+        label: 'DX',
+        value: 'dx_number'
       },
       {
         label: 'opening times',
