@@ -122,3 +122,20 @@ export const clearField = async (selector: string) => {
     console.log("The element didn't appear.");
   }
 };
+
+export const selectItem = async (selector: string, value: string) => {
+  try {
+    await scope.page.select(selector, value);
+  } catch (error) {
+    console.log("The element didn't appear.");
+  }
+};
+
+export const countElement = async (selector: string) => {
+  try {
+    const count = (await scope.page.$$(selector)).length;
+    return count;
+  } catch (error) {
+    console.log("The element didn't appear.");
+  }
+};

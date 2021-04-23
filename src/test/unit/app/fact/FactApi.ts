@@ -115,4 +115,35 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
 
   });
+
+  test('Should return results from getOpeningTimes request', async () => {
+    const results = {
+      data: [
+        { description: 'Counter open', 'description_cy': 'Counter open welsh', hours: '9am to 4pm'}
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getOpeningTimes('London')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getOpeningTimeDescriptions request', async () => {
+    const results = {
+      data: [
+        { id: 1, name: 'Telephone enquiries answered', 'name_cy': 'Oriau ateb ymholiadau dros y ffôn' },
+        { id: 2, name: 'Bailiff office open', 'name_cy': 'Oriau agor swyddfar Beiliaid' }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getOpeningTimeTypes()).resolves.toEqual(results.data);
+  });
 });

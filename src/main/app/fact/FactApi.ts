@@ -1,5 +1,6 @@
 import { Logger } from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
+import {OpeningTime, OpeningType} from '../../types/OpeningTime';
 
 export class FactApi {
 
@@ -41,6 +42,27 @@ export class FactApi {
   public updateCourtGeneral(slug: string, body: {}): Promise<{}> {
     return this.axios
       .put(`${this.baseURL}/${slug}/general`, body)
+      .then(results => results.data)
+      .catch(this.errorHandler({}));
+  }
+
+  public getOpeningTimeTypes(): Promise<OpeningType[]> {
+    return this.axios
+      .get(`${this.baseURL}/openingTypes`)
+      .then(results => results.data)
+      .catch(this.errorHandler({}));
+  }
+
+  public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
+    return this.axios
+      .get(`${this.baseURL}/${slug}/openingTimes`)
+      .then(results => results.data)
+      .catch(this.errorHandler({}));
+  }
+
+  public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
+    return this.axios
+      .put(`${this.baseURL}/${slug}/openingTimes`, body)
       .then(results => results.data)
       .catch(this.errorHandler({}));
   }
