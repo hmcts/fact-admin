@@ -5,6 +5,8 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
+<h2 class="govuk-heading-l">Opening Hours</h2>
+
 {% if errorMsg != '' %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
@@ -65,7 +67,6 @@
   }) }}
 
   <hr/>
-  <br/>
 
   {% endcall %}
 
@@ -103,7 +104,6 @@
   }) }}
 
   <hr/>
-  <br/>
 
 {% endcall %}
 

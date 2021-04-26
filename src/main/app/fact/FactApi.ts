@@ -50,21 +50,24 @@ export class FactApi {
     return this.axios
       .get(`${this.baseURL}/openingTypes`)
       .then(results => results.data)
-      .catch(this.errorHandler({}));
+      .catch(this.errorHandler([]));
   }
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios
       .get(`${this.baseURL}/${slug}/openingTimes`)
       .then(results => results.data)
-      .catch(this.errorHandler({}));
+      .catch(this.errorHandler([]));
   }
 
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
       .put(`${this.baseURL}/${slug}/openingTimes`, body)
       .then(results => results.data)
-      .catch(this.errorHandler({}));
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });
   }
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {

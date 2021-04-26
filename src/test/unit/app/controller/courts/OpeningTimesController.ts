@@ -3,7 +3,6 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {OpeningTimesController} from '../../../../../main/app/controller/courts/OpeningTimesController';
 import {OpeningTime, OpeningTimeData, OpeningType} from '../../../../../main/types/OpeningTime';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
-import anything = jasmine.anything;
 
 describe('OpeningTimesController', () => {
 
@@ -58,7 +57,7 @@ describe('OpeningTimesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
 
-  test('Should post opening times and return updated view', async () => {
+  test('Should post opening times if opening times are valid', async () => {
     const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
@@ -67,15 +66,12 @@ describe('OpeningTimesController', () => {
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockReturnValue(res);
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockResolvedValue(res);
 
     await controller.post(req, res);
 
     // Should call API to save data
     expect(mockApi.updateOpeningTimes).toBeCalledWith(slug, openingTimes);
-
-    // Should return an updated opening times view
-    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', anything());
   });
 
   test('Should not post opening times if description or hours field is empty', async() => {

@@ -8,6 +8,7 @@ import {SelectItem} from '../../../types/CourtPageData';
 export class OpeningTimesController {
 
   private emptyTypeOrHoursErrorMsg = 'Type and hours are required for all opening times.';
+  private updateErrorMessage = 'A problem occurred when saving the opening times.';
 
   public async get(
     req: AuthedRequest,
@@ -35,8 +36,10 @@ export class OpeningTimesController {
       return this.get(req, res, false, this.emptyTypeOrHoursErrorMsg, openingTimes);
     } else {
       const slug: string = req.params.slug as string;
-      await req.scope.cradle.api.updateOpeningTimes(slug, openingTimes);
-      return this.get(req, res, true);
+
+      req.scope.cradle.api.updateOpeningTimes(slug, openingTimes)
+        .then((value: OpeningTime[]) => this.get(req, res, true, '', value))
+        .catch((reason: string) => this.get(req, res, false, this.updateErrorMessage, openingTimes));
     }
   }
 
