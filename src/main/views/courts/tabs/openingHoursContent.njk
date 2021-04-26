@@ -4,8 +4,19 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 <h2 class="govuk-heading-l">Opening Hours</h2>
+
+{{ govukDetails({
+  summaryText: "Help with dates and times",
+  html: "Government standards are available for
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#dates'
+    target='_blank' rel='noopener noreferrer'>dates</a>
+  and
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#times'
+    target='_blank' rel='noopener noreferrer'>times</a> "})
+}}
 
 {% if errorMsg != '' %}
   {{ govukErrorSummary({
