@@ -9,13 +9,13 @@ const addOpeningTimesBtnName = 'addOpeningTime';
 const typeSelectName = 'type_id';
 const hoursInputName = 'hours';
 
-const getInputName = (name: string, index: number) => {
+const getInputName = (name: string, index: number): string => {
   return `opening_times[${index}][${name}]`;
 };
 
 // Rename the input fields so that the index values are in order,
 // which affects the order when the form is posted.
-const renameFormElements = () => {
+const renameFormElements = (): void => {
   $(`${tabId} select[name$="[${typeSelectName}]"]`)
     .attr('name', idx => getInputName(typeSelectName, idx))
     .attr('id', idx => 'description-' + idx);
@@ -36,7 +36,7 @@ $(() => {
         $(openingTimesContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log(errorTextStatus + ': ' + err)
+        console.log(`GET opening times failed: ${errorTextStatus} ${err}`)
     });
 
     // POST the opening-hours form for a court
@@ -49,7 +49,8 @@ $(() => {
           $(openingTimesContentId).html(res);
           window.scrollTo(0,0);
         })
-        .fail(res => console.log(res));
+        .fail(response =>
+          console.log(`POST opening times failed: ${response.status} ${response.responseText}`));
     });
 
     // Remove an opening-hours entry
