@@ -5,6 +5,7 @@ import {OpeningTime, OpeningType} from '../../types/OpeningTime';
 export class FactApi {
 
   private readonly baseURL = '/courts';
+  private readonly adminBaseUrl = '/admin/courts';
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -48,21 +49,21 @@ export class FactApi {
 
   public getOpeningTimeTypes(): Promise<OpeningType[]> {
     return this.axios
-      .get(`${this.baseURL}/openingTypes`)
+      .get(`${this.adminBaseUrl}/openingTypes`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
   }
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios
-      .get(`${this.baseURL}/${slug}/openingTimes`)
+      .get(`${this.adminBaseUrl}/${slug}/openingTimes`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
   }
 
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
-      .put(`${this.baseURL}/${slug}/openingTimes`, body)
+      .put(`${this.adminBaseUrl}/${slug}/openingTimes`, body)
       .then(results => results.data)
       .catch(err => {
         this.errorHandler([]);
