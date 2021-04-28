@@ -9,8 +9,8 @@ export class OpeningTimesController {
 
   private emptyTypeOrHoursErrorMsg = 'Type and hours are required for all opening times.';
   private updateErrorMsg = 'A problem occurred when saving the opening times.';
-  private getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
-  private getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time types.';
+  getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
+  getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time types.';
 
   public async get(
     req: AuthedRequest,

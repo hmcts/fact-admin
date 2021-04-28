@@ -6,6 +6,11 @@ import {SelectItem} from '../../../../../main/types/CourtPageData';
 
 describe('OpeningTimesController', () => {
 
+  let mockApi: {
+    getOpeningTimes: () => Promise<OpeningTime[]>,
+    updateOpeningTimes: () => Promise<OpeningTime[]>,
+    getOpeningTimeTypes: () => Promise<OpeningType[]> };
+
   const openingTimes: OpeningTime[] = [
     { 'type_id': 1, hours: '9am to 5pm' },
     { 'type_id': 2, hours: '9am to 1pm' },
@@ -32,11 +37,13 @@ describe('OpeningTimesController', () => {
 
   const controller = new OpeningTimesController();
 
-  const mockApi = {
-    getOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
-    updateOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
-    getOpeningTimeTypes: async (): Promise<OpeningType[]> => openingTimeTypes
-  };
+  beforeEach(() => {
+    mockApi = {
+      getOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
+      updateOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
+      getOpeningTimeTypes: async (): Promise<OpeningType[]> => openingTimeTypes
+    };
+  });
 
   test('Should get opening times view and render the page', async () => {
     const req = mockRequest();
@@ -44,6 +51,9 @@ describe('OpeningTimesController', () => {
       slug: 'southport-county-court'
     };
     req.scope.cradle.api = mockApi;
+    const res = mockResponse();
+
+    await controller.get(req, res);
 
     const expectedResults: OpeningTimeData = {
       'opening_times': openingTimes,
@@ -51,9 +61,6 @@ describe('OpeningTimesController', () => {
       updated: false,
       errorMsg: ''
     };
-
-    const res = mockResponse();
-    await controller.get(req, res);
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
 
@@ -92,6 +99,47 @@ describe('OpeningTimesController', () => {
 
     await controller.post(req, res);
 
+    // Should not call API if opening times data is incomplete
     expect(mockApi.updateOpeningTimes).not.toBeCalled();
+  });
+
+  test('Should handle errors when getting opening time data from API', async () => {
+    const req = mockRequest();
+    req.params = {
+      slug: 'southport-county-court'
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.getOpeningTimes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': null,
+      openingTimeTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: controller.getOpeningTimesErrorMsg
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
+  });
+
+  test('Should handle errors when getting opening time types from API', async () => {
+    const req = mockRequest();
+    req.params = {
+      slug: 'southport-county-court'
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.getOpeningTimeTypes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': openingTimes,
+      openingTimeTypes: [],
+      updated: false,
+      errorMsg: controller.getOpeningTypesErrorMsg
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
 });
