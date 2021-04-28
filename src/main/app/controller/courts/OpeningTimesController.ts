@@ -8,19 +8,33 @@ import {SelectItem} from '../../../types/CourtPageData';
 export class OpeningTimesController {
 
   private emptyTypeOrHoursErrorMsg = 'Type and hours are required for all opening times.';
-  private updateErrorMessage = 'A problem occurred when saving the opening times.';
+  private updateErrorMsg = 'A problem occurred when saving the opening times.';
+  private getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
+  private getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time types.';
 
   public async get(
     req: AuthedRequest,
     res: Response,
     updated = false,
     error = '',
-    openingTimes: OpeningTime[] = null) {
+    openingTimes: OpeningTime[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+
+    if (!openingTimes) {
+      await req.scope.cradle.api.getOpeningTimes(slug)
+        .then((value: OpeningTime[]) => openingTimes = value)
+        .catch(() => error += this.getOpeningTimesErrorMsg);
+    }
+
+    let types: OpeningType[] = [];
+    await req.scope.cradle.api.getOpeningTimeTypes()
+      .then((value: OpeningType[]) => types = value)
+      .catch(() => error += this.getOpeningTypesErrorMsg);
+
     const pageData: OpeningTimeData = {
-      'opening_times': openingTimes ?? await req.scope.cradle.api.getOpeningTimes(slug),
-      openingTimeTypes: await this.getOpeningTimeTypes(req),
+      'opening_times': openingTimes,
+      openingTimeTypes: this.getOpeningTimeTypesForSelect(types),
       errorMsg: error,
       updated: updated
     };
@@ -28,7 +42,7 @@ export class OpeningTimesController {
     res.render('courts/tabs/openingHoursContent', pageData);
   }
 
-  public async post(req: AuthedRequest, res: Response) {
+  public async post(req: AuthedRequest, res: Response): Promise<void> {
     const openingTimes = req.body.opening_times as OpeningTime[] ?? [];
 
     if (openingTimes.some(ot => !ot.type_id || ot.hours === '')) {
@@ -37,15 +51,14 @@ export class OpeningTimesController {
     } else {
       const slug: string = req.params.slug as string;
 
-      req.scope.cradle.api.updateOpeningTimes(slug, openingTimes)
+      await req.scope.cradle.api.updateOpeningTimes(slug, openingTimes)
         .then((value: OpeningTime[]) => this.get(req, res, true, '', value))
-        .catch((reason: string) => this.get(req, res, false, this.updateErrorMessage, openingTimes));
+        .catch(() => this.get(req, res, false, this.updateErrorMsg, openingTimes));
     }
   }
 
-  private async getOpeningTimeTypes(req: AuthedRequest): Promise<SelectItem[]> {
-    const standardDescriptions = await req.scope.cradle.api.getOpeningTimeTypes();
-    return standardDescriptions.map((ott: OpeningType) => (
+  private getOpeningTimeTypesForSelect(standardTypes: OpeningType[]): SelectItem[] {
+    return standardTypes.map((ott: OpeningType) => (
       {value: ott.id, text: ott.type, selected: false}));
   }
 }

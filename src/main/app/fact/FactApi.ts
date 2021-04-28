@@ -51,15 +51,19 @@ export class FactApi {
     return this.axios
       .get(`${this.adminBaseUrl}/openingTypes`)
       .then(results => results.data)
-      .catch(this.errorHandler([]));
-  }
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });  }
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/openingTimes`)
       .then(results => results.data)
-      .catch(this.errorHandler([]));
-  }
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });  }
 
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
