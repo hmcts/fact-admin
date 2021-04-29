@@ -37,6 +37,7 @@
 
 {% for openingTime in opening_times %}
 
+  {% set descriptionError = false %}
   {% if openingTime.type_id === '' %}
     {% set descriptionError = "{ text: 'Type is required' }" %}
   {% endif %}
