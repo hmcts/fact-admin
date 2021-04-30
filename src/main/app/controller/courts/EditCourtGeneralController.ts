@@ -7,13 +7,14 @@ import {CourtPageData} from '../../../types/CourtPageData';
 export class EditCourtGeneralController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const updated = req.query.updated === 'true';
+    const slug: string = req.params.slug as string;
+
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
-      court: null,
+      court: await req.scope.cradle.api.getCourtGeneral(slug),
       updated: updated
     };
-    const slug: string = req.params.slug as string;
-    pageData.court = await req.scope.cradle.api.getCourtGeneral(slug);
+
     res.render('courts/edit-court-general', pageData);
   }
 }

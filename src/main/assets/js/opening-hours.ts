@@ -1,88 +1,107 @@
 import $ from 'jquery';
 
-const formId = '#openingTimesForm';
-const tabId = '#openingTimesTab';
-const newOpeningTimeHeadingId = '#newOpeningHoursHeading';
-const openingTimesContentId = '#openingTimesContent';
-const deleteBtnClass = 'deleteOpeningTime';
-const addOpeningTimesBtnName = 'addOpeningTime';
-const typeSelectName = 'type_id';
-const hoursInputName = 'hours';
+export class OpeningHoursController {
+  private formId = '#openingTimesForm';
+  private tabId = '#openingTimesTab';
+  private newOpeningTimeHeadingId = '#newOpeningHoursHeading';
+  private openingTimesContentId = '#openingTimesContent';
+  private deleteBtnClass = 'deleteOpeningTime';
+  private addOpeningTimesBtnName = 'addOpeningTime';
+  private typeSelectName = 'type_id';
+  private hoursInputName = 'hours';
 
-const getInputName = (name: string, index: number): string => {
-  return `opening_times[${index}][${name}]`;
-};
+  constructor() {
+    this.initialize();
+  }
 
-// Rename the input fields so that the index values are in order,
-// which affects the order when the form is posted.
-const renameFormElements = (): void => {
-  $(`${tabId} select[name$="[${typeSelectName}]"]`)
-    .attr('name', idx => getInputName(typeSelectName, idx))
-    .attr('id', idx => 'description-' + idx);
-  $(`${tabId} input[name$="[${hoursInputName}]"]`)
-    .attr('name', idx => getInputName(hoursInputName, idx))
-    .attr('id', idx => 'hours-' + idx);
-};
+  private initialize(): void {
+    $(() => {
+      if ($(this.tabId).length > 0) {
+        this.getOpeningHours();
+        this.setUpSubmitEventHandler();
+        this.setUpAddEventHandler();
+        this.setUpDeleteEventHandler();
+      }
+    });
+  }
 
-$(() => {
-  if($(tabId).length > 0) {
-
-    // GET the opening-hours data for a court
+  private getOpeningHours(): void {
     const slug = $('#slug').val();
+
     $.ajax({
       url: `/courts/${slug}/opening-times`,
       method: 'get',
       success: (res) => {
-        $(openingTimesContentId).html(res);
+        $(this.openingTimesContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log(`GET opening times failed: ${errorTextStatus} ${err}`)
+        console.log('GET opening times failed.')
     });
+  }
 
-    // POST the opening-hours form for a court
-    $(formId).on('submit', e => {
+  private setUpSubmitEventHandler(): void {
+    $(this.formId).on('submit', e => {
       e.preventDefault();
 
       const url = $(e.target).attr('action');
-      $.post(url, $(e.target).serialize())
-        .done(res => {
-          $(openingTimesContentId).html(res);
-          window.scrollTo(0,0);
-        })
-        .fail(response =>
-          console.log(`POST opening times failed: ${response.status} ${response.responseText}`));
+      $.ajax({
+        url: url,
+        method: 'put',
+        data: $(e.target).serialize()
+      }).done(res => {
+        $(this.openingTimesContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        console.log('POST opening times failed.'));
     });
+  }
 
-    // Remove an opening-hours entry
-    $(tabId).on('click', `button.${deleteBtnClass}`, e => {
-      e.target.closest('fieldset').remove();
-      renameFormElements();
-    });
-
-    // Add an opening-hours entry
-    $(tabId).on('click', `button[name="${addOpeningTimesBtnName}"]`, e => {
+  private setUpAddEventHandler(): void {
+    $(this.tabId).on('click', `button[name="${this.addOpeningTimesBtnName}"]`, e => {
       // Copy new opening hours fields to main table.
       const addNewFieldset = e.target.closest('fieldset');
       const copyFieldset = $(addNewFieldset).clone();
-      $(`${newOpeningTimeHeadingId}`).before(copyFieldset);
+      $(`${this.newOpeningTimeHeadingId}`).before(copyFieldset);
 
       // Set the value of the select to that chosen in 'add new'.
       const type = $(addNewFieldset).find('select').val();
       $(copyFieldset).find('select')
         .val(type)
-        .attr('name', getInputName(typeSelectName, 0));
-      $(copyFieldset).find('input').attr('name', getInputName(hoursInputName, 0));
+        .attr('name', this.getInputName(this.typeSelectName, 0));
+      $(copyFieldset).find('input').attr('name', this.getInputName(this.hoursInputName, 0));
 
       // Set the id and names of the elements in the table
-      renameFormElements();
+      this.renameFormElements();
 
       // Change button type in newly added row from 'add' to 'delete'.
       $(copyFieldset).find('button').replaceWith(
         '<button type="button" name="deleteOpeningHours" ' +
-        `class="govuk-button govuk-button--secondary ${deleteBtnClass}" data-module="govuk-button">Remove</button>`);
+        `class="govuk-button govuk-button--secondary ${this.deleteBtnClass}" data-module="govuk-button">Remove</button>`);
 
       // Reset select and input values on 'add new' row.
       $(addNewFieldset).find('input, select').val('');
     });
   }
-});
+
+  private setUpDeleteEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.deleteBtnClass}`, e => {
+      e.target.closest('fieldset').remove();
+      this.renameFormElements();
+    });
+  }
+
+  private getInputName(name: string, index: number): string {
+    return `opening_times[${index}][${name}]`;
+  }
+
+  private renameFormElements(): void {
+    // Rename the input fields so that the index values are in order,
+    // which affects the order when the form is posted.
+    $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
+      .attr('name', idx => this.getInputName(this.typeSelectName, idx))
+      .attr('id', idx => 'description-' + idx);
+    $(`${this.tabId} input[name$="[${this.hoursInputName}]"]`)
+      .attr('name', idx => this.getInputName(this.hoursInputName, idx))
+      .attr('id', idx => 'hours-' + idx);
+  }
+}

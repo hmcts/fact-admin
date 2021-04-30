@@ -1,8 +1,9 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {OpeningTimesController} from '../../../../../main/app/controller/courts/OpeningTimesController';
-import {OpeningTime, OpeningTimeData, OpeningType} from '../../../../../main/types/OpeningTime';
+import {OpeningTime, OpeningTimeData} from '../../../../../main/types/OpeningTime';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
+import {OpeningType} from '../../../../../main/types/OpeningType';
 
 describe('OpeningTimesController', () => {
 
@@ -75,7 +76,7 @@ describe('OpeningTimesController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.updateOpeningTimes = jest.fn().mockResolvedValue(res);
 
-    await controller.post(req, res);
+    await controller.put(req, res);
 
     // Should call API to save data
     expect(mockApi.updateOpeningTimes).toBeCalledWith(slug, openingTimes);
@@ -97,7 +98,7 @@ describe('OpeningTimesController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.updateOpeningTimes = jest.fn().mockReturnValue(res);
 
-    await controller.post(req, res);
+    await controller.put(req, res);
 
     // Should not call API if opening times data is incomplete
     expect(mockApi.updateOpeningTimes).not.toBeCalled();

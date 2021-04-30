@@ -1,6 +1,7 @@
 import { Logger } from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
-import {OpeningTime, OpeningType} from '../../types/OpeningTime';
+import {OpeningTime} from '../../types/OpeningTime';
+import {OpeningType} from '../../types/OpeningType';
 
 export class FactApi {
 

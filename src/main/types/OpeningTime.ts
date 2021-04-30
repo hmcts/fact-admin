@@ -5,12 +5,6 @@ export interface OpeningTime {
   hours: string
 }
 
-export interface OpeningType {
-  id: number,
-  type: string,
-  type_cy: string
-}
-
 export interface OpeningTimeData {
   opening_times: OpeningTime[],
   openingTimeTypes: SelectItem[],

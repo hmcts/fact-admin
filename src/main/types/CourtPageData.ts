@@ -7,7 +7,7 @@ export interface CourtPageData {
 }
 
 export interface SelectItem {
-  value: any,
+  value: string | number,
   text: string,
   selected: boolean
 }

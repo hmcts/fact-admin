@@ -48,10 +48,11 @@ export class Nunjucks {
       }
     });
 
+    // If we don't have a selected item, add an empty item and select this.
+    // This means the select control will show an empty value if there is no selection or
+    // if the selected item doesn't exist in the array of items in the select.
     if (!itemSelected) {
-      if (!arr.some(si => si.value === '')) {
-        arr.splice(0, 0, {value: '', text: '', selected: true});
-      }
+      arr.splice(0, 0, {value: '', text: '', selected: true});
     }
     return arr;
   }

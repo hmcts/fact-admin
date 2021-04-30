@@ -3,6 +3,18 @@ import { expect } from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
+async function clickButtonAndCheckFieldsetAdded(containerId: string, buttonName: string) {
+  const numFieldsets = await I.countElement(`${containerId} fieldset`);
+
+  const selector = `button[name="${buttonName}"]`;
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+
+  const updatedNumFieldsets = await I.countElement(`${containerId} fieldset`);
+  expect(updatedNumFieldsets - numFieldsets).equal(1);
+}
+
 When('I click the opening hours tab', async () => {
   const selector = '#tab_opening-hours';
   const elementExist = await I.checkElement(selector);
@@ -32,15 +44,7 @@ When('I enter new opening hours entry', async () => {
 });
 
 When('I click the Add button', async () => {
-  const numOpeningTimes = await I.countElement('#openingTimesTab fieldset');
-
-  const selector = 'button[name="addOpeningTime"]';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
-
-  const updatedNumOpeningTimes = await I.countElement('#openingTimesTab fieldset');
-  expect(updatedNumOpeningTimes - numOpeningTimes).equal(1);
+  await clickButtonAndCheckFieldsetAdded('#openingTimesTab', 'addOpeningTime');
 });
 
 Then('I click save', async () => {

@@ -127,7 +127,7 @@ export const selectItem = async (selector: string, value: string) => {
   try {
     await scope.page.select(selector, value);
   } catch (error) {
-    console.log("The element didn't appear.");
+    console.log(`The element with selector: ${selector} and value: ${value} didn't appear.`);
   }
 };
 
@@ -136,6 +136,6 @@ export const countElement = async (selector: string) => {
     const count = (await scope.page.$$(selector)).length;
     return count;
   } catch (error) {
-    console.log("The element didn't appear.");
+    console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
