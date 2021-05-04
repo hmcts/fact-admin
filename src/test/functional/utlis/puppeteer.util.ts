@@ -139,3 +139,14 @@ export const countElement = async (selector: string) => {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
+
+export const getLastElementValue = async (selector: string) => {
+  try {
+    const input = await scope.page.$$(selector);
+    const lastIdx = input.length - 1;
+    const value = await scope.page.evaluate((x: any) => x.value, input[lastIdx]);
+    return value;
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};

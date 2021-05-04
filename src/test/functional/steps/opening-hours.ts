@@ -30,7 +30,7 @@ Then('I can view the existing opening hours', async () => {
   expect(tabClosed).equal(false);
 });
 
-When('I enter new opening hours entry', async () => {
+When('I enter new opening hours entry by selecting id {string} and adding text {string}', async (id: string, text: string) => {
   const inputSelector = '#newOpeningTimeHours';
   const selectSelector = 'select[name="newOpeningTimeDescription"]';
 
@@ -39,8 +39,8 @@ When('I enter new opening hours entry', async () => {
   const inputElementExists = await I.checkElement(inputSelector);
   expect(inputElementExists).equal(true);
 
-  await I.selectItem(selectSelector, '44');
-  await I.fillField(inputSelector, '9am to 5pm');
+  await I.selectItem(selectSelector, id);
+  await I.fillField(inputSelector, text);
 });
 
 When('I click the Add button', async () => {
@@ -55,8 +55,16 @@ Then('I click save', async () => {
 });
 
 Then('a green update message is displayed', async () => {
-  const elementExist = await I.checkElement('.govuk-panel--confirmation');
+  const elementExist = await I.checkElement('#openingTimesTab .govuk-panel--confirmation');
   expect(elementExist).equal(true);
+});
+
+Then('the new opening time is displayed as expected with id {string} and text {string}', async (id: string, hoursText: string) => {
+  const lastTypeId = await I.getLastElementValue('#openingTimesTab fieldset select[name$="[type_id]"]');
+  const lastHoursText = await I.getLastElementValue('#openingTimesTab fieldset input[name$="[hours]"]');
+
+  expect(lastTypeId.toString()).equal(id);
+  expect(hoursText).equal(lastHoursText);
 });
 
 When('I enter a blank opening hours entry', async () => {
@@ -72,14 +80,14 @@ When('I enter a blank opening hours entry', async () => {
 });
 
 Then('an error message is displayed', async () => {
-  const elementExist = await I.checkElement('.govuk-error-summary');
+  const elementExist = await I.checkElement('#openingTimesTab .govuk-error-summary');
   expect(elementExist).equal(true);
 });
 
 When('I click the remove button under an opening hours entry', async () => {
   const numOpeningTimes = await I.countElement('#openingTimesTab fieldset');
 
-  const selector = 'button[name="deleteOpeningHours"]';
+  const selector = '#openingTimesTab button[name="deleteOpeningHours"]';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
