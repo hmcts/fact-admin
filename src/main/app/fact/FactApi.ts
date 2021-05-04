@@ -1,9 +1,12 @@
 import { Logger } from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
+import {OpeningTime} from '../../types/OpeningTime';
+import {OpeningType} from '../../types/OpeningType';
 
 export class FactApi {
 
   private readonly baseURL = '/courts';
+  private readonly adminBaseUrl = '/admin/courts';
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -43,6 +46,34 @@ export class FactApi {
       .put(`${this.baseURL}/${slug}/general`, body)
       .then(results => results.data)
       .catch(this.errorHandler({}));
+  }
+
+  public getOpeningTimeTypes(): Promise<OpeningType[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/openingTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });  }
+
+  public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/openingTimes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });  }
+
+  public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/openingTimes`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.errorHandler([]);
+        return Promise.reject(err);
+      });
   }
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {

@@ -10,7 +10,8 @@ export default function(app: Application): void {
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
   app.get('/courts/:slug', app.locals.container.cradle.courtDetailsController.get);
   app.get('/courts/:slug/edit/general', app.locals.container.cradle.editCourtGeneralController.get);
-  app.post('/courts/:slug/edit/general', app.locals.container.cradle.editCourtGeneralController.post);
+  app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
+  app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);

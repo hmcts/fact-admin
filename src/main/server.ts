@@ -24,7 +24,7 @@ server.locals.ENV = env;
 server.use(Express.accessLogger());
 server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.static(path.join(__dirname, 'public')));
 server.use('/tinymce', express.static(path.join(__dirname, '..', '..', 'node_modules', 'tinymce')));
 

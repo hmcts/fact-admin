@@ -3,10 +3,10 @@ appVersion: "1.0"
 description: A Helm chart for fact-admin App
 name: fact-admin
 home: https://github.com/hmcts/fact-admin
-version: 0.0.8
+version: 0.0.9
 dependencies:
   - name: nodejs
-    version: 2.3.2
+    version: 2.3.4
     repository: '@hmctspublic'
   - name: idam-pr
     version: 2.2.6

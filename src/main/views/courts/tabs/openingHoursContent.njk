@@ -1,0 +1,125 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+<h2 class="govuk-heading-l">Opening Hours</h2>
+
+{{ govukDetails({
+  summaryText: "Help with dates and times",
+  html: "Government standards are available for
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#dates'
+    target='_blank' rel='noopener noreferrer'>dates</a>
+  and
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#times'
+    target='_blank' rel='noopener noreferrer'>times</a> "})
+}}
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Opening Hours updated"
+  }) }}
+{% endif %}
+
+{% for openingTime in opening_times %}
+
+  {% set descriptionError = false %}
+  {% if openingTime.type_id === '' %}
+    {% set descriptionError = "{ text: 'Type is required' }" %}
+  {% endif %}
+
+  {% set hoursError = false %}
+  {% if openingTime.hours === '' %}
+   {% set hoursError = "{ text: 'Hours is required.' }" %}
+  {% endif %}
+
+  {% call govukFieldset({
+  }) %}
+
+  {{ govukSelect({
+    id: "opening_times-" + loop.index,
+    name: "opening_times[" + loop.index +"][type_id]",
+    label: {
+      text: "Type"
+    },
+    errorMessage: descriptionError,
+    items: openingTimeTypes | selectFilter(openingTime.type_id)
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Hours"
+    },
+    classes: "govuk-input--width-20",
+    id: "hours-" + loop.index,
+    name: "opening_times[" + loop.index +"][hours]",
+    value: openingTime.hours,
+    errorMessage: hoursError
+  }) }}
+
+  {{ govukButton({
+    text: "Remove",
+    name: "deleteOpeningHours",
+    type: "button",
+    classes: "govuk-button--secondary deleteOpeningTime"
+  }) }}
+
+  <hr/>
+
+  {% endcall %}
+
+  {% endfor %}
+
+<h3 id='newOpeningHoursHeading' class="govuk-heading-s">Add New Opening Hours</h3>
+
+{% call govukFieldset({
+  attributes: { name: 'add-new-opening-time-fieldset'}
+}) %}
+
+  {{ govukSelect({
+    id: "newOpeningTimeDescription",
+    name: "newOpeningTimeDescription",
+    label: {
+      text: "Type"
+    },
+    items: openingTimeTypes | selectFilter('')
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Hours"
+    },
+    classes: "govuk-input--width-20",
+    id: "newOpeningTimeHours",
+    name: "newOpeningTimeHours"
+  }) }}
+
+  {{ govukButton({
+    text: "Add",
+    name: "addOpeningTime",
+    type: "button",
+    classes: "govuk-button--secondary"
+  }) }}
+
+  <hr/>
+
+{% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveOpeningTime"
+}) }}

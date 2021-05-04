@@ -122,3 +122,31 @@ export const clearField = async (selector: string) => {
     console.log("The element didn't appear.");
   }
 };
+
+export const selectItem = async (selector: string, value: string) => {
+  try {
+    await scope.page.select(selector, value);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} and value: ${value} didn't appear.`);
+  }
+};
+
+export const countElement = async (selector: string) => {
+  try {
+    const count = (await scope.page.$$(selector)).length;
+    return count;
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+export const getLastElementValue = async (selector: string) => {
+  try {
+    const input = await scope.page.$$(selector);
+    const lastIdx = input.length - 1;
+    const value = await scope.page.evaluate((x: any) => x.value, input[lastIdx]);
+    return value;
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
