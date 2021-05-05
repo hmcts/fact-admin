@@ -1,9 +1,9 @@
 import {SelectItem} from "./CourtPageData";
 
 export interface Email {
-  admin_email_type_id: number,
+  adminEmailTypeId: number,
   explanation: string
-  explanation_cy: string
+  explanationCy: string
   address: string
 }
 

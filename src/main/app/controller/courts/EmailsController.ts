@@ -39,17 +39,24 @@ export class EmailsController {
       errorMsg: error,
       updated: updated
     };
-
     res.render('courts/tabs/emailsContent', pageData);
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const emails = req.body.emails as Email[] ?? [];
 
-    if (emails.some(ot => !ot.admin_email_type_id || ot.address === '')) {
+    console.log('goes into put on controller');
+    console.log(req.body.emails);
+
+    console.log('emails from put path');
+    console.log(emails);
+
+    if (emails.some(ot => !ot.adminEmailTypeId || ot.address === '')) {
       // Retains the posted email data when errors exist
+      console.log('goes into the error handling path');
       return this.get(req, res, false, this.emptyTypeOrAddressErrorMsg, emails);
     } else {
+      console.log('goes into the success path');
       await req.scope.cradle.api.updateEmails(req.params.slug, emails)
         .then((value: Email[]) => this.get(req, res, true, '', value))
         .catch(() => this.get(req, res, false, this.updateErrorMsg, emails));
@@ -58,6 +65,6 @@ export class EmailsController {
 
   private static getEmailTypesForSelect(standardTypes: EmailType[]): SelectItem[] {
     return standardTypes.map((ott: EmailType) => (
-      {value: ott.id, text: ott.description, textCy: ott.description_cy, selected: false}));
+      {value: ott.id, text: ott.description, textCy: ott.descriptionCy, selected: false}));
   }
 }

@@ -35,7 +35,7 @@
 {% for email in emails %}
 
   {% set descriptionError = false %}
-  {% if email.admin_email_type_id === '' %}
+  {% if email.adminEmailTypeId === '' %}
     {% set descriptionError = "{ text: 'Type is required' }" %}
   {% endif %}
 
@@ -44,17 +44,16 @@
    {% set emailsError = "{ text: 'Address is required.' }" %}
   {% endif %}
 
-  {% call govukFieldset({
-  }) %}
+  {% call govukFieldset({}) %}
 
   {{ govukSelect({
     id: "emails-" + loop.index,
-    name: "emails[" + loop.index +"][admin_email_type_id]",
+    name: "emails[" + loop.index +"][adminEmailTypeId]",
     label: {
       text: "Type"
     },
     errorMessage: descriptionError,
-    items: emailTypes | selectFilter(email.admin_email_type_id)
+    items: emailTypes | selectFilter(email.adminEmailTypeId)
   }) }}
 
   {{ govukInput({
@@ -104,6 +103,7 @@
     id: "newEmailAddress",
     name: "newEmailAddress"
   }) }}
+
 
   {{ govukButton({
     text: "Add",

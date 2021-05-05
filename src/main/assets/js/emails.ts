@@ -7,8 +7,10 @@ export class EmailsController {
   private emailContentId = '#emailsContent';
   private deleteBtnClass = 'deleteEmail';
   private addEmailsBtnName = 'addEmail';
-  private typeSelectName = 'admin_email_type_id'
+  private typeSelectName = 'adminEmailTypeId'
   private addressInputName = 'address';
+  // private explanationInputName = 'explanation';
+  // private explanationCyInputName = 'explanationCy';
 
   constructor() {
     this.initialize();
@@ -39,10 +41,13 @@ export class EmailsController {
     });
   }
 
+  // By default this will be used when the save button is pressed
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
-      e.preventDefault();
 
+      console.log('goes in setUpSubmitEventHandler');
+
+      e.preventDefault();
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,
@@ -52,11 +57,14 @@ export class EmailsController {
         $(this.emailContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response =>
-        console.log('POST emails failed.'));
+        console.log('PUT emails failed.'));
     });
   }
 
   private setUpAddEventHandler(): void {
+
+    console.log('goes in setUpAddEventHandler');
+
     $(this.tabId).on('click', `button[name="${this.addEmailsBtnName}"]`, e => {
       // Copy new emails fields to main table.
       const addNewFieldset = e.target.closest('fieldset');
@@ -69,6 +77,8 @@ export class EmailsController {
         .val(type)
         .attr('name', EmailsController.getInputName(this.typeSelectName, 0));
       $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.addressInputName, 0));
+      // $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.explanationInputName, 0));
+      // $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.explanationCyInputName, 0));
 
       // Set the id and names of the elements in the table
       this.renameFormElements();
@@ -95,6 +105,9 @@ export class EmailsController {
   }
 
   private renameFormElements(): void {
+
+    console.log('goes in renameFormElements');
+
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
     $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
@@ -102,6 +115,12 @@ export class EmailsController {
       .attr('id', idx => 'description-' + idx);
     $(`${this.tabId} input[name$="[${this.addressInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(this.addressInputName, idx))
-      .attr('id', idx => 'hours-' + idx);
+      .attr('id', idx => 'address-' + idx);
+    // $(`${this.tabId} input[name$="[${this.explanationInputName}]"]`)
+    //   .attr('name', idx => EmailsController.getInputName(this.explanationInputName, idx))
+    //   .attr('id', idx => 'explanation-' + idx);
+    // $(`${this.tabId} input[name$="[${this.explanationCyInputName}]"]`)
+    //   .attr('name', idx => EmailsController.getInputName(this.explanationCyInputName, idx))
+    //   .attr('id', idx => 'explanation-cy-' + idx);
   }
 }
