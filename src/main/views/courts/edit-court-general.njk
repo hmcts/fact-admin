@@ -51,21 +51,31 @@
             {% set openingHoursHtml %}
               {% include "./tabs/openingHours.njk" %}
             {% endset -%}
+            {% set emailsHtml %}
+              {% include "./tabs/emails.njk" %}
+            {% endset -%}
             {{ govukTabs({
               items: [
                 {
                   label: "General",
                   id: "general",
                   panel: {
-                  html: generalHtml
-                }
+                    html: generalHtml
+                  }
                 },
                 {
                   label: "Opening Hours",
                   id: "opening-hours",
                   panel: {
-                  html: openingHoursHtml
-                }
+                    html: openingHoursHtml
+                  }
+                },
+                {
+                  label: "Emails",
+                  id: "emails",
+                  panel: {
+                    html: emailsHtml
+                  }
                 }
               ]
             }) }}
