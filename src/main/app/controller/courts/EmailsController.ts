@@ -27,15 +27,11 @@ export class EmailsController {
         .then((value: Email[]) => emails = value)
         .catch(() => error += this.getEmailsErrorMsg);
     }
-    console.log('emails');
-    console.log(emails);
 
     let types: EmailType[] = [];
     await req.scope.cradle.api.getEmailTypes()
       .then((value: EmailType[]) => types = value)
       .catch(() => error += this.getEmailTypesErrorMsg);
-    console.log('email types');
-    console.log(types);
 
     const pageData: EmailData = {
       'emails': emails,
@@ -49,18 +45,10 @@ export class EmailsController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const emails = req.body.emails as Email[] ?? [];
 
-    console.log('goes into put on controller');
-    console.log(req.body.emails);
-
-    console.log('emails from put path');
-    console.log(emails);
-
     if (emails.some(ot => !ot.adminEmailTypeId || ot.address === '')) {
       // Retains the posted email data when errors exist
-      console.log('goes into the error handling path');
       return this.get(req, res, false, this.emptyTypeOrAddressErrorMsg, emails);
     } else {
-      console.log('goes into the success path');
       await req.scope.cradle.api.updateEmails(req.params.slug, emails)
         .then((value: Email[]) => this.get(req, res, true, '', value))
         .catch(() => this.get(req, res, false, this.updateErrorMsg, emails));

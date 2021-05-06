@@ -44,9 +44,6 @@ export class EmailsController {
   // By default this will be used when the save button is pressed
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
-
-      console.log('goes in setUpSubmitEventHandler');
-
       e.preventDefault();
       const url = $(e.target).attr('action');
       $.ajax({
@@ -62,9 +59,6 @@ export class EmailsController {
   }
 
   private setUpAddEventHandler(): void {
-
-    console.log('goes in setUpAddEventHandler');
-
     $(this.tabId).on('click', `button[name="${this.addEmailsBtnName}"]`, e => {
       // Copy new emails fields to main table.
       const addNewFieldset = e.target.closest('fieldset');
@@ -107,9 +101,6 @@ export class EmailsController {
   }
 
   private renameFormElements(): void {
-
-    console.log('goes in renameFormElements');
-
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
     $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
