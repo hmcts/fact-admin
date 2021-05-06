@@ -27,11 +27,15 @@ export class EmailsController {
         .then((value: Email[]) => emails = value)
         .catch(() => error += this.getEmailsErrorMsg);
     }
+    console.log('emails');
+    console.log(emails);
 
     let types: EmailType[] = [];
     await req.scope.cradle.api.getEmailTypes()
       .then((value: EmailType[]) => types = value)
       .catch(() => error += this.getEmailTypesErrorMsg);
+    console.log('email types');
+    console.log(types);
 
     const pageData: EmailData = {
       'emails': emails,
@@ -65,6 +69,6 @@ export class EmailsController {
 
   private static getEmailTypesForSelect(standardTypes: EmailType[]): SelectItem[] {
     return standardTypes.map((ott: EmailType) => (
-      {value: ott.id, text: ott.description, textCy: ott.descriptionCy, selected: false}));
+      {value: ott.id, text: ott.description, selected: false}));
   }
 }

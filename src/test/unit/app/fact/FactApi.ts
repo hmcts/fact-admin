@@ -1,4 +1,4 @@
-import { FactApi } from '../../../../main/app/fact/FactApi';
+import {FactApi} from '../../../../main/app/fact/FactApi';
 
 describe('FactApi', () => {
   test('Should return results from get request', async () => {
@@ -145,5 +145,44 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.getOpeningTimeTypes()).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getEmails request', async () => {
+    const results = {
+      data: [
+        {
+          address: 'test address', explanation: 'explanation ',
+          explanationCy: 'explanation cy', adminEmailTypeId: 8
+        },
+        {
+          address: 'test address 2', explanation: 'explanation 2',
+          explanationCy: 'explanation cy 2', adminEmailTypeId: 2
+        }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getEmails('Plymouth')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getEmailTypes request', async () => {
+    const results = {
+      data: [
+        {
+          id: 1, description: 'Case progression', descriptionCy: 'Case progression cy'
+        },
+        {
+          id: 2, description: 'Chancery', descriptionCy: 'Chancery cy' },
+        {
+          id: 3, description: 'Civil court', descriptionCy: 'Civil court cy'
+        }]
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getEmailTypes()).resolves.toEqual(results.data);
   });
 });
