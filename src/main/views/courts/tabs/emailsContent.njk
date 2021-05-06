@@ -67,6 +67,26 @@
     errorMessage: emailsError
   }) }}
 
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "explanation-" + loop.index,
+    name: "emails[" + loop.index +"][explanation]",
+    value: email.explanation
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "explanation-cy-" + loop.index,
+    name: "emails[" + loop.index +"][explanationCy]",
+    value: email.explanationCy
+  }) }}
+
   {{ govukButton({
     text: "Remove",
     name: "deleteEmails",
@@ -104,6 +124,23 @@
     name: "newEmailAddress"
   }) }}
 
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "newEmailExplanation",
+    name: "newEmailExplanation"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "newEmailExplanationCy",
+    name: "newEmailExplanationCy"
+  }) }}
 
   {{ govukButton({
     text: "Add",

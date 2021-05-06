@@ -9,8 +9,8 @@ export class EmailsController {
   private addEmailsBtnName = 'addEmail';
   private typeSelectName = 'adminEmailTypeId'
   private addressInputName = 'address';
-  // private explanationInputName = 'explanation';
-  // private explanationCyInputName = 'explanationCy';
+  private explanationInputName = 'explanation';
+  private explanationCyInputName = 'explanationCy';
 
   constructor() {
     this.initialize();
@@ -76,9 +76,11 @@ export class EmailsController {
       $(copyFieldset).find('select')
         .val(type)
         .attr('name', EmailsController.getInputName(this.typeSelectName, 0));
-      $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.addressInputName, 0));
-      // $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.explanationInputName, 0));
-      // $(copyFieldset).find('input').attr('name', EmailsController.getInputName(this.explanationCyInputName, 0));
+      $(copyFieldset).find('#newEmailAddress').attr('name', EmailsController.getInputName(this.addressInputName, 0));
+      $(copyFieldset).find('#newEmailExplanation')
+        .attr('name', EmailsController.getInputName(this.explanationInputName, 0));
+      $(copyFieldset).find('#newEmailExplanationCy')
+        .attr('name', EmailsController.getInputName(this.explanationCyInputName, 0));
 
       // Set the id and names of the elements in the table
       this.renameFormElements();
@@ -116,11 +118,11 @@ export class EmailsController {
     $(`${this.tabId} input[name$="[${this.addressInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(this.addressInputName, idx))
       .attr('id', idx => 'address-' + idx);
-    // $(`${this.tabId} input[name$="[${this.explanationInputName}]"]`)
-    //   .attr('name', idx => EmailsController.getInputName(this.explanationInputName, idx))
-    //   .attr('id', idx => 'explanation-' + idx);
-    // $(`${this.tabId} input[name$="[${this.explanationCyInputName}]"]`)
-    //   .attr('name', idx => EmailsController.getInputName(this.explanationCyInputName, idx))
-    //   .attr('id', idx => 'explanation-cy-' + idx);
+    $(`${this.tabId} input[name$="[${this.explanationInputName}]"]`)
+      .attr('name', idx => EmailsController.getInputName(this.explanationInputName, idx))
+      .attr('id', idx => 'explanation-' + idx);
+    $(`${this.tabId} input[name$="[${this.explanationCyInputName}]"]`)
+      .attr('name', idx => EmailsController.getInputName(this.explanationCyInputName, idx))
+      .attr('id', idx => 'explanation-cy-' + idx);
   }
 }
