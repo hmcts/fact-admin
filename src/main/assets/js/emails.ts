@@ -113,12 +113,12 @@ export class EmailsController {
   private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.tabId} select[name$="[${attributeInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
-      .attr('id', idx => attributeInputId + '-' + idx);
+      .attr('id', idx => `${attributeInputId}-${idx}`);
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.tabId} input[name$="[${attributeInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
-      .attr('id', idx => attributeInputId + '-' + idx);
+      .attr('id', idx => `${attributeInputId}-${idx}`);
   }
 }
