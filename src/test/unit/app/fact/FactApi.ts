@@ -205,7 +205,7 @@ describe('FactApi', () => {
     await expect(api.updateEmails('Plymouth', results.data)).resolves.toEqual(results.data);
   });
 
-  test('Should return no result and log error from getEmails request', async () => {
+  test('Should return results and log error from getEmails request', async () => {
 
     const error = new Error('Error') as any;
     const mockAxios = { get: async () => {
@@ -227,7 +227,7 @@ describe('FactApi', () => {
     await expect(api.getEmails('No Slug')).rejects.toEqual(error);
   });
 
-  test('Should return no result and log error from getEmailTypes request', async () => {
+  test('Should return results and log error from getEmailTypes request', async () => {
 
     const error = new Error('Error') as any;
     const mockAxios = { get: async () => {
@@ -249,7 +249,7 @@ describe('FactApi', () => {
     await expect(api.getEmailTypes()).rejects.toEqual(error);
   });
 
-  test('Should return no result and log error from updateEmails request', async () => {
+  test('Should return results and log error from updateEmails request', async () => {
 
     const error = new Error('Error') as any;
     const mockAxios = { put: async () => {
