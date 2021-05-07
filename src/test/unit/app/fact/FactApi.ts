@@ -52,7 +52,6 @@ describe('FactApi', () => {
 
     await expect(api.getCourts()).resolves.toEqual([]);
     await expect(spy).toBeCalled();
-
   });
 
   test('Should return results from getCourt request', async () => {
@@ -184,5 +183,90 @@ describe('FactApi', () => {
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.getEmailTypes()).resolves.toEqual(results.data);
+  });
+
+  test('Should update and return results from updateEmails request', async () => {
+    const results = {
+      data: [
+        {
+          address: 'test address', explanation: 'explanation ',
+          explanationCy: 'explanation cy', adminEmailTypeId: 8
+        },
+        {
+          address: 'test address 2', explanation: 'explanation 2',
+          explanationCy: 'explanation cy 2', adminEmailTypeId: 2
+        }
+      ]
+    };
+
+    const mockAxios = { put: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateEmails('Plymouth', results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should return no result and log error from getEmails request', async () => {
+
+    const error = new Error('Error') as any;
+    const mockAxios = { get: async () => {
+      error.response = {
+        data: 'something failed',
+        headers: {},
+        status: 403,
+        statusText: 'Failed'
+      };
+      throw error;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getEmails('No Slug')).rejects.toEqual(error);
+  });
+
+  test('Should return no result and log error from getEmailTypes request', async () => {
+
+    const error = new Error('Error') as any;
+    const mockAxios = { get: async () => {
+      error.response = {
+        data: 'something failed',
+        headers: {},
+        status: 403,
+        statusText: 'Failed'
+      };
+      throw error;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getEmailTypes()).rejects.toEqual(error);
+  });
+
+  test('Should return no result and log error from updateEmails request', async () => {
+
+    const error = new Error('Error') as any;
+    const mockAxios = { put: async () => {
+      error.response = {
+        data: 'something failed',
+        headers: {},
+        status: 403,
+        statusText: 'Failed'
+      };
+      throw error;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateEmails('No Slug', [])).rejects.toEqual(error);
   });
 });

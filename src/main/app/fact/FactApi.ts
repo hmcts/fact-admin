@@ -55,7 +55,7 @@ export class FactApi {
       .get(`${this.adminBaseUrl}/openingTypes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });  }
 
@@ -64,7 +64,7 @@ export class FactApi {
       .get(`${this.adminBaseUrl}/${slug}/openingTimes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });  }
 
@@ -73,7 +73,7 @@ export class FactApi {
       .put(`${this.adminBaseUrl}/${slug}/openingTimes`, body)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });
   }
@@ -83,7 +83,7 @@ export class FactApi {
       .get(`${this.adminBaseUrl}/emailTypes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });  }
 
@@ -92,7 +92,7 @@ export class FactApi {
       .get(`${this.adminBaseUrl}/${slug}/emails`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });  }
 
@@ -101,7 +101,7 @@ export class FactApi {
       .put(`${this.adminBaseUrl}/${slug}/emails`, body)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });
   }
@@ -121,6 +121,15 @@ export class FactApi {
 
       return defaultValue;
     };
+  }
+
+  private logError(err: AxiosError) {
+    this.logger.error(err.message);
+
+    if (err.response) {
+      this.logger.info(err.response.data);
+      this.logger.info(err.response.headers);
+    }
   }
 }
 

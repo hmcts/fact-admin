@@ -11,6 +11,7 @@ export class EmailsController {
   private addressInputName = 'address';
   private explanationInputName = 'explanation';
   private explanationCyInputName = 'explanationCy';
+  private explanationCyInputId = 'explanation-cy'
 
   constructor() {
     this.initialize();
@@ -103,17 +104,21 @@ export class EmailsController {
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
-      .attr('name', idx => EmailsController.getInputName(this.typeSelectName, idx))
-      .attr('id', idx => 'description-' + idx);
-    $(`${this.tabId} input[name$="[${this.addressInputName}]"]`)
-      .attr('name', idx => EmailsController.getInputName(this.addressInputName, idx))
-      .attr('id', idx => 'address-' + idx);
-    $(`${this.tabId} input[name$="[${this.explanationInputName}]"]`)
-      .attr('name', idx => EmailsController.getInputName(this.explanationInputName, idx))
-      .attr('id', idx => 'explanation-' + idx);
-    $(`${this.tabId} input[name$="[${this.explanationCyInputName}]"]`)
-      .attr('name', idx => EmailsController.getInputName(this.explanationCyInputName, idx))
-      .attr('id', idx => 'explanation-cy-' + idx);
+    this.renameSelectElement(this.typeSelectName, this.typeSelectName);
+    this.renameInputElement(this.addressInputName, this.addressInputName);
+    this.renameInputElement(this.explanationInputName, this.explanationInputName);
+    this.renameInputElement(this.explanationCyInputName, this.explanationCyInputId);
+  }
+
+  private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
+    $(`${this.tabId} select[name$="[${attributeInputName}]"]`)
+      .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
+      .attr('id', idx => attributeInputId + '-' + idx);
+  }
+
+  private renameInputElement(attributeInputName: string, attributeInputId: string): void {
+    $(`${this.tabId} input[name$="[${attributeInputName}]"]`)
+      .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
+      .attr('id', idx => attributeInputId + '-' + idx);
   }
 }
