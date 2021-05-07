@@ -68,7 +68,7 @@ export class CourtGeneralInfoController {
       }).done(async res => {
         await this.updateContent(res);
       }).fail(response =>
-        console.log('POST opening times failed.'));
+        console.log('POST general info failed.'));
     });
   }
 }
