@@ -2,6 +2,7 @@ import { Logger } from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
 import {OpeningTime} from '../../types/OpeningTime';
 import {OpeningType} from '../../types/OpeningType';
+import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
 
 export class FactApi {
 
@@ -34,44 +35,50 @@ export class FactApi {
       .catch(this.errorHandler([]));
   }
 
-  public getCourtGeneral(slug: string): Promise<{}> {
+  public getGeneralInfo(slug: string): Promise<CourtGeneralInfo> {
     return this.axios
-      .get(`${this.baseURL}/${slug}/general`)
+      .get(`${this.adminBaseUrl}/${slug}/generalInfo`)
       .then(results => results.data)
-      .catch(this.errorHandler({}));
-  }
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });  }
 
-  public updateCourtGeneral(slug: string, body: {}): Promise<{}> {
+  public updateGeneralInfo(slug: string, body: {}): Promise<CourtGeneralInfo> {
     return this.axios
-      .put(`${this.baseURL}/${slug}/general`, body)
+      .put(`${this.adminBaseUrl}/${slug}/generalInfo`, body)
       .then(results => results.data)
-      .catch(this.errorHandler({}));
-  }
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });  }
 
   public getOpeningTimeTypes(): Promise<OpeningType[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/openingTypes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
-      });  }
+      });
+  }
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/openingTimes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
-      });  }
+      });
+  }
 
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/openingTimes`, body)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });
   }
@@ -82,15 +89,18 @@ export class FactApi {
 
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
-      this.logger.error(err.message);
-
-      if (err.response) {
-        this.logger.info(err.response.data);
-        this.logger.info(err.response.headers);
-      }
-
+      this.logError(err);
       return defaultValue;
     };
+  }
+
+  private logError(err: AxiosError) {
+    this.logger.error(err.message);
+
+    if (err.response) {
+      this.logger.info(err.response.data);
+      this.logger.info(err.response.headers);
+    }
   }
 }
 

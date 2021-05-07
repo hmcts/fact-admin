@@ -150,3 +150,10 @@ export const getLastElementValue = async (selector: string) => {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
+
+export const isElementVisible = async (selector: string) => {
+  let visible = true;
+  await scope.page.waitForSelector(selector, { visible: true, timeout: 3000 })
+    .catch(() => { visible = false; });
+  return visible;
+};

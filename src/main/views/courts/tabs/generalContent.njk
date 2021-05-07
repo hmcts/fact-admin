@@ -1,0 +1,111 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+<h2 class="govuk-heading-l">General</h2>
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "General Information updated"
+  }) }}
+{% endif %}
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+{% if isSuperAdmin %}
+  {{ govukCheckboxes({
+    name: "open",
+    items: [
+      {
+        value: true,
+        text: "Open",
+        checked: generalInfo.open
+      }
+    ]
+  }) }}
+
+  {% set disableAccessScheme = generalInfo.in_person == false %}
+  {{ govukCheckboxes({
+    name: "access_scheme",
+    items: [
+      {
+        value: true,
+        text: "Participates in Professional Users Access Scheme (in-person courts only)",
+        checked: generalInfo.access_scheme,
+        disabled: disableAccessScheme
+      }
+    ]
+  }) }}
+{% endif %}
+
+{{ govukCharacterCount({
+  name: "alert",
+  id: "urgent-notice",
+  maxlength: 250,
+  rows: "3",
+  value: generalInfo.alert,
+  label: {
+    text: "Urgent notice",
+    classes: "govuk-label--m"
+  },
+  hint: {
+    text: "Use this field to display a temporary notice of building closure or temporary disruption to court
+    services. This is limited to 250 characters including spaces."
+  },
+  attributes: {
+    maxlength: 250
+  }
+}) }}
+
+{{ govukCharacterCount({
+  name: "alert_cy",
+  id: "urgent-notice-welsh",
+  maxlength: 250,
+  rows: "3",
+  value: generalInfo.alert_cy,
+  label: {
+    text: "Urgent notice (Welsh)",
+    classes: "govuk-label--m"
+  },
+  attributes: {
+    maxlength: 250
+  }
+}) }}
+
+{% if isSuperAdmin %}
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                           for="info">
+        Coronavirus (COVID-19) Update
+      </label>
+    </h2>
+    <textarea class="govuk-textarea rich-editor" id="info" name="info"
+              rows="3">{{ generalInfo.info }}</textarea>
+  </div>
+
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m"
+                                           for="info_cy">
+        Coronavirus (COVID-19) Update (Welsh)
+      </label>
+    </h2>
+    <textarea class="govuk-textarea rich-editor" id="info_cy" name="info_cy"
+              rows="3">{{ generalInfo.info_cy }}</textarea>
+  </div>
+{% endif %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveGeneralInfo",
+  attributes: { id: 'saveGeneralInfoBtn'}
+}) }}

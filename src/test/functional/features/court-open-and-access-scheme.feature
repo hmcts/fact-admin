@@ -9,16 +9,16 @@ Feature: Court Open and Access Scheme flags
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-#  Scenario: Open
-#    When I click edit next to a chosen court or tribunal
-#    Then I am redirected to the Edit Court page for the chosen court
-#    When I click the open checkbox
-#    And I click the update button
-#    Then a message is displayed on the page
-#
-#  Scenario: Access scheme
-#    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
-#    Then I am redirected to the Edit Court page for the chosen court
-#    When I click the Participates in access scheme checkbox
-#    And I click the update button
-#    Then a message is displayed on the page
+  Scenario: Open
+    When I click edit next to a chosen court or tribunal
+    Then I am redirected to the Edit Court page for the chosen court
+    When I click the open checkbox
+    And I click the save button
+    Then a success message is displayed on the tab
+
+  Scenario: Access scheme
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I click the Participates in access scheme checkbox
+    And I click the save button
+    Then a success message is displayed on the tab
