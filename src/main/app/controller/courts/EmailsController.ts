@@ -4,6 +4,7 @@ import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {Email, EmailData} from '../../../types/Email';
 import {EmailType} from '../../../types/EmailType';
+import {validateEmail} from '../../../utils/validation';
 
 @autobind
 export class EmailsController {
@@ -12,6 +13,7 @@ export class EmailsController {
   private updateErrorMsg = 'A problem occurred when saving the emails.';
   getEmailsErrorMsg = 'A problem occurred when retrieving the emails.';
   getEmailTypesErrorMsg = 'A problem occurred when retrieving the email types.';
+  getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
 
   public async get(
     req: AuthedRequest,
@@ -49,6 +51,11 @@ export class EmailsController {
       // Retains the posted email data when errors exist
       return this.get(req, res, false, this.emptyTypeOrAddressErrorMsg, emails);
     } else {
+
+      // If any address used is not of an email format, return with an error
+      if(emails.some(ot => !validateEmail(ot.address)))
+        return this.get(req, res, false, this.getEmailAddressFormatErrorMsg, emails);
+
       await req.scope.cradle.api.updateEmails(req.params.slug, emails)
         .then((value: Email[]) => this.get(req, res, true, '', value))
         .catch(() => this.get(req, res, false, this.updateErrorMsg, emails));
