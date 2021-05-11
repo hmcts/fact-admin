@@ -1,0 +1,105 @@
+import {mockRequest} from '../../../utils/mockRequest';
+import {mockResponse} from '../../../utils/mockResponse';
+import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../../../main/types/CourtGeneralInfo';
+import {GeneralInfoController} from '../../../../../main/app/controller/courts/GeneralInfoController';
+
+describe('GeneralInfoController', () => {
+
+  let mockApi: {
+    getGeneralInfo: () => Promise<CourtGeneralInfo>,
+    updateGeneralInfo: () => Promise<CourtGeneralInfo>
+  };
+
+  const courtGeneralInfo: CourtGeneralInfo = {
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
+  const controller = new GeneralInfoController();
+
+  beforeEach(() => {
+    mockApi = {
+      getGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
+      updateGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
+    };
+  });
+
+  test('Should get court general info and render the page', async () => {
+    const req = mockRequest();
+    req.params = {
+      slug: 'southport-county-court'
+    };
+    req.scope.cradle.api = mockApi;
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: '',
+      updated: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should put court general info', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockResolvedValue(res);
+
+    await controller.put(req, res);
+
+    expect(mockApi.updateGeneralInfo).toBeCalledWith(slug, courtGeneralInfo);
+  });
+
+  test('Should handle errors when getting court general info from API', async () => {
+    const req = mockRequest();
+    req.params = {
+      slug: 'southport-county-court'
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.getGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: null,
+      errorMsg: controller.getGeneralInfoErrorMsg,
+      updated: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should handle errors when posting court general info to API', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+});

@@ -4,15 +4,13 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {CourtPageData} from '../../../types/CourtPageData';
 
 @autobind
-export class EditCourtGeneralController {
+export class EditCourtController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
-    const updated = req.query.updated === 'true';
-    const slug: string = req.params.slug as string;
 
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
-      court: await req.scope.cradle.api.getCourtGeneral(slug),
-      updated: updated
+      slug: req.params.slug,
+      name: req.query.name?.toString()
     };
 
     res.render('courts/edit-court-general', pageData);

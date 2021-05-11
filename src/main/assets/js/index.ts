@@ -5,9 +5,11 @@ import './opening-hours';
 import './emails';
 import {OpeningHoursController} from './opening-hours';
 import {EmailsController} from './emails';
+import {CourtGeneralInfoController} from './courtGeneralInfo';
 
 const { initAll } = require('govuk-frontend');
 
 initAll();
 new OpeningHoursController();
 new EmailsController();
+new CourtGeneralInfoController();

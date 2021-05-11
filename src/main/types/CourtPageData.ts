@@ -1,9 +1,7 @@
-import {Court} from './Court';
-
 export interface CourtPageData {
   isSuperAdmin: boolean,
-  court: Court,
-  updated: boolean
+  slug: string,
+  name: string
 }
 
 export interface SelectItem {
