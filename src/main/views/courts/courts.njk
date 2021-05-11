@@ -22,7 +22,7 @@
           <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
         </td>
         <td scope="row" class="govuk-table__cell">
-          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general">edit</a>
+          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general?name={{ court.name }}">edit</a>
         </td>
       </tr>
     {% endfor %}

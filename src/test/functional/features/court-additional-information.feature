@@ -9,16 +9,16 @@ Feature: Court Additional Information Message
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-#  Scenario: Additional Information
-#    When I click edit next to a chosen court or tribunal
-#    Then I am redirected to the Edit Court page for the chosen court
-#    When I add an "Additional Information" in the rich editor field provided "#info_message"
-#    And I click the update button
-#    Then a message is displayed on the page
-#
-#  Scenario: Welsh Translation
-#    When I click edit next to a chosen court or tribunal
-#    Then I am redirected to the Edit Court page for the chosen court
-#    When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_message_cy"
-#    And I click the update button
-#    Then a message is displayed on the page
+  Scenario: Additional Information
+    When I click edit next to a chosen court or tribunal
+    Then I am redirected to the Edit Court page for the chosen court
+    When I add an "Additional Information" in the rich editor field provided "#info"
+    And I click the save button
+    Then a success message is displayed on the tab
+
+  Scenario: Welsh Translation
+    When I click edit next to a chosen court or tribunal
+    Then I am redirected to the Edit Court page for the chosen court
+    When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_cy"
+    And I click the save button
+    Then a success message is displayed on the tab

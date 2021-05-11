@@ -5,9 +5,10 @@ import { CourtsController } from '../../app/controller/courts/CourtsController';
 import { CourtsDownloadController } from '../../app/controller/courts/CourtsDownloadController';
 import { ErrorController } from '../../app/controller/ErrorController';
 import { CourtDetailsController } from '../../app/controller/courts/CourtDetailsController';
-import { EditCourtGeneralController } from '../../app/controller/courts/EditCourtGeneralController';
+import { EditCourtController } from '../../app/controller/courts/EditCourtController';
 import { BulkUpdateController } from '../../app/controller/bulk-update/BulkUpdateController';
 import {OpeningTimesController} from '../../app/controller/courts/OpeningTimesController';
+import {GeneralInfoController} from '../../app/controller/courts/GeneralInfoController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -26,8 +27,9 @@ export class Container {
       courtsController: asClass(CourtsController),
       courtsDownloadController: asClass(CourtsDownloadController),
       courtDetailsController: asClass(CourtDetailsController),
-      editCourtGeneralController: asClass(EditCourtGeneralController),
+      editCourtController: asClass(EditCourtController),
       openingTimesController: asClass(OpeningTimesController),
+      generalInfoController: asClass(GeneralInfoController),
       errorController: asClass(ErrorController),
       exposeErrors: asValue(server.locals.env === 'development')
     });

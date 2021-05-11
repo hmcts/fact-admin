@@ -1,8 +1,7 @@
 {% from "macros/csrf.njk" import csrfProtection %}
 
 <div id='openingTimesTab'>
-  <input id='slug' type='hidden' value='{{court.slug}}'></input>
-  <form id="openingTimesForm" method="POST" action="/courts/{{court.slug}}/opening-times">
+  <form id="openingTimesForm" method="POST" action="/courts/{{slug}}/opening-times">
     {{ csrfProtection(csrfToken) }}
     <div id='openingTimesContent'></div>
   </form>

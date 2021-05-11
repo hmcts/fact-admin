@@ -33,15 +33,15 @@ Then('a message is displayed on the page', async () => {
 });
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
-  const selector = '#urgent-notice-welsh';
+  const selector = '#generalInfoTab #urgent-notice-welsh';
   await I.clearField(selector);
   await I.fillField(selector, welshMessage);
 });
 
 When('I click the open checkbox', async () => {
-  await I.click('#open');
+  await I.click('#generalInfoTab #open');
 });
 
 When('I click the Participates in access scheme checkbox', async () => {
-  await I.click('#access-scheme');
+  await I.click('#generalInfoTab #access_scheme');
 });
