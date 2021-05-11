@@ -25,25 +25,25 @@ When('I click on Add new Email', async () => {
 When('I add Description from the dropdown {string} and Address {string} and Explanation {string} and Welsh Explanation {string}',
   async (id: string, email: string, explanation: string, explanationCy: string) => {
 
-  const selectSelector = '#newEmailDescription';
-  const addressInputSelector = '#newEmailAddress';
-  const expInputSelector = '#newEmailExplanation';
-  const expCyInputSelector = '#newEmailExplanationCy';
+    const selectSelector = '#newEmailDescription';
+    const addressInputSelector = '#newEmailAddress';
+    const expInputSelector = '#newEmailExplanation';
+    const expCyInputSelector = '#newEmailExplanationCy';
 
-  const selectSelectorExists = await I.checkElement(selectSelector);
-  expect(selectSelectorExists).equal(true);
-  const addressInputSelectorExists = await I.checkElement(addressInputSelector);
-  expect(addressInputSelectorExists).equal(true);
-  const expInputSelectorExists = await I.checkElement(expInputSelector);
-  expect(expInputSelectorExists).equal(true);
-  const expCyInputSelectorExists = await I.checkElement(expCyInputSelector);
-  expect(expCyInputSelectorExists).equal(true);
+    const selectSelectorExists = await I.checkElement(selectSelector);
+    expect(selectSelectorExists).equal(true);
+    const addressInputSelectorExists = await I.checkElement(addressInputSelector);
+    expect(addressInputSelectorExists).equal(true);
+    const expInputSelectorExists = await I.checkElement(expInputSelector);
+    expect(expInputSelectorExists).equal(true);
+    const expCyInputSelectorExists = await I.checkElement(expCyInputSelector);
+    expect(expCyInputSelectorExists).equal(true);
 
-  await I.selectItem(selectSelector, id);
-  await I.fillField(addressInputSelector, email);
-  await I.fillField(expInputSelector, explanation);
-  await I.fillField(expCyInputSelector, explanationCy);
-});
+    await I.selectItem(selectSelector, id);
+    await I.fillField(addressInputSelector, email);
+    await I.fillField(expInputSelector, explanation);
+    await I.fillField(expCyInputSelector, explanationCy);
+  });
 
 When('I click save button', async () => {
   const selector = 'button[name=\'saveEmail\']';
@@ -61,7 +61,7 @@ When('I leave adminId blank', async () => {
   const selectSelector = '#newEmailDescription';
   const selectSelectorExists = await I.checkElement(selectSelector);
   expect(selectSelectorExists).equal(true);
-  await I.clearField(selectSelector)
+  await I.clearField(selectSelector);
 });
 
 When('I leave Address blank', async () => {
@@ -89,28 +89,24 @@ When('I click the remove button below a email section', async () => {
   expect(numEmailAdd - updatedEmailAdd).equal(1);
 });
 
-When( 'I add Description from the dropdown {string} and wrong Email-Address {string}',
+When('I add Description from the dropdown {string} and wrong Email-Address {string}',
   async (id: string, email: string) => {
 
     const selectSelector = '#newEmailDescription';
     const addressInputSelector = '#newEmailAddress';
 
-    const selectSelectorExists = await I.checkElement(selectSelector);
-    expect(selectSelectorExists).equal(true);
-    const addressInputSelectorExists = await I.checkElement(addressInputSelector);
-    expect(addressInputSelectorExists).equal(true);
+    expect(await I.checkElement(selectSelector)).equal(true);
+    expect(await I.checkElement(addressInputSelector)).equal(true);
 
     await I.selectItem(selectSelector, id);
     await I.fillField(addressInputSelector, email);
+  });
 
-});
-
-Then('An error message is displayed with the text {string}',async (msg: string) => {
-  const elementExist = await I.checkElement('#error-summary-title');
-  console.log(elementExist);
-  expect(elementExist).equal(true);
-  const actualErrMsg = await I.getElementText('#error-summary-title');
-  console.log(actualErrMsg);
-  expect(actualErrMsg).equal(msg);
-
+Then('An error message is displayed with the text {string}', async (msg: string) => {
+  expect(await I.checkElement('#error-summary-title')).equal(true);
+  expect(await I.checkElement('#emailsContent > div > div > ul > li')).equal(true);
+  expect(
+    await I.getElementText(                                                // Get Text for the element below
+      await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
+    .equal(msg);
 });

@@ -42,8 +42,7 @@ Feature: Email-addresses
     Then An error message is displayed with the text "<validation>"
 
     Examples:
-      |adminId  |address           |validation                                                             |
-      |6        |abcabc@gmailcom.  |Enter an email address in the correct format, like name@example.com      |
-      |6        |abcefg!gmail.com  |Enter an email address in the correct format, like name@example.com    |
-      |6        |abcef              |Enter an email address in the correct format, like name@example.com    |
-
+      | adminId | address          | validation                                                          |
+      | 6       | abcabc@gmailcom. | Enter an email address in the correct format, like name@example.com |
+      | 6       | abcefg!gmail.com | Enter an email address in the correct format, like name@example.com |
+      | 6       | abcef            | Enter an email address in the correct format, like name@example.com |

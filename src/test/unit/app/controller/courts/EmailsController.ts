@@ -14,11 +14,22 @@ describe('EmailsController', () => {
 
   const emails: Email[] = [
     {
-      address: 'test address', explanation: 'explanation ',
+      address: 'abc@test.com', explanation: 'explanation ',
       explanationCy: 'explanation cy', adminEmailTypeId: 8
     },
     {
-      address: 'test address 2', explanation: 'explanation 2',
+      address: 'abc@test2.com', explanation: 'explanation 2',
+      explanationCy: 'explanation cy 2', adminEmailTypeId: 2
+    }
+  ];
+
+  const emailsInvalidSyntax: Email[] = [
+    {
+      address: 'abc1', explanation: 'explanation ',
+      explanationCy: 'explanation cy', adminEmailTypeId: 8
+    },
+    {
+      address: 'abc2', explanation: 'explanation 2',
       explanationCy: 'explanation cy 2', adminEmailTypeId: 2
     }
   ];
@@ -113,7 +124,30 @@ describe('EmailsController', () => {
     expect(mockApi.updateEmails).not.toBeCalled();
   });
 
-  test('Should handle errors when getting email data from API', async () => {
+  test('Should handle email address error invalid syntax when getting email data from API', async () => {
+    const req = mockRequest();
+    req.params = {
+      slug: 'plymouth-combined-court'
+    };
+    req.body = {
+      'emails': emailsInvalidSyntax
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.getEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.put(req, res);
+
+    const expectedResults: EmailData = {
+      emails: emailsInvalidSyntax,
+      emailTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: controller.getEmailAddressFormatErrorMsg
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+  });
+
+  test('Should handle address blank error when getting email data from API', async () => {
     const req = mockRequest();
     req.params = {
       slug: 'plymouth-combined-court'
