@@ -88,3 +88,29 @@ When('I click the remove button below a email section', async () => {
   const updatedEmailAdd = await I.countElement('#emailsTab fieldset');
   expect(numEmailAdd - updatedEmailAdd).equal(1);
 });
+
+When( 'I add Description from the dropdown {string} and wrong Email-Address {string}',
+  async (id: string, email: string) => {
+
+    const selectSelector = '#newEmailDescription';
+    const addressInputSelector = '#newEmailAddress';
+
+    const selectSelectorExists = await I.checkElement(selectSelector);
+    expect(selectSelectorExists).equal(true);
+    const addressInputSelectorExists = await I.checkElement(addressInputSelector);
+    expect(addressInputSelectorExists).equal(true);
+
+    await I.selectItem(selectSelector, id);
+    await I.fillField(addressInputSelector, email);
+
+});
+
+Then('An error message is displayed with the text {string}',async (msg: string) => {
+  const elementExist = await I.checkElement('#error-summary-title');
+  console.log(elementExist);
+  expect(elementExist).equal(true);
+  const actualErrMsg = await I.getElementText('#error-summary-title');
+  console.log(actualErrMsg);
+  expect(actualErrMsg).equal(msg);
+
+});

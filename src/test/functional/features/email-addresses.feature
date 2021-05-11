@@ -34,3 +34,16 @@ Feature: Email-addresses
     When I click the remove button below a email section
     And I click save button
     Then a green update message showing email updated is displayed
+
+  Scenario Outline: Email validation
+    When I add Description from the dropdown "<adminId>" and wrong Email-Address "<address>"
+    When I click on Add new Email
+    And I click save button
+    Then An error message is displayed with the text "<validation>"
+
+    Examples:
+      |adminId  |address           |validation                                                             |
+      |6        |abcabc@gmailcom.  |Enter an email address in the correct format, like name@example.com      |
+      |6        |abcefg!gmail.com  |Enter an email address in the correct format, like name@example.com    |
+      |6        |abcef              |Enter an email address in the correct format, like name@example.com    |
+
