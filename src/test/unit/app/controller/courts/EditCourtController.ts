@@ -2,6 +2,9 @@ import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {EditCourtController} from '../../../../../main/app/controller/courts/EditCourtController';
 import {CourtPageData} from '../../../../../main/types/CourtPageData';
+import config from 'config';
+import { when } from 'jest-when';
+import Tokens from 'csrf';
 
 describe('EditCourtController', () => {
   const controller = new EditCourtController();
@@ -10,7 +13,12 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const csrfToken = 'aRandomT0ken4You';
+    const csrfTokenSecret = 'aRandomT0ken4You';
+    const csrfToken = new Tokens();
+
+    jest.mock('config');
+    config.get = jest.fn();
+    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfTokenSecret);
 
     req.params = { slug: slug };
     req.query = { name: name };
@@ -20,7 +28,7 @@ describe('EditCourtController', () => {
       isSuperAdmin: true,
       slug: slug,
       name: name,
-      csrfToken: csrfToken
+      csrfToken: csrfToken.create(csrfTokenSecret)
     };
     const res = mockResponse();
 
