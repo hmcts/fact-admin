@@ -14,9 +14,10 @@ export class PropertiesVolume {
       set(config, 'session.redis.key', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'session.secret', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'appInsights.instrumentationKey', get(config, 'secrets.fact.AppInsightsInstrumentationKey'));
+      set(config, 'csrf.tokenSecret', get(config, 'secrets.fact.csrf-token-secret'));
     } else {
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
-
+      set(config, 'csrf.tokenSecret', process.env.CSRF_TOKEN_SECRET);
     }
   }
 

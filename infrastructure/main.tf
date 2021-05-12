@@ -31,3 +31,8 @@ resource "azurerm_key_vault_secret" "redis_access_key" {
   value        = module.fact-admin-session-storage.access_key
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "csrf_token_secret" {
+  name = "csrf-token-secret"
+  key_vault_id = data.azurerm_key_vault.fact_key_vault.id
+}
