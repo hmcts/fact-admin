@@ -1,7 +1,8 @@
 export interface CourtPageData {
   isSuperAdmin: boolean,
   slug: string,
-  name: string
+  name: string,
+  csrfToken: string
 }
 
 export interface SelectItem {

@@ -10,6 +10,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
+    const csrfToken = 'aRandomT0ken4You';
 
     req.params = { slug: slug };
     req.query = { name: name };
@@ -18,7 +19,8 @@ describe('EditCourtController', () => {
     const expectedResults: CourtPageData = {
       isSuperAdmin: true,
       slug: slug,
-      name: name
+      name: name,
+      csrfToken: csrfToken
     };
     const res = mockResponse();
 
@@ -31,6 +33,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
+    const csrfToken = 'aRandomT0ken4You';
 
     req.params = { slug: slug };
     req.query = { name: name };
@@ -39,7 +42,8 @@ describe('EditCourtController', () => {
     const expectedResults: CourtPageData = {
       isSuperAdmin: false,
       slug: slug,
-      name: name
+      name: name,
+      csrfToken: csrfToken
     };
     const res = mockResponse();
 
