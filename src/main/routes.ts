@@ -16,6 +16,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
   app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);
   app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
+  app.get('/courts/:slug/contacts', app.locals.container.cradle.contactsController.get);
+  app.put('/courts/:slug/contacts', app.locals.container.cradle.contactsController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);

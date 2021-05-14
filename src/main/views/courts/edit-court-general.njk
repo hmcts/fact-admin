@@ -51,6 +51,9 @@
             {% set openingHoursHtml %}
               {% include "./tabs/openingHours.njk" %}
             {% endset -%}
+            {% set phoneNumbersHtml %}
+              {% include "./tabs/phoneNumbers.njk" %}
+            {% endset -%}
             {% set emailsHtml %}
               {% include "./tabs/emails.njk" %}
             {% endset -%}
@@ -69,6 +72,13 @@
                   id: "opening-hours",
                   panel: {
                     html: openingHoursHtml
+                  }
+                },
+                {
+                  label: "Phone Numbers",
+                  id: "phone-numbers",
+                  panel: {
+                    html: phoneNumbersHtml
                   }
                 },
                 {

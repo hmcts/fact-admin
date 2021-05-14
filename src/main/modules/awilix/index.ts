@@ -10,6 +10,7 @@ import {OpeningTimesController} from '../../app/controller/courts/OpeningTimesCo
 import {EditCourtController} from '../../app/controller/courts/EditCourtController';
 import {GeneralInfoController} from '../../app/controller/courts/GeneralInfoController';
 import {EmailsController} from '../../app/controller/courts/EmailsController';
+import {ContactsController} from '../../app/controller/courts/ContactsController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -32,6 +33,7 @@ export class Container {
       openingTimesController: asClass(OpeningTimesController),
       emailsController: asClass(EmailsController),
       generalInfoController: asClass(GeneralInfoController),
+      contactsController: asClass(ContactsController),
       errorController: asClass(ErrorController),
       exposeErrors: asValue(server.locals.env === 'development')
     });

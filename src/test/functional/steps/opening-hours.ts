@@ -2,18 +2,7 @@ import { Then, When } from 'cucumber';
 import { expect } from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
-
-async function clickButtonAndCheckFieldsetAdded(containerId: string, buttonName: string) {
-  const numFieldsets = await I.countElement(`${containerId} fieldset`);
-
-  const selector = `button[name="${buttonName}"]`;
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
-
-  const updatedNumFieldsets = await I.countElement(`${containerId} fieldset`);
-  expect(updatedNumFieldsets - numFieldsets).equal(1);
-}
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the opening hours tab', async () => {
   const selector = '#tab_opening-hours';
@@ -44,7 +33,7 @@ When('I enter new opening hours entry by selecting id {string} and adding text {
 });
 
 When('I click the Add button', async () => {
-  await clickButtonAndCheckFieldsetAdded('#openingTimesTab', 'addOpeningTime');
+  await FunctionalTestHelpers.clickButtonAndCheckFieldsetAdded('#openingTimesTab', 'addOpeningTime');
 });
 
 Then('I click save', async () => {

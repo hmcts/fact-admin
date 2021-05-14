@@ -1,0 +1,18 @@
+import * as I from './puppeteer.util';
+import {expect} from 'chai';
+
+export class FunctionalTestHelpers {
+
+  public static async clickButtonAndCheckFieldsetAdded(containerId: string, buttonName: string, fieldsetClass = '') {
+    const fieldsetSelector = `${containerId} fieldset${fieldsetClass}`;
+    const numFieldsets = await I.countElement(fieldsetSelector);
+
+    const selector = `button[name="${buttonName}"]`;
+    const elementExist = await I.checkElement(selector);
+    expect(elementExist).equal(true);
+    await I.click(selector);
+
+    const updatedNumFieldsets = await I.countElement(fieldsetSelector);
+    expect(updatedNumFieldsets - numFieldsets).equal(1);
+  }
+}
