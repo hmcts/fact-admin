@@ -1,7 +1,9 @@
-import { Logger } from '../../types/Logger';
+import {Logger} from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
 import {OpeningTime} from '../../types/OpeningTime';
 import {OpeningType} from '../../types/OpeningType';
+import {EmailType} from '../../types/EmailType';
+import {Email} from '../../types/Email';
 import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
 
 export class FactApi {
@@ -76,6 +78,34 @@ export class FactApi {
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/openingTimes`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getEmailTypes(): Promise<EmailType[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/emailTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });  }
+
+  public getEmails(slug: string): Promise<Email[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/emails`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });  }
+
+  public updateEmails(slug: string, body: Email[]): Promise<Email[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/emails`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

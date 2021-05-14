@@ -37,7 +37,7 @@ export class OpeningTimesController {
 
     const pageData: OpeningTimeData = {
       'opening_times': openingTimes,
-      openingTimeTypes: this.getOpeningTimeTypesForSelect(types),
+      openingTimeTypes: OpeningTimesController.getOpeningTimeTypesForSelect(types),
       errorMsg: error,
       updated: updated
     };
@@ -64,7 +64,7 @@ export class OpeningTimesController {
     }
   }
 
-  private getOpeningTimeTypesForSelect(standardTypes: OpeningType[]): SelectItem[] {
+  private static getOpeningTimeTypesForSelect(standardTypes: OpeningType[]): SelectItem[] {
     return standardTypes.map((ott: OpeningType) => (
       {value: ott.id, text: ott.type, selected: false}));
   }

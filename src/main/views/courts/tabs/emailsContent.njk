@@ -1,0 +1,159 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+<h2 class="govuk-heading-l">Emails</h2>
+
+{{ govukDetails({
+  summaryText: "Help with email addresses",
+  html: "Government standards are available for
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#emailaddresses'
+    target='_blank' rel='noopener noreferrer'>email addresses</a>"})
+}}
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Emails updated"
+  }) }}
+{% endif %}
+
+{% for email in emails %}
+
+  {% set descriptionError = false %}
+  {% if email.adminEmailTypeId === '' %}
+    {% set descriptionError = "{ text: 'Type is required' }" %}
+  {% endif %}
+
+  {% set emailsError = false %}
+  {% if email.address === '' %}
+   {% set emailsError = "{ text: 'Address is required.' }" %}
+  {% endif %}
+
+  {% call govukFieldset({}) %}
+
+  {{ govukSelect({
+    id: "emails-" + loop.index,
+    name: "emails[" + loop.index +"][adminEmailTypeId]",
+    label: {
+      text: "Type"
+    },
+    errorMessage: descriptionError,
+    items: emailTypes | selectFilter(email.adminEmailTypeId)
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Address"
+    },
+    classes: "govuk-input--width-20",
+    id: "address-" + loop.index,
+    name: "emails[" + loop.index +"][address]",
+    value: email.address,
+    errorMessage: emailsError
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "explanation-" + loop.index,
+    name: "emails[" + loop.index +"][explanation]",
+    value: email.explanation
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "explanation-cy-" + loop.index,
+    name: "emails[" + loop.index +"][explanationCy]",
+    value: email.explanationCy
+  }) }}
+
+  {{ govukButton({
+    text: "Remove",
+    name: "deleteEmails",
+    type: "button",
+    classes: "govuk-button--secondary deleteEmail"
+  }) }}
+
+  <hr/>
+
+  {% endcall %}
+
+  {% endfor %}
+
+<h3 id='newEmailsHeading' class="govuk-heading-s">Add New Email Address</h3>
+
+{% call govukFieldset({
+  attributes: { name: 'add-new-email-fieldset'}
+}) %}
+
+  {{ govukSelect({
+    id: "newEmailDescription",
+    name: "newEmailDescription",
+    label: {
+      text: "Type"
+    },
+    items: emailTypes | selectFilter('')
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Address"
+    },
+    classes: "govuk-input--width-20",
+    id: "newEmailAddress",
+    name: "newEmailAddress"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "newEmailExplanation",
+    name: "newEmailExplanation"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "newEmailExplanationCy",
+    name: "newEmailExplanationCy"
+  }) }}
+
+  {{ govukButton({
+    text: "Add",
+    name: "addEmail",
+    type: "button",
+    classes: "govuk-button--secondary"
+  }) }}
+
+  <hr/>
+
+{% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveEmail"
+}) }}

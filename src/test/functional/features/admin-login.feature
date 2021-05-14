@@ -5,6 +5,7 @@ Feature: Login/Logout
     And I am on FACT homepage
 
   Scenario Outline: Login Unsuccessful
+
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials "<username>" "<password>"
     And click the Sign In button

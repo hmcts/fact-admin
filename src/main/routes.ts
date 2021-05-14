@@ -1,5 +1,5 @@
-import { Application } from 'express';
-import { isSuperAdmin } from './modules/oidc';
+import {Application} from 'express';
+import {isSuperAdmin} from './modules/oidc';
 
 export default function(app: Application): void {
 
@@ -14,8 +14,9 @@ export default function(app: Application): void {
   app.put('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.put);
   app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
   app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
+  app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);
+  app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
-
 }
