@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import {AjaxErrorHandler} from './ajaxErrorHandler';
+
+const { initAll } = require('govuk-frontend');
 
 export class OpeningHoursController {
   private formId = '#openingTimesForm';
@@ -33,9 +36,10 @@ export class OpeningHoursController {
       method: 'get',
       success: (res) => {
         $(this.openingTimesContentId).html(res);
+        initAll({ scope: document.getElementById('openingTimesTab') });
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log('GET opening times failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET opening times failed.')
     });
   }
 
@@ -50,9 +54,10 @@ export class OpeningHoursController {
         data: $(e.target).serialize()
       }).done(res => {
         $(this.openingTimesContentId).html(res);
+        initAll({ scope: document.getElementById('openingTimesTab') });
         window.scrollTo(0, 0);
       }).fail(response =>
-        console.log('POST opening times failed.'));
+        AjaxErrorHandler.handleError(response, 'POST opening times failed.'));
     });
   }
 

@@ -1,0 +1,196 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
+<h2 class="govuk-heading-l">Phone Numbers</h2>
+
+{{ govukDetails({
+  summaryText: "Help with phone numbers",
+  html: "Government standards for telephone numbers are available
+  <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#telephone-numbers'
+    target='_blank' rel='noopener noreferrer'>here</a>"})
+}}
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Phone Numbers updated"
+  }) }}
+{% endif %}
+
+{% for contact in contacts %}
+
+  {% set descriptionError = false %}
+  {% if (contact.type_id === '') and (contact.fax === false) %}
+    {% set descriptionError = "{ text: 'Description is required' }" %}
+  {% endif %}
+
+  {% set numberError = false %}
+  {% if contact.number === '' %}
+   {% set numberError = "{ text: 'Number is required.' }" %}
+  {% endif %}
+
+  {% call govukFieldset({
+  }) %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukSelect({
+        id: "contactDescription-" + loop.index,
+        name: "contacts[" + loop.index +"][type_id]",
+        label: {
+          text: "Description"
+        },
+        errorMessage: descriptionError,
+        items: contactTypes | selectFilter(contact.type_id)
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-!-padding-bottom-6"></div>
+      {{ govukCheckboxes({
+        name: "contacts[" + loop.index + "][fax]",
+        items: [
+          {
+            value: true,
+            text: "Fax number",
+            checked: contact.fax
+          }
+        ]
+      }) }}
+    </div>
+  </div>
+
+  {{ govukInput({
+    label: {
+      text: "Number"
+    },
+    classes: "govuk-input--width-20",
+    id: "contactNumber-" + loop.index,
+    name: "contacts[" + loop.index +"][number]",
+    value: contact.number,
+    errorMessage: numberError
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "contactExplanation-" + loop.index,
+    name: "contacts[" + loop.index +"][explanation]",
+    value: contact.explanation
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "contactExplanationCy-" + loop.index,
+    name: "contacts[" + loop.index +"][explanation_cy]",
+    value: contact.explanation_cy
+  }) }}
+
+  {{ govukButton({
+    text: "Remove",
+    name: "deletePhoneNumber",
+    type: "button",
+    classes: "govuk-button--secondary deletePhoneNumber"
+  }) }}
+
+  <hr/>
+
+  {% endcall %}
+
+  {% endfor %}
+
+<h3 id='newPhoneNumberHeading' class="govuk-heading-s">Add New Phone Number</h3>
+
+{% call govukFieldset({
+  attributes: { name: 'add-new-phone-number-fieldset'}
+}) %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukSelect({
+        id: "newPhoneNumberDescription",
+        name: "newPhoneNumberDescription",
+        label: {
+          text: "Description"
+        },
+        items: contactTypes | selectFilter('')
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-!-padding-bottom-6"></div>
+      {{ govukCheckboxes({
+        name: "newPhoneNumberIsFax",
+        items: [
+          {
+            value: true,
+            text: "Fax number"
+          }
+        ]
+      }) }}
+    </div>
+  </div>
+
+  {{ govukInput({
+    label: {
+      text: "Number"
+    },
+    classes: "govuk-input--width-20",
+    id: "newPhoneNumber",
+    name: "newPhoneNumber"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation"
+    },
+    classes: "govuk-input--width-20",
+    id: "newPhoneNumberExplanation",
+    name: "newPhoneNumberExplanation"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Explanation (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "newPhoneNumberExplanationCy",
+    name: "newPhoneNumberExplanationCy"
+  }) }}
+
+  {{ govukButton({
+    text: "Add",
+    name: "addPhoneNumber",
+    type: "button",
+    classes: "govuk-button--secondary"
+  }) }}
+
+  <hr/>
+
+{% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "savePhoneNumbers"
+}) }}

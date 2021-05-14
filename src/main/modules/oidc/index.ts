@@ -64,11 +64,14 @@ export class OidcMiddleware {
 
         return next();
       }
-      res.redirect('/login');
+
+      if (req.xhr) {
+        res.status(302).send({ url: '/login' });
+      } else {
+        res.redirect('/login');
+      }
     });
-
   }
-
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
