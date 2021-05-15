@@ -7,8 +7,6 @@ import {OpeningType} from '../../../../../main/types/OpeningType';
 import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('OpeningTimesController', () => {
-  CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
-  CSRF.verify = jest.fn().mockReturnValue(true);
 
   let mockApi: {
     getOpeningTimes: () => Promise<OpeningTime[]>,
@@ -47,6 +45,9 @@ describe('OpeningTimesController', () => {
       updateOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
       getOpeningTimeTypes: async (): Promise<OpeningType[]> => openingTimeTypes
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get opening times view and render the page', async () => {

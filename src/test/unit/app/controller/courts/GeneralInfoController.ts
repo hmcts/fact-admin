@@ -5,8 +5,6 @@ import {GeneralInfoController} from '../../../../../main/app/controller/courts/G
 import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('GeneralInfoController', () => {
-  CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
-  CSRF.verify = jest.fn().mockReturnValue(true);
 
   let mockApi: {
     getGeneralInfo: () => Promise<CourtGeneralInfo>,
@@ -30,6 +28,9 @@ describe('GeneralInfoController', () => {
       getGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
       updateGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get court general info and render the page', async () => {
