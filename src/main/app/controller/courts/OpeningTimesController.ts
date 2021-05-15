@@ -4,8 +4,7 @@ import {OpeningTime, OpeningTimeData} from '../../../types/OpeningTime';
 import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {OpeningType} from '../../../types/OpeningType';
-import config from 'config';
-import Tokens from 'csrf';
+import {CSRF} from '../../../modules/csrf';
 
 @autobind
 export class OpeningTimesController {
@@ -46,13 +45,11 @@ export class OpeningTimesController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    const csrfTokenSecret: string = config.get('csrf.tokenSecret');
-
-    if(!new Tokens().verify(csrfTokenSecret, req.body._csrf)) {
-      return this.get(req, res, false, this.updateErrorMsg, []);
-    }
-
     const openingTimes = req.body.opening_times as OpeningTime[] ?? [];
+
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, this.updateErrorMsg, openingTimes);
+    }
 
     if (openingTimes.some(ot => !ot.type_id || ot.hours === '')) {
       // Retains the posted opening hours when errors exist

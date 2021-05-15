@@ -2,8 +2,7 @@ import {Response} from 'express';
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {CourtPageData} from '../../../types/CourtPageData';
-import config from 'config';
-import Tokens from 'csrf';
+import {CSRF} from '../../../modules/csrf';
 
 @autobind
 export class EditCourtController {
@@ -13,7 +12,7 @@ export class EditCourtController {
       isSuperAdmin: req.session.user.isSuperAdmin,
       slug: req.params.slug,
       name: req.query.name?.toString(),
-      csrfToken: new Tokens().create(config.get('csrf.tokenSecret'))
+      csrfToken: CSRF.create()
     };
 
     res.render('courts/edit-court-general', pageData);

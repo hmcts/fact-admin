@@ -4,16 +4,11 @@ import {OpeningTimesController} from '../../../../../main/app/controller/courts/
 import {OpeningTime, OpeningTimeData} from '../../../../../main/types/OpeningTime';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {OpeningType} from '../../../../../main/types/OpeningType';
-import {when} from 'jest-when';
-import config from 'config';
-import Tokens from 'csrf';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('OpeningTimesController', () => {
-
-  const csrfTokenSecret = 'csrfTokenTestSecret';
-  jest.mock('config');
-  config.get = jest.fn();
-  when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfTokenSecret);
+  CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+  CSRF.verify = jest.fn().mockReturnValue(true);
 
   let mockApi: {
     getOpeningTimes: () => Promise<OpeningTime[]>,
@@ -79,7 +74,7 @@ describe('OpeningTimesController', () => {
     const req = mockRequest();
     req.body = {
       'opening_times': openingTimes,
-      '_csrf': new Tokens().create(csrfTokenSecret)
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -102,7 +97,7 @@ describe('OpeningTimesController', () => {
 
     req.body = {
       'opening_times': postedOpeningTimes,
-      '_csrf': new Tokens().create(csrfTokenSecret)
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -120,19 +115,20 @@ describe('OpeningTimesController', () => {
     const req = mockRequest();
     const postedOpeningTimes: OpeningTime[] = [
       { 'type_id': 1, hours: '9am to 5pm' },
-      { 'type_id': null, hours: '9am to 1pm' }
+      { 'type_id': 2, hours: '9am to 1pm' }
     ];
+    (CSRF.verify as jest.Mock).mockReturnValue(false);
 
     req.body = {
       'opening_times': postedOpeningTimes,
-      '_csrf': new Tokens().create('invalidCSRF')
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.updateOpeningTimes = jest.fn().mockReturnValue(res);
 
     const expectedResults: OpeningTimeData = {
-      'opening_times': [],
+      'opening_times': postedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
       errorMsg: 'A problem occurred when saving the opening times.'
