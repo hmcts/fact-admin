@@ -17,7 +17,7 @@ export class PropertiesVolume {
       set(config, 'csrf.tokenSecret', get(config, 'secrets.fact.csrf-token-secret'));
     } else {
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
-      set(config, 'csrf.tokenSecret', process.env.CSRF_TOKEN_SECRET);
+      this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
     }
   }
 
