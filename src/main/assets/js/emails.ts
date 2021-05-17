@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {AjaxErrorHandler} from './ajaxErrorHandler';
 
 export class EmailsController {
   private formId = '#emailsForm';
@@ -38,7 +39,7 @@ export class EmailsController {
         $(this.emailContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log('GET emails failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET emails failed.')
     });
   }
 
@@ -55,7 +56,7 @@ export class EmailsController {
         $(this.emailContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response =>
-        console.log('PUT emails failed.'));
+        AjaxErrorHandler.handleError(response, 'PUT emails failed.'));
     });
   }
 

@@ -5,6 +5,8 @@ import {OpeningType} from '../../types/OpeningType';
 import {EmailType} from '../../types/EmailType';
 import {Email} from '../../types/Email';
 import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
+import {ContactType} from '../../types/ContactType';
+import {Contact} from '../../types/Contact';
 
 export class FactApi {
 
@@ -106,6 +108,36 @@ export class FactApi {
   public updateEmails(slug: string, body: Email[]): Promise<Email[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/emails`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getContactTypes(): Promise<ContactType[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/contactTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getContacts(slug: string): Promise<Contact[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/contacts`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateContacts(slug: string, body: Contact[]): Promise<Contact[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/contacts`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

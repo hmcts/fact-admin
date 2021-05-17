@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import tinymce from 'tinymce';
+import {AjaxErrorHandler} from './ajaxErrorHandler';
 const { initAll } = require('govuk-frontend');
 
 export class CourtGeneralInfoController {
@@ -49,7 +50,7 @@ export class CourtGeneralInfoController {
         await this.updateContent(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log('GET general info failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET general info failed.')
     });
   }
 
@@ -68,7 +69,7 @@ export class CourtGeneralInfoController {
       }).done(async res => {
         await this.updateContent(res);
       }).fail(response =>
-        console.log('POST general info failed.'));
+        AjaxErrorHandler.handleError(response, 'POST general info failed.'));
     });
   }
 }
