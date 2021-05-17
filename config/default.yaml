@@ -22,3 +22,5 @@ session:
     key:
 appInsights:
   instrumentationKey:
+csrf:
+  tokenSecret:
