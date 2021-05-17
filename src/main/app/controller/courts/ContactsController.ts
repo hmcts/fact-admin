@@ -4,6 +4,7 @@ import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {Contact, ContactPageData} from '../../../types/Contact';
 import {ContactType} from '../../../types/ContactType';
+import {CSRF} from '../../../modules/csrf';
 
 @autobind
 export class ContactsController {
@@ -46,6 +47,10 @@ export class ContactsController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const contacts = req.body.contacts as Contact[] ?? [];
     contacts.forEach(c => c.fax = c.fax ?? false);
+
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, this.updateErrorMsg, contacts);
+    }
 
     if (contacts.some(ot => (!ot.type_id && !ot.fax) || ot.number.trim() === '')) {
       return this.get(req, res, false, this.emptyTypeOrNumberErrorMsg, contacts);

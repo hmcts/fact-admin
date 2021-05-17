@@ -4,6 +4,7 @@ import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {Contact, ContactPageData} from '../../../../../main/types/Contact';
 import {ContactType} from '../../../../../main/types/ContactType';
 import {ContactsController} from '../../../../../main/app/controller/courts/ContactsController';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('ContactsController', () => {
 
@@ -38,6 +39,9 @@ describe('ContactsController', () => {
       updateContacts: async (): Promise<Contact[]> => contacts,
       getContactTypes: async (): Promise<ContactType[]> => contactTypes
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get phone numbers view and render the page', async () => {
@@ -64,7 +68,8 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      contacts: contacts
+      'contacts': contacts,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -88,7 +93,8 @@ describe('ContactsController', () => {
     ];
 
     req.body = {
-      contacts: postedContacts
+      'contacts': postedContacts,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -110,7 +116,8 @@ describe('ContactsController', () => {
     ];
 
     req.body = {
-      contacts: postedContacts
+      'contacts': postedContacts,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -126,6 +133,35 @@ describe('ContactsController', () => {
     req.body.contacts[1].number = '';
     await controller.put(req, res);
     expect(mockApi.updateContacts).not.toBeCalled();
+  });
+
+  test('Should not post contacts if CSRF token is invalid', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    const postedContacts: Contact[] = [
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh' },
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh' }
+    ];
+
+    req.params = {
+      slug: 'royal-courts-of-justice'
+    };
+    req.body = {
+      'contacts': postedContacts,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    (CSRF.verify as jest.Mock).mockReturnValue(false);
+
+    await controller.put(req, res);
+
+    const expectedResults: ContactPageData = {
+      contacts: postedContacts,
+      contactTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: controller.updateErrorMsg
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
 
   test('Should handle errors when getting contacts data from API', async () => {
@@ -180,7 +216,8 @@ describe('ContactsController', () => {
       slug: 'royal-courts-of-justice'
     };
     req.body = {
-      contacts: postedContacts
+      'contacts': postedContacts,
+      '_csrf': CSRF.create()
     };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.updateContacts = jest.fn().mockRejectedValue(new Error('Mock API Error'));

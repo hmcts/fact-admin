@@ -2,6 +2,7 @@ import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../../../main/types/CourtGeneralInfo';
 import {GeneralInfoController} from '../../../../../main/app/controller/courts/GeneralInfoController';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('GeneralInfoController', () => {
 
@@ -27,6 +28,9 @@ describe('GeneralInfoController', () => {
       getGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
       updateGeneralInfo: async (): Promise<CourtGeneralInfo> => courtGeneralInfo,
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get court general info and render the page', async () => {
@@ -53,13 +57,44 @@ describe('GeneralInfoController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
-    req.body = courtGeneralInfo;
+    req.body = {
+      ...courtGeneralInfo,
+      _csrf: CSRF.create()
+    };
+
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.updateGeneralInfo = jest.fn().mockResolvedValue(res);
 
     await controller.put(req, res);
 
-    expect(mockApi.updateGeneralInfo).toBeCalledWith(slug, courtGeneralInfo);
+    expect(mockApi.updateGeneralInfo).toBeCalledWith(slug, {...courtGeneralInfo, _csrf: CSRF.create()});
+  });
+
+  test('Should not put court general info if CSRF token is invalid', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = {
+      ...courtGeneralInfo,
+      _csrf: CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockResolvedValue(res);
+    (CSRF.verify as jest.Mock).mockReturnValue(false);
+
+    const expectedResults: CourtGeneralInfoData = {
+      generalInfo: {
+        ...courtGeneralInfo,
+        _csrf: CSRF.create()
+      },
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false
+    } as CourtGeneralInfoData;
+    await controller.put(req, res);
+
+    //expect(mockApi.updateGeneralInfo).not.toBeCalled();
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResults);
   });
 
   test('Should handle errors when getting court general info from API', async () => {

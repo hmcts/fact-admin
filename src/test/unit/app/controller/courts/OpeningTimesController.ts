@@ -4,6 +4,7 @@ import {OpeningTimesController} from '../../../../../main/app/controller/courts/
 import {OpeningTime, OpeningTimeData} from '../../../../../main/types/OpeningTime';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {OpeningType} from '../../../../../main/types/OpeningType';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('OpeningTimesController', () => {
 
@@ -44,6 +45,9 @@ describe('OpeningTimesController', () => {
       updateOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
       getOpeningTimeTypes: async (): Promise<OpeningType[]> => openingTimeTypes
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get opening times view and render the page', async () => {
@@ -70,7 +74,8 @@ describe('OpeningTimesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'opening_times': openingTimes
+      'opening_times': openingTimes,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -92,7 +97,8 @@ describe('OpeningTimesController', () => {
     ];
 
     req.body = {
-      'opening_times': postedOpeningTimes
+      'opening_times': postedOpeningTimes,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -102,6 +108,38 @@ describe('OpeningTimesController', () => {
 
     // Should not call API if opening times data is incomplete
     expect(mockApi.updateOpeningTimes).not.toBeCalled();
+  });
+
+  test('Should not post opening times if CSRF token is invalid', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedOpeningTimes: OpeningTime[] = [
+      { 'type_id': 1, hours: '9am to 5pm' },
+      { 'type_id': 2, hours: '9am to 1pm' }
+    ];
+    (CSRF.verify as jest.Mock).mockReturnValue(false);
+
+    req.body = {
+      'opening_times': postedOpeningTimes,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockReturnValue(res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': postedOpeningTimes,
+      openingTimeTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: 'A problem occurred when saving the opening times.'
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API if opening times data is incomplete
+    expect(mockApi.updateOpeningTimes).not.toBeCalled();
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
 
   test('Should handle errors when getting opening time data from API', async () => {

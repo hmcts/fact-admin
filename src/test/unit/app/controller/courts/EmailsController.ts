@@ -4,6 +4,7 @@ import {EmailType} from '../../../../../main/types/EmailType';
 import {Email, EmailData} from '../../../../../main/types/Email';
 import {EmailsController} from '../../../../../main/app/controller/courts/EmailsController';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 describe('EmailsController', () => {
 
@@ -64,6 +65,9 @@ describe('EmailsController', () => {
       updateEmails: async (): Promise<Email[]> => emails,
       getEmailTypes: async (): Promise<EmailType[]> => emailTypes
     };
+
+    CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
+    CSRF.verify = jest.fn().mockReturnValue(true);
   });
 
   test('Should get emails view and render the page', async () => {
@@ -90,7 +94,8 @@ describe('EmailsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      emails: emails
+      'emails': emails,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -112,7 +117,8 @@ describe('EmailsController', () => {
     ];
 
     req.body = {
-      'emails': postedEmails
+      'emails': postedEmails,
+      '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -124,13 +130,40 @@ describe('EmailsController', () => {
     expect(mockApi.updateEmails).not.toBeCalled();
   });
 
+  test('Should not post emails if CSRF token is invalid', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    req.params = {
+      slug: 'plymouth-combined-court'
+    };
+    req.body = {
+      'emails': emailsInvalidSyntax,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateEmails = jest.fn().mockReturnValue(res);
+    (CSRF.verify as jest.Mock).mockReturnValue(false);
+
+    await controller.put(req, res);
+
+    const expectedResults: EmailData = {
+      emails: emailsInvalidSyntax,
+      emailTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: 'A problem occurred when saving the emails.'
+    };
+    expect(mockApi.updateEmails).not.toBeCalled();
+    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+  });
+
   test('Should handle email address error invalid syntax when getting email data from API', async () => {
     const req = mockRequest();
     req.params = {
       slug: 'plymouth-combined-court'
     };
     req.body = {
-      'emails': emailsInvalidSyntax
+      'emails': emailsInvalidSyntax,
+      '_csrf': CSRF.create()
     };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));

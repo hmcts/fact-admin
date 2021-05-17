@@ -5,6 +5,7 @@ import {SelectItem} from '../../../types/CourtPageData';
 import {Email, EmailData} from '../../../types/Email';
 import {EmailType} from '../../../types/EmailType';
 import {validateEmail} from '../../../utils/validation';
+import {CSRF} from '../../../modules/csrf';
 
 @autobind
 export class EmailsController {
@@ -46,6 +47,10 @@ export class EmailsController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const emails = req.body.emails as Email[] ?? [];
+
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, this.updateErrorMsg, emails);
+    }
 
     if (emails.some(ot => !ot.adminEmailTypeId || ot.address === '')) {
       // Retains the posted email data when errors exist

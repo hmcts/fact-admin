@@ -2,6 +2,7 @@ import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../types/CourtGeneralInfo';
+import {CSRF} from '../../../modules/csrf';
 
 @autobind
 export class GeneralInfoController {
@@ -37,8 +38,12 @@ export class GeneralInfoController {
     const generalInfo = req.body as CourtGeneralInfo;
     const slug: string = req.params.slug as string;
 
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, generalInfo);
+    }
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
+
 
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => this.get(req, res, true, '', value))
