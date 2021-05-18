@@ -5,7 +5,7 @@ import {OpeningType} from '../../types/OpeningType';
 import {EmailType} from '../../types/EmailType';
 import {Email} from '../../types/Email';
 import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
-import {CourtType} from "../../types/CourtType";
+import {CourtType} from '../../types/CourtType';
 import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
 

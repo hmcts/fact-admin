@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import tinymce from "tinymce";
+import tinymce from 'tinymce';
 const { initAll } = require('govuk-frontend');
 
 export class CourtTypesController {

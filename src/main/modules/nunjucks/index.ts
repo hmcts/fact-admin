@@ -32,7 +32,7 @@ export class Nunjucks {
 
     env.addFilter('setAttribute', function(dictionary , key , value){
       dictionary[key] = value;
-      return dictionary
+      return dictionary;
     });
 
     env.addFilter('valid', function(string){

@@ -1,7 +1,7 @@
-import {mockRequest} from "../../../utils/mockRequest";
-import {mockResponse} from "../../../utils/mockResponse";
+import {mockRequest} from '../../../utils/mockRequest';
+import {mockResponse} from '../../../utils/mockResponse';
 import {CourtTypesController} from '../../../../../main/app/controller/courts/CourtTypesController';
-import {CourtType, CourtTypeItem, CourtTypePageData} from "../../../../../main/types/CourtType";
+import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../../../main/types/CourtType';
 
 
 describe ( 'CourtTypesController', () =>{
@@ -14,28 +14,28 @@ describe ( 'CourtTypesController', () =>{
 
   const courtTypes: CourtType[] = [
     { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:"County Court", code: 456},
-    { id: 3, name:"Crown Court", code: 789},
-    { id: 4, name:"Family Court", code: null}
+    { id: 2, name:'County Court', code: 456},
+    { id: 3, name:'Crown Court', code: 789},
+    { id: 4, name:'Family Court', code: null}
   ];
 
   const courtTypeItems: CourtTypeItem[] = [
     {value:"1,Magistrates' Court", text:"Magistrates' Court", checked: true, code:123},
-    {value:"2,County Court", text:"County Court", checked: true, code:456},
-    {value:"3,Crown Court", text:"Crown Court", checked:true, code:789},
-    {value:"4,Family Court", text:"Family Court", checked:true, code:null}
+    {value:'2,County Court', text:'County Court', checked: true, code:456},
+    {value:'3,Crown Court', text:'Crown Court', checked:true, code:789},
+    {value:'4,Family Court', text:'Family Court', checked:true, code:null}
 
   ];
 
   const courtCourtTypes: CourtType[] =[
     { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:"County Court", code: 456},
-    { id: 3, name:"Crown Court", code: 789},
-    { id: 4, name:"Family Court", code: null}
+    { id: 2, name:'County Court', code: 456},
+    { id: 3, name:'Crown Court', code: 789},
+    { id: 4, name:'Family Court', code: null}
   ];
 
 
-const controller = new CourtTypesController();
+  const controller = new CourtTypesController();
 
   beforeEach(() => {
     mockApi = {
@@ -70,12 +70,12 @@ const controller = new CourtTypesController();
     const res = mockResponse();
     const req = mockRequest();
 
-    const types : string[]= [
+    const types: string[]= [
       "1,Magistrates' Court",
-      "2,County Court",
-      "3,Crown Court",
-      "4,Family Court"
-    ]
+      '2,County Court',
+      '3,Crown Court',
+      '4,Family Court'
+    ];
 
     req.body = {
       'types': types,
@@ -118,12 +118,12 @@ const controller = new CourtTypesController();
     const res = mockResponse();
     const req = mockRequest();
 
-    const types : string[]= [
+    const types: string[]= [
       "1,Magistrates' Court",
-      "2,County Court",
-      "3,Crown  Court"
+      '2,County Court',
+      '3,Crown  Court'
 
-    ]
+    ];
     req.body = {
       'types': types,
       'magistratesCourtCode' : '',
@@ -186,4 +186,4 @@ const controller = new CourtTypesController();
   });
 
 
-})
+});

@@ -1,14 +1,13 @@
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {CourtType, CourtTypeItem, CourtTypePageData} from "../../../types/CourtType";
-
+import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtType';
 
 @autobind
 export class CourtTypesController {
 
 
-  emptyCourtCodeErrorMsg = "Court code is required and must be numeric.";
+  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required.';
@@ -49,25 +48,25 @@ export class CourtTypesController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
-    let courtCourtTypes : CourtType[] = null;
+    let courtCourtTypes: CourtType[] = null;
 
     if (req.body.types) {
 
-    courtCourtTypes = this.mapBodyToCourtType(req.body);
+      courtCourtTypes = this.mapBodyToCourtType(req.body);
 
-    if(courtCourtTypes.find( c => (c.name ==="Magistrates' Court" && !c.code ) || (c.name ==="Magistrates' Court" && isNaN(c.code))
-      || (c.name==="County Court" && !c.code) || (c.name ==="County Court" && isNaN(c.code))
-      || (c.name === "Crown Court" && !c.code)  || (c.name ==="Crown Court" && isNaN(c.code)))){
+      if(courtCourtTypes.find( c => (c.name ==="Magistrates' Court" && !c.code ) || (c.name ==="Magistrates' Court" && isNaN(c.code))
+      || (c.name==='County Court' && !c.code) || (c.name ==='County Court' && isNaN(c.code))
+      || (c.name === 'Crown Court' && !c.code)  || (c.name ==='Crown Court' && isNaN(c.code)))){
 
-      return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
-    }
+        return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
+      }
 
-    else
-    {
-      await req.scope.cradle.api.updateCourtCourtTypes(req.params.slug, courtCourtTypes)
-        .then((value: CourtType[]) => this.get(req, res, true, '', value))
-        .catch(() => this.get(req, res, false, this.updateErrorMsg, courtCourtTypes));
-    }
+      else
+      {
+        await req.scope.cradle.api.updateCourtCourtTypes(req.params.slug, courtCourtTypes)
+          .then((value: CourtType[]) => this.get(req, res, true, '', value))
+          .catch(() => this.get(req, res, false, this.updateErrorMsg, courtCourtTypes));
+      }
     }
     else
     {
@@ -96,7 +95,7 @@ export class CourtTypesController {
 
   private mapBodyToCourtType(body: any): CourtType[] {
 
-    const courtTypes : string[] = Array.isArray(body.types) ? body.types : [body.types];
+    const courtTypes: string[] = Array.isArray(body.types) ? body.types : [body.types];
 
     const courtTypeItems = courtTypes.map((ct) => (
       {
@@ -112,12 +111,12 @@ export class CourtTypesController {
 
 
   private isChecked(courtType: CourtType, courtCourtTypes: CourtType[]) {
-    return (courtCourtTypes.some(e => e.id === courtType.id))
+    return (courtCourtTypes.some(e => e.id === courtType.id));
   }
 
   private getCode(id: number, courtCourtTypes: CourtType[]) {
 
-    return (courtCourtTypes.find(e => e.id === id) ? courtCourtTypes.find(e => e.id === id).code : null)
+    return (courtCourtTypes.find(e => e.id === id) ? courtCourtTypes.find(e => e.id === id).code : null);
 
   }
 
@@ -129,10 +128,10 @@ export class CourtTypesController {
       case "Magistrates' Court":
         return regExp.test(magistratesCourtCode) ? null : parseInt(magistratesCourtCode);
 
-      case "County Court":
+      case 'County Court':
         return regExp.test(countyCourtCode) ? null : parseInt(countyCourtCode) ;
 
-      case "Crown Court":
+      case 'Crown Court':
         return regExp.test(crownCourtCode) ? null : parseInt(crownCourtCode);
 
       default:

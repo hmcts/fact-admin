@@ -11,7 +11,7 @@ import {OpeningTimesController} from '../../app/controller/courts/OpeningTimesCo
 import {GeneralInfoController} from '../../app/controller/courts/GeneralInfoController';
 import {EmailsController} from '../../app/controller/courts/EmailsController';
 import {ContactsController} from '../../app/controller/courts/ContactsController';
-import {CourtTypesController} from "../../app/controller/courts/CourtTypesController";
+import {CourtTypesController} from '../../app/controller/courts/CourtTypesController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');

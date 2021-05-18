@@ -1,6 +1,6 @@
-import {Then, When} from "cucumber";
-import * as I from "../utlis/puppeteer.util";
-import {expect} from "chai";
+import {Then, When} from 'cucumber';
+import * as I from '../utlis/puppeteer.util';
+import {expect} from 'chai';
 
 
 When('I click the types tab', async () => {
