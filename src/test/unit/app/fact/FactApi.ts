@@ -142,6 +142,7 @@ describe('FactApi', () => {
     const mockAxios = { get: async () => results } as any;
     const api = new FactApi(mockAxios, mockLogger);
 
+
     await expect(api.getOpeningTimes('London')).resolves.toEqual(results.data);
   });
 
@@ -377,4 +378,39 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.updateEmails('No Slug', [])).rejects.toEqual(mockError);
   });
+
+
+  test('Should return results from getCourtTypes request', async () => {
+  const results = {
+    data: [
+      { id: 1, name:"Magistrates' Court", code: 123},
+      { id: 2, name:"Tribunal Court", code: 456}
+
+    ]
+  };
+
+  const mockAxios = { get: async () => results } as any;
+  const mockLogger = {} as any;
+
+  const api = new FactApi(mockAxios, mockLogger);
+
+  await expect(api.getCourtTypes()).resolves.toEqual(results.data);
+ });
+
+  test('Should return results from getCourtCourtTypes request', async () => {
+  const results = {
+    data: [
+      { id: 1, name:"Magistrates' Court", code: 123},
+      { id: 2, name:"Tribunal Court", code: 456}
+
+    ]
+  };
+
+  const mockAxios = { get: async () => results } as any;
+  const mockLogger = {} as any;
+
+  const api = new FactApi(mockAxios, mockLogger);
+
+  await expect(api.getCourtCourtTypes('London')).resolves.toEqual(results.data);
+ });
 });
