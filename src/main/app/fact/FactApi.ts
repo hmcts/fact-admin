@@ -64,7 +64,7 @@ export class FactApi {
       .get(`${this.adminBaseUrl}/openingTypes`)
       .then(results => results.data)
       .catch(err => {
-        this.errorHandler([]);
+        this.logError(err);
         return Promise.reject(err);
       });  }
 

@@ -2,6 +2,7 @@ import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {CourtTypesController} from '../../../../../main/app/controller/courts/CourtTypesController';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../../../main/types/CourtType';
+import {CSRF} from '../../../../../main/modules/csrf';
 
 
 describe ( 'CourtTypesController', () =>{
@@ -20,10 +21,10 @@ describe ( 'CourtTypesController', () =>{
   ];
 
   const courtTypeItems: CourtTypeItem[] = [
-    {value:"1,Magistrates' Court", text:"Magistrates' Court", checked: true, code:123},
-    {value:'2,County Court', text:'County Court', checked: true, code:456},
-    {value:'3,Crown Court', text:'Crown Court', checked:true, code:789},
-    {value:'4,Family Court', text:'Family Court', checked:true, code:null}
+    {value:"1_&_Magistrates' Court", text:"Magistrates' Court", checked: true, code:123},
+    {value:'2_&_County Court', text:'County Court', checked: true, code:456},
+    {value:'3_&_Crown Court', text:'Crown Court', checked:true, code:789},
+    {value:'4_&_Family Court', text:'Family Court', checked:true, code:null}
 
   ];
 
@@ -71,17 +72,18 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     const types: string[]= [
-      "1,Magistrates' Court",
-      '2,County Court',
-      '3,Crown Court',
-      '4,Family Court'
+      "1_&_Magistrates' Court",
+      '2_&_County Court',
+      '3_&_Crown Court',
+      '4_&_Family Court'
     ];
 
     req.body = {
       'types': types,
       'magistratesCourtCode' : '123',
       'countyCourtCode' : '456',
-      'crownCourtCode': '789'
+      'crownCourtCode': '789',
+      '_csrf': CSRF.create()
 
     };
     req.params = { slug: slug };
@@ -109,7 +111,7 @@ describe ( 'CourtTypesController', () =>{
 
     await controller.put(req, res);
 
-    // Should not call API if opening times data is incomplete
+    // Should not call API if court types data is incomplete
     expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
   });
 
@@ -119,9 +121,9 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     const types: string[]= [
-      "1,Magistrates' Court",
-      '2,County Court',
-      '3,Crown  Court'
+      "1_&_Magistrates' Court",
+      '2_&_County Court',
+      '3_&_Crown  Court'
 
     ];
     req.body = {
@@ -138,7 +140,7 @@ describe ( 'CourtTypesController', () =>{
 
     await controller.put(req, res);
 
-    // Should not call API if opening times data is incomplete
+    // Should not call API if court types data is incomplete
     expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
   });
 

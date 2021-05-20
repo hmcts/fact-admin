@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import tinymce from 'tinymce';
+import {AjaxErrorHandler} from './ajaxErrorHandler';
+
 const { initAll } = require('govuk-frontend');
 
 export class CourtTypesController {
@@ -26,19 +27,8 @@ export class CourtTypesController {
   private async updateContent(content: any): Promise<void> {
     $(this.courtTypesContentId).html(content);
 
-    tinymce.remove();
-    await tinymce.init({
-      selector: '.rich-editor',
-      plugins: 'autolink link paste',
-      menubar: '',
-      toolbar: 'link bold italic underline',
-      'paste_as_text': true,
-      statusbar: false,
-    });
-
     initAll({ scope: document.getElementById('courtTypesTab') });
 
-    window.scrollTo(0, 0);
   }
 
 
@@ -52,7 +42,7 @@ export class CourtTypesController {
         await this.updateContent(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        console.log('GET court types failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET court types failed.')
     });
 
   }
@@ -70,14 +60,9 @@ export class CourtTypesController {
         await this.updateContent(res);
         window.scrollTo(0, 0);
       }).fail(response =>
-        console.log('POST opening times failed.'));
+        AjaxErrorHandler.handleError(response, 'POST court types failed.'));
     });
   }
-
-
-
-
-
 
 
 }

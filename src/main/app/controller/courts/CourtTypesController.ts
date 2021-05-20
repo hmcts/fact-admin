@@ -2,6 +2,8 @@ import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtType';
+import {CSRF} from '../../../modules/csrf';
+
 
 @autobind
 export class CourtTypesController {
@@ -50,13 +52,17 @@ export class CourtTypesController {
 
     let courtCourtTypes: CourtType[] = null;
 
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, this.updateErrorMsg, courtCourtTypes);
+    }
+
     if (req.body.types) {
 
       courtCourtTypes = this.mapBodyToCourtType(req.body);
 
-      if(courtCourtTypes.find( c => (c.name ==="Magistrates' Court" && !c.code ) || (c.name ==="Magistrates' Court" && isNaN(c.code))
-      || (c.name==='County Court' && !c.code) || (c.name ==='County Court' && isNaN(c.code))
-      || (c.name === 'Crown Court' && !c.code)  || (c.name ==='Crown Court' && isNaN(c.code)))){
+      if(courtCourtTypes.find( c => (c.name ==="Magistrates' Court" && this.CheckCodeIsNullOrNan(c.code) )
+      || (c.name==='County Court' && this.CheckCodeIsNullOrNan(c.code))
+      || (c.name === 'Crown Court' && this.CheckCodeIsNullOrNan(c.code)) )){
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
       }
@@ -80,7 +86,7 @@ export class CourtTypesController {
     if( courtCourtTypes && allCourtTypes) {
       const courtTypeItems = allCourtTypes.map((ott: CourtType) => (
         {
-          value: ott.id + ',' + ott.name,
+          value: ott.id + '_&_' + ott.name,
           text: ott.name,
           checked: this.isChecked(ott, courtCourtTypes),
           code: this.getCode(ott.id, courtCourtTypes)
@@ -99,9 +105,9 @@ export class CourtTypesController {
 
     const courtTypeItems = courtTypes.map((ct) => (
       {
-        id: parseInt(ct.split(',',2)[0]),
-        name: ct.split(',',2)[1],
-        code:this.setCode(ct.split(',',2)[1], body.magistratesCourtCode, body.countyCourtCode, body.crownCourtCode),
+        id: parseInt(ct.split('_&_',2)[0]),
+        name: ct.split('_&_',2)[1],
+        code:this.setCode(ct.split('_&_',2)[1], body.magistratesCourtCode, body.countyCourtCode, body.crownCourtCode),
 
       }));
 
@@ -122,21 +128,26 @@ export class CourtTypesController {
 
   private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
 
-    const regExp = /[a-zA-Z]/g;
+    const regExp = /^[0-9]*$/;
 
     switch (name) {
       case "Magistrates' Court":
-        return regExp.test(magistratesCourtCode) ? null : parseInt(magistratesCourtCode);
+        return regExp.test(magistratesCourtCode) ? parseInt(magistratesCourtCode) : null ;
 
       case 'County Court':
-        return regExp.test(countyCourtCode) ? null : parseInt(countyCourtCode) ;
+        return regExp.test(countyCourtCode) ? parseInt(countyCourtCode): null ;
 
       case 'Crown Court':
-        return regExp.test(crownCourtCode) ? null : parseInt(crownCourtCode);
+        return regExp.test(crownCourtCode) ? parseInt(crownCourtCode) : null;
 
       default:
         return null;
     }
+  }
+
+  private CheckCodeIsNullOrNan(code: number){
+
+    return !code || isNaN(code);
   }
 }
 

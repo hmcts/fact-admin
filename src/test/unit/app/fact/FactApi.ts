@@ -397,6 +397,32 @@ describe('FactApi', () => {
     await expect(api.getCourtTypes()).resolves.toEqual(results.data);
   });
 
+  test('Should return results and log error from getCourtTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtTypes()).rejects.toEqual(mockError);
+  });
+
+  test('Should log error and reject promise for failed getCourtTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtTypes()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
   test('Should return results from getCourtCourtTypes request', async () => {
     const results = {
       data: [
@@ -412,5 +438,45 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.getCourtCourtTypes('London')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results and log error from getCourtCourtTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtCourtTypes('No slug')).rejects.toEqual(mockError);
+  });
+
+  test('Should log error and reject promise for failed getCourtCourtTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtCourtTypes('No Slug')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+
+  test('Should return results and log error from updateCourtCourtTypes request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtCourtTypes('No Slug', [])).rejects.toEqual(mockError);
   });
 });

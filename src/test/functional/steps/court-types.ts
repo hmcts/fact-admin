@@ -42,11 +42,10 @@ Then('a green update message is displayed showing Court Types updated', async ()
 
 When ('I uncheck a court type', async() =>{
   const selector = '#court_types-3';
-  const elementExist = await I.checkElement('#court_types-3');
-  expect(elementExist).equal(true);
-
   await I.click(selector);
 
+  const checked = await I.isElementChecked('#court_types-3');
+  expect(checked).equal(false);
 });
 
 Then('a court types error message is displayed', async () => {

@@ -1,9 +1,6 @@
 {% from "macros/csrf.njk" import csrfProtection %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
 
 <div id='courtTypesTab'>
-  <input id='slug' type='hidden' value='{{court.slug}}'></input>
   <form id="courtTypesForm" method="POST" action="/courts/{{slug}}/court-types">
     {{ csrfProtection(csrfToken) }}
  <div id='courtTypesContent'></div>
