@@ -64,7 +64,7 @@
     "jest-when": "^3.3.1",
     "jquery": "^3.5.1",
     "json2csv": "^5.0.5",
-    "jwt-decode": "^3.0.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "nunjucks": "^3.2.2",
     "redis": "^3.1.2",
