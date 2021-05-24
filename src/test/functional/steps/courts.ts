@@ -9,8 +9,7 @@ Then('I can view the courts or tribunals in a list format', async () => {
 });
 
 Given('they are in alphabetical order', async () => {
-  const elements = await I.getElements('#courts > tbody > tr > td');
-  const courts = await I.getTextFromList(elements);
+  const courts = await I.getTextFromList('#courts > tbody > tr > td:first-child');
   expect(courts).not.equal([]);
   expect(courts).equals(courts.sort());
 });
