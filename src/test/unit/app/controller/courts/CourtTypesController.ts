@@ -12,26 +12,29 @@ describe ( 'CourtTypesController', () =>{
     getCourtCourtTypes: () => Promise<CourtType[]>,
     updateCourtCourtTypes: () => Promise<CourtType[]> };
 
+  const magistrateCourtTypeId = 11416;
+  const countyCourtTypeId = 11419;
+  const crownCourtTypeId = 11420;
 
   const courtTypes: CourtType[] = [
-    { id: 11416, name:"Magistrates' Court", code: 123},
-    { id: 11419, name:'County Court', code: 456},
-    { id: 11420, name:'Crown Court', code: 789},
+    { id: magistrateCourtTypeId, name:"Magistrates' Court", code: 123},
+    { id: countyCourtTypeId, name:'County Court', code: 456},
+    { id: crownCourtTypeId, name:'Crown Court', code: 789},
     { id: 4, name:'Family Court', code: null}
   ];
 
   const courtTypeItems: CourtTypeItem[] = [
-    {value:11416, text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: true, code:123},
-    {value:11419, text:'County Court', magistrate:false, county:true, crown:false, checked: true, code:456},
-    {value:11420, text:'Crown Court',magistrate:false, county:false, crown:true, checked:true, code:789},
+    {value:magistrateCourtTypeId, text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: true, code:123},
+    {value:countyCourtTypeId, text:'County Court', magistrate:false, county:true, crown:false, checked: true, code:456},
+    {value:crownCourtTypeId, text:'Crown Court',magistrate:false, county:false, crown:true, checked:true, code:789},
     {value:4, text:'Family Court', magistrate:false, county:false, crown:false, checked:true, code:null}
 
   ];
 
   const courtCourtTypes: CourtType[] =[
-    { id: 11416, name:'11416', code: 123},
-    { id: 11419, name:'11419', code: 456},
-    { id: 11420, name:'11420', code: 789},
+    { id: magistrateCourtTypeId, name:'11416', code: 123},
+    { id: countyCourtTypeId, name:'11419', code: 456},
+    { id: crownCourtTypeId, name:'11420', code: 789},
     { id: 4, name:'4', code: null}
   ];
 

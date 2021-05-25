@@ -13,7 +13,9 @@ export class CourtTypesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required.';
-
+  magistrateCourtTypeId = 11416;
+  countyCourtTypeId = 11419;
+  crownCourtTypeId = 11420;
 
   public async get(
     req: AuthedRequest,
@@ -60,9 +62,9 @@ export class CourtTypesController {
 
       courtCourtTypes = this.mapBodyToCourtType(req);
 
-      if(courtCourtTypes.find( c => (c.id === 11416 && this.CheckCodeIsNullOrNan(c.code))
-      || (c.id === 11419 && this.CheckCodeIsNullOrNan(c.code))
-      || (c.id === 11420 && this.CheckCodeIsNullOrNan(c.code)) )){
+      if(courtCourtTypes.find( c => (c.id === this.magistrateCourtTypeId && this.CheckCodeIsNullOrNan(c.code))
+      || (c.id === this.countyCourtTypeId && this.CheckCodeIsNullOrNan(c.code))
+      || (c.id === this.crownCourtTypeId && this.CheckCodeIsNullOrNan(c.code)) )){
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
       }
@@ -88,9 +90,9 @@ export class CourtTypesController {
         {
           value: ott.id,
           text: ott.name,
-          magistrate: ott.id === 11416 ? true: false,
-          county: ott.id === 11419 ? true: false,
-          crown: ott.id === 11420 ? true: false,
+          magistrate: ott.id === this.magistrateCourtTypeId ? true: false,
+          county: ott.id === this.countyCourtTypeId ? true: false,
+          crown: ott.id === this.crownCourtTypeId ? true: false,
           checked: this.isChecked(ott, courtCourtTypes),
           code: this.getCode(ott.id, courtCourtTypes)
         }));
