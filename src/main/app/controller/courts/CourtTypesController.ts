@@ -9,13 +9,13 @@ import {CSRF} from '../../../modules/csrf';
 export class CourtTypesController {
 
 
-  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
-  getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
-  updateErrorMsg = 'A problem occurred when saving the court court types.';
-  emptyCourtTypesErrorMsg = 'One or more court types are required.';
-  magistrateCourtTypeId = 11416;
-  countyCourtTypeId = 11419;
-  crownCourtTypeId = 11420;
+  private emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
+  private getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
+  private updateErrorMsg = 'A problem occurred when saving the court court types.';
+  private emptyCourtTypesErrorMsg = 'One or more court types are required.';
+  private magistrateCourtTypeId = 11416;
+  private countyCourtTypeId = 11419;
+  private crownCourtTypeId = 11420;
 
   public async get(
     req: AuthedRequest,
@@ -136,13 +136,13 @@ export class CourtTypesController {
     const regExp = /^[0-9]*$/;
 
     switch (id) {
-      case '11416':
+      case this.magistrateCourtTypeId.toString():
         return regExp.test(magistratesCourtCode) ? parseInt(magistratesCourtCode) : null ;
 
-      case '11419':
+      case this.countyCourtTypeId.toString():
         return regExp.test(countyCourtCode) ? parseInt(countyCourtCode): null ;
 
-      case '11420':
+      case this.crownCourtTypeId.toString():
         return regExp.test(crownCourtCode) ? parseInt(crownCourtCode) : null;
 
       default:
