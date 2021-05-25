@@ -9,10 +9,10 @@ import {CSRF} from '../../../modules/csrf';
 export class CourtTypesController {
 
 
-  private emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
-  private getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
-  private updateErrorMsg = 'A problem occurred when saving the court court types.';
-  private emptyCourtTypesErrorMsg = 'One or more court types are required.';
+  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
+  getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
+  updateErrorMsg = 'A problem occurred when saving the court court types.';
+  emptyCourtTypesErrorMsg = 'One or more court types are required.';
   private magistrateCourtTypeId = 11416;
   private countyCourtTypeId = 11419;
   private crownCourtTypeId = 11420;
