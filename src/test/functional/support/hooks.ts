@@ -11,10 +11,10 @@ export const launchBrowser = async () => {
 setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
 BeforeAll(async () => {
-  await launchBrowser();
   puppeteerConfig.username = process.env.OAUTH_USER;
   puppeteerConfig.superUsername = process.env.OAUTH_SUPER_USER;
   puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
+  await launchBrowser();
 });
 
 After(async () => {
