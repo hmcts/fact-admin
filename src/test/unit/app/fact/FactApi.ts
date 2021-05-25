@@ -467,7 +467,7 @@ describe('FactApi', () => {
   });
 
 
-  test('Should return results and log error from updateCourtCourtTypes request', async () => {
+  test('Should log error for failed updateCourtCourtTypes request', async () => {
     const mockAxios = { put: async () => {
       throw mockError;
     }} as never;

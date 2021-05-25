@@ -58,11 +58,11 @@ export class CourtTypesController {
 
     if (req.body.types) {
 
-      courtCourtTypes = this.mapBodyToCourtType(req.body);
+      courtCourtTypes = this.mapBodyToCourtType(req);
 
-      if(courtCourtTypes.find( c => (c.name ==="Magistrates' Court" && this.CheckCodeIsNullOrNan(c.code) )
-      || (c.name==='County Court' && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === 'Crown Court' && this.CheckCodeIsNullOrNan(c.code)) )){
+      if(courtCourtTypes.find( c => (c.id === 11416 && this.CheckCodeIsNullOrNan(c.code))
+      || (c.id === 11419 && this.CheckCodeIsNullOrNan(c.code))
+      || (c.id === 11420 && this.CheckCodeIsNullOrNan(c.code)) )){
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
       }
@@ -86,8 +86,11 @@ export class CourtTypesController {
     if( courtCourtTypes && allCourtTypes) {
       const courtTypeItems = allCourtTypes.map((ott: CourtType) => (
         {
-          value: ott.id + '_&_' + ott.name,
+          value: ott.id,
           text: ott.name,
+          magistrate: ott.id === 11416 ? true: false,
+          county: ott.id === 11419 ? true: false,
+          crown: ott.id === 11420 ? true: false,
           checked: this.isChecked(ott, courtCourtTypes),
           code: this.getCode(ott.id, courtCourtTypes)
         }));
@@ -99,26 +102,26 @@ export class CourtTypesController {
   }
 
 
-  private mapBodyToCourtType(body: any): CourtType[] {
+  private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
-    const courtTypes: string[] = Array.isArray(body.types) ? body.types : [body.types];
+    const courtTypes: string[] = Array.isArray(req.body.types) ? req.body.types : [req.body.types];
+
 
     const courtTypeItems = courtTypes.map((ct) => (
       {
-        id: parseInt(ct.split('_&_',2)[0]),
-        name: ct.split('_&_',2)[1],
-        code:this.setCode(ct.split('_&_',2)[1], body.magistratesCourtCode, body.countyCourtCode, body.crownCourtCode),
-
+        id: parseInt(ct),
+        name: ct,
+        code: this.setCode(ct, req.body.magistratesCourtCode, req.body.countyCourtCode, req.body.crownCourtCode),
       }));
 
     return courtTypeItems;
   }
 
 
-
   private isChecked(courtType: CourtType, courtCourtTypes: CourtType[]) {
     return (courtCourtTypes.some(e => e.id === courtType.id));
   }
+
 
   private getCode(id: number, courtCourtTypes: CourtType[]) {
 
@@ -126,18 +129,18 @@ export class CourtTypesController {
 
   }
 
-  private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
+  private setCode(id: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
 
     const regExp = /^[0-9]*$/;
 
-    switch (name) {
-      case "Magistrates' Court":
+    switch (id) {
+      case '11416':
         return regExp.test(magistratesCourtCode) ? parseInt(magistratesCourtCode) : null ;
 
-      case 'County Court':
+      case '11419':
         return regExp.test(countyCourtCode) ? parseInt(countyCourtCode): null ;
 
-      case 'Crown Court':
+      case '11420':
         return regExp.test(crownCourtCode) ? parseInt(crownCourtCode) : null;
 
       default:

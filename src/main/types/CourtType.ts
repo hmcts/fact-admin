@@ -3,7 +3,7 @@
 
 export interface CourtType {
   id: number,
-  name: string,
+  name?: string,
   code: number
 }
 
@@ -15,8 +15,11 @@ export interface CourtTypePageData {
 
 
 export interface CourtTypeItem {
-  value: string,
+  value: number,
   text: string,
+  magistrate: boolean,
+  county: boolean,
+  crown: boolean,
   checked: boolean,
   code: number
 }

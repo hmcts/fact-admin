@@ -14,25 +14,25 @@ describe ( 'CourtTypesController', () =>{
 
 
   const courtTypes: CourtType[] = [
-    { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:'County Court', code: 456},
-    { id: 3, name:'Crown Court', code: 789},
+    { id: 11416, name:"Magistrates' Court", code: 123},
+    { id: 11419, name:'County Court', code: 456},
+    { id: 11420, name:'Crown Court', code: 789},
     { id: 4, name:'Family Court', code: null}
   ];
 
   const courtTypeItems: CourtTypeItem[] = [
-    {value:"1_&_Magistrates' Court", text:"Magistrates' Court", checked: true, code:123},
-    {value:'2_&_County Court', text:'County Court', checked: true, code:456},
-    {value:'3_&_Crown Court', text:'Crown Court', checked:true, code:789},
-    {value:'4_&_Family Court', text:'Family Court', checked:true, code:null}
+    {value:11416, text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: true, code:123},
+    {value:11419, text:'County Court', magistrate:false, county:true, crown:false, checked: true, code:456},
+    {value:11420, text:'Crown Court',magistrate:false, county:false, crown:true, checked:true, code:789},
+    {value:4, text:'Family Court', magistrate:false, county:false, crown:false, checked:true, code:null}
 
   ];
 
   const courtCourtTypes: CourtType[] =[
-    { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:'County Court', code: 456},
-    { id: 3, name:'Crown Court', code: 789},
-    { id: 4, name:'Family Court', code: null}
+    { id: 11416, name:'11416', code: 123},
+    { id: 11419, name:'11419', code: 456},
+    { id: 11420, name:'11420', code: 789},
+    { id: 4, name:'4', code: null}
   ];
 
 
@@ -72,10 +72,10 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     const types: string[]= [
-      "1_&_Magistrates' Court",
-      '2_&_County Court',
-      '3_&_Crown Court',
-      '4_&_Family Court'
+      '11416',
+      '11419',
+      '11420',
+      '4'
     ];
 
     req.body = {
@@ -96,6 +96,27 @@ describe ( 'CourtTypesController', () =>{
     expect(mockApi.updateCourtCourtTypes).toBeCalledWith(slug, courtCourtTypes);
   });
 
+  test('Should not post court types if no csrf token provided', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      'types': null,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+    };
+
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtCourtTypes = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+
+    // Should not call API if court types data is incomplete
+    expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
+  });
 
   test('Should not post court types if no court types is selected', async() => {
     const slug = 'another-county-court';
@@ -103,6 +124,11 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     req.body = {
+      'types': null,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+      '_csrf': CSRF.create()
     };
 
     req.params = { slug: slug };
@@ -121,17 +147,17 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     const types: string[]= [
-      "1_&_Magistrates' Court",
-      '2_&_County Court',
-      '3_&_Crown  Court'
-
+      '11416',
+      '11419',
+      '11420',
     ];
+
     req.body = {
       'types': types,
       'magistratesCourtCode' : '',
       'countyCourtCode': '',
-      'crownCourtCode': ''
-
+      'crownCourtCode': '',
+      '_csrf': CSRF.create()
     };
 
     req.params = { slug: slug };

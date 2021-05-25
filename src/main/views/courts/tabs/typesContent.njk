@@ -26,7 +26,7 @@
 
 {% for item in items %}
 
-{% if item.text === "Magistrates' Court"  %}
+{% if item.magistrate  %}
 
  {% set magistratesCodeError = false %}
   {% if item.checked and item.code | valid === false %}
@@ -43,7 +43,9 @@
   name: "magistratesCourtCode",
   type: "text",
   value: item.code,
-  errorMessage: magistratesCodeError
+  errorMessage: magistratesCodeError,
+  inputmode: "numeric",
+  pattern: "[0-9]*"
 
 }) }}
 {% endset -%}
@@ -55,7 +57,7 @@
 
 
 
-{% if item.text === "County Court" %}
+{% if item.county %}
 
 {% set countyCourtCode = false %}
  {% if item.checked and  item.code | valid === false  %}
@@ -82,7 +84,7 @@
 
 {% endif %}
 
-{% if item.text === "Crown Court" %}
+{% if item.crown %}
 
 {% set crownCourtCode = false %}
  {% if item.checked and item.code | valid === false  %}
