@@ -13,4 +13,8 @@ FROM base as runtime
 RUN rm -rf webpack/ webpack.config.js
 COPY --from=build $WORKDIR/src/main ./src/main
 
+RUN groupadd -g 1000 fact && \
+    useradd -r -u 1000 -g fact fact
+USER fact
+
 EXPOSE 3300
