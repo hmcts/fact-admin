@@ -1535,10 +1535,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/serve-favicon@^2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@types/serve-favicon/-/serve-favicon-2.5.0.tgz#21164e61290d577d75e22de1b3119fad70bf52b6"
-  integrity sha512-APK6i1tJp8XBYCZyU4HqtNZBiwipIBQvpQVLYZezTm4TaKKl0KrsGokQK9k3Ll2CaEGNuehppKhXp/Ki9oWT/w==
+"@types/serve-favicon@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@types/serve-favicon/-/serve-favicon-2.5.2.tgz#c0f73f9e4f61fe61ad209ec7b8daacf3159f0fa8"
+  integrity sha512-tGpJ3ZdAxnmuHX/BCRnZcPNQe2J8PbmwWFB2Fi6BvepDYuakFKraMG7orLkv387HS2C4MJm2UCINaxv4p7kP9A==
   dependencies:
     "@types/express" "*"
 
