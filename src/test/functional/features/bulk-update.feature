@@ -4,7 +4,7 @@ Feature: Bulk update of court info
     Given I am on new browser
     Given I am on FACT homepage
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials "hmcts.super.fact@gmail.com" "Pa55word11"
+    When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
 
