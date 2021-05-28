@@ -8,8 +8,26 @@ def component = "admin"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
+def secrets = [
+  'fact-${env}': [
+    secret("oauth-user", "OAUTH_USER"),
+    secret("oauth-user-password", "OAUTH_USER_PASSWORD"),
+    secret("oauth-super-user", "OAUTH_SUPER_USER")
+  ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   version    : '',
+   envVariable: envVar
+  ]
+}
+
 withPipeline(type, product, component) {
   disableLegacyDeployment()
+  loadVaultSecrets(secrets)
   syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
 
   after('build') {

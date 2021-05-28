@@ -87,12 +87,10 @@ export const checkElementLength = async (selector: string) => {
   }
 };
 
-export const getTextFromList = async (el: any) => {
+export const getTextFromList = async (selector: string) => {
   try {
-    const texts: string[] = [];
-    await el.foreach(async (el: any) => {
-      texts.push(await getElementText(el));
-    });
+    const texts = await scope.page.evaluate((s: string) => Array.from(document.querySelectorAll(s),
+      (element: Element) => element.innerHTML.toString()), selector);
     return texts;
   } catch (error) {
     console.log("The element didn't appear.");
