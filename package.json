@@ -52,7 +52,7 @@
     "awilix": "^4.2.6",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
-    "config": "^3.3.2",
+    "config": "^3.3.6",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
