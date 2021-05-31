@@ -46,7 +46,7 @@
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.2",
     "@types/session-file-store": "^1.2.1",
-    "@types/tinymce": "^4.6.0",
+    "@types/tinymce": "^4.6.1",
     "applicationinsights": "^1.8.7",
     "autobind-decorator": "^2.4.0",
     "awilix": "^4.2.6",
