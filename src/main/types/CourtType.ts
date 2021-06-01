@@ -15,7 +15,7 @@ export interface CourtTypePageData {
 
 
 export interface CourtTypeItem {
-  value: number,
+  value: string,
   text: string,
   magistrate: boolean,
   county: boolean,

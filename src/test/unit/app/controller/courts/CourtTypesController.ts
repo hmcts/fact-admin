@@ -12,30 +12,27 @@ describe ( 'CourtTypesController', () =>{
     getCourtCourtTypes: () => Promise<CourtType[]>,
     updateCourtCourtTypes: () => Promise<CourtType[]> };
 
-  const magistrateCourtTypeId = 11416;
-  const countyCourtTypeId = 11419;
-  const crownCourtTypeId = 11420;
 
   const courtTypes: CourtType[] = [
-    { id: magistrateCourtTypeId, name:"Magistrates' Court", code: 123},
-    { id: countyCourtTypeId, name:'County Court', code: 456},
-    { id: crownCourtTypeId, name:'Crown Court', code: 789},
+    { id: 1, name:"Magistrates' Court", code: 123},
+    { id: 2, name:'County Court', code: 456},
+    { id: 3, name:'Crown Court', code: 789},
     { id: 4, name:'Family Court', code: null}
   ];
 
   const courtTypeItems: CourtTypeItem[] = [
-    {value:magistrateCourtTypeId, text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: true, code:123},
-    {value:countyCourtTypeId, text:'County Court', magistrate:false, county:true, crown:false, checked: true, code:456},
-    {value:crownCourtTypeId, text:'Crown Court',magistrate:false, county:false, crown:true, checked:true, code:789},
-    {value:4, text:'Family Court', magistrate:false, county:false, crown:false, checked:true, code:null}
+    {value:'{"id":1,"name":"Magistrates\' Court","code":123}',text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: true, code:123},
+    {value:'{"id":2,"name":"County Court","code":456}', text:'County Court', magistrate:false, county:true, crown:false, checked: true, code:456},
+    {value:'{"id":3,"name":"Crown Court","code":789}', text:'Crown Court',magistrate:false, county:false, crown:true, checked:true, code:789},
+    {value:'{"id":4,"name":"Family Court","code":null}', text:'Family Court', magistrate:false, county:false, crown:false, checked:true, code:null}
 
   ];
 
   const courtCourtTypes: CourtType[] =[
-    { id: magistrateCourtTypeId, name:'11416', code: 123},
-    { id: countyCourtTypeId, name:'11419', code: 456},
-    { id: crownCourtTypeId, name:'11420', code: 789},
-    { id: 4, name:'4', code: null}
+    { id: 1, name:"Magistrates' Court", code: 123},
+    { id: 2, name:'County Court', code: 456},
+    { id: 3, name:'Crown Court', code: 789},
+    { id: 4, name:'Family Court', code: null}
   ];
 
 
@@ -74,11 +71,12 @@ describe ( 'CourtTypesController', () =>{
     const res = mockResponse();
     const req = mockRequest();
 
+
     const types: string[]= [
-      '11416',
-      '11419',
-      '11420',
-      '4'
+      '{"id":1, "name":"Magistrates\' Court","code":123}',
+      '{"id":2,"name":"County Court","code":456}',
+      '{"id":3,"name":"Crown Court","code":789}',
+      '{"id":4,"name":"Family Court","code":1}'
     ];
 
     req.body = {
@@ -150,9 +148,9 @@ describe ( 'CourtTypesController', () =>{
     const req = mockRequest();
 
     const types: string[]= [
-      '11416',
-      '11419',
-      '11420',
+      '{"id":1,"name":"Magistrates\' Court","code":1}',
+      '{"id":2,"name":"County Court","code":2}',
+      '{"id":3,"name":"Crown Court","code":3}'
     ];
 
     req.body = {

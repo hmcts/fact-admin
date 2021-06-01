@@ -5,6 +5,7 @@ import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtT
 import {CSRF} from '../../../modules/csrf';
 
 
+
 @autobind
 export class CourtTypesController {
 
@@ -13,9 +14,10 @@ export class CourtTypesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required.';
-  private magistrateCourtTypeId = 11416;
-  private countyCourtTypeId = 11419;
-  private crownCourtTypeId = 11420;
+  private magistrateCourtType = "Magistrates' Court";
+  private countyCourtType = 'County Court';
+  private crownCourtType = 'Crown Court';
+
 
   public async get(
     req: AuthedRequest,
@@ -62,9 +64,9 @@ export class CourtTypesController {
 
       courtCourtTypes = this.mapBodyToCourtType(req);
 
-      if(courtCourtTypes.find( c => (c.id === this.magistrateCourtTypeId && this.CheckCodeIsNullOrNan(c.code))
-      || (c.id === this.countyCourtTypeId && this.CheckCodeIsNullOrNan(c.code))
-      || (c.id === this.crownCourtTypeId && this.CheckCodeIsNullOrNan(c.code)) )){
+      if(courtCourtTypes.find( c => (c.name === this.magistrateCourtType && this.CheckCodeIsNullOrNan(c.code))
+      || (c.name === this.countyCourtType && this.CheckCodeIsNullOrNan(c.code))
+      || (c.name === this.crownCourtType && this.CheckCodeIsNullOrNan(c.code)) )){
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
       }
@@ -86,15 +88,15 @@ export class CourtTypesController {
   private mapCourtTypeToCourtTypeItem(allCourtTypes: CourtType[], courtCourtTypes: CourtType[]): CourtTypeItem[] {
 
     if( courtCourtTypes && allCourtTypes) {
-      const courtTypeItems = allCourtTypes.map((ott: CourtType) => (
+      const courtTypeItems = allCourtTypes.map((ct: CourtType) => (
         {
-          value: ott.id,
-          text: ott.name,
-          magistrate: ott.id === this.magistrateCourtTypeId ? true: false,
-          county: ott.id === this.countyCourtTypeId ? true: false,
-          crown: ott.id === this.crownCourtTypeId ? true: false,
-          checked: this.isChecked(ott, courtCourtTypes),
-          code: this.getCode(ott.id, courtCourtTypes)
+          value: JSON.stringify(ct),
+          text: ct.name,
+          magistrate: ct.name === this.magistrateCourtType ? true: false,
+          county: ct.name === this.countyCourtType ? true: false,
+          crown: ct.name === this.crownCourtType ? true: false,
+          checked: this.isChecked(ct, courtCourtTypes),
+          code: this.getCode(ct.id, courtCourtTypes)
         }));
 
       return courtTypeItems;
@@ -106,14 +108,13 @@ export class CourtTypesController {
 
   private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
-    const courtTypes: string[] = Array.isArray(req.body.types) ? req.body.types : [req.body.types];
-
+    const courtTypes: CourtType[] = Array.isArray(req.body.types) ? req.body.types.map((ct: string) => JSON.parse(ct)) : [JSON.parse(req.body.types)];
 
     const courtTypeItems = courtTypes.map((ct) => (
       {
-        id: parseInt(ct),
-        name: ct,
-        code: this.setCode(ct, req.body.magistratesCourtCode, req.body.countyCourtCode, req.body.crownCourtCode),
+        id: ct.id,
+        name:ct.name,
+        code: this.setCode(ct.name, req.body.magistratesCourtCode, req.body.countyCourtCode, req.body.crownCourtCode),
       }));
 
     return courtTypeItems;
@@ -131,18 +132,18 @@ export class CourtTypesController {
 
   }
 
-  private setCode(id: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
+  private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
 
     const regExp = /^[0-9]*$/;
 
-    switch (id) {
-      case this.magistrateCourtTypeId.toString():
+    switch (name) {
+      case this.magistrateCourtType:
         return regExp.test(magistratesCourtCode) ? parseInt(magistratesCourtCode) : null ;
 
-      case this.countyCourtTypeId.toString():
+      case this.countyCourtType:
         return regExp.test(countyCourtCode) ? parseInt(countyCourtCode): null ;
 
-      case this.crownCourtTypeId.toString():
+      case this.crownCourtType:
         return regExp.test(crownCourtCode) ? parseInt(crownCourtCode) : null;
 
       default:
@@ -154,5 +155,7 @@ export class CourtTypesController {
 
     return !code || isNaN(code);
   }
+
+
 }
 
