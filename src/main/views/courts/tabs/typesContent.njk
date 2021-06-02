@@ -1,0 +1,140 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+<h2 class="govuk-heading-l">Court Types and Codes</h2>
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Court Types updated"
+  }) }}
+{% endif %}
+
+
+{% for item in items %}
+
+{% if item.magistrate  %}
+
+ {% set magistratesCodeError = false %}
+  {% if item.checked and item.code | valid === false %}
+   {% set magistratesCodeError = { text: 'Magistrates code is required and must be numeric.' } %}
+  {% endif %}
+
+{% set magistratesCourtCodeHtml %}
+{{ govukInput({
+ label: {
+    text: "Magistrates' Court Code"
+  },
+  classes: "govuk-!-width-one-third",
+  id: "magistratesCourtCode",
+  name: "magistratesCourtCode",
+  type: "text",
+  value: item.code,
+  errorMessage: magistratesCodeError,
+  inputmode: "numeric",
+  pattern: "[0-9]*"
+
+}) }}
+{% endset -%}
+
+{% set item = item | setAttribute('conditional',{ html: magistratesCourtCodeHtml }) %}
+
+{% endif %}
+
+
+
+
+{% if item.county %}
+
+{% set countyCourtCode = false %}
+ {% if item.checked and  item.code | valid === false  %}
+   {% set countyCourtCode = { text: 'County code is required and must be numeric.' } %}
+ {% endif %}
+
+{% set countyCourtCodeHtml %}
+{{ govukInput({
+  id: "countyCourtCode",
+  name: "countyCourtCode",
+  type: "text",
+  value: item.code,
+  errorMessage: countyCourtCode,
+  inputmode: "numeric",
+  pattern: "[0-9]*",
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: "County Court Code"
+  }
+}) }}
+{% endset -%}
+
+{% set item = item | setAttribute('conditional',{ html: countyCourtCodeHtml }) %}
+
+{% endif %}
+
+{% if item.crown %}
+
+{% set crownCourtCode = false %}
+ {% if item.checked and item.code | valid === false  %}
+   {% set crownCourtCode = { text: 'Crown code is required and must be numeric.' } %}
+ {% endif %}
+
+{% set crownCourtCodeHtml %}
+{{ govukInput({
+  id: "crownCourtCode",
+  name: "crownCourtCode",
+  type: "text",
+  value : item.code,
+  errorMessage: crownCourtCode,
+  inputmode: "numeric",
+  pattern: "[0-9]*",
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: "Crown Court Code"
+  }
+}) }}
+{% endset -%}
+
+{% set item = item | setAttribute('conditional',{ html: crownCourtCodeHtml }) %}
+
+{% endif %}
+
+{% endfor %}
+
+
+{{ govukCheckboxes({
+  idPrefix: "court_types",
+  name: "types",
+
+  hint: {
+    text: "Court types and codes:"
+  },
+
+
+  items: items
+}) }}
+
+
+<hr/>
+
+{{ govukButton({
+  text: "Save",
+  name: "saveCourtTypes"
+}) }}
+
+
+
+
+

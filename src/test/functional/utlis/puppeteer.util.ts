@@ -155,3 +155,11 @@ export const isElementVisible = async (selector: string) => {
     .catch(() => { visible = false; });
   return visible;
 };
+
+export const isElementChecked = async (selector: string) => {
+  try {
+    return await scope.page.$eval(selector, (checkbox: any) => checkbox.checked);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};

@@ -52,41 +52,51 @@
               {% include "./tabs/openingHours.njk" %}
             {% endset -%}
             {% set phoneNumbersHtml %}
-              {% include "./tabs/phoneNumbers.njk" %}
+               {% include "./tabs/phoneNumbers.njk" %}
             {% endset -%}
             {% set emailsHtml %}
-              {% include "./tabs/emails.njk" %}
+               {% include "./tabs/emails.njk" %}
             {% endset -%}
-            <input id='slug' type='hidden' value='{{slug}}'></input>
+            {% set courtTypesHtml %}
+                {% include "./tabs/types.njk" %}
+            {% endset -%}
+             <input id='slug' type='hidden' value='{{slug}}'></input>
             {{ govukTabs({
               items: [
                 {
                   label: "General",
                   id: "general",
                   panel: {
-                    html: generalHtml
-                  }
+                  html: generalHtml
+                }
                 },
                 {
                   label: "Opening Hours",
                   id: "opening-hours",
                   panel: {
-                    html: openingHoursHtml
-                  }
+                  html: openingHoursHtml
+                }
                 },
                 {
                   label: "Phone Numbers",
                   id: "phone-numbers",
                   panel: {
-                    html: phoneNumbersHtml
-                  }
+                  html: phoneNumbersHtml
+                }
                 },
                 {
                   label: "Emails",
                   id: "emails",
                   panel: {
-                    html: emailsHtml
-                  }
+                  html: emailsHtml
+                }
+                },
+                {
+                  label: "Types",
+                  id: "court-types",
+                  panel: {
+                  html: courtTypesHtml
+                }
                 }
               ]
             }) }}
