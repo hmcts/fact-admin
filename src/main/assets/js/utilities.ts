@@ -1,0 +1,78 @@
+import $ from 'jquery';
+
+export class Utilities {
+
+  private static deleteButtonText = 'Remove';
+  private static moveUpButtonText = 'Move Up';
+  private static moveDownButtonText = 'Move Down';
+
+  // Fieldsets that can be re-ordered are expected to have this class
+  private static fieldsetReorderSelector = 'fieldset.can-reorder';
+
+  /**
+   * Adds reordering of fieldsets to an area of the page by attaching click event handlers to move up and
+   * move down buttons within the fieldset.
+   * The fieldset must include the 'can-reorder' class to be re-ordered.
+   * @param tabId The ID of the container where reordering is required.
+   * @param upButtonClass The class for the 'move up' buttons.
+   * @param downButtonClass The class for the 'move down' buttons.
+   * @param callback Optional callback - called after the reordering has taken place.
+   **/
+  public static addFieldsetReordering(
+    tabId: string,
+    upButtonClass: string,
+    downButtonClass: string,
+    callback?: Function): void {
+
+    if (upButtonClass) {
+      this.addUpReordering(tabId, upButtonClass, callback);
+    }
+
+    if (downButtonClass) {
+      this.addDownReordering(tabId, downButtonClass, callback);
+    }
+  }
+
+  /**
+   * Returns a string containing standard html button layout for removing and re-ordering fieldsets.
+   * @param deleteButtonClass The class for the delete button
+   * @param moveUpButtonClass The class for the 'move up' button
+   * @param moveDownButtonClass The class for the 'move down' button
+   */
+  public static getRemoveAndReOrderButtons(deleteButtonClass: string, moveUpButtonClass: string, moveDownButtonClass: string): string {
+    const button = (btnClass: string, text: string): string => '<button type=button name=deleteOpeningHours ' +
+    `class="govuk-button govuk-button--secondary ${btnClass}" data-module="govuk-button">${text}</button>`;
+
+    return `${button(deleteButtonClass, this.deleteButtonText)}
+    ${button(moveUpButtonClass, this.moveUpButtonText)}
+    ${button(moveDownButtonClass, this.moveDownButtonText)}`;
+  }
+
+  private static addUpReordering(tabId: string, upButtonClass: string, callback?: Function): void {
+    $(tabId).on('click', `button.${upButtonClass}`, e => {
+      const entryToMove = e.target.closest(this.fieldsetReorderSelector);
+      const previousEntry = $(entryToMove).prev(this.fieldsetReorderSelector);
+
+      if (previousEntry.length === 1) {
+        $(entryToMove).insertBefore(previousEntry);
+        if (callback) {
+          callback();
+        }
+      }
+    });
+  }
+
+  private static addDownReordering(tabId: string, downButtonClass: string, callback?: Function): void {
+    $(tabId).on('click', `button.${downButtonClass}`, e => {
+      const entryToMove = e.target.closest(this.fieldsetReorderSelector);
+      const nextEntry = $(entryToMove).next(this.fieldsetReorderSelector);
+
+      if (nextEntry.length === 1) {
+        $(entryToMove).insertAfter(nextEntry);
+        if (callback) {
+          callback();
+        }
+      }
+    });
+  }
+}

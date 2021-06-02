@@ -48,6 +48,7 @@
   {% endif %}
 
   {% call govukFieldset({
+    classes: "can-reorder"
   }) %}
 
   {{ govukSelect({
@@ -71,12 +72,30 @@
     errorMessage: hoursError
   }) }}
 
-  {{ govukButton({
-    text: "Remove",
-    name: "deleteOpeningHours",
-    type: "button",
-    classes: "govuk-button--secondary deleteOpeningTime"
-  }) }}
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Remove",
+      name: "deleteOpeningHours",
+      type: "button",
+      classes: "govuk-button--secondary deleteOpeningTime"
+    }) }}
+
+
+    {{ govukButton({
+      text: "Move Up",
+      name: "moveUp",
+      type: "button",
+      classes: "govuk-button--secondary move-up"
+    }) }}
+
+    {{ govukButton({
+      text: "Move Down",
+      name: "moveDown",
+      type: "button",
+      classes: "govuk-button--secondary move-down"
+    }) }}
+
+  </div>
 
   <hr/>
 

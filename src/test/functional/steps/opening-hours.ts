@@ -84,3 +84,57 @@ When('I click the remove button under an opening hours entry', async () => {
   const updatedNumOpeningTimes = await I.countElement('#openingTimesTab fieldset');
   expect(numOpeningTimes - updatedNumOpeningTimes).equal(1);
 });
+
+When('I click the move up button on the last opening hours entry which has id {string} and hours {string}',
+  async (id: string, hours: string) => {
+    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+
+    // Ensure last entry is as expected
+    const lastEntrySelectValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder select', numEntries - 1);
+    const lastEntryInputValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder input', numEntries - 1);
+    expect(lastEntrySelectValue).equal(id);
+    expect(lastEntryInputValue).equal(hours);
+
+    // Click the move up button
+    await I.clickElementAtIndex('#openingTimesTab fieldset.can-reorder button[name="moveUp"]', numEntries - 1);
+  });
+
+When('I click the move down button on the second last opening hours entry which has id {string} and hours {string}',
+  async (id: string, hours: string) => {
+    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+
+    // Ensure second-last entry is as expected
+    const secondLastEntrySelectValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder select', numEntries - 2);
+    const secondLastEntryInputValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder input', numEntries - 2);
+    expect(secondLastEntrySelectValue).equal(id);
+    expect(secondLastEntryInputValue).equal(hours);
+
+    // Click the move down button
+    await I.clickElementAtIndex('#openingTimesTab fieldset.can-reorder button[name="moveDown"]', numEntries - 2);
+  });
+
+Then('The opening hours entry with id {string} and hours {string} is in second last position',
+  async(id: string, hours: string) => {
+    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+    const secondLastIdx = numEntries - 2;
+
+    const secondLastEntrySelectValue = await I.getElementValueAtIndex(
+      '#openingTimesTab fieldset.can-reorder select', secondLastIdx);
+    const secondLastEntryInputValue = await I.getElementValueAtIndex(
+      '#openingTimesTab fieldset.can-reorder input', secondLastIdx);
+    expect(secondLastEntrySelectValue).equal(id);
+    expect(secondLastEntryInputValue).equal(hours);
+  });
+
+Then('The opening hours entry with id {string} and hours {string} is in last position',
+  async(id: string, hours: string) => {
+    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+    const lastIdx = numEntries - 1;
+
+    const lastEntrySelectValue = await I.getElementValueAtIndex(
+      '#openingTimesTab fieldset.can-reorder select', lastIdx);
+    const lastEntryInputValue = await I.getElementValueAtIndex(
+      '#openingTimesTab fieldset.can-reorder input', lastIdx);
+    expect(lastEntrySelectValue).equal(id);
+    expect(lastEntryInputValue).equal(hours);
+  });

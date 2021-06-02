@@ -129,12 +129,34 @@ export const selectItem = async (selector: string, value: string) => {
   }
 };
 
-export const countElement = async (selector: string) => {
+export const countElement = async (selector: string): Promise<number> => {
   try {
     const count = (await scope.page.$$(selector)).length;
     return count;
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+export const getElementValueAtIndex = async (selector: string, index: number) => {
+  try {
+    return await scope.page.evaluate(
+      (entrySelector: string, index: number) =>
+        (document.querySelectorAll(entrySelector)[index] as HTMLInputElement | HTMLSelectElement).value, selector, index
+    );
+  } catch (error) {
+    console.log(`The element with selector: ${selector} at index ${index} didn't appear.`);
+  }
+};
+
+export const clickElementAtIndex = async (selector: string, index: number) => {
+  try {
+    return await scope.page.evaluate(
+      (entrySelector: string, index: number) =>
+        (document.querySelectorAll(entrySelector)[index] as HTMLButtonElement).click(), selector, index
+    );
+  } catch (error) {
+    console.log(`The element with selector: ${selector} at index ${index} didn't appear.`);
   }
 };
 

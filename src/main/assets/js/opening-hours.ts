@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
@@ -8,7 +9,12 @@ export class OpeningHoursController {
   private tabId = '#openingTimesTab';
   private newOpeningTimeHeadingId = '#newOpeningHoursHeading';
   private openingTimesContentId = '#openingTimesContent';
+
   private deleteBtnClass = 'deleteOpeningTime';
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
+  private canReorderClass = 'can-reorder';
+
   private addOpeningTimesBtnName = 'addOpeningTime';
   private typeSelectName = 'type_id';
   private hoursInputName = 'hours';
@@ -24,6 +30,7 @@ export class OpeningHoursController {
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
+        Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
     });
   }
@@ -75,13 +82,15 @@ export class OpeningHoursController {
         .attr('name', this.getInputName(this.typeSelectName, 0));
       $(copyFieldset).find('input').attr('name', this.getInputName(this.hoursInputName, 0));
 
+      // Allow new row to be re-ordered
+      $(copyFieldset).addClass(this.canReorderClass);
+
       // Set the id and names of the elements in the table
       this.renameFormElements();
 
-      // Change button type in newly added row from 'add' to 'delete'.
+      // Change button type in newly added row from 'add' to 'delete' & 'move up/down'.
       $(copyFieldset).find('button').replaceWith(
-        '<button type="button" name="deleteOpeningHours" ' +
-        `class="govuk-button govuk-button--secondary ${this.deleteBtnClass}" data-module="govuk-button">Remove</button>`);
+        Utilities.getRemoveAndReOrderButtons(this.deleteBtnClass, this.moveUpBtnClass, this.moveDownBtnClass));
 
       // Reset select and input values on 'add new' row.
       $(addNewFieldset).find('input, select').val('');
