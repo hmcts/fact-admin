@@ -149,16 +149,41 @@ export const getLastElementValue = async (selector: string) => {
   }
 };
 
-export const getElementValueAtIndex = async (selector: string, index: number, type: ('select' | 'input') = 'input') => {
+/**
+ * Returns the selectedIndex of an HTML Select element
+ * @param selector The selector for an array of HTML Select elements
+ * @param index The index of the HTML Select element to return
+ */
+export const getSelectedIndexAtIndex = async (selector: string, index: number) => {
   try {
     const input = await scope.page.$$(selector);
-    return await scope.page.evaluate((x: any, type: ('select' | 'input')) =>
-      (type === 'select' ? x.selectedIndex : x.value), input[index], type);
+    return await scope.page.evaluate((x: HTMLSelectElement) => x.selectedIndex, input[index]);
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
 
+/**
+ * Returns the value of an HTML Select or Input element
+ * @param selector The selector for an array of HTML Select and Input elements
+ * @param index The index of the element to return
+ */
+export const getElementValueAtIndex = async (selector: string, index: number) => {
+  try {
+    const input = await scope.page.$$(selector);
+    return await scope.page.evaluate((x: HTMLSelectElement | HTMLInputElement) => x.value, input[index]);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+/**
+ * Sets the value of an HTML Select or Input element. For Select elements, the selectedIndex will be set to the given value.
+ * @param selector The selector for an array of HTML Select / Input elements
+ * @param index The index of the element to set
+ * @param value The value to set
+ * @param type The expected type of the element
+ */
 export const setElementValueAtIndex = async (selector: string, index: number, value: number | string, type: ('select' | 'input') = 'input') => {
   try {
     const input = await scope.page.$$(selector);

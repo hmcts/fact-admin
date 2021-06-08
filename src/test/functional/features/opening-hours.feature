@@ -7,30 +7,30 @@ Feature: Opening Hours
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
-    And they are in alphabetical order
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
     When I click the opening hours tab
     Then I can view the existing opening hours
 
-  Scenario Outline: Add new opening hours
-    When I enter new opening hours entry by selecting id "<selected_type_id>" and adding text "<hours>"
-    And I click the Add button
+  Scenario: Add opening hours
+    When I enter new opening hours entry by selecting type at index 4 and adding text "9:00am to 3:30pm"
+    Then I click the Add button in the opening hours tab
+    And I enter new opening hours entry by selecting type at index 5 and adding text "10:00am to 4:00pm"
     And I click save
-    Then a green update message is displayed
-    Then the new opening time is displayed as expected with id "<selected_type_id>" and text "<hours>"
+    Then a green update message is displayed in the opening hours tab
+    Then the second last opening time is displayed as expected with type shown as selected index 4 and hours as "9:00am to 3:30pm"
+    And the last opening time is displayed as expected with type shown as selected index 5 and hours as "10:00am to 4:00pm"
 
-    Examples:
-      | selected_type_id  | hours            |
-      | 44                | 9:00am to 3:30pm |
-
-  Scenario: Prevent empty entries being added
-    When I enter a blank opening hours entry
-    And I click the Add button
+  Scenario: Prevent incomplete entries being added
+    When I enter an incomplete opening hours entry
     And I click save
     Then an error message is displayed
 
   Scenario: Remove opening hours
     When I click the remove button under an opening hours entry
     Then I click save
-    Then a green update message is displayed
+    Then a green update message is displayed in the opening hours tab
+    # Delete another to remove both entries added above
+    When I click the remove button under an opening hours entry
+    Then I click save
+    Then a green update message is displayed in the opening hours tab

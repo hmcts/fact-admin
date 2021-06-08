@@ -37,18 +37,26 @@
 
 {% for openingTime in opening_times %}
 
+  {% set isNew = (openingTime.isNew === true) or (openingTime.isNew === "true") %}
+
   {% set descriptionError = false %}
   {% if openingTime.type_id === '' %}
-    {% set descriptionError = "{ text: 'Type is required' }" %}
+    {% set descriptionError = { text: 'Type is required' } %}
   {% endif %}
 
   {% set hoursError = false %}
   {% if openingTime.hours === '' %}
-   {% set hoursError = "{ text: 'Hours is required.' }" %}
+   {% set hoursError = { text: 'Hours is required' } %}
   {% endif %}
 
   {% call govukFieldset({
   }) %}
+
+  {% if isNew === true %}
+    <h3 class="govuk-heading-s">Add New Opening Hours</h3>
+  {% endif %}
+
+  <input type="hidden" name={{"opening_times[" + loop.index +"][isNew]"}} value={{openingTime.isNew}}></input>
 
   {{ govukSelect({
     id: "opening_times-" + loop.index,
@@ -71,12 +79,23 @@
     errorMessage: hoursError
   }) }}
 
-  {{ govukButton({
-    text: "Remove",
-    name: "deleteOpeningHours",
-    type: "button",
-    classes: "govuk-button--secondary deleteOpeningTime"
-  }) }}
+  {% if isNew === false %}
+    {{ govukButton({
+      text: "Remove",
+      name: "deleteOpeningHours",
+      type: "button",
+      classes: "govuk-button--secondary deleteOpeningTime"
+    }) }}
+  {% endif %}
+
+  {% if isNew === true %}
+    {{ govukButton({
+      text: "Clear",
+      name: "clearOpeningTime",
+      type: "button",
+      classes: "govuk-button--secondary clearOpeningTime"
+    }) }}
+  {% endif %}
 
   <hr/>
 
@@ -84,15 +103,17 @@
 
   {% endfor %}
 
-<h3 id='newOpeningHoursHeading' class="govuk-heading-s">Add New Opening Hours</h3>
 
 {% call govukFieldset({
-  attributes: { name: 'add-new-opening-time-fieldset'}
+  attributes: { id: "newOpeningTimeTemplate", disabled: "disabled", hidden: true }
 }) %}
 
+  <h3 id='newOpeningHoursHeading' class="govuk-heading-s">Add New Opening Hours</h3>
+
+  <input type="hidden" name={{"opening_times[" + opening_times.length +"][isNew]"}} value="true"></input>
+
   {{ govukSelect({
-    id: "newOpeningTimeDescription",
-    name: "newOpeningTimeDescription",
+    name: "opening_times[" + opening_times.length +"][type_id]",
     label: {
       text: "Type"
     },
@@ -104,15 +125,14 @@
       text: "Hours"
     },
     classes: "govuk-input--width-20",
-    id: "newOpeningTimeHours",
-    name: "newOpeningTimeHours"
+    name: "opening_times[" + opening_times.length +"][hours]"
   }) }}
 
   {{ govukButton({
-    text: "Add",
-    name: "addOpeningTime",
+    text: "Clear",
+    name: "clearOpeningTime",
     type: "button",
-    classes: "govuk-button--secondary"
+    classes: "govuk-button--secondary clearOpeningTime"
   }) }}
 
   <hr/>
@@ -122,4 +142,11 @@
 {{ govukButton({
   text: "Save",
   name: "saveOpeningTime"
+}) }}
+
+{{ govukButton({
+  text: "Add another",
+  name: "addOpeningTime",
+  type: "button",
+  classes: "govuk-button--secondary addOpeningTime"
 }) }}
