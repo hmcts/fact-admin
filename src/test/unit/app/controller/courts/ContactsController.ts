@@ -76,7 +76,7 @@ describe('ContactsController', () => {
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateContacts = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateContacts = jest.fn().mockResolvedValue(getContacts());
 
     await controller.put(req, res);
 
@@ -101,7 +101,7 @@ describe('ContactsController', () => {
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateContacts = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateContacts = jest.fn().mockResolvedValue(getContacts());
 
     await controller.put(req, res);
 
@@ -114,8 +114,9 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedContacts: Contact[] = [
-      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl2welsh', isNew: false },
-      { 'type_id': 89, number: '0432 111 9090', fax: true, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false },
+      { 'type_id': 44, number: '0202 303 4040', fax: true, explanation: 'explanation3', 'explanation_cy': 'expl3 welsh', isNew: true }
     ];
 
     req.body = {
@@ -124,7 +125,7 @@ describe('ContactsController', () => {
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateContacts = jest.fn().mockReturnValue(res);
+    req.scope.cradle.api.updateContacts = jest.fn().mockResolvedValue(res);
 
     // No description selected
     req.body.contacts[0]['type_id'] = null;
@@ -143,7 +144,8 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const postedContacts: Contact[] = [
       { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
-      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false },
+      { 'type_id': 44, number: '0202 303 4040', fax: true, explanation: 'explanation3', 'explanation_cy': 'expl3 welsh', isNew: true }
     ];
 
     req.params = {
@@ -198,8 +200,11 @@ describe('ContactsController', () => {
 
     await controller.get(req, res);
 
+    // Empty entry expected for adding new phone numbers
+    const expectedContacts = getContacts().concat([{ 'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true }]);
+
     const expectedResults: ContactPageData = {
-      contacts: getContacts(),
+      contacts: expectedContacts,
       contactTypes: [],
       updated: false,
       errorMsg: controller.getContactTypesErrorMsg
@@ -212,7 +217,8 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const postedContacts: Contact[] = [
       { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
-      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false },
+      { 'type_id': 44, number: '0202 303 4040', fax: true, explanation: 'explanation3', 'explanation_cy': 'expl3 welsh', isNew: true }
     ];
 
     req.params = {
