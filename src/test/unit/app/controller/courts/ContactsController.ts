@@ -13,10 +13,10 @@ describe('ContactsController', () => {
     updateContacts: () => Promise<Contact[]>,
     getContactTypes: () => Promise<ContactType[]> };
 
-  const contacts: Contact[] = [
-    { 'type_id': 1, number: '0123 456 7890', fax: false, explanation: 'Exp 1', 'explanation_cy': 'Exp_cy 1' },
-    { 'type_id': 2, number: '0987 654 3211', fax: true, explanation: 'Exp 2', 'explanation_cy': 'Exp_cy 2' },
-    { 'type_id': 3, number: '0879 123 4556', fax: false, explanation: 'Exp 3', 'explanation_cy': 'Exp_cy 3' }
+  const getContacts: () => Contact[] = () => [
+    { 'type_id': 1, number: '0123 456 7890', fax: false, explanation: 'Exp 1', 'explanation_cy': 'Exp_cy 1', isNew: false },
+    { 'type_id': 2, number: '0987 654 3211', fax: true, explanation: 'Exp 2', 'explanation_cy': 'Exp_cy 2', isNew: false },
+    { 'type_id': 3, number: '0879 123 4556', fax: false, explanation: 'Exp 3', 'explanation_cy': 'Exp_cy 3', isNew: false }
   ];
 
   const contactTypes: ContactType[] = [
@@ -35,8 +35,8 @@ describe('ContactsController', () => {
 
   beforeEach(() => {
     mockApi = {
-      getContacts: async (): Promise<Contact[]> => contacts,
-      updateContacts: async (): Promise<Contact[]> => contacts,
+      getContacts: async (): Promise<Contact[]> => getContacts(),
+      updateContacts: async (): Promise<Contact[]> => getContacts(),
       getContactTypes: async (): Promise<ContactType[]> => contactTypes
     };
 
@@ -54,8 +54,11 @@ describe('ContactsController', () => {
 
     await controller.get(req, res);
 
+    // Empty entry expected for adding new phone numbers
+    const expectedContacts = getContacts().concat([{ 'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true }]);
+
     const expectedResults: ContactPageData = {
-      contacts: contacts,
+      contacts: expectedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
       errorMsg: ''
@@ -68,7 +71,7 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'contacts': contacts,
+      'contacts': getContacts(),
       '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
@@ -78,7 +81,7 @@ describe('ContactsController', () => {
     await controller.put(req, res);
 
     // Should call API to save data
-    expect(mockApi.updateContacts).toBeCalledWith(slug, contacts);
+    expect(mockApi.updateContacts).toBeCalledWith(slug, getContacts());
   });
 
   test('Should post contacts if phone number has no type id but is a fax number', async () => {
@@ -88,8 +91,8 @@ describe('ContactsController', () => {
 
     const postedContacts: Contact[] = [
       // No type selected in first phone number but is fax number
-      { 'type_id': null, number: '01234 555 6060', fax: true, explanation: 'explanation1', 'explanation_cy': 'expl2welsh' },
-      { 'type_id': 22, number: '0432 111 9090', fax: true, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh' }
+      { 'type_id': null, number: '01234 555 6060', fax: true, explanation: 'explanation1', 'explanation_cy': 'expl2welsh', isNew: false },
+      { 'type_id': 22, number: '0432 111 9090', fax: true, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
     ];
 
     req.body = {
@@ -111,8 +114,8 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedContacts: Contact[] = [
-      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl2welsh' },
-      { 'type_id': 89, number: '0432 111 9090', fax: true, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh' }
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl2welsh', isNew: false },
+      { 'type_id': 89, number: '0432 111 9090', fax: true, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
     ];
 
     req.body = {
@@ -139,8 +142,8 @@ describe('ContactsController', () => {
     const req = mockRequest();
     const res = mockResponse();
     const postedContacts: Contact[] = [
-      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh' },
-      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh' }
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
     ];
 
     req.params = {
@@ -196,7 +199,7 @@ describe('ContactsController', () => {
     await controller.get(req, res);
 
     const expectedResults: ContactPageData = {
-      contacts: contacts,
+      contacts: getContacts(),
       contactTypes: [],
       updated: false,
       errorMsg: controller.getContactTypesErrorMsg
@@ -208,8 +211,8 @@ describe('ContactsController', () => {
     const req = mockRequest();
     const res = mockResponse();
     const postedContacts: Contact[] = [
-      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh' },
-      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh' }
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
+      { 'type_id': 89, number: '0432 111 9090', fax: false, explanation: 'explanation2', 'explanation_cy': 'expl2 welsh', isNew: false }
     ];
 
     req.params = {

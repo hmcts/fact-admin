@@ -149,6 +149,26 @@ export const getLastElementValue = async (selector: string) => {
   }
 };
 
+export const getElementValueAtIndex = async (selector: string, index: number, type: ('select' | 'input') = 'input') => {
+  try {
+    const input = await scope.page.$$(selector);
+    return await scope.page.evaluate((x: any, type: ('select' | 'input')) =>
+      (type === 'select' ? x.selectedIndex : x.value), input[index], type);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+export const setElementValueAtIndex = async (selector: string, index: number, value: number | string, type: ('select' | 'input') = 'input') => {
+  try {
+    const input = await scope.page.$$(selector);
+    return await scope.page.evaluate((el: HTMLSelectElement | HTMLInputElement, type: ('select' | 'input'),  value: string) =>
+      (type === 'select' ? (el as HTMLSelectElement).selectedIndex = parseInt(value) : el.value = value), input[index], type, value);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
 export const isElementVisible = async (selector: string) => {
   let visible = true;
   await scope.page.waitForSelector(selector, { visible: true, timeout: 3000 })
