@@ -124,6 +124,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "resolutions": {
-    "express-nunjucks/nunjucks-async-loader/chokidar/glob-parent": "5.1.2"
+    "express-nunjucks/nunjucks-async-loader/chokidar/glob-parent": "5.1.2",
+    "sass-lint/merge": "^2.1.1"
   }
 }
