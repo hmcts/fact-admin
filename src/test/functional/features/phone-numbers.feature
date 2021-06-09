@@ -30,7 +30,7 @@ Feature: Phone Numbers
     When I click the remove button under a phone number entry
     Then I click save in the phone number tab
     Then a green update message is displayed in the phone numbers tab
-    # Delete another to remove both entries added above
+    # Delete another to remove both entries added above.
     When I click the remove button under a phone number entry
     Then I click save in the phone number tab
     Then a green update message is displayed in the phone numbers tab
