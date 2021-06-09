@@ -1,5 +1,4 @@
 import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
-import {HomeController} from '../../app/controller/HomeController';
 import {Application} from 'express';
 import {CourtsController} from '../../app/controller/courts/CourtsController';
 import {CourtsDownloadController} from '../../app/controller/courts/CourtsDownloadController';
@@ -25,7 +24,6 @@ export class Container {
 
     server.locals.container = createContainer({ injectionMode: InjectionMode.CLASSIC }).register({
       logger: asValue(logger),
-      homeController: asClass(HomeController),
       bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
       courtsDownloadController: asClass(CourtsDownloadController),
