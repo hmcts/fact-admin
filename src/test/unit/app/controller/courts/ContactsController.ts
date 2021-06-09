@@ -19,6 +19,9 @@ describe('ContactsController', () => {
     { 'type_id': 3, number: '0879 123 4556', fax: false, explanation: 'Exp 3', 'explanation_cy': 'Exp_cy 3', isNew: false }
   ];
 
+  const getContactsWithEmptyEntry: () => Contact[] = () =>
+    getContacts().concat([{ 'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true }]);
+
   const contactTypes: ContactType[] = [
     { id: 54, type: 'Bankruptcy', 'type_cy': 'methdaliad'},
     { id: 89, type: 'Care cases', 'type_cy': 'Ochosion gofal'},
@@ -54,11 +57,8 @@ describe('ContactsController', () => {
 
     await controller.get(req, res);
 
-    // Empty entry expected for adding new phone numbers
-    const expectedContacts = getContacts().concat([{ 'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true }]);
-
     const expectedResults: ContactPageData = {
-      contacts: expectedContacts,
+      contacts: getContactsWithEmptyEntry(),
       contactTypes: expectedSelectItems,
       updated: false,
       errorMsg: ''
@@ -71,7 +71,7 @@ describe('ContactsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'contacts': getContacts(),
+      'contacts': getContactsWithEmptyEntry(),
       '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
@@ -200,11 +200,8 @@ describe('ContactsController', () => {
 
     await controller.get(req, res);
 
-    // Empty entry expected for adding new phone numbers
-    const expectedContacts = getContacts().concat([{ 'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true }]);
-
     const expectedResults: ContactPageData = {
-      contacts: expectedContacts,
+      contacts: getContactsWithEmptyEntry(),
       contactTypes: [],
       updated: false,
       errorMsg: controller.getContactTypesErrorMsg
