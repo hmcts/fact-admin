@@ -59,6 +59,7 @@
     "express": "^4.17.1",
     "express-nunjucks": "^2.2.5",
     "express-session": "^1.17.2",
+    "glob-parent": "5.1.2",
     "govuk-frontend": "^3.9.1",
     "helmet": "^4.6.0",
     "jest-when": "^3.3.1",
@@ -71,7 +72,7 @@
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
     "session-file-store": "^1.5.0",
-    "tinymce": "^5.7.1",
+    "tinymce": "^5.8.1",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.3"
@@ -119,7 +120,10 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-middleware": "^3.7.2",
+    "webpack-dev-middleware": "^5.0.0",
     "webpack-node-externals": "^1.7.2"
+  },
+  "resolutions": {
+    "express-nunjucks/nunjucks-async-loader/chokidar/glob-parent": "5.1.2"
   }
 }
