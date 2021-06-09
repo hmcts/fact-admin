@@ -129,7 +129,7 @@
     "node-sass/meow/trim-newlines": "^4.0.1",
     "nodemon/update-notifier/latest-version/package-json/got/cacheable-request/normalize-url": "^6.0.1",
     "mini-css-extract-plugin/normalize-url": "^6.0.1",
-    "html-webpack-plugin/pretty-error/renderkid/css-select/css-what": "^5.0.1",
+    "html-webpack-plugin/pretty-error": "^3.0.4",
     "uglifyjs-webpack-plugin/serialize-javascript": "^3.1.0"
   }
 }
