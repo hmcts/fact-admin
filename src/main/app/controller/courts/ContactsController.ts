@@ -25,7 +25,7 @@ export class ContactsController {
 
     if (!contacts) {
       await req.scope.cradle.api.getContacts(slug)
-        .then((value: Contact[]) => contacts = value)
+        .then((value: Contact[]) => contacts = value.map(c => { c.isNew = false; return c; }))
         .catch(() => error += this.getContactsErrorMsg);
     }
 
@@ -33,6 +33,10 @@ export class ContactsController {
     await req.scope.cradle.api.getContactTypes()
       .then((value: ContactType[]) => types = value)
       .catch(() => error += this.getContactTypesErrorMsg);
+
+    if (!contacts?.some(c => c.isNew === true)) {
+      this.addEmptyFormsForNewEntries(contacts);
+    }
 
     const pageData: ContactPageData = {
       contacts: contacts,
@@ -45,12 +49,18 @@ export class ContactsController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    const contacts = req.body.contacts as Contact[] ?? [];
-    contacts.forEach(c => c.fax = c.fax ?? false);
+    let contacts = req.body.contacts as Contact[] ?? [];
+    contacts.forEach(c => {
+      c.fax = c.fax ?? false;
+      c.isNew = (c.isNew === true || (c.isNew as any) === 'true');
+    });
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateErrorMsg, contacts);
     }
+
+    // Remove fully empty entries
+    contacts = contacts.filter(c => !this.contactIsEmpty(c));
 
     if (contacts.some(ot => (!ot.type_id && !ot.fax) || ot.number.trim() === '')) {
       return this.get(req, res, false, this.emptyTypeOrNumberErrorMsg, contacts);
@@ -64,5 +74,17 @@ export class ContactsController {
   private getContactTypesForSelect(standardTypes: ContactType[]): SelectItem[] {
     return standardTypes.map((ct: ContactType) => (
       {value: ct.id, text: ct.type, selected: false}));
+  }
+
+  private addEmptyFormsForNewEntries(contacts: Contact[], numberOfForms = 1): void {
+    if (contacts) {
+      for (let i = 0; i < numberOfForms; i++) {
+        contacts.push({'type_id': null, number: null, fax: false, explanation: '', 'explanation_cy': '', isNew: true});
+      }
+    }
+  }
+
+  private contactIsEmpty(contact: Contact): boolean {
+    return (!contact.type_id && !contact.number?.trim() && !contact.explanation?.trim() && !contact.explanation_cy?.trim());
   }
 }
