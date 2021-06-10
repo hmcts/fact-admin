@@ -10,7 +10,7 @@ import {CSRF} from '../../../modules/csrf';
 export class CourtTypesController {
 
 
-  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric. eg(1234)';
+  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric and start with 1-9';
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
@@ -135,7 +135,7 @@ export class CourtTypesController {
 
   private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
 
-    const regExp = /^[1-9][0-9]*$/;
+    const regExp = /^[1-9][0-9]{0,8}$/;
 
     switch (name) {
       case this.magistrateCourtType:
@@ -151,6 +151,7 @@ export class CourtTypesController {
         return null;
     }
   }
+
 
   private CheckCodeIsNullOrNan(code: number){
 
