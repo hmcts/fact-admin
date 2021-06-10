@@ -24,8 +24,9 @@ export class OpeningTimesController {
     const slug: string = req.params.slug as string;
 
     if (!openingTimes) {
+      // Get opening times from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getOpeningTimes(slug)
-        .then((value: OpeningTime[]) => openingTimes = value)
+        .then((value: OpeningTime[]) => openingTimes = value.map(ot => { ot.isNew = false; return ot; }))
         .catch(() => error += this.getOpeningTimesErrorMsg);
     }
 
