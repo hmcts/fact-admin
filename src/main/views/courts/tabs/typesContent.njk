@@ -4,7 +4,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-<h2 class="govuk-heading-l">Court Types and Codes</h2>
+<h2 class="govuk-heading-l">Types and Codes</h2>
 
 {% if errorMsg != '' %}
   {{ govukErrorSummary({
@@ -30,7 +30,7 @@
 
  {% set magistratesCodeError = false %}
   {% if item.checked and item.code | valid === false %}
-   {% set magistratesCodeError = { text: 'Magistrates code is required and must be numeric.' } %}
+   {% set magistratesCodeError = "{ text: 'Magistrates code is required and must be numeric. eg(1234)' }" %}
   {% endif %}
 
 {% set magistratesCourtCodeHtml %}
@@ -43,9 +43,7 @@
   name: "magistratesCourtCode",
   type: "text",
   value: item.code,
-  errorMessage: magistratesCodeError,
-  inputmode: "numeric",
-  pattern: "[0-9]*"
+  errorMessage: magistratesCodeError
 
 }) }}
 {% endset -%}
@@ -61,7 +59,7 @@
 
 {% set countyCourtCode = false %}
  {% if item.checked and  item.code | valid === false  %}
-   {% set countyCourtCode = { text: 'County code is required and must be numeric.' } %}
+   {% set countyCourtCode = "{ text: 'County code is required and must be numeric. eg(1234)' }" %}
  {% endif %}
 
 {% set countyCourtCodeHtml %}
@@ -71,8 +69,6 @@
   type: "text",
   value: item.code,
   errorMessage: countyCourtCode,
-  inputmode: "numeric",
-  pattern: "[0-9]*",
   classes: "govuk-!-width-one-third",
   label: {
     text: "County Court Code"
@@ -88,7 +84,7 @@
 
 {% set crownCourtCode = false %}
  {% if item.checked and item.code | valid === false  %}
-   {% set crownCourtCode = { text: 'Crown code is required and must be numeric.' } %}
+   {% set crownCourtCode = "{ text: 'Crown code is required and must be numeric. eg(1234)' }" %}
  {% endif %}
 
 {% set crownCourtCodeHtml %}
@@ -98,8 +94,6 @@
   type: "text",
   value : item.code,
   errorMessage: crownCourtCode,
-  inputmode: "numeric",
-  pattern: "[0-9]*",
   classes: "govuk-!-width-one-third",
   label: {
     text: "Crown Court Code"
@@ -117,10 +111,6 @@
 {{ govukCheckboxes({
   idPrefix: "court_types",
   name: "types",
-
-  hint: {
-    text: "Court types and codes:"
-  },
 
 
   items: items
