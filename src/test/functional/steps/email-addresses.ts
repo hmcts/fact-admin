@@ -22,27 +22,25 @@ When('I click on Add new Email', async () => {
   await I.click(selector);
 });
 
-When('I add Description from the dropdown {string} and Address {string} and Explanation {string} and Welsh Explanation {string}',
-  async (id: string, email: string, explanation: string, explanationCy: string) => {
+When('I add Description from the dropdown at index {int} and Address {string} and Explanation {string} and Welsh Explanation {string}',
+  async (descriptionIndex: number, email: string, explanation: string, explanationCy: string) => {
+    const numFieldsets = await I.countElement('#emailsTab fieldset');
+    const entryFormIdx = numFieldsets - 2; // we deduct one for zero-based indexing and the hidden template fieldset
 
-    const selectSelector = '#newEmailDescription';
-    const addressInputSelector = '#newEmailAddress';
-    const expInputSelector = '#newEmailExplanation';
-    const expCyInputSelector = '#newEmailExplanationCy';
+    // The description select element contains an empty entry in the 'add new' form only. We add 1 here
+    // to keep the indexing the same as the select elements in the existing email addresses, where the
+    // select element doesn't contain an empty entry.
+    descriptionIndex += 1;
 
-    const selectSelectorExists = await I.checkElement(selectSelector);
-    expect(selectSelectorExists).equal(true);
-    const addressInputSelectorExists = await I.checkElement(addressInputSelector);
-    expect(addressInputSelectorExists).equal(true);
-    const expInputSelectorExists = await I.checkElement(expInputSelector);
-    expect(expInputSelectorExists).equal(true);
-    const expCyInputSelectorExists = await I.checkElement(expCyInputSelector);
-    expect(expCyInputSelectorExists).equal(true);
+    const descriptionSelectSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+    const addressInputSelector = '#emailsTab input[name$="[address]"]';
+    const expInputSelector = '#emailsTab input[name$="[explanation]"]';
+    const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
 
-    await I.selectItem(selectSelector, id);
-    await I.fillField(addressInputSelector, email);
-    await I.fillField(expInputSelector, explanation);
-    await I.fillField(expCyInputSelector, explanationCy);
+    await I.setElementValueAtIndex(descriptionSelectSelector, entryFormIdx, descriptionIndex, 'select');
+    await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');
+    await I.setElementValueAtIndex(expInputSelector, entryFormIdx, explanation, 'input');
+    await I.setElementValueAtIndex(expCyInputSelector, entryFormIdx, explanationCy, 'input');
   });
 
 When('I click save button', async () => {
@@ -57,20 +55,49 @@ Then('a green update message showing email updated is displayed', async () => {
   expect(elementExist).equal(true);
 });
 
+Then('the second last email address is displayed with description at index {int} Address {string} Explanation {string} and Welsh Explanation {string}', async (id: number, email: string, explanation: string, explanationCy: string) => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const secondLastEmailIdx = numFieldsets - 4; // we deduct one for zero-based indexing, the hidden template, the 'add new' form and the last entry
+
+  const descriptionSelectSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  const addressInputSelector = '#emailsTab input[name$="[address]"]';
+  const expInputSelector = '#emailsTab input[name$="[explanation]"]';
+  const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
+
+  expect(await I.getSelectedIndexAtIndex(descriptionSelectSelector, secondLastEmailIdx)).equal(id);
+  expect(await I.getElementValueAtIndex(addressInputSelector, secondLastEmailIdx)).equal(email);
+  expect(await I.getElementValueAtIndex(expInputSelector, secondLastEmailIdx)).equal(explanation);
+  expect(await I.getElementValueAtIndex(expCyInputSelector, secondLastEmailIdx)).equal(explanationCy);
+});
+
+Then('the last email address is displayed with description at index {int} Address {string} Explanation {string} and Welsh Explanation {string}', async (id: number, email: string, explanation: string, explanationCy: string) => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const secondLastEmailIdx = numFieldsets - 3; // we deduct one for zero-based indexing, the hidden template and the 'add new' form
+
+  const descriptionSelectSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  const addressInputSelector = '#emailsTab input[name$="[address]"]';
+  const expInputSelector = '#emailsTab input[name$="[explanation]"]';
+  const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
+
+  expect(await I.getSelectedIndexAtIndex(descriptionSelectSelector, secondLastEmailIdx)).equal(id);
+  expect(await I.getElementValueAtIndex(addressInputSelector, secondLastEmailIdx)).equal(email);
+  expect(await I.getElementValueAtIndex(expInputSelector, secondLastEmailIdx)).equal(explanation);
+  expect(await I.getElementValueAtIndex(expCyInputSelector, secondLastEmailIdx)).equal(explanationCy);
+});
+
 When('I leave adminId blank', async () => {
-  const selectSelector = '#newEmailDescription';
-  const selectSelectorExists = await I.checkElement(selectSelector);
-  expect(selectSelectorExists).equal(true);
-  await I.clearField(selectSelector);
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const entryFormIdx = numFieldsets - 2; // we deduct one each for zero-based indexing and the hidden template fieldset
+  const descriptionSelectSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  await I.setElementValueAtIndex(descriptionSelectSelector, entryFormIdx, 0, 'select');
 });
 
-When('I leave Address blank', async () => {
-  const addressInputSelector = '#newEmailAddress';
-  const addressInputSelectorExists = await I.checkElement(addressInputSelector);
-  expect(addressInputSelectorExists).equal(true);
-  await I.clearField(addressInputSelector);
+When('I add address {string}', async (address: string) => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const entryFormIdx = numFieldsets - 2; // we deduct one each for zero-based indexing and the hidden template fieldset
+  const addressSelector = '#emailsTab input[name$="[address]"]';
+  await I.setElementValueAtIndex(addressSelector, entryFormIdx, address);
 });
-
 
 Then('A red error message display', async () => {
   const elementExist = await I.checkElement('#error-summary-title');
@@ -89,17 +116,16 @@ When('I click the remove button below a email section', async () => {
   expect(numEmailAdd - updatedEmailAdd).equal(1);
 });
 
-When('I add Description from the dropdown {string} and wrong Email-Address {string}',
-  async (id: string, email: string) => {
+When('I add Description from the dropdown {int} and wrong Email-Address {string}',
+  async (id: number, email: string) => {
+    const numFieldsets = await I.countElement('#emailsTab fieldset');
+    const entryFormIdx = numFieldsets - 2; // we deduct one for zero-based indexing and the hidden template fieldset
 
-    const selectSelector = '#newEmailDescription';
-    const addressInputSelector = '#newEmailAddress';
+    const descriptionSelectSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+    const addressInputSelector = '#emailsTab input[name$="[address]"]';
 
-    expect(await I.checkElement(selectSelector)).equal(true);
-    expect(await I.checkElement(addressInputSelector)).equal(true);
-
-    await I.selectItem(selectSelector, id);
-    await I.fillField(addressInputSelector, email);
+    await I.setElementValueAtIndex(descriptionSelectSelector, entryFormIdx, id, 'select');
+    await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');
   });
 
 Then('An error message is displayed with the text {string}', async (msg: string) => {

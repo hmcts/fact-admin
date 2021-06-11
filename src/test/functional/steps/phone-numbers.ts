@@ -18,34 +18,64 @@ Then('I can view the existing phone numbers', async () => {
   expect(tabClosed).equal(false);
 });
 
-When('I enter new phone number entry by selecting description and entering {string}, ' +
-  '{string} and {string}', async (number: string, explanation: string, explanationCy: string) => {
-  const selectSelector = 'select[name="newPhoneNumberDescription"]';
-  const numberInputSelector = '#newPhoneNumber';
-  const explanationInputSelector = '#newPhoneNumberExplanation';
-  const explanationCyInputSelector = '#newPhoneNumberExplanationCy';
+When('I enter new phone number entry by selecting description at index {int} and entering {string}, ' +
+  '{string} and {string}', async (index: number, number: string, explanation: string, explanationCy: string) => {
+  const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
+  const entryFormIdx = numFieldsets - 2;
 
-  expect(await I.checkElement(selectSelector)).equal(true);
-  expect(await I.checkElement(numberInputSelector)).equal(true);
-  expect(await I.checkElement(explanationInputSelector)).equal(true);
-  expect(await I.checkElement(explanationCyInputSelector)).equal(true);
+  // The 'description' select element includes an initial empty value in the 'add new' forms only
+  // (so that there is no initial selection). We add one here so that the indexing matches that of
+  // existing entries, where the select element doesn't contain an initial empty value.
+  index += 1;
 
-  const id = await I.getLastElementValue(selectSelector + ' option:nth-child(4)');
-  await I.selectItem(selectSelector, id);
-  await I.fillField(numberInputSelector, number);
-  await I.fillField(explanationInputSelector, explanation);
-  await I.fillField(explanationCyInputSelector, explanationCy);
+  const selectSelector = '#phoneNumbersTab select[name$="[type_id]"]';
+  const numberInputSelector = '#phoneNumbersTab input[name$="[number]"]';
+  const explanationInputSelector = '#phoneNumbersTab input[name$="[explanation]"]';
+  const explanationCyInputSelector = '#phoneNumbersTab input[name$="[explanation_cy]"]';
+
+  await I.setElementValueAtIndex(selectSelector, entryFormIdx, index, 'select');
+  await I.setElementValueAtIndex(numberInputSelector, entryFormIdx, number);
+  await I.setElementValueAtIndex(explanationInputSelector, entryFormIdx, explanation);
+  await I.setElementValueAtIndex(explanationCyInputSelector, entryFormIdx, explanationCy);
 });
 
-Then('the new phone number entry is displayed as expected with number {string} ' +
-  'explanation {string} and welsh explanation {string}', async (number: string, explanation: string, explanationCy: string) => {
-  const lastNumberText = await I.getLastElementValue('#phoneNumbersTab fieldset input[name$="[number]"]');
+Then('the phone number entry in second last position has description at index {int} number {string} ' +
+  'explanation {string} and welsh explanation {string}', async (descriptionIndex: number, number: string, explanation: string, explanationCy: string) => {
+  const numPhoneNumbers = await I.countElement('#phoneNumbersTab fieldset');
+
+  // We deduct 1 each for zero-based indexing, hidden template fieldset, 'add new' fieldset and last entry
+  const secondLastIndex = numPhoneNumbers - 4;
+
+  const typeIndex = await I.getSelectedIndexAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', secondLastIndex);
+  expect(typeIndex).equal(descriptionIndex);
+
+  const numberText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[number]"]', secondLastIndex);
+  expect(numberText).equal(number);
+
+  const explanationText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[explanation]"]', secondLastIndex);
+  expect(explanationText).equal(explanation);
+
+  const explanationCyText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[explanation_cy]"]', secondLastIndex);
+  expect(explanationCyText).equal(explanationCy);
+});
+
+Then('the phone number entry in last position has description at index {int} number {string} ' +
+  'explanation {string} and welsh explanation {string}', async (descriptionIndex: number, number: string, explanation: string, explanationCy: string) => {
+  const numPhoneNumbers = await I.countElement('#phoneNumbersTab fieldset');
+
+  // We deduct 1 each for zero-based indexing, hidden template fieldset and 'add new' fieldset
+  const lastIndex = numPhoneNumbers - 3;
+
+  const lastTypeIndex = await I.getSelectedIndexAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', lastIndex);
+  expect(lastTypeIndex).equal(descriptionIndex);
+
+  const lastNumberText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[number]"]', lastIndex);
   expect(lastNumberText).equal(number);
 
-  const lastExplanationText = await I.getLastElementValue('#phoneNumbersTab fieldset input[name$="[explanation]"]');
+  const lastExplanationText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[explanation]"]', lastIndex);
   expect(lastExplanationText).equal(explanation);
 
-  const lastExplanationCyText = await I.getLastElementValue('#phoneNumbersTab fieldset input[name$="[explanation_cy]"]');
+  const lastExplanationCyText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[explanation_cy]"]', lastIndex);
   expect(lastExplanationCyText).equal(explanationCy);
 });
 
@@ -54,16 +84,15 @@ Then('a green update message is displayed in the phone numbers tab', async() => 
   expect(elementExist).equal(true);
 });
 
-When('I enter a blank phone number entry', async () => {
-  const selectSelector = 'select[name="newPhoneNumberDescription"]';
-  const inputSelector = '#newPhoneNumber';
+When('I enter an incomplete phone number entry', async () => {
+  const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
+  const entryFormIdx = numFieldsets - 2;
 
-  const selectElementExists = await I.checkElement(selectSelector);
-  expect(selectElementExists).equal(true);
-  const inputElementExists = await I.checkElement(inputSelector);
-  expect(inputElementExists).equal(true);
+  // Ensure last entry is for new number and the description is unselected
+  const selectedDescription = await I.getLastElementValue('select[name$="[type_id]"');
+  expect(selectedDescription).equal('');
 
-  await I.clearField(inputSelector);
+  await I.setElementValueAtIndex('input[name$="[number]"', entryFormIdx, '0987 666 5040');
 });
 
 Then('I click the Add button in the phone number tab', async () => {

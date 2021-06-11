@@ -2,7 +2,8 @@ import {SelectItem} from "./CourtPageData";
 
 export interface OpeningTime {
   type_id: number,
-  hours: string
+  hours: string,
+  isNew?: boolean
 }
 
 export interface OpeningTimeData {

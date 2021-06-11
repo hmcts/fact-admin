@@ -1,9 +1,9 @@
-import {Application} from 'express';
-import {isSuperAdmin} from './modules/oidc';
+import { Application } from 'express';
+import { isSuperAdmin } from './modules/oidc';
 
 export default function(app: Application): void {
 
-  app.get('/', app.locals.container.cradle.homeController.get);
+  app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);
@@ -18,7 +18,10 @@ export default function(app: Application): void {
   app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
   app.get('/courts/:slug/contacts', app.locals.container.cradle.contactsController.get);
   app.put('/courts/:slug/contacts', app.locals.container.cradle.contactsController.put);
+  app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
+  app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
+
 }

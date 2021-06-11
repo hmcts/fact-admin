@@ -30,11 +30,23 @@ export class Nunjucks {
 
     env.addFilter('selectFilter', this.selectFilter);
 
+    env.addFilter('setAttribute', function(dictionary , key , value){
+      dictionary[key] = value;
+      return dictionary;
+    });
+
+    env.addFilter('valid', function(string){
+      const regExp = /[a-zA-Z]/g;
+      return (!(regExp.test(string) || isNaN(string)) );
+
+    });
+
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
       next();
     });
   }
+
 
   private selectFilter(arr: SelectItem[], selectedId: string) {
     // Set selected property on selected item
@@ -56,4 +68,5 @@ export class Nunjucks {
     }
     return arr;
   }
+
 }

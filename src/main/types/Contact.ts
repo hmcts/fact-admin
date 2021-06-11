@@ -6,6 +6,7 @@ export interface Contact {
   fax: boolean;
   explanation: string;
   explanation_cy: string;
+  isNew?: boolean;
 }
 
 export interface ContactPageData {
