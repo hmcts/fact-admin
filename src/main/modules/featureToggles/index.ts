@@ -28,8 +28,4 @@ export default class FeatureToggles {
         .catch(() => next());
     };
   }
-
-  public static toggleViewElement = async(flag: string): Promise<boolean> => {
-    return await FeatureToggles.getFlagValue(flag);
-  }
 }
