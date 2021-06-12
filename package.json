@@ -66,6 +66,7 @@
     "jquery": "^3.5.1",
     "json2csv": "^5.0.5",
     "jwt-decode": "^3.1.2",
+    "launchdarkly-node-server-sdk": "^5.14.5",
     "lodash": "^4.17.21",
     "nunjucks": "^3.2.3",
     "redis": "^3.1.2",
