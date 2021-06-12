@@ -2,6 +2,8 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
+import FeatureToggles from '../featureToggles';
+import {LDFlagSet} from 'launchdarkly-node-server-sdk';
 
 export class Nunjucks {
   constructor(public developmentMode: boolean) {
@@ -27,6 +29,11 @@ export class Nunjucks {
         express: app,
       },
     );
+
+    FeatureToggles.onFlagUpdate((flags: LDFlagSet) => {
+      env.addGlobal('featureToggles', flags);
+    });
+
 
     env.addFilter('selectFilter', this.selectFilter);
 

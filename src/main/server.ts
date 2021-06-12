@@ -12,6 +12,7 @@ import {PropertiesVolume} from './modules/properties-volume';
 import {SessionStorage} from './modules/session';
 import {AppInsights} from './modules/appinsights';
 import {OidcMiddleware} from './modules/oidc';
+import FeatureToggles from './modules/featureToggles';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -41,12 +42,12 @@ setupDev(server,developmentMode);
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
 new SessionStorage().enableFor(server);
+FeatureToggles.enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);
 new AppInsights().enableFor(server);
 new OidcMiddleware().enableFor(server);
-
 addRoutes(server);
 
 export const app = server.listen(config.get('port'), () => {
