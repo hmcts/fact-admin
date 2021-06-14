@@ -15,7 +15,7 @@ export class OpeningTimesController {
   openingTimeDuplicatedErrorMsg = 'All descriptions must be unique.';
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
   getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
-  private updateErrorMsg = 'A problem occurred when saving the opening times.';
+  updateErrorMsg = 'A problem occurred when saving the opening times.';
 
   public async get(
     req: AuthedRequest,

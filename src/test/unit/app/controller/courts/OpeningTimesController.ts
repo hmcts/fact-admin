@@ -152,7 +152,7 @@ describe('OpeningTimesController', () => {
       'opening_times': postedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: 'A problem occurred when saving the opening times.'}]
+      errors: [{text: controller.updateErrorMsg}]
     };
 
     await controller.put(req, res);
