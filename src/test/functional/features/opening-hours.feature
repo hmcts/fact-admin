@@ -30,7 +30,6 @@ Feature: Opening Hours
     When I click the remove button under an opening hours entry
     Then I click save
     Then a green update message is displayed in the opening hours tab
-    # Delete another to remove both entries added above
     When I click the remove button under an opening hours entry
     Then I click save
     Then a green update message is displayed in the opening hours tab
