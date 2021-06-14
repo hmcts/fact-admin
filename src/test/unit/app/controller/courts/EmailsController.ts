@@ -13,16 +13,19 @@ describe('EmailsController', () => {
     updateEmails: () => Promise<Email[]>,
     getEmailTypes: () => Promise<EmailType[]> };
 
-  const emails: Email[] = [
+  const getEmails: () => Email[] = () => [
     {
       address: 'abc@test.com', explanation: 'explanation ',
-      explanationCy: 'explanation cy', adminEmailTypeId: 8
+      explanationCy: 'explanation cy', adminEmailTypeId: 8, isNew: false
     },
     {
       address: 'abc@test2.com', explanation: 'explanation 2',
-      explanationCy: 'explanation cy 2', adminEmailTypeId: 2
+      explanationCy: 'explanation cy 2', adminEmailTypeId: 2, isNew: false
     }
   ];
+
+  const emailsWithEmptyEntry: Email[] =
+    getEmails().concat({ adminEmailTypeId: null, address: null, explanation: null, explanationCy: null, isNew: true });
 
   const emailsInvalidSyntax: Email[] = [
     {
@@ -61,8 +64,8 @@ describe('EmailsController', () => {
 
   beforeEach(() => {
     mockApi = {
-      getEmails: async (): Promise<Email[]> => emails,
-      updateEmails: async (): Promise<Email[]> => emails,
+      getEmails: async (): Promise<Email[]> => getEmails(),
+      updateEmails: async (): Promise<Email[]> => getEmails(),
       getEmailTypes: async (): Promise<EmailType[]> => emailTypes
     };
 
@@ -81,7 +84,7 @@ describe('EmailsController', () => {
     await controller.get(req, res);
 
     const expectedResults: EmailData = {
-      emails: emails,
+      emails: emailsWithEmptyEntry,
       emailTypes: expectedSelectItems,
       updated: false,
       errorMsg: ''
@@ -94,17 +97,17 @@ describe('EmailsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'emails': emails,
+      'emails': getEmails(),
       '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateEmails = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateEmails = jest.fn().mockResolvedValue(getEmails());
 
     await controller.put(req, res);
 
     // Should call API to save data
-    expect(mockApi.updateEmails).toBeCalledWith(slug, emails);
+    expect(mockApi.updateEmails).toBeCalledWith(slug, getEmails());
   });
 
   test('Should not post emails if type or address field(s) are empty', async() => {
@@ -212,7 +215,7 @@ describe('EmailsController', () => {
     await controller.get(req, res);
 
     const expectedResults: EmailData = {
-      emails: emails,
+      emails: emailsWithEmptyEntry,
       emailTypes: [],
       updated: false,
       errorMsg: controller.getEmailTypesErrorMsg

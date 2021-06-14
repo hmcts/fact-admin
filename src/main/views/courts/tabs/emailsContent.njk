@@ -34,17 +34,25 @@
 
 {% for email in emails %}
 
+  {% set isNew = (email.isNew === true) or (email.isNew === "true") %}
+
   {% set descriptionError = false %}
   {% if email.adminEmailTypeId === '' %}
-    {% set descriptionError = "{ text: 'Type is required' }" %}
+    {% set descriptionError = { text: 'Type is required' } %}
   {% endif %}
 
   {% set emailsError = false %}
   {% if email.address === '' %}
-   {% set emailsError = "{ text: 'Address is required.' }" %}
+   {% set emailsError = { text: 'Address is required' } %}
   {% endif %}
 
   {% call govukFieldset({}) %}
+
+  {% if isNew === true %}
+    <h3 class="govuk-heading-s">Add New Email Address</h3>
+  {% endif %}
+
+  <input type="hidden" name={{"emails[" + loop.index +"][isNew]"}} value={{email.isNew}}></input>
 
   {{ govukSelect({
     id: "emails-" + loop.index,
@@ -87,12 +95,23 @@
     value: email.explanationCy
   }) }}
 
-  {{ govukButton({
-    text: "Remove",
-    name: "deleteEmails",
-    type: "button",
-    classes: "govuk-button--secondary deleteEmail"
-  }) }}
+  {% if isNew === false %}
+    {{ govukButton({
+      text: "Remove",
+      name: "deleteEmails",
+      type: "button",
+      classes: "govuk-button--secondary deleteEmail"
+    }) }}
+  {% endif %}
+
+  {% if isNew === true %}
+    {{ govukButton({
+      text: "Clear",
+      name: "clearEmail",
+      type: "button",
+      classes: "govuk-button--secondary clearEmail"
+    }) }}
+  {% endif %}
 
   <hr/>
 
@@ -100,15 +119,17 @@
 
   {% endfor %}
 
-<h3 id='newEmailsHeading' class="govuk-heading-s">Add New Email Address</h3>
 
 {% call govukFieldset({
-  attributes: { name: 'add-new-email-fieldset'}
+  attributes: { id: "newEmailTemplate", disabled: "disabled", hidden: true }
 }) %}
 
+  <input type="hidden" name={{"emails[" + emails.length +"][isNew]"}} value="true"></input>
+
+  <h3 class="govuk-heading-s">Add New Email Address</h3>
+
   {{ govukSelect({
-    id: "newEmailDescription",
-    name: "newEmailDescription",
+    name:  "emails[" + emails.length +"][adminEmailTypeId]",
     label: {
       text: "Type"
     },
@@ -120,8 +141,7 @@
       text: "Address"
     },
     classes: "govuk-input--width-20",
-    id: "newEmailAddress",
-    name: "newEmailAddress"
+    name: "emails[" + emails.length +"][address]"
   }) }}
 
   {{ govukInput({
@@ -129,8 +149,7 @@
       text: "Explanation"
     },
     classes: "govuk-input--width-20",
-    id: "newEmailExplanation",
-    name: "newEmailExplanation"
+    name: "emails[" + emails.length +"][explanation]"
   }) }}
 
   {{ govukInput({
@@ -138,15 +157,7 @@
       text: "Explanation (Welsh)"
     },
     classes: "govuk-input--width-20",
-    id: "newEmailExplanationCy",
-    name: "newEmailExplanationCy"
-  }) }}
-
-  {{ govukButton({
-    text: "Add",
-    name: "addEmail",
-    type: "button",
-    classes: "govuk-button--secondary"
+    name: "emails[" + emails.length +"][explanationCy]"
   }) }}
 
   <hr/>
@@ -156,4 +167,11 @@
 {{ govukButton({
   text: "Save",
   name: "saveEmail"
+}) }}
+
+{{ govukButton({
+  text: "Add another",
+  name: "addEmail",
+  type: "button",
+  classes: "govuk-button--secondary addEmail"
 }) }}

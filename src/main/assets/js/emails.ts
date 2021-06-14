@@ -4,15 +4,19 @@ import {AjaxErrorHandler} from './ajaxErrorHandler';
 export class EmailsController {
   private formId = '#emailsForm';
   private tabId = '#emailsTab';
-  private newEmailHeadingId = '#newEmailsHeading';
   private emailContentId = '#emailsContent';
+  private hiddenNewEmailTemplateId = '#newEmailTemplate';
+
   private deleteBtnClass = 'deleteEmail';
-  private addEmailsBtnName = 'addEmail';
+  private addEmailsBtnClass = 'addEmail';
+  private clearEmailBtnClass = 'clearEmail';
+
   private typeSelectName = 'adminEmailTypeId'
   private addressInputName = 'address';
   private explanationInputName = 'explanation';
   private explanationCyInputName = 'explanationCy';
   private explanationCyInputId = 'explanation-cy'
+  private hiddenNewInputName = 'isNew';
 
   constructor() {
     this.initialize();
@@ -25,6 +29,7 @@ export class EmailsController {
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
+        this.setUpClearEventHandler();
       }
     });
   }
@@ -61,33 +66,17 @@ export class EmailsController {
   }
 
   private setUpAddEventHandler(): void {
-    $(this.tabId).on('click', `button[name="${this.addEmailsBtnName}"]`, e => {
-      // Copy new emails fields to main table.
-      const addNewFieldset = e.target.closest('fieldset');
-      const copyFieldset = $(addNewFieldset).clone();
-      $(`${this.newEmailHeadingId}`).before(copyFieldset);
-
-      // Set the value of the select to that chosen in 'add new'.
-      const type = $(addNewFieldset).find('select').val();
-      $(copyFieldset).find('select')
-        .val(type)
-        .attr('name', EmailsController.getInputName(this.typeSelectName, 0));
-      $(copyFieldset).find('#newEmailAddress').attr('name', EmailsController.getInputName(this.addressInputName, 0));
-      $(copyFieldset).find('#newEmailExplanation')
-        .attr('name', EmailsController.getInputName(this.explanationInputName, 0));
-      $(copyFieldset).find('#newEmailExplanationCy')
-        .attr('name', EmailsController.getInputName(this.explanationCyInputName, 0));
+    $(this.tabId).on('click', `button.${this.addEmailsBtnClass}`, e => {
+      // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
+      const selector = `${this.tabId} ${this.hiddenNewEmailTemplateId}`;
+      const copyFieldset = $(selector).clone()
+        .removeAttr('disabled')
+        .removeAttr('hidden')
+        .removeAttr('id');
+      $(selector).before(copyFieldset);
 
       // Set the id and names of the elements in the table
       this.renameFormElements();
-
-      // Change button type in newly added row from 'add' to 'delete'.
-      $(copyFieldset).find('button').replaceWith(
-        '<button type="button" name="deleteEmails" ' +
-        `class="govuk-button govuk-button--secondary ${this.deleteBtnClass}" data-module="govuk-button">Remove</button>`);
-
-      // Reset select and input values on 'add new' row.
-      $(addNewFieldset).find('input, select').val('');
     });
   }
 
@@ -95,6 +84,12 @@ export class EmailsController {
     $(this.tabId).on('click', `button.${this.deleteBtnClass}`, e => {
       e.target.closest('fieldset').remove();
       this.renameFormElements();
+    });
+  }
+
+  private setUpClearEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.clearEmailBtnClass}`, e => {
+      $(e.target.closest('fieldset')).find(':input:visible').val('');
     });
   }
 
@@ -109,6 +104,7 @@ export class EmailsController {
     this.renameInputElement(this.addressInputName, this.addressInputName);
     this.renameInputElement(this.explanationInputName, this.explanationInputName);
     this.renameInputElement(this.explanationCyInputName, this.explanationCyInputId);
+    this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
   private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
