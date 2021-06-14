@@ -31,7 +31,6 @@ Feature: Email-addresses
     When I click the remove button below a email section
     And I click save button
     Then a green update message showing email updated is displayed
-    # Delete another to remove both additions from above and test multiple deletes
     When I click the remove button below a email section
     And I click save button
     Then a green update message showing email updated is displayed
