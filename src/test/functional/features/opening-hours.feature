@@ -12,46 +12,24 @@ Feature: Opening Hours
     When I click the opening hours tab
     Then I can view the existing opening hours
 
-  Scenario Outline: Add new opening hours
-    When I enter new opening hours entry by selecting id "<selected_type_id>" and adding text "<hours>"
-    And I click the Add button
+  Scenario: Add opening hours
+    When I enter new opening hours entry by selecting type at index 4 and adding text "9:00am to 3:30pm"
+    Then I click the Add button in the opening hours tab
+    And I enter new opening hours entry by selecting type at index 5 and adding text "10:00am to 4:00pm"
     And I click save
-    Then a green update message is displayed
-    Then the new opening time is displayed as expected with id "<selected_type_id>" and text "<hours>"
+    Then a green update message is displayed in the opening hours tab
+    Then the second last opening time is displayed as expected with type shown as selected index 4 and hours as "9:00am to 3:30pm"
+    And the last opening time is displayed as expected with type shown as selected index 5 and hours as "10:00am to 4:00pm"
 
-    # 2 examples are added to ensure we have at least 2 entries for testing re-ordering later in this feature.
-    Examples:
-      | selected_type_id  | hours             |
-      | 44                | 9:00am to 3:30pm  |
-      | 49                | 11:00am to 4:00pm |
-
-  Scenario: Reorder opening hours - move entry up
-    When I click the move up button on the last opening hours entry which has id "49" and hours "11:00am to 4:00pm"
-    Then The opening hours entry with id "49" and hours "11:00am to 4:00pm" is in second last position
-    When I click save
-    Then a green update message is displayed
-    # Check the opening hours entry remains in 2nd last position after saving, which reloads the content
-    And The opening hours entry with id "49" and hours "11:00am to 4:00pm" is in second last position
-
-  Scenario: Reorder opening hours - move entry down
-    When I click the move down button on the second last opening hours entry which has id "49" and hours "11:00am to 4:00pm"
-    Then The opening hours entry with id "49" and hours "11:00am to 4:00pm" is in last position
-    When I click save
-    Then a green update message is displayed
-    # Check the opening hours entry remains in last position after saving, which reloads the content
-    And The opening hours entry with id "49" and hours "11:00am to 4:00pm" is in last position
-
-  Scenario: Prevent empty entries being added
-    When I enter a blank opening hours entry
-    And I click the Add button
+  Scenario: Prevent incomplete entries being added
+    When I enter an incomplete opening hours entry
     And I click save
     Then an error message is displayed
 
   Scenario: Remove opening hours
     When I click the remove button under an opening hours entry
     Then I click save
-    Then a green update message is displayed
-    # Remove a second entry to clean up both additions from scenario above
+    Then a green update message is displayed in the opening hours tab
     When I click the remove button under an opening hours entry
     Then I click save
-    Then a green update message is displayed
+    Then a green update message is displayed in the opening hours tab
