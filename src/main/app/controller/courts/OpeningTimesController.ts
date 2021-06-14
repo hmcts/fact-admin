@@ -5,20 +5,23 @@ import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {OpeningType} from '../../../types/OpeningType';
 import {CSRF} from '../../../modules/csrf';
+import {validateOpeningTimeDuplicates} from '../../../utils/validation';
+import {Error} from '../../../types/Error';
 
 @autobind
 export class OpeningTimesController {
 
-  private emptyTypeOrHoursErrorMsg = 'Type and hours are required for all opening times.';
-  private updateErrorMsg = 'A problem occurred when saving the opening times.';
+  emptyTypeOrHoursErrorMsg = 'Description and hours are required for all opening times.';
+  openingTimeDuplicatedErrorMsg = 'All descriptions must be unique.';
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
-  getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time types.';
+  getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
+  private updateErrorMsg = 'A problem occurred when saving the opening times.';
 
   public async get(
     req: AuthedRequest,
     res: Response,
     updated = false,
-    error = '',
+    errorMsg: string[] = [],
     openingTimes: OpeningTime[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
@@ -27,22 +30,27 @@ export class OpeningTimesController {
       // Get opening times from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getOpeningTimes(slug)
         .then((value: OpeningTime[]) => openingTimes = value.map(ot => { ot.isNew = false; return ot; }))
-        .catch(() => error += this.getOpeningTimesErrorMsg);
+        .catch(() => errorMsg.push(this.getOpeningTimesErrorMsg));
     }
 
     let types: OpeningType[] = [];
     await req.scope.cradle.api.getOpeningTimeTypes()
       .then((value: OpeningType[]) => types = value)
-      .catch(() => error += this.getOpeningTypesErrorMsg);
+      .catch(() => errorMsg.push(this.getOpeningTypesErrorMsg));
 
     if (!openingTimes?.some(ot => ot.isNew === true)) {
       this.addEmptyFormsForNewEntries(openingTimes);
     }
 
+    const errors: Error[] = [];
+    for (const msg of errorMsg) {
+      errors.push({text: msg});
+    }
+
     const pageData: OpeningTimeData = {
       'opening_times': openingTimes,
       openingTimeTypes: OpeningTimesController.getOpeningTimeTypesForSelect(types),
-      errorMsg: error,
+      errors: errors,
       updated: updated
     };
 
@@ -54,20 +62,28 @@ export class OpeningTimesController {
     openingTimes.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateErrorMsg, openingTimes);
+      return this.get(req, res, false, [this.updateErrorMsg], openingTimes);
     }
 
     // Remove fully empty entries
     openingTimes = openingTimes.filter(ot => !this.openingHoursEntryIsEmpty(ot));
+    const errorMsg: string[] = [];
 
     if (openingTimes.some(ot => !ot.type_id || ot.hours === '')) {
-      // Retains the posted opening hours when errors exist
-      return this.get(req, res, false, this.emptyTypeOrHoursErrorMsg, openingTimes);
-    } else {
-      await req.scope.cradle.api.updateOpeningTimes(req.params.slug, openingTimes)
-        .then((value: OpeningTime[]) => this.get(req, res, true, '', value))
-        .catch(() => this.get(req, res, false, this.updateErrorMsg, openingTimes));
+      errorMsg.push(this.emptyTypeOrHoursErrorMsg);
     }
+
+    if (!validateOpeningTimeDuplicates(openingTimes)) {
+      errorMsg.push(this.openingTimeDuplicatedErrorMsg);
+    }
+
+    if (errorMsg.length > 0) {
+      return this.get(req, res, false, errorMsg, openingTimes);
+    }
+
+    await req.scope.cradle.api.updateOpeningTimes(req.params.slug, openingTimes)
+      .then((value: OpeningTime[]) => this.get(req, res, true, [], value))
+      .catch(() => this.get(req, res, false, [this.updateErrorMsg], openingTimes));
   }
 
   private static getOpeningTimeTypesForSelect(standardTypes: OpeningType[]): SelectItem[] {

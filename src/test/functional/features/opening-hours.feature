@@ -21,11 +21,6 @@ Feature: Opening Hours
     Then the second last opening time is displayed as expected with type shown as selected index 4 and hours as "9:00am to 3:30pm"
     And the last opening time is displayed as expected with type shown as selected index 5 and hours as "10:00am to 4:00pm"
 
-  Scenario: Prevent incomplete entries being added
-    When I enter an incomplete opening hours entry
-    And I click save
-    Then an error message is displayed
-
   Scenario: Remove opening hours
     When I click the remove button under an opening hours entry
     Then I click save
@@ -33,3 +28,13 @@ Feature: Opening Hours
     When I click the remove button under an opening hours entry
     Then I click save
     Then a green update message is displayed in the opening hours tab
+
+  Scenario: Prevent incomplete entries being added
+    When I enter an incomplete opening hour description
+    And I click save
+    Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and description field message "Description is required"
+
+  Scenario: Prevent duplicated entries being added
+    When I enter duplicated opening hour description
+    And I click save
+    Then An error is displayed for opening hours with summary "All descriptions must be unique." and description field message "Duplicated description"

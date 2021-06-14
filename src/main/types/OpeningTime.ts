@@ -1,14 +1,16 @@
 import {SelectItem} from "./CourtPageData";
+import {Error} from "./Error";
 
 export interface OpeningTime {
   type_id: number,
   hours: string,
-  isNew?: boolean
+  isNew?: boolean,
+  isDuplicated?: boolean
 }
 
 export interface OpeningTimeData {
   opening_times: OpeningTime[],
   openingTimeTypes: SelectItem[],
-  errorMsg: string,
+  errors: Error[],
   updated: boolean
 }
