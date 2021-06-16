@@ -20,8 +20,7 @@ Then('I can view the existing opening hours', async () => {
 });
 
 When('I remove all existing opening hours entries and save', async () => {
-  await FunctionalTestHelpers.clearFieldsets('#openingTimesTab', 'deleteOpeningHours');
-  await FunctionalTestHelpers.clickSaveButton('#openingTimesTab', 'saveOpeningTime');
+  await FunctionalTestHelpers.clearFieldsets('#openingTimesTab', 'deleteOpeningHours', 'saveOpeningTime');
 });
 
 When('I enter new opening hours entry by selecting type at index {int} and adding text {string}', async (typeIdx: number, text: string) => {
