@@ -13,6 +13,9 @@ Feature: Opening Hours
     Then I can view the existing opening hours
 
   Scenario: Add opening hours
+    # Clear out potential left-over opening hours from the previous run before adding new ones
+    When I remove all existing opening hours entries and save
+    Then a green update message is displayed in the opening hours tab
     When I enter new opening hours entry by selecting type at index 4 and adding text "9:00am to 3:30pm"
     Then I click the Add button in the opening hours tab
     And I enter new opening hours entry by selecting type at index 5 and adding text "10:00am to 4:00pm"

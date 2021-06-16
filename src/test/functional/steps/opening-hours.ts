@@ -19,6 +19,11 @@ Then('I can view the existing opening hours', async () => {
   expect(tabClosed).equal(false);
 });
 
+When('I remove all existing opening hours entries and save', async () => {
+  await FunctionalTestHelpers.clearFieldsets('#openingTimesTab', 'deleteOpeningHours');
+  await FunctionalTestHelpers.clickSaveButton('#openingTimesTab', 'saveOpeningTime');
+});
+
 When('I enter new opening hours entry by selecting type at index {int} and adding text {string}', async (typeIdx: number, text: string) => {
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const entryFormIdx = numFieldsets - 2;
@@ -40,10 +45,7 @@ When('I click the Add button in the opening hours tab', async () => {
 });
 
 Then('I click save', async () => {
-  const selector = '#openingTimesTab button[name="saveOpeningTime"]';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
+  await FunctionalTestHelpers.clickSaveButton('#openingTimesTab', 'saveOpeningTime');
 });
 
 Then('a green update message is displayed in the opening hours tab', async () => {

@@ -15,4 +15,26 @@ export class FunctionalTestHelpers {
     const updatedNumFieldsets = await I.countElement(fieldsetSelector);
     expect(updatedNumFieldsets - numFieldsets).equal(1);
   }
+
+  public static async clearFieldsets(containerId: string, buttonName: string) {
+    const fieldsetSelector = `${containerId} fieldset`;
+    const fieldsetCount = await I.countElement(fieldsetSelector);
+    // Remove all fieldsets except the empty new one and the template
+    for (let i = fieldsetCount; i > 2; i--) {
+      const deleteButtonSelector = `${containerId} button[name="${buttonName}"]`;
+      const elementExist = await I.checkElement(deleteButtonSelector);
+      expect(elementExist).equal(true);
+      await I.click(deleteButtonSelector);
+
+      const updatedFieldsetCount = await I.countElement(fieldsetSelector);
+      expect(i - updatedFieldsetCount).equal(1);
+    }
+  }
+
+  public static async clickSaveButton(containerId: string, buttonName: string) {
+    const selector = `${containerId} button[name="${buttonName}"]`;
+    const elementExist = await I.checkElement(selector);
+    expect(elementExist).equal(true);
+    await I.click(selector);
+  }
 }
