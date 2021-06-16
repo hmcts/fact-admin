@@ -18,14 +18,10 @@
     target='_blank' rel='noopener noreferrer'>times</a> "})
 }}
 
-{% if errorMsg != '' %}
+{% if errors|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
-    errorList: [
-      {
-        text: errorMsg
-      }
-    ]
+    errorList: errors
   }) }}
 {% endif %}
 
@@ -41,7 +37,9 @@
 
   {% set descriptionError = false %}
   {% if openingTime.type_id === '' %}
-    {% set descriptionError = { text: 'Type is required' } %}
+    {% set descriptionError = { text: 'Description is required' } %}
+  {% elif openingTime.isDuplicated === true %}
+    {% set descriptionError = { text: 'Duplicated description' } %}
   {% endif %}
 
   {% set hoursError = false %}
@@ -62,7 +60,7 @@
     id: "opening_times-" + loop.index,
     name: "opening_times[" + loop.index +"][type_id]",
     label: {
-      text: "Type"
+      text: "Description"
     },
     errorMessage: descriptionError,
     items: openingTimeTypes | selectFilter(openingTime.type_id)
@@ -86,9 +84,7 @@
       type: "button",
       classes: "govuk-button--secondary deleteOpeningTime"
     }) }}
-  {% endif %}
-
-  {% if isNew === true %}
+  {% else %}
     {{ govukButton({
       text: "Clear",
       name: "clearOpeningTime",
