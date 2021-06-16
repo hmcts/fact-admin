@@ -29,10 +29,10 @@ export class FunctionalTestHelpers {
       const updatedFieldsetCount = await I.countElement(fieldsetSelector);
       expect(i - updatedFieldsetCount).equal(1);
     }
-    await this.clickSaveButton(containerId, saveButtonName);
+    await this.save(containerId, saveButtonName);
   }
 
-  public static async clickSaveButton(containerId: string, buttonName: string) {
+  public static async save(containerId: string, buttonName: string) {
     const selector = `${containerId} button[name="${buttonName}"]`;
     const elementExist = await I.checkElement(selector);
     expect(elementExist).equal(true);

@@ -44,7 +44,7 @@ When('I click the Add button in the opening hours tab', async () => {
 });
 
 Then('I click save', async () => {
-  await FunctionalTestHelpers.clickSaveButton('#openingTimesTab', 'saveOpeningTime');
+  await FunctionalTestHelpers.save('#openingTimesTab', 'saveOpeningTime');
 });
 
 Then('a green update message is displayed in the opening hours tab', async () => {
