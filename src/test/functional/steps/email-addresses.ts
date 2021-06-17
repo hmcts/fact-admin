@@ -2,7 +2,7 @@ import {Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
-import {FunctionalTestHelpers} from "../utlis/helpers";
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the Emails tab', async () => {
   const selector = '#tab_emails';
