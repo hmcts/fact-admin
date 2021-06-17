@@ -130,3 +130,68 @@ Then('An error message is displayed with the text {string}', async (msg: string)
       await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
     .equal(msg);
 });
+
+
+
+let entryFormIdx = 0;
+const descriptionSelector = '#emailsTab select[name$="[adminEmailTypeId]]"]';
+const addressSelector = '#emailsTab input[name$="[address]"]';
+
+When('I select email description {string}', async (description: string)=> {
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#emailsTab', 'deleteEmail', 'saveEmail');
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+
+  if(numFieldsets>0)
+  {
+    entryFormIdx = numFieldsets - 2;
+  }
+  await I.setElementValueAtIndex(descriptionSelector, entryFormIdx, description, 'select');
+});
+
+When('I enter email address {string}', async (address: string)=>{
+
+  await I.setElementValueAtIndex(addressSelector, entryFormIdx, 'address', 'input');
+});
+
+When('I click on add another button', async () =>{
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'addEmail');
+
+});
+
+When('I click on any description {string}', async (description: string) => {
+
+  await I.setElementValueAtIndex(descriptionSelector, entryFormIdx, description, 'select');
+});
+
+When('I enter the same email address {string}', async (address: string) =>{
+
+  await I.setElementValueAtIndex(addressSelector, entryFormIdx, 'address', 'input');
+});
+
+When('I click Save button', async () => {
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
+});
+
+Then('An error is displayed for email address with summary {string} and description field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#emailContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summaryErrMsg);
+
+  const numFieldsets = await I.countElement('#emailTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#email-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(fieldErrMsg);
+
+  expect(await I.checkElement('#address-' + fieldsetErrorIndex + '-error')).equal(false);
+});
+
+
