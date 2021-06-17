@@ -2,6 +2,7 @@ import {Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the Emails tab', async () => {
   const selector = '#tab_emails';
@@ -15,11 +16,12 @@ Then('I can view the existing emails', async () => {
   expect(elementExist).equal(true);
 });
 
+When('I remove all existing email entries and save', async () => {
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#emailsTab', 'deleteEmail', 'saveEmail');
+});
+
 When('I click on Add new Email', async () => {
-  const selector = 'button[name=\'addEmail\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'addEmail');
 });
 
 When('I add Description from the dropdown at index {int} and Address {string} and Explanation {string} and Welsh Explanation {string}',
@@ -44,10 +46,7 @@ When('I add Description from the dropdown at index {int} and Address {string} an
   });
 
 When('I click save button', async () => {
-  const selector = 'button[name=\'saveEmail\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
 });
 
 Then('a green update message showing email updated is displayed', async () => {
@@ -106,12 +105,7 @@ Then('A red error message display', async () => {
 
 When('I click the remove button below a email section', async () => {
   const numEmailAdd = await I.countElement('#emailsTab fieldset');
-
-  const selector = 'button[name=\'deleteEmails\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
-
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'deleteEmail');
   const updatedEmailAdd = await I.countElement('#emailsTab fieldset');
   expect(numEmailAdd - updatedEmailAdd).equal(1);
 });
