@@ -138,17 +138,6 @@ export const countElement = async (selector: string): Promise<number> => {
   }
 };
 
-export const getElementValueAtIndex = async (selector: string, index: number) => {
-  try {
-    return await scope.page.evaluate(
-      (entrySelector: string, index: number) =>
-        (document.querySelectorAll(entrySelector)[index] as HTMLInputElement | HTMLSelectElement).value, selector, index
-    );
-  } catch (error) {
-    console.log(`The element with selector: ${selector} at index ${index} didn't appear.`);
-  }
-};
-
 export const clickElementAtIndex = async (selector: string, index: number) => {
   try {
     return await scope.page.evaluate(

@@ -23,7 +23,7 @@ When('I remove all existing opening hours entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#openingTimesTab', 'deleteOpeningHours', 'saveOpeningTime');
 });
 
-When('I enter new opening hours entry by selecting type at index {int} and adding text {string}', async (typeIdx: number, text: string) => {
+When('I enter a new opening hours entry by selecting description at index {int} and adding hours {string}', async (typeIdx: number, text: string) => {
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const entryFormIdx = numFieldsets - 2;
 
@@ -52,7 +52,7 @@ Then('a green update message is displayed in the opening hours tab', async () =>
   expect(elementExist).equal(true);
 });
 
-Then('the second last opening time is displayed as expected with type shown as selected index {int} and hours as {string}', async (index: number, hoursText: string) => {
+Then('the second last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const secondLastIndex = numOpeningTimes - 4; // we deduct one each for zero-based index, hidden template fieldset, new opening hours fieldset and the last entry.
@@ -64,7 +64,7 @@ Then('the second last opening time is displayed as expected with type shown as s
   expect(hours).equal(hoursText);
 });
 
-Then('the last opening time is displayed as expected with type shown as selected index {int} and hours as {string}', async (index: number, hoursText: string) => {
+Then('the last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const lastIndex = numOpeningTimes - 3; // we deduct one each for zero-based index, hidden template fieldset and new opening hours fieldset.
@@ -115,7 +115,7 @@ Then('An error is displayed for opening hours with summary {string} and descript
 
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
-  selector = '#opening_times-' + fieldsetErrorIndex + '-error';
+  selector = '#description-' + fieldsetErrorIndex + '-error';
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
@@ -131,56 +131,27 @@ When('I click the remove button under an opening hours entry', async () => {
   expect(numOpeningTimes - updatedNumOpeningTimes).equal(1);
 });
 
-When('I click the move up button on the last opening hours entry which has id {string} and hours {string}',
-  async (id: string, hours: string) => {
-    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+When('I click the move up button on the last opening hours entry', async () => {
+  const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
+  const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+  const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
 
-    // Ensure last entry is as expected
-    const lastEntrySelectValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder select', numEntries - 1);
-    const lastEntryInputValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder input', numEntries - 1);
-    expect(lastEntrySelectValue).equal(id);
-    expect(lastEntryInputValue).equal(hours);
+  // Click the move up button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveUp"]`, lastOpeningHrsIdx);
+});
 
-    // Click the move up button
-    await I.clickElementAtIndex('#openingTimesTab fieldset.can-reorder button[name="moveUp"]', numEntries - 1);
-  });
+When('I click the move down button on the second last opening hours entry', async () => {
+  const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
+  const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+  // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
+  const secondLastOpeningHrsIdx = numEntries - 4;
 
-When('I click the move down button on the second last opening hours entry which has id {string} and hours {string}',
-  async (id: string, hours: string) => {
-    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
+  // Click the move down button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveDown"]`, secondLastOpeningHrsIdx);
+});
 
-    // Ensure second-last entry is as expected
-    const secondLastEntrySelectValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder select', numEntries - 2);
-    const secondLastEntryInputValue = await I.getElementValueAtIndex('#openingTimesTab fieldset.can-reorder input', numEntries - 2);
-    expect(secondLastEntrySelectValue).equal(id);
-    expect(secondLastEntryInputValue).equal(hours);
-
-    // Click the move down button
-    await I.clickElementAtIndex('#openingTimesTab fieldset.can-reorder button[name="moveDown"]', numEntries - 2);
-  });
-
-Then('The opening hours entry with id {string} and hours {string} is in second last position',
-  async(id: string, hours: string) => {
-    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
-    const secondLastIdx = numEntries - 2;
-
-    const secondLastEntrySelectValue = await I.getElementValueAtIndex(
-      '#openingTimesTab fieldset.can-reorder select', secondLastIdx);
-    const secondLastEntryInputValue = await I.getElementValueAtIndex(
-      '#openingTimesTab fieldset.can-reorder input', secondLastIdx);
-    expect(secondLastEntrySelectValue).equal(id);
-    expect(secondLastEntryInputValue).equal(hours);
-  });
-
-Then('The opening hours entry with id {string} and hours {string} is in last position',
-  async(id: string, hours: string) => {
-    const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
-    const lastIdx = numEntries - 1;
-
-    const lastEntrySelectValue = await I.getElementValueAtIndex(
-      '#openingTimesTab fieldset.can-reorder select', lastIdx);
-    const lastEntryInputValue = await I.getElementValueAtIndex(
-      '#openingTimesTab fieldset.can-reorder input', lastIdx);
-    expect(lastEntrySelectValue).equal(id);
-    expect(lastEntryInputValue).equal(hours);
-  });
+Then('there are no opening hours entries', async () => {
+  const numberOfFieldsets = await I.countElement('#openingTimesTab fieldset.can-reorder');
+  const numberOfOpeningHours = numberOfFieldsets - 2; // we deduct the hidden template and the new opening hours form
+  expect(numberOfOpeningHours).to.equal(0);
+});
