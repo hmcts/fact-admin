@@ -1,6 +1,3 @@
-
-
-
 export interface CourtType {
   id: number,
   name?: string,
@@ -13,7 +10,6 @@ export interface CourtTypePageData {
   items: CourtTypeItem[]
 }
 
-
 export interface CourtTypeItem {
   value: string,
   text: string,
@@ -23,4 +19,3 @@ export interface CourtTypeItem {
   checked: boolean,
   code: number
 }
-
