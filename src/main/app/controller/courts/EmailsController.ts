@@ -96,7 +96,7 @@ export class EmailsController {
   }
 
   private emailsDuplicated(emails: Email[], index1: number, index2: number): boolean {
-    return emails[index1].address && emails[index1].address === emails[index2].address;
+    return emails[index1].address && emails[index1].address.toLowerCase() === emails[index2].address.toLowerCase();
   }
 
   private getErrorMessages(emails: Email[]): string[] {
