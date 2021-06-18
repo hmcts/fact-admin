@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 export class EmailsController {
   private formId = '#emailsForm';
@@ -10,6 +11,8 @@ export class EmailsController {
   private deleteBtnClass = 'deleteEmail';
   private addEmailsBtnClass = 'addEmail';
   private clearEmailBtnClass = 'clearEmail';
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
 
   private typeSelectName = 'adminEmailTypeId'
   private addressInputName = 'address';
@@ -30,6 +33,7 @@ export class EmailsController {
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
         this.setUpClearEventHandler();
+        Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
     });
   }
@@ -110,12 +114,14 @@ export class EmailsController {
   private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.tabId} select[name$="[${attributeInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
-      .attr('id', idx => `${attributeInputId}-${idx}`);
+      .attr('id', idx => `${attributeInputId}-${idx}`)
+      .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.tabId} input[name$="[${attributeInputName}]"]`)
       .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
-      .attr('id', idx => `${attributeInputId}-${idx}`);
+      .attr('id', idx => `${attributeInputId}-${idx}`)
+      .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);
   }
 }

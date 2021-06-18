@@ -130,3 +130,17 @@ Then('An error message is displayed with the text {string}', async (msg: string)
       await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
     .equal(msg);
 });
+
+When('I click the move up button on the last entry', async () => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset.can-reorder');
+  const lastEmailIdx = numFieldsets - 3;  // we deduct one each for zero-based indexing, the hidden template and the 'add new' form
+  await I.clickElementAtIndex('#emailsTab fieldset.can-reorder button.move-up', lastEmailIdx);
+});
+
+When('I click the move down button on the second last entry', async () => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset.can-reorder');
+  // we deduct one for zero-based indexing, the hidden template, the 'add new' form and the last email address entry
+  const secondLastEmailIdx = numFieldsets - 4;
+  await I.clickElementAtIndex('#emailsTab fieldset.can-reorder button.move-down', secondLastEmailIdx);
+});
+
