@@ -60,6 +60,9 @@
             {% set courtTypesHtml %}
                 {% include "./tabs/types.njk" %}
             {% endset -%}
+            {% set postcodesHtml %}
+                {% include "./tabs/postcodes.njk" %}
+            {% endset -%}
              <input id='slug' type='hidden' value='{{slug}}'></input>
             {{ govukTabs({
               items: [
@@ -67,36 +70,43 @@
                   label: "General",
                   id: "general",
                   panel: {
-                  html: generalHtml
-                }
+                    html: generalHtml
+                  }
                 },
                 {
                   label: "Opening Hours",
                   id: "opening-hours",
                   panel: {
-                  html: openingHoursHtml
-                }
+                    html: openingHoursHtml
+                  }
                 },
                 {
                   label: "Phone Numbers",
                   id: "phone-numbers",
                   panel: {
-                  html: phoneNumbersHtml
-                }
+                    html: phoneNumbersHtml
+                  }
                 },
                 {
                   label: "Emails",
                   id: "emails",
                   panel: {
-                  html: emailsHtml
-                }
+                    html: emailsHtml
+                  }
                 },
                 {
                   label: "Types",
                   id: "court-types",
                   panel: {
-                  html: courtTypesHtml
-                }
+                    html: courtTypesHtml
+                  }
+                },
+                {
+                  label: "Postcodes",
+                  id: "postcodes",
+                  panel: {
+                    html: postcodesHtml
+                  }
                 }
               ]
             }) }}
