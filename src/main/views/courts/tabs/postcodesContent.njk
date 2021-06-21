@@ -1,22 +1,17 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
-In postcodes content.njk
-
 {{ govukDetails({
   summaryText: "Help with postcodes",
-  html: "Only full postcodes are allowed, no partials e.g SA1 1AA, not SA1 (do we want both?)
+  html: "Only full postcodes, partials e.g SA1 1AA, not SA1 (do we want both?)"})
 }}
 
-{% if errorMsg != '' %}
+{% if errors|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
-    errorList: [
-      {
-        text: errorMsg
-      }
-    ]
+    errorList: errors
   }) }}
 {% endif %}
 

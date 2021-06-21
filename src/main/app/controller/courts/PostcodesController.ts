@@ -1,19 +1,33 @@
+import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {Email} from '../../../types/Email';
-import autobind from 'autobind-decorator';
+import {PostcodeData} from '../../../types/Postcode';
+import {Error} from "../../../types/Error";
 
 @autobind
 export class PostcodesController {
 
+  getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
+
   public async get(
     req: AuthedRequest,
     res: Response,
-    updated = false,
-    error = '',
-    emails: Email[] = null): Promise<void> {
+    postcodes: string[] = null): Promise<void> {
+    const slug: string = req.params.slug as string;
 
-    console.log('get');
-    res.render('courts/tabs/postcodesContent', {});
+    const errors: Error[] = [];
+
+    if (!postcodes) {
+      // Get postcodes from API and set the isNew property to false on all email entries.
+      await req.scope.cradle.api.getPostcodes(slug)
+        .then((value: string[]) => postcodes = value)
+        .catch(() => errors.push({text: this.getPostcodesErrorMsg}));
+    }
+
+    const pageData: PostcodeData = {
+      postcodes: postcodes,
+      errors: errors,
+    };
+    res.render('courts/tabs/postcodesContent', pageData);
   }
 }

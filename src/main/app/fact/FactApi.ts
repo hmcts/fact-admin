@@ -1,4 +1,4 @@
-import { Logger } from '../../types/Logger';
+import {Logger} from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
 import {OpeningTime} from '../../types/OpeningTime';
 import {OpeningType} from '../../types/OpeningType';
@@ -24,6 +24,16 @@ export class FactApi {
       .get(`${this.baseURL}/all`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
+  }
+
+  public getPostcodes(slug: string): Promise<string[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/postcodes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 
   public getDownloadCourts(): Promise<unknown[]> {
