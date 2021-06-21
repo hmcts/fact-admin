@@ -2,6 +2,7 @@ import {Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the Emails tab', async () => {
   const selector = '#tab_emails';
@@ -15,11 +16,12 @@ Then('I can view the existing emails', async () => {
   expect(elementExist).equal(true);
 });
 
+When('I remove all existing email entries and save', async () => {
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#emailsTab', 'deleteEmail', 'saveEmail');
+});
+
 When('I click on Add new Email', async () => {
-  const selector = 'button[name=\'addEmail\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'addEmail');
 });
 
 When('I add Description from the dropdown at index {int} and Address {string} and Explanation {string} and Welsh Explanation {string}',
@@ -44,10 +46,7 @@ When('I add Description from the dropdown at index {int} and Address {string} an
   });
 
 When('I click save button', async () => {
-  const selector = 'button[name=\'saveEmail\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
 });
 
 Then('a green update message showing email updated is displayed', async () => {
@@ -106,12 +105,7 @@ Then('A red error message display', async () => {
 
 When('I click the remove button below a email section', async () => {
   const numEmailAdd = await I.countElement('#emailsTab fieldset');
-
-  const selector = 'button[name=\'deleteEmails\']';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
-
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'deleteEmail');
   const updatedEmailAdd = await I.countElement('#emailsTab fieldset');
   expect(numEmailAdd - updatedEmailAdd).equal(1);
 });
@@ -128,11 +122,64 @@ When('I add Description from the dropdown {int} and wrong Email-Address {string}
     await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');
   });
 
-Then('An error message is displayed with the text {string}', async (msg: string) => {
-  expect(await I.checkElement('#error-summary-title')).equal(true);
-  expect(await I.checkElement('#emailsContent > div > div > ul > li')).equal(true);
-  expect(
-    await I.getElementText(                                                // Get Text for the element below
-      await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
-    .equal(msg);
+
+let entryFormInedx = 0;
+
+When('I add Description from the dropdown {int}', async (description: number) => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const descriptionSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  if (numFieldsets > 0) {
+    entryFormInedx = numFieldsets - 2;
+  }
+  await I.setElementValueAtIndex(descriptionSelector, entryFormInedx, description, 'select');
 });
+
+When('I enter email address {string}', async (address: string) => {
+  const emailAddressSelector = '#emailsTab input[name$="[address]"]';
+  await I.setElementValueAtIndex(emailAddressSelector, entryFormInedx, address, 'input');
+});
+
+When('I click on add another button', async () => {
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'addEmail');
+
+});
+
+When('I click on any description {int}', async (description: number) => {
+  const descriptionSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  await I.setElementValueAtIndex(descriptionSelector, entryFormInedx + 1, description, 'select');
+});
+
+When('I enter the same email address {string}', async (address: string) => {
+  const emailAddressSelector = '#emailsTab input[name$="[address]"]';
+  await I.setElementValueAtIndex(emailAddressSelector, entryFormInedx + 1, address, 'input');
+});
+
+When('I click Save button', async () => {
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
+});
+
+Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#emailsContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+
+  const errorListElement = await I.getElement(selector);
+
+  expect(await I.getElementText(errorListElement)).equal(summaryErrMsg);
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+
+  selector = '#address-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(fieldErrMsg);
+
+});
+
+

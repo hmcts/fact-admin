@@ -88,7 +88,7 @@
           text: "Remove",
           name: "deleteOpeningHours",
           type: "button",
-          classes: "govuk-button--secondary deleteOpeningTime"
+          classes: "govuk-button--warning deleteOpeningTime"
         }) }}
       {% endif %}
 
@@ -126,6 +126,7 @@
   {% endcall %}
 
 {% endfor %}
+
 
 {% call govukFieldset({
   classes: "can-reorder",
@@ -190,7 +191,7 @@
 }) }}
 
 {{ govukButton({
-  text: "Add another",
+  text: "Add new opening time",
   name: "addOpeningTime",
   type: "button",
   classes: "govuk-button--secondary addOpeningTime"
