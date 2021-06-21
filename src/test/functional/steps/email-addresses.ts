@@ -158,7 +158,7 @@ When('I click Save button', async () => {
   await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
 });
 
-Then('An error is displayed for email address with summary {string} and description field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
+Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
   expect(await I.checkElement(selector)).equal(true);
