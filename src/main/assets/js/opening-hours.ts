@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
@@ -17,6 +18,9 @@ export class OpeningHoursController {
   private hoursInputName = 'hours';
   private hiddenNewInputName = 'isNew';
 
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
+
   constructor() {
     this.initialize();
   }
@@ -29,6 +33,7 @@ export class OpeningHoursController {
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
         this.setUpClearEventHandler();
+        Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
     });
   }
@@ -98,17 +103,18 @@ export class OpeningHoursController {
     return `opening_times[${index}][${name}]`;
   }
 
+  private renameFormElement(type: 'input' | 'select', name: string, id: string): void {
+    $(`${this.tabId} ${type}[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('id', idx => `${id}-` + idx)
+      .siblings('label').attr('for', idx => `${id}-` + idx);
+  }
+
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
-      .attr('name', idx => this.getInputName(this.typeSelectName, idx))
-      .attr('id', idx => 'description-' + idx);
-    $(`${this.tabId} input[name$="[${this.hoursInputName}]"]`)
-      .attr('name', idx => this.getInputName(this.hoursInputName, idx))
-      .attr('id', idx => 'hours-' + idx);
-    $(`${this.tabId} input[name$="[${this.hiddenNewInputName}]"]`)
-      .attr('name', idx => this.getInputName(this.hiddenNewInputName, idx))
-      .attr('id', idx => 'isNew-' + idx);
+    this.renameFormElement('select', this.typeSelectName, 'description');
+    this.renameFormElement('input', this.hoursInputName, this.hoursInputName);
+    this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
   }
 }
