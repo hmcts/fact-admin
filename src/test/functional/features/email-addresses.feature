@@ -41,7 +41,8 @@ Feature: Email-addresses
   Scenario: Email format validation
     When I add Description from the dropdown 6 and wrong Email-Address "abcef"
     And I click save button
-    Then An error message is displayed with the text "Enter an email address in the correct format, like name@example.com"
+    Then An error is displayed for email address with summary "Enter an email address in the correct format, like name@example.com" and description field message "Invalid email address format"
+
 
   Scenario: Prevent duplicated entries being added
     When I remove all existing email entries and save
