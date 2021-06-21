@@ -122,15 +122,6 @@ When('I add Description from the dropdown {int} and wrong Email-Address {string}
     await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');
   });
 
-Then('An error message is displayed with the text {string}', async (msg: string) => {
-  expect(await I.checkElement('#error-summary-title')).equal(true);
-  expect(await I.checkElement('#emailsContent > div > div > ul > li')).equal(true);
-  expect(
-    await I.getElementText(                                                // Get Text for the element below
-      await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
-    .equal(msg);
-});
-
 
 let entryFormInedx = 0;
 
