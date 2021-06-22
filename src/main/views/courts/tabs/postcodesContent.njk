@@ -1,12 +1,27 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
 {{ govukDetails({
   summaryText: "Help with postcodes",
-  html: "Only full postcodes, partials e.g SA1 1AA, not SA1 (do we want both?)"})
+  html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
 }}
+
+{{ govukInput({
+  label: {
+    text: "Add postcodes:",
+    classes: "govuk-label--s",
+    isPageHeading: false
+  },
+  hint: {
+    text: "Please add a comma separated list of postcodes.
+    These can be case insensitive, and spaces are not significant."
+  },
+  id: "add-postcodes",
+  name: "add-postcodes"
+}) }}
 
 {% if errors|length %}
   {{ govukErrorSummary({
