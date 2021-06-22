@@ -15,6 +15,7 @@ describe('EmailsController', () => {
 
   const testEmail1 = 'abc@test.com';
   const testEmail2 = 'abc@test2.com';
+  const testEmail1UpperCase = 'ABC@TEST.COM';
 
   const getEmails: () => Email[] = () => [
     {
@@ -263,9 +264,9 @@ describe('EmailsController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
 
-  test('Should handle error with duplicated addresses when updating emails', async () => {
+  test('Should handle error with duplicated addresses when updating emails (ignoring casing)', async () => {
     const req = mockRequest();
-    const postedEmails: Email[] = getEmails().concat({ adminEmailTypeId: 5, address: testEmail1, explanation: null, explanationCy: null, isNew: true });
+    const postedEmails: Email[] = getEmails().concat({ adminEmailTypeId: 5, address: testEmail1UpperCase, explanation: null, explanationCy: null, isNew: true });
     req.params = { slug: 'plymouth-combined-court' };
     req.body = {
       'emails': postedEmails,

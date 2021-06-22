@@ -131,6 +131,67 @@ Then('An error message is displayed with the text {string}', async (msg: string)
     .equal(msg);
 });
 
+
+let entryFormInedx = 0;
+
+When('I add Description from the dropdown {int}', async (description: number) => {
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+  const descriptionSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  if (numFieldsets > 0) {
+    entryFormInedx = numFieldsets - 2;
+  }
+  await I.setElementValueAtIndex(descriptionSelector, entryFormInedx, description, 'select');
+});
+
+When('I enter email address {string}', async (address: string) => {
+  const emailAddressSelector = '#emailsTab input[name$="[address]"]';
+  await I.setElementValueAtIndex(emailAddressSelector, entryFormInedx, address, 'input');
+});
+
+When('I click on add another button', async () => {
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'addEmail');
+
+});
+
+When('I click on any description {int}', async (description: number) => {
+  const descriptionSelector = '#emailsTab select[name$="[adminEmailTypeId]"]';
+  await I.setElementValueAtIndex(descriptionSelector, entryFormInedx + 1, description, 'select');
+});
+
+When('I enter the same email address {string}', async (address: string) => {
+  const emailAddressSelector = '#emailsTab input[name$="[address]"]';
+  await I.setElementValueAtIndex(emailAddressSelector, entryFormInedx + 1, address, 'input');
+});
+
+When('I click Save button', async () => {
+  await FunctionalTestHelpers.clickButton('#emailsTab', 'saveEmail');
+});
+
+Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#emailsContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+
+  const errorListElement = await I.getElement(selector);
+
+  expect(await I.getElementText(errorListElement)).equal(summaryErrMsg);
+  const numFieldsets = await I.countElement('#emailsTab fieldset');
+
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+
+  selector = '#address-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(fieldErrMsg);
+
+});
+
+
 When('I click the move up button on the last entry', async () => {
   const numFieldsets = await I.countElement('#emailsTab fieldset.can-reorder');
   const lastEmailIdx = numFieldsets - 3;  // we deduct one each for zero-based indexing, the hidden template and the 'add new' form
@@ -143,4 +204,3 @@ When('I click the move down button on the second last entry', async () => {
   const secondLastEmailIdx = numFieldsets - 4;
   await I.clickElementAtIndex('#emailsTab fieldset.can-reorder button.move-down', secondLastEmailIdx);
 });
-
