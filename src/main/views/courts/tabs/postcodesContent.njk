@@ -1,6 +1,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
@@ -19,8 +20,8 @@
     text: "Please add a comma separated list of postcodes.
     These can be case insensitive, and spaces are not significant."
   },
-  id: "add-postcodes",
-  name: "add-postcodes"
+  id: "addNewPostcodes",
+  name: "addNewPostcodes"
 }) }}
 
 {% if errors|length %}
@@ -30,4 +31,17 @@
   }) }}
 {% endif %}
 
+{{ govukButton({
+  text: "Add",
+  name: "addPostcodes",
+  type: "button",
+  classes: "addPostcodes",
+  attributes: { existingPostcodes: postcodes }
+}) }}
+
+<br><br>
+
+{% for postcode in postcodes %}
+  {{ postcode }}
+{% endfor %}
 
