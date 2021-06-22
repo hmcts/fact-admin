@@ -28,6 +28,9 @@
   }) }}
 {% endif %}
 
+{% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %}
+
 {% for email in emails %}
 
   {% set isNew = (email.isNew === true) or (email.isNew === "true") %}
@@ -46,7 +49,9 @@
     {% set emailsError = { text: 'Invalid email address format' } %}
   {% endif %}
 
-  {% call govukFieldset({}) %}
+  {% call govukFieldset({
+    classes: "can-reorder"
+  }) %}
 
   {% if isNew === true %}
     <h3 class="govuk-heading-s">Add New Email Address</h3>
@@ -95,21 +100,42 @@
     value: email.explanationCy
   }) }}
 
-  {% if isNew === false %}
-    {{ govukButton({
-      text: "Remove",
-      name: "deleteEmail",
-      type: "button",
-      classes: "govuk-button--warning deleteEmail"
-    }) }}
-  {% else %}
-    {{ govukButton({
-      text: "Clear",
-      name: "clearEmail",
-      type: "button",
-      classes: "govuk-button--secondary clearEmail"
-    }) }}
-  {% endif %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+    {% if isNew === false %}
+      {{ govukButton({
+        text: "Remove",
+        name: "deleteEmail",
+        type: "button",
+        classes: "govuk-button--warning deleteEmail"
+      }) }}
+    {% else %}
+      {{ govukButton({
+        text: "Clear",
+        name: "clearEmail",
+        type: "button",
+        classes: "govuk-button--secondary clearEmail"
+      }) }}
+    {% endif %}
+    </div>
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+    </div>
+  </div>
 
   <hr/>
 
@@ -117,9 +143,9 @@
 
 {% endfor %}
 
-
 {% call govukFieldset({
-  attributes: { id: "newEmailTemplate", disabled: "disabled", hidden: true }
+    classes: "can-reorder",
+    attributes: { id: "newEmailTemplate", disabled: "disabled", hidden: true }
 }) %}
 
   <input type="hidden" name={{"emails[" + emails.length +"][isNew]"}} value="true"></input>
@@ -157,6 +183,35 @@
     classes: "govuk-input--width-20",
     name: "emails[" + emails.length +"][explanationCy]"
   }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukButton({
+        text: "Clear",
+        name: "clearOpeningTime",
+        type: "button",
+        classes: "govuk-button--secondary clearOpeningTime"
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+      </div>
+  </div>
 
   <hr/>
 
