@@ -5,10 +5,28 @@
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
+{{ csrfToken }}
+
 {{ govukDetails({
   summaryText: "Help with postcodes",
   html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
 }}
+
+{% set descriptionError = false %}
+{% if email.adminEmailTypeId === '' %}
+    {% set addError = { text: 'Type is required' } %}
+{% endif %}
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if searchValue == '' and updated and errors|length %}
+   {% set addError = { text: 'One or more postcodes are required.' } %}
+{% endif %}
 
 {{ govukInput({
   label: {
@@ -21,15 +39,9 @@
     These can be case insensitive, and spaces are not significant."
   },
   id: "addNewPostcodes",
-  name: "addNewPostcodes"
+  name: "addNewPostcodes",
+  errorMessage: addError
 }) }}
-
-{% if errors|length %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errors
-  }) }}
-{% endif %}
 
 {{ govukButton({
   text: "Add",
@@ -44,4 +56,3 @@
 {% for postcode in postcodes %}
   {{ postcode }}
 {% endfor %}
-

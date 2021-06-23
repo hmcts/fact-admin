@@ -7,5 +7,7 @@ export interface Postcode {
 export interface PostcodeData {
   postcodes: Postcode[],
   slug: string,
-  errors: Error[]
+  errors: Error[],
+  updated: boolean,
+  searchValue: string
 }

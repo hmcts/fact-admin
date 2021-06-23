@@ -8,6 +8,7 @@ import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
 import {CourtType} from '../../types/CourtType';
 import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
+import {Postcode} from "../../types/Postcode";
 
 export class FactApi {
 
@@ -29,6 +30,16 @@ export class FactApi {
   public getPostcodes(slug: string): Promise<string[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/postcodes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public addPostcodes(slug: string, postcodes: Postcode[]): Promise<Postcode[]> {
+    return this.axios
+      .post(`${this.adminBaseUrl}/${slug}/postcodes`, postcodes)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

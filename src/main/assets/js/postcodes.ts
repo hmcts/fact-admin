@@ -4,6 +4,7 @@ import {AjaxErrorHandler} from './ajaxErrorHandler';
 const { initAll } = require('govuk-frontend');
 
 export class PostcodesController {
+
   private formId = '#postcodesForm';
   private tabId = '#postcodesTab';
   private postcodesContentId = '#postcodesContent';
@@ -48,21 +49,21 @@ export class PostcodesController {
 
   private setUpAddEventHandler(): void {
     $(this.tabId).on('click', `button.${this.addPostcodesBtnClass}`, e => {
-
-      console.log($(document.getElementById(this.addNewPostcodesInput)).val());
-      console.log($(e.target).attr('existingPostcodes'));
-
-      // TODO: pass in new and old, validate, then call endpoint if its cool. Do this on controller level.
-      // e.preventDefault();
-      // $.ajax({
-      //   url: $(e.target).attr('action'),
-      //   method: 'post',
-      //   data: $(e.target).serialize()
-      // }).done(res => {
-      //   $(this.postcodesContentId).html(res);
-      //   window.scrollTo(0, 0);
-      // }).fail(response =>
-      //   AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
+      e.preventDefault();
+      const slug = $('#slug').val();
+      $.ajax({
+        url: `/courts/${slug}/postcodes`,
+        method: 'post',
+        data: {
+          existingPostcodes: $(e.target).attr('existingPostcodes'),
+          newPostcodes: $(document.getElementById(this.addNewPostcodesInput)).val(),
+          csrfToken: $(document.querySelector('#postcodesForm > input[type=hidden]')).val()
+        }
+      }).done(res => {
+        $(this.postcodesContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
     });
   }
 
