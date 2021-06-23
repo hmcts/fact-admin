@@ -79,9 +79,12 @@ Then('the phone number entry in last position has description at index {int} num
   expect(lastExplanationCyText).equal(explanationCy);
 });
 
-Then('a green update message is displayed in the phone numbers tab', async() => {
-  const elementExist = await I.checkElement('#phoneNumbersTab .govuk-panel--confirmation');
-  expect(elementExist).equal(true);
+Then('a green message is displayed for updated entries {string}', async(message: string) => {
+  const selector = '#phoneNumbersContent > div > h1';
+  expect(await I.checkElement(selector)).equal(true);
+
+  const messageUpdate = await I.getElement('#phoneNumbersContent > div > h1');
+  expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
 When('I enter an incomplete phone number entry', async () => {
