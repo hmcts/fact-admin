@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
+import config from 'config';
 
 export class Nunjucks {
   constructor(public developmentMode: boolean) {
@@ -40,6 +41,8 @@ export class Nunjucks {
       return (!(regExp.test(string) || isNaN(string)) );
 
     });
+
+    env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

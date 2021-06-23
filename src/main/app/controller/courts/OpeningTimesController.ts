@@ -5,7 +5,7 @@ import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {OpeningType} from '../../../types/OpeningType';
 import {CSRF} from '../../../modules/csrf';
-import {validateOpeningTimeDuplicates} from '../../../utils/validation';
+import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
 
 @autobind
@@ -73,7 +73,7 @@ export class OpeningTimesController {
       errorMsg.push(this.emptyTypeOrHoursErrorMsg);
     }
 
-    if (!validateOpeningTimeDuplicates(openingTimes)) {
+    if (!validateDuplication(openingTimes, this.openingHoursDuplicated)) {
       errorMsg.push(this.openingTimeDuplicatedErrorMsg);
     }
 
@@ -101,5 +101,9 @@ export class OpeningTimesController {
 
   private openingHoursEntryIsEmpty(openingHours: OpeningTime): boolean {
     return (!openingHours.type_id && !openingHours.hours?.trim());
+  }
+
+  private openingHoursDuplicated(openingHours: OpeningTime[], index1: number, index2: number): boolean {
+    return openingHours[index1].type_id && openingHours[index1].type_id === openingHours[index2].type_id;
   }
 }
