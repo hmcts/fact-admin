@@ -7,7 +7,6 @@ import {puppeteerConfig} from '../puppeteer.config';
 async function fillInUsernameAndPassword(username: string, password: string) {
   const usernameEl = await I.checkElement('#username');
   expect(usernameEl).equal(true);
-  //await I.fillField('#username', username);
   await I.setElementValueForInputField('#username', username);
 
   const passwordEl = await I.checkElement('#password');
