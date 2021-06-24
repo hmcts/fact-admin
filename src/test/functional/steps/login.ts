@@ -13,7 +13,6 @@ async function fillInUsernameAndPassword(username: string, password: string) {
   const passwordEl = await I.checkElement('#password');
   expect(passwordEl).equal(true);
 
-  //await I.fillField('#password', password);
   await I.setElementValueForInputField('#password', password);
 }
 
