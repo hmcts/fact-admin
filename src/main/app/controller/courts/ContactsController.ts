@@ -24,6 +24,7 @@ export class ContactsController {
     const slug: string = req.params.slug as string;
 
     if (!contacts) {
+      // Get contacts from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getContacts(slug)
         .then((value: Contact[]) => contacts = value.map(c => { c.isNew = false; return c; }))
         .catch(() => error += this.getContactsErrorMsg);

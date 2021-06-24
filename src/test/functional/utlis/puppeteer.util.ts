@@ -1,4 +1,4 @@
-import { launchBrowser } from '../support/hooks';
+import {launchBrowser} from '../support/hooks';
 
 const scope = require('../support/scope');
 
@@ -114,7 +114,7 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
 export const clearField = async (selector: string) => {
   try {
     const input = await scope.page.$(selector);
-    await input.click({ clickCount: 3 });
+    await input.click({clickCount: 3});
     await scope.page.keyboard.press('Backspace');
   } catch (error) {
     console.log("The element didn't appear.");
@@ -129,12 +129,23 @@ export const selectItem = async (selector: string, value: string) => {
   }
 };
 
-export const countElement = async (selector: string) => {
+export const countElement = async (selector: string): Promise<number> => {
   try {
     const count = (await scope.page.$$(selector)).length;
     return count;
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+export const clickElementAtIndex = async (selector: string, index: number) => {
+  try {
+    return await scope.page.evaluate(
+      (entrySelector: string, index: number) =>
+        (document.querySelectorAll(entrySelector)[index] as HTMLButtonElement).click(), selector, index
+    );
+  } catch (error) {
+    console.log(`The element with selector: ${selector} at index ${index} didn't appear.`);
   }
 };
 
@@ -149,30 +160,69 @@ export const getLastElementValue = async (selector: string) => {
   }
 };
 
-export const getElementValueAtIndex = async (selector: string, index: number, type: ('select' | 'input') = 'input') => {
+/**
+ * Returns the selectedIndex of an HTML Select element
+ * @param selector The selector for an array of HTML Select elements
+ * @param index The index of the HTML Select element to return
+ */
+export const getSelectedIndexAtIndex = async (selector: string, index: number) => {
   try {
     const input = await scope.page.$$(selector);
-    return await scope.page.evaluate((x: any, type: ('select' | 'input')) =>
-      (type === 'select' ? x.selectedIndex : x.value), input[index], type);
+    return await scope.page.evaluate((x: HTMLSelectElement) => x.selectedIndex, input[index]);
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
 
+/**
+ * Returns the value of an HTML Select or Input element
+ * @param selector The selector for an array of HTML Select and Input elements
+ * @param index The index of the element to return
+ */
+export const getElementValueAtIndex = async (selector: string, index: number) => {
+  try {
+    const input = await scope.page.$$(selector);
+    return await scope.page.evaluate((x: HTMLSelectElement | HTMLInputElement) => x.value, input[index]);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+/**
+ * Sets the value of an HTML Select or Input element. For Select elements, the selectedIndex will be set to the given value.
+ * @param selector The selector for an array of HTML Select / Input elements
+ * @param index The index of the element to set
+ * @param value The value to set
+ * @param type The expected type of the element
+ */
 export const setElementValueAtIndex = async (selector: string, index: number, value: number | string, type: ('select' | 'input') = 'input') => {
   try {
     const input = await scope.page.$$(selector);
-    return await scope.page.evaluate((el: HTMLSelectElement | HTMLInputElement, type: ('select' | 'input'),  value: string) =>
+    return await scope.page.evaluate((el: HTMLSelectElement | HTMLInputElement, type: ('select' | 'input'), value: string) =>
       (type === 'select' ? (el as HTMLSelectElement).selectedIndex = parseInt(value) : el.value = value), input[index], type, value);
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
 
+
+export const setElementValueForInputField = async (selector: string, value: number | string) => {
+  try {
+    const input = await scope.page.$$(selector);
+    return await scope.page.evaluate((el: HTMLInputElement, type: 'input', value: string) =>
+      (el.value = value), input[0], 'input', value);
+  } catch (error) {
+    console.log(`The element with selector: ${selector} didn't appear.`);
+  }
+};
+
+
 export const isElementVisible = async (selector: string) => {
   let visible = true;
-  await scope.page.waitForSelector(selector, { visible: true, timeout: 3000 })
-    .catch(() => { visible = false; });
+  await scope.page.waitForSelector(selector, {visible: true, timeout: 3000})
+    .catch(() => {
+      visible = false;
+    });
   return visible;
 };
 

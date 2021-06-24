@@ -46,7 +46,7 @@ Then('the phone number entry in second last position has description at index {i
   // We deduct 1 each for zero-based indexing, hidden template fieldset, 'add new' fieldset and last entry
   const secondLastIndex = numPhoneNumbers - 4;
 
-  const typeIndex = await I.getElementValueAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', secondLastIndex, 'select');
+  const typeIndex = await I.getSelectedIndexAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', secondLastIndex);
   expect(typeIndex).equal(descriptionIndex);
 
   const numberText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[number]"]', secondLastIndex);
@@ -66,7 +66,7 @@ Then('the phone number entry in last position has description at index {int} num
   // We deduct 1 each for zero-based indexing, hidden template fieldset and 'add new' fieldset
   const lastIndex = numPhoneNumbers - 3;
 
-  const lastTypeIndex = await I.getElementValueAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', lastIndex, 'select');
+  const lastTypeIndex = await I.getSelectedIndexAtIndex('#phoneNumbersTab fieldset select[name$="[type_id]"]', lastIndex);
   expect(lastTypeIndex).equal(descriptionIndex);
 
   const lastNumberText = await I.getElementValueAtIndex('#phoneNumbersTab fieldset input[name$="[number]"]', lastIndex);

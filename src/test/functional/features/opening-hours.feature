@@ -7,30 +7,54 @@ Feature: Opening Hours
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
-    And they are in alphabetical order
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
     When I click the opening hours tab
     Then I can view the existing opening hours
 
-  Scenario Outline: Add new opening hours
-    When I enter new opening hours entry by selecting id "<selected_type_id>" and adding text "<hours>"
-    And I click the Add button
+  Scenario: Add and remove opening hours
+    # Clear out potential left-over opening hours from the previous run before adding new ones
+    When I remove all existing opening hours entries and save
+    Then a green update message is displayed in the opening hours tab
+    When I enter a new opening hours entry by selecting description at index 4 and adding hours "9:00am to 3:30pm"
+    Then I click the Add button in the opening hours tab
+    And I enter a new opening hours entry by selecting description at index 5 and adding hours "10:00am to 4:00pm"
     And I click save
-    Then a green update message is displayed
-    Then the new opening time is displayed as expected with id "<selected_type_id>" and text "<hours>"
-
-    Examples:
-      | selected_type_id  | hours            |
-      | 44                | 9:00am to 3:30pm |
-
-  Scenario: Prevent empty entries being added
-    When I enter a blank opening hours entry
-    And I click the Add button
-    And I click save
-    Then an error message is displayed
-
-  Scenario: Remove opening hours
+    Then a green update message is displayed in the opening hours tab
+    Then the second last opening hours is displayed with description at index 4 and hours "9:00am to 3:30pm"
+    And the last opening hours is displayed with description at index 5 and hours "10:00am to 4:00pm"
     When I click the remove button under an opening hours entry
-    Then I click save
-    Then a green update message is displayed
+    And I click the remove button under an opening hours entry
+    And I click save
+    Then a green update message is displayed in the opening hours tab
+    And there are no opening hours entries
+
+  Scenario: Reorder opening hours
+    When I remove all existing opening hours entries and save
+    Then a green update message is displayed in the opening hours tab
+    When I enter a new opening hours entry by selecting description at index 2 and adding hours "9:00am to 4:30pm"
+    And I click the Add button in the opening hours tab
+    And I enter a new opening hours entry by selecting description at index 3 and adding hours "11:00am to 5:00pm"
+    And I click save
+    Then the second last opening hours is displayed with description at index 2 and hours "9:00am to 4:30pm"
+    And the last opening hours is displayed with description at index 3 and hours "11:00am to 5:00pm"
+    When I click the move up button on the last opening hours entry
+    And I click save
+    Then a green update message is displayed in the opening hours tab
+    And the second last opening hours is displayed with description at index 3 and hours "11:00am to 5:00pm"
+    And the last opening hours is displayed with description at index 2 and hours "9:00am to 4:30pm"
+    When I click the move down button on the second last opening hours entry
+    And I click save
+    Then a green update message is displayed in the opening hours tab
+    And the second last opening hours is displayed with description at index 2 and hours "9:00am to 4:30pm"
+    And the last opening hours is displayed with description at index 3 and hours "11:00am to 5:00pm"
+
+  Scenario: Prevent incomplete entries being added
+    When I enter an incomplete opening hour description
+    And I click save
+    Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and description field message "Description is required"
+
+  Scenario: Prevent duplicated entries being added
+    When I enter duplicated opening hour description
+    And I click save
+    Then An error is displayed for opening hours with summary "All descriptions must be unique." and description field message "Duplicated description"

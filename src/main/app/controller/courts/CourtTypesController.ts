@@ -4,19 +4,19 @@ import {Response} from 'express';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtType';
 import {CSRF} from '../../../modules/csrf';
 
-
+export enum courtType {
+  magistrate = "Magistrates' Court",
+  county = 'County Court',
+  crown = 'Crown Court',
+}
 
 @autobind
 export class CourtTypesController {
 
-
-  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric.';
+  emptyCourtCodeErrorMsg = 'Court code is required and must be numeric and start with 1-9';
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
-  updateErrorMsg = 'A problem occurred when saving the court court types.';
-  emptyCourtTypesErrorMsg = 'One or more court types are required.';
-  private magistrateCourtType = "Magistrates' Court";
-  private countyCourtType = 'County Court';
-  private crownCourtType = 'Crown Court';
+  updateErrorMsg = 'A problem occurred when saving the court types.';
+  emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
 
 
   public async get(
@@ -64,12 +64,13 @@ export class CourtTypesController {
 
       courtCourtTypes = this.mapBodyToCourtType(req);
 
-      if(courtCourtTypes.find( c => (c.name === this.magistrateCourtType && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === this.countyCourtType && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === this.crownCourtType && this.CheckCodeIsNullOrNan(c.code)) )){
+      if(courtCourtTypes.find( c => (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))
+      || (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))
+      || (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )){
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
       }
+
 
       else
       {
@@ -92,9 +93,9 @@ export class CourtTypesController {
         {
           value: JSON.stringify(ct),
           text: ct.name,
-          magistrate: ct.name === this.magistrateCourtType ? true: false,
-          county: ct.name === this.countyCourtType ? true: false,
-          crown: ct.name === this.crownCourtType ? true: false,
+          magistrate: ct.name === courtType.magistrate ? true: false,
+          county: ct.name === courtType.county ? true: false,
+          crown: ct.name === courtType.crown? true: false,
           checked: this.isChecked(ct, courtCourtTypes),
           code: this.getCode(ct.id, courtCourtTypes)
         }));
@@ -134,21 +135,26 @@ export class CourtTypesController {
 
   private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
 
-    const regExp = /^[0-9]*$/;
-
     switch (name) {
-      case this.magistrateCourtType:
-        return regExp.test(magistratesCourtCode) ? parseInt(magistratesCourtCode) : null ;
+      case courtType.magistrate:
+        return this.ValidateCode(magistratesCourtCode);
 
-      case this.countyCourtType:
-        return regExp.test(countyCourtCode) ? parseInt(countyCourtCode): null ;
+      case courtType.county:
+        return this.ValidateCode(countyCourtCode);
 
-      case this.crownCourtType:
-        return regExp.test(crownCourtCode) ? parseInt(crownCourtCode) : null;
+      case courtType.crown:
+        return this.ValidateCode(crownCourtCode);
 
       default:
         return null;
     }
+  }
+
+  private ValidateCode(code: string)
+  {
+    const regExp = /^[1-9][0-9]{0,8}$/;
+    return regExp.test(code) ? parseInt(code) : null ;
+
   }
 
   private CheckCodeIsNullOrNan(code: number){
