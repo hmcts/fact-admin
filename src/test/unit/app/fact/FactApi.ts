@@ -172,6 +172,28 @@ describe('FactApi', () => {
     await expect(api.getOpeningTimeTypes()).resolves.toEqual(results.data);
   });
 
+  test('Should return results from getPostcodes request', async () => {
+    const results = {
+      data: ['PL1', 'PL2', 'PL3']
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getPostcodes('Plymouth')).resolves.toEqual(results.data);
+  });
+
+  test('Should add and return results from addPostcodes request', async () => {
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const mockAxios = { post: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.addPostcodes('Plymouth', results.data)).resolves.toEqual(results.data);
+  });
+
   test('Should return results from getEmails request', async () => {
     const results = {
       data: [

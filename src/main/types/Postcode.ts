@@ -1,11 +1,7 @@
 import {Error} from "./Error";
 
-export interface Postcode {
-  postcode: string
-}
-
 export interface PostcodeData {
-  postcodes: Postcode[],
+  postcodes: string[],
   slug: string,
   errors: Error[],
   updated: boolean,

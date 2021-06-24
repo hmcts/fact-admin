@@ -1,26 +1,27 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {CSRF} from '../../../../../main/modules/csrf';
-import {Postcode, PostcodeData} from '../../../../../main/types/Postcode';
+import {PostcodeData} from '../../../../../main/types/Postcode';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
 
 describe('PostcodeController', () => {
 
   let mockApi: {
-    getPostcodes: () => Promise<Postcode[]>,
-    addPostcodes: () => Promise<Postcode[]> };
+    getPostcodes: () => Promise<string[]>,
+    addPostcodes: () => Promise<string[]> };
 
-  const postcodeData: Postcode[] = ['PL1'].map(value => { return {'postcode': value}; });
-  const getPostcodes: () => Postcode[] = () => postcodeData;
-  const addPostcodes: () => Postcode[] = () => postcodeData;
+  const postcodeData = ['PL1', 'PL2', 'PL3'];
+  const newPostcodes = 'PL4,PL5,PL6';
+  const getPostcodes: () => string[] = () => postcodeData;
+  const addPostcodes: () => string[] = () => postcodeData;
 
 
   const controller = new PostcodesController();
 
   beforeEach(() => {
     mockApi = {
-      getPostcodes: async (): Promise<Postcode[]> => getPostcodes(),
-      addPostcodes: async (): Promise<Postcode[]> => addPostcodes()
+      getPostcodes: async (): Promise<string[]> => getPostcodes(),
+      addPostcodes: async (): Promise<string[]> => addPostcodes()
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -59,6 +60,92 @@ describe('PostcodeController', () => {
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
+    jest.spyOn(mockApi, 'addPostcodes');
+
+    await controller.post(req, res);
+
+    const expectedResults: PostcodeData = {
+      postcodes: postcodeData,
+      slug: slug,
+      searchValue: 'PL3,PL4,PL5',
+      updated: true,
+      errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
+    expect(mockApi.addPostcodes).not.toBeCalled();
+  });
+
+  test('Should add postcodes if all are verified', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    mockApi = {
+      getPostcodes: async (): Promise<string[]> => getPostcodes(),
+      addPostcodes: async (): Promise<string[]> => newPostcodes.split(',')
+    };
+    req.body = {
+      'existingPostcodes': postcodeData,
+      'newPostcodes': newPostcodes,
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    jest.spyOn(mockApi, 'addPostcodes');
+
+    await controller.post(req, res);
+
+    const expectedResults: PostcodeData = {
+      postcodes: ['PL1', 'PL2', 'PL3', 'PL4', 'PL5', 'PL6'],
+      slug: slug,
+      searchValue: '',
+      updated: true,
+      errors: []
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
+    expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
+  });
+
+  test('Should not post postcodes if CSRF token is invalid', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+
+    CSRF.verify = jest.fn().mockReturnValue(false);
+    req.body = {
+      'existingPostcodes': postcodeData,
+      'newPostcodes': newPostcodes,
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    jest.spyOn(mockApi, 'addPostcodes');
+
+    await controller.post(req, res);
+
+    const expectedResults: PostcodeData = {
+      postcodes: postcodeData,
+      slug: slug,
+      searchValue: '',
+      updated: false,
+      errors: [{text: controller.addErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
+    expect(mockApi.addPostcodes).not.toBeCalled();
+  });
+
+  test('Should handle new postcode blank error', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      'existingPostcodes': postcodeData,
+      'newPostcodes': '',
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    jest.spyOn(mockApi, 'addPostcodes');
 
     await controller.post(req, res);
 
@@ -67,57 +154,9 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: true,
-      errors: []
-      // errors: ['One or more postcodes provided already exist: PL3'].map(value => { return {'text': value}; })
+      errors: [{text: controller.noPostcodeErrorMsg}]
     };
-    // Should not call API if emails data is incomplete
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
   });
-  //
-  // test('Should not post emails if CSRF token is invalid', async () => {
-  //   const req = mockRequest();
-  //   const res = mockResponse();
-  //   req.params = {
-  //     slug: 'plymouth-combined-court'
-  //   };
-  //   req.body = {
-  //     'emails': emailsInvalidSyntax,
-  //     '_csrf': CSRF.create()
-  //   };
-  //   req.scope.cradle.api = mockApi;
-  //   req.scope.cradle.api.updateEmails = jest.fn().mockReturnValue(res);
-  //   (CSRF.verify as jest.Mock).mockReturnValue(false);
-  //
-  //   await controller.put(req, res);
-  //
-  //   const expectedResults: EmailData = {
-  //     emails: emailsInvalidSyntax,
-  //     emailTypes: expectedSelectItems,
-  //     updated: false,
-  //     errors: [{text: controller.updateErrorMsg}]
-  //   };
-  //   expect(mockApi.updateEmails).not.toBeCalled();
-  //   expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
-  // });
-  //
-  // test('Should handle address blank error when getting email data from API', async () => {
-  //   const req = mockRequest();
-  //   req.params = {
-  //     slug: 'plymouth-combined-court'
-  //   };
-  //   req.scope.cradle.api = mockApi;
-  //   req.scope.cradle.api.getEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
-  //   const res = mockResponse();
-  //
-  //   await controller.get(req, res);
-  //
-  //   const expectedResults: EmailData = {
-  //     emails: null,
-  //     emailTypes: expectedSelectItems,
-  //     updated: false,
-  //     errors: [{text: controller.getEmailsErrorMsg}]
-  //   };
-  //   expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
-  // });
 });

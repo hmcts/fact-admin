@@ -1,7 +1,7 @@
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {Postcode, PostcodeData} from '../../../types/Postcode';
+import {PostcodeData} from '../../../types/Postcode';
 import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 
@@ -17,7 +17,7 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response,
     searchValue = '',
-    postcodes: Postcode[] = null,
+    postcodes: string[] = null,
     error = '',
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
@@ -31,7 +31,7 @@ export class PostcodesController {
 
     if (!postcodes)
       await req.scope.cradle.api.getPostcodes(slug)
-        .then((value: Postcode[]) => postcodes = value)
+        .then((value: string[]) => postcodes = value)
         .catch(() => errors.push({text: this.getPostcodesErrorMsg}));
 
     const pageData: PostcodeData = {
@@ -48,7 +48,7 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response): Promise<void> {
 
-    const existingPostcodes: Postcode[] = req.body.existingPostcodes ?? [];
+    const existingPostcodes: string[] = req.body.existingPostcodes ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg);
     }
@@ -69,8 +69,8 @@ export class PostcodesController {
     }
 
     // Send the new postcodes to fact-api to add them to the database
-    await req.scope.cradle.api.addPostcodes(req.params.slug, newPostcodes)
-      .then((value: Postcode[]) =>
+    await req.scope.cradle.api.addPostcodes(req.params.slug, newPostcodes.split(','))
+      .then((value: string[]) =>
         this.get(req, res, '', existingPostcodes.concat(value), '', true))
       .catch((err: any) =>
         this.get(req, res, newPostcodes, existingPostcodes,
