@@ -136,7 +136,6 @@ Then('An error is displayed for opening hours with summary {string} and descript
   expect(await I.checkElement('#hours-' + fieldsetErrorIndex + '-error')).equal(false);
 });
 
-
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';

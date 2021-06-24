@@ -87,15 +87,71 @@ Then('a green message is displayed for updated entries {string}', async(message:
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
-When('I enter an incomplete phone number entry', async () => {
+When('I left description entry blank in phone number tab and enter phone number {string}', async (number: string) => {
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const entryFormIdx = numFieldsets - 2;
 
   // Ensure last entry is for new number and the description is unselected
-  const selectedDescription = await I.getLastElementValue('select[name$="[type_id]"');
+  const selectedDescription = await I.getLastElementValue('#phoneNumbersTab select[name$="[type_id]"');
   expect(selectedDescription).equal('');
 
-  await I.setElementValueAtIndex('input[name$="[number]"', entryFormIdx, '0987 666 5040');
+  await I.setElementValueAtIndex('#phoneNumbersTab input[name$="[number]"', entryFormIdx, number);
+});
+
+When('I left the phone number entry blank and select description at index {int}', async (descriptinIndex: number) => {
+  const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
+  const entryFormIdx = numFieldsets - 2;
+
+  const selectSelector = '#phoneNumbersTab select[name$="[type_id]"]';
+  const numbersSelector = '#phoneNumbersTab input[name$="[number]"]';
+
+  await I.setElementValueAtIndex(selectSelector, entryFormIdx, descriptinIndex, 'select');
+  await I.setElementValueAtIndex(numbersSelector, entryFormIdx, '', "input");
+ // await I.clearField('#phoneNumbersTab input[name$="[number]"');
+});
+
+
+Then('an error message is displayed for phone number tab with summary {string} and description field message {string}', async (summary: string, message: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#phoneNumbersContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summary);
+
+  const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#contactDescription-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(message);
+
+  expect(await I.checkElement('#hours-' + fieldsetErrorIndex + '-error')).equal(false);
+});
+
+
+Then('an error message is displayed for phone number tab with summary {string} and number field message {string}', async (summary: string, message: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#phoneNumbersContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summary);
+
+  const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#contactNumber-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
 
 Then('I click the Add button in the phone number tab', async () => {

@@ -21,10 +21,14 @@ Feature: Phone Numbers
     Then the phone number entry in second last position has description at index 4 number "0123 456 7890" explanation "Fine" and welsh explanation "Dirwy"
     And the phone number entry in last position has description at index 5 number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
 
-  Scenario: Prevent incomplete entries being added
-    When I enter an incomplete phone number entry
+  Scenario: Prevent blank entries being added
+    When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
     And I click save in the phone number tab
-    Then an error message is displayed in the phone number tab
+    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and description field message "Description is required"
+    # blank entry for phone number
+    When I left the phone number entry blank and select description at index 4
+    And I click save in the phone number tab
+    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Number is required"
 
   Scenario: Remove phone number
     When I click the remove button under a phone number entry

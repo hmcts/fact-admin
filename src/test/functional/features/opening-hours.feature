@@ -56,8 +56,7 @@ Feature: Opening Hours
     When I left the opening hours blank and select description at index 6
     And I click save
     Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and hours field message "Hours is required"
-
-
+    
   Scenario: Prevent duplicated entries being added
     When I remove all existing opening hours entries and save
     When I enter a new opening hours entry by selecting description at index 4 and adding hours "9:00am to 3:30pm"
