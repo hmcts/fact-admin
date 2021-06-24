@@ -9,17 +9,17 @@ import {CSRF} from '../../../modules/csrf';
 export class PostcodesController {
 
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
-  addErrorMsg = 'A problem has occurred when adding new postcodes.';
+  addErrorMsg = 'A problem has occurred when adding the following postcodes: ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist.';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
 
   public async get(
     req: AuthedRequest,
     res: Response,
     searchValue = '',
-    updated = false,
+    postcodes: Postcode[] = null,
     error = '',
-    postcodes: Postcode[] = null): Promise<void> {
+    updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
 
     const errors: Error[] = [];
@@ -48,29 +48,32 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response): Promise<void> {
 
-    const existingPostcodes: Postcode[] = req.body.existingPostcodes.split(',') ?? [];
-    if(!CSRF.verify(req.body.csrfToken)) {
-      return this.get(req, res, '', false, this.addErrorMsg, existingPostcodes);
+    const existingPostcodes: Postcode[] = req.body.existingPostcodes ?? [];
+    if (!CSRF.verify(req.body.csrfToken)) {
+      return this.get(req, res, '', existingPostcodes, this.addErrorMsg);
     }
 
     // If there is no user input
-    let newPostcodes = req.body.newPostcodes;
-    if (newPostcodes.trim().length == 0) {
-      return this.get(req, res, '', true, this.noPostcodeErrorMsg, existingPostcodes);
+    const newPostcodes = req.body.newPostcodes;
+    if (newPostcodes.length == 0) {
+      return this.get(req, res, '', existingPostcodes, this.noPostcodeErrorMsg, true);
     }
 
     // Do an intersect between the existing and new postcodes, if any values cross over
     // then return an error specifying why
-    newPostcodes = req.body.newPostcodes.replace(/\s/g, '').split(',');
-    if (existingPostcodes.filter(value => newPostcodes.includes(value)).length > 0) {
-      return this.get(req, res, newPostcodes, false, this.duplicatePostcodeMsg, existingPostcodes);
+    const duplicatePostcodes = existingPostcodes.filter(
+      value => newPostcodes.replace(/\s/g, '').toUpperCase().split(',').includes(String(value).toUpperCase()));
+    if (duplicatePostcodes.length > 0) {
+      return this.get(req, res, newPostcodes, existingPostcodes,
+        this.duplicatePostcodeMsg + duplicatePostcodes, true);
     }
 
     // Send the new postcodes to fact-api to add them to the database
     await req.scope.cradle.api.addPostcodes(req.params.slug, newPostcodes)
       .then((value: Postcode[]) =>
-        this.get(req, res, '', true, '', existingPostcodes.concat(value)))
-      .catch(() =>
-        this.get(req, res, '', false, this.addErrorMsg, existingPostcodes.concat(newPostcodes)));
+        this.get(req, res, '', existingPostcodes.concat(value), '', true))
+      .catch((err: any) =>
+        this.get(req, res, newPostcodes, existingPostcodes,
+          this.addErrorMsg + err.response.data, false));
   }
 }

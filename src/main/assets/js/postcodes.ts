@@ -55,7 +55,7 @@ export class PostcodesController {
         url: `/courts/${slug}/postcodes`,
         method: 'post',
         data: {
-          existingPostcodes: $(e.target).attr('existingPostcodes'),
+          existingPostcodes: $(e.target).attr('existingPostcodes').split(','),
           newPostcodes: $(document.getElementById(this.addNewPostcodesInput)).val(),
           csrfToken: $(document.querySelector('#postcodesForm > input[type=hidden]')).val()
         }

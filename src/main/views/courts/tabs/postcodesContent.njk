@@ -1,6 +1,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 <h2 class="govuk-heading-l">Postcodes</h2>
@@ -12,9 +13,10 @@
   html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
 }}
 
-{% set descriptionError = false %}
-{% if email.adminEmailTypeId === '' %}
-    {% set addError = { text: 'Type is required' } %}
+{% if updated === true and not errors|length %}
+  {{ govukPanel({
+    titleText: "Postcodes updated"
+  }) }}
 {% endif %}
 
 {% if errors|length %}
@@ -25,7 +27,9 @@
 {% endif %}
 
 {% if searchValue == '' and updated and errors|length %}
-   {% set addError = { text: 'One or more postcodes are required.' } %}
+  {% set addError = { text: 'One or more postcodes are required.' } %}
+{% elif searchValue != '' and updated and errors|length %}
+  {% set addError = { text: 'Please make sure that postcodes are not already added for this court.' } %}
 {% endif %}
 
 {{ govukInput({
@@ -38,6 +42,7 @@
     text: "Please add a comma separated list of postcodes.
     These can be case insensitive, and spaces are not significant."
   },
+  value: searchValue if updated,
   id: "addNewPostcodes",
   name: "addNewPostcodes",
   errorMessage: addError
