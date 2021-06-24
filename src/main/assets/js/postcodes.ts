@@ -8,18 +8,8 @@ export class PostcodesController {
   private formId = '#postcodesForm';
   private tabId = '#postcodesTab';
   private postcodesContentId = '#postcodesContent';
-  // private hiddenPostcodesNumTemplateId = '#newPostcodesTemplate';
-  //
   private addPostcodesBtnClass = 'addPostcodes';
   private addNewPostcodesInput = 'addNewPostcodes';
-
-  //
-  // private typeSelectName = 'type_id';
-  // private numberInputName = 'number';
-  // private explanationInputName = 'explanation';
-  // private explanationCyInputName = 'explanation_cy';
-  // private faxInputName = 'fax';
-  // private hiddenNewInputName = 'isNew';
 
   constructor() {
     this.initialize();

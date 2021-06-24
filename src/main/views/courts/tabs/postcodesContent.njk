@@ -6,8 +6,6 @@
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
-{{ csrfToken }}
-
 {{ govukDetails({
   summaryText: "Help with postcodes",
   html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
@@ -55,9 +53,3 @@
   classes: "addPostcodes",
   attributes: { existingPostcodes: postcodes }
 }) }}
-
-<br><br>
-
-{% for postcode in postcodes %}
-  {{ postcode }}
-{% endfor %}
