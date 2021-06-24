@@ -1,16 +1,18 @@
 import {SelectItem} from "./CourtPageData";
+import {Error} from "./Error";
+import {Element} from "./Element";
 
-export interface Email {
+export interface Email extends Element {
   adminEmailTypeId: number,
   explanation: string,
   explanationCy: string,
   address: string,
-  isNew?: boolean
+  isInvalidFormat?: boolean
 }
 
 export interface EmailData {
   emails: Email[],
   emailTypes: SelectItem[],
-  errorMsg: string,
+  errors: Error[],
   updated: boolean
 }

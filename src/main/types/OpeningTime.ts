@@ -1,14 +1,15 @@
 import {SelectItem} from "./CourtPageData";
+import {Error} from "./Error";
+import {Element} from "./Element";
 
-export interface OpeningTime {
+export interface OpeningTime extends Element {
   type_id: number,
   hours: string,
-  isNew?: boolean
 }
 
 export interface OpeningTimeData {
   opening_times: OpeningTime[],
   openingTimeTypes: SelectItem[],
-  errorMsg: string,
+  errors: Error[],
   updated: boolean
 }
