@@ -4,6 +4,7 @@ import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
 import FeatureToggles from '../featureToggles';
 import {LDFlagSet} from 'launchdarkly-node-server-sdk';
+import config from 'config';
 
 export class Nunjucks {
   constructor(public developmentMode: boolean) {
@@ -47,6 +48,8 @@ export class Nunjucks {
       return (!(regExp.test(string) || isNaN(string)) );
 
     });
+
+    env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

@@ -30,7 +30,7 @@
 
  {% set magistratesCodeError = false %}
   {% if item.checked and item.code | valid === false %}
-   {% set magistratesCodeError = "{ text: 'Magistrates code is required and must be numeric. eg(1234)' }" %}
+   {% set magistratesCodeError = { text: 'Magistrates code is required and must be numeric. eg(1234)' } %}
   {% endif %}
 
 {% set magistratesCourtCodeHtml %}
@@ -59,7 +59,7 @@
 
 {% set countyCourtCode = false %}
  {% if item.checked and  item.code | valid === false  %}
-   {% set countyCourtCode = "{ text: 'County code is required and must be numeric. eg(1234)' }" %}
+   {% set countyCourtCode = { text: 'County code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
 {% set countyCourtCodeHtml %}
@@ -84,7 +84,7 @@
 
 {% set crownCourtCode = false %}
  {% if item.checked and item.code | valid === false  %}
-   {% set crownCourtCode = "{ text: 'Crown code is required and must be numeric. eg(1234)' }" %}
+   {% set crownCourtCode = { text: 'Crown code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
 {% set crownCourtCodeHtml %}

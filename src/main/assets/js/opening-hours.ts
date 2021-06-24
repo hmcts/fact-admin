@@ -1,17 +1,25 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
 export class OpeningHoursController {
   private formId = '#openingTimesForm';
   private tabId = '#openingTimesTab';
-  private newOpeningTimeHeadingId = '#newOpeningHoursHeading';
+  private hiddenOpeningHrsTemplateId = '#newOpeningTimeTemplate';
   private openingTimesContentId = '#openingTimesContent';
+
   private deleteBtnClass = 'deleteOpeningTime';
-  private addOpeningTimesBtnName = 'addOpeningTime';
+  private addOpeningTimeBtnClass = 'addOpeningTime';
+  private clearOpeningTimeBtnClass = 'clearOpeningTime';
+
   private typeSelectName = 'type_id';
   private hoursInputName = 'hours';
+  private hiddenNewInputName = 'isNew';
+
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
 
   constructor() {
     this.initialize();
@@ -24,6 +32,8 @@ export class OpeningHoursController {
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
+        this.setUpClearEventHandler();
+        Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
     });
   }
@@ -62,29 +72,23 @@ export class OpeningHoursController {
   }
 
   private setUpAddEventHandler(): void {
-    $(this.tabId).on('click', `button[name="${this.addOpeningTimesBtnName}"]`, e => {
-      // Copy new opening hours fields to main table.
-      const addNewFieldset = e.target.closest('fieldset');
-      const copyFieldset = $(addNewFieldset).clone();
-      $(`${this.newOpeningTimeHeadingId}`).before(copyFieldset);
-
-      // Set the value of the select to that chosen in 'add new'.
-      const type = $(addNewFieldset).find('select').val();
-      $(copyFieldset).find('select')
-        .val(type)
-        .attr('name', this.getInputName(this.typeSelectName, 0));
-      $(copyFieldset).find('input').attr('name', this.getInputName(this.hoursInputName, 0));
+    $(this.tabId).on('click', `button.${this.addOpeningTimeBtnClass}`, e => {
+      // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
+      const selector = `${this.tabId} ${this.hiddenOpeningHrsTemplateId}`;
+      const copyFieldset = $(selector).clone()
+        .removeAttr('disabled')
+        .removeAttr('hidden')
+        .removeAttr('id');
+      $(selector).before(copyFieldset);
 
       // Set the id and names of the elements in the table
       this.renameFormElements();
+    });
+  }
 
-      // Change button type in newly added row from 'add' to 'delete'.
-      $(copyFieldset).find('button').replaceWith(
-        '<button type="button" name="deleteOpeningHours" ' +
-        `class="govuk-button govuk-button--secondary ${this.deleteBtnClass}" data-module="govuk-button">Remove</button>`);
-
-      // Reset select and input values on 'add new' row.
-      $(addNewFieldset).find('input, select').val('');
+  private setUpClearEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.clearOpeningTimeBtnClass}`, e => {
+      $(e.target.closest('fieldset')).find(':input:visible').val('');
     });
   }
 
@@ -99,14 +103,18 @@ export class OpeningHoursController {
     return `opening_times[${index}][${name}]`;
   }
 
+  private renameFormElement(type: 'input' | 'select', name: string, id: string): void {
+    $(`${this.tabId} ${type}[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('id', idx => `${id}-` + idx)
+      .siblings('label').attr('for', idx => `${id}-` + idx);
+  }
+
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    $(`${this.tabId} select[name$="[${this.typeSelectName}]"]`)
-      .attr('name', idx => this.getInputName(this.typeSelectName, idx))
-      .attr('id', idx => 'description-' + idx);
-    $(`${this.tabId} input[name$="[${this.hoursInputName}]"]`)
-      .attr('name', idx => this.getInputName(this.hoursInputName, idx))
-      .attr('id', idx => 'hours-' + idx);
+    this.renameFormElement('select', this.typeSelectName, 'description');
+    this.renameFormElement('input', this.hoursInputName, this.hoursInputName);
+    this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
   }
 }
