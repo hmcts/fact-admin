@@ -94,7 +94,7 @@ When('I left the opening hours blank and select description at index {int}', asy
   const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
   const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
 
-  await I.setElementValueAtIndex(typeSelector, entryFormIdx, type_id, 'select');
+  await I.setElementValueAtIndex(typeSelector, entryFormIdx, typeId, 'select');
   await I.setElementValueAtIndex(hoursSelector, entryFormIdx, '', 'input');
   await I.clearField(hoursSelector);
 
