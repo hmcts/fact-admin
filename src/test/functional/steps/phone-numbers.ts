@@ -79,7 +79,7 @@ Then('the phone number entry in last position has description at index {int} num
   expect(lastExplanationCyText).equal(explanationCy);
 });
 
-Then('a green message is displayed for updated entries {string}', async(message: string) => {
+Then('a green message is displayed for updated entries {string}', async (message: string) => {
   const selector = '#phoneNumbersContent > div > h1';
   expect(await I.checkElement(selector)).equal(true);
 
@@ -107,7 +107,6 @@ When('I left the phone number entry blank and select description at index {int}'
 
   await I.setElementValueAtIndex(selectSelector, entryFormIdx, descriptinIndex, 'select');
   await I.setElementValueAtIndex(numbersSelector, entryFormIdx, '', "input");
- // await I.clearField('#phoneNumbersTab input[name$="[number]"');
 });
 
 
