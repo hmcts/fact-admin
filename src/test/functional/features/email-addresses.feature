@@ -24,6 +24,26 @@ Feature: Email-addresses
     And the second last email address is displayed with description at index 6 Address "abs@gmail.com" Explanation "County Court" and Welsh Explanation "Llys sirol"
     And the last email address is displayed with description at index 8 Address "functional.test1@testing.com" Explanation "Testing - English" and Welsh Explanation "Testing - Welsh"
 
+  Scenario: Re-order email addresses
+    When I remove all existing email entries and save
+    Then a green update message showing email updated is displayed
+    When I add Description from the dropdown at index 2 and Address "functional.test1@testing.com" and Explanation "Test 1 - English" and Welsh Explanation "Test 1 - Welsh"
+    Then I click on Add new Email
+    And I add Description from the dropdown at index 3 and Address "functional.test2@testing.com" and Explanation "Test 2 - English" and Welsh Explanation "Test 2 - Welsh"
+    And I click save button
+    Then the second last email address is displayed with description at index 2 Address "functional.test1@testing.com" Explanation "Test 1 - English" and Welsh Explanation "Test 1 - Welsh"
+    And the last email address is displayed with description at index 3 Address "functional.test2@testing.com" Explanation "Test 2 - English" and Welsh Explanation "Test 2 - Welsh"
+    When I click the move up button on the last entry
+    And I click save button
+    Then a green update message showing email updated is displayed
+    And the second last email address is displayed with description at index 3 Address "functional.test2@testing.com" Explanation "Test 2 - English" and Welsh Explanation "Test 2 - Welsh"
+    And the last email address is displayed with description at index 2 Address "functional.test1@testing.com" Explanation "Test 1 - English" and Welsh Explanation "Test 1 - Welsh"
+    When I click the move down button on the second last entry
+    And I click save button
+    Then a green update message showing email updated is displayed
+    Then the second last email address is displayed with description at index 2 Address "functional.test1@testing.com" Explanation "Test 1 - English" and Welsh Explanation "Test 1 - Welsh"
+    And the last email address is displayed with description at index 3 Address "functional.test2@testing.com" Explanation "Test 2 - English" and Welsh Explanation "Test 2 - Welsh"
+
   Scenario: Incomplete email type and address
     When I leave adminId blank
     And I add address "incomplete@test.com"
