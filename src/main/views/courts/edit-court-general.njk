@@ -44,7 +44,7 @@
       </div>
 
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-three-quarters">
+        <div class="govuk-grid-column-full">
             {% set generalHtml %}
               {% include "./tabs/general.njk" %}
             {% endset -%}
@@ -60,8 +60,14 @@
             {% set courtTypesHtml %}
                 {% include "./tabs/types.njk" %}
             {% endset -%}
+            {% set localAuthoritiesHtml %}
+                {% include "./tabs/localAuthorities.njk" %}
+            {% endset -%}
+
              <input id='slug' type='hidden' value='{{slug}}'></input>
+             <input id='isSuperAdmin' type='hidden' value={{isSuperAdmin}}></input>
             {{ govukTabs({
+            id: 'Main',
               items: [
                 {
                   label: "General",
@@ -97,9 +103,16 @@
                   panel: {
                   html: courtTypesHtml
                 }
+                },
+                {
+                  label: "Local Authorities",
+                  id: "local-authorities",
+                  panel: {
+                  html: localAuthoritiesHtml
                 }
-              ]
-            }) }}
+                }
+               ]
+              }) }}
         </div>
       </div>
     </div>
