@@ -53,10 +53,6 @@
 
   <div id="localAuthoritiesList" class="govuk-grid-row">
 
-  {% for localAuthoritiesItems in range(0, 87) -%}
-    {{ localAuthoritiesItems }},
-  {%- endfor %}
-
     {%- for items in localAuthoritiesItems | slice(2) %}
 
       <div class="govuk-grid-column-one-half">
