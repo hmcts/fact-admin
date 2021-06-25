@@ -106,7 +106,7 @@ When('I left the phone number entry blank and select description at index {int}'
   const numbersSelector = '#phoneNumbersTab input[name$="[number]"]';
 
   await I.setElementValueAtIndex(selectSelector, entryFormIdx, descriptinIndex, 'select');
-  await I.setElementValueAtIndex(numbersSelector, entryFormIdx, '', "input");
+  await I.setElementValueAtIndex(numbersSelector, entryFormIdx, '', 'input');
 });
 
 
