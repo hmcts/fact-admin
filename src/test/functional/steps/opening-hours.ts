@@ -87,7 +87,7 @@ When('I enter an incomplete opening hour description', async () => {
   await I.setElementValueAtIndex('#openingTimesTab input[name$="[hours]"', entryFormIdx, '10:00am to 4:00pm', 'input');
 });
 
-When('I left the opening hours blank and select description at index {int}', async (type_id: number) => {
+When('I left the opening hours blank and select description at index {int}', async (typeId: number) => {
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const entryFormIdx = numFieldsets - 2; // we deduct one each for zero-based index and hidden template field
 
