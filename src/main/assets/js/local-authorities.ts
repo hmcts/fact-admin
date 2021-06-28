@@ -9,7 +9,7 @@ export class LocalAuthoritiesController {
   private tabId = '#localAuthoritiesTab';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
-  private loccalAuthoritiesListId = '#localAuthoritiesList';
+  private localAuthoritiesListId = '#localAuthoritiesList';
 
   private slug = $('#slug').val();
   private areaOfLaw = ($('#courtAreasOfLaw').val() == undefined ) ? 'unknown': $('#courtAreasOfLaw').val();
@@ -105,9 +105,9 @@ export class LocalAuthoritiesController {
   }
 
   private scrollable(): void{
-    $(this.loccalAuthoritiesListId).addClass('visible-scrollbar');
-    $(this.loccalAuthoritiesListId).addClass('scrollable');
-    $(this.loccalAuthoritiesListId).attr('role','scrollbar') ;
+    $(this.localAuthoritiesListId).addClass('visible-scrollbar');
+    $(this.localAuthoritiesListId).addClass('scrollable');
+    $(this.localAuthoritiesListId).attr('role','scrollbar') ;
 
   }
 

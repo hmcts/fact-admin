@@ -59,9 +59,14 @@ export class CourtTypesController {
       }).done( async res => {
         await this.updateContent(res);
         window.scrollTo(0, 0);
+        this.refresh();
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST court types failed.'));
     });
+  }
+
+  private refresh(): void {
+    location.reload();
   }
 
 
