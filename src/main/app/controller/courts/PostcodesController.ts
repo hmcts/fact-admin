@@ -9,7 +9,7 @@ import {CSRF} from '../../../modules/csrf';
 export class PostcodesController {
 
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
-  addErrorMsg = 'A problem has occurred when adding the following postcodes (your changes have not been saved): ';
+  addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
   duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
 
