@@ -11,7 +11,7 @@ export class PostcodesController {
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred when adding the following postcodes: ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved): ';
 
   public async get(
     req: AuthedRequest,
