@@ -10,7 +10,7 @@ describe('PostcodeController', () => {
     getPostcodes: () => Promise<string[]>,
     addPostcodes: () => Promise<string[]> };
 
-  const postcodeData = ['PL1', 'PL2', 'PL3'];
+  const postcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
   const newPostcodes = 'PL4,PL5,PL6';
   const getPostcodes: () => string[] = () => postcodeData;
   const addPostcodes: () => string[] = () => postcodeData;
@@ -95,7 +95,7 @@ describe('PostcodeController', () => {
     await controller.post(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: ['PL1', 'PL2', 'PL3', 'PL4', 'PL5', 'PL6'],
+      postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1', 'PL4', 'PL5', 'PL6'],
       slug: slug,
       searchValue: '',
       updated: true,

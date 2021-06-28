@@ -20,8 +20,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/contacts', app.locals.container.cradle.contactsController.put);
   app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
   app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
-  app.get('/courts/:slug/postcodes', isSuperAdmin, app.locals.container.cradle.postcodesController.get);
-  app.post('/courts/:slug/postcodes', isSuperAdmin, app.locals.container.cradle.postcodesController.post);
+  app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
+  app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);

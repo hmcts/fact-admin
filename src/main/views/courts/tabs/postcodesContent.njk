@@ -3,6 +3,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
@@ -46,10 +47,11 @@
   errorMessage: addError
 }) }}
 
+<input id="existingPostcodesInput" name="existingPostcodesInput" type="hidden" value= {{ postcodes }}>
+
 {{ govukButton({
   text: "Add",
   name: "addPostcodes",
   type: "button",
-  classes: "addPostcodes",
-  attributes: { existingPostcodes: postcodes }
+  classes: "addPostcodes"
 }) }}

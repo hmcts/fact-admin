@@ -5,11 +5,11 @@ const { initAll } = require('govuk-frontend');
 
 export class PostcodesController {
 
-  private formId = '#postcodesForm';
   private tabId = '#postcodesTab';
   private postcodesContentId = '#postcodesContent';
   private addPostcodesBtnClass = 'addPostcodes';
   private addNewPostcodesInput = 'addNewPostcodes';
+  private existingPostcodesInput = 'existingPostcodesInput';
 
   constructor() {
     this.initialize();
@@ -20,7 +20,6 @@ export class PostcodesController {
       if ($(this.tabId).length > 0) {
         this.getPostcodes();
         this.setUpAddEventHandler();
-        this.setUpSubmitEventHandler();
       }
     });
   }
@@ -45,32 +44,15 @@ export class PostcodesController {
         url: `/courts/${slug}/postcodes`,
         method: 'post',
         data: {
-          existingPostcodes: $(e.target).attr('existingPostcodes').split(','),
+          existingPostcodes: $(document.getElementById(this.existingPostcodesInput)).val(),
           newPostcodes: $(document.getElementById(this.addNewPostcodesInput)).val(),
-          csrfToken: $(document.querySelector('#postcodesForm > input[type=hidden]')).val()
+          csrfToken: $(document.querySelector('#postcodesTab > input[type=hidden]')).val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
-    });
-  }
-
-  private setUpSubmitEventHandler(): void {
-    $(this.formId).on('submit', e => {
-      e.preventDefault();
-
-      const url = $(e.target).attr('action');
-      $.ajax({
-        url: url,
-        method: 'put',
-        data: $(e.target).serialize()
-      }).done(res => {
-        this.updateContent(res);
-        window.scrollTo(0, 0);
-      }).fail(response =>
-        AjaxErrorHandler.handleError(response, 'POST add or move postcodes failed.'));
     });
   }
 

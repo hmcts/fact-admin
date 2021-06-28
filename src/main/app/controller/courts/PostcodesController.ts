@@ -48,7 +48,7 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response): Promise<void> {
 
-    const existingPostcodes: string[] = req.body.existingPostcodes ?? [];
+    const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg);
     }
