@@ -25,7 +25,6 @@ export class LocalAuthoritiesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
-        this.displayLocalAuthoritiesTab();
         this.getAreasOfLaw();
         this.setUpGetLocalAuthoritiesEventHandler();
         this.setUpSubmitEventHandler();
@@ -87,14 +86,6 @@ export class LocalAuthoritiesController {
     });
   }
 
-  private displayLocalAuthoritiesTab(): void{
-
-    const isSuperAdmin = Boolean($('#isSuperAdmin').val() === 'true');
-    if(!isSuperAdmin){
-      $('ul li').eq(5).remove();
-    }
-  }
-
   private disableLocalAuthoritiesTab(): void{
     const isEnabled = Boolean($('#enabled').val() === 'true');
     if(!isEnabled) {
@@ -114,7 +105,6 @@ export class LocalAuthoritiesController {
     $(this.localAuthoritiesListId).attr('role','scrollbar') ;
 
   }
-
 
   private setUpGetLocalAuthoritiesEventHandler(): void {
     $(this.tabId).on('change', `${this.getLocalAuthoritiesSelect}`, e => {
