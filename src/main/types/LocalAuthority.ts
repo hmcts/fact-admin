@@ -22,6 +22,7 @@ export interface LocalAuthoritiesPageData {
 
 
 export interface LocalAuthorityItem {
+  id: number,
   value: string,
   text: string,
   checked: boolean

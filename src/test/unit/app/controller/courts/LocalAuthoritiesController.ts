@@ -52,10 +52,10 @@ describe ( 'LocalAuthoritiesController', () => {
   ];
 
   const localAuthoritiesItems: LocalAuthorityItem[] = [
-    { value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:false },
-    { value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:true },
-    { value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:true },
-    { value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
+    { id:1, value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:false },
+    { id:2, value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:true },
+    { id:3, value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:true },
+    { id:4, value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
   ];
 
   const areasOfLawItems: SelectItem[] =[

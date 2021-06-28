@@ -125,6 +125,7 @@ export class LocalAuthoritiesController {
 
       const localAuthorityItems = allLocalAuthorities.map((la: LocalAuthority) => (
         {
+          id: la.id,
           value: JSON.stringify(la),
           text: la.name,
           checked: courtLocalAuthorities.some(e => e.id === la.id)
