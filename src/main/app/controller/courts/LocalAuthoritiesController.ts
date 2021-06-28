@@ -9,19 +9,12 @@ import {
   LocalAuthorityItem
 } from '../../../types/LocalAuthority';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
-
 import {SelectItem} from '../../../types/CourtPageData';
 import {CSRF} from '../../../modules/csrf';
+import {familyAreaOfLaw} from '../../../utils/enums/familyAreaOfLaw'
 
-export enum familyAreaOfLaw {
-  adoption = 'Adoption',
-  children = 'Children',
-  civilPartnership = 'Civil partnership',
-  divorce = 'Divorce'
-}
 @autobind
 export class LocalAuthoritiesController {
-
 
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
@@ -66,29 +59,21 @@ export class LocalAuthoritiesController {
     res.render('courts/tabs/localAuthoritiesContent', pageData);
   }
 
-
   public async getLocalAuthorities(
     req: AuthedRequest,
     res: Response,
     updated = false,
     error = '',
-    selectedAreaOfLaw = '',
     courtLocalAuthorities: LocalAuthority[] = null): Promise<void> {
     const slug: string = req.params.slug as string;
     const areaOfLaw: string = req.params.areaOfLaw as string;
 
     let areasOfLaw: AreaOfLaw[] = null;
-
-    if (!areasOfLaw ) {
-
-      await req.scope.cradle.api.getCourtAreasOfLaw(slug)
-        .then((value: AreaOfLaw[]) => areasOfLaw = value)
-        .catch(() => error += this.getCourtAreasOfLawErrorMsg);
-    }
-
-    if (areasOfLaw ){
-      areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
-    }
+    await req.scope.cradle.api.getCourtAreasOfLaw(slug)
+      .then((value: AreaOfLaw[]) => areasOfLaw = this.checkFamilyAreasOfLaw(value))
+      .catch(() => {
+        error += this.getCourtAreasOfLawErrorMsg;
+      } );
 
     if ( courtLocalAuthorities === null  || (courtLocalAuthorities.length < 1 && areaOfLaw != 'unknown')) {
 
@@ -97,12 +82,10 @@ export class LocalAuthoritiesController {
         .catch(() => error += this.getCourtLocalAuthoritiesErrorMsg);
     }
 
-
     let allLocalAuthorities: LocalAuthority[] = [];
     await req.scope.cradle.api.getLocalAuthorities()
       .then((value: LocalAuthority[]) => allLocalAuthorities = value)
       .catch(() => error += this.getLocalAuthoritiesErrorMsg);
-
 
     const pageData: LocalAuthoritiesPageData = {
       errorMsg: error,
@@ -124,17 +107,14 @@ export class LocalAuthoritiesController {
       localAuthorities = Array.isArray(req.body.localAuthoritiesItems) ? req.body.localAuthoritiesItems.map((la: string) => JSON.parse(la)) : [JSON.parse(req.body.localAuthoritiesItems)];
     }
 
-    const SelectedAreaOfLaw = req.body.courtAreasOfLaw as string;
-
     if(!CSRF.verify(req.body._csrf)) {
-      return this.getLocalAuthorities(req, res, false, this.updateErrorMsg, SelectedAreaOfLaw, localAuthorities);
+      return this.getLocalAuthorities(req, res, false, this.updateErrorMsg, localAuthorities);
     }
     else
     {
       await req.scope.cradle.api.updateCourtLocalAuthoritiesByAreaOfLaw(req.params.slug, req.params.areaOfLaw, localAuthorities)
-        .then((value: LocalAuthority[]) => this.getLocalAuthorities(req, res, true, '', SelectedAreaOfLaw, value))
-        .catch(() => this.getLocalAuthorities(req, res, false, this.updateErrorMsg, SelectedAreaOfLaw, localAuthorities));
-
+        .then((value: LocalAuthority[]) => this.getLocalAuthorities(req, res, true, '', value))
+        .catch(() => this.getLocalAuthorities(req, res, false, this.updateErrorMsg, localAuthorities));
     }
 
   }
@@ -156,21 +136,20 @@ export class LocalAuthoritiesController {
     {
       return [];
     }
-
   }
 
-
   private checkFamilyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]){
-    return courtAreasOfLaw.filter( c => c.name == familyAreaOfLaw.children || c.name == familyAreaOfLaw.divorce
-      || c.name == familyAreaOfLaw.adoption || c.name == familyAreaOfLaw.civilPartnership );
-
+    if(courtAreasOfLaw && courtAreasOfLaw.length) {
+      return courtAreasOfLaw.filter(c => c.name == familyAreaOfLaw.children || c.name == familyAreaOfLaw.divorce
+        || c.name == familyAreaOfLaw.adoption || c.name == familyAreaOfLaw.civilPartnership);
+    }
+    return [];
   }
 
   private getAreasOfLawForSelect(courtAreasOfLaw: AreaOfLaw[], selectedAreaOfLaw: string): SelectItem[] {
 
     if(courtAreasOfLaw && courtAreasOfLaw.length)
     {
-
       const defaultString = 'Select a area of law';
       const areaOfLawItems: SelectItem[] = courtAreasOfLaw.map((aol: AreaOfLaw) => (
         {value: aol.name, text: aol.name, selected: aol.name === selectedAreaOfLaw }));
@@ -179,15 +158,11 @@ export class LocalAuthoritiesController {
       if (!areaOfLawItems.some(c => c.selected) ) {
         areaOfLawItems.unshift({value: defaultString, text: defaultString, selected:true});
       }
-
       return areaOfLawItems;
     }
     else
     {
       return [];
     }
-
   }
-
-
 }

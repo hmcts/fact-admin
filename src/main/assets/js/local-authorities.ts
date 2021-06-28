@@ -33,7 +33,6 @@ export class LocalAuthoritiesController {
     });
   }
 
-
   private async updateContent(content: any , contentId: string): Promise<void> {
 
     $(contentId).html(content);
@@ -101,6 +100,11 @@ export class LocalAuthoritiesController {
     if(!isEnabled) {
       $(this.localAuthoritiesTabId).addClass('disable-tab');
       $(this.localAuthoritiesTabId).attr('disabled') ;
+    }
+    else
+    {
+      $(this.localAuthoritiesTabId).removeClass('disable-tab');
+      $(this.localAuthoritiesTabId).removeAttr('disabled') ;
     }
   }
 
