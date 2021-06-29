@@ -10,12 +10,11 @@ describe('PostcodeController', () => {
     getPostcodes: () => Promise<string[]>,
     addPostcodes: () => Promise<string[]> };
 
-  const postcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
+  const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
+  const getPostcodeInput = 'PL1,PL2,PL3,PL11 1YY,PL1 1,PL 1';
   const newPostcodes = 'PL4,PL5,PL6';
-  const getPostcodes: () => string[] = () => postcodeData;
-  const addPostcodes: () => string[] = () => postcodeData;
-
-
+  const getPostcodes: () => string[] = () => getPostcodeData;
+  const addPostcodes: () => string[] = () => getPostcodeData;
   const controller = new PostcodesController();
 
   beforeEach(() => {
@@ -39,7 +38,7 @@ describe('PostcodeController', () => {
     await controller.get(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: postcodeData,
+      postcodes: getPostcodeData,
       slug: 'plymouth-combined-court',
       searchValue: '',
       updated: false,
@@ -54,7 +53,7 @@ describe('PostcodeController', () => {
     const req = mockRequest();
 
     req.body = {
-      'existingPostcodes': postcodeData,
+      'existingPostcodes': getPostcodeInput,
       'newPostcodes': 'PL3,PL4,PL5',
       'csrfToken': CSRF.create()
     };
@@ -65,7 +64,7 @@ describe('PostcodeController', () => {
     await controller.post(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: postcodeData,
+      postcodes: getPostcodeData,
       slug: slug,
       searchValue: 'PL3,PL4,PL5',
       updated: true,
@@ -84,7 +83,7 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(',')
     };
     req.body = {
-      'existingPostcodes': postcodeData,
+      'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
       'csrfToken': CSRF.create()
     };
@@ -112,7 +111,7 @@ describe('PostcodeController', () => {
 
     CSRF.verify = jest.fn().mockReturnValue(false);
     req.body = {
-      'existingPostcodes': postcodeData,
+      'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
       'csrfToken': CSRF.create()
     };
@@ -123,7 +122,7 @@ describe('PostcodeController', () => {
     await controller.post(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: postcodeData,
+      postcodes: getPostcodeData,
       slug: slug,
       searchValue: '',
       updated: false,
@@ -139,7 +138,7 @@ describe('PostcodeController', () => {
     const req = mockRequest();
 
     req.body = {
-      'existingPostcodes': postcodeData,
+      'existingPostcodes': getPostcodeInput,
       'newPostcodes': '',
       'csrfToken': CSRF.create()
     };
@@ -150,7 +149,7 @@ describe('PostcodeController', () => {
     await controller.post(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: postcodeData,
+      postcodes: getPostcodeData,
       slug: slug,
       searchValue: '',
       updated: true,

@@ -65,24 +65,6 @@
             {% endset -%}
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
-           {% set some_var1 = [{
-             label: "General",
-             id: "general",
-             panel: {
-               html: generalHtml
-             }
-           }
-           ] %}
-
-
-           {% if not featureToggles['test-feature-flag'] %}
-
-           {% endif %}
-
-           {{ some_var1 }}
-
-           {{ adminTabs }}
-
             {{ govukTabs({
               items: [
                 {
