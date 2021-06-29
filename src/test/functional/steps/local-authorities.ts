@@ -22,16 +22,13 @@ When('I click the local authorities tab', async () => {
 });
 
 When('I select area of law {string}', async (areaOfLaw: string) => {
-
   const selector = '#courtAreasOfLaw';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, areaOfLaw);
-
 });
 
 When('I select {string}', async (areaOfLaw: string) => {
-
   const selector = '#\\33 97353';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
@@ -52,7 +49,6 @@ Then('Success message is displayed for local authorities with summary {string}',
 });
 
 Then('An error is displayed for local authorities with title {string} and summery {string}', async (errorTitle: string, errorSummery: string) => {
-
   const errorTitleSelector = '#error-summary-title';
   const errorSummerySelector = '#localAuthoritiesContent > div > div > ul > li';
 
@@ -64,8 +60,34 @@ Then('An error is displayed for local authorities with title {string} and summer
 
   const errorSummeryElement = await I.getElement(errorSummerySelector);
   expect(await I.getElementText(errorSummeryElement)).equal(errorSummery);
-
 });
+
+When('I will make sure Family court type is not selected', async () => {
+  const selectorFamilyCourt = '#court_types-2';
+  const selectorTribunalCourt = '#court_types-3';
+
+  const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
+  expect(elementFamilyCourtExist).equal(true);
+  const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
+  expect(elementTribunalCourtExist).equal(true);
+
+  const elementFamilyCourtChecked = await I.isElementChecked(selectorFamilyCourt);
+  if (elementFamilyCourtChecked) {
+    await I.click(selectorFamilyCourt);
+  }
+  const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
+  if (!elementTribunalCourtChecked) {
+    await I.click(selectorTribunalCourt);
+  }
+});
+
+Then('The local authorities tab should be disabled', async () => {
+  const selector = '#tab_local-authorities.govuk-tabs__tab.disable-tab';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+});
+
+
 
 
 
