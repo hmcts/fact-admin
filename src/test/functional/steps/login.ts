@@ -3,14 +3,16 @@ import { Given, Then, When } from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
 
+
 async function fillInUsernameAndPassword(username: string, password: string) {
   const usernameEl = await I.checkElement('#username');
   expect(usernameEl).equal(true);
-  await I.fillField('#username', username);
+  await I.setElementValueForInputField('#username', username);
 
   const passwordEl = await I.checkElement('#password');
   expect(passwordEl).equal(true);
-  await I.fillField('#password', password);
+
+  await I.setElementValueForInputField('#password', password);
 }
 
 Given('that I am a logged-out admin or super admin user', async () => {
