@@ -104,6 +104,39 @@ describe('PostcodeController', () => {
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
   });
 
+  test('Should not add postcodes if the api returns an error', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    mockApi = {
+      getPostcodes: async (): Promise<string[]> => getPostcodes(),
+      addPostcodes: async (): Promise<string[]> => newPostcodes.split(',')
+    };
+    req.body = {
+      'existingPostcodes': getPostcodeInput,
+      'newPostcodes': newPostcodes,
+      'csrfToken': CSRF.create()
+    };
+    const errorResponse = mockResponse();
+    errorResponse.response.data = ['pl1'];
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.addPostcodes = jest.fn().mockRejectedValue(errorResponse);
+    jest.spyOn(mockApi, 'addPostcodes');
+
+    await controller.post(req, res);
+
+    const expectedResults: PostcodeData = {
+      postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'],
+      slug: slug,
+      searchValue: 'PL4,PL5,PL6',
+      updated: false,
+      errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
+    expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
+  });
+
   test('Should not post postcodes if CSRF token is invalid', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
