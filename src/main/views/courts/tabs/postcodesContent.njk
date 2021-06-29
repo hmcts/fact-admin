@@ -4,6 +4,9 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
@@ -34,7 +37,7 @@
 {{ govukInput({
   label: {
     text: "Add postcodes:",
-    classes: "govuk-label--s",
+    classes: "govuk-label--m",
     isPageHeading: false
   },
   hint: {
@@ -55,3 +58,80 @@
   type: "button",
   classes: "addPostcodes"
 }) }}
+
+{% set postcodesCheckboxItems = [] %}
+{% for postcode in postcodes %}
+  {% set postcodesCheckboxItems =
+    (postcodesCheckboxItems.push({'text': postcode, 'value': postcode, 'id': postcode}), postcodesCheckboxItems) %}
+{% endfor %}
+
+<h2 class="govuk-heading-m">Delete or move postcodes:</h2>
+<div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+
+  {%- for items in postcodesCheckboxItems | slice(3) %}
+
+  <div class="govuk-grid-column-one-third">
+      {{ govukCheckboxes({
+        idPrefix: "postcodes-checkbox",
+        name: "postcodesCheckboxItems",
+        classes: "govuk-checkboxes--medium",
+        items: items
+      }) }}
+  </div>
+
+  {% endfor %}
+</div>
+
+<div id="postcodesList" class="govuk-grid-row">
+
+    <div class="govuk-grid-column-one-third">
+
+      {{ govukButton({
+        text: "Move all selected to:",
+        name: "movePostcodesButton",
+        type: "button",
+        classes: "movePostcodesButton"
+      }) }}
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+
+      {{ govukSelect({
+        id: "movePostcodesSelect",
+        name: "movePostcodesSelect",
+        items: [
+          {
+            value: "published",
+            text: "Recently published"
+          },
+          {
+            value: "updated",
+            text: "Recently updated",
+            selected: true
+          },
+          {
+            value: "views",
+            text: "Most views"
+          },
+          {
+            value: "comments",
+            text: "Most comments"
+          }
+        ]
+      }) }}
+
+    </div>
+</div>
+
+
+  <div class="govuk-grid-column-column-half">
+
+    {{ govukButton({
+      text: "Delete all selected",
+      name: "deletePostcodes",
+      type: "button",
+      classes: "deletePostcodes govuk-button--warning"
+    }) }}
+
+  </div>

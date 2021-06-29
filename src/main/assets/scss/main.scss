@@ -1,5 +1,16 @@
 @import '~govuk-frontend';
+@import 'scrollbar';
 
 .warning-color {
   color: $govuk-error-colour;
+}
+
+.disable-tab {
+  opacity: 40%;
+  pointer-events: none;
+}
+
+// sass-lint:disable class-name-format
+.govuk-tabs__list-item {
+  font-size: 1.1495rem;
 }

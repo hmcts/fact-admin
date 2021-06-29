@@ -104,7 +104,7 @@ describe('PostcodeController', () => {
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
   });
 
-  test('Should not add postcodes if the api returns an error', async() => {
+  test('Should not add postcodes if the api returns with an error', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();

@@ -30,7 +30,9 @@ export class PostcodesController {
     $.ajax({
       url: `/courts/${slug}/postcodes`,
       method: 'get',
-      success: (res) => this.updateContent(res),
+      success: (res) => {
+        this.updateContent(res);
+      },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET postcodes failed.')
     });
