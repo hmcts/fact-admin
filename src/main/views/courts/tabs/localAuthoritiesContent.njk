@@ -51,7 +51,7 @@
 {% endif %}
 {% if ((localAuthoritiesItems | length) > 0) and selectedAreaOfLaw != '' %}
 
-  <div id="localAuthoritiesList" class="govuk-grid-row">
+  <div id="localAuthoritiesList" class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
 
     {%- for items in localAuthoritiesItems | slice(2) %}
 

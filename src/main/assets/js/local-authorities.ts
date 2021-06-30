@@ -9,7 +9,6 @@ export class LocalAuthoritiesController {
   private tabId = '#localAuthoritiesTab';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
-  private localAuthoritiesListId = '#localAuthoritiesList';
 
   private slug = $('#slug').val();
   private areaOfLaw = ($('#courtAreasOfLaw').val() == undefined ) ? 'unknown': $('#courtAreasOfLaw').val();
@@ -59,8 +58,6 @@ export class LocalAuthoritiesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.localAuthoritiesContentId);
-        this.scrollable();
-
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET local authorities failed.')
@@ -80,7 +77,6 @@ export class LocalAuthoritiesController {
       }).done( async res => {
         await this.updateContent(res, this.localAuthoritiesContentId);
         window.scrollTo(0, 0);
-        this.scrollable();
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST local authorities failed.'));
     });
@@ -99,28 +95,11 @@ export class LocalAuthoritiesController {
     }
   }
 
-  private scrollable(): void{
-    $(this.localAuthoritiesListId).addClass('visible-scrollbar');
-    $(this.localAuthoritiesListId).addClass('scrollable');
-    $(this.localAuthoritiesListId).attr('role','scrollbar') ;
-
-  }
-
   private setUpGetLocalAuthoritiesEventHandler(): void {
     $(this.tabId).on('change', `${this.getLocalAuthoritiesSelect}`, e => {
       e.preventDefault();
       this.areaOfLaw = $('#courtAreasOfLaw').val();
       this.getLocalAuthorities();
     });
-
-
   }
-
-
-
-
-
-
-
-
 }
