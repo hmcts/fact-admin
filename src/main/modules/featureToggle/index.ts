@@ -13,7 +13,7 @@ export default class FeatureToggleService {
   };
 
   static getAllFlagValues = (defaultValue = false) => {
-    return FeatureToggleService.featureFlagClient.getAllFlagValues(defaultValue)
+    return FeatureToggleService.featureFlagClient.getAllFlagValues(defaultValue);
   }
 
   static onFlagChange = (callback: Function, flag?: string, defaultValue = false) => {
