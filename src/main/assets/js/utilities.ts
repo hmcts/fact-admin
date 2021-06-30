@@ -6,7 +6,7 @@ export class Utilities {
   private static fieldsetReorderSelector = 'fieldset.can-reorder';
 
   /**
-   * Adds reordering of fieldsets to an area of the page by attaching click event handlers to move up and
+   * Adds re-ordering of fieldsets to an area of the page by attaching click event handlers to move up and
    * move down buttons within the fieldset.
    * The fieldset must include the 'can-reorder' class to be re-ordered.
    * @param tabId The ID of the container where reordering is required.
