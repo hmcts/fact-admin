@@ -66,7 +66,7 @@ describe('FeatureToggleService', () => {
     expect(mockCallback).toBeCalledTimes(1);
   });
 
-  test('Should use feature-flag controller', async () => {
+  test('Should use feature-flag controller if flag is true', async () => {
     const mockReq = mockRequest();
     const mockRes = mockResponse();
     const mockNextController = jest.fn();
@@ -82,10 +82,11 @@ describe('FeatureToggleService', () => {
     }).then(() => {
       expect(mockFeatureFlagClient.getFlagValue).toBeCalledWith('test-feature-flag', false);
       expect(mockController).toBeCalledTimes(1);
+      expect(mockNextController).toBeCalledTimes(0);
     });
   });
 
-  test('Should use next controller', async () => {
+  test('Should use next controller if flag is set to false', async () => {
     const mockReq = mockRequest();
     const mockRes = mockResponse();
     const mockController = jest.fn();
@@ -101,6 +102,7 @@ describe('FeatureToggleService', () => {
     }).then(() => {
       expect(mockFeatureFlagClient.getFlagValue).toBeCalledWith('test-feature-flag', false);
       expect(mockNextController).toBeCalledTimes(1);
+      expect(mockController).toBeCalledTimes(0);
     });
   });
 });

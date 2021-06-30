@@ -9,7 +9,7 @@ class LaunchDarkly implements FeatureFlagClient {
 
   private constructor() {
     const sdkKey: string = config.get('launchDarkly.sdkKey');
-    const options: LDOptions = config.get('featureToggles.enabled') ? { diagnosticOptOut: true } : { offline: true };
+    const options: LDOptions = { diagnosticOptOut: true };
     this.ldUser = { key: 'fact-admin' };
     this.client = launchDarkly.init(sdkKey, options);
   }
@@ -29,7 +29,7 @@ class LaunchDarkly implements FeatureFlagClient {
   public async getAllFlagValues(defaultValue: boolean): Promise<{ [p: string]: boolean }> {
     const flagMap = (await this.client.allFlagsState(this.ldUser)).allValues();
     for (const key in flagMap) {
-      flagMap[key] = flagMap[key] === null ? defaultValue : flagMap[key];
+      flagMap[key] = flagMap[key] ?? defaultValue;
     }
 
     return flagMap;

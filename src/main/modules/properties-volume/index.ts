@@ -14,10 +14,8 @@ export class PropertiesVolume {
       set(config, 'session.secret', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'appInsights.instrumentationKey', get(config, 'secrets.fact.AppInsightsInstrumentationKey'));
       set(config, 'csrf.tokenSecret', get(config, 'secrets.fact.csrf-token-secret'));
-      set(config, 'featureToggles.enabled', true);
       set(config, 'launchDarkly.sdkKey', get(config, 'secrets.fact.launchdarkly-sdk-key'));
     } else {
-      set(config, 'featureToggles.enabled', true);
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
       this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
       this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
