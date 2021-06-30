@@ -49,12 +49,18 @@ Feature: Opening Hours
     And the second last opening hours is displayed with description at index 2 and hours "9:00am to 4:30pm"
     And the last opening hours is displayed with description at index 3 and hours "11:00am to 5:00pm"
 
-  Scenario: Prevent incomplete entries being added
+  Scenario: Prevent blank entries being added
     When I enter an incomplete opening hour description
     And I click save
     Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and description field message "Description is required"
+    When I left the opening hours blank and select description at index 6
+    And I click save
+    Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and hours field message "Hours is required"
 
   Scenario: Prevent duplicated entries being added
-    When I enter duplicated opening hour description
+    When I remove all existing opening hours entries and save
+    When I enter a new opening hours entry by selecting description at index 4 and adding hours "9:00am to 3:30pm"
+    And I click the Add button in the opening hours tab
+    And I enter a new opening hours entry by selecting description at index 4 and adding hours "9:00am to 3:30pm"
     And I click save
     Then An error is displayed for opening hours with summary "All descriptions must be unique." and description field message "Duplicated description"
