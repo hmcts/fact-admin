@@ -205,17 +205,13 @@ export const setElementValueAtIndex = async (selector: string, index: number, va
   }
 };
 
-
-export const setElementValueForInputField = async (selector: string, value: number | string) => {
+export const setElementValueForInputField = async (selector: string, value: string) => {
   try {
-    const input = await scope.page.$$(selector);
-    return await scope.page.evaluate((el: HTMLInputElement, type: 'input', value: string) =>
-      (el.value = value), input[0], 'input', value);
+    await scope.page.$eval(selector, (el: HTMLInputElement, value: string) => el.value = value, value);
   } catch (error) {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
-
 
 export const isElementVisible = async (selector: string) => {
   let visible = true;
