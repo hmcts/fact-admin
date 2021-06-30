@@ -12,11 +12,8 @@ When('I click the types tab', async () => {
 });
 
 Then('I can view the existing court types', async () => {
-  const elementExist = await I.checkElement('#courtTypesForm');
+  const elementExist = await I.isElementVisible('#courtTypesForm');
   expect(elementExist).equal(true);
-
-  const tabClosed = await I.checkElement('#court-types.govuk-tabs__panel--hidden');
-  expect(tabClosed).equal(false);
 });
 
 
