@@ -12,6 +12,7 @@ export class PostcodesController {
   private existingPostcodesInput = 'existingPostcodesInput';
   private selectAllPostcodes = 'postcodesSelectAllItems';
   private postcodesCheckboxItems = 'postcodesCheckboxItems';
+  private csrfTokenName = '_csrf';
 
   constructor() {
     this.initialize();
@@ -51,7 +52,7 @@ export class PostcodesController {
         data: {
           existingPostcodes: $(document.getElementById(this.existingPostcodesInput)).val(),
           newPostcodes: $(document.getElementById(this.addNewPostcodesInput)).val(),
-          csrfToken: $(document.querySelector('#postcodesTab > input[type=hidden]')).val()
+          csrfToken: $(document.getElementsByName(this.csrfTokenName)).val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -64,26 +65,9 @@ export class PostcodesController {
   private setUpSelectAllEventHandler(): void {
     $(this.tabId).on('change', `input[name=${this.selectAllPostcodes}]`, e => {
       e.preventDefault();
-      const selectAll = document.getElementsByName(this.selectAllPostcodes)[0];
-      const ele = document.getElementsByName(this.postcodesCheckboxItems);
-
-      if (selectAll.hasAttribute('checked')) {
-        console.log('in checked');
-        (selectAll as HTMLInputElement).checked = false;
-        for(let i=0; i<3; i++) {
-          (ele[i] as HTMLInputElement).checked = null;
-          console.log('select all:' + selectAll.getAttribute('checked'));
-          console.log('postcode:' + ele[i].outerHTML + ele[i].innerHTML);
-        }
-      } else {
-        console.log('in unchecked');
-        (selectAll as HTMLInputElement).checked = true;
-        for(let i=0; i<3; i++) {
-          (ele[i] as HTMLInputElement).checked = true;
-          console.log('select all:' + selectAll.getAttribute('checked'));
-          console.log('postcode:' + ele[i].outerHTML + ele[i].innerHTML);
-        }
-      }
+      // Switch between selecting checked on all (when ticked) and unchecked on all (when not ticked)
+      const toggle = $(document.getElementsByName(this.selectAllPostcodes)).prop('checked');
+      $(document.getElementsByName(this.postcodesCheckboxItems)).prop('checked', toggle);
     });
   }
 
