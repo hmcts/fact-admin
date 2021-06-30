@@ -1,27 +1,17 @@
 import config from 'config';
-import launchDarkly, {
-  LDClient,
-  LDFlagSet,
-  LDFlagValue,
-  LDOptions,
-  LDUser
-} from 'launchdarkly-node-server-sdk';
+import launchDarkly, { LDClient, LDOptions, LDUser } from 'launchdarkly-node-server-sdk';
+import {FeatureFlagClient} from '../types/FeatureFlagClient';
 
-class LaunchDarkly {
+class LaunchDarkly implements FeatureFlagClient {
   private static instance: LaunchDarkly
   private readonly client: LDClient;
   private readonly ldUser: LDUser;
-  private ready = false;
 
   private constructor() {
     const sdkKey: string = config.get('launchDarkly.sdkKey');
     const options: LDOptions = config.get('featureToggles.enabled') ? { diagnosticOptOut: true } : { offline: true };
     this.ldUser = { key: 'fact-admin' };
-
     this.client = launchDarkly.init(sdkKey, options);
-    this.client.once('ready', async () => {
-      this.ready = true;
-    });
   }
 
   public static getInstance(): LaunchDarkly {
@@ -32,38 +22,25 @@ class LaunchDarkly {
     return LaunchDarkly.instance;
   }
 
-  public variation(flagName: string, defaultValue: boolean, callback?: (err: any, res: any) => void): void | Promise<LDFlagValue> {
-    if (this.ready) {
-      return this.client.variation(flagName, this.ldUser, defaultValue, callback);
-    }
-
-    this.client.once('ready', () => {
-      this.ready = true;
-      return this.variation(flagName, defaultValue, callback);
-    });
+  public async getFlagValue(flag: string, defaultValue: boolean): Promise<boolean> {
+    return this.client.variation(flag, this.ldUser, defaultValue);
   }
 
-  public async allFlagsState(): Promise<LDFlagSet> {
-    if (this.ready) {
-      return (await this.client.allFlagsState(this.ldUser)).allValues();
+  public async getAllFlagValues(defaultValue: boolean): Promise<{ [p: string]: boolean }> {
+    const flagMap = (await this.client.allFlagsState(this.ldUser)).allValues();
+    for (const key in flagMap) {
+      flagMap[key] = flagMap[key] === null ? defaultValue : flagMap[key];
     }
 
-    this.client.once('ready', () => {
-      this.ready = true;
-      return this.allFlagsState();
-    });
+    return flagMap;
   }
 
-  public onFlagUpdate(callback: Function, flag?: string): LDFlagSet | LDFlagValue {
+  public onFlagChange(callback: Function, defaultValue: boolean, flag?: string) {
     if(flag) {
-      this.client.on(`update:${flag}` , async () => callback(await this.variation(flag, false)));
+      this.client.on(`update:${flag}` , async () => callback(await this.getFlagValue(flag, defaultValue)));
     } else {
-      this.client.on('update' , async () => callback(await this.allFlagsState()));
+      this.client.on('update' , async () => callback(await this.getAllFlagValues(defaultValue)));
     }
-  }
-
-  public close(): void {
-    this.client.close();
   }
 }
 

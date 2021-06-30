@@ -2,8 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
-import FeatureToggles from '../featureToggles';
-import {LDFlagSet} from 'launchdarkly-node-server-sdk';
+import FeatureToggleService from '../featureToggle';
 import config from 'config';
 
 export class Nunjucks {
@@ -31,7 +30,7 @@ export class Nunjucks {
       },
     );
 
-    FeatureToggles.onFlagUpdate((flags: LDFlagSet) => {
+    FeatureToggleService.onFlagChange((flags: { [flag: string]: boolean }) => {
       env.addGlobal('featureToggles', flags);
     });
 
