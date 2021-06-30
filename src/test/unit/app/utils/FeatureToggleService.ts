@@ -89,7 +89,7 @@ describe('FeatureToggleService', () => {
     const mockReq = mockRequest();
     const mockRes = mockResponse();
     const mockController = jest.fn();
-    let mockNextController: Mock
+    let mockNextController: Mock;
 
     await new Promise((resolve) => {
       when(mockFeatureFlagClient.getFlagValue)
