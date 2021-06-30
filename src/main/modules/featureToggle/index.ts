@@ -20,11 +20,19 @@ export default class FeatureToggleService {
     FeatureToggleService.featureFlagClient.onFlagChange(callback, defaultValue, flag);
   }
 
-  static toggleController = (flag: string, controller: Function) => {
+  static toggleController = (flag: string, controller: Function, defaultValue = false) => {
     return (req: Request, res: Response, next: NextFunction): void => {
-      FeatureToggleService.getFlagValue(flag)
-        .then(flagValue => flagValue ? controller(req, res, next) : next())
-        .catch(next);
+      FeatureToggleService.getFlagValue(flag, defaultValue)
+        .then(flagValue => {
+          if(flagValue) {
+            controller(req, res, next);
+          } else {
+            next();
+          }
+        })
+        .catch(() => {
+          next();
+        });
     };
   }
 }
