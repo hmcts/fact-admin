@@ -180,3 +180,32 @@ When('I click the remove button under a phone number entry', async () => {
   const updatedNumPhoneNumbers = await I.countElement('#phoneNumbersTab fieldset');
   expect(numPhoneNumbers - updatedNumPhoneNumbers).equal(1);
 });
+
+When('I remove all existing phone number entries and save', async () => {
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#phoneNumbersTab', 'deletePhoneNumber', 'savePhoneNumbers');
+});
+
+Then('there are no phone number entries', async () => {
+  const numberOfFieldsets = await I.countElement('#phoneNumbersTab fieldset.can-reorder');
+  const numberOfPhoneNumbers = numberOfFieldsets - 2; // we deduct the hidden template and the new opening hours form
+  expect(numberOfPhoneNumbers).to.equal(0);
+});
+
+When('I click the move down button on the second last phone number entry', async () => {
+  const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
+  const numEntries = await I.countElement(fieldsetSelector);
+  // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
+  const secondLastOpeningHrsIdx = numEntries - 4;
+
+  // Click the move down button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveDown"]`, secondLastOpeningHrsIdx);
+});
+
+When('I click the move up button on the last phone number entry', async () => {
+  const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
+  const numEntries = await I.countElement(fieldsetSelector);
+  const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
+
+  // Click the move up button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveUp"]`, lastOpeningHrsIdx);
+});
