@@ -8,6 +8,8 @@ import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
 import {CourtType} from '../../types/CourtType';
 import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
+import {LocalAuthority} from '../../types/LocalAuthority';
+import {AreaOfLaw} from '../../types/AreaOfLaw';
 
 export class FactApi {
 
@@ -169,6 +171,46 @@ export class FactApi {
   public updateCourtCourtTypes(slug: string, body: CourtType[]): Promise<CourtType[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/courtTypes`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getLocalAuthorities(): Promise<LocalAuthority[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/localAuthorities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string, body: LocalAuthority[]): Promise<LocalAuthority[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
