@@ -66,6 +66,18 @@
 {% endfor %}
 
 <h2 class="govuk-heading-m">Delete or move postcodes:</h2>
+
+{{ govukCheckboxes({
+    idPrefix: "postcodes-select-all",
+    name: "postcodesSelectAllItems",
+    classes: "govuk-checkboxes--medium",
+    items: [
+      {
+        value: "selectAll",
+        text: "Select all"
+      }]
+  }) }}
+
 <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
 
   {%- for items in postcodesCheckboxItems | slice(3) %}
@@ -95,43 +107,31 @@
 
     </div>
 
+    {% set courtSelectItems = [] %}
+    {% for court in courts | sort(attribute="name") %}
+      {% set courtSelectItems =
+        (courtSelectItems.push({'text': court.name, 'value': court.name, 'id': court.name}), courtSelectItems) %}
+    {% endfor %}
+
     <div class="govuk-grid-column-one-third">
 
-      {{ govukSelect({
-        id: "movePostcodesSelect",
-        name: "movePostcodesSelect",
-        items: [
-          {
-            value: "published",
-            text: "Recently published"
-          },
-          {
-            value: "updated",
-            text: "Recently updated",
-            selected: true
-          },
-          {
-            value: "views",
-            text: "Most views"
-          },
-          {
-            value: "comments",
-            text: "Most comments"
-          }
-        ]
-      }) }}
+        {{ govukSelect({
+          id: "movePostcodesSelect",
+          name: "movePostcodesSelect",
+          items: courtSelectItems
+        }) }}
 
     </div>
+
 </div>
 
+<div>
 
-  <div class="govuk-grid-column-column-half">
+  {{ govukButton({
+    text: "Delete all selected",
+    name: "deletePostcodes",
+    type: "button",
+    classes: "deletePostcodes govuk-button--warning"
+  }) }}
 
-    {{ govukButton({
-      text: "Delete all selected",
-      name: "deletePostcodes",
-      type: "button",
-      classes: "deletePostcodes govuk-button--warning"
-    }) }}
-
-  </div>
+</div>

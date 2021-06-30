@@ -10,6 +10,8 @@ export class PostcodesController {
   private addPostcodesBtnClass = 'addPostcodes';
   private addNewPostcodesInput = 'addNewPostcodes';
   private existingPostcodesInput = 'existingPostcodesInput';
+  private selectAllPostcodes = 'postcodesSelectAllItems';
+  private postcodesCheckboxItems = 'postcodesCheckboxItems';
 
   constructor() {
     this.initialize();
@@ -20,6 +22,7 @@ export class PostcodesController {
       if ($(this.tabId).length > 0) {
         this.getPostcodes();
         this.setUpAddEventHandler();
+        this.setUpSelectAllEventHandler();
       }
     });
   }
@@ -55,6 +58,32 @@ export class PostcodesController {
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
+    });
+  }
+
+  private setUpSelectAllEventHandler(): void {
+    $(this.tabId).on('change', `input[name=${this.selectAllPostcodes}]`, e => {
+      e.preventDefault();
+      const selectAll = document.getElementsByName(this.selectAllPostcodes)[0];
+      const ele = document.getElementsByName(this.postcodesCheckboxItems);
+
+      if (selectAll.hasAttribute('checked')) {
+        console.log('in checked');
+        (selectAll as HTMLInputElement).checked = false;
+        for(let i=0; i<3; i++) {
+          (ele[i] as HTMLInputElement).checked = null;
+          console.log('select all:' + selectAll.getAttribute('checked'));
+          console.log('postcode:' + ele[i].outerHTML + ele[i].innerHTML);
+        }
+      } else {
+        console.log('in unchecked');
+        (selectAll as HTMLInputElement).checked = true;
+        for(let i=0; i<3; i++) {
+          (ele[i] as HTMLInputElement).checked = true;
+          console.log('select all:' + selectAll.getAttribute('checked'));
+          console.log('postcode:' + ele[i].outerHTML + ele[i].innerHTML);
+        }
+      }
     });
   }
 

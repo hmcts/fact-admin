@@ -8,7 +8,8 @@ describe('PostcodeController', () => {
 
   let mockApi: {
     getPostcodes: () => Promise<string[]>,
-    addPostcodes: () => Promise<string[]> };
+    addPostcodes: () => Promise<string[]>,
+    getCourts: () => Promise<object[]> };
 
   const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
   const getPostcodeInput = 'PL1,PL2,PL3,PL11 1YY,PL1 1,PL 1';
@@ -20,7 +21,8 @@ describe('PostcodeController', () => {
   beforeEach(() => {
     mockApi = {
       getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => addPostcodes()
+      addPostcodes: async (): Promise<string[]> => addPostcodes(),
+      getCourts: async (): Promise<object[]> => []
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -39,6 +41,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: getPostcodeData,
+      courts: [],
       slug: 'plymouth-combined-court',
       searchValue: '',
       updated: false,
@@ -65,6 +68,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: getPostcodeData,
+      courts: [],
       slug: slug,
       searchValue: 'PL3,PL4,PL5',
       updated: true,
@@ -80,7 +84,8 @@ describe('PostcodeController', () => {
     const req = mockRequest();
     mockApi = {
       getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(',')
+      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
+      getCourts: async (): Promise<object[]> => []
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -95,6 +100,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1', 'PL4', 'PL5', 'PL6'],
+      courts: [],
       slug: slug,
       searchValue: '',
       updated: true,
@@ -110,7 +116,8 @@ describe('PostcodeController', () => {
     const req = mockRequest();
     mockApi = {
       getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(',')
+      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
+      getCourts: async (): Promise<object[]> => []
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -128,6 +135,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'],
+      courts: [],
       slug: slug,
       searchValue: 'PL4,PL5,PL6',
       updated: false,
@@ -156,6 +164,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: getPostcodeData,
+      courts: [],
       slug: slug,
       searchValue: '',
       updated: false,
@@ -183,6 +192,7 @@ describe('PostcodeController', () => {
 
     const expectedResults: PostcodeData = {
       postcodes: getPostcodeData,
+      courts: [],
       slug: slug,
       searchValue: '',
       updated: true,

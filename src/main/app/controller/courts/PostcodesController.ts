@@ -34,8 +34,11 @@ export class PostcodesController {
         .then((value: string[]) => postcodes = value)
         .catch(() => errors.push({text: this.getPostcodesErrorMsg}));
 
+    const courts = await req.scope.cradle.api.getCourts();
+
     const pageData: PostcodeData = {
       postcodes: postcodes,
+      courts: courts,
       slug: slug,
       errors: errors,
       updated: updated,
