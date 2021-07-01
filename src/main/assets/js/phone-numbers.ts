@@ -1,6 +1,7 @@
 import $ from 'jquery';
-import { AjaxErrorHandler } from './ajaxErrorHandler';
-const { initAll } = require('govuk-frontend');
+import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
+const {initAll} = require('govuk-frontend');
 
 export class PhoneNumbersController {
   private formId = '#phoneNumbersForm';
@@ -11,6 +12,8 @@ export class PhoneNumbersController {
   private deleteBtnClass = 'deletePhoneNumber';
   private addPhoneNumBtnClass = 'addPhoneNumber';
   private clearPhoneNumBtnClass = 'clearPhoneNumber';
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
 
   private typeSelectName = 'type_id';
   private numberInputName = 'number';
@@ -31,6 +34,7 @@ export class PhoneNumbersController {
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
         this.setUpClearEventHandler();
+        Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
     });
   }
@@ -117,7 +121,8 @@ export class PhoneNumbersController {
   private renameFormElement(elementType: string, name: string): void {
     $(`${this.tabId} ${elementType}[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(`${name}`, idx))
-      .attr('id', idx => `${name}-` + idx);
+      .attr('id', idx => `${name}-${idx}`)
+      .siblings('label').attr('for', idx => `${name}-${idx}`);
   }
 
   private updateContent(res: any): void {

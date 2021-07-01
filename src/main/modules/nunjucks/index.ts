@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
+import FeatureToggleService from '../featureToggle';
 import config from 'config';
 
 export class Nunjucks {
@@ -28,6 +29,11 @@ export class Nunjucks {
         express: app,
       },
     );
+
+    FeatureToggleService.onFlagChange((flags: { [flag: string]: boolean }) => {
+      env.addGlobal('featureToggles', flags);
+    });
+
 
     env.addFilter('selectFilter', this.selectFilter);
 

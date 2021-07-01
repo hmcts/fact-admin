@@ -17,11 +17,11 @@ Feature: Court Types
     When I click the types tab
     Then I can view the existing court types
     When I check a court type
-    And I click on save
+    And I click on save court type
     Then a green update message is displayed showing Court Types updated
 
     Examples:
-      | view_court_slug                            |
+      | view_court_slug                        |
       | uxbridge-county-court-and-family-court |
 
 
@@ -31,12 +31,12 @@ Feature: Court Types
     When I click the types tab
     Then I can view the existing court types
     When I uncheck a court type
-    Then I click on save
+    Then I click on save court type
     Then a green update message is displayed showing Court Types updated
 
 
     Examples:
-      | view_court_slug                            |
+      | view_court_slug                        |
       | uxbridge-county-court-and-family-court |
 
 
@@ -46,9 +46,9 @@ Feature: Court Types
     When I click the types tab
     Then I can view the existing court types
     When I check a court type which has code associated with it
-    Then I click on save
+    Then I click on save court type
     Then a court types error message is displayed
 
     Examples:
-      | view_court_slug                            |
+      | view_court_slug                        |
       | uxbridge-county-court-and-family-court |
