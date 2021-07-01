@@ -8,13 +8,8 @@ export class PostcodesController {
   private tabId = '#postcodesTab';
   private postcodesContentId = '#postcodesContent';
   private addPostcodesBtnClass = 'addPostcodes';
-  private addNewPostcodesInput = 'addNewPostcodes';
-  private existingPostcodesInput = 'existingPostcodesInput';
   private selectAllPostcodes = 'postcodesSelectAllItems';
-  private selectPostcodes = 'postcodesCheckboxItems';
-  private postcodesCheckboxItems = 'postcodesCheckboxItems';
   private deletePostcodesBtnClass = 'deletePostcodes';
-  private csrfTokenName = '_csrf';
 
   constructor() {
     this.initialize();
@@ -53,9 +48,9 @@ export class PostcodesController {
         url: `/courts/${slug}/postcodes`,
         method: 'post',
         data: {
-          existingPostcodes: $(document.getElementById(this.existingPostcodesInput)).val(),
-          newPostcodes: $(document.getElementById(this.addNewPostcodesInput)).val(),
-          csrfToken: $(document.getElementsByName(this.csrfTokenName)).val()
+          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
+          newPostcodes: $('[id="addNewPostcodes"]').val(),
+          csrfToken: $('[name="_csrf"]').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -73,9 +68,9 @@ export class PostcodesController {
         url: `/courts/${slug}/postcodes`,
         method: 'delete',
         data: {
-          existingPostcodes: $(document.getElementById(this.existingPostcodesInput)).val(),
-          selectedPostcodes: this.getSelectedItems($(document.getElementsByName(this.selectPostcodes))),
-          csrfToken: $(document.getElementsByName(this.csrfTokenName)).val()
+          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
+          selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
+          csrfToken: $('[name="_csrf"]').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -103,13 +98,13 @@ export class PostcodesController {
     $(this.tabId).on('change', `input[name=${this.selectAllPostcodes}]`, e => {
       e.preventDefault();
       // Switch between selecting checked on all (when ticked) and unchecked on all (when not ticked)
-      const toggle = $(document.getElementsByName(this.selectAllPostcodes)).prop('checked');
-      $(document.getElementsByName(this.postcodesCheckboxItems)).prop('checked', toggle);
+      $('[name="postcodesCheckboxItems"]').prop('checked',
+        $('[name="postcodesSelectAllItems"]').prop('checked'));
     });
   }
 
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
-    initAll({ scope: document.getElementById('postcodesTab')});
+    initAll({ scope: $('[id="postcodesTab"]')});
   }
 }

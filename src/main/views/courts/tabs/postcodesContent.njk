@@ -7,7 +7,6 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 
-
 <h2 class="govuk-heading-l">Postcodes</h2>
 
 {{ govukDetails({
@@ -59,15 +58,17 @@
   classes: "addPostcodes"
 }) }}
 
-{% set postcodesCheckboxItems = [] %}
-{% for postcode in postcodes %}
-  {% set postcodesCheckboxItems =
-    (postcodesCheckboxItems.push({'text': postcode, 'value': postcode, 'id': postcode}), postcodesCheckboxItems) %}
-{% endfor %}
+{% if postcodes|length %}
 
-<h2 class="govuk-heading-m">Delete or move postcodes:</h2>
+  {% set postcodesCheckboxItems = [] %}
+  {% for postcode in postcodes %}
+    {% set postcodesCheckboxItems =
+      (postcodesCheckboxItems.push({'text': postcode, 'value': postcode, 'id': postcode}), postcodesCheckboxItems) %}
+  {% endfor %}
 
-{{ govukCheckboxes({
+  <h2 class="govuk-heading-m">Delete or move postcodes:</h2>
+
+  {{ govukCheckboxes({
     idPrefix: "postcodes-select-all",
     name: "postcodesSelectAllItems",
     classes: "govuk-checkboxes--medium",
@@ -78,33 +79,27 @@
       }]
   }) }}
 
-<div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
-
-  {%- for items in postcodesCheckboxItems | slice(3) %}
-
-  <div class="govuk-grid-column-one-third">
-      {{ govukCheckboxes({
-        idPrefix: "postcodes-checkbox",
-        name: "postcodesCheckboxItems",
-        classes: "govuk-checkboxes--medium",
-        items: items
-      }) }}
+  <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+    {%- for items in postcodesCheckboxItems | slice(2) %}
+      <div class="govuk-grid-column-one-half">
+          {{ govukCheckboxes({
+            idPrefix: "postcodes-checkbox",
+            name: "postcodesCheckboxItems",
+            classes: "govuk-checkboxes--medium",
+            items: items
+          }) }}
+      </div>
+    {% endfor %}
   </div>
 
-  {% endfor %}
-</div>
-
-<div id="postcodesMoveOrDelete" class="govuk-grid-row">
-
+  <div id="postcodesMoveOrDelete" class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-
       {{ govukButton({
         text: "Move all selected to:",
         name: "movePostcodesButton",
         type: "button",
         classes: "movePostcodesButton"
       }) }}
-
     </div>
 
     {% set courtSelectItems = [] %}
@@ -114,18 +109,13 @@
     {% endfor %}
 
     <div class="govuk-grid-column-one-third">
-
       {{ govukSelect({
         id: "movePostcodesSelect",
         name: "movePostcodesSelect",
         items: courtSelectItems
       }) }}
-
     </div>
-
-</div>
-
-<div>
+  </div>
 
   {{ govukButton({
     text: "Delete all selected",
@@ -134,4 +124,4 @@
     classes: "deletePostcodes govuk-button--warning"
   }) }}
 
-</div>
+{% endif %}
