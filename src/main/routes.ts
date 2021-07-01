@@ -22,8 +22,10 @@ export default function(app: Application): void {
   app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
   app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
   app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
+  app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
+  app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
+  app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
-
 }

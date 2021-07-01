@@ -44,7 +44,7 @@
       </div>
 
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-three-quarters">
+        <div class="govuk-grid-column-full">
             {% set generalHtml %}
               {% include "./tabs/general.njk" %}
             {% endset -%}
@@ -63,54 +63,79 @@
             {% set postcodesHtml %}
                 {% include "./tabs/postcodes.njk" %}
             {% endset -%}
+             <input id='slug' type='hidden' value='{{slug}}'></input
+            {% set localAuthoritiesHtml %}
+                {% include "./tabs/localAuthorities.njk" %}
+            {% endset -%}
+
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
-            {{ govukTabs({
-              items: [
-                {
-                  label: "General",
-                  id: "general",
-                  panel: {
-                    html: generalHtml
+             {% set tabItems = [
+                  {
+                    label: "General",
+                    id: "general",
+                    panel: {
+                      html: generalHtml
+                    }
+                  },
+                  {
+                    label: "Opening Hours",
+                    id: "opening-hours",
+                    panel: {
+                      html: openingHoursHtml
+                    }
+                  },
+                  {
+                    label: "Phone Numbers",
+                    id: "phone-numbers",
+                    panel: {
+                      html: phoneNumbersHtml
+                    }
+                  },
+                  {
+                    label: "Emails",
+                    id: "emails",
+                    panel: {
+                      html: emailsHtml
+                    }
+                  },
+                  {
+                    label: "Types",
+                    id: "court-types",
+                    panel: {
+                      html: courtTypesHtml
+                    }
+                  },
+                  {
+                   label: "Postcodes",
+                   id: "postcodes",
+                   panel: {
+                      html: postcodesHtml
+                   }
                   }
-                },
-                {
-                  label: "Opening Hours",
-                  id: "opening-hours",
-                  panel: {
-                    html: openingHoursHtml
-                  }
-                },
-                {
-                  label: "Phone Numbers",
-                  id: "phone-numbers",
-                  panel: {
-                    html: phoneNumbersHtml
-                  }
-                },
-                {
-                  label: "Emails",
-                  id: "emails",
-                  panel: {
-                    html: emailsHtml
-                  }
-                },
-                {
-                  label: "Types",
-                  id: "court-types",
-                  panel: {
-                    html: courtTypesHtml
-                  }
-                },
-                {
-                  label: "Postcodes",
-                  id: "postcodes",
-                  panel: {
-                    html: postcodesHtml
-                  }
-                }
-              ]
-            }) }}
+                  ]%}
+
+              {% set localAuthoritiesTab =
+                  {
+                    label: "Local Authorities",
+                    id: "local-authorities",
+                    panel: {
+                    html: localAuthoritiesHtml
+                    }
+                    }
+                    %}
+
+
+        {% if isSuperAdmin %}
+
+          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+
+        {% endif %}
+
+        {{ govukTabs({
+        id: 'Main',
+          items: tabItems
+          }) }}
         </div>
       </div>
     </div>

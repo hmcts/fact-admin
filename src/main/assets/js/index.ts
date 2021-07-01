@@ -10,10 +10,10 @@ import {EmailsController} from './emails';
 import {CourtGeneralInfoController} from './courtGeneralInfo';
 import {PhoneNumbersController} from './phone-numbers';
 import {CourtTypesController} from './court-types';
+import {LocalAuthoritiesController} from './local-authorities';
 import {PostcodesController} from './postcodes';
 
 const { initAll } = require('govuk-frontend');
-
 
 initAll();
 new OpeningHoursController();
@@ -22,3 +22,4 @@ new CourtGeneralInfoController();
 new PhoneNumbersController();
 new CourtTypesController();
 new PostcodesController();
+new LocalAuthoritiesController();
