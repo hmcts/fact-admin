@@ -48,6 +48,16 @@ export class FactApi {
       });
   }
 
+  public deletePostcodes(slug: string, postcodes: string[]): Promise<string[]> {
+    return this.axios
+      .delete(`${this.adminBaseUrl}/${slug}/postcodes`, { data: postcodes })
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getDownloadCourts(): Promise<unknown[]> {
     return this.axios
       .get(`${this.baseURL}/`)

@@ -10,8 +10,10 @@ export class PostcodesController {
 
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
+  deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
   duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
+  noSelectedPostcodeMsg = 'Please select one or more postcodes to move or delete.'
 
   public async get(
     req: AuthedRequest,
@@ -77,6 +79,36 @@ export class PostcodesController {
         this.get(req, res, '', existingPostcodes.concat(value), '', true))
       .catch((err: any) =>
         this.get(req, res, newPostcodes, existingPostcodes,
-          this.addErrorMsg + err.response.data, false));
+          this.addErrorMsg + err.response.data));
+  }
+
+  public async delete(
+    req: AuthedRequest,
+    res: Response): Promise<void> {
+
+    console.log(req.body);
+
+    const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
+    if (!CSRF.verify(req.body.csrfToken)) {
+      return this.get(req, res, '', existingPostcodes, this.addErrorMsg);
+    }
+
+    const postcodesToDelete: string[] = req.body.selectedPostcodes ?? [];
+    if (!postcodesToDelete.length) {
+      console.log('gone into postcode length empty');
+      return this.get(req, res, '', existingPostcodes, this.noSelectedPostcodeMsg);
+    }
+
+    // Send the postcodes to fact-api to delete them
+    await req.scope.cradle.api.deletePostcodes(req.params.slug, postcodesToDelete)
+      .then(() => {
+        // Remove the values from the existing list and return
+        const existingMinusDeleted =
+          existingPostcodes.filter( ( postcode ) => !postcodesToDelete.includes( postcode ) );
+        this.get(req, res, '', existingMinusDeleted, '', true);
+      })
+      .catch(() =>
+        this.get(req, res, '', existingPostcodes,
+          this.deleteErrorMsg + postcodesToDelete));
   }
 }

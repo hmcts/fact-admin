@@ -11,7 +11,9 @@ export class PostcodesController {
   private addNewPostcodesInput = 'addNewPostcodes';
   private existingPostcodesInput = 'existingPostcodesInput';
   private selectAllPostcodes = 'postcodesSelectAllItems';
+  private selectPostcodes = 'postcodesCheckboxItems';
   private postcodesCheckboxItems = 'postcodesCheckboxItems';
+  private deletePostcodesBtnClass = 'deletePostcodes';
   private csrfTokenName = '_csrf';
 
   constructor() {
@@ -24,6 +26,7 @@ export class PostcodesController {
         this.getPostcodes();
         this.setUpAddEventHandler();
         this.setUpSelectAllEventHandler();
+        this.setUpDeleteEventHandler();
       }
     });
   }
@@ -59,6 +62,40 @@ export class PostcodesController {
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
+    });
+  }
+
+  private setUpDeleteEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.deletePostcodesBtnClass}`, e => {
+      e.preventDefault();
+      const slug = $('#slug').val();
+      $.ajax({
+        url: `/courts/${slug}/postcodes`,
+        method: 'delete',
+        data: {
+          existingPostcodes: $(document.getElementById(this.existingPostcodesInput)).val(),
+          selectedPostcodes: this.getSelectedItems($(document.getElementsByName(this.selectPostcodes))),
+          csrfToken: $(document.getElementsByName(this.csrfTokenName)).val()
+        }
+      }).done(res => {
+        $(this.postcodesContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'DELETE postcodes failed.'));
+    });
+  }
+
+  /**
+   *
+   * Return a list of postcodes (in this case) that have been selected
+   * @param elementList a list of checked boxes
+   * @private
+   */
+  private getSelectedItems(elementList: JQuery): string[] {
+    return $.map(elementList, function(value: HTMLElement){
+      if ($(value).prop('checked')) {
+        return [value.id];
+      }
     });
   }
 

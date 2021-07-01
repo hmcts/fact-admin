@@ -94,7 +94,7 @@
   {% endfor %}
 </div>
 
-<div id="postcodesList" class="govuk-grid-row">
+<div id="postcodesMoveOrDelete" class="govuk-grid-row">
 
     <div class="govuk-grid-column-one-third">
 
@@ -115,11 +115,11 @@
 
     <div class="govuk-grid-column-one-third">
 
-        {{ govukSelect({
-          id: "movePostcodesSelect",
-          name: "movePostcodesSelect",
-          items: courtSelectItems
-        }) }}
+      {{ govukSelect({
+        id: "movePostcodesSelect",
+        name: "movePostcodesSelect",
+        items: courtSelectItems
+      }) }}
 
     </div>
 
