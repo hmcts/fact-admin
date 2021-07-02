@@ -19,9 +19,9 @@ export const getPageTitle = async () => {
   return await scope.page.title();
 };
 
-export const hover = async (selector : string) => {
+export const hover = async (selector: string) => {
   await scope.page.hover(selector);
-}
+};
 
 
 export const click = async (selector: string) => {
