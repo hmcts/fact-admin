@@ -3,7 +3,14 @@ import {Then, When} from 'cucumber';
 import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-When('I click the phone numbers tab', async () => {
+When('I hover over phone numbers nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+Then('I click the phone numbers tab', async () => {
   const selector = '#tab_phone-numbers';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);

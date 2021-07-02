@@ -4,6 +4,14 @@ import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
 
+When('I hover over types nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+
 When('I click the types tab', async () => {
   const selector = '#tab_court-types';
   const elementExist = await I.checkElement(selector);

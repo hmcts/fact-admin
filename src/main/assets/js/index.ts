@@ -5,6 +5,7 @@ import './tinymce.config';
 import './opening-hours';
 import './emails';
 import './court-types';
+const {initTabs} = require('./fact-tabs/fact-tabs-index');
 import {OpeningHoursController} from './opening-hours';
 import {EmailsController} from './emails';
 import {CourtGeneralInfoController} from './courtGeneralInfo';
@@ -12,6 +13,7 @@ import {PhoneNumbersController} from './phone-numbers';
 import {CourtTypesController} from './court-types';
 import {LocalAuthoritiesController} from './local-authorities';
 
+initTabs();
 initAll();
 new OpeningHoursController();
 new EmailsController();

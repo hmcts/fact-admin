@@ -9,7 +9,8 @@ Feature: Email-addresses
     Then I can view the courts or tribunals in a list format
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
-    When I click the Emails tab
+    When I hover over emails nav element
+    Then I click the Emails tab
     Then I can view the existing emails
 
   Scenario: Add new Email Addresses

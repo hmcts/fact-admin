@@ -4,6 +4,14 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
+When('I hover over local authorities nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+
 When('I will make sure Family court type is selected', async () => {
   const selector = '#court_types-2';
   const elementExist = await I.checkElement(selector);

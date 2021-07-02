@@ -1,3 +1,4 @@
+@Local
 Feature: Local authorities
 
   Background:
@@ -13,9 +14,11 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I click the types tab
+    When I hover over local authorities nav element
+    And I click the types tab
     And I will make sure Family court type is selected
     And I click on save court type
+    And I hover over local authorities nav element
     And I click the local authorities tab
     And I select area of law "Adoption"
     And I select 'Barking and Dagenham Borough Council'
@@ -30,9 +33,12 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I click the types tab
+    When I hover over local authorities nav element
+    And I click the types tab
+    And I can view the existing court types
     And I will make sure Family court type is selected
     And I click on save court type
+    And I hover over local authorities nav element
     And I click the local authorities tab
     Then An error is displayed for local authorities with title "There is a problem" and summery "You need to enable relevant family court areas of law"
 
@@ -44,9 +50,11 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I click the types tab
+    When I hover over local authorities nav element
+    And I click the types tab
     And I will make sure Family court type is not selected
     And I click on save court type
+    And I hover over local authorities nav element
     And I click the local authorities tab
     Then The local authorities tab should be disabled
 
