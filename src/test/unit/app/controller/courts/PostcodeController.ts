@@ -78,6 +78,34 @@ describe('PostcodeController', () => {
     expect(mockApi.addPostcodes).not.toBeCalled();
   });
 
+  test('Should not add postcodes if they are not the right length constraint', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      'existingPostcodes': getPostcodeInput,
+      'newPostcodes': 'P,M,KUPOMOSH123',
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    jest.spyOn(mockApi, 'addPostcodes');
+
+    await controller.post(req, res);
+
+    const expectedResults: PostcodeData = {
+      postcodes: getPostcodeData,
+      courts: [],
+      slug: slug,
+      searchValue: 'P,M,KUPOMOSH123',
+      updated: false,
+      errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
+    expect(mockApi.addPostcodes).not.toBeCalled();
+  });
+
   test('Should add postcodes if all are verified', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();

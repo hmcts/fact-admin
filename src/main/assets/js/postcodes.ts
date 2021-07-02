@@ -8,6 +8,7 @@ export class PostcodesController {
   private tabId = '#postcodesTab';
   private postcodesContentId = '#postcodesContent';
   private addPostcodesBtnClass = 'addPostcodes';
+  private movePostcodesBtnClass = 'movePostcodesButton';
   private selectAllPostcodes = 'postcodesSelectAllItems';
   private deletePostcodesBtnClass = 'deletePostcodes';
 
@@ -22,6 +23,7 @@ export class PostcodesController {
         this.setUpAddEventHandler();
         this.setUpSelectAllEventHandler();
         this.setUpDeleteEventHandler();
+        this.setUpMoveEventHandler();
       }
     });
   }
@@ -57,6 +59,27 @@ export class PostcodesController {
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
+    });
+  }
+
+  private setUpMoveEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.movePostcodesBtnClass}`, e => {
+      e.preventDefault();
+      const slug = $('#slug').val();
+      $.ajax({
+        url: `/courts/${slug}/postcodes`,
+        method: 'put',
+        data: {
+          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
+          selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
+          selectedCourt: $('[name="movePostcodesSelect"]').val(),
+          csrfToken: $('[name="_csrf"]').val()
+        }
+      }).done(res => {
+        $(this.postcodesContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'PUT (move) postcodes failed.'));
     });
   }
 

@@ -23,6 +23,7 @@ export default function(app: Application): void {
   app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
   app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
   app.delete('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.delete);
+  app.put('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.put);
   app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
   app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);

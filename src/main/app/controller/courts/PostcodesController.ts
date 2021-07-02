@@ -11,6 +11,8 @@ export class PostcodesController {
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
+  moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
+  postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode: '
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
   duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
   noSelectedPostcodeMsg = 'Please select one or more postcodes to move or delete.'
@@ -64,10 +66,17 @@ export class PostcodesController {
       return this.get(req, res, '', existingPostcodes, this.noPostcodeErrorMsg, true);
     }
 
+    // We should only send a postcode that is of at least size 7 (without spaces) min 2 characters
+    const newPostcodesArray = newPostcodes.replace(/\s/g, '').toUpperCase().split(',');
+    const invalidPostcodes = newPostcodesArray.filter((value: string) => value.length < 2 || value.length > 7);
+    if(invalidPostcodes.length > 0) {
+      return this.get(req, res, newPostcodes, existingPostcodes, this.postcodesNotValidMsg + invalidPostcodes);
+    }
+
     // Do an intersect between the existing and new postcodes, if any values cross over
     // then return an error specifying why
     const duplicatePostcodes = existingPostcodes.filter(
-      value => newPostcodes.replace(/\s/g, '').toUpperCase().split(',').includes(String(value).toUpperCase()));
+      value => newPostcodesArray.includes(String(value).toUpperCase()));
     if (duplicatePostcodes.length > 0) {
       return this.get(req, res, newPostcodes, existingPostcodes,
         this.duplicatePostcodeMsg + duplicatePostcodes, true);
@@ -86,16 +95,14 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response): Promise<void> {
 
-    console.log(req.body);
-
     const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg);
     }
 
+    // If we have no postcodes selected
     const postcodesToDelete: string[] = req.body.selectedPostcodes ?? [];
     if (!postcodesToDelete.length) {
-      console.log('gone into postcode length empty');
       return this.get(req, res, '', existingPostcodes, this.noSelectedPostcodeMsg);
     }
 
@@ -110,5 +117,33 @@ export class PostcodesController {
       .catch(() =>
         this.get(req, res, '', existingPostcodes,
           this.deleteErrorMsg + postcodesToDelete));
+  }
+
+  public async put(
+    req: AuthedRequest,
+    res: Response): Promise<void> {
+
+    const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
+    if (!CSRF.verify(req.body.csrfToken)) {
+      return this.get(req, res, '', existingPostcodes, this.moveErrorMsg);
+    }
+
+    // If we have no postcodes selected
+    const postcodesToMove: string[] = req.body.selectedPostcodes ?? [];
+    if (!postcodesToMove.length) {
+      return this.get(req, res, '', existingPostcodes, this.noSelectedPostcodeMsg);
+    }
+
+    // Send the postcodes to fact-api to delete them
+    await req.scope.cradle.api.movePostcodes(req.params.slug, req.body.selectedCourt, postcodesToMove)
+      .then(() => {
+        // Remove the values from the existing list and return
+        const existingMinusDeleted =
+          existingPostcodes.filter( ( postcode ) => !postcodesToMove.includes( postcode ) );
+        this.get(req, res, '', existingMinusDeleted, '', true);
+      })
+      .catch(() =>
+        this.get(req, res, '', existingPostcodes,
+          this.deleteErrorMsg + postcodesToMove));
   }
 }

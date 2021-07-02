@@ -103,9 +103,11 @@
     </div>
 
     {% set courtSelectItems = [] %}
+    {% set courtSelectItems =
+      (courtSelectItems.push({'text': 'Click to select', 'disabled': true, 'selected': true}), courtSelectItems) %}
     {% for court in courts | sort(attribute="name") %}
       {% set courtSelectItems =
-        (courtSelectItems.push({'text': court.name, 'value': court.name, 'id': court.name}), courtSelectItems) %}
+        (courtSelectItems.push({'text': court.name, 'value': court.slug, 'id': court.name}), courtSelectItems) %}
     {% endfor %}
 
     <div class="govuk-grid-column-one-third">

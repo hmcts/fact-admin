@@ -194,6 +194,29 @@ describe('FactApi', () => {
     await expect(api.addPostcodes('Plymouth', results.data)).resolves.toEqual(results.data);
   });
 
+  test('Should delete and return results from deletePostcodes request', async () => {
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const mockAxios = { delete: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.deletePostcodes('Plymouth', results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should move and return results from movePostcodes request', async () => {
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const mockAxios = { put: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.movePostcodes('Plymouth', 'Mosh Land',
+      results.data)).resolves.toEqual(results.data);
+  });
+
   test('Should return results from getEmails request', async () => {
     const results = {
       data: [

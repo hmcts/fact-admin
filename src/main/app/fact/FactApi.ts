@@ -58,6 +58,16 @@ export class FactApi {
       });
   }
 
+  public movePostcodes(sourceSlug: string, destSlug: string, postcodes: string[]): Promise<string[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${sourceSlug}/${destSlug}/postcodes`, postcodes)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getDownloadCourts(): Promise<unknown[]> {
     return this.axios
       .get(`${this.baseURL}/`)
