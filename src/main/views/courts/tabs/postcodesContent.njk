@@ -93,7 +93,17 @@
   </div>
 
   <div id="postcodesMoveOrDelete" class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
+    {% set courtSelectItems = [] %}
+    {% set courtSelectItems =
+      (courtSelectItems.push({'text': 'Click to select', 'disabled': true, 'selected': true}), courtSelectItems) %}
+    {% for court in courts | sort(attribute="name") %}
+      {% if court.slug != slug %}
+        {% set courtSelectItems =
+          (courtSelectItems.push({'text': court.name, 'value': court.slug, 'id': court.name}), courtSelectItems) %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="govuk-grid-column-one-quarter">
       {{ govukButton({
         text: "Move all selected to:",
         name: "movePostcodesButton",
@@ -102,15 +112,7 @@
       }) }}
     </div>
 
-    {% set courtSelectItems = [] %}
-    {% set courtSelectItems =
-      (courtSelectItems.push({'text': 'Click to select', 'disabled': true, 'selected': true}), courtSelectItems) %}
-    {% for court in courts | sort(attribute="name") %}
-      {% set courtSelectItems =
-        (courtSelectItems.push({'text': court.name, 'value': court.slug, 'id': court.name}), courtSelectItems) %}
-    {% endfor %}
-
-    <div class="govuk-grid-column-one-third">
+    <div class="govuk-grid-column-three-quarters">
       {{ govukSelect({
         id: "movePostcodesSelect",
         name: "movePostcodesSelect",

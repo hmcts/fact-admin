@@ -4,6 +4,7 @@ import {Response} from 'express';
 import {PostcodeData} from '../../../types/Postcode';
 import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
+import {AxiosError} from 'axios';
 
 @autobind
 export class PostcodesController {
@@ -12,10 +13,12 @@ export class PostcodesController {
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
+  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court: ';
   postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode: '
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
   duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
-  noSelectedPostcodeMsg = 'Please select one or more postcodes to move or delete.'
+  noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.'
+  noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.'
 
   public async get(
     req: AuthedRequest,
@@ -86,9 +89,18 @@ export class PostcodesController {
     await req.scope.cradle.api.addPostcodes(req.params.slug, newPostcodes.split(','))
       .then((value: string[]) =>
         this.get(req, res, '', existingPostcodes.concat(value), '', true))
-      .catch((err: any) =>
-        this.get(req, res, newPostcodes, existingPostcodes,
-          this.addErrorMsg + err.response.data));
+      .catch((reason: AxiosError) => {
+
+        // conflict, postcode(s) already exists on the database
+        if(reason.response?.status === 409) {
+          this.get(req, res, newPostcodes, existingPostcodes,
+            this.duplicatePostcodeMsg + reason.response?.data);
+        }
+        else {
+          this.get(req, res, newPostcodes, existingPostcodes,
+            this.addErrorMsg + reason.response?.data);
+        }
+      });
   }
 
   public async delete(
@@ -130,8 +142,8 @@ export class PostcodesController {
 
     // If we have no postcodes selected
     const postcodesToMove: string[] = req.body.selectedPostcodes ?? [];
-    if (!postcodesToMove.length) {
-      return this.get(req, res, '', existingPostcodes, this.noSelectedPostcodeMsg);
+    if (!postcodesToMove.length || !req.body.selectedCourt) {
+      return this.get(req, res, '', existingPostcodes, this.noSelectedPostcodeOrCourtMsg);
     }
 
     // Send the postcodes to fact-api to delete them
@@ -142,8 +154,16 @@ export class PostcodesController {
           existingPostcodes.filter( ( postcode ) => !postcodesToMove.includes( postcode ) );
         this.get(req, res, '', existingMinusDeleted, '', true);
       })
-      .catch(() =>
-        this.get(req, res, '', existingPostcodes,
-          this.deleteErrorMsg + postcodesToMove));
+      .catch((reason: AxiosError) => {
+        // conflict, postcode(s) already exists on the database
+        if(reason.response?.status === 409) { // conflict, postcode already exists on the destination court
+          this.get(req, res, '', existingPostcodes,
+            this.moveErrorDuplicatedMsg + postcodesToMove);
+        }
+        else {
+          this.get(req, res, '', existingPostcodes,
+            this.moveErrorMsg + postcodesToMove);
+        }
+      });
   }
 }
