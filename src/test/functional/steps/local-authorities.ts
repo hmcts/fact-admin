@@ -14,11 +14,15 @@ When('I hover over local authorities nav element', async () => {
 
 When('I will make sure Family court type is selected', async () => {
   const selector = '#court_types-2';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  const elementChecked = await I.isElementChecked(selector);
-  if (!elementChecked) {
-    await I.click(selector);
+  const elementVisible = await I.isElementVisible(selector);
+
+  if (elementVisible) {
+    const elementExist = await I.checkElement(selector);
+    expect(elementExist).equal(true);
+    const elementChecked = await I.isElementChecked(selector);
+    if (!elementChecked) {
+      await I.click(selector);
+    }
   }
 });
 
@@ -73,24 +77,29 @@ Then('An error is displayed for local authorities with title {string} and summer
 When('I will make sure Family court type is not selected', async () => {
   const selectorFamilyCourt = '#court_types-2';
   const selectorTribunalCourt = '#court_types-3';
+  const elementVisible = await I.isElementVisible(selectorFamilyCourt);
 
-  const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
-  expect(elementFamilyCourtExist).equal(true);
-  const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
-  expect(elementTribunalCourtExist).equal(true);
+  if (elementVisible) {
 
-  const elementFamilyCourtChecked = await I.isElementChecked(selectorFamilyCourt);
-  if (elementFamilyCourtChecked) {
-    await I.click(selectorFamilyCourt);
-  }
-  const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
-  if (!elementTribunalCourtChecked) {
-    await I.click(selectorTribunalCourt);
+    const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
+    expect(elementFamilyCourtExist).equal(true);
+    const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
+    expect(elementTribunalCourtExist).equal(true);
+
+    const elementFamilyCourtChecked = await I.isElementChecked(selectorFamilyCourt);
+    if (elementFamilyCourtChecked) {
+      await I.click(selectorFamilyCourt);
+    }
+    const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
+    if (!elementTribunalCourtChecked) {
+      await I.click(selectorTribunalCourt);
+    }
   }
 });
 
 Then('The local authorities tab should be disabled', async () => {
-  const selector = '#tab_local-authorities.govuk-tabs__tab.disable-tab';
+
+  const selector = '#tab_local-authorities.disable-tab';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });

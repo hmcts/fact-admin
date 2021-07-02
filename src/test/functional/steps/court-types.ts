@@ -38,8 +38,11 @@ When('I check a court type', async () => {
 });
 
 Then('I click on save court type', async () => {
-
-  await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
+  const selector = '#courtTypesTab';
+  const elementVisible = await I.isElementVisible(selector);
+  if (elementVisible) {
+    await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
+  }
 });
 
 Then('a green update message is displayed showing Court Types updated', async () => {

@@ -64,7 +64,7 @@ export const getElements = async (selector: string) => {
 
 export const getElementText = async (el: any) => {
   try {
-    return await scope.page.evaluate((element: HTMLElement) => element.innerText, el);
+    return await scope.page.evaluate((element: HTMLElement) => element.innerText.trim(), el);
   } catch (error) {
     console.log("The element didn't appear.");
     return false;

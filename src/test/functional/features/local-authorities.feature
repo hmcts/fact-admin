@@ -14,7 +14,7 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I hover over local authorities nav element
+    When I hover over types nav element
     And I click the types tab
     And I will make sure Family court type is selected
     And I click on save court type
@@ -33,9 +33,8 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I hover over local authorities nav element
+    When I hover over types nav element
     And I click the types tab
-    And I can view the existing court types
     And I will make sure Family court type is selected
     And I click on save court type
     And I hover over local authorities nav element
@@ -50,12 +49,11 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I hover over local authorities nav element
+    When I hover over types nav element
     And I click the types tab
     And I will make sure Family court type is not selected
     And I click on save court type
     And I hover over local authorities nav element
-    And I click the local authorities tab
     Then The local authorities tab should be disabled
 
     Examples:
