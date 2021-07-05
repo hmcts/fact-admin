@@ -105,7 +105,10 @@
                     panel: {
                       html: courtTypesHtml
                     }
-                  },
+                  }
+                  ]%}
+
+              {% set postcodeAuthoritiesTab =
                   {
                    label: "Postcodes",
                    id: "postcodes",
@@ -113,7 +116,7 @@
                       html: postcodesHtml
                    }
                   }
-                  ]%}
+              %}
 
               {% set localAuthoritiesTab =
                   {
@@ -122,12 +125,13 @@
                     panel: {
                     html: localAuthoritiesHtml
                     }
-                    }
+                    }l
                     %}
 
 
         {% if isSuperAdmin %}
 
+          {% set tabItems = (tabItems.push(postcodeAuthoritiesTab),tabItems) %}
           {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
 
         {% endif %}
