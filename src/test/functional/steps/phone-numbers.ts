@@ -18,11 +18,8 @@ Then('I click the phone numbers tab', async () => {
 });
 
 Then('I can view the existing phone numbers', async () => {
-  const elementExist = await I.checkElement('#phoneNumbersForm');
+  const elementExist = await I.isElementVisible('#phoneNumbersForm');
   expect(elementExist).equal(true);
-
-  const tabClosed = await I.checkElement('#phone-numbers.govuk-tabs__panel--hidden');
-  expect(tabClosed).equal(false);
 });
 
 When('I enter new phone number entry by selecting description at index {int} and entering {string}, ' +
