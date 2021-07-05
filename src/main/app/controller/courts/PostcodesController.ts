@@ -50,6 +50,8 @@ export class PostcodesController {
       }
     }
 
+    console.log(areasOfLaw);
+
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it

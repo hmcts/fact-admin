@@ -11,13 +11,24 @@ describe('PostcodeController', () => {
     addPostcodes: () => Promise<string[]>,
     getCourts: () => Promise<object[]>,
     deletePostcodes: () => Promise<object>,
-    movePostcodes: () => Promise<object[]> };
+    movePostcodes: () => Promise<object[]>,
+    getCourtAreasOfLaw: () => Promise<object[]>,
+    getCourtCourtTypes: () => Promise<object[]>};
 
   const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
   const getPostcodeInput = 'PL1,PL2,PL3,PL11 1YY,PL1 1,PL 1';
   const getDeletedPostcodes = ['PL1', 'PL2', 'PL3'];
   const getMovedPostcodes = ['PL11 1YY', 'PL1 1'];
   const newPostcodes = 'PL4,PL5,PL6';
+  const successFamilyCourtAreas: () => object[] = () => [
+    { id: 34255, name: 'Bankruptcy' },
+    { id: 34254, name: 'Money claims' }
+  ];
+  const successCourtType: () => object[] = () => [
+    { id: 11420, name: 'Crown Court', code: 446 },
+    { id: 11419, name: 'County Court', code: 296 },
+    { id: 11417, name: 'Family Court', code: null }
+  ];
   const getPostcodes: () => string[] = () => getPostcodeData;
   const addPostcodes: () => string[] = () => getPostcodeData;
 
@@ -29,7 +40,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => addPostcodes(),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -125,7 +138,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -160,7 +175,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -316,7 +333,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -351,7 +370,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -422,7 +443,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -461,7 +484,9 @@ describe('PostcodeController', () => {
       addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => []
+      movePostcodes: async (): Promise<object[]> => [],
+      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
+      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
     };
     req.body = {
       'existingPostcodes': getPostcodeInput,
