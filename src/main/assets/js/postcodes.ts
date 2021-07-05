@@ -24,6 +24,7 @@ export class PostcodesController {
         this.setUpSelectAllEventHandler();
         this.setUpDeleteEventHandler();
         this.setUpMoveEventHandler();
+        this.disablePostcodesTab();
       }
     });
   }
@@ -129,5 +130,16 @@ export class PostcodesController {
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
     initAll({ scope: $('[id="postcodesTab"]')});
+  }
+
+  private disablePostcodesTab(): void {
+    const isEnabled = Boolean($('#enabled').val() === 'true');
+
+    console.log('test');
+
+    if (!isEnabled) {
+      $(this.tabId).addClass('disable-tab');
+      $(this.tabId).attr('disabled');
+    }
   }
 }

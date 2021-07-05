@@ -7,5 +7,6 @@ export interface PostcodeData {
   slug: string,
   errors: Error[],
   updated: boolean,
-  searchValue: string
+  searchValue: string,
+  isEnabled : boolean
 }

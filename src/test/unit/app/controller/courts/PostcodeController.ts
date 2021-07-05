@@ -52,7 +52,8 @@ describe('PostcodeController', () => {
       slug: 'plymouth-combined-court',
       searchValue: '',
       updated: false,
-      errors: []
+      errors: [],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
   });
@@ -79,7 +80,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: 'PL3,PL4,PL5',
       updated: true,
-      errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}]
+      errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -107,7 +109,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: 'P,M,KUPOMOSH123',
       updated: false,
-      errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}]
+      errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -141,7 +144,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: true,
-      errors: []
+      errors: [],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -178,7 +182,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: 'PL4,PL5,PL6',
       updated: false,
-      errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}]
+      errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -207,7 +212,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{text: controller.addErrorMsg}]
+      errors: [{text: controller.addErrorMsg}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -235,7 +241,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: true,
-      errors: [{text: controller.noPostcodeErrorMsg}]
+      errors: [{text: controller.noPostcodeErrorMsg}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -264,7 +271,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{text: controller.addErrorMsg}]
+      errors: [{text: controller.addErrorMsg}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -292,7 +300,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{text: controller.noSelectedPostcodeMsg}]
+      errors: [{text: controller.noSelectedPostcodeMsg}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -326,7 +335,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: true,
-      errors: []
+      errors: [],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).toBeCalledWith(slug, ['PL1','PL2','PL3']);
@@ -363,7 +373,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{'text': 'A problem has occurred when attempting to delete the following postcodes: PL1,PL2,PL3'}]
+      errors: [{'text': 'A problem has occurred when attempting to delete the following postcodes: PL1,PL2,PL3'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).toBeCalledWith(slug, ['PL1','PL2','PL3']);
@@ -395,7 +406,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{text: controller.noSelectedPostcodeOrCourtMsg}]
+      errors: [{text: controller.noSelectedPostcodeOrCourtMsg}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).not.toBeCalled();
@@ -433,7 +445,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{'text': 'A problem has occurred when attempting to move the following postcodes: PL11 1YY,PL1 1'}]
+      errors: [{'text': 'A problem has occurred when attempting to move the following postcodes: PL11 1YY,PL1 1'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
@@ -472,7 +485,8 @@ describe('PostcodeController', () => {
       slug: slug,
       searchValue: '',
       updated: false,
-      errors: [{'text': 'The postcode is already present on the destination court: PL11 1YY,PL1 1'}]
+      errors: [{'text': 'The postcode is already present on the destination court: PL11 1YY,PL1 1'}],
+      isEnabled: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);

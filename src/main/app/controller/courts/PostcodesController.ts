@@ -5,10 +5,17 @@ import {PostcodeData} from '../../../types/Postcode';
 import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
+import {AreaOfLaw} from '../../../types/AreaOfLaw';
+import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
+import {CourtType} from '../../../types/CourtType';
 
 @autobind
 export class PostcodesController {
 
+  getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
+  getCourtAreasErrorMsg = 'A problem occurred when retrieving the court areas of law.';
+  getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
+  familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law ';
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
@@ -26,8 +33,22 @@ export class PostcodesController {
     searchValue = '',
     postcodes: string[] = null,
     error = '',
-    updated = false): Promise<void> {
+    updated = false,
+    areasOfLaw: AreaOfLaw[] = null): Promise<void> {
     const slug: string = req.params.slug as string;
+
+    if (!areasOfLaw ) {
+      await req.scope.cradle.api.getCourtAreasOfLaw(slug)
+        .then((value: AreaOfLaw[]) => areasOfLaw = value)
+        .catch(() => error += this.getCourtAreasOfLawErrorMsg);
+    }
+
+    if (areasOfLaw ){
+      areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
+      if(!areasOfLaw.length){
+        error += this.familyAreaOfLawErrorMsg;
+      }
+    }
 
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
@@ -43,13 +64,21 @@ export class PostcodesController {
 
     const courts = await req.scope.cradle.api.getCourts();
 
+    let courtTypes: CourtType[] = [];
+    await req.scope.cradle.api.getCourtCourtTypes(slug)
+      .then((value: CourtType[]) => courtTypes = value)
+      .catch(() => error += this.getCourtTypesErrorMsg);
+
+    console.log(courtTypes);
+
     const pageData: PostcodeData = {
       postcodes: postcodes,
       courts: courts,
       slug: slug,
       errors: errors,
       updated: updated,
-      searchValue: searchValue
+      searchValue: searchValue,
+      isEnabled: !courtTypes.length ? false :courtTypes.some(c => c.name === 'Family Court')
     };
     res.render('courts/tabs/postcodesContent', pageData);
   }
@@ -165,5 +194,13 @@ export class PostcodesController {
             this.moveErrorMsg + postcodesToMove);
         }
       });
+  }
+
+  private checkFamilyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]): AreaOfLaw[]{
+    if(courtAreasOfLaw && courtAreasOfLaw.length) {
+      return courtAreasOfLaw.filter(c => c.name == familyAreaOfLaw.moneyClaims || c.name == familyAreaOfLaw.housing
+        || c.name == familyAreaOfLaw.bankruptcy);
+    }
+    return [];
   }
 }
