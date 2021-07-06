@@ -75,8 +75,11 @@ FactTabs.prototype.setup = function () {
   selectedTab.style.paddingTop = '0px';
   selectedTab.style.paddingBottom= '15px';
 
-
   this.showTab($activeTab);
+
+  // Handle hashchange events
+  $module.boundOnHashChange = this.onHashChange.bind(this)
+  window.addEventListener('hashchange', $module.boundOnHashChange, true)
 
 
 };
@@ -110,6 +113,31 @@ FactTabs.prototype.teardown = function () {
   window.removeEventListener('hashchange', $module.boundOnHashChange, true);
 };
 
+
+FactTabs.prototype.onHashChange = function (e) {
+  var hash = window.location.hash
+  var $tabWithHash = this.getTab(hash)
+  if (!$tabWithHash) {
+    return
+  }
+
+  // Prevent changing the hash
+  if (this.changingHash) {
+    this.changingHash = false
+    return
+  }
+
+  // Show either the active tab according to the URL's hash or the first tab
+  var $previousTab = this.getCurrentTab()
+
+  this.hideTab($previousTab)
+  this.showTab($tabWithHash)
+  this.setSelected($tabWithHash.innerText);
+  var selectedTab = this.$module.querySelector('.fact-tabs-title');
+  selectedTab.style.paddingTop = '0px';
+  selectedTab.style.paddingBottom= '15px';
+  $tabWithHash.focus()
+}
 
 FactTabs.prototype.hideTab = function ($tab) {
   this.unhighlightTab($tab);
@@ -166,8 +194,8 @@ FactTabs.prototype.onTabClick = function (e) {
   var $currentTab = this.getCurrentTab();
   this.hideTab($currentTab);
   this.showTab($newTab);
-  this.createHistoryEntry($newTab);
   this.setSelected($newTab.innerText);
+  this.createHistoryEntry($newTab);
 };
 
 FactTabs.prototype.createHistoryEntry = function ($tab) {
@@ -176,7 +204,7 @@ FactTabs.prototype.createHistoryEntry = function ($tab) {
   // so the page doesn't jump when a user clicks a tab (which changes the hash)
   var id = $panel.id;
   $panel.id = '';
-  //this.changingHash = true
+  this.changingHash = true
   window.location.hash = this.getHref($tab).slice(1);
   $panel.id = id;
 };
