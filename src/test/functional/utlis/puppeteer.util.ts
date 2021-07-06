@@ -23,9 +23,8 @@ export const hover = async (selector: string) => {
   await scope.page.hover(selector);
 };
 
-
 export const click = async (selector: string) => {
-  await scope.page.click(selector);
+  await scope.page.$eval(selector, (elem: HTMLElement) => elem.click());
 };
 
 export const fillField = async (selector: string, value: string) => {

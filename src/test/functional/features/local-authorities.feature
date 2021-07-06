@@ -13,8 +13,8 @@ Feature: Local authorities
   Scenario Outline: Local authorities updated successfully
 
     When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over types nav element
+    And I am redirected to the Edit Court page for the chosen court
+    And I hover over types nav element
     And I click the types tab
     And I will make sure Family court type is selected
     And I click on save court type
@@ -32,8 +32,8 @@ Feature: Local authorities
   Scenario Outline: When there are no area of law selected for the chosen court user should get proper error message when he clicks on local authorities
 
     When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over types nav element
+    And I am redirected to the Edit Court page for the chosen court
+    And I hover over types nav element
     And I click the types tab
     And I will make sure Family court type is selected
     And I click on save court type
@@ -49,7 +49,7 @@ Feature: Local authorities
 
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
-    When I hover over types nav element
+    And I hover over types nav element
     And I click the types tab
     And I will make sure Family court type is not selected
     And I click on save court type

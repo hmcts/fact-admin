@@ -1,6 +1,7 @@
 
 $blue: #1d70b8;
 $border-width: 1px;
+$white: #fff;
 $backgorund-colour: #f1f1f1;
 
 .fact-tabs {
@@ -131,6 +132,11 @@ $backgorund-colour: #f1f1f1;
 
       &:hover {
         background-color: $blue;
+
+        .fact-tabs-tab {
+          color: $white;
+          font-weight: bold;
+        }
       }
     }
 
