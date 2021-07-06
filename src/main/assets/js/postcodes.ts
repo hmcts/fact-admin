@@ -53,7 +53,9 @@ export class PostcodesController {
         data: {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
           newPostcodes: $('[id="addNewPostcodes"]').val(),
-          csrfToken: $('[name="_csrf"]').val()
+          csrfToken: $('[name="_csrf"]').val(),
+          courtTypes: $('#courtTypes').val(),
+          areasOfLaw: $('#areasOfLaw').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -74,7 +76,9 @@ export class PostcodesController {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
           selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
           selectedCourt: $('[name="movePostcodesSelect"]').val(),
-          csrfToken: $('[name="_csrf"]').val()
+          csrfToken: $('[name="_csrf"]').val(),
+          courtTypes: $('#courtTypes').val(),
+          areasOfLaw: $('#areasOfLaw').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -94,7 +98,9 @@ export class PostcodesController {
         data: {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
           selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
-          csrfToken: $('[name="_csrf"]').val()
+          csrfToken: $('[name="_csrf"]').val(),
+          courtTypes: $('#courtTypes').val(),
+          areasOfLaw: $('#areasOfLaw').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);

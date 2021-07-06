@@ -1,5 +1,7 @@
 import {Error} from "./Error";
 import {Court} from "./Court";
+import {CourtType} from "./CourtType";
+import {AreaOfLaw} from "./AreaOfLaw";
 
 export interface PostcodeData {
   postcodes: string[],
@@ -8,5 +10,7 @@ export interface PostcodeData {
   errors: Error[],
   updated: boolean,
   searchValue: string,
-  isEnabled : boolean
+  isEnabled : boolean,
+  courtTypes: CourtType[],
+  areasOfLaw: AreaOfLaw[]
 }

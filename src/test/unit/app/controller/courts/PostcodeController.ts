@@ -3,6 +3,9 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {CSRF} from '../../../../../main/modules/csrf';
 import {PostcodeData} from '../../../../../main/types/Postcode';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
+import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
+import {CourtType} from '../../../../../main/types/CourtType';
+import {familyAreaOfLaw} from '../../../../../main/enums/familyAreaOfLaw';
 
 describe('PostcodeController', () => {
 
@@ -12,38 +15,37 @@ describe('PostcodeController', () => {
     getCourts: () => Promise<object[]>,
     deletePostcodes: () => Promise<object>,
     movePostcodes: () => Promise<object[]>,
-    getCourtAreasOfLaw: () => Promise<object[]>,
-    getCourtCourtTypes: () => Promise<object[]>};
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
+    getCourtCourtTypes: () => Promise<CourtType[]>};
 
   const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
   const getPostcodeInput = 'PL1,PL2,PL3,PL11 1YY,PL1 1,PL 1';
   const getDeletedPostcodes = ['PL1', 'PL2', 'PL3'];
   const getMovedPostcodes = ['PL11 1YY', 'PL1 1'];
-  // const movedPostcodesResults = ['PL1', 'PL2', 'PL3', 'PL 1'];
   const newPostcodes = 'PL4,PL5,PL6';
-  const successFamilyCourtAreas: () => object[] = () => [
-    { id: 34255, name: 'Bankruptcy' },
-    { id: 34254, name: 'Money claims' }
-  ];
-  const successCourtType: () => object[] = () => [
+  const getPostcodes: () => string[] = () => getPostcodeData;
+  const happyCourtTypes: CourtType[] = [
     { id: 11420, name: 'Crown Court', code: 446 },
     { id: 11419, name: 'County Court', code: 296 },
     { id: 11417, name: 'Family Court', code: null }
   ];
-  const getPostcodes: () => string[] = () => getPostcodeData;
-  const addPostcodes: () => string[] = () => getPostcodeData;
+  const happyCourtAreasOfLaw: AreaOfLaw[] = [
+    { id: 1, name:familyAreaOfLaw.housing},
+    { id: 2, name:familyAreaOfLaw.moneyClaims},
+    { id: 3, name:familyAreaOfLaw.bankruptcy}
+  ];
 
   const controller = new PostcodesController();
 
   beforeEach(() => {
     mockApi = {
       getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => addPostcodes(),
+      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
       movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
+      getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => happyCourtAreasOfLaw,
+      getCourtCourtTypes: async (): Promise<CourtType[]> => happyCourtTypes
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -67,7 +69,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [],
-      isEnabled: true
+      isEnabled: true,
+      areasOfLaw: happyCourtAreasOfLaw,
+      courtTypes: happyCourtTypes
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
   });
@@ -80,7 +84,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': 'PL3,PL4,PL5',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'courtTypes': happyCourtTypes,
+      'areasOfLaw': happyCourtAreasOfLaw
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -95,7 +101,9 @@ describe('PostcodeController', () => {
       searchValue: 'PL3,PL4,PL5',
       updated: true,
       errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -109,7 +117,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': 'P,M,KUPOMOSH123',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -124,7 +134,9 @@ describe('PostcodeController', () => {
       searchValue: 'P,M,KUPOMOSH123',
       updated: false,
       errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -134,19 +146,12 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -155,13 +160,15 @@ describe('PostcodeController', () => {
     await controller.post(req, res);
 
     const expectedResults: PostcodeData = {
-      postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1', 'PL4', 'PL5', 'PL6'],
+      postcodes: ['PL1','PL2','PL3','PL11 1YY','PL1 1','PL 1','PL4','PL5','PL6'],
       courts: [],
       slug: slug,
       searchValue: '',
       updated: true,
       errors: [],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -171,19 +178,12 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['pl1'];
@@ -201,7 +201,9 @@ describe('PostcodeController', () => {
       searchValue: 'PL4,PL5,PL6',
       updated: false,
       errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -216,7 +218,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -231,7 +235,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{text: controller.addErrorMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -245,7 +251,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': '',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -260,7 +268,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: true,
       errors: [{text: controller.noPostcodeErrorMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -275,7 +285,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': newPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -290,7 +302,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{text: controller.addErrorMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -304,7 +318,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': '',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -319,7 +335,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{text: controller.noSelectedPostcodeMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -329,19 +347,12 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -356,29 +367,24 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: true,
       errors: [],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
-    expect(mockApi.deletePostcodes).toBeCalledWith(slug, ['PL1','PL2','PL3']);
+    expect(mockApi.deletePostcodes).toBeCalledWith(slug, getDeletedPostcodes);
   });
 
   test('Should not delete postcodes if the api returns with an error', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL1','PL2','PL3'];
@@ -396,7 +402,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{'text': 'A problem has occurred when attempting to delete the following postcodes: PL1,PL2,PL3'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).toBeCalledWith(slug, ['PL1','PL2','PL3']);
@@ -409,20 +417,13 @@ describe('PostcodeController', () => {
     const req = mockRequest();
 
     CSRF.verify = jest.fn().mockReturnValue(false);
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => [],
-      getCourtCourtTypes: async (): Promise<object[]> => []
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -440,7 +441,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{'text': controller.moveErrorMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).not.toBeCalled();
@@ -451,20 +454,13 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => [],
-      getCourtCourtTypes: async (): Promise<object[]> => []
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
 
     req.params = { slug: slug };
@@ -480,7 +476,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: true,
       errors: [],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
@@ -494,7 +492,9 @@ describe('PostcodeController', () => {
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -509,7 +509,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{text: controller.noSelectedPostcodeOrCourtMsg}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).not.toBeCalled();
@@ -519,20 +521,13 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -550,7 +545,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{'text': 'A problem has occurred when attempting to move the following postcodes: PL11 1YY,PL1 1'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
@@ -560,20 +557,13 @@ describe('PostcodeController', () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-    mockApi = {
-      getPostcodes: async (): Promise<string[]> => getPostcodes(),
-      addPostcodes: async (): Promise<string[]> => newPostcodes.split(','),
-      getCourts: async (): Promise<object[]> => [],
-      deletePostcodes: async (): Promise<object[]> => [],
-      movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<object[]> => successFamilyCourtAreas(),
-      getCourtCourtTypes: async (): Promise<object[]> => successCourtType()
-    };
     req.body = {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
-      'csrfToken': CSRF.create()
+      'csrfToken': CSRF.create(),
+      'areasOfLaw': happyCourtAreasOfLaw,
+      'courtTypes': happyCourtTypes
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -592,7 +582,9 @@ describe('PostcodeController', () => {
       searchValue: '',
       updated: false,
       errors: [{'text': 'The postcode is already present on the destination court: PL11 1YY,PL1 1'}],
-      isEnabled: true
+      isEnabled: true,
+      courtTypes: happyCourtTypes,
+      areasOfLaw: happyCourtAreasOfLaw
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
