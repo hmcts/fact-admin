@@ -12,11 +12,8 @@ When('I click the opening hours tab', async () => {
 });
 
 Then('I can view the existing opening hours', async () => {
-  const elementExist = await I.checkElement('#openingTimesForm');
+  const elementExist = await I.isElementVisible('#openingTimesForm');
   expect(elementExist).equal(true);
-
-  const tabClosed = await I.checkElement('#opening-hours.govuk-tabs__panel--hidden');
-  expect(tabClosed).equal(false);
 });
 
 When('I remove all existing opening hours entries and save', async () => {
@@ -87,6 +84,19 @@ When('I enter an incomplete opening hour description', async () => {
   await I.setElementValueAtIndex('#openingTimesTab input[name$="[hours]"', entryFormIdx, '10:00am to 4:00pm', 'input');
 });
 
+When('I left the opening hours blank and select description at index {int}', async (typeId: number) => {
+  const numFieldsets = await I.countElement('#openingTimesTab fieldset');
+  const entryFormIdx = numFieldsets - 2; // we deduct one each for zero-based index and hidden template field
+
+  const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
+  const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
+
+  await I.setElementValueAtIndex(typeSelector, entryFormIdx, typeId, 'select');
+  await I.setElementValueAtIndex(hoursSelector, entryFormIdx, '', 'input');
+  await I.clearField(hoursSelector);
+
+});
+
 When('I enter duplicated opening hour description', async () => {
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const entryFormIdx = numFieldsets - 2; // we deduct one each for zero-based index and hidden template field
@@ -121,6 +131,26 @@ Then('An error is displayed for opening hours with summary {string} and descript
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 
   expect(await I.checkElement('#hours-' + fieldsetErrorIndex + '-error')).equal(false);
+});
+
+Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#openingTimesContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summary);
+
+  const numFieldsets = await I.countElement('#openingTimesTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#hours-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const hoursErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(hoursErrorElement)).contains(message);
 });
 
 When('I click the remove button under an opening hours entry', async () => {

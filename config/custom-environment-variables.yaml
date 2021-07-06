@@ -17,3 +17,5 @@ appInsights:
   instrumentationKey: APPINSIGHTS_KEY
 csrf:
   tokenSecret: CSRF_TOKEN_SECRET
+launchDarkly:
+  sdkKey: LAUNCHDARKLY_SDK_KEY
