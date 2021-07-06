@@ -135,7 +135,7 @@ export class PostcodesController {
 
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
-    initAll({ scope: $('[id="postcodesTab"]')});
+    initAll({ scope: document.getElementById('postcodesTab')});
   }
 
   // private disablePostcodesTab(): void {

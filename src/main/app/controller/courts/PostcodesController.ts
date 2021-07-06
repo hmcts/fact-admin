@@ -15,7 +15,7 @@ export class PostcodesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
   getCourtAreasErrorMsg = 'A problem occurred when retrieving the court areas of law.';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
-  familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law ';
+  familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law: Housing, Money Claims, or Bankruptcy';
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
@@ -38,24 +38,30 @@ export class PostcodesController {
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
 
-    if (!areasOfLaw) {
-      await req.scope.cradle.api.getCourtAreasOfLaw(slug)
-        .then((value: AreaOfLaw[]) => areasOfLaw = value)
-        .catch(() => error += this.getCourtAreasOfLawErrorMsg);
-    }
-
-    if (areasOfLaw) {
-      areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
-      if(!areasOfLaw.length){
-        error += this.familyAreaOfLawErrorMsg;
-      }
-    }
-
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it
     if (error) {
       errors.push({text: error});
+    }
+
+    if (!areasOfLaw) {
+      await req.scope.cradle.api.getCourtAreasOfLaw(slug)
+        .then((value: AreaOfLaw[]) => areasOfLaw = value)
+        .catch(() => errors.push({text: this.getCourtAreasOfLawErrorMsg}));
+    }
+
+    if (areasOfLaw) {
+      areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
+      if(!areasOfLaw.length){
+        errors.push({text: this.familyAreaOfLawErrorMsg});
+      }
+    }
+
+    if (!courtTypes) {
+      await req.scope.cradle.api.getCourtCourtTypes(slug)
+        .then((value: CourtType[]) => courtTypes = value)
+        .catch(() => errors.push({text: this.getCourtTypesErrorMsg}));
     }
 
     if (!postcodes)
@@ -65,12 +71,6 @@ export class PostcodesController {
 
     const courts = await req.scope.cradle.api.getCourts();
 
-    if (!courtTypes) {
-      await req.scope.cradle.api.getCourtCourtTypes(slug)
-        .then((value: CourtType[]) => courtTypes = value)
-        .catch(() => error += this.getCourtTypesErrorMsg);
-    }
-
     const pageData: PostcodeData = {
       postcodes: postcodes,
       courts: courts,
@@ -78,7 +78,7 @@ export class PostcodesController {
       errors: errors,
       updated: updated,
       searchValue: searchValue,
-      isEnabled: !courtTypes.length ? false :courtTypes.some(c => c.name === 'Family Court'),
+      isEnabled: !courtTypes.length ? false :courtTypes.some(c => c.name === 'County Court'),
       areasOfLaw: areasOfLaw,
       courtTypes: courtTypes
     };
@@ -122,18 +122,18 @@ export class PostcodesController {
 
     // Send the new postcodes to fact-api to add them to the database
     await req.scope.cradle.api.addPostcodes(req.params.slug, newPostcodes.split(','))
-      .then((value: string[]) =>
-        this.get(req, res, '', existingPostcodes.concat(value), '',
+      .then(async (value: string[]) =>
+        await this.get(req, res, '', existingPostcodes.concat(value), '',
           areasOfLaw, courtTypes, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
 
         // conflict, postcode(s) already exists on the database
         if(reason.response?.status === 409) {
-          this.get(req, res, newPostcodes, existingPostcodes,
+          await this.get(req, res, newPostcodes, existingPostcodes,
             this.duplicatePostcodeMsg + reason.response?.data, areasOfLaw, courtTypes);
         }
         else {
-          this.get(req, res, newPostcodes, existingPostcodes,
+          await this.get(req, res, newPostcodes, existingPostcodes,
             this.addErrorMsg + reason.response?.data, areasOfLaw, courtTypes);
         }
       });
@@ -158,14 +158,14 @@ export class PostcodesController {
 
     // Send the postcodes to fact-api to delete them
     await req.scope.cradle.api.deletePostcodes(req.params.slug, postcodesToDelete)
-      .then(() => {
+      .then(async () => {
         // Remove the values from the existing list and return
         const existingMinusDeleted =
           existingPostcodes.filter( ( postcode ) => !postcodesToDelete.includes( postcode ) );
-        this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
+        await this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
       })
-      .catch(() =>
-        this.get(req, res, '', existingPostcodes,
+      .catch(async () =>
+        await this.get(req, res, '', existingPostcodes,
           this.deleteErrorMsg + postcodesToDelete, areasOfLaw, courtTypes));
   }
 
@@ -189,20 +189,20 @@ export class PostcodesController {
 
     // Send the postcodes to fact-api to delete them
     await req.scope.cradle.api.movePostcodes(req.params.slug, req.body.selectedCourt, postcodesToMove)
-      .then(() => {
+      .then(async () => {
         // Remove the values from the existing list and return
         const existingMinusDeleted =
           existingPostcodes.filter( ( postcode ) => !postcodesToMove.includes( postcode ) );
-        this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
+        await this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
       })
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         // conflict, postcode(s) already exists on the database
         if(reason.response?.status === 409) { // conflict, postcode already exists on the destination court
-          this.get(req, res, '', existingPostcodes,
+          await this.get(req, res, '', existingPostcodes,
             this.moveErrorDuplicatedMsg + postcodesToMove, areasOfLaw, courtTypes);
         }
         else {
-          this.get(req, res, '', existingPostcodes,
+          await this.get(req, res, '', existingPostcodes,
             this.moveErrorMsg + postcodesToMove, areasOfLaw, courtTypes);
         }
       });
