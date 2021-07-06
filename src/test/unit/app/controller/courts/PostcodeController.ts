@@ -5,7 +5,7 @@ import {PostcodeData} from '../../../../../main/types/Postcode';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
 import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {CourtType} from '../../../../../main/types/CourtType';
-import {familyAreaOfLaw} from "../../../../../main/enums/familyAreaOfLaw";
+import {familyAreaOfLaw} from '../../../../../main/enums/familyAreaOfLaw';
 
 describe('PostcodeController', () => {
 
@@ -24,16 +24,21 @@ describe('PostcodeController', () => {
   const getMovedPostcodes = ['PL11 1YY', 'PL1 1'];
   const newPostcodes = 'PL4,PL5,PL6';
   const getPostcodes: () => string[] = () => getPostcodeData;
-  const happyCourtTypes: CourtType[] = [
+  const apiCourtTypesInput: CourtType[] = [
     { id: 11420, name: 'Crown Court', code: 446 },
     { id: 11419, name: 'County Court', code: 296 },
     { id: 11417, name: 'Family Court', code: null }
   ];
-  const happyCourtAreasOfLaw: AreaOfLaw[] = [
+  const apiAreasOfLawInput: AreaOfLaw[] = [
     { id: 1, name:familyAreaOfLaw.bankruptcy},
     { id: 2, name:familyAreaOfLaw.moneyClaims},
     { id: 3, name:familyAreaOfLaw.housing}
   ];
+  const courtTypesBodyInput = 'Crown_Court,County_Court,Family_Court';
+  const areasOfLawBodyInput = familyAreaOfLaw.bankruptcy + ',' + familyAreaOfLaw.moneyClaims + ',' + familyAreaOfLaw.housing;
+  const courtTypesMethodOutput = ['Crown_Court', 'County_Court', 'Family_Court'];
+  const areasOfLawMethodOutput = [familyAreaOfLaw.bankruptcy,
+    familyAreaOfLaw.moneyClaims.replace(' ', '_'), familyAreaOfLaw.housing];
 
   const controller = new PostcodesController();
 
@@ -44,8 +49,8 @@ describe('PostcodeController', () => {
       getCourts: async (): Promise<object[]> => [],
       deletePostcodes: async (): Promise<object[]> => [],
       movePostcodes: async (): Promise<object[]> => [],
-      getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => happyCourtAreasOfLaw,
-      getCourtCourtTypes: async (): Promise<CourtType[]> => happyCourtTypes
+      getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => apiAreasOfLawInput,
+      getCourtCourtTypes: async (): Promise<CourtType[]> => apiCourtTypesInput
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -70,8 +75,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [],
       isEnabled: true,
-      areasOfLaw: happyCourtAreasOfLaw,
-      courtTypes: happyCourtTypes
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
   });
@@ -85,8 +90,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': 'PL3,PL4,PL5',
       'csrfToken': CSRF.create(),
-      'courtTypes': happyCourtTypes,
-      'areasOfLaw': happyCourtAreasOfLaw
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -102,8 +107,8 @@ describe('PostcodeController', () => {
       updated: true,
       errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -118,8 +123,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': 'P,M,KUPOMOSH123',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -135,8 +140,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -150,8 +155,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -167,8 +172,8 @@ describe('PostcodeController', () => {
       updated: true,
       errors: [],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -182,8 +187,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['pl1'];
@@ -202,8 +207,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).toBeCalledWith(slug, newPostcodes.split(','));
@@ -219,8 +224,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': newPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -236,8 +241,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{text: controller.addErrorMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -252,8 +257,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'newPostcodes': '',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -269,8 +274,8 @@ describe('PostcodeController', () => {
       updated: true,
       errors: [{text: controller.noPostcodeErrorMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.addPostcodes).not.toBeCalled();
@@ -286,8 +291,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': newPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -303,8 +308,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{text: controller.addErrorMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -319,8 +324,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': '',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -336,8 +341,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{text: controller.noSelectedPostcodeMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).not.toBeCalled();
@@ -351,8 +356,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -368,8 +373,8 @@ describe('PostcodeController', () => {
       updated: true,
       errors: [],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).toBeCalledWith(slug, getDeletedPostcodes);
@@ -383,8 +388,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL1','PL2','PL3'];
@@ -403,14 +408,13 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{'text': 'A problem has occurred when attempting to delete the following postcodes: PL1,PL2,PL3'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.deletePostcodes).toBeCalledWith(slug, ['PL1','PL2','PL3']);
   });
 
-  // TODO: CSRF TOKEN INVALID TEST FOR MOVING POSTCODES
   test('Should not move postcodes if CSRF token is invalid', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
@@ -422,8 +426,8 @@ describe('PostcodeController', () => {
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -442,14 +446,13 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{'text': controller.moveErrorMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).not.toBeCalled();
   });
 
-  // TODO: HAPPY PATH SCENARIO TEST FOR MOVING POSTCODES
   test('Should move postcodes if there are no errors', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
@@ -459,8 +462,8 @@ describe('PostcodeController', () => {
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
 
     req.params = { slug: slug };
@@ -477,8 +480,8 @@ describe('PostcodeController', () => {
       updated: true,
       errors: [],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
@@ -493,8 +496,8 @@ describe('PostcodeController', () => {
       'existingPostcodes': getPostcodeInput,
       'selectedPostcodes': getDeletedPostcodes,
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
@@ -510,8 +513,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{text: controller.noSelectedPostcodeOrCourtMsg}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).not.toBeCalled();
@@ -526,8 +529,8 @@ describe('PostcodeController', () => {
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -546,8 +549,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{'text': 'A problem has occurred when attempting to move the following postcodes: PL11 1YY,PL1 1'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
@@ -562,8 +565,8 @@ describe('PostcodeController', () => {
       'selectedPostcodes': getMovedPostcodes,
       'selectedCourt': 'Mosh Land Court',
       'csrfToken': CSRF.create(),
-      'areasOfLaw': happyCourtAreasOfLaw,
-      'courtTypes': happyCourtTypes
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
     errorResponse.response.data = ['PL11 1YY', 'PL1 1'];
@@ -583,8 +586,8 @@ describe('PostcodeController', () => {
       updated: false,
       errors: [{'text': 'The postcode is already present on the destination court: PL11 1YY,PL1 1'}],
       isEnabled: true,
-      courtTypes: happyCourtTypes,
-      areasOfLaw: happyCourtAreasOfLaw
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
     };
     expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', expectedResults);
     expect(mockApi.movePostcodes).toBeCalledWith(slug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);

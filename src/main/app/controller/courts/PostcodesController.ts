@@ -33,8 +33,8 @@ export class PostcodesController {
     searchValue = '',
     postcodes: string[] = null,
     error = '',
-    areasOfLaw: AreaOfLaw[] = null,
-    courtTypes: CourtType[] = null,
+    areasOfLaw: string[] = null,
+    courtTypes: string[] = null,
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
 
@@ -50,12 +50,12 @@ export class PostcodesController {
 
     if (!areasOfLaw) {
       await req.scope.cradle.api.getCourtAreasOfLaw(slug)
-        .then((value: AreaOfLaw[]) => areasOfLaw = value)
+        .then((value: AreaOfLaw[]) => areasOfLaw = value.map(ct => ct.name))
         .catch(() => errors.push({text: this.getCourtAreasOfLawErrorMsg}));
     }
 
     if (areasOfLaw) {
-      areasOfLaw = this.checkCountyAreasOfLaw(areasOfLaw);
+      areasOfLaw = this.checkCountyAreasOfLaw(areasOfLaw).map(ct => ct.replace(/\s/g, '_'));
       if(!areasOfLaw.length){
         errors.push({text: this.familyAreaOfLawErrorMsg});
       }
@@ -63,7 +63,7 @@ export class PostcodesController {
 
     if (!courtTypes) {
       await req.scope.cradle.api.getCourtCourtTypes(slug)
-        .then((value: CourtType[]) => courtTypes = value)
+        .then((value: CourtType[]) => courtTypes = value.map(ct => ct.name.replace(/\s/g, '_')))
         .catch(() => errors.push({text: this.getCourtTypesErrorMsg}));
     }
 
@@ -81,7 +81,7 @@ export class PostcodesController {
       errors: errors,
       updated: updated,
       searchValue: searchValue,
-      isEnabled: !courtTypes.length ? false :courtTypes.some(c => c.name === 'County Court'),
+      isEnabled: !courtTypes.length ? false :courtTypes.some(ct => ct === 'County_Court'),
       areasOfLaw: areasOfLaw,
       courtTypes: courtTypes
     };
@@ -93,8 +93,8 @@ export class PostcodesController {
     res: Response): Promise<void> {
 
     const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
-    const courtTypes = req.body.courtTypes;
-    const areasOfLaw = req.body.areasOfLaw;
+    const courtTypes = req.body.courtTypes?.split(',') ?? [];
+    const areasOfLaw = req.body.areasOfLaw?.split(',') ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg, areasOfLaw, courtTypes);
     }
@@ -147,8 +147,8 @@ export class PostcodesController {
     res: Response): Promise<void> {
 
     const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
-    const courtTypes = req.body.courtTypes;
-    const areasOfLaw = req.body.areasOfLaw;
+    const courtTypes = req.body.courtTypes?.split(',') ?? [];
+    const areasOfLaw = req.body.areasOfLaw?.split(',') ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg, areasOfLaw, courtTypes);
     }
@@ -177,8 +177,8 @@ export class PostcodesController {
     res: Response): Promise<void> {
 
     const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
-    const courtTypes = req.body.courtTypes;
-    const areasOfLaw = req.body.areasOfLaw;
+    const courtTypes = req.body.courtTypes?.split(',') ?? [];
+    const areasOfLaw = req.body.areasOfLaw?.split(',') ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.moveErrorMsg, areasOfLaw, courtTypes);
     }
@@ -211,10 +211,11 @@ export class PostcodesController {
       });
   }
 
-  private checkCountyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]){
+  private checkCountyAreasOfLaw(courtAreasOfLaw: string[]): string[] {
     if(courtAreasOfLaw && courtAreasOfLaw.length) {
-      return courtAreasOfLaw.filter(c => c.name == familyAreaOfLaw.moneyClaims || c.name == familyAreaOfLaw.housing
-        || c.name == familyAreaOfLaw.bankruptcy);
+      return courtAreasOfLaw.map(c => c.replace('_', ' '))
+        .filter(c => c == familyAreaOfLaw.moneyClaims || c == familyAreaOfLaw.housing
+        || c == familyAreaOfLaw.bankruptcy);
     }
     return [];
   }
