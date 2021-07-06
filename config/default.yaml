@@ -22,3 +22,7 @@ session:
     key:
 appInsights:
   instrumentationKey:
+csrf:
+  tokenSecret: 'get from AAT vault'
+launchdarkly:
+  sdkKey:

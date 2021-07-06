@@ -13,10 +13,10 @@ describe('OpeningTimesController', () => {
     updateOpeningTimes: () => Promise<OpeningTime[]>,
     getOpeningTimeTypes: () => Promise<OpeningType[]> };
 
-  const openingTimes: OpeningTime[] = [
-    { 'type_id': 1, hours: '9am to 5pm' },
-    { 'type_id': 2, hours: '9am to 1pm' },
-    { 'type_id': 3, hours: '10am to 4pm' },
+  const getOpeningTimes: () => OpeningTime[] = () => [
+    { 'type_id': 1, hours: '9am to 5pm', isNew: false },
+    { 'type_id': 2, hours: '9am to 1pm', isNew: false },
+    { 'type_id': 3, hours: '10am to 4pm', isNew: false }
   ];
 
   const openingTimeTypes: OpeningType[] = [
@@ -41,8 +41,8 @@ describe('OpeningTimesController', () => {
 
   beforeEach(() => {
     mockApi = {
-      getOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
-      updateOpeningTimes: async (): Promise<OpeningTime[]> => openingTimes,
+      getOpeningTimes: async (): Promise<OpeningTime[]> => getOpeningTimes(),
+      updateOpeningTimes: async (): Promise<OpeningTime[]> => getOpeningTimes(),
       getOpeningTimeTypes: async (): Promise<OpeningType[]> => openingTimeTypes
     };
 
@@ -60,11 +60,14 @@ describe('OpeningTimesController', () => {
 
     await controller.get(req, res);
 
+    // Empty entry expected for adding new opening time
+    const expectedOpeningTimes = getOpeningTimes().concat([{ 'type_id': null, hours: null, isNew: true }]);
+
     const expectedResults: OpeningTimeData = {
-      'opening_times': openingTimes,
+      'opening_times': expectedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errorMsg: ''
+      errors: []
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -74,17 +77,17 @@ describe('OpeningTimesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'opening_times': openingTimes,
+      'opening_times': getOpeningTimes(),
       '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockResolvedValue(getOpeningTimes());
 
     await controller.put(req, res);
 
     // Should call API to save data
-    expect(mockApi.updateOpeningTimes).toBeCalledWith(slug, openingTimes);
+    expect(mockApi.updateOpeningTimes).toBeCalledWith(slug, getOpeningTimes());
   });
 
   test('Should not post opening times if description or hours field is empty', async() => {
@@ -110,6 +113,23 @@ describe('OpeningTimesController', () => {
     expect(mockApi.updateOpeningTimes).not.toBeCalled();
   });
 
+  test('Should not post opening times if descriptions are duplicated', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedOpeningTimes: OpeningTime[] = getOpeningTimes().concat([{ 'type_id': 2, hours: '10am to 5pm', isNew: true }]);
+    req.body = {
+      'opening_times': postedOpeningTimes,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+    expect(mockApi.updateOpeningTimes).not.toBeCalled();
+  });
+
   test('Should not post opening times if CSRF token is invalid', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
@@ -132,7 +152,7 @@ describe('OpeningTimesController', () => {
       'opening_times': postedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errorMsg: 'A problem occurred when saving the opening times.'
+      errors: [{text: controller.updateErrorMsg}]
     };
 
     await controller.put(req, res);
@@ -157,7 +177,7 @@ describe('OpeningTimesController', () => {
       'opening_times': null,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.getOpeningTimesErrorMsg
+      errors: [{text: controller.getOpeningTimesErrorMsg}]
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -173,11 +193,65 @@ describe('OpeningTimesController', () => {
 
     await controller.get(req, res);
 
+    // Empty entry expected for adding new opening time
+    const expectedOpeningTimes = getOpeningTimes().concat([{ 'type_id': null, hours: null, isNew: true }]);
+
     const expectedResults: OpeningTimeData = {
-      'opening_times': openingTimes,
+      'opening_times': expectedOpeningTimes,
       openingTimeTypes: [],
       updated: false,
-      errorMsg: controller.getOpeningTypesErrorMsg
+      errors: [{text: controller.getOpeningTypesErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
+  });
+
+  test('Should handle error with duplicated descriptions when updating opening time', async () => {
+    const req = mockRequest();
+    const postedOpeningTimes: OpeningTime[] = getOpeningTimes().concat([{ 'type_id': 2, hours: '10am to 5pm', isNew: true }]);
+    req.params = { slug: 'southport-county-court' };
+    req.body = {
+      'opening_times': postedOpeningTimes,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.put(req, res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': postedOpeningTimes,
+      openingTimeTypes: expectedSelectItems,
+      updated: false,
+      errors: [{text: controller.openingTimeDuplicatedErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
+  });
+
+  test('Should handle multiple errors when updating opening time', async () => {
+    const req = mockRequest();
+    const postedOpeningTimes: OpeningTime[] = getOpeningTimes()
+      .concat([{ 'type_id': 2, hours: '10am to 5pm', isNew: true }])
+      .concat([{ 'type_id': 1, hours: '', isNew: true }]);
+    req.params = { slug: 'southport-county-court' };
+    req.body = {
+      'opening_times': postedOpeningTimes,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.put(req, res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': postedOpeningTimes,
+      openingTimeTypes: expectedSelectItems,
+      updated: false,
+      errors: [
+        {text: controller.emptyTypeOrHoursErrorMsg},
+        {text: controller.openingTimeDuplicatedErrorMsg}
+      ]
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });

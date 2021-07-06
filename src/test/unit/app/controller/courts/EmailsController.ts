@@ -13,16 +13,23 @@ describe('EmailsController', () => {
     updateEmails: () => Promise<Email[]>,
     getEmailTypes: () => Promise<EmailType[]> };
 
-  const emails: Email[] = [
+  const testEmail1 = 'abc@test.com';
+  const testEmail2 = 'abc@test2.com';
+  const testEmail1UpperCase = 'ABC@TEST.COM';
+
+  const getEmails: () => Email[] = () => [
     {
-      address: 'abc@test.com', explanation: 'explanation ',
-      explanationCy: 'explanation cy', adminEmailTypeId: 8
+      address: testEmail1, explanation: 'explanation ',
+      explanationCy: 'explanation cy', adminEmailTypeId: 8, isNew: false
     },
     {
-      address: 'abc@test2.com', explanation: 'explanation 2',
-      explanationCy: 'explanation cy 2', adminEmailTypeId: 2
+      address: testEmail2, explanation: 'explanation 2',
+      explanationCy: 'explanation cy 2', adminEmailTypeId: 2, isNew: false
     }
   ];
+
+  const emailsWithEmptyEntry: Email[] =
+    getEmails().concat({ adminEmailTypeId: null, address: null, explanation: null, explanationCy: null, isNew: true });
 
   const emailsInvalidSyntax: Email[] = [
     {
@@ -61,8 +68,8 @@ describe('EmailsController', () => {
 
   beforeEach(() => {
     mockApi = {
-      getEmails: async (): Promise<Email[]> => emails,
-      updateEmails: async (): Promise<Email[]> => emails,
+      getEmails: async (): Promise<Email[]> => getEmails(),
+      updateEmails: async (): Promise<Email[]> => getEmails(),
       getEmailTypes: async (): Promise<EmailType[]> => emailTypes
     };
 
@@ -81,10 +88,10 @@ describe('EmailsController', () => {
     await controller.get(req, res);
 
     const expectedResults: EmailData = {
-      emails: emails,
+      emails: emailsWithEmptyEntry,
       emailTypes: expectedSelectItems,
       updated: false,
-      errorMsg: ''
+      errors: []
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -94,20 +101,43 @@ describe('EmailsController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      'emails': emails,
+      'emails': getEmails(),
       '_csrf': CSRF.create()
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateEmails = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateEmails = jest.fn().mockResolvedValue(getEmails());
 
     await controller.put(req, res);
 
     // Should call API to save data
-    expect(mockApi.updateEmails).toBeCalledWith(slug, emails);
+    expect(mockApi.updateEmails).toBeCalledWith(slug, getEmails());
   });
 
-  test('Should not post emails if type or address field(s) are empty', async() => {
+  test('Should not post emails if description or address field(s) are empty', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedEmails: Email[] = [
+      { adminEmailTypeId: 1, address: null, explanation: null, explanationCy: null},
+      { adminEmailTypeId: null, address: 'an address', explanation: null, explanationCy: null }
+    ];
+
+    req.body = {
+      'emails': postedEmails,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateEmails = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+
+    // Should not call API if emails data is incomplete
+    expect(mockApi.updateEmails).not.toBeCalled();
+  });
+
+  test('Should not post emails if descriptions are duplicated', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
@@ -150,34 +180,48 @@ describe('EmailsController', () => {
       emails: emailsInvalidSyntax,
       emailTypes: expectedSelectItems,
       updated: false,
-      errorMsg: 'A problem occurred when saving the emails.'
+      errors: [{text: controller.updateErrorMsg}]
     };
     expect(mockApi.updateEmails).not.toBeCalled();
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
 
-  test('Should handle email address error invalid syntax when getting email data from API', async () => {
-    const req = mockRequest();
-    req.params = {
-      slug: 'plymouth-combined-court'
-    };
-    req.body = {
-      'emails': emailsInvalidSyntax,
-      '_csrf': CSRF.create()
-    };
-    req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.getEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
-    const res = mockResponse();
+  const parameters = [
+    { email: 'abcabc@gmailcom.' },
+    { email: 'abcefg!gmail.com' },
+    { email: 'abc' }
+  ];
 
-    await controller.put(req, res);
+  parameters.forEach((parameter) => {
+    it('Should handle invalid email address format \'' + parameter.email + '\' when getting email data from API', async () => {
+      const postedEmails = [
+        {
+          address: parameter.email, explanation: 'explanation ',
+          explanationCy: 'explanation cy', adminEmailTypeId: 8, isNew: true
+        }
+      ];
+      const req = mockRequest();
+      req.params = {
+        slug: 'plymouth-combined-court'
+      };
+      req.body = {
+        'emails': postedEmails,
+        '_csrf': CSRF.create()
+      };
+      req.scope.cradle.api = mockApi;
+      req.scope.cradle.api.getEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+      const res = mockResponse();
 
-    const expectedResults: EmailData = {
-      emails: emailsInvalidSyntax,
-      emailTypes: expectedSelectItems,
-      updated: false,
-      errorMsg: controller.getEmailAddressFormatErrorMsg
-    };
-    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+      await controller.put(req, res);
+
+      const expectedResults: EmailData = {
+        emails: postedEmails,
+        emailTypes: expectedSelectItems,
+        updated: false,
+        errors: [{text: controller.getEmailAddressFormatErrorMsg}]
+      };
+      expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+    });
   });
 
   test('Should handle address blank error when getting email data from API', async () => {
@@ -195,7 +239,7 @@ describe('EmailsController', () => {
       emails: null,
       emailTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.getEmailsErrorMsg
+      errors: [{text: controller.getEmailsErrorMsg}]
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -212,10 +256,64 @@ describe('EmailsController', () => {
     await controller.get(req, res);
 
     const expectedResults: EmailData = {
-      emails: emails,
+      emails: emailsWithEmptyEntry,
       emailTypes: [],
       updated: false,
-      errorMsg: controller.getEmailTypesErrorMsg
+      errors: [{text: controller.getEmailTypesErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+  });
+
+  test('Should handle error with duplicated addresses when updating emails (ignoring casing)', async () => {
+    const req = mockRequest();
+    const postedEmails: Email[] = getEmails().concat({ adminEmailTypeId: 5, address: testEmail1UpperCase, explanation: null, explanationCy: null, isNew: true });
+    req.params = { slug: 'plymouth-combined-court' };
+    req.body = {
+      'emails': postedEmails,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.put(req, res);
+
+    const expectedResults: EmailData = {
+      'emails': postedEmails,
+      emailTypes: expectedSelectItems,
+      updated: false,
+      errors: [{text: controller.emailDuplicatedErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+  });
+
+  test('Should handle multiple errors when updating emails', async () => {
+    const req = mockRequest();
+    const postedEmails: Email[] = getEmails()
+      .concat({ adminEmailTypeId: 4, address: 'abc', explanation: null, explanationCy: null, isNew: true })
+      .concat({ adminEmailTypeId: 5, address: testEmail1, explanation: null, explanationCy: null, isNew: true })
+      .concat({ adminEmailTypeId: 6, address: '', explanation: null, explanationCy: null, isNew: true });
+
+    req.params = { slug: 'plymouth-combined-court' };
+    req.body = {
+      'emails': postedEmails,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateEmails = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    const res = mockResponse();
+
+    await controller.put(req, res);
+
+    const expectedResults: EmailData = {
+      'emails': postedEmails,
+      emailTypes: expectedSelectItems,
+      updated: false,
+      errors: [
+        {text: controller.emptyTypeOrAddressErrorMsg},
+        {text: controller.getEmailAddressFormatErrorMsg},
+        {text: controller.emailDuplicatedErrorMsg}
+      ]
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });

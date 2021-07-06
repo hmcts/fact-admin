@@ -4,33 +4,56 @@ Feature: Phone Numbers
     Given I am on new browser
     Given I am on FACT homepage
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials "hmcts.super.fact@gmail.com" "Pa55word11"
+    When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
-    And they are in alphabetical order
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
     When I click the phone numbers tab
     Then I can view the existing phone numbers
 
-  Scenario Outline: Add new phone numbers
-    When I enter new phone number entry by selecting description and entering "<number>", "<explanation>" and "<explanationCy>"
-    And I click the Add button in the phone number tab
+  Scenario: Add and remove phone numbers
+    When I remove all existing phone number entries and save
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    When I enter new phone number entry by selecting description at index 4 and entering "0123 456 7890", "Fine" and "Dirwy"
+    Then I click the Add button in the phone number tab
+    And I enter new phone number entry by selecting description at index 5 and entering "0987 654 321", "Chancery" and "Siawnsri"
     And I click save in the phone number tab
-    Then a green update message is displayed in the phone numbers tab
-    Then the new phone number entry is displayed as expected with number "<number>" explanation "<explanation>" and welsh explanation "<explanationCy>"
-
-    Examples:
-      | number         | explanation  | explanationCy |
-      | 0123 456 7890  | Fine         | Dirwy         |
-
-  Scenario: Prevent empty entries being added
-    When I enter a blank phone number entry
-    And I click the Add button in the phone number tab
-    And I click save in the phone number tab
-    Then an error message is displayed in the phone number tab
-
-  Scenario: Remove phone number
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    Then the phone number entry in second last position has description at index 4 number "0123 456 7890" explanation "Fine" and welsh explanation "Dirwy"
+    And the phone number entry in last position has description at index 5 number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
     When I click the remove button under a phone number entry
+    And I click the remove button under a phone number entry
     Then I click save in the phone number tab
-    Then a green update message is displayed in the phone numbers tab
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    And there are no phone number entries
+
+  Scenario: Reorder phone numbers
+    When I remove all existing phone number entries and save
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    When I enter new phone number entry by selecting description at index 2 and entering "0333 222 1111", "ReorderTest1" and "ReorderTest1Cy"
+    Then I click the Add button in the phone number tab
+    And I enter new phone number entry by selecting description at index 3 and entering "0666 555 4444", "ReorderTest2" and "ReorderTest2Cy"
+    And I click save in the phone number tab
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    Then the phone number entry in second last position has description at index 2 number "0333 222 1111" explanation "ReorderTest1" and welsh explanation "ReorderTest1Cy"
+    And the phone number entry in last position has description at index 3 number "0666 555 4444" explanation "ReorderTest2" and welsh explanation "ReorderTest2Cy"
+    When I click the move up button on the last phone number entry
+    And I click save in the phone number tab
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    Then the phone number entry in second last position has description at index 3 number "0666 555 4444" explanation "ReorderTest2" and welsh explanation "ReorderTest2Cy"
+    And the phone number entry in last position has description at index 2 number "0333 222 1111" explanation "ReorderTest1" and welsh explanation "ReorderTest1Cy"
+    When I click the move down button on the second last phone number entry
+    And I click save in the phone number tab
+    Then a green message is displayed for updated entries "Phone Numbers updated"
+    Then the phone number entry in second last position has description at index 2 number "0333 222 1111" explanation "ReorderTest1" and welsh explanation "ReorderTest1Cy"
+    And the phone number entry in last position has description at index 3 number "0666 555 4444" explanation "ReorderTest2" and welsh explanation "ReorderTest2Cy"
+
+  Scenario: Prevent blank entries being added
+    When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
+    And I click save in the phone number tab
+    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and description field message "Description is required"
+    # blank entry for phone number
+    When I left the phone number entry blank and select description at index 4
+    And I click save in the phone number tab
+    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Number is required"

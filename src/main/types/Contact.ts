@@ -1,6 +1,7 @@
 import {SelectItem} from "./CourtPageData";
+import {Element} from "./Element";
 
-export interface Contact {
+export interface Contact extends Element {
   type_id: number;
   number: string;
   fax: boolean;

@@ -39,12 +39,12 @@
 
         <div class="govuk-grid-column-one-quarter">
           <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank"
-             href="/courts/{{ slug }}">view in new window</a>
+             href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
         </div>
       </div>
 
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-three-quarters">
+        <div class="govuk-grid-column-full">
             {% set generalHtml %}
               {% include "./tabs/general.njk" %}
             {% endset -%}
@@ -52,44 +52,79 @@
               {% include "./tabs/openingHours.njk" %}
             {% endset -%}
             {% set phoneNumbersHtml %}
-              {% include "./tabs/phoneNumbers.njk" %}
+               {% include "./tabs/phoneNumbers.njk" %}
             {% endset -%}
             {% set emailsHtml %}
-              {% include "./tabs/emails.njk" %}
+               {% include "./tabs/emails.njk" %}
             {% endset -%}
-            <input id='slug' type='hidden' value='{{slug}}'></input>
-            {{ govukTabs({
-              items: [
-                {
+            {% set courtTypesHtml %}
+                {% include "./tabs/types.njk" %}
+            {% endset -%}
+            {% set localAuthoritiesHtml %}
+                {% include "./tabs/localAuthorities.njk" %}
+            {% endset -%}
+
+             <input id='slug' type='hidden' value='{{slug}}'></input>
+
+             {% set tabItems = [
+                  {
                   label: "General",
                   id: "general",
                   panel: {
-                    html: generalHtml
+                  html: generalHtml
                   }
-                },
-                {
+                  },
+                  {
                   label: "Opening Hours",
                   id: "opening-hours",
                   panel: {
-                    html: openingHoursHtml
+                  html: openingHoursHtml
                   }
-                },
-                {
+                  },
+                  {
                   label: "Phone Numbers",
                   id: "phone-numbers",
                   panel: {
-                    html: phoneNumbersHtml
+                  html: phoneNumbersHtml
                   }
-                },
-                {
+                  },
+                  {
                   label: "Emails",
                   id: "emails",
                   panel: {
-                    html: emailsHtml
+                  html: emailsHtml
                   }
-                }
-              ]
-            }) }}
+                  },
+                  {
+                  label: "Types",
+                  id: "court-types",
+                  panel: {
+                  html: courtTypesHtml
+                  }
+                  }
+                  ]%}
+
+              {% set localAuthoritiesTab =
+                  {
+                    label: "Local Authorities",
+                    id: "local-authorities",
+                    panel: {
+                    html: localAuthoritiesHtml
+                    }
+                    }
+                    %}
+
+
+{% if isSuperAdmin %}
+
+{% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+
+{% endif %}
+
+            {{ govukTabs({
+            id: 'Main',
+              items: tabItems
+              }) }}
         </div>
       </div>
     </div>

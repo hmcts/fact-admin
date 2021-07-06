@@ -1,7 +1,19 @@
 import { expect } from 'chai';
 import { Given, Then, When } from 'cucumber';
-
 import * as I from '../utlis/puppeteer.util';
+import {puppeteerConfig} from '../puppeteer.config';
+
+
+async function fillInUsernameAndPassword(username: string, password: string) {
+  const usernameEl = await I.checkElement('#username');
+  expect(usernameEl).equal(true);
+  await I.setElementValueForInputField('#username', username);
+
+  const passwordEl = await I.checkElement('#password');
+  expect(passwordEl).equal(true);
+
+  await I.setElementValueForInputField('#password', password);
+}
 
 Given('that I am a logged-out admin or super admin user', async () => {
   const element = await I.checkElement('#login');
@@ -18,15 +30,22 @@ Given('I am on the admin portal sign in page', async () => {
   expect(text).equal('Sign in');
 });
 
-When('I fill in the Username and Password fields with my authenticated credentials {string} {string}', async (username: string, password: string) => {
-  const usernameEl = await I.checkElement('#username');
-  expect(usernameEl).equal(true);
-  await I.fillField('#username', username);
-
-  const passwordEl = await I.checkElement('#password');
-  expect(passwordEl).equal(true);
-  await I.fillField('#password', password);
+When('I fill in the Username and Password fields with my authenticated credentials', async () => {
+  const username = puppeteerConfig.username;
+  const password = puppeteerConfig.password;
+  await fillInUsernameAndPassword(username, password);
 });
+
+When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
+  const username = puppeteerConfig.superUsername;
+  const password = puppeteerConfig.password;
+  await fillInUsernameAndPassword(username, password);
+});
+
+When('I fill in the Username and Password fields with my incorrect authenticated credentials {string} {string}',
+  async (username: string, password: string) => {
+    await fillInUsernameAndPassword(username, password);
+  });
 
 Given('click the Sign In button', async () => {
   await I.click('.button');

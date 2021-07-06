@@ -7,7 +7,7 @@ Feature: Login/Logout
   Scenario Outline: Login Unsuccessful
 
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials "<username>" "<password>"
+    When I fill in the Username and Password fields with my incorrect authenticated credentials "<username>" "<password>"
     And click the Sign In button
     Then an error message is shown
 
@@ -15,12 +15,8 @@ Feature: Login/Logout
       | username              | password        |
       | wrong-email@gmail.com | wrongPa55word11 |
 
-  Scenario Outline: Login Successful
+  Scenario: Login Successful
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials "<username>" "<password>"
+    When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     Then the system will sign me in
-
-    Examples:
-      | username             | password   |
-      | hmcts.fact@gmail.com | Pa55word11 |

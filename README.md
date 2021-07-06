@@ -42,8 +42,6 @@ docker-compose up
 yarn start:dev
 ```
 
-You can log in with a user `hmcts.fact@gmail.com` and password `Pa55word11`.
-
 ### Code style
 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
@@ -129,4 +127,4 @@ e.g. the ones verifying the state of each service it depends on.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

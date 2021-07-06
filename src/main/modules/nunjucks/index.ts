@@ -2,6 +2,8 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
+import FeatureToggleService from '../featureToggle';
+import config from 'config';
 
 export class Nunjucks {
   constructor(public developmentMode: boolean) {
@@ -28,13 +30,32 @@ export class Nunjucks {
       },
     );
 
+    FeatureToggleService.onFlagChange((flags: { [flag: string]: boolean }) => {
+      env.addGlobal('featureToggles', flags);
+    });
+
+
     env.addFilter('selectFilter', this.selectFilter);
+
+    env.addFilter('setAttribute', function(dictionary , key , value){
+      dictionary[key] = value;
+      return dictionary;
+    });
+
+    env.addFilter('valid', function(string){
+      const regExp = /[a-zA-Z]/g;
+      return (!(regExp.test(string) || isNaN(string)) );
+
+    });
+
+    env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
       next();
     });
   }
+
 
   private selectFilter(arr: SelectItem[], selectedId: string) {
     // Set selected property on selected item
@@ -56,4 +77,5 @@ export class Nunjucks {
     }
     return arr;
   }
+
 }

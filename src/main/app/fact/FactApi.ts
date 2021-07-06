@@ -1,12 +1,15 @@
-import {Logger} from '../../types/Logger';
+import { Logger } from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
 import {OpeningTime} from '../../types/OpeningTime';
 import {OpeningType} from '../../types/OpeningType';
 import {EmailType} from '../../types/EmailType';
 import {Email} from '../../types/Email';
 import {CourtGeneralInfo} from '../../types/CourtGeneralInfo';
+import {CourtType} from '../../types/CourtType';
 import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
+import {LocalAuthority} from '../../types/LocalAuthority';
+import {AreaOfLaw} from '../../types/AreaOfLaw';
 
 export class FactApi {
 
@@ -48,6 +51,7 @@ export class FactApi {
         return Promise.reject(err);
       });  }
 
+
   public updateGeneralInfo(slug: string, body: {}): Promise<CourtGeneralInfo> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/generalInfo`, body)
@@ -64,8 +68,7 @@ export class FactApi {
       .catch(err => {
         this.logError(err);
         return Promise.reject(err);
-      });
-  }
+      });  }
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios
@@ -74,8 +77,7 @@ export class FactApi {
       .catch(err => {
         this.logError(err);
         return Promise.reject(err);
-      });
-  }
+      });  }
 
   public updateOpeningTimes(slug: string, body: OpeningTime[]): Promise<OpeningTime[]> {
     return this.axios
@@ -86,6 +88,7 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
+
 
   public getEmailTypes(): Promise<EmailType[]> {
     return this.axios
@@ -145,6 +148,76 @@ export class FactApi {
       });
   }
 
+  public getCourtTypes(): Promise<CourtType[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/courtTypes/all`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtCourtTypes(slug: string): Promise<CourtType[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/courtTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtCourtTypes(slug: string, body: CourtType[]): Promise<CourtType[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/courtTypes`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getLocalAuthorities(): Promise<LocalAuthority[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/localAuthorities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string, body: LocalAuthority[]): Promise<LocalAuthority[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);
   }
@@ -152,6 +225,7 @@ export class FactApi {
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logError(err);
+
       return defaultValue;
     };
   }

@@ -9,15 +9,16 @@ export class PropertiesVolume {
   enableFor(server: Application) {
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
-
       set(config, 'services.idam.clientSecret', get(config, 'secrets.fact.oauth-client-secret'));
       set(config, 'session.redis.key', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'session.secret', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'appInsights.instrumentationKey', get(config, 'secrets.fact.AppInsightsInstrumentationKey'));
       set(config, 'csrf.tokenSecret', get(config, 'secrets.fact.csrf-token-secret'));
+      set(config, 'launchDarkly.sdkKey', get(config, 'secrets.fact.launchdarkly-sdk-key'));
     } else {
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
-      set(config, 'csrf.tokenSecret', process.env.CSRF_TOKEN_SECRET);
+      this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
+      this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
     }
   }
 

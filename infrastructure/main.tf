@@ -33,6 +33,11 @@ resource "azurerm_key_vault_secret" "redis_access_key" {
 }
 
 data "azurerm_key_vault_secret" "csrf_token_secret" {
-  name = "csrf-token-secret"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  name          = "csrf-token-secret"
+  key_vault_id  = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "launchdarkly_sdk_key" {
+  name          = "launchdarkly-sdk-key"
+  key_vault_id  = data.azurerm_key_vault.key_vault.id
 }
