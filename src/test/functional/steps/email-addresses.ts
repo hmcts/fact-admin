@@ -12,7 +12,7 @@ When('I click the Emails tab', async () => {
 });
 
 Then('I can view the existing emails', async () => {
-  const elementExist = await I.checkElement('#emailsContent');
+  const elementExist = await I.isElementVisible('#emailsContent');
   expect(elementExist).equal(true);
 });
 
