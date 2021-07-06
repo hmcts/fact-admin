@@ -135,8 +135,6 @@ export class PostcodesController {
   // private disablePostcodesTab(): void {
   //   const isEnabled = Boolean($('#enabled').val() === 'true');
   //
-  //   console.log('test');
-  //
   //   if (!isEnabled) {
   //     $(this.tabId).addClass('disable-tab');
   //     $(this.tabId).attr('disabled');

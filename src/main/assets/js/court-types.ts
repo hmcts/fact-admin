@@ -9,6 +9,7 @@ export class CourtTypesController {
   private courtTypesContentId = '#courtTypesContent';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
+  private postcodesTab = '#tab_postcodes'
 
   constructor() {
     this.initialize();
@@ -73,7 +74,8 @@ export class CourtTypesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.localAuthoritiesContentId);
-        this.disableLocalAuthoritiesTab();
+        this.disableTab(this.localAuthoritiesTabId);
+        this.disableTab(this.postcodesTab);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET local authorities areas of law failed.')
@@ -81,16 +83,16 @@ export class CourtTypesController {
 
   }
 
-  private disableLocalAuthoritiesTab(): void{
+  private disableTab(tab: string): void{
     const isEnabled = Boolean($('#enabled').val() === 'true');
     if(!isEnabled) {
-      $(this.localAuthoritiesTabId).addClass('disable-tab');
-      $(this.localAuthoritiesTabId).attr('disabled') ;
+      $(tab).addClass('disable-tab');
+      $(tab).attr('disabled') ;
     }
     else
     {
-      $(this.localAuthoritiesTabId).removeClass('disable-tab');
-      $(this.localAuthoritiesTabId).removeAttr('disabled') ;
+      $(tab).removeClass('disable-tab');
+      $(tab).removeAttr('disabled') ;
     }
   }
 

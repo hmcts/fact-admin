@@ -50,8 +50,6 @@ export class PostcodesController {
       }
     }
 
-    console.log(areasOfLaw);
-
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it
@@ -70,8 +68,6 @@ export class PostcodesController {
     await req.scope.cradle.api.getCourtCourtTypes(slug)
       .then((value: CourtType[]) => courtTypes = value)
       .catch(() => error += this.getCourtTypesErrorMsg);
-
-    console.log(courtTypes);
 
     const pageData: PostcodeData = {
       postcodes: postcodes,
