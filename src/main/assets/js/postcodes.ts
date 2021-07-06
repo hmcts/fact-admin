@@ -24,7 +24,6 @@ export class PostcodesController {
         this.setUpSelectAllEventHandler();
         this.setUpDeleteEventHandler();
         this.setUpMoveEventHandler();
-        // this.disablePostcodesTab();
       }
     });
   }
@@ -54,8 +53,8 @@ export class PostcodesController {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
           newPostcodes: $('[id="addNewPostcodes"]').val(),
           csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('#courtTypes').val(),
-          areasOfLaw: $('#areasOfLaw').val()
+          courtTypes: $('[name="courtTypesInput"]').val(),
+          areasOfLaw: $('[name="areasOfLawInput"]').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -77,8 +76,8 @@ export class PostcodesController {
           selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
           selectedCourt: $('[name="movePostcodesSelect"]').val(),
           csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('#courtTypes').val(),
-          areasOfLaw: $('#areasOfLaw').val()
+          courtTypes: $('[name="courtTypesInput"]').val(),
+          areasOfLaw: $('[name="areasOfLawInput"]').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -99,8 +98,8 @@ export class PostcodesController {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
           selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
           csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('#courtTypes').val(),
-          areasOfLaw: $('#areasOfLaw').val()
+          courtTypes: $('[name="courtTypesInput"]').val(),
+          areasOfLaw: $('[name="areasOfLawInput"]').val()
         }
       }).done(res => {
         $(this.postcodesContentId).html(res);
@@ -136,14 +135,13 @@ export class PostcodesController {
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
     initAll({ scope: document.getElementById('postcodesTab')});
+    this.disablePostcodesTab();
   }
 
-  // private disablePostcodesTab(): void {
-  //   const isEnabled = Boolean($('#enabled').val() === 'true');
-  //
-  //   if (!isEnabled) {
-  //     $(this.tabId).addClass('disable-tab');
-  //     $(this.tabId).attr('disabled');
-  //   }
-  // }
+  private disablePostcodesTab(): void {
+    if (!$('[name="enabled"]').val()) {
+      $(this.tabId).addClass('disable-tab');
+      $(this.tabId).attr('disabled');
+    }
+  }
 }

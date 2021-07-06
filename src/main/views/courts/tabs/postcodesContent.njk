@@ -9,6 +9,8 @@
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
+{{ isEnabled }}
+
 {{ govukDetails({
   summaryText: "Help with postcodes",
   html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
@@ -51,7 +53,22 @@
     errorMessage: addError
   }) }}
 
+  {% for ct in courtTypes %}
+    {{ ct.name }}
+    <br>
+  {% endfor %}
+
+  <br>
+
+  {% for aol in areasOfLaw %}
+    {{ aol.name }}
+    <br>
+  {% endfor %}
+
   <input id="existingPostcodesInput" name="existingPostcodesInput" type="hidden" value= {{ postcodes }}>
+  <input id="courtTypesInput" name="courtTypesInput" type="hidden" value= {{ courtTypes }}>
+  <input id="areasOfLawInput" name="areasOfLawInput" type="hidden" value= {{ areasOfLaw }}>
+  <input type="hidden" name="enabled" id='enabled' value="{{ isEnabled }}">
 
   {{ govukButton({
     text: "Add",

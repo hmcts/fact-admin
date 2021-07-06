@@ -5,7 +5,7 @@ import {PostcodeData} from '../../../../../main/types/Postcode';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
 import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {CourtType} from '../../../../../main/types/CourtType';
-import {familyAreaOfLaw} from '../../../../../main/enums/familyAreaOfLaw';
+import {familyAreaOfLaw} from "../../../../../main/enums/familyAreaOfLaw";
 
 describe('PostcodeController', () => {
 
@@ -30,9 +30,9 @@ describe('PostcodeController', () => {
     { id: 11417, name: 'Family Court', code: null }
   ];
   const happyCourtAreasOfLaw: AreaOfLaw[] = [
-    { id: 1, name:familyAreaOfLaw.housing},
+    { id: 1, name:familyAreaOfLaw.bankruptcy},
     { id: 2, name:familyAreaOfLaw.moneyClaims},
-    { id: 3, name:familyAreaOfLaw.bankruptcy}
+    { id: 3, name:familyAreaOfLaw.housing}
   ];
 
   const controller = new PostcodesController();

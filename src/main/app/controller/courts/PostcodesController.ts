@@ -15,7 +15,7 @@ export class PostcodesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
   getCourtAreasErrorMsg = 'A problem occurred when retrieving the court areas of law.';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
-  familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law: Housing, Money Claims, or Bankruptcy';
+  familyAreaOfLawErrorMsg = 'You need to enable relevant county court areas of law: Housing, Money Claims, or Bankruptcy';
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
@@ -38,6 +38,9 @@ export class PostcodesController {
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
 
+    console.log(areasOfLaw);
+    console.log(courtTypes);
+
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it
@@ -52,7 +55,7 @@ export class PostcodesController {
     }
 
     if (areasOfLaw) {
-      areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
+      areasOfLaw = this.checkCountyAreasOfLaw(areasOfLaw);
       if(!areasOfLaw.length){
         errors.push({text: this.familyAreaOfLawErrorMsg});
       }
@@ -208,7 +211,7 @@ export class PostcodesController {
       });
   }
 
-  private checkFamilyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]): AreaOfLaw[]{
+  private checkCountyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]){
     if(courtAreasOfLaw && courtAreasOfLaw.length) {
       return courtAreasOfLaw.filter(c => c.name == familyAreaOfLaw.moneyClaims || c.name == familyAreaOfLaw.housing
         || c.name == familyAreaOfLaw.bankruptcy);
