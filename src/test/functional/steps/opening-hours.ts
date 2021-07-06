@@ -20,11 +20,8 @@ When('I click the opening hours tab', async () => {
 });
 
 Then('I can view the existing opening hours', async () => {
-  const elementExist = await I.checkElement('#openingTimesForm');
+  const elementExist = await I.isElementVisible('#openingTimesForm');
   expect(elementExist).equal(true);
-
-  const tabClosed = await I.checkElement('#opening-hours.govuk-tabs__panel--hidden');
-  expect(tabClosed).equal(false);
 });
 
 When('I remove all existing opening hours entries and save', async () => {
