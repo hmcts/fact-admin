@@ -4,6 +4,14 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
+When('I hover over local authorities nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+
 When('I will make sure Family court type is selected', async () => {
   const selector = '#court_types-2';
   const elementExist = await I.checkElement(selector);
@@ -13,6 +21,7 @@ When('I will make sure Family court type is selected', async () => {
     await I.click(selector);
   }
 });
+
 
 When('I click the local authorities tab', async () => {
   const selector = '#tab_local-authorities';
@@ -66,6 +75,7 @@ When('I will make sure Family court type is not selected', async () => {
   const selectorFamilyCourt = '#court_types-2';
   const selectorTribunalCourt = '#court_types-3';
 
+
   const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
   expect(elementFamilyCourtExist).equal(true);
   const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
@@ -79,10 +89,12 @@ When('I will make sure Family court type is not selected', async () => {
   if (!elementTribunalCourtChecked) {
     await I.click(selectorTribunalCourt);
   }
+
 });
 
 Then('The local authorities tab should be disabled', async () => {
-  const selector = '#tab_local-authorities.govuk-tabs__tab.disable-tab';
+
+  const selector = '#tab_local-authorities.disable-tab';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });

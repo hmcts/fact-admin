@@ -4,6 +4,14 @@ import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
 
+When('I hover over types nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+
 When('I click the types tab', async () => {
   const selector = '#tab_court-types';
   const elementExist = await I.checkElement(selector);
@@ -27,8 +35,8 @@ When('I check a court type', async () => {
 });
 
 Then('I click on save court type', async () => {
-
   await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
+
 });
 
 Then('a green update message is displayed showing Court Types updated', async () => {

@@ -11,6 +11,7 @@ Feature: General Info
     Then I can view the courts or tribunals in a list format
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
     When I click the general tab
     Then I can view the urgent notices
     And I cannot view super admin content
@@ -21,6 +22,7 @@ Feature: General Info
     Then I can view the courts or tribunals in a list format
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
     When I click the general tab
     Then I can view the open checkbox
     And I can view the access scheme checkbox
