@@ -29,6 +29,8 @@
   }) }}
 {% endif %}
 
+<input type="hidden" name="postcodesEnabled" id='postcodesEnabled' value="{{ isEnabled }}">
+
 {% if (areasOfLaw|length) %}
 
   {% if searchValue == '' and updated and errors|length %}
@@ -69,7 +71,6 @@
   <input id="existingPostcodesInput" name="existingPostcodesInput" type="hidden" value= {{ postcodes }}>
   <input id="courtTypesInput" name="courtTypesInput" type="hidden" value= {{ courtTypes }}>
   <input id="areasOfLawInput" name="areasOfLawInput" type="hidden" value= {{ areasOfLaw }}>
-  <input type="hidden" name="enabled" id='enabled' value="{{ isEnabled }}">
 
   {{ govukButton({
     text: "Add",

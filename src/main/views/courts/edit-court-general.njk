@@ -108,7 +108,7 @@
                   }
                   ]%}
 
-              {% set postcodeAuthoritiesTab =
+              {% set postcodesTab =
                   {
                    label: "Postcodes",
                    id: "postcodes",
@@ -131,7 +131,7 @@
 
         {% if isSuperAdmin %}
 
-          {% set tabItems = (tabItems.push(postcodeAuthoritiesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
           {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
 
         {% endif %}

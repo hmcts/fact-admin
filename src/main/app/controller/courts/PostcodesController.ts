@@ -74,6 +74,8 @@ export class PostcodesController {
 
     const courts = await req.scope.cradle.api.getCourts();
 
+    console.log(courtTypes);
+
     const pageData: PostcodeData = {
       postcodes: postcodes,
       courts: courts,

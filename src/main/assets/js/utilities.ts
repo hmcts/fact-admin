@@ -56,4 +56,45 @@ export class Utilities {
       }
     });
   }
+
+  /**
+   * Return a list of checkbox ids that have been selected
+   * @param elementList a list of checked boxes
+   */
+  public static getSelectedItemsIds(elementList: JQuery): string[] {
+    return $.map(elementList, function(value: HTMLElement){
+      if ($(value).prop('checked')) {
+        return [value.id];
+      }
+    });
+  }
+
+  /**
+   * Return a true or false depending on whether or not a checkbox has been selected or not
+   * @param element: the element of the checkbox
+   * @param textToSearch: the text of the element to check
+   */
+  public static isCheckboxItemSelected(element: string, textToSearch: string): boolean {
+    let result = false;
+    $(element).each(function(){
+      if ($(this).prop('checked')) {
+        if ($(this).val().toString().indexOf(textToSearch) >= 0) {
+          result = true;
+        }
+      }
+    });
+    return result;
+  }
+
+  public static toggleTabEnabled(tabId: string, isEnabled: boolean): void{
+    if(!isEnabled) {
+      $(tabId).addClass('disable-tab');
+      $(tabId).attr('disabled') ;
+    }
+    else
+    {
+      $(tabId).removeClass('disable-tab');
+      $(tabId).removeAttr('disabled') ;
+    }
+  }
 }

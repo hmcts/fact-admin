@@ -1,11 +1,13 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
 export class PostcodesController {
 
   private tabId = '#postcodesTab';
+  private postcodesNavTab = '#tab_postcodes'
   private postcodesContentId = '#postcodesContent';
   private addPostcodesBtnClass = 'addPostcodes';
   private movePostcodesBtnClass = 'movePostcodesButton';
@@ -19,6 +21,7 @@ export class PostcodesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        Utilities.toggleTabEnabled(this.postcodesNavTab, false);
         this.getPostcodes();
         this.setUpAddEventHandler();
         this.setUpSelectAllEventHandler();
@@ -73,7 +76,7 @@ export class PostcodesController {
         method: 'put',
         data: {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
-          selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
+          selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
           selectedCourt: $('[name="movePostcodesSelect"]').val(),
           csrfToken: $('[name="_csrf"]').val(),
           courtTypes: $('[name="courtTypesInput"]').val(),
@@ -96,7 +99,7 @@ export class PostcodesController {
         method: 'delete',
         data: {
           existingPostcodes: $('[name="existingPostcodesInput"]').val(),
-          selectedPostcodes: this.getSelectedItems($('[name="postcodesCheckboxItems"]')),
+          selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
           csrfToken: $('[name="_csrf"]').val(),
           courtTypes: $('[name="courtTypesInput"]').val(),
           areasOfLaw: $('[name="areasOfLawInput"]').val()
@@ -106,20 +109,6 @@ export class PostcodesController {
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'DELETE postcodes failed.'));
-    });
-  }
-
-  /**
-   *
-   * Return a list of postcodes (in this case) that have been selected
-   * @param elementList a list of checked boxes
-   * @private
-   */
-  private getSelectedItems(elementList: JQuery): string[] {
-    return $.map(elementList, function(value: HTMLElement){
-      if ($(value).prop('checked')) {
-        return [value.id];
-      }
     });
   }
 
@@ -134,14 +123,7 @@ export class PostcodesController {
 
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
+    Utilities.toggleTabEnabled(this.postcodesNavTab, $('[name="postcodesEnabled"]').val()  === 'true');
     initAll({ scope: document.getElementById('postcodesTab')});
-    this.disablePostcodesTab();
-  }
-
-  private disablePostcodesTab(): void {
-    if (!$('[name="enabled"]').val()) {
-      $(this.tabId).addClass('disable-tab');
-      $(this.tabId).attr('disabled');
-    }
   }
 }
