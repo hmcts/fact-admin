@@ -77,6 +77,16 @@ Then('I choose the destination court as {string}',async (destinationCourt: strin
   await I.click('button[name="movePostcodesButton"]');
 });
 
+When('I will make sure County court type is selected', async () => {
+  const selector = '#court_types-4';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  const elementChecked = await I.isElementChecked(selector);
+  if (!elementChecked) {
+    await I.click(selector);
+  }
+});
+
 Then('I click the move button', async () => {
   const buttonSelector = 'button[name="movePostcodesButton"]';
   const elementExist = await I.checkElement(buttonSelector);
@@ -84,7 +94,7 @@ Then('I click the move button', async () => {
   await I.click(buttonSelector);
   //deleting destination court postcodes for next test run
   await I.click('#courts');
-  await I.click('#edit-aldridge-magistrates-court');
+  await I.click('#edit-bankruptcy-court-high-court');
   await I.click('#tab_postcodes');
   await I.click('#postcodes-select-all');
   await I.click('button[name="deletePostcodes"]');
