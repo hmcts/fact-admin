@@ -7,11 +7,16 @@ Feature: Postcodes
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "aberdare-magistrates-court"
+    When I click edit next to court with "aldershot-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
+    When I hover over opening hours nav element
+    When I click the types tab
+    And I will make sure County court type is selected
     When I click the postcodes tab
 
   Scenario: Adding and deleting valid postcodes
+    When I add new postcodes "bd7 2qb,bd2,bd4,BD7"
+    Then I click the add postcode button
     Then I click the select all
     When I click the delete all selected button
     Then A green message is displayed for the postcodes "Postcodes updated"
@@ -35,5 +40,4 @@ Feature: Postcodes
 
     Examples:
       | view_court_slug            |
-      | aldridge-magistrates-court |
-
+      | bankruptcy-court-high-court |
