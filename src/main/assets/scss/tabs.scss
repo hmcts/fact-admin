@@ -1,0 +1,175 @@
+
+$blue: #1d70b8;
+$border-width: 1px;
+$white: #fff;
+$backgorund-colour: #f1f1f1;
+
+.fact-tabs {
+  @include govuk-responsive-margin(1, 'top');
+  @include govuk-responsive-margin(6, 'bottom');
+}
+
+.fact-tabs-title {
+  @include govuk-font($size: 19, $weight: bold);
+  @include govuk-text-colour;
+  font-size: 23px;
+}
+
+.fact-tabs-list {
+  @include govuk-responsive-margin(6, 'bottom');
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fact-tabs-list-item {
+  @include govuk-font($size: 19);
+  margin-left: govuk-spacing(5);
+
+  &::before {
+    @include govuk-text-colour;
+    content: '\2014 ';
+    margin-left: - govuk-spacing(5);
+    padding-right: govuk-spacing(1);
+  }
+}
+
+.fact-tabs-tab {
+
+  @include govuk-link-common;
+  @include govuk-link-style-default;
+
+  display: inline-block;
+  margin-bottom: govuk-spacing(2);
+}
+
+.fact-tabs-panel {
+  @include govuk-responsive-margin(8, 'bottom');
+}
+
+// JavaScript enabled
+.js-enabled {
+  @include govuk-media-query($from: tablet) {
+    .fact-tabs-list {
+      @include govuk-clearfix;
+
+      background-color: $backgorund-colour;
+      border-bottom: 1px solid $govuk-border-colour;
+      display: none;
+      margin-bottom: 0;
+      min-width: 120px;
+      position: absolute;
+      z-index: 1;
+      }
+
+    .nav {
+      display: inline-block;
+      position: relative;
+
+      &:hover {
+        .fact-tabs-list {
+          display: block;
+        }
+
+        // sass-lint:disable force-pseudo-nesting
+        .fact-tabs-title::after {
+          @include govuk-shape-arrow($direction: up, $base: 17px);
+        }
+      }
+    }
+
+
+    // sass-lint:disable property-sort-order
+    .fact-tabs-title {
+      $border-width: 1px;
+
+      position: relative;
+
+      margin-top: - govuk-spacing(1);
+      display: block;
+      font-size: 22px;
+      min-height: 35px;
+      width: 220px;
+      // Compensation for border (otherwise we get a shift)
+      margin-bottom: -$border-width;
+      padding-top: govuk-spacing(3) - $border-width;
+      padding-right: govuk-spacing(4) - $border-width;
+      padding-bottom: govuk-spacing(3) + $border-width;
+      padding-left: govuk-spacing(4) - $border-width;
+
+      border: $border-width solid $govuk-border-colour;
+      border-bottom: 0;
+
+      background-color: $govuk-body-background-colour;
+
+      &::after {
+        @include govuk-shape-arrow($direction: down, $base: 17px);
+
+        border-color: $blue;
+        bottom: -1px;
+        color: $blue;
+        content: '';
+        left: 215px;
+        margin: auto;
+        position: absolute;
+        top: 1px;
+      }
+    }
+
+    .fact-tabs-list-item {
+      background-color: govuk-colour('light-grey', $legacy: 'grey-4');
+      margin-bottom: 0;
+      margin-left: 0;
+      margin-right: govuk-spacing(1);
+      min-width: 215px;
+      padding: govuk-spacing(2) govuk-spacing(4);
+      position: relative;
+      text-align: left;
+
+      &::before {
+        content: none;
+      }
+
+      &:hover {
+        background-color: $blue;
+
+        .fact-tabs-tab {
+          color: $white;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .fact-tabs-tab {
+      @include govuk-link-style-text;
+
+      margin-bottom: 0;
+
+      &::after {
+
+        bottom: 0;
+        content: '';
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+      }
+    }
+
+    .fact-tabs-panel {
+      @include govuk-responsive-margin(0, 'bottom');
+      border: 1px solid $govuk-border-colour;
+      padding: govuk-spacing(6) govuk-spacing(4);
+
+      & > :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .fact-tabs-panel--hidden {
+      display: none;
+    }
+  }
+}
+

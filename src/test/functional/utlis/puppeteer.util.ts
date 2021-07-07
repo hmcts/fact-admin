@@ -19,8 +19,12 @@ export const getPageTitle = async () => {
   return await scope.page.title();
 };
 
+export const hover = async (selector: string) => {
+  await scope.page.hover(selector);
+};
+
 export const click = async (selector: string) => {
-  await scope.page.click(selector);
+  await scope.page.$eval(selector, (elem: HTMLElement) => elem.click());
 };
 
 export const fillField = async (selector: string, value: string) => {
@@ -59,7 +63,7 @@ export const getElements = async (selector: string) => {
 
 export const getElementText = async (el: any) => {
   try {
-    return await scope.page.evaluate((element: HTMLElement) => element.innerText, el);
+    return await scope.page.evaluate((element: HTMLElement) => element.innerText.trim(), el);
   } catch (error) {
     console.log("The element didn't appear.");
     return false;

@@ -13,8 +13,11 @@ import {CourtTypesController} from './court-types';
 import {LocalAuthoritiesController} from './local-authorities';
 import {PostcodesController} from './postcodes';
 
+const {initTabs} = require('./fact-tabs/fact-tabs-index');
+
 const { initAll } = require('govuk-frontend');
 
+initTabs();
 initAll();
 new OpeningHoursController();
 new EmailsController();

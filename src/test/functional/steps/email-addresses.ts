@@ -4,7 +4,14 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-When('I click the Emails tab', async () => {
+When('I hover over emails nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
+Then('I click the Emails tab', async () => {
   const selector = '#tab_emails';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);

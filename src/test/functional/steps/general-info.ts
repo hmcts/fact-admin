@@ -3,6 +3,13 @@ import { expect } from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
+When('I hover over general nav element', async () => {
+  const selector = '#nav';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.hover(selector);
+});
+
 When('I click the general tab', async () => {
   const selector = '#tab_general';
   const elementExist = await I.checkElement(selector);

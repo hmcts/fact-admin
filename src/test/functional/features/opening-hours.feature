@@ -9,6 +9,7 @@ Feature: Opening Hours
     Then I can view the courts or tribunals in a list format
     When I click edit next to a chosen court or tribunal
     Then I am redirected to the Edit Court page for the chosen court
+    When I hover over opening hours nav element
     When I click the opening hours tab
     Then I can view the existing opening hours
 
