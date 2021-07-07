@@ -95,7 +95,7 @@
     "babel-loader": "^8.2.2",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "copy-webpack-plugin": "^6.1.0",
+    "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^3.4.2",
     "cucumber": "^6.0.5",
     "debug": "^4.3.1",
