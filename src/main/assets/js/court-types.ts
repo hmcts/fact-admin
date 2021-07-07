@@ -84,13 +84,5 @@ export class CourtTypesController {
 
     Utilities.toggleTabEnabled(this.postcodesNavTab,
       Utilities.isCheckboxItemSelected('[name="types"]', 'County Court'));
-
-    // $('[name="types"]').each(function(){
-    //   if ($(this).prop('checked')) {
-    //     if ($(this).val().toString().indexOf('County Court') >= 0) {
-    //       console.log('checked');
-    //     }
-    //   }
-    // });
   }
 }

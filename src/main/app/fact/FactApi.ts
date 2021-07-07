@@ -200,7 +200,7 @@ export class FactApi {
 
   public getCourtCourtTypes(slug: string): Promise<CourtType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/${slug}/courtTypes`) // county court
+      .get(`${this.adminBaseUrl}/${slug}/courtTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -220,7 +220,7 @@ export class FactApi {
 
   public getCourtAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`) // bankrupty, housing, money claims
+      .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
