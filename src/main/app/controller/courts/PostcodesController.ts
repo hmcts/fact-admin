@@ -38,9 +38,6 @@ export class PostcodesController {
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
 
-    console.log(areasOfLaw);
-    console.log(courtTypes);
-
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it
@@ -73,8 +70,6 @@ export class PostcodesController {
         .catch(() => errors.push({text: this.getPostcodesErrorMsg}));
 
     const courts = await req.scope.cradle.api.getCourts();
-
-    console.log(courtTypes);
 
     const pageData: PostcodeData = {
       postcodes: postcodes,
@@ -215,6 +210,7 @@ export class PostcodesController {
 
   private checkCountyAreasOfLaw(courtAreasOfLaw: string[]): string[] {
     if(courtAreasOfLaw && courtAreasOfLaw.length) {
+      // Note: the frontend for the input fields cut out the rest of the values if not for the replace below
       return courtAreasOfLaw.map(c => c.replace('_', ' '))
         .filter(c => c == familyAreaOfLaw.moneyClaims || c == familyAreaOfLaw.housing
         || c == familyAreaOfLaw.bankruptcy);
