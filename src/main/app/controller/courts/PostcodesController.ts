@@ -97,7 +97,7 @@ export class PostcodesController {
     }
 
     // If there is no user input
-    const newPostcodes = req.body.newPostcodes;
+    const newPostcodes = req.body.newPostcodes ?? [];
     if (newPostcodes.length == 0) {
       return this.get(req, res, '', existingPostcodes, this.noPostcodeErrorMsg,
         areasOfLaw, courtTypes, true);
