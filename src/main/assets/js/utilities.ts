@@ -71,12 +71,12 @@ export class Utilities {
 
   /**
    * Return a true or false depending on whether or not a checkbox has been selected or not
-   * @param element: the element of the checkbox
+   * @param selector: the selector for the checkbox
    * @param textToSearch: the text of the element to check
    */
-  public static isCheckboxItemSelected(element: string, textToSearch: string): boolean {
+  public static isCheckboxItemSelected(selector: string, textToSearch: string): boolean {
     let result = false;
-    $(element).each(function(){
+    $(selector).each(function(){
       if ($(this).prop('checked')) {
         if ($(this).val().toString().indexOf(textToSearch) >= 0) {
           result = true;

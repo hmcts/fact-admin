@@ -40,7 +40,7 @@ export class PostcodesController {
       success: (res) => {
         this.updateContent(res);
       },
-      error: (jqxhr, errorTextStatus, err) =>
+      error: (jqxhr) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET postcodes failed.')
     });
   }
@@ -49,18 +49,15 @@ export class PostcodesController {
     $(this.tabId).on('click', `button.${this.addPostcodesBtnClass}`, e => {
       e.preventDefault();
       const slug = $('#slug').val();
+      const requestBodyData = PostcodesController.getRequestBodyData();
+      requestBodyData['newPostcodes'] = $('[id="addNewPostcodes"]').val();
+
       $.ajax({
         url: `/courts/${slug}/postcodes`,
         method: 'post',
-        data: {
-          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
-          newPostcodes: $('[id="addNewPostcodes"]').val(),
-          csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('[name="courtTypesInput"]').val(),
-          areasOfLaw: $('[name="areasOfLawInput"]').val()
-        }
+        data: requestBodyData
       }).done(res => {
-        $(this.postcodesContentId).html(res);
+        this.updateContent(res);
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST new postcodes failed.'));
@@ -71,19 +68,15 @@ export class PostcodesController {
     $(this.tabId).on('click', `button.${this.movePostcodesBtnClass}`, e => {
       e.preventDefault();
       const slug = $('#slug').val();
+      const requestBodyData = PostcodesController.getRequestBodyData();
+      requestBodyData['selectedCourt'] = $('[id="movePostcodesSelect"]').val();
+
       $.ajax({
         url: `/courts/${slug}/postcodes`,
         method: 'put',
-        data: {
-          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
-          selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
-          selectedCourt: $('[name="movePostcodesSelect"]').val(),
-          csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('[name="courtTypesInput"]').val(),
-          areasOfLaw: $('[name="areasOfLawInput"]').val()
-        }
+        data: requestBodyData
       }).done(res => {
-        $(this.postcodesContentId).html(res);
+        this.updateContent(res);
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT (move) postcodes failed.'));
@@ -97,15 +90,9 @@ export class PostcodesController {
       $.ajax({
         url: `/courts/${slug}/postcodes`,
         method: 'delete',
-        data: {
-          existingPostcodes: $('[name="existingPostcodesInput"]').val(),
-          selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
-          csrfToken: $('[name="_csrf"]').val(),
-          courtTypes: $('[name="courtTypesInput"]').val(),
-          areasOfLaw: $('[name="areasOfLawInput"]').val()
-        }
+        data: PostcodesController.getRequestBodyData()
       }).done(res => {
-        $(this.postcodesContentId).html(res);
+        this.updateContent(res);
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'DELETE postcodes failed.'));
@@ -123,7 +110,17 @@ export class PostcodesController {
 
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
-    Utilities.toggleTabEnabled(this.postcodesNavTab, $('[name="postcodesEnabled"]').val()  === 'true');
+    Utilities.toggleTabEnabled(this.postcodesNavTab, $('[id="postcodesEnabled"]').val()  === 'true');
     initAll({ scope: document.getElementById('postcodesTab')});
+  }
+
+  private static getRequestBodyData(): any {
+    return {
+      existingPostcodes: $('[id="existingPostcodesInput"]').val(),
+      selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
+      csrfToken: $('[name="_csrf"]').val(),
+      courtTypes: $('[id="courtTypesInput"]').val(),
+      areasOfLaw: $('[id="areasOfLawInput"]').val()
+    };
   }
 }

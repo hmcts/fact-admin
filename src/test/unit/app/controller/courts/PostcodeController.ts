@@ -92,6 +92,32 @@ describe('PostcodeController', () => {
     expect(mockApi.getCourtCourtTypes).toBeCalledWith(testSlug);
   });
 
+  test('Should display an error if courts cant be retrieved when getting postcodes', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    req.params = {
+      slug: testSlug
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.getCourts = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+
+    await controller.get(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', {
+      postcodes: getPostcodeData,
+      courts: [],
+      slug: 'plymouth-combined-court',
+      searchValue: '',
+      updated: false,
+      errors: [{text: controller.getCourtsErrorMsg}],
+      isEnabled: true,
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput
+    });
+    expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
+    expect(mockApi.getCourtCourtTypes).toBeCalledWith(testSlug);
+  });
+
   test('Should get postcodes view and render the page with invalid court court type', async () => {
     const req = mockRequest();
     const res = mockResponse();

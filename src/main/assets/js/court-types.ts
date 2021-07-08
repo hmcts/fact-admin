@@ -71,7 +71,7 @@ export class CourtTypesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.localAuthoritiesContentId);
-        Utilities.toggleTabEnabled(this.localAuthoritiesTabId, Boolean($('#enabled').val() === 'true'));
+        Utilities.toggleTabEnabled(this.localAuthoritiesTabId, $('#enabled').val() === 'true');
         this.togglePostcodesTab();
       },
       error: (jqxhr, errorTextStatus, err) =>
@@ -80,9 +80,8 @@ export class CourtTypesController {
   }
 
   // In the event that the court type is updated to county court, enable the postcodes tab if it has been disabled
-  private togglePostcodesTab(): void{
-
+  private togglePostcodesTab(): void {
     Utilities.toggleTabEnabled(this.postcodesNavTab,
-      Utilities.isCheckboxItemSelected('[name="types"]', 'County Court'));
+      Utilities.isCheckboxItemSelected('#courtTypesContent input[name="types"]', 'County Court'));
   }
 }
