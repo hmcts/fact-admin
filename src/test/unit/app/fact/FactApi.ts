@@ -194,6 +194,21 @@ describe('FactApi', () => {
     await expect(api.addPostcodes('Plymouth', results.data)).resolves.toEqual(results.data);
   });
 
+  test('Should log error and reject promise for failed addPostcodes request', async () => {
+    const mockAxios = { post: async () => {
+      throw mockError;
+    }} as any;
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.addPostcodes('Plymouth', results.data)).rejects.toEqual(mockError);
+    await expect(spy).toBeCalled();
+  });
+
   test('Should delete and return results from deletePostcodes request', async () => {
     const results = {
       data: ['MOSH', 'KUPO']
@@ -203,6 +218,21 @@ describe('FactApi', () => {
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.deletePostcodes('Plymouth', results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed deletePostcodes request', async () => {
+    const mockAxios = { delete: async () => {
+      throw mockError;
+    }} as any;
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deletePostcodes('Plymouth', results.data)).rejects.toEqual(mockError);
+    await expect(spy).toBeCalled();
   });
 
   test('Should move and return results from movePostcodes request', async () => {
@@ -215,6 +245,22 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.movePostcodes('Plymouth', 'Mosh Land',
       results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed movePostcodes request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+    const results = {
+      data: ['MOSH', 'KUPO']
+    };
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.movePostcodes('Plymouth', 'Mosh Land',
+      results.data)).rejects.toEqual(mockError);
+    await expect(spy).toBeCalled();
   });
 
   test('Should return results from getEmails request', async () => {
