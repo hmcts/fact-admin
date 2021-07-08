@@ -80,6 +80,10 @@ export class CourtsDownloadController {
       {
         label: 'opening times',
         value: 'opening_times'
+      },
+      {
+        label: 'application updates',
+        value: 'application_updates'
       }
     ];
 
