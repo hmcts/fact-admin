@@ -95,5 +95,4 @@ export class CourtsDownloadController {
     res.attachment(fileName);
     res.send(csv);
   }
-
 }
