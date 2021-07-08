@@ -9,10 +9,14 @@ export class PostcodesController {
   private tabId = '#postcodesTab';
   private postcodesNavTab = '#tab_postcodes'
   private postcodesContentId = '#postcodesContent';
+  private movePostcodesSelectId = '#movePostcodesSelect';
   private addPostcodesBtnClass = 'addPostcodes';
   private movePostcodesBtnClass = 'movePostcodesButton';
   private selectAllPostcodes = 'postcodesSelectAllItems';
   private deletePostcodesBtnClass = 'deletePostcodes';
+  private static existingPostcodesInputId = '#existingPostcodesInput';
+  private static courtTypesInputId = '#courtTypesInput';
+  private static areasOfLawInputId = '#areasOfLawInput';
 
   constructor() {
     this.initialize();
@@ -69,7 +73,7 @@ export class PostcodesController {
       e.preventDefault();
       const slug = $('#slug').val();
       const requestBodyData = PostcodesController.getRequestBodyData();
-      requestBodyData['selectedCourt'] = $('#movePostcodesSelect').val();
+      requestBodyData['selectedCourt'] = $(this.movePostcodesSelectId).val();
 
       $.ajax({
         url: `/courts/${slug}/postcodes`,
@@ -116,11 +120,11 @@ export class PostcodesController {
 
   private static getRequestBodyData(): any {
     return {
-      existingPostcodes: $('#existingPostcodesInput').val(),
+      existingPostcodes: $(this.existingPostcodesInputId).val(),
       selectedPostcodes: Utilities.getSelectedItemsIds($('#postcodesList input[name="postcodesCheckboxItems"]')),
-      csrfToken: $('#generalInfoForm input[name="_csrf"]').val(),
-      courtTypes: $('#courtTypesInput').val(),
-      areasOfLaw: $('#areasOfLawInput').val()
+      csrfToken: $('#postcodesTab input[name="_csrf"]').val(),
+      courtTypes: $(this.courtTypesInputId).val(),
+      areasOfLaw: $(this.areasOfLawInputId).val()
     };
   }
 }
