@@ -50,7 +50,7 @@ export class PostcodesController {
       e.preventDefault();
       const slug = $('#slug').val();
       const requestBodyData = PostcodesController.getRequestBodyData();
-      requestBodyData['newPostcodes'] = $('[id="addNewPostcodes"]').val();
+      requestBodyData['newPostcodes'] = $('#addNewPostcodes').val();
 
       $.ajax({
         url: `/courts/${slug}/postcodes`,
@@ -69,7 +69,7 @@ export class PostcodesController {
       e.preventDefault();
       const slug = $('#slug').val();
       const requestBodyData = PostcodesController.getRequestBodyData();
-      requestBodyData['selectedCourt'] = $('[id="movePostcodesSelect"]').val();
+      requestBodyData['selectedCourt'] = $('#movePostcodesSelect').val();
 
       $.ajax({
         url: `/courts/${slug}/postcodes`,
@@ -103,24 +103,24 @@ export class PostcodesController {
     $(this.tabId).on('change', `input[name=${this.selectAllPostcodes}]`, e => {
       e.preventDefault();
       // Switch between selecting checked on all (when ticked) and unchecked on all (when not ticked)
-      $('[name="postcodesCheckboxItems"]').prop('checked',
-        $('[name="postcodesSelectAllItems"]').prop('checked'));
+      $('#postcodesList input[name="postcodesCheckboxItems"]').prop('checked',
+        $('#postcodeSelectAll input[name="postcodesSelectAllItems"]').prop('checked'));
     });
   }
 
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
-    Utilities.toggleTabEnabled(this.postcodesNavTab, $('[id="postcodesEnabled"]').val()  === 'true');
+    Utilities.toggleTabEnabled(this.postcodesNavTab, $('#postcodesEnabled').val()  === 'true');
     initAll({ scope: document.getElementById('postcodesTab')});
   }
 
   private static getRequestBodyData(): any {
     return {
-      existingPostcodes: $('[id="existingPostcodesInput"]').val(),
-      selectedPostcodes: Utilities.getSelectedItemsIds($('[name="postcodesCheckboxItems"]')),
-      csrfToken: $('[name="_csrf"]').val(),
-      courtTypes: $('[id="courtTypesInput"]').val(),
-      areasOfLaw: $('[id="areasOfLawInput"]').val()
+      existingPostcodes: $('#existingPostcodesInput').val(),
+      selectedPostcodes: Utilities.getSelectedItemsIds($('#postcodesList input[name="postcodesCheckboxItems"]')),
+      csrfToken: $('#generalInfoForm input[name="_csrf"]').val(),
+      courtTypes: $('#courtTypesInput').val(),
+      areasOfLaw: $('#areasOfLawInput').val()
     };
   }
 }

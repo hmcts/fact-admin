@@ -74,16 +74,18 @@
 
     <h2 class="govuk-heading-m">Delete or move postcodes:</h2>
 
-    {{ govukCheckboxes({
-      idPrefix: "postcodes-select-all",
-      name: "postcodesSelectAllItems",
-      classes: "govuk-checkboxes--medium",
-      items: [
-        {
-          value: "selectAll",
-          text: "Select all"
-        }]
-    }) }}
+    <div id="postcodeSelectAll">
+      {{ govukCheckboxes({
+        idPrefix: "postcodes-select-all",
+        name: "postcodesSelectAllItems",
+        classes: "govuk-checkboxes--medium",
+        items: [
+          {
+            value: "selectAll",
+            text: "Select all"
+          }]
+      }) }}
+    </div>
 
     <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
       {%- for items in postcodesCheckboxItems | slice(2) %}
