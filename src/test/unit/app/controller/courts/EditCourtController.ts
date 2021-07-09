@@ -13,7 +13,7 @@ describe('EditCourtController', () => {
   config.get = jest.fn();
   const mockApi = {
     getCourt: () => {}
-  }
+  };
 
   mockApi.getCourt = jest.fn();
 
