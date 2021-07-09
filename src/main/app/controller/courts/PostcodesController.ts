@@ -93,9 +93,11 @@ export class PostcodesController {
     req: AuthedRequest,
     res: Response): Promise<void> {
 
-    const existingPostcodes: string[] = req.body.existingPostcodes?.split(',') ?? [];
+    const existingPostcodes: string[] = req.body.existingPostcodes.length?
+      req.body.existingPostcodes?.split(',') ?? [] : [];
     const courtTypes = req.body.courtTypes?.split(',') ?? [];
     const areasOfLaw = req.body.areasOfLaw?.split(',') ?? [];
+
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, '', existingPostcodes, this.addErrorMsg, areasOfLaw, courtTypes);
     }
