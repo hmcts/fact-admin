@@ -13,7 +13,6 @@ When('I click the postcodes tab', async () => {
 Then('A green message is displayed for the postcodes {string}', async (message: string) => {
   const selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
   expect(await I.checkElement(selector)).equal(true);
-
   const messageUpdate = await I.getElement('#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1');
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
@@ -72,9 +71,7 @@ Then('I choose the destination court as {string}',async (destinationCourt: strin
   const selector = '#movePostcodesSelect';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-
   await I.selectItem(selector, destinationCourt);
-  await I.click('button[name="movePostcodesButton"]');
 });
 
 When('I will make sure County court type is selected', async () => {
@@ -87,15 +84,44 @@ When('I will make sure County court type is selected', async () => {
   }
 });
 
+When('I will make sure to delete the existing postcodes', async () => {
+  const selector = '#postcodes-select-all';
+  const selectorDelete = 'button[name="deletePostcodes"]';
+
+  const elementExist = await I.checkElement(selector);
+  if (elementExist) {
+    await I.click(selector);
+    await I.click(selectorDelete);
+  }
+});
+
 Then('I click the move button', async () => {
   const buttonSelector = 'button[name="movePostcodesButton"]';
   const elementExist = await I.checkElement(buttonSelector);
   expect(elementExist).equal(true);
   await I.click(buttonSelector);
-  //deleting destination court postcodes for next test run
+});
+
+Then ('I went back to source court {string}', async (destinationCourt: string)=> {
   await I.click('#courts');
-  await I.click('#edit-bankruptcy-court-high-court');
+  await I.click('#edit-' + destinationCourt);
   await I.click('#tab_postcodes');
-  await I.click('#postcodes-select-all');
-  await I.click('button[name="deletePostcodes"]');
+});
+
+Then('I will make sure to delete the existing postcodes for the court {string}', async (courtName: string) => {
+  await I.click('#courts');
+
+  const elementExist = await I.checkElement('#edit-' + courtName);
+  expect(elementExist).equal(true);
+
+  await I.click('#edit-' + courtName);
+  await I.click('#tab_postcodes');
+
+  const selector = '#postcodes-select-all';
+  const selectorDelete = 'button[name="deletePostcodes"]';
+  const selectAllElementExist = await I.checkElement(selector);
+  if (selectAllElementExist) {
+    await I.click(selector);
+    await I.click(selectorDelete);
+  }
 });
