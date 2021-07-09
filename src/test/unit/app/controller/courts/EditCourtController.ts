@@ -8,21 +8,26 @@ import Tokens from 'csrf';
 
 describe('EditCourtController', () => {
   const controller = new EditCourtController();
+  const csrfToken = new Tokens().create('aRandomT0ken4You');
+  jest.mock('config');
+  config.get = jest.fn();
+  const mockApi = {
+    getCourt: () => {}
+  }
+
+  mockApi.getCourt = jest.fn();
 
   test('Should get court and render the edit court page as super admin', async () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const csrfTokenSecret = 'aRandomT0ken4You';
-    const csrfToken = new Tokens().create(csrfTokenSecret);
-
-    jest.mock('config');
-    config.get = jest.fn();
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
 
     req.params = { slug: slug };
     req.query = { name: name };
     req.session.user.isSuperAdmin = true;
+    req.scope.cradle.api = mockApi;
 
     const expectedResults: CourtPageData = {
       isSuperAdmin: true,
@@ -41,16 +46,14 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const csrfTokenSecret = 'aRandomT0ken4You';
-    const csrfToken = new Tokens().create(csrfTokenSecret);
 
-    jest.mock('config');
-    config.get = jest.fn();
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
 
     req.params = { slug: slug };
     req.query = { name: name };
     req.session.user.isSuperAdmin = false;
+    req.scope.cradle.api = mockApi;
 
     const expectedResults: CourtPageData = {
       isSuperAdmin: false,
