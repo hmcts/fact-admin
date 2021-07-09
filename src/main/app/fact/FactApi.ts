@@ -37,7 +37,7 @@ export class FactApi {
 
   public getCourt(slug: string): Promise<unknown[]> {
     return this.axios
-      .get(`${this.baseURL}/court/${slug}`)
+      .get(`${this.baseURL}/${slug}`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
   }

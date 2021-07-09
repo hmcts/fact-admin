@@ -2,7 +2,7 @@
 
 
 {% block content %}
-  <h1 class="govuk-heading-xl">You are logged in</h1>
+  <h1 class="govuk-heading-xl">Courts and Tribunals</h1>
 
   <table class="govuk-table" id="courts">
     <thead class="govuk-table__head">
@@ -19,10 +19,10 @@
         <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
         <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
         <td scope="row" class="govuk-table__cell">
-          <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
+          <a id="view-{{ court.slug }}" class="govuk-link" href="{{ factFrontendURL }}/courts/{{ court.slug }}">view</a>
         </td>
         <td scope="row" class="govuk-table__cell">
-          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general?name={{ court.name }}">edit</a>
+          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit#general">edit</a>
         </td>
       </tr>
     {% endfor %}
