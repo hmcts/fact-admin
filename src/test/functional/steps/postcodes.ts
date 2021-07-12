@@ -102,7 +102,7 @@ Then('I click the move button', async () => {
   await I.click(buttonSelector);
 });
 
-Then ('I went back to source court {string}', async (destinationCourt: string)=> {
+Then ('I go back to the editing postcodes for source court {string}', async (destinationCourt: string)=> {
   await I.click('#courts');
   await I.click('#edit-' + destinationCourt);
   await I.click('#tab_postcodes');
