@@ -9,7 +9,13 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
         <a id="courts" class="govuk-link govuk-link--no-visited-state" href="/courts">courts</a>
+
+        {% if isSuperAdmin %}
+          <a id="lists" class="govuk-link govuk-link--no-visited-state" href="/lists">lists</a>
+        {% endif %}
+
         <a class="govuk-link govuk-link--no-visited-state" href="/courts/download">download csv</a>
+
         {% if isSuperAdmin %}
           <a id="bulk-update" class="govuk-link govuk-link--no-visited-state" href="/bulk-update">bulk update</a>
         {% endif %}

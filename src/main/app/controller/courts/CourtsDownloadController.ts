@@ -80,6 +80,10 @@ export class CourtsDownloadController {
       {
         label: 'opening times',
         value: 'opening_times'
+      },
+      {
+        label: 'application updates',
+        value: 'application_updates'
       }
     ];
 
@@ -91,5 +95,4 @@ export class CourtsDownloadController {
     res.attachment(fileName);
     res.send(csv);
   }
-
 }

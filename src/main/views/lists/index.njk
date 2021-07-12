@@ -1,0 +1,32 @@
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "macros/tabs/macro.njk" import factTabs %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-xl">Edit A List</h1>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {% set localAuthoritiesHtml %}
+        {% include "./tabs/localAuthorities.njk" %}
+      {% endset -%}
+
+      {% set tabItems = [
+        {
+          label: "Local Authorities",
+          id: "local-authorities",
+          panel: {
+            html: localAuthoritiesHtml
+          }
+        }]
+      %}
+
+      {{ factTabs({
+        id: 'main',
+        items: tabItems
+      }) }}
+    </div>
+  </div>
+{% endblock %}
