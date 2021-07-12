@@ -11,6 +11,7 @@ import {GeneralInfoController} from '../../app/controller/courts/GeneralInfoCont
 import {EmailsController} from '../../app/controller/courts/EmailsController';
 import {ContactsController} from '../../app/controller/courts/ContactsController';
 import {CourtTypesController} from '../../app/controller/courts/CourtTypesController';
+import {ListsController} from '../../app/controller/lists/ListsController';
 import {LocalAuthoritiesController} from '../../app/controller/courts/LocalAuthoritiesController';
 import {PostcodesController} from '../../app/controller/courts/PostcodesController';
 
@@ -37,6 +38,7 @@ export class Container {
       generalInfoController: asClass(GeneralInfoController),
       contactsController: asClass(ContactsController),
       courtTypesController: asClass(CourtTypesController),
+      listsController: asClass(ListsController),
       localAuthoritiesController: asClass(LocalAuthoritiesController),
       errorController: asClass(ErrorController),
       exposeErrors: asValue(server.locals.env === 'development')
