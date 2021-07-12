@@ -11,6 +11,9 @@ export const mockResponse = () => {
   res.header = jest.fn().mockReturnValue(res);
   res.attachment = jest.fn().mockReturnValue(res);
   res.send = jest.fn().mockReturnValue(res);
+  res.response = (message: string) => {
+    res.response.data = message;
+  };
 
   return res;
 };

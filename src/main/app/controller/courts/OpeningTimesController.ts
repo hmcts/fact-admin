@@ -5,8 +5,8 @@ import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {OpeningType} from '../../../types/OpeningType';
 import {CSRF} from '../../../modules/csrf';
-import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
+import {validateDuplication} from '../../../utils/validation';
 
 @autobind
 export class OpeningTimesController {

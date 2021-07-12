@@ -1,0 +1,140 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+
+<h2 class="govuk-heading-l">Postcodes</h2>
+
+{{ govukDetails({
+  summaryText: "Help with postcodes",
+  html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
+}}
+
+{% if updated === true and not errors|length %}
+  {{ govukPanel({
+    titleText: "Postcodes updated"
+  }) }}
+{% endif %}
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+<input type="hidden" name="postcodesEnabled" id='postcodesEnabled' value="{{ isEnabled }}">
+
+{% if (areasOfLaw|length) %}
+
+  {% if searchValue == '' and updated and errors|length %}
+    {% set addError = { text: 'One or more postcodes are required.' } %}
+  {% elif searchValue != '' and updated and errors|length %}
+    {% set addError = { text: 'Please make sure that postcodes are not already added for this court.' } %}
+  {% endif %}
+
+  {{ govukInput({
+    label: {
+      text: "Add postcodes:",
+      classes: "govuk-label--m",
+      isPageHeading: false
+    },
+    hint: {
+      text: "Please add a comma separated list of postcodes.
+      These can be case insensitive, and spaces are not significant."
+    },
+    value: searchValue if updated,
+    id: "addNewPostcodes",
+    name: "addNewPostcodes",
+    errorMessage: addError
+  }) }}
+
+  <input id="existingPostcodesInput" name="existingPostcodesInput" type="hidden" value= {{ postcodes }}>
+  <input id="courtTypesInput" name="courtTypesInput" type="hidden" value= {{ courtTypes }}>
+  <input id="areasOfLawInput" name="areasOfLawInput" type="hidden" value= {{ areasOfLaw }}>
+
+  {{ govukButton({
+    text: "Add",
+    name: "addPostcodes",
+    type: "button",
+    classes: "addPostcodes"
+  }) }}
+
+  {% if postcodes|length %}
+
+    {% set postcodesCheckboxItems = [] %}
+    {% for postcode in postcodes %}
+      {% set postcodesCheckboxItems =
+        (postcodesCheckboxItems.push({'text': postcode, 'value': postcode, 'id': postcode}), postcodesCheckboxItems) %}
+    {% endfor %}
+
+    <h2 class="govuk-heading-m">Delete or move postcodes:</h2>
+
+    <div id="postcodeSelectAll">
+      {{ govukCheckboxes({
+        idPrefix: "postcodes-select-all",
+        name: "postcodesSelectAllItems",
+        classes: "govuk-checkboxes--medium",
+        items: [
+          {
+            value: "selectAll",
+            text: "Select all"
+          }]
+      }) }}
+    </div>
+
+    <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+      {%- for items in postcodesCheckboxItems | slice(2) %}
+        <div class="govuk-grid-column-one-half">
+            {{ govukCheckboxes({
+              idPrefix: "postcodes-checkbox",
+              name: "postcodesCheckboxItems",
+              classes: "govuk-checkboxes--medium",
+              items: items
+            }) }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div id="postcodesMoveOrDelete" class="govuk-grid-row">
+      {% set courtSelectItems = [] %}
+      {% set courtSelectItems =
+        (courtSelectItems.push({'text': 'Click to select', 'disabled': true, 'selected': true}), courtSelectItems) %}
+      {% for court in courts | sort(attribute="name") %}
+        {% if court.slug != slug %}
+          {% set courtSelectItems =
+            (courtSelectItems.push({'text': court.name, 'value': court.slug, 'id': court.name}), courtSelectItems) %}
+        {% endif %}
+      {% endfor %}
+
+      <div class="govuk-grid-column-one-quarter">
+        {{ govukButton({
+          text: "Move all selected to:",
+          name: "movePostcodesButton",
+          type: "button",
+          classes: "movePostcodesButton"
+        }) }}
+      </div>
+
+      <div class="govuk-grid-column-three-quarters">
+        {{ govukSelect({
+          id: "movePostcodesSelect",
+          name: "movePostcodesSelect",
+          items: courtSelectItems
+        }) }}
+      </div>
+    </div>
+
+    {{ govukButton({
+      text: "Delete all selected",
+      name: "deletePostcodes",
+      type: "button",
+      classes: "deletePostcodes govuk-button--warning"
+    }) }}
+
+  {% endif %}
+{% endif %}

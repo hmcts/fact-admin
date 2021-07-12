@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
@@ -9,10 +10,10 @@ export class CourtTypesController {
   private courtTypesContentId = '#courtTypesContent';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
+  private postcodesNavTab = '#tab_postcodes'
 
   constructor() {
     this.initialize();
-
   }
 
   private initialize(): void {
@@ -42,7 +43,6 @@ export class CourtTypesController {
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET court types failed.')
     });
-
   }
 
   private setUpSubmitEventHandler(): void {
@@ -64,8 +64,6 @@ export class CourtTypesController {
   }
 
   //added below methods to make sure local authorities tabs is enabled and disabled when family court type is updated.
-
-
   private getAreasOfLaw(): void{
     const slug = $('#slug').val();
     $.ajax({
@@ -73,25 +71,17 @@ export class CourtTypesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.localAuthoritiesContentId);
-        this.disableLocalAuthoritiesTab();
+        Utilities.toggleTabEnabled(this.localAuthoritiesTabId, $('#enabled').val() === 'true');
+        this.togglePostcodesTab();
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET local authorities areas of law failed.')
     });
-
   }
 
-  private disableLocalAuthoritiesTab(): void{
-    const isEnabled = Boolean($('#enabled').val() === 'true');
-    if(!isEnabled) {
-      $(this.localAuthoritiesTabId).addClass('disable-tab');
-      $(this.localAuthoritiesTabId).attr('disabled') ;
-    }
-    else
-    {
-      $(this.localAuthoritiesTabId).removeClass('disable-tab');
-      $(this.localAuthoritiesTabId).removeAttr('disabled') ;
-    }
+  // In the event that the court type is updated to county court, enable the postcodes tab if it has been disabled
+  private togglePostcodesTab(): void {
+    Utilities.toggleTabEnabled(this.postcodesNavTab,
+      Utilities.isCheckboxItemSelected('#courtTypesContent input[name="types"]', 'County Court'));
   }
-
 }

@@ -61,6 +61,9 @@
             {% set courtTypesHtml %}
                 {% include "./tabs/types.njk" %}
             {% endset -%}
+            {% set postcodesHtml %}
+                {% include "./tabs/postcodes.njk" %}
+            {% endset -%}
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
@@ -69,41 +72,51 @@
 
              {% set tabItems = [
                   {
-                  label: "General",
-                  id: "general",
-                  panel: {
-                  html: generalHtml
-                  }
+                    label: "General",
+                    id: "general",
+                    panel: {
+                      html: generalHtml
+                    }
                   },
                   {
-                  label: "Opening Hours",
-                  id: "opening-hours",
-                  panel: {
-                  html: openingHoursHtml
-                  }
+                    label: "Opening Hours",
+                    id: "opening-hours",
+                    panel: {
+                      html: openingHoursHtml
+                    }
                   },
                   {
-                  label: "Phone Numbers",
-                  id: "phone-numbers",
-                  panel: {
-                  html: phoneNumbersHtml
-                  }
+                    label: "Phone Numbers",
+                    id: "phone-numbers",
+                    panel: {
+                      html: phoneNumbersHtml
+                    }
                   },
                   {
-                  label: "Emails",
-                  id: "emails",
-                  panel: {
-                  html: emailsHtml
-                  }
+                    label: "Emails",
+                    id: "emails",
+                    panel: {
+                      html: emailsHtml
+                    }
                   },
                   {
-                  label: "Types",
-                  id: "court-types",
-                  panel: {
-                  html: courtTypesHtml
-                  }
+                    label: "Types",
+                    id: "court-types",
+                    panel: {
+                      html: courtTypesHtml
+                    }
                   }
                   ]%}
+
+              {% set postcodesTab =
+                  {
+                   label: "Postcodes",
+                   id: "postcodes",
+                   panel: {
+                      html: postcodesHtml
+                   }
+                  }
+              %}
 
               {% set localAuthoritiesTab =
                   {
@@ -116,16 +129,16 @@
                     %}
 
 
-{% if isSuperAdmin %}
+        {% if isSuperAdmin %}
 
-{% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
 
-{% endif %}
-
-            {{ factTabs({
-            id: 'Main',
-              items: tabItems
-              }) }}
+        {% endif %}
+          {{ factTabs({
+          id: 'Main',
+            items: tabItems
+            }) }}
         </div>
       </div>
     </div>

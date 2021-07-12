@@ -1,10 +1,11 @@
+// sass-lint:disable property-sort-order
 .scrollable {
-  height: 448px;
+  max-height: 448px;
   overflow-x: hidden;
   overflow-y: scroll;
 
   width: 100%;
-
+  margin-bottom: 20px;
 }
 
 $track-background: #f1f1f1;

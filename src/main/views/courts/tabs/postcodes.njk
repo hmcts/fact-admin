@@ -1,0 +1,6 @@
+{% from "macros/csrf.njk" import csrfProtection %}
+
+<div id='postcodesTab'>
+  {{ csrfProtection(csrfToken) }}
+  <div id='postcodesContent'></div>
+</div>

@@ -1,4 +1,4 @@
-import { Logger } from '../../types/Logger';
+import {Logger} from '../../types/Logger';
 import {AxiosError, AxiosInstance} from 'axios';
 import {OpeningTime} from '../../types/OpeningTime';
 import {OpeningType} from '../../types/OpeningType';
@@ -26,6 +26,46 @@ export class FactApi {
       .get(`${this.baseURL}/all`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
+  }
+
+  public getPostcodes(slug: string): Promise<string[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/postcodes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public addPostcodes(slug: string, postcodes: string[]): Promise<string[]> {
+    return this.axios
+      .post(`${this.adminBaseUrl}/${slug}/postcodes`, postcodes)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deletePostcodes(slug: string, postcodes: string[]): Promise<string[]> {
+    return this.axios
+      .delete(`${this.adminBaseUrl}/${slug}/postcodes`, { data: postcodes })
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public movePostcodes(sourceSlug: string, destSlug: string, postcodes: string[]): Promise<string[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${sourceSlug}/${destSlug}/postcodes`, postcodes)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 
   public getDownloadCourts(): Promise<unknown[]> {
