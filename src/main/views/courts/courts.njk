@@ -1,31 +1,68 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
 {% extends "template.njk" %}
 
 
 {% block content %}
   <h1 class="govuk-heading-xl">You are logged in</h1>
 
-  <table class="govuk-table" id="courts">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Name</th>
-        <th scope="col" class="govuk-table__header">Last Updated</th>
-        <th scope="col" class="govuk-table__header"></th>
-        <th scope="col" class="govuk-table__header"></th>
-      </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-    {% for court in courts | sort(attribute="name") %}
-      <tr class="govuk-table__row">
-        <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
-        <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
-        <td scope="row" class="govuk-table__cell">
-          <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
-        </td>
-        <td scope="row" class="govuk-table__cell">
-          <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general?name={{ court.name }}">edit</a>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+  <div id = 'test'>
+
+    <input type="hidden" name="courtsHidden" id='courtsHidden' value="{{ courts | dump }}">
+    <input type="hidden" name="courtsHiddenFiltered" id='courtsHiddenFiltered' value="">
+
+
+    <div id="courtOptionsRow" class="govuk-grid-row">
+
+      <div class="govuk-grid-column-one-half">
+        {{ govukInput({
+          label: {
+            classes: "govuk-label--l",
+            isPageHeading: false
+          },
+          id: "searchCourts",
+          name: "searchCourts"
+        }) }}
+      </div>
+      <div id="toggleClosedCourtsDisplay" class="govuk-grid-column-one-half">
+       {{ govukCheckboxes({
+         idPrefix: "toggle-closed-courts-display",
+         name: "toggleClosedCourtsDisplay",
+         classes: "govuk-checkboxes--small",
+         items: [
+           {
+             value: "includeClosed",
+             text: "Include closed"
+           }]
+       }) }}
+      </div>
+
+    </div>
+
+    <table class="govuk-table" id="courtsResults">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Name</th>
+          <th scope="col" class="govuk-table__header">Last Updated</th>
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for court in courts | sort(attribute="name") %}
+        <tr class="govuk-table__row">
+          <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
+          <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
+          <td scope="row" class="govuk-table__cell">
+            <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
+          </td>
+          <td scope="row" class="govuk-table__cell">
+            <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general?name={{ court.name }}">edit</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

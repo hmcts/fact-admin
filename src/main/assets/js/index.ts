@@ -12,6 +12,7 @@ import {PhoneNumbersController} from './phone-numbers';
 import {CourtTypesController} from './court-types';
 import {LocalAuthoritiesController} from './local-authorities';
 import {PostcodesController} from './postcodes';
+import {CourtsController} from './courts';
 
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
 
@@ -26,3 +27,4 @@ new PhoneNumbersController();
 new CourtTypesController();
 new PostcodesController();
 new LocalAuthoritiesController();
+new CourtsController();
