@@ -1,0 +1,114 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+ {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+ {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+ {% from "govuk/components/input/macro.njk" import govukInput %}
+ {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+ {% from "govuk/components/panel/macro.njk" import govukPanel %}
+ {% from "govuk/components/select/macro.njk" import govukSelect %}
+
+
+ <h2 class="govuk-heading-l">Local Authorities</h2>
+
+ {% if errorMsg != '' %}
+   {{ govukErrorSummary({
+     titleText: "There is a problem",
+     errorList: [
+       {
+         text: errorMsg
+       }
+     ]
+   }) }}
+ {% endif %}
+
+ {% set selectError = false %}
+ {% if errorMsg === 'Please select a area of law.' %}
+ {% set selectError = true %}
+ {% endif %}
+
+ <input type="hidden" name="enabled" id='enabled' value="{{ isEnabled }}">
+
+ {% if updated === true %}
+   {{ govukPanel({
+     titleText: "Local authorities updated"
+   }) }}
+ {% endif %}
+
+ {% if (courtAreasOfLaw | length) > 1 %}
+
+   <div class="govuk-grid-row">
+
+   <div class="govuk-grid-column-one-quarter">
+     {{ govukSelect({
+       id: "courtAreasOfLaw",
+       name: "courtAreasOfLaw",
+       label: {
+       text: "Select a area of law"
+     },
+       items: courtAreasOfLaw ,
+       errorMessage: selectError
+     }) }}
+     </div>
+
+   </div>
+
+ {% endif %}
+
+ {% block content %}
+ {% if ((localAuthoritiesItems | length) > 0) and selectedAreaOfLaw != 'unknown' %}
+ <div class="govuk-grid-row">
+
+ {% set TabItems = [] %}
+ {%- for items in localAuthoritiesItems | slice(6) %}
+
+   {% set tabHtml  %}
+    <div class="govuk-grid-row">
+
+   {%- for items in items | slice(2) %}
+
+     <div class="govuk-grid-column-one-half">
+           {{ govukCheckboxes({
+             idPrefix: "local-authorities",
+             name: "localAuthoritiesItems",
+             classes: "govuk-checkboxes--small",
+             items: items
+           }) }}
+     </div>
+
+     {%- endfor %}
+     </div>
+   {% endset -%}
+
+   {% set tabItem = { label: ( items[0].text | first) + " - " + (items[(items | length - 1)].text | first),
+                          id: ( items[0].text | first) + "-" + (items[(items | length - 1)].text | first),
+                            panel: {
+                            html: tabHtml
+                                     }
+                                     } %}
+
+ {% set TabItems = (TabItems.push(tabItem),TabItems) %}
+
+ {%- endfor %}
+ </div>
+
+ {{ govukTabs({
+   id: 'LocalAuthorities',
+
+   items: TabItems
+ }) }}
+
+  {{ govukButton({
+    text: "Save",
+    name: "saveLocalAuthorities"
+
+  }) }}
+
+  {% set HTML  %}
+     <div class="govuk-grid-row">
+
+    <h1>Test</h1>
+      </div>
+    {% endset -%}
+
+ {% endif %}
+
+ {% endblock %}

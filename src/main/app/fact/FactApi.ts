@@ -238,6 +238,17 @@ export class FactApi {
       });
   }
 
+  public updateLocalAuthority( body: LocalAuthority): Promise<LocalAuthority> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/localAuthorities`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+
   public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`)
@@ -257,6 +268,8 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
+
+
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);

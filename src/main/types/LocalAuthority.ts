@@ -25,5 +25,14 @@ export interface LocalAuthorityItem {
   id: number,
   value: string,
   text: string,
-  checked: boolean
+  checked?: boolean
+}
+
+export interface LocalAuthoritiesListPageData {
+  errorMsg: string,
+  updated: boolean,
+  selected: LocalAuthority,
+  updatedName: string,
+  localAuthorities: LocalAuthorityItem[]
+
 }

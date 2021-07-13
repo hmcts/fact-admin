@@ -1,0 +1,92 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+
+<h2 class="govuk-heading-l">Edit Local Authorities</h2>
+
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
+
+
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Local authorities updated"
+  }) }}
+{% endif %}
+
+
+{% if ( localAuthorities | length) > 0 %}
+
+ <div id="localAuthoritiesList" class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+  {%- for items in localAuthorities | slice(2) %}
+
+     <div class="govuk-grid-column-one-half">
+
+       {{ govukRadios({
+         classes: "govuk-radios--small",
+         name: "localAuthorities",
+         items: items
+       }) }}
+
+     </div>
+  {%- endfor %}
+ </div>
+
+{% endif %}
+
+ {% set error = false %}
+  {% if updatedName === ''  and selected is not null %}
+   {% set error = true %}
+  {% endif %}
+
+<div id="edit" {% if selected is null  %} class="no-display" {% endif %}>
+
+<br/>
+<hr/>
+<br/>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+    {{ govukInput({
+      label: {
+        text: "Edit " + selected.name,
+        classes: "govuk-label--m",
+        isPageHeading: true,
+        attributes :  { "id": "selected" }
+      },
+      id: "local-authority",
+      name: "localAuthorityName",
+      value: updatedName,
+      errorMessage: error
+    }) }}
+    </div>
+  </div>
+
+
+  <hr/>
+
+ {{ govukButton({
+   text: "Save",
+   name: "saveLocalAuthoritiesList"
+
+ }) }}
+
+<div>
+
+
