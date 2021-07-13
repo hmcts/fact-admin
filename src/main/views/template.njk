@@ -8,22 +8,34 @@
   {% if isLoggedIn %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
-        <a id="courts" class="govuk-link govuk-link--no-visited-state" href="/courts">courts</a>
+        <a id="courts" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts">
+          courts
+        </a>
 
         {% if isSuperAdmin %}
-          <a id="lists" class="govuk-link govuk-link--no-visited-state" href="/lists">lists</a>
+          <a id="lists" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/lists">
+            lists
+          </a>
         {% endif %}
 
-        <a class="govuk-link govuk-link--no-visited-state" href="/courts/download">download csv</a>
+        <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
+          download csv
+        </a>
 
         {% if isSuperAdmin %}
-          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state" href="/bulk-update">bulk update</a>
+          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/bulk-update">
+            bulk update
+          </a>
         {% endif %}
       </div>
 
-      <div class="govuk-grid-column-one-quarter">
-        <a id="my-account" class="govuk-link govuk-link--no-visited-state" href="#">my account</a>
-        <a id="logout" class="govuk-link govuk-link--no-visited-state" href="/logout">log out</a>
+      <div class="govuk-grid-column-one_quarters">
+        <a id="my-account" class="govuk-link govuk-link--no-visited-state govuk-!-padding-left-9 govuk-!-padding-right-3" href="#">
+          my account
+        </a>
+        <a id="logout" class="govuk-link govuk-link--no-visited-state" href="/logout">
+          log out
+        </a>
       </div>
     </div>
   {% endif %}
