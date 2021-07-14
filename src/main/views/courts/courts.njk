@@ -41,28 +41,6 @@
     </div>
 
     <table class="govuk-table" id="courtsResults">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Name</th>
-          <th scope="col" class="govuk-table__header">Last Updated</th>
-          <th scope="col" class="govuk-table__header"></th>
-          <th scope="col" class="govuk-table__header"></th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-      {% for court in courts | sort(attribute="name") %}
-        <tr class="govuk-table__row">
-          <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
-          <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
-          <td scope="row" class="govuk-table__cell">
-            <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
-          </td>
-          <td scope="row" class="govuk-table__cell">
-            <a id="edit-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}/edit/general?name={{ court.name }}">edit</a>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
     </table>
   </div>
 {% endblock %}
