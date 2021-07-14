@@ -202,7 +202,7 @@ describe('PostcodeController', () => {
       courts: [],
       slug: testSlug,
       searchValue: 'P,M,KUPOMOSH123',
-      updated: false,
+      updated: true,
       errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
