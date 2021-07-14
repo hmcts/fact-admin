@@ -267,7 +267,7 @@ describe('PostcodeController', () => {
       courts: [],
       slug: testSlug,
       searchValue: 'PL4,PL5,PL6',
-      updated: false,
+      updated: true,
       errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
@@ -636,7 +636,8 @@ describe('PostcodeController', () => {
       slug: testSlug,
       searchValue: '',
       updated: false,
-      errors: [{'text': 'The postcode is already present on the destination court: PL11 1YY,PL1 1'}],
+      errors: [{'text': 'The postcode is already present on the destination ' +
+          'court (your changes have not been saved): PL11 1YY,PL1 1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
       courtTypes: courtTypesMethodOutput
