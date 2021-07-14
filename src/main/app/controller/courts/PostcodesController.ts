@@ -135,7 +135,7 @@ export class PostcodesController {
         await this.get(req, res, newPostcodes, existingPostcodes,
           reason.response?.status === 409
             ? this.duplicatePostcodeMsg + reason.response?.data
-            : this.addErrorMsg + reason.response?.data, areasOfLaw, courtTypes);
+            : this.addErrorMsg + reason.response?.data, areasOfLaw, courtTypes, true);
       });
   }
 
