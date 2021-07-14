@@ -4,11 +4,9 @@ export class CourtsController {
 
   private contentId = '#main-content';
   private toggleCourts = 'toggleClosedCourtsDisplay';
-  // private toggleCourtsId = '#toggleClosedCourtsDisplay';
   private searchCourtsFilter = 'searchCourts';
   private searchCourtsFilterId = '#searchCourts';
   private courtsHiddenId = 'courtsHidden';
-  // private courtsHiddenFilteredId = 'courtsHiddenFiltered';
   private courtsResults = 'courtsResults';
   private TABLE_HEADER = '    <table class="govuk-table" id="courtsResults">' +
     '      <thead class="govuk-table__head">' +
@@ -55,47 +53,30 @@ export class CourtsController {
   }
 
   private setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean) {
-
     let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
-
-    // const tableCourtData = this.getFilteredSearchResults(courts, searchFilterValue, includeClosedCourts) as unknown as string;
-
-    // sorting .sort((a: { name: string }, b: { name: string }) => (a.name > b.name) ? 1 : -1)
-
-    const filteredCourts = JSON.parse(courts).filter((a: { displayed: boolean }) => {
-      if (includeClosedCourts) {
-        return a.displayed == true || a.displayed == false;
-      }
-      else return a.displayed == true;
-    }).filter((a: { name: string }) => {
-      if (searchFilterValue.length == 0)
-        return a;
-      else if (a.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
-        return a;
-      }
-    });
-
+    const filteredCourts = this.filterCourts(courts, searchFilterValue, includeClosedCourts);
     tableBody += this.getCourtsTableBody(filteredCourts) + this.TABLE_HEADER_BODY_END;
 
     (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
   }
 
-  // private getFilteredSearchResults(courts: string, filterValue: string,
-  //   includeClosedCourts: boolean): (string | number | symbol)[] {
-  //   const filteredCourtsList: (string | number | symbol)[] = [];
-  //
-  //   $.each(JSON.parse(courts),function(index, value){
-  //
-  //     // Conditions:
-  //     // 1. Check if the toggle box for 'include closed' is selected or not
-  //     // 2. Get the filter value, and search based on that if it is populated
-  //     // if(value.name.toLowerCase().includes(filterValue.toString().toLowerCase())) {
-  //     filteredCourtsList.push(value);
-  //     // }
-  //   });
-  //   return filteredCourtsList;
-  // }
-  // }
+  private filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean) {
+    return JSON.parse(courts).filter((court: { displayed: boolean }) => {
+      if (includeClosedCourts) {
+        return court.displayed == true || court.displayed == false;
+      }
+      else return court.displayed == true;
+    }).filter((court: { name: string }) => {
+      if (searchFilterValue.length == 0)
+        return court;
+      else if (court.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
+        return court;
+      }
+    });
+
+
+    // .sort((a: { name: string }, b: { name: string }) => (a.name > b.name) ? 1 : -1)
+  }
 
   private getCourtsTableBody(filteredCourts: any) {
     let tableData = '';
