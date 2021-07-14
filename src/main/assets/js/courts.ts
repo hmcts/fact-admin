@@ -66,6 +66,9 @@ export class CourtsController {
 
     let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
 
+    const string = this.parameterizedString('my name is %s1 and surname is %s2', ['John', 'Doe']);
+    console.log(string);
+
     $.each(JSON.parse(courts).sort((a: { name: string }, b: { name: string }) =>
       (a.name > b.name) ? 1 : -1),function(index,value) {
 
@@ -96,10 +99,20 @@ export class CourtsController {
     (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
   }
 
-  private parse(str) {
-    let args = [].slice.call(arguments, 1),
-      i = 0;
-
-    return str.replace(/%s/g, () => args[i++]);
+  /***
+   * @example parameterizedString("my name is %s1 and surname is %s2", "John", "Doe");
+   * @return "my name is John and surname is Doe"
+   *
+   * @firstArgument {String} like "my name is %s1 and surname is %s2"
+   * @otherArguments {String | Number}
+   * @returns {String}
+   */
+  private parameterizedString = (str: string, values: string[]) => {
+    if (!str) return '';
+    return str.replace(/%s[0-9]+/g, matchedStr => {
+      // const variableIndex = matchedStr.replace('%s', '') - 1;
+      const variableIndex = <any> matchedStr.replace('%s', '') -1;
+      return values[variableIndex];
+    });
   }
 }
