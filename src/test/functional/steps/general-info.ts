@@ -1,5 +1,5 @@
 import {Given, Then, When} from 'cucumber';
-import { expect } from 'chai';
+import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
@@ -24,7 +24,7 @@ Then('I can view the urgent notices', async () => {
   expect(welshUrgentNoticesExist).equal(true);
 });
 
-Then('I cannot view super admin content', async() => {
+Then('I cannot view super admin content', async () => {
   expect(await I.isElementVisible('#generalInfoTab #open')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #access_scheme')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info')).equal(false);
@@ -48,10 +48,12 @@ Then('I can view the Covid-19 notices', async () => {
   expect(welshCovidNoticeExists).equal(true);
 });
 
-Then('a success message is displayed on the tab', async () => {
-  const elementExist = await I.checkElement('#generalInfoTab .govuk-panel--confirmation');
-  expect(elementExist).equal(true);
+Then('a success message is displayed on the tab {string}', async (successMsg: string) => {
+  const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const successTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
+
 
 Given('I click the save button', async () => {
   await I.click('#saveGeneralInfoBtn');
