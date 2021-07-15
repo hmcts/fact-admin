@@ -691,8 +691,8 @@ describe('FactApi', () => {
 
   test('Should return results and log error from getAllLocalAuthorities request', async () => {
     const mockAxios = { get: async () => {
-        throw mockError;
-      }} as never;
+      throw mockError;
+    }} as never;
 
     const mockLogger = {
       error: (message: string) => message,
@@ -705,8 +705,8 @@ describe('FactApi', () => {
 
   test('Should log error and reject promise for failed getAllLocalAuthorities request', async () => {
     const mockAxios = { get: async () => {
-        throw mockError;
-      }} as any;
+      throw mockError;
+    }} as any;
 
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);

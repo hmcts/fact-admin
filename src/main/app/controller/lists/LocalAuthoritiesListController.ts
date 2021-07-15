@@ -6,7 +6,7 @@ import {
   LocalAuthority, LocalAuthorityItem
 } from '../../../types/LocalAuthority';
 import {CSRF} from '../../../modules/csrf';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 
 @autobind
@@ -90,7 +90,7 @@ export class LocalAuthoritiesListController {
 
   }
 
-  private returnResponseMessage(status : number ){
+  private returnResponseMessage(status: number ){
 
     switch (status) {
       case 400:
