@@ -7,19 +7,28 @@ export class CourtsController {
   private searchCourtsFilter = 'searchCourts';
   private searchCourtsFilterId = '#searchCourts';
   private courtsHiddenId = 'courtsHidden';
+  private courtsNameAscToggleId = '#courtsNameAscToggle';
+  private courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
   private courtsResults = 'courtsResults';
   private TABLE_HEADER = '    <table class="govuk-table" id="courtsResults">' +
     '      <thead class="govuk-table__head">' +
     '        <tr class="govuk-table__row">' +
-    '          <th scope="col" class="govuk-table__header govuk-!-width-one-half">Name</th>' +
+    '          <th id="tableCourtsName" scope="col" class="govuk-table__header govuk-!-width-one-half">Name</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
-    '          <th scope="col" class="govuk-table__header">Last Updated</th>' +
+    '          <th id="tableCourtsUpdated" scope="col" class="govuk-table__header">Last Updated</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
     '        </tr>' +
     '      </thead>';
   private TABLE_BODY_START = ' <tbody class="govuk-table__body">';
   private TABLE_HEADER_BODY_END = '</tbody> </table>';
+  private tableCourtsNameId = '#tableCourtsName';
+  private tableCourtsUpdatedId = '#tableCourtsUpdated';
+  private orderToggleState = {
+    ASC: 'ASC',
+    DESC: 'DESC',
+    INACTIVE: 'INACTIVE'
+  }
 
   constructor() {
     this.initialize();
@@ -28,9 +37,11 @@ export class CourtsController {
   private initialize(): void {
     $(() => {
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
-        '', false);
+        '', false, true);
       this.setUpToggleClosedCourtsDisplay();
       this.setUpCourtsDynamicSearchFilter();
+      this.setUpAscDecNameFilter();
+      this.setUpAscDecUpdatedDateFilter();
     });
   }
 
@@ -39,7 +50,8 @@ export class CourtsController {
       e.preventDefault();
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
-        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'));
+        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
+        false);
     });
   }
 
@@ -48,37 +60,55 @@ export class CourtsController {
       e.preventDefault();
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
-        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'));
+        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'), false);
     });
   }
 
-  private setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean) {
+  private setUpAscDecNameFilter(): void {
+    $(this.contentId).on('click', `${this.tableCourtsNameId}`, e => {
+      e.preventDefault();
+      this.switchTableToggle($(this.courtsNameAscToggleId), $(this.courtsUpdatedAscToggleId));
+    });
+  }
+
+  private setUpAscDecUpdatedDateFilter(): void {
+    $(this.contentId).on('click', `${this.tableCourtsUpdatedId}`, e => {
+      e.preventDefault();
+      this.switchTableToggle($(this.courtsUpdatedAscToggleId), $(this.courtsNameAscToggleId));
+    });
+  }
+
+  private setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
+    orderNameAscendingFilter: boolean): void {
     let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
-    const filteredCourts = this.filterCourts(courts, searchFilterValue, includeClosedCourts);
+    const filteredCourts = this.filterCourts(courts, searchFilterValue, includeClosedCourts, orderNameAscendingFilter);
     tableBody += this.getCourtsTableBody(filteredCourts) + this.TABLE_HEADER_BODY_END;
 
     (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
   }
 
-  private filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean) {
-    return JSON.parse(courts).filter((court: { displayed: boolean }) => {
-      if (includeClosedCourts) {
-        return court.displayed == true || court.displayed == false;
-      }
-      else return court.displayed == true;
-    }).filter((court: { name: string }) => {
-      if (searchFilterValue.length == 0)
-        return court;
-      else if (court.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
-        return court;
-      }
-    });
+  private filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
+    orderNameAscendingFilter: boolean): any {
+    return JSON.parse(courts)
+      .filter((court: { displayed: boolean }) => {
+        if (includeClosedCourts) {
+          return court.displayed == true || court.displayed == false;
+        }
+        else return court.displayed == true;
+      }).filter((court: { name: string }) => {
+        if (searchFilterValue.length == 0)
+          return court;
+        else if (court.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
+          return court;
+        }
+      }).sort(((a: { name: string }, b: { name: string }) => {
 
-
-    // .sort((a: { name: string }, b: { name: string }) => (a.name > b.name) ? 1 : -1)
+        if (orderNameAscendingFilter)
+          return (a.name > b.name) ? 1 : -1;
+      }));
   }
 
-  private getCourtsTableBody(filteredCourts: any) {
+  private getCourtsTableBody(filteredCourts: any): string {
     let tableData = '';
     $.each(filteredCourts,function(index,value) {
       function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string): string {
@@ -98,5 +128,23 @@ export class CourtsController {
       tableData += getDataStructure(value.name, value.updated_at ?? '', value.displayed, value.slug);
     });
     return tableData;
+  }
+
+  private switchTableToggle(toToggle: JQuery, toReset: JQuery): void {
+    const toggleUpdatedVal = toToggle.val();
+
+    switch (toggleUpdatedVal) {
+      case this.orderToggleState.ASC:
+        toToggle.val(this.orderToggleState.DESC);
+        break;
+      case this.orderToggleState.DESC:
+        toToggle.val(this.orderToggleState.ASC);
+        break;
+      case this.orderToggleState.INACTIVE:
+        toToggle.val(this.orderToggleState.ASC);
+        break;
+    }
+
+    toReset.val(this.orderToggleState.INACTIVE);
   }
 }
