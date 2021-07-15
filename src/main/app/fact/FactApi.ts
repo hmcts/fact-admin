@@ -15,6 +15,7 @@ export class FactApi {
 
   private readonly baseURL = '/courts';
   private readonly adminBaseUrl = '/admin/courts';
+  private readonly adminUrl = '/admin';
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -238,9 +239,22 @@ export class FactApi {
       });
   }
 
-  public updateLocalAuthority( body: LocalAuthority): Promise<LocalAuthority> {
+  public getAllLocalAuthorities(): Promise<LocalAuthority[]> {
     return this.axios
-      .put(`${this.adminBaseUrl}/localAuthorities`, body)
+      .get(`${this.adminUrl}/localauthorities/all`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateLocalAuthority(id: number , name: string): Promise<LocalAuthority> {
+    return this.axios
+      .put(`${this.adminUrl }/localauthorities/${id}`, name, {
+        headers: {
+          'content-type': 'application/json'
+        }})
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

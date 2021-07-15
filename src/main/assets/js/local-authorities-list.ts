@@ -34,7 +34,6 @@ export class LocalAuthoritiesListController {
 
   }
 
-
   private get(): void{
     $.ajax({
       url: '/lists/local-authorities-list',

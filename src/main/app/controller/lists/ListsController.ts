@@ -1,8 +1,6 @@
-import autobind from "autobind-decorator";
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 
-@autobind
 export class ListsController {
   /**
    * GET /lists

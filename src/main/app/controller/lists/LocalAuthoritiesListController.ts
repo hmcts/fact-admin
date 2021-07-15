@@ -6,6 +6,7 @@ import {
   LocalAuthority, LocalAuthorityItem
 } from '../../../types/LocalAuthority';
 import {CSRF} from '../../../modules/csrf';
+import {AxiosError} from "axios";
 
 
 @autobind
@@ -13,7 +14,11 @@ export class LocalAuthoritiesListController {
 
   getLocalAuthoritiesErrorMsg = 'A problem occurred when retrieving the list of local authorities. ';
   updateErrorMsg = 'A problem occurred when saving the local authority. ';
-  emptyLocalAuthorityErrorMsg = 'The local authority name is required.'
+  emptyLocalAuthorityErrorMsg = 'The local authority name is required.';
+  duplicatedErrorMsg = 'Local Authority already exists. ';
+  invalidErrorMsg = 'Invalid Local Authority entered';
+  notFoundErrorMsg = 'Local Authority not found';
+
 
   public async get(
     req: AuthedRequest,
@@ -24,7 +29,7 @@ export class LocalAuthoritiesListController {
     selectedLocalAuthority: LocalAuthority = null): Promise<void> {
 
     let allLocalAuthorities: LocalAuthority[] ;
-    await req.scope.cradle.api.getLocalAuthorities()
+    await req.scope.cradle.api.getAllLocalAuthorities()
       .then((value: LocalAuthority[]) => allLocalAuthorities = value)
       .catch(() => error += this.getLocalAuthoritiesErrorMsg);
 
@@ -42,30 +47,30 @@ export class LocalAuthoritiesListController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
-    let localAuthority: LocalAuthority;
+    let selectedLocalAuthority: LocalAuthority;
     const updatedName = req.body.localAuthorityName;
 
     if (req.body.localAuthorities){
-      localAuthority = JSON.parse(req.body.localAuthorities);
+      selectedLocalAuthority = JSON.parse(req.body.localAuthorities);
     }
 
     if(updatedName === '')
     {
-      return this.get(req, res, false, this.emptyLocalAuthorityErrorMsg, updatedName, localAuthority);
+      return this.get(req, res, false, this.emptyLocalAuthorityErrorMsg, updatedName, selectedLocalAuthority);
     }
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateErrorMsg,updatedName, localAuthority);
+      return this.get(req, res, false, this.updateErrorMsg,updatedName, selectedLocalAuthority);
     }
     else
     {
-      await req.scope.cradle.api.updateLocalAuthority( localAuthority)
+      await req.scope.cradle.api.updateLocalAuthority(selectedLocalAuthority.id , updatedName)
         .then((value: LocalAuthority) => this.get(req, res, true, '',updatedName, value))
-        .catch(() => this.get(req, res, false, this.updateErrorMsg, updatedName, localAuthority));
+        .catch(async (reason: AxiosError) => {
+          await this.get(req, res,false, this.returnResponseMessage(reason.response?.status), updatedName, selectedLocalAuthority);
+        });
     }
-
   }
-
 
   private mapLocalAuthorityToLocalAuthorityItem(localAuthorities: LocalAuthority[], selectedLocalAuthority: LocalAuthority): LocalAuthorityItem[] {
 
@@ -77,13 +82,26 @@ export class LocalAuthoritiesListController {
           value: JSON.stringify(la),
           text: la.name,
           checked : selectedLocalAuthority ? (la.id === selectedLocalAuthority.id) : false
-
         }));
 
       return localAuthorityItems.sort((a, b) => (a.text < b.text ? -1 : 1));
     }
     return [];
 
+  }
+
+  private returnResponseMessage(status : number ){
+
+    switch (status) {
+      case 400:
+        return this.invalidErrorMsg;
+      case 409:
+        return this.duplicatedErrorMsg;
+      case 404:
+        return this.notFoundErrorMsg;
+      default:
+        return this.updateErrorMsg;
+    }
   }
 
 
