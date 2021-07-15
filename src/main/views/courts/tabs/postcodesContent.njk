@@ -6,6 +6,8 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
 
 <h2 class="govuk-heading-l">Postcodes</h2>
 
@@ -13,6 +15,14 @@
   summaryText: "Help with postcodes",
   html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
 }}
+
+{% if not postcodes|length %}
+  {{ govukWarningText({
+    text: "There are currently no postcodes assigned to this court, please note that moving and deleting
+    functionality will not be present until one or more have been added.",
+    iconFallbackText: "Warning"
+  }) }}
+{% endif %}
 
 {% if updated === true and not errors|length %}
   {{ govukPanel({
