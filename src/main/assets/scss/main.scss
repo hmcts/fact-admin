@@ -15,3 +15,30 @@
 .govuk-tabs__list-item {
   font-size: 1.1495rem;
 }
+
+$blue: #1d70b8;
+
+.courts-table-header {
+
+  color: govuk-colour("blue", $legacy: "blue-3");
+  height: auto;
+
+  &:after {
+    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
+    content: "\25BC";
+    // 2191 - up arrow
+    // 2193 - down arrow
+
+
+    // 005E - partial up
+    //
+    // 25BC - down triangle
+    // 25B2 - up triangle
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  &:hover {
+    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+  }
+}

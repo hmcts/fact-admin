@@ -13,7 +13,8 @@ export class CourtsController {
   private TABLE_HEADER = '    <table class="govuk-table" id="courtsResults">' +
     '      <thead class="govuk-table__head">' +
     '        <tr class="govuk-table__row">' +
-    '          <th id="tableCourtsName" scope="col" class="govuk-table__header govuk-!-width-one-half">Name</th>' +
+    '          <th id="tableCourtsName" scope="col" ' +
+    '           class="govuk-table__header govuk-!-width-one-half courts-table-header">Name</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
     '          <th id="tableCourtsUpdated" scope="col" class="govuk-table__header">Last Updated</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
@@ -37,7 +38,7 @@ export class CourtsController {
   private initialize(): void {
     $(() => {
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
-        '', false, true);
+        '', false, this.orderToggleState.ASC, this.orderToggleState.INACTIVE);
       this.setUpToggleClosedCourtsDisplay();
       this.setUpCourtsDynamicSearchFilter();
       this.setUpAscDecNameFilter();
@@ -51,7 +52,7 @@ export class CourtsController {
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
         $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
-        false);
+        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
     });
   }
 
@@ -60,7 +61,8 @@ export class CourtsController {
       e.preventDefault();
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
-        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'), false);
+        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
+        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
     });
   }
 
@@ -68,6 +70,10 @@ export class CourtsController {
     $(this.contentId).on('click', `${this.tableCourtsNameId}`, e => {
       e.preventDefault();
       this.switchTableToggle($(this.courtsNameAscToggleId), $(this.courtsUpdatedAscToggleId));
+      this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
+        $(this.searchCourtsFilterId).val() as string,
+        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
+        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
     });
   }
 
@@ -75,20 +81,25 @@ export class CourtsController {
     $(this.contentId).on('click', `${this.tableCourtsUpdatedId}`, e => {
       e.preventDefault();
       this.switchTableToggle($(this.courtsUpdatedAscToggleId), $(this.courtsNameAscToggleId));
+      this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
+        $(this.searchCourtsFilterId).val() as string,
+        $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
+        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
     });
   }
 
   private setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
-    orderNameAscendingFilter: boolean): void {
+    orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): void {
     let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
-    const filteredCourts = this.filterCourts(courts, searchFilterValue, includeClosedCourts, orderNameAscendingFilter);
+    const filteredCourts = this.filterCourts(courts, searchFilterValue, includeClosedCourts,
+      orderNameAscendingFilter, orderUpdatedAscendingFilter);
     tableBody += this.getCourtsTableBody(filteredCourts) + this.TABLE_HEADER_BODY_END;
-
     (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
   }
 
   private filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
-    orderNameAscendingFilter: boolean): any {
+    orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): any {
+
     return JSON.parse(courts)
       .filter((court: { displayed: boolean }) => {
         if (includeClosedCourts) {
@@ -101,10 +112,25 @@ export class CourtsController {
         else if (court.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
           return court;
         }
-      }).sort(((a: { name: string }, b: { name: string }) => {
+      }).sort(((a: { name: string; updated_at: string }, b: { name: string; updated_at: string }) => {
 
-        if (orderNameAscendingFilter)
-          return (a.name > b.name) ? 1 : -1;
+        switch (orderNameAscendingFilter) {
+          case this.orderToggleState.ASC:
+            return (a.name > b.name) ? 1 : -1;
+          case this.orderToggleState.DESC:
+            return (a.name < b.name) ? 1 : -1;
+          case this.orderToggleState.INACTIVE:
+            break;
+        }
+
+        switch (orderUpdatedAscendingFilter) {
+          case this.orderToggleState.ASC:
+            return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
+          case this.orderToggleState.DESC:
+            return (Date.parse(a.updated_at) < Date.parse(b.updated_at)) ? 1 : -1;
+          case this.orderToggleState.INACTIVE:
+            break;
+        }
       }));
   }
 
