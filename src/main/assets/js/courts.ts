@@ -14,9 +14,10 @@ export class CourtsController {
     '      <thead class="govuk-table__head">' +
     '        <tr class="govuk-table__row">' +
     '          <th id="tableCourtsName" scope="col" ' +
-    '           class="govuk-table__header govuk-!-width-one-half courts-table-header">Name</th>' +
+    '           class="govuk-table__header govuk-!-width-one-half courts-table-header-inactive">Name</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
-    '          <th id="tableCourtsUpdated" scope="col" class="govuk-table__header">Last Updated</th>' +
+    '          <th id="tableCourtsUpdated" scope="col" ' +
+    '           class="govuk-table__header courts-table-header-inactive">Last Updated</th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
     '          <th scope="col" class="govuk-table__header"></th>' +
     '        </tr>' +
@@ -70,10 +71,14 @@ export class CourtsController {
     $(this.contentId).on('click', `${this.tableCourtsNameId}`, e => {
       e.preventDefault();
       this.switchTableToggle($(this.courtsNameAscToggleId), $(this.courtsUpdatedAscToggleId));
-      this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
+      this.setUpTableData(
+        (document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
         $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
-        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
+        $(this.courtsNameAscToggleId).val() as string,
+        $(this.courtsUpdatedAscToggleId).val() as string);
+      this.switchTableClasses($(this.courtsNameAscToggleId),
+        $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId));
     });
   }
 
@@ -81,10 +86,14 @@ export class CourtsController {
     $(this.contentId).on('click', `${this.tableCourtsUpdatedId}`, e => {
       e.preventDefault();
       this.switchTableToggle($(this.courtsUpdatedAscToggleId), $(this.courtsNameAscToggleId));
-      this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
+      this.setUpTableData(
+        (document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
         $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
-        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
+        $(this.courtsNameAscToggleId).val() as string,
+        $(this.courtsUpdatedAscToggleId).val() as string);
+      this.switchTableClasses($(this.courtsUpdatedAscToggleId),
+        $(this.tableCourtsUpdatedId), $(this.tableCourtsNameId));
     });
   }
 
@@ -160,17 +169,46 @@ export class CourtsController {
     const toggleUpdatedVal = toToggle.val();
 
     switch (toggleUpdatedVal) {
-      case this.orderToggleState.ASC:
+      case this.orderToggleState.ASC: {
         toToggle.val(this.orderToggleState.DESC);
         break;
-      case this.orderToggleState.DESC:
+      }
+      case this.orderToggleState.DESC: {
         toToggle.val(this.orderToggleState.ASC);
         break;
-      case this.orderToggleState.INACTIVE:
+      }
+      case this.orderToggleState.INACTIVE: {
         toToggle.val(this.orderToggleState.ASC);
         break;
+      }
     }
 
     toReset.val(this.orderToggleState.INACTIVE);
+  }
+
+  private switchTableClasses(tableState: JQuery, thToToggle: JQuery, thToReset: JQuery): void {
+    switch (tableState.val()) {
+      case this.orderToggleState.ASC: {
+        thToToggle.removeClass('courts-table-header-inactive')
+          .removeClass('courts-table-header-asc')
+          .addClass('courts-table-header-desc');
+        break;
+      }
+      case this.orderToggleState.DESC: {
+        thToToggle.removeClass('courts-table-header-inactive')
+          .removeClass('courts-table-header-desc')
+          .addClass('courts-table-header-asc');
+        break;
+      }
+      case this.orderToggleState.INACTIVE: {
+        thToToggle.removeClass('courts-table-header-inactive')
+          .addClass('courts-table-header-asc');
+        break;
+      }
+    }
+
+    thToReset.removeClass('courts-table-header-asc')
+      .removeClass('courts-table-header-desc')
+      .addClass('courts-table-header-inactive');
   }
 }

@@ -18,27 +18,47 @@
 
 $blue: #1d70b8;
 
-.courts-table-header {
+.courts-table-header-inactive {
 
   color: govuk-colour("blue", $legacy: "blue-3");
-  height: auto;
 
   &:after {
     border-color: govuk-colour("blue", $legacy: "dark-blue-3");
-    content: "\25BC";
-    // 2191 - up arrow
-    // 2193 - down arrow
-
-
-    // 005E - partial up
-    //
-    // 25BC - down triangle
-    // 25B2 - up triangle
-    margin-left: 10px;
-    vertical-align: middle;
+    content: "\2B65";
   }
 
   &:hover {
     color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    cursor: pointer;
+  }
+}
+
+.courts-table-header-asc {
+
+  color: govuk-colour("blue", $legacy: "blue-3");
+
+  &:after {
+    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
+    content: "\2193";
+  }
+
+  &:hover {
+    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    cursor: pointer;
+  }
+}
+
+.courts-table-header-desc {
+
+  color: govuk-colour("blue", $legacy: "blue-3");
+
+  &:after {
+    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
+    content: "\2191";
+  }
+
+  &:hover {
+    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    cursor: pointer;
   }
 }
