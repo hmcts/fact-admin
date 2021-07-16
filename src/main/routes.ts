@@ -1,5 +1,5 @@
-import {Application} from 'express';
-import {isSuperAdmin} from './modules/oidc';
+import { Application } from 'express';
+import { isSuperAdmin } from './modules/oidc';
 
 export default function(app: Application): void {
 
@@ -27,7 +27,9 @@ export default function(app: Application): void {
   app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
-
+  app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
+  app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
+
 }

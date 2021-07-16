@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
 import FeatureToggleService from '../featureToggle';
+import {CSRF} from '../csrf';
 import config from 'config';
 
 export class Nunjucks {
@@ -49,6 +50,8 @@ export class Nunjucks {
     });
 
     env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
+
+    env.addGlobal('csrf', CSRF.create());
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

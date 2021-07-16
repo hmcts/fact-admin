@@ -53,8 +53,8 @@ When('I click on local authorities save button', async () => {
 
 Then('Success message is displayed for local authorities with summary {string}', async (successMsg: string) => {
   const selector = '#localAuthoritiesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  const errorTitleElement = await I.getElement(selector);
-  expect(await I.getElementText(errorTitleElement)).equal(successMsg);
+  const successTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
 
 Then('An error is displayed for local authorities with title {string} and summery {string}', async (errorTitle: string, errorSummery: string) => {
@@ -74,7 +74,6 @@ Then('An error is displayed for local authorities with title {string} and summer
 When('I will make sure Family court type is not selected', async () => {
   const selectorFamilyCourt = '#court_types-2';
   const selectorTribunalCourt = '#court_types-3';
-
 
   const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
   expect(elementFamilyCourtExist).equal(true);
