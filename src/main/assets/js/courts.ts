@@ -4,24 +4,25 @@ export class CourtsController {
 
   private contentId = '#main-content';
   private toggleCourts = 'toggleClosedCourtsDisplay';
+  private numberOfCourts = '#numberOfCourts';
   private searchCourtsFilter = 'searchCourts';
   private searchCourtsFilterId = '#searchCourts';
   private courtsHiddenId = 'courtsHidden';
   private courtsNameAscToggleId = '#courtsNameAscToggle';
   private courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
   private courtsResults = 'courtsResults';
-  private TABLE_HEADER = '    <table class="govuk-table" id="courtsResults">' +
-    '      <thead class="govuk-table__head">' +
-    '        <tr class="govuk-table__row">' +
-    '          <th id="tableCourtsName" scope="col" ' +
-    '           class="govuk-table__header govuk-!-width-one-half courts-table-header-inactive">Name</th>' +
-    '          <th scope="col" class="govuk-table__header"></th>' +
-    '          <th id="tableCourtsUpdated" scope="col" ' +
-    '           class="govuk-table__header courts-table-header-inactive">Last Updated</th>' +
-    '          <th scope="col" class="govuk-table__header"></th>' +
-    '          <th scope="col" class="govuk-table__header"></th>' +
-    '        </tr>' +
-    '      </thead>';
+  private TABLE_HEADER = ' <table class="govuk-table" id="courtsResults">' +
+    ' <thead class="govuk-table__head">' +
+    '   <tr class="govuk-table__row">' +
+    '     <th id="tableCourtsName" scope="col" ' +
+    '       class="govuk-table__header govuk-!-width-one-half courts-table-header-inactive">Name</th>' +
+    '     <th scope="col" class="govuk-table__header"></th>' +
+    '     <th id="tableCourtsUpdated" scope="col" ' +
+    '       class="govuk-table__header courts-table-header-inactive">Last Updated</th>' +
+    '     <th scope="col" class="govuk-table__header"></th>' +
+    '     <th scope="col" class="govuk-table__header"></th>' +
+    '   </tr>' +
+    ' </thead>';
   private TABLE_BODY_START = ' <tbody class="govuk-table__body">';
   private TABLE_HEADER_BODY_END = '</tbody> </table>';
   private tableCourtsNameId = '#tableCourtsName';
@@ -40,6 +41,7 @@ export class CourtsController {
     $(() => {
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         '', false, this.orderToggleState.ASC, this.orderToggleState.INACTIVE);
+      this.switchTableClasses($(this.courtsNameAscToggleId), $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId));
       this.setUpToggleClosedCourtsDisplay();
       this.setUpCourtsDynamicSearchFilter();
       this.setUpAscDecNameFilter();
@@ -50,10 +52,21 @@ export class CourtsController {
   private setUpToggleClosedCourtsDisplay(): void {
     $(this.contentId).on('change', `input[name=${this.toggleCourts}]`, e => {
       e.preventDefault();
+
+      const courtsUpdatedAscToggleId = $(this.courtsUpdatedAscToggleId);
+      const courtsNameAscToggleId = $(this.courtsNameAscToggleId);
+
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
         $(this.searchCourtsFilterId).val() as string,
         $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
-        $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
+        $(this.courtsNameAscToggleId).val() as string,
+        courtsUpdatedAscToggleId.val() as string);
+
+      courtsUpdatedAscToggleId.val() == this.orderToggleState.INACTIVE ?
+        this.switchTableClasses(courtsNameAscToggleId,
+          $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId)) :
+        this.switchTableClasses(courtsUpdatedAscToggleId,
+          $(this.tableCourtsUpdatedId), $(this.tableCourtsNameId));
     });
   }
 
@@ -64,6 +77,8 @@ export class CourtsController {
         $(this.searchCourtsFilterId).val() as string,
         $('#main-content input[name="toggleClosedCourtsDisplay"]').prop('checked'),
         $(this.courtsNameAscToggleId).val() as string, $(this.courtsUpdatedAscToggleId).val() as string);
+      this.switchTableClasses($(this.courtsNameAscToggleId),
+        $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId));
     });
   }
 
@@ -104,6 +119,9 @@ export class CourtsController {
       orderNameAscendingFilter, orderUpdatedAscendingFilter);
     tableBody += this.getCourtsTableBody(filteredCourts) + this.TABLE_HEADER_BODY_END;
     (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
+    searchFilterValue.length ? $(this.numberOfCourts).show().text(
+      'Showing ' + filteredCourts.length + ' results')
+      : $(this.numberOfCourts).hide();
   }
 
   private filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean,

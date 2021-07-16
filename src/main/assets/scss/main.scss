@@ -40,6 +40,7 @@ $blue: #1d70b8;
   &:after {
     border-color: govuk-colour("blue", $legacy: "dark-blue-3");
     content: "\2193";
+    margin-left: 5px;
   }
 
   &:hover {
@@ -55,6 +56,7 @@ $blue: #1d70b8;
   &:after {
     border-color: govuk-colour("blue", $legacy: "dark-blue-3");
     content: "\2191";
+    margin-left: 5px;
   }
 
   &:hover {
