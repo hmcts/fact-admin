@@ -10,6 +10,7 @@
 
 <h2 class="govuk-heading-l">Edit Local Authorities</h2>
 
+
 {% if errorMsg != '' %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
@@ -22,7 +23,6 @@
 {% endif %}
 
 
-
 {% if updated === true %}
   {{ govukPanel({
     titleText: "Local authority updated"
@@ -32,7 +32,7 @@
 
 {% if ( localAuthorities | length) > 0 %}
 
- <div id="localAuthoritiesList" class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+ <div id="localAuthoritiesList" class="scrollable visible-scrollbar role: scrollbar">
 
   {%- for items in localAuthorities | slice(2) %}
 

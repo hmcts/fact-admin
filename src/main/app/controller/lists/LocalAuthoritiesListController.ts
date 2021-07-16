@@ -16,8 +16,8 @@ export class LocalAuthoritiesListController {
   updateErrorMsg = 'A problem occurred when saving the local authority. ';
   emptyLocalAuthorityErrorMsg = 'The local authority name is required.';
   duplicatedErrorMsg = 'Local Authority already exists. ';
-  invalidErrorMsg = 'Invalid Local Authority entered';
-  notFoundErrorMsg = 'Local Authority not found';
+  invalidErrorMsg = 'Invalid Local Authority entered.';
+  notFoundErrorMsg = 'Local Authority not found.';
 
 
   public async get(
@@ -78,7 +78,7 @@ export class LocalAuthoritiesListController {
 
       const localAuthorityItems = localAuthorities.map((la: LocalAuthority) => (
         {
-          id: la.id,
+          id: la.name.replace(/ /g,'_'),
           value: JSON.stringify(la),
           text: la.name,
           checked : selectedLocalAuthority ? (la.id === selectedLocalAuthority.id) : false
