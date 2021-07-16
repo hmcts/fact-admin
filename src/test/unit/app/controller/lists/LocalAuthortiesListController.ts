@@ -24,10 +24,10 @@ describe ( 'LocalAuthoritiesListController', () => {
 
 
   const localAuthoritiesItems: LocalAuthorityItem[] = [
-    { id:1, value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:false },
-    { id:2, value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
-    { id:3, value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
-    { id:4, value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
+    { id:'Barnet_Borough_Council', value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:false },
+    { id:'Brent_Borough_Council', value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
+    { id:'Camden_Borough_Council', value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
+    { id:'City_of_London_Corporation', value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
   ];
 
   const updatedLocalAuthority: LocalAuthority  =  { id: 1, name:'Barnet Borough Council1'};
@@ -173,10 +173,10 @@ describe ( 'LocalAuthoritiesListController', () => {
     };
 
     const localAuthoritiesItems: LocalAuthorityItem[] = [
-      { id:1, value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
-      { id:2, value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
-      { id:3, value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
-      { id:4, value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
+      { id:'Barnet_Borough_Council', value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
+      { id:'Brent_Borough_Council', value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
+      { id:'Camden_Borough_Council', value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
+      { id:'City_of_London_Corporation', value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
     ];
 
     const errorResponse = mockResponse();
@@ -213,10 +213,10 @@ describe ( 'LocalAuthoritiesListController', () => {
     };
 
     const localAuthoritiesItems: LocalAuthorityItem[] = [
-      { id:1, value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
-      { id:2, value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
-      { id:3, value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
-      { id:4, value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
+      { id:'Barnet_Borough_Council', value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
+      { id:'Brent_Borough_Council', value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
+      { id:'Camden_Borough_Council', value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
+      { id:'City_of_London_Corporation', value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
     ];
 
     const errorResponse = mockResponse();
@@ -253,10 +253,10 @@ describe ( 'LocalAuthoritiesListController', () => {
     };
 
     const localAuthoritiesItems: LocalAuthorityItem[] = [
-      { id:1, value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
-      { id:2, value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
-      { id:3, value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
-      { id:4, value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
+      { id:'Barnet_Borough_Council', value:'{"id":1,"name":"Barnet Borough Council"}', text:'Barnet Borough Council', checked:true },
+      { id:'Brent_Borough_Council', value:'{"id":2,"name":"Brent Borough Council"}', text:'Brent Borough Council', checked:false },
+      { id:'Camden_Borough_Council', value:'{"id":3,"name":"Camden Borough Council"}', text:'Camden Borough Council', checked:false },
+      { id:'City_of_London_Corporation', value:'{"id":4,"name":"City of London Corporation"}', text:'City of London Corporation', checked:false }
     ];
 
     const errorResponse = mockResponse();
