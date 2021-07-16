@@ -29,7 +29,7 @@ Feature: Local authorities List
     When I select local authority "<local authority id>"
     When I edit the local authority "<duplicate local authority>"
     When I click on save local authority list
-    Then An error is displayed for edit local authorities with title "There is a problem" and summery "Local Authority already exists."
+    Then An error is displayed for edit local authorities with title "There is a problem" and summary "Local Authority already exists."
 
     Examples:
       | local authority id     | duplicate local authority |
@@ -40,7 +40,7 @@ Feature: Local authorities List
     When I select local authority "<local authority id>"
     When I edit the local authority "<invalid local authority>"
     When I click on save local authority list
-    Then An error is displayed for edit local authorities with title "There is a problem" and summery "Invalid Local Authority entered."
+    Then An error is displayed for edit local authorities with title "There is a problem" and summary "Invalid Local Authority entered."
 
     Examples:
       | local authority id     | invalid local authority  |
@@ -51,7 +51,7 @@ Feature: Local authorities List
     When I select local authority "<local authority id>"
     When I edit the local authority ""
     When I click on save local authority list
-    Then An error is displayed for edit local authorities with title "There is a problem" and summery "The local authority name is required."
+    Then An error is displayed for edit local authorities with title "There is a problem" and summary "The local authority name is required."
 
     Examples:
       | local authority id     |
