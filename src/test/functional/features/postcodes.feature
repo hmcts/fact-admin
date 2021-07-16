@@ -39,7 +39,7 @@ Feature: Postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
     Then I will make sure to delete the existing postcodes for the court "<view_court_slug>"
     Then I go back to the editing postcodes for source court "aldershot-justice-centre"
-    When I choose the postcodes bd4 and bd2 to move them from the source court to the destination court
+    When I choose the postcodes "BD4" and "BD2" to move them from the source court to the destination court
     Then I choose the destination court as "<view_court_slug>"
     Then I click the move button
     Then A green message is displayed for the postcodes "Postcodes updated"
