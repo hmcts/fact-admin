@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {orderToggleState} from '../../enums/searchToggleState';
 
 export class CourtsController {
 
@@ -11,6 +12,12 @@ export class CourtsController {
   private courtsNameAscToggleId = '#courtsNameAscToggle';
   private courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
   private courtsResults = 'courtsResults';
+  private courtsTableHeaderAsc = 'courts-table-header-asc';
+  private courtsTableHeaderDesc = 'courts-table-header-desc';
+  private courtsTableHeaderInactive = 'courts-table-header-inactive';
+  private tableCourtsNameId = '#tableCourtsName';
+  private tableCourtsUpdatedId = '#tableCourtsUpdated';
+  private TABLE_BODY_START = ' <tbody class="govuk-table__body">';
   private TABLE_HEADER = ' <table class="govuk-table" id="courtsResults">' +
     ' <thead class="govuk-table__head">' +
     '   <tr class="govuk-table__row">' +
@@ -23,15 +30,7 @@ export class CourtsController {
     '     <th scope="col" class="govuk-table__header"></th>' +
     '   </tr>' +
     ' </thead>';
-  private TABLE_BODY_START = ' <tbody class="govuk-table__body">';
   private TABLE_HEADER_BODY_END = '</tbody> </table>';
-  private tableCourtsNameId = '#tableCourtsName';
-  private tableCourtsUpdatedId = '#tableCourtsUpdated';
-  private orderToggleState = {
-    ASC: 'ASC',
-    DESC: 'DESC',
-    INACTIVE: 'INACTIVE'
-  }
 
   constructor() {
     this.initialize();
@@ -40,7 +39,7 @@ export class CourtsController {
   private initialize(): void {
     $(() => {
       this.setUpTableData((document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
-        '', false, this.orderToggleState.ASC, this.orderToggleState.INACTIVE);
+        '', false, orderToggleState.ASC, orderToggleState.INACTIVE);
       this.switchTableClasses($(this.courtsNameAscToggleId), $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId));
       this.setUpToggleClosedCourtsDisplay();
       this.setUpCourtsDynamicSearchFilter();
@@ -62,7 +61,7 @@ export class CourtsController {
         $(this.courtsNameAscToggleId).val() as string,
         courtsUpdatedAscToggleId.val() as string);
 
-      courtsUpdatedAscToggleId.val() == this.orderToggleState.INACTIVE ?
+      courtsUpdatedAscToggleId.val() == orderToggleState.INACTIVE ?
         this.switchTableClasses(courtsNameAscToggleId,
           $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId)) :
         this.switchTableClasses(courtsUpdatedAscToggleId,
@@ -142,20 +141,20 @@ export class CourtsController {
       }).sort(((a: { name: string; updated_at: string }, b: { name: string; updated_at: string }) => {
 
         switch (orderNameAscendingFilter) {
-          case this.orderToggleState.ASC:
+          case orderToggleState.ASC:
             return (a.name > b.name) ? 1 : -1;
-          case this.orderToggleState.DESC:
+          case orderToggleState.DESC:
             return (a.name < b.name) ? 1 : -1;
-          case this.orderToggleState.INACTIVE:
+          case orderToggleState.INACTIVE:
             break;
         }
 
         switch (orderUpdatedAscendingFilter) {
-          case this.orderToggleState.ASC:
+          case orderToggleState.ASC:
             return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
-          case this.orderToggleState.DESC:
+          case orderToggleState.DESC:
             return (Date.parse(a.updated_at) < Date.parse(b.updated_at)) ? 1 : -1;
-          case this.orderToggleState.INACTIVE:
+          case orderToggleState.INACTIVE:
             break;
         }
       }));
@@ -166,9 +165,9 @@ export class CourtsController {
     $.each(filteredCourts,function(index,value) {
       function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string, frontendUrl: string): string {
         return ' <tr class="govuk-table__row">' +
-          ' <td scope="row" class="govuk-table__cell">' + name + ' </td>' +
-          ' <td scope="row" class="govuk-table__cell">' + (displayed ? '' : 'closed') + ' </td>' +
-          ' <td scope="row" class="govuk-table__cell">' + updatedAt + ' </td>' +
+          ' <td id = "courtTableColumnName" scope="row" class="govuk-table__cell">' + name + ' </td>' +
+          ' <td id = "courtTableColumnClosed" scope="row" class="govuk-table__cell">' + (displayed ? '' : 'closed') + ' </td>' +
+          ' <td id = "courtTableColumnLastUpdated" scope="row" class="govuk-table__cell">' + updatedAt + ' </td>' +
           ' <td scope="row" class="govuk-table__cell">' +
           '   <a id="view-"' + slug + ' class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
           ' </td>' +
@@ -189,46 +188,46 @@ export class CourtsController {
     const toggleUpdatedVal = toToggle.val();
 
     switch (toggleUpdatedVal) {
-      case this.orderToggleState.ASC: {
-        toToggle.val(this.orderToggleState.DESC);
+      case orderToggleState.ASC: {
+        toToggle.val(orderToggleState.DESC);
         break;
       }
-      case this.orderToggleState.DESC: {
-        toToggle.val(this.orderToggleState.ASC);
+      case orderToggleState.DESC: {
+        toToggle.val(orderToggleState.ASC);
         break;
       }
-      case this.orderToggleState.INACTIVE: {
-        toToggle.val(this.orderToggleState.ASC);
+      case orderToggleState.INACTIVE: {
+        toToggle.val(orderToggleState.ASC);
         break;
       }
     }
 
-    toReset.val(this.orderToggleState.INACTIVE);
+    toReset.val(orderToggleState.INACTIVE);
   }
 
   private switchTableClasses(tableState: JQuery, thToToggle: JQuery, thToReset: JQuery): void {
     switch (tableState.val()) {
-      case this.orderToggleState.ASC: {
-        thToToggle.removeClass('courts-table-header-inactive')
-          .removeClass('courts-table-header-asc')
-          .addClass('courts-table-header-desc');
+      case orderToggleState.ASC: {
+        thToToggle.removeClass(this.courtsTableHeaderInactive)
+          .removeClass(this.courtsTableHeaderAsc)
+          .addClass(this.courtsTableHeaderDesc);
         break;
       }
-      case this.orderToggleState.DESC: {
-        thToToggle.removeClass('courts-table-header-inactive')
-          .removeClass('courts-table-header-desc')
-          .addClass('courts-table-header-asc');
+      case orderToggleState.DESC: {
+        thToToggle.removeClass(this.courtsTableHeaderInactive)
+          .removeClass(this.courtsTableHeaderDesc)
+          .addClass(this.courtsTableHeaderAsc);
         break;
       }
-      case this.orderToggleState.INACTIVE: {
-        thToToggle.removeClass('courts-table-header-inactive')
-          .addClass('courts-table-header-asc');
+      case orderToggleState.INACTIVE: {
+        thToToggle.removeClass(this.courtsTableHeaderInactive)
+          .addClass(this.courtsTableHeaderAsc);
         break;
       }
     }
 
-    thToReset.removeClass('courts-table-header-asc')
-      .removeClass('courts-table-header-desc')
-      .addClass('courts-table-header-inactive');
+    thToReset.removeClass(this.courtsTableHeaderAsc)
+      .removeClass(this.courtsTableHeaderDesc)
+      .addClass(this.courtsTableHeaderInactive);
   }
 }
