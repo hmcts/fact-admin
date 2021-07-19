@@ -87,7 +87,6 @@ export class LocalAuthoritiesListController {
       return localAuthorityItems.sort((a, b) => (a.text < b.text ? -1 : 1));
     }
     return [];
-
   }
 
   private returnResponseMessage(status: number ){
