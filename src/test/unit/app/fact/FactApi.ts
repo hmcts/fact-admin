@@ -628,50 +628,6 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
   });
 
-  test('Should return results from getLocalAuthorities request', async () => {
-    const results = {
-      data: [
-        { id: 1, name:'Local Authority 1'},
-        { id: 2, name:'Local Authority 2'}
-
-      ]
-    };
-
-    const mockAxios = { get: async () => results } as any;
-    const mockLogger = {} as any;
-
-    const api = new FactApi(mockAxios, mockLogger);
-
-    await expect(api.getLocalAuthorities()).resolves.toEqual(results.data);
-  });
-
-  test('Should return results and log error from getLocalAuthorities request', async () => {
-    const mockAxios = { get: async () => {
-      throw mockError;
-    }} as never;
-
-    const mockLogger = {
-      error: (message: string) => message,
-      info: (message: string) => message
-    } as never;
-    const api = new FactApi(mockAxios, mockLogger);
-
-    await expect(api.getLocalAuthorities()).rejects.toEqual(mockError);
-  });
-
-  test('Should log error and reject promise for failed getLocalAuthorities request', async () => {
-    const mockAxios = { get: async () => {
-      throw mockError;
-    }} as any;
-
-    const spy = jest.spyOn(mockLogger, 'info');
-    const api = new FactApi(mockAxios, mockLogger);
-
-    await expect(api.getLocalAuthorities()).rejects.toBe(mockError);
-    await expect(spy).toBeCalled();
-  });
-
-
   test('Should return results from getAllLocalAuthorities request', async () => {
     const results = {
       data: [

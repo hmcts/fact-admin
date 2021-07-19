@@ -16,7 +16,7 @@ describe ( 'LocalAuthoritiesController', () => {
   let mockApi: {
     getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
     getCourtCourtTypes: () => Promise<CourtType[]>,
-    getLocalAuthorities: () => Promise<LocalAuthority[]>,
+    getAllLocalAuthorities: () => Promise<LocalAuthority[]>,
     getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>,
     updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]> };
 
@@ -73,7 +73,7 @@ describe ( 'LocalAuthoritiesController', () => {
     mockApi = {
       getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => courtAreasOfLaw,
       getCourtCourtTypes: async (): Promise<CourtType[]> => courtTypes,
-      getLocalAuthorities: async (): Promise<LocalAuthority[]> => localAuthorites,
+      getAllLocalAuthorities: async (): Promise<LocalAuthority[]> => localAuthorites,
       getCourtLocalAuthoritiesByAreaOfLaw: async (): Promise<LocalAuthority[]> => courtlocalAuthorites,
       updateCourtLocalAuthoritiesByAreaOfLaw: async (): Promise<LocalAuthority[]> => courtlocalAuthorites
     };
@@ -262,7 +262,7 @@ describe ( 'LocalAuthoritiesController', () => {
     };
 
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.getLocalAuthorities = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.getAllLocalAuthorities = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 
     await controller.getLocalAuthorities(req, res);
