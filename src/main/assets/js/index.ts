@@ -5,18 +5,19 @@ import './opening-hours';
 import './emails';
 import './court-types';
 import './postcodes';
+import './local-authorities-list';
 import {OpeningHoursController} from './opening-hours';
 import {EmailsController} from './emails';
 import {CourtGeneralInfoController} from './courtGeneralInfo';
 import {PhoneNumbersController} from './phone-numbers';
 import {CourtTypesController} from './court-types';
 import {LocalAuthoritiesController} from './local-authorities';
+import {LocalAuthoritiesListController} from './local-authorities-list';
 import {PostcodesController} from './postcodes';
 import {CourtsController} from './courts';
 
-const {initTabs} = require('./fact-tabs/fact-tabs-index');
-
 const { initAll } = require('govuk-frontend');
+const {initTabs} = require('./fact-tabs/fact-tabs-index');
 
 initTabs();
 initAll();
@@ -28,3 +29,4 @@ new CourtTypesController();
 new PostcodesController();
 new LocalAuthoritiesController();
 new CourtsController();
+new LocalAuthoritiesListController();

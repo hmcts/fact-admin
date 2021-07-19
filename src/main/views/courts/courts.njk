@@ -12,6 +12,7 @@
     <input type="hidden" name="courtsHidden" id='courtsHidden' value="{{ courts | dump }}" />
     <input type="hidden" name="courtsUpdatedAscToggle" id='courtsUpdatedAscToggle' value="INACTIVE" />
     <input type="hidden" name="courtsNameAscToggle" id='courtsNameAscToggle' value="ASC" />
+    <input type="hidden" name="courtsFrontendUrl" id='courtsFrontendUrl' value= {{ factFrontendURL }} />
 
     <div id="courtOptionsRow" class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
@@ -43,4 +44,5 @@
     <table class="govuk-table" id="courtsResults">
     </table>
   </div>
+
 {% endblock %}

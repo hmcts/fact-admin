@@ -6,7 +6,9 @@ const { initAll } = require('govuk-frontend');
 
 export class CourtTypesController {
   private formId = '#courtTypesForm';
+  private localAuthoritiesId = '#localAuthoritiesTab';
   private tabId = '#courtTypesTab';
+  private postcodesTabId = '#postcodesTab';
   private courtTypesContentId = '#courtTypesContent';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
@@ -71,17 +73,24 @@ export class CourtTypesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.localAuthoritiesContentId);
-        Utilities.toggleTabEnabled(this.localAuthoritiesTabId, $('#enabled').val() === 'true');
-        this.togglePostcodesTab();
+        this.toggleTabs();
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET local authorities areas of law failed.')
     });
   }
 
-  // In the event that the court type is updated to county court, enable the postcodes tab if it has been disabled
-  private togglePostcodesTab(): void {
+  // In the event that the court type is updated, enable/disable the tab and also the data within
+  private toggleTabs(): void {
+    // Postcodes
     Utilities.toggleTabEnabled(this.postcodesNavTab,
       Utilities.isCheckboxItemSelected('#courtTypesContent input[name="types"]', 'County Court'));
+    Utilities.toggleTabEnabled(this.postcodesTabId,
+      Utilities.isCheckboxItemSelected('#courtTypesContent input[name="types"]', 'County Court'));
+
+    // Local authorities
+    Utilities.toggleTabEnabled(this.localAuthoritiesTabId, $('#enabled').val() === 'true');
+    Utilities.toggleTabEnabled(this.localAuthoritiesId,
+      Utilities.isCheckboxItemSelected('#courtTypesContent input[name="types"]', 'Family Court'));
   }
 }

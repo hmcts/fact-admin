@@ -164,22 +164,24 @@ export class CourtsController {
   private getCourtsTableBody(filteredCourts: any): string {
     let tableData = '';
     $.each(filteredCourts,function(index,value) {
-      function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string): string {
+      function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string, frontendUrl: string): string {
         return ' <tr class="govuk-table__row">' +
           ' <td scope="row" class="govuk-table__cell">' + name + ' </td>' +
           ' <td scope="row" class="govuk-table__cell">' + (displayed ? '' : 'closed') + ' </td>' +
           ' <td scope="row" class="govuk-table__cell">' + updatedAt + ' </td>' +
           ' <td scope="row" class="govuk-table__cell">' +
-          '   <a id="view-"' + slug + ' class="govuk-link" href="/courts/"' + slug + '>view</a>' +
+          '   <a id="view-"' + slug + ' class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
           ' </td>' +
           ' <td scope="row" class="govuk-table__cell">' +
-          '   <a id="edit-"' + slug + ' class="govuk-link" href="/courts/' + slug + '/edit/general?name=' + name + '">edit</a>' +
+          '   <a id="edit-"' + slug + ' class="govuk-link" href="/courts/' + slug + '/edit#general">edit</a>' +
           ' </td>' +
           ' </tr>';
       }
 
-      tableData += getDataStructure(value.name, value.updated_at ?? '', value.displayed, value.slug);
+      tableData += getDataStructure(value.name, value.updated_at ?? '', value.displayed, value.slug,
+        $('#courtsFrontendUrl').val() as string);
     });
+
     return tableData;
   }
 

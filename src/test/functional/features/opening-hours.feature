@@ -7,7 +7,7 @@ Feature: Opening Hours
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     Then I can view the courts or tribunals in a list format
-    When I click edit next to a chosen court or tribunal
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click the opening hours tab
