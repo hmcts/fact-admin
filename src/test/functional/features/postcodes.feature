@@ -23,6 +23,7 @@ Feature: Postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
 
   Scenario: Adding invalid and duplicate postcode
+    When I will make sure to delete the existing postcodes
     When I add new postcodes "bdx,123,bd1"
     Then I click the add postcode button
     Then The error message display for the postcodes "A problem has occurred (your changes have not been saved). The following postcodes are invalid: bdx,123"
