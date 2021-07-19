@@ -15,6 +15,7 @@ export class FactApi {
 
   private readonly baseURL = '/courts';
   private readonly adminBaseUrl = '/admin/courts';
+  private readonly adminUrl = '/admin';
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -77,7 +78,7 @@ export class FactApi {
 
   public getCourt(slug: string): Promise<unknown[]> {
     return this.axios
-      .get(`${this.baseURL}/court/${slug}`)
+      .get(`${this.baseURL}/${slug}`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
   }
@@ -238,6 +239,30 @@ export class FactApi {
       });
   }
 
+  public getAllLocalAuthorities(): Promise<LocalAuthority[]> {
+    return this.axios
+      .get(`${this.adminUrl}/localauthorities/all`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateLocalAuthority(id: number , name: string): Promise<LocalAuthority> {
+    return this.axios
+      .put(`${this.adminUrl }/localauthorities/${id}`, name, {
+        headers: {
+          'content-type': 'application/json'
+        }})
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+
   public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`)
@@ -257,6 +282,8 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
+
+
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);

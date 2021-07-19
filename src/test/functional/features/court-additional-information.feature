@@ -10,15 +10,15 @@ Feature: Court Additional Information Message
     And they are in alphabetical order
 
   Scenario: Additional Information
-    When I click edit next to a chosen court or tribunal
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Additional Information" in the rich editor field provided "#info"
     And I click the save button
-    Then a success message is displayed on the tab
+    Then a success message is displayed on the tab "General Information updated"
 
   Scenario: Welsh Translation
-    When I click edit next to a chosen court or tribunal
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_cy"
     And I click the save button
-    Then a success message is displayed on the tab
+    Then a success message is displayed on the tab "General Information updated"

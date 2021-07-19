@@ -10,15 +10,15 @@ Feature: Court Update Urgent Message
     And they are in alphabetical order
 
   Scenario: Urgent notice
-    When I click edit next to a chosen court or tribunal
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Urgent Notice" in the field provided "#generalInfoTab #urgent-notice"
     And I click the save button
-    Then a success message is displayed on the tab
+    Then a success message is displayed on the tab "General Information updated"
 
   Scenario: Welsh Translation
-    When I click edit next to a chosen court or tribunal
+    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I have added the "Welsh translation of the urgent notice" in the Urgent Notice Welsh field
     And I click the save button
-    Then a success message is displayed on the tab
+    Then a success message is displayed on the tab "General Information updated"

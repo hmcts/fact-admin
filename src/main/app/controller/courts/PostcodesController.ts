@@ -21,10 +21,11 @@ export class PostcodesController {
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
-  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court: ';
-  postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode: '
+  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved): ';
+  postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode ' +
+    '(your changes have not been saved): '
   noPostcodeErrorMsg = 'Please update the required form below and try again.'
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist: ';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved): ';
   noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.'
   noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.'
 
@@ -114,7 +115,7 @@ export class PostcodesController {
     const invalidPostcodes = this.getInvalidPostcodes(newPostcodesArray);
     if(invalidPostcodes.length > 0) {
       return this.get(req, res, newPostcodes, existingPostcodes,
-        this.postcodesNotValidMsg + invalidPostcodes, areasOfLaw, courtTypes);
+        this.postcodesNotValidMsg + invalidPostcodes, areasOfLaw, courtTypes, true);
     }
 
     // Do an intersect between the existing and new postcodes, if any values cross over
@@ -135,7 +136,7 @@ export class PostcodesController {
         await this.get(req, res, newPostcodes, existingPostcodes,
           reason.response?.status === 409
             ? this.duplicatePostcodeMsg + reason.response?.data
-            : this.addErrorMsg + reason.response?.data, areasOfLaw, courtTypes);
+            : this.addErrorMsg + reason.response?.data, areasOfLaw, courtTypes, true);
       });
   }
 

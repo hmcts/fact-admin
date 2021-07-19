@@ -25,7 +25,7 @@ export class PostcodesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
-        Utilities.toggleTabEnabled(this.postcodesNavTab, false);
+        Utilities.toggleTabEnabled(this.tabId, false);
         this.getPostcodes();
         this.setUpAddEventHandler();
         this.setUpSelectAllEventHandler();
@@ -115,6 +115,7 @@ export class PostcodesController {
   private updateContent(res: any): void {
     $(this.postcodesContentId).html(res);
     Utilities.toggleTabEnabled(this.postcodesNavTab, $('#postcodesEnabled').val()  === 'true');
+    Utilities.toggleTabEnabled(this.tabId, $('#postcodesEnabled').val()  === 'true');
     initAll({ scope: document.getElementById('postcodesTab')});
   }
 

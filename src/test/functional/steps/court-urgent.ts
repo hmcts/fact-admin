@@ -1,13 +1,7 @@
-import { Given, Then, When } from 'cucumber';
-import { expect } from 'chai';
+import {Given, Then, When} from 'cucumber';
+import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
-
-When('I click edit next to a chosen court or tribunal', async () => {
-  const elementExist = await I.checkElement('#courts > tbody > tr > td:nth-child(4) > a');
-  expect(elementExist).equal(true);
-  await I.click('#courts > tbody > tr > td:nth-child(4) > a');
-});
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.getPageTitle();
@@ -39,9 +33,49 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 });
 
 When('I click the open checkbox', async () => {
-  await I.click('#generalInfoTab #open');
+  const selectorOpen = '#generalInfoTab #open';
+
+  const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
+  expect(elementOpenCheckboxExist).equal(true);
+
+  const elementOpenChkboxChecked = await I.isElementChecked(selectorOpen);
+  if (!elementOpenChkboxChecked) {
+    await I.click(selectorOpen);
+  }
+});
+
+When('I click the close checkbox', async () => {
+  const selectorOpen = '#generalInfoTab #open';
+
+  const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
+  expect(elementOpenCheckboxExist).equal(true);
+
+  const elementOpenChkboxChecked = await I.isElementChecked(selectorOpen);
+  if (elementOpenChkboxChecked) {
+    await I.click(selectorOpen);
+  }
 });
 
 When('I click the Participates in access scheme checkbox', async () => {
-  await I.click('#generalInfoTab #access_scheme');
+  const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
+
+  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
+  expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
+
+  const elementParticipantsAccessSchemeChkboxChecked = await I.isElementChecked(selectorParticipantsAccessSchemeChkbox);
+  if (!elementParticipantsAccessSchemeChkboxChecked) {
+    await I.click(selectorParticipantsAccessSchemeChkbox);
+  }
+});
+
+When('I unclick the Participates in access scheme checkbox', async () => {
+  const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
+
+  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
+  expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
+
+  const elementParticipantsAccessSchemeChkboxChecked = await I.isElementChecked(selectorParticipantsAccessSchemeChkbox);
+  if (elementParticipantsAccessSchemeChkboxChecked) {
+    await I.click(selectorParticipantsAccessSchemeChkbox);
+  }
 });
