@@ -54,17 +54,17 @@ Then('The error message display for the postcodes {string}', async (errorMessage
   expect(await I.getElementText(errorList)).equal(errorMessage);
 });
 
-When('I choose the postcodes bd4 and bd2 to move them from the source court to the destination court', async () => {
-  const postcode1 = '#BD4';
-  const postcode2 = '#BD2';
+When('I choose the postcodes {string} and {string} to move them from the source court to the destination court', async (firstPostcode: string,secondPostcode: string) => {
+  const firstPostcodeSelector = '#'+firstPostcode;
+  const secondPostcodeSelector = '#'+secondPostcode;
 
-  const elementExist1 = await I.checkElement(postcode1);
-  expect(elementExist1).equal(true);
-  const elementExist2 = await I.checkElement(postcode2);
-  expect(elementExist2).equal(true);
+  const elementExistFirstPostcode = await I.checkElement(firstPostcodeSelector);
+  expect(elementExistFirstPostcode).equal(true);
+  const elementExistSecondPostcode = await I.checkElement(secondPostcodeSelector);
+  expect(elementExistSecondPostcode).equal(true);
 
-  await I.click(postcode1);
-  await I.click(postcode2);
+  await I.click(firstPostcodeSelector);
+  await I.click(secondPostcodeSelector);
 });
 
 Then('I choose the destination court as {string}',async (destinationCourt: string) => {
