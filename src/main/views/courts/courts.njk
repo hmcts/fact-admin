@@ -44,7 +44,6 @@
 
     <div id='numberOfCourts' class='govuk-hint'></div>
 
-
     {{ govukTable({
       id: 'courtsResults',
       name: 'courtResults',
@@ -59,20 +58,14 @@
             id: 'tableCourtsName'
           },
           classes: 'govuk-!-width-one-half'
-        },
-        {},
+        }, {},
         {
           text: "Last updated",
           attributes: {
             id: 'tableCourtsUpdated'
           }
-        },
-        {},
-        {}
+        }, {}, {}
       ],
-      body: {
-        attributes: {id: 'courtResultsBody'}
-      },
       rows: []
     }) }}
 
