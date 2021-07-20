@@ -124,6 +124,8 @@ export class CourtsTableSearch {
         toToggle.val(orderToggleState.ASC);
         break;
       }
+      default:
+        break;
     }
 
     toReset.val(orderToggleState.INACTIVE);
@@ -149,6 +151,8 @@ export class CourtsTableSearch {
           .addClass(this.courtsTableHeaderAsc);
         break;
       }
+      default:
+        break;
     }
 
     thToReset.removeClass(this.courtsTableHeaderAsc)
