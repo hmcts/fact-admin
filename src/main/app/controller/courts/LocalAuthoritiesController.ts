@@ -83,7 +83,7 @@ export class LocalAuthoritiesController {
     }
 
     let allLocalAuthorities: LocalAuthority[] = [];
-    await req.scope.cradle.api.getLocalAuthorities()
+    await req.scope.cradle.api.getAllLocalAuthorities()
       .then((value: LocalAuthority[]) => allLocalAuthorities = value)
       .catch(() => error += this.getLocalAuthoritiesErrorMsg);
 

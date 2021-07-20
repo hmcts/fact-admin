@@ -229,16 +229,6 @@ export class FactApi {
       });
   }
 
-  public getLocalAuthorities(): Promise<LocalAuthority[]> {
-    return this.axios
-      .get(`${this.adminBaseUrl}/localAuthorities`)
-      .then(results => results.data)
-      .catch(err => {
-        this.logError(err);
-        return Promise.reject(err);
-      });
-  }
-
   public getAllLocalAuthorities(): Promise<LocalAuthority[]> {
     return this.axios
       .get(`${this.adminUrl}/localauthorities/all`)
