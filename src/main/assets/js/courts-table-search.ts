@@ -51,7 +51,7 @@ export class CourtsTableSearch {
         $(this.tableCourtsUpdatedId), $(this.tableCourtsNameId));
   }
 
-  static setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
+  private static setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): void {
     let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
     const filteredCourts = CourtsTableSearch.filterCourts(courts, searchFilterValue, includeClosedCourts,
@@ -145,7 +145,7 @@ export class CourtsTableSearch {
     toReset.val(orderToggleState.INACTIVE);
   }
 
-  static switchTableClasses(tableState: JQuery, thToToggle: JQuery, thToReset: JQuery): void {
+  private static switchTableClasses(tableState: JQuery, thToToggle: JQuery, thToReset: JQuery): void {
 
     switch (tableState.val()) {
       case orderToggleState.ASC: {
