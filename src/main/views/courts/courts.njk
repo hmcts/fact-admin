@@ -1,5 +1,6 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 
 {% extends "template.njk" %}
 
@@ -8,37 +9,74 @@
 
   <div id = 'tableContainer'>
 
-    <input type="hidden" name="courtsHidden" id='courtsHidden' value="{{ courts | dump }}" />
-    <input type="hidden" name="courtsUpdatedAscToggle" id='courtsUpdatedAscToggle' value="INACTIVE" />
-    <input type="hidden" name="courtsNameAscToggle" id='courtsNameAscToggle' value="ASC" />
-    <input type="hidden" name="courtsFrontendUrl" id='courtsFrontendUrl' value= {{ factFrontendURL }} />
+    <input type='hidden' name='courtsHidden' id='courtsHidden' value='{{ courts | dump }}' />
+    <input type='hidden' name='courtsUpdatedAscToggle' id='courtsUpdatedAscToggle' value='INACTIVE' />
+    <input type='hidden' name='courtsNameAscToggle' id='courtsNameAscToggle' value='ASC' />
+    <input type='hidden' name='courtsFrontendUrl' id='courtsFrontendUrl' value= {{ factFrontendURL }} />
 
-    <div id="courtOptionsRow" class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half">
-        <div class="govuk-input__wrapper">
-          <div class="govuk-input__prefix" aria-hidden="true">🔎</div>
-          <input class="govuk-input" id="searchCourts" name="searchCourts" type="text",
-            placeholder=" Search courts and tribunals"/>
-        </div>
+    <div id='courtOptionsRow' class='govuk-grid-row'>
+      <div class='govuk-grid-column-one-half'>
+        {{ govukInput({
+          attributes: {
+            placeholder: ' Search courts and tribunals'
+          },
+          prefix: {
+            text: '🔎'
+          },
+          id: 'searchCourts',
+          name: 'searchCourts'
+        }) }}
       </div>
 
-      <div id="toggleClosedCourtsDisplay" class="govuk-grid-column-one-quarter">
+      <div id='toggleClosedCourtsDisplay' class='govuk-grid-column-one-quarter'>
        {{ govukCheckboxes({
-         idPrefix: "toggle-closed-courts-display",
-         name: "toggleClosedCourtsDisplay",
-         classes: "govuk-checkboxes--small",
+         idPrefix: 'toggle-closed-courts-display',
+         name: 'toggleClosedCourtsDisplay',
+         classes: 'govuk-checkboxes--small',
          items: [
            {
-             value: "includeClosed",
-             text: "Include closed"
+             value: 'includeClosed',
+             text: 'Include closed'
            }]
        }) }}
       </div>
-
     </div>
 
-    <div id="numberOfCourts" class="govuk-hint"></div>
-    <table class="govuk-table" id="courtsResults"></table>
+    <div id='numberOfCourts' class='govuk-hint'></div>
+
+
+    {{ govukTable({
+      id: 'courtsResults',
+      name: 'courtResults',
+      firstCellIsHeader: true,
+      attributes: {
+        id: 'courtResults'
+      },
+      head: [
+        {
+          text: 'Name',
+          attributes: {
+            id: 'tableCourtsName'
+          },
+          classes: 'govuk-!-width-one-half'
+        },
+        {},
+        {
+          text: "Last updated",
+          attributes: {
+            id: 'tableCourtsUpdated'
+          }
+        },
+        {},
+        {}
+      ],
+      body: {
+        attributes: {id: 'courtResultsBody'}
+      },
+      rows: []
+    }) }}
+
+    <!-- <table class='govuk-table' id='courtsResults'></table> -->
   </div>
 
 {% endblock %}

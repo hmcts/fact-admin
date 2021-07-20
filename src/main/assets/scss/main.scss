@@ -16,51 +16,49 @@
   font-size: 1.1495rem;
 }
 
-$blue: #1d70b8;
-
 .courts-table-header-inactive {
 
-  color: govuk-colour("blue", $legacy: "blue-3");
+  color: govuk-colour('blue', $legacy: 'blue-3');
 
   &:after {
-    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
-    content: "\2B65";
+    border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
+    content: '\2B65';
   }
 
   &:hover {
-    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    color: govuk-colour('dark-blue', $legacy: 'dark-blue-3');
     cursor: pointer;
   }
 }
 
 .courts-table-header-asc {
 
-  color: govuk-colour("blue", $legacy: "blue-3");
+  color: govuk-colour('blue', $legacy: 'blue-3');
 
   &:after {
-    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
-    content: "\2193";
+    border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
+    content: '\2193';
     margin-left: 5px;
   }
 
   &:hover {
-    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    color: govuk-colour('dark-blue', $legacy: 'dark-blue-3');
     cursor: pointer;
   }
 }
 
 .courts-table-header-desc {
 
-  color: govuk-colour("blue", $legacy: "blue-3");
+  color: govuk-colour('blue', $legacy: 'blue-3');
 
   &:after {
-    border-color: govuk-colour("blue", $legacy: "dark-blue-3");
-    content: "\2191";
+    border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
+    content: '\2191';
     margin-left: 5px;
   }
 
   &:hover {
-    color: govuk-colour("dark-blue", $legacy: "dark-blue-3");
+    color: govuk-colour('dark-blue', $legacy: 'dark-blue-3');
     cursor: pointer;
   }
 }

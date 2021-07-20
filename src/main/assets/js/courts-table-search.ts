@@ -9,27 +9,13 @@ export class CourtsTableSearch {
   private static courtsHiddenId = 'courtsHidden';
   private static courtsNameAscToggleId = '#courtsNameAscToggle';
   private static courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
-  private static courtsResults = 'courtsResults';
+  private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';
   private static courtsTableHeaderDesc = 'courts-table-header-desc';
   private static courtsTableHeaderInactive = 'courts-table-header-inactive';
   private static courtsFrontendUrl = '#courtsFrontendUrl';
   private static tableCourtsNameId = '#tableCourtsName';
   private static tableCourtsUpdatedId = '#tableCourtsUpdated';
-  private static TABLE_BODY_START = ' <tbody class="govuk-table__body">';
-  private static TABLE_HEADER = ' <table class="govuk-table" id="courtsResults">' +
-    ' <thead class="govuk-table__head">' +
-    '   <tr class="govuk-table__row">' +
-    '     <th id="tableCourtsName" scope="col" ' +
-    '       class="govuk-table__header govuk-!-width-one-half courts-table-header-inactive">Name</th>' +
-    '     <th scope="col" class="govuk-table__header"></th>' +
-    '     <th id="tableCourtsUpdated" scope="col" ' +
-    '       class="govuk-table__header courts-table-header-inactive">Last Updated</th>' +
-    '     <th scope="col" class="govuk-table__header"></th>' +
-    '     <th scope="col" class="govuk-table__header"></th>' +
-    '   </tr>' +
-    ' </thead>';
-  private static TABLE_HEADER_BODY_END = '</tbody> </table>';
 
   static setUpTable(filterName: string, defaultValue = false): void {
 
@@ -53,11 +39,9 @@ export class CourtsTableSearch {
 
   private static setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): void {
-    let tableBody = this.TABLE_HEADER + this.TABLE_BODY_START;
     const filteredCourts = CourtsTableSearch.filterCourts(courts, searchFilterValue, includeClosedCourts,
       orderNameAscendingFilter, orderUpdatedAscendingFilter);
-    tableBody += CourtsTableSearch.getCourtsTableBody(filteredCourts) + this.TABLE_HEADER_BODY_END;
-    (document.getElementById(this.courtsResults) as HTMLElement).outerHTML = tableBody;
+    $(this.courtsResultsSection).html(CourtsTableSearch.getCourtsTableBody(filteredCourts));
     searchFilterValue.length ? $(this.numberOfCourts).show().text(
       'Showing ' + filteredCourts.length + ' results')
       : $(this.numberOfCourts).hide();
@@ -85,7 +69,7 @@ export class CourtsTableSearch {
             return (a.name > b.name) ? 1 : -1;
           case orderToggleState.DESC:
             return (a.name < b.name) ? 1 : -1;
-          case orderToggleState.INACTIVE:
+          default:
             break;
         }
 
@@ -94,7 +78,7 @@ export class CourtsTableSearch {
             return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
           case orderToggleState.DESC:
             return (Date.parse(a.updated_at) < Date.parse(b.updated_at)) ? 1 : -1;
-          case orderToggleState.INACTIVE:
+          default:
             break;
         }
       }));
