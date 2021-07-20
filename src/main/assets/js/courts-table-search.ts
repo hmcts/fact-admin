@@ -109,9 +109,9 @@ export class CourtsTableSearch {
         }
         switch (orderUpdatedAscendingFilter) {
           case orderToggleState.ASC:
-            return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
-          case orderToggleState.DESC:
             return (Date.parse(a.updated_at) < Date.parse(b.updated_at)) ? 1 : -1;
+          case orderToggleState.DESC:
+            return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
           default:
             break;
         }
@@ -131,9 +131,9 @@ export class CourtsTableSearch {
     $.each(filteredCourts,function(index,value) {
       function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string, frontendUrl: string): string {
         return ' <tr class="govuk-table__row">' +
-          ' <td id = "courtTableColumnName" class="govuk-table__cell">' + name + ' </td>' +
-          ' <td id = "courtTableColumnClosed" class="govuk-table__cell">' + (displayed ? '' : 'closed') + ' </td>' +
-          ' <td id = "courtTableColumnLastUpdated" class="govuk-table__cell">' + updatedAt + ' </td>' +
+          ' <td class="govuk-table__cell courtTableColumnName">' + name + ' </td>' +
+          ' <td class="govuk-table__cell courtTableColumnClosed">' + (displayed ? '' : 'closed') + ' </td>' +
+          ' <td class="govuk-table__cell courtTableColumnLastUpdated">' + updatedAt + ' </td>' +
           ' <td class="govuk-table__cell">' +
           '   <a id="view-"' + slug + ' class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
           ' </td>' +
