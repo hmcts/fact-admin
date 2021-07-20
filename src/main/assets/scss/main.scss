@@ -20,7 +20,7 @@
 
   color: govuk-colour('blue', $legacy: 'blue-3');
 
-  &:after {
+  &::after {
     border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
     content: '\2B65';
   }
@@ -35,7 +35,7 @@
 
   color: govuk-colour('blue', $legacy: 'blue-3');
 
-  &:after {
+  &::after {
     border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
     content: '\2193';
     margin-left: 5px;
@@ -51,7 +51,7 @@
 
   color: govuk-colour('blue', $legacy: 'blue-3');
 
-  &:after {
+  &::after {
     border-color: govuk-colour('blue', $legacy: 'dark-blue-3');
     content: '\2191';
     margin-left: 5px;
