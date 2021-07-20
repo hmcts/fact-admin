@@ -23,6 +23,7 @@ Feature: Postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
 
   Scenario: Adding invalid and duplicate postcode
+    When I will make sure to delete the existing postcodes
     When I add new postcodes "bdx,123,bd1"
     Then I click the add postcode button
     Then The error message display for the postcodes "A problem has occurred (your changes have not been saved). The following postcodes are invalid: bdx,123"
@@ -39,7 +40,7 @@ Feature: Postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
     Then I will make sure to delete the existing postcodes for the court "<view_court_slug>"
     Then I go back to the editing postcodes for source court "aldershot-justice-centre"
-    When I choose the postcodes bd4 and bd2 to move them from the source court to the destination court
+    When I choose the postcodes "BD4" and "BD2" to move them from the source court to the destination court
     Then I choose the destination court as "<view_court_slug>"
     Then I click the move button
     Then A green message is displayed for the postcodes "Postcodes updated"
