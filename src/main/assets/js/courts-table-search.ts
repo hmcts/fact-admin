@@ -135,10 +135,10 @@ export class CourtsTableSearch {
           ' <td class="govuk-table__cell courtTableColumnClosed">' + (displayed ? '' : 'closed') + ' </td>' +
           ' <td class="govuk-table__cell courtTableColumnLastUpdated">' + updatedAt + ' </td>' +
           ' <td class="govuk-table__cell">' +
-          '   <a id="view-"' + slug + ' class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
+          '   <a id="view-' + slug + '" class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
           ' </td>' +
           ' <td class="govuk-table__cell">' +
-          '   <a id="edit-"' + slug + ' class="govuk-link" href="/courts/' + slug + '/edit#general">edit</a>' +
+          '   <a id="edit-' + slug + '" class="govuk-link" href="/courts/' + slug + '/edit#general">edit</a>' +
           ' </td>' +
           ' </tr>';
       }
