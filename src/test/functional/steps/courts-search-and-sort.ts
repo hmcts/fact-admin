@@ -105,7 +105,9 @@ When('I click on last updated to sort descending', async () => {
   const selector = '#tableCourtsUpdated';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
+  //This click is to sort in ascending order
   await I.click(selector);
+  //This click is to sort in descending order
   await I.click(selector);
 });
 
