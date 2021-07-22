@@ -19,11 +19,8 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
   const sortedCourtNames: [string] = courtHtmlElementToSort.sort();
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i) {
+  for (let i = 0; i < courtHtmlElement.length && isEqual; ++i && isEqual) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
-    if (!isEqual) {
-      break;
-    }
   }
   expect(isEqual).equal(true);
 });
@@ -62,14 +59,12 @@ Then('Then All courts should be displayed sorted by name in a descending order',
   const courtHtmlElementToSort: [string] = await I.getHtmlFromElements(selector);
   const sortedCourtNames = courtHtmlElementToSort.sort().reverse();
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i) {
+  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
-    if (!isEqual) {
-      break;
-    }
   }
   expect(isEqual).equal(true);
-});
+})
+;
 
 Then('I should be able to see the message {string} correct number of {string}', async (firstHalfMsg: string, secondHalfMsg: string) => {
   const selectorCourts = '.govuk-table__cell.courtTableColumnName';
@@ -101,11 +96,9 @@ Then('Then All courts should be displayed in a ascending order', async () => {
     return new Date(b).getTime() - new Date(a).getTime()
   });
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i) {
+  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
-    if (!isEqual) {
-      break;
-    }
+
   }
   expect(isEqual).equal(true);
 });
@@ -131,11 +124,8 @@ Then('Then All courts should be displayed in a descending order', async () => {
     return new Date(a).getTime() - new Date(b).getTime()
   });
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i) {
+  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
-    if (!isEqual) {
-      break;
-    }
   }
   expect(isEqual).equal(true);
 });

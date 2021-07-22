@@ -6,6 +6,7 @@ Feature: Postcodes
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
     When I click edit next to court with "aldershot-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
@@ -46,5 +47,5 @@ Feature: Postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
 
     Examples:
-      | view_court_slug            |
+      | view_court_slug             |
       | bankruptcy-court-high-court |

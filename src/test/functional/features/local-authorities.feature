@@ -7,6 +7,7 @@ Feature: Local authorities
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
 
 
@@ -26,8 +27,8 @@ Feature: Local authorities
     Then Success message is displayed for local authorities with summary "Local authorities updated"
 
     Examples:
-      | view_court_slug                         |
-      | aylesbury-county-court-and-family-court |
+      | view_court_slug                            |
+      | birmingham-civil-and-family-justice-centre |
 
   Scenario Outline: When there are no area of law selected for the chosen court user should get proper error message when he clicks on local authorities
 
@@ -42,8 +43,8 @@ Feature: Local authorities
     Then An error is displayed for local authorities with title "There is a problem" and summery "You need to enable relevant family court areas of law"
 
     Examples:
-      | view_court_slug         |
-      | barry-magistrates-court |
+      | view_court_slug      |
+      | administrative-court |
 
   Scenario Outline: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user.
 
@@ -57,8 +58,8 @@ Feature: Local authorities
     Then The local authorities tab should be disabled
 
     Examples:
-      | view_court_slug         |
-      | barry-magistrates-court |
+      | view_court_slug      |
+      | administrative-court |
 
 
 
