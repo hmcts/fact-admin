@@ -6,8 +6,10 @@ Feature: Homepage
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
 
   Scenario: View the list
+
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
@@ -17,4 +19,12 @@ Feature: Homepage
 
     Examples:
       | edit_court_slug                            | edit_court_name                            |
+      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |
+
+  Scenario Outline: Navigate to view court or tribunal page
+    When I click view next to court with "<view_court_slug>"
+    Then I am redirected to the View Court page for the "<view_court_name>"
+
+    Examples:
+      | view_court_slug                            | view_court_name                            |
       | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |

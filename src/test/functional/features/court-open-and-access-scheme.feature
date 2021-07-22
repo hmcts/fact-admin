@@ -6,6 +6,7 @@ Feature: Court Open and Access Scheme flags
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
@@ -22,8 +23,8 @@ Feature: Court Open and Access Scheme flags
     Then a success message is displayed on the tab "General Information updated"
 
     Examples:
-      | view_court_slug                         |
-      | aylesbury-county-court-and-family-court |
+      | view_court_slug                            |
+      | birmingham-civil-and-family-justice-centre |
 
   Scenario Outline: Access scheme
     When I click edit next to court with "<view_court_slug>"
@@ -36,8 +37,8 @@ Feature: Court Open and Access Scheme flags
     Then a success message is displayed on the tab "General Information updated"
 
     Examples:
-      | view_court_slug                              |
-      | aylesbury-magistrates-court-and-family-court |
+      | view_court_slug                            |
+      | birmingham-civil-and-family-justice-centre |
 
 
 

@@ -7,6 +7,7 @@ Feature: Court Types
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
@@ -22,8 +23,8 @@ Feature: Court Types
     Then a green update message is displayed showing Court Types updated
 
     Examples:
-      | view_court_slug                        |
-      | uxbridge-county-court-and-family-court |
+      | view_court_slug                           |
+      | basingstoke-county-court-and-family-court |
 
 
   Scenario Outline: Remove a court type
@@ -38,8 +39,8 @@ Feature: Court Types
 
 
     Examples:
-      | view_court_slug                        |
-      | uxbridge-county-court-and-family-court |
+      | view_court_slug                           |
+      | basingstoke-county-court-and-family-court |
 
 
   Scenario Outline: Select a court type and leave court code blank
@@ -53,5 +54,5 @@ Feature: Court Types
     Then a court types error message is displayed
 
     Examples:
-      | view_court_slug                        |
-      | uxbridge-county-court-and-family-court |
+      | view_court_slug                           |
+      | basingstoke-county-court-and-family-court |
