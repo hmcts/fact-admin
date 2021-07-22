@@ -8,11 +8,8 @@
   <h1 class="govuk-heading-xl">Courts and tribunals</h1>
 
   <div id = 'tableContainer'>
-
-    <input type='hidden' name='courtsHidden' id='courtsHidden' value='{{ courts | dump }}' />
     <input type='hidden' name='courtsUpdatedAscToggle' id='courtsUpdatedAscToggle' value='INACTIVE' />
     <input type='hidden' name='courtsNameAscToggle' id='courtsNameAscToggle' value='ASC' />
-    <input type='hidden' name='courtsFrontendUrl' id='courtsFrontendUrl' value= {{ factFrontendURL }} />
 
     <div id='courtOptionsRow' class='govuk-grid-row'>
       <div class='govuk-grid-column-one-half'>
@@ -44,10 +41,37 @@
 
     <div id='numberOfCourts' class='govuk-hint'></div>
 
+    {% set courtItems = [] %}
+    {% for court in courts|sort(false, true, 'name') %}
+      {% set courtItems = (courtItems.push([
+        {
+          'attributes': {
+            'type': 'name',
+            'value': court.name,
+            'name': court.slug
+          },
+          'text': court.name
+        },
+        {
+          'attributes': {'type': 'displayed', 'value': court.displayed},
+          'text': '' if court.displayed else 'closed'
+        },
+        {
+         'attributes': {'type': 'updated_at', 'value': court.updated_at},
+         'text': court.updated_at
+        },
+        {
+          'html': '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
+        },
+        {
+          'html': '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
+        }
+        ]), courtItems) %}
+    {% endfor %}
+
     {{ govukTable({
       id: 'courtsResults',
       name: 'courtResults',
-      firstCellIsHeader: true,
       attributes: {
         id: 'courtResults'
       },
@@ -64,9 +88,11 @@
           attributes: {
             id: 'tableCourtsUpdated'
           }
-        }, {}, {}
+        },
+        {},
+        {}
       ],
-      rows: []
+      rows: courtItems
     }) }}
   </div>
 

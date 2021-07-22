@@ -1,19 +1,19 @@
 import $ from 'jquery';
 import {orderToggleState} from '../../enums/searchToggleState';
+import {CourtItem} from '../../types/CourtItem';
 
 export class CourtsTableSearch {
 
   private static toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private static numberOfCourts = '#numberOfCourts';
   private static searchCourtsFilterId = '#searchCourts';
-  private static courtsHiddenId = 'courtsHidden';
+  private static tableData = '#courtResults';
   private static courtsNameAscToggleId = '#courtsNameAscToggle';
   private static courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
   private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';
   private static courtsTableHeaderDesc = 'courts-table-header-desc';
   private static courtsTableHeaderInactive = 'courts-table-header-inactive';
-  private static courtsFrontendUrl = '#courtsFrontendUrl';
   private static tableCourtsNameId = '#tableCourtsName';
   private static tableCourtsUpdatedId = '#tableCourtsUpdated';
 
@@ -28,11 +28,9 @@ export class CourtsTableSearch {
   static setUpTable(filterName: string, defaultValue = false): void {
     defaultValue
       ? CourtsTableSearch.setUpTableData(
-        (document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
-      $(this.searchCourtsFilterId).val() as string, // if the user clicks 'back' in the browser after view or editing
-      false, orderToggleState.ASC, orderToggleState.INACTIVE)
-      : CourtsTableSearch.setUpTableData((
-        document.getElementById(this.courtsHiddenId) as HTMLInputElement).value,
+        $(this.searchCourtsFilterId).val() as string, // if the user clicks 'back' in the browser after view or editing
+        false, orderToggleState.ASC, orderToggleState.INACTIVE)
+      : CourtsTableSearch.setUpTableData(
         $(this.searchCourtsFilterId).val() as string,
         $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
         $(this.courtsNameAscToggleId).val() as string,
@@ -50,21 +48,60 @@ export class CourtsTableSearch {
    * Retrieves the filtered results from the toggles and search, and sets the html
    * of the tbody element of the table accordingly
    *
-   * @param courts the list of public court information
    * @param searchFilterValue the search value from the 'search courts or tribunals' input field
    * @param includeClosedCourts whether or not to include closed courts in the result
    * @param orderNameAscendingFilter whether to sort by name asc or desc
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
    * @private
    */
-  private static setUpTableData(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
+  private static setUpTableData(searchFilterValue: string, includeClosedCourts: boolean,
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): void {
-    const filteredCourts = CourtsTableSearch.filterCourts(courts, searchFilterValue, includeClosedCourts,
+    const filteredCourts = CourtsTableSearch.filterCourts(this.getExistingTableData(),
+      searchFilterValue, includeClosedCourts,
       orderNameAscendingFilter, orderUpdatedAscendingFilter);
     $(this.courtsResultsSection).html(CourtsTableSearch.getCourtsTableBody(filteredCourts));
-    searchFilterValue.length ? $(this.numberOfCourts).show().text(
-      'Showing ' + filteredCourts.length + ' results')
+    searchFilterValue.length
+      ? $(this.numberOfCourts).show().text('Showing '
+        + filteredCourts.filter(d => d.visible).length + ' results')
       : $(this.numberOfCourts).hide();
+  }
+
+  /**
+   *
+   * Get the court data by extracting it from the table
+   *
+   * @private
+   */
+  private static getExistingTableData(): CourtItem[] {
+    const courtItems = [] as CourtItem[];
+    $(this.tableData).find('tr').each(function(i, row) {
+      if (i == 0)
+        // the first index is for the column names; i.e name, displayed, updated_at
+        return;
+
+      const courtItem = {} as CourtItem;
+      $(row).find('td').each(function(i, dataCell) {
+
+        switch ($(dataCell).attr('type')) {
+          case 'name':
+            courtItem.name = $(dataCell).attr('value');
+            courtItem.slug = $(dataCell).attr('name');
+            break;
+          case 'displayed':
+            courtItem.displayed = $(dataCell).attr('value') === 'true';
+            break;
+          case 'updated_at':
+            courtItem.updatedAt = $(dataCell).attr('value');
+            break;
+          default:
+            break;
+        }
+      });
+
+      courtItem.row = $(row);
+      courtItems.push(courtItem);
+    });
+    return courtItems;
   }
 
   /**
@@ -82,41 +119,40 @@ export class CourtsTableSearch {
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
    * @private
    */
-  private static filterCourts(courts: string, searchFilterValue: string, includeClosedCourts: boolean,
-    orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): any {
+  private static filterCourts(courts: CourtItem[], searchFilterValue: string, includeClosedCourts: boolean,
+    orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): CourtItem[] {
 
-    return JSON.parse(courts)
-      .filter((court: { displayed: boolean }) => {
-        if (includeClosedCourts) {
-          return court.displayed == true || court.displayed == false;
-        }
-        else return court.displayed == true;
-      }).filter((court: { name: string }) => {
-        if (searchFilterValue.length == 0)
-          return court;
-        else if (court.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())) {
-          return court;
-        }
-      }).sort(((a: { name: string; updated_at: string }, b: { name: string; updated_at: string }) => {
+    courts.forEach((courtItem) => {
+      if (searchFilterValue.trim().length > 0) {
+        courtItem.visible = ((includeClosedCourts || courtItem.displayed)
+          && courtItem.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase()));
+      } else
+        courtItem.visible = (includeClosedCourts || courtItem.displayed);
+    });
 
-        switch (orderNameAscendingFilter) {
-          case orderToggleState.ASC:
-            return (a.name > b.name) ? 1 : -1;
-          case orderToggleState.DESC:
-            return (a.name < b.name) ? 1 : -1;
-          default:
-            break;
-        }
-        switch (orderUpdatedAscendingFilter) {
-          case orderToggleState.ASC:
-            return (Date.parse(a.updated_at) < Date.parse(b.updated_at)) ? 1 : -1;
-          case orderToggleState.DESC:
-            return (Date.parse(a.updated_at) > Date.parse(b.updated_at)) ? 1 : -1;
-          default:
-            break;
-        }
-      }));
+    const otherWayAround = courts.sort(((courtItemA, courtItemB) => {
+      switch (orderNameAscendingFilter) {
+        case orderToggleState.ASC:
+          return (courtItemA.name > courtItemB.name) ? 1 : -1;
+        case orderToggleState.DESC:
+          return (courtItemA.name < courtItemB.name) ? 1 : -1;
+        default:
+          break;
+      }
+      switch (orderUpdatedAscendingFilter) {
+        case orderToggleState.ASC:
+          return (Date.parse(courtItemA.updatedAt) < Date.parse(courtItemB.updatedAt)) ? 1 : -1;
+        case orderToggleState.DESC:
+          return (Date.parse(courtItemA.updatedAt) > Date.parse(courtItemB.updatedAt)) ? 1 : -1;
+        default:
+          break;
+      }
+    }));
+
+    console.log(otherWayAround);
+    return otherWayAround;
   }
+
 
   /**
    *
@@ -126,24 +162,17 @@ export class CourtsTableSearch {
    * @param filteredCourts the filtered list of public courts
    * @private
    */
-  private static getCourtsTableBody(filteredCourts: any): string {
+  private static getCourtsTableBody(filteredCourts: CourtItem[]): string {
     let tableData = '';
     $.each(filteredCourts,function(index,value) {
-      function getDataStructure(name: string, updatedAt: string, displayed: string, slug: string, frontendUrl: string): string {
-        return ' <tr class="govuk-table__row">' +
-          ' <td class="govuk-table__cell courtTableColumnName">' + name + ' </td>' +
-          ' <td class="govuk-table__cell courtTableColumnClosed">' + (displayed ? '' : 'closed') + ' </td>' +
-          ' <td class="govuk-table__cell courtTableColumnLastUpdated">' + updatedAt + ' </td>' +
-          ' <td class="govuk-table__cell">' +
-          '   <a id="view-' + slug + '" class="govuk-link" href="' + frontendUrl +  '/courts/' + slug + '">view</a>' +
-          ' </td>' +
-          ' <td class="govuk-table__cell">' +
-          '   <a id="edit-' + slug + '" class="govuk-link" href="/courts/' + slug + '/edit#general">edit</a>' +
-          ' </td>' +
-          ' </tr>';
+      function getDataStructure(courtItem: CourtItem): string {
+        return (!courtItem.visible
+          ? '<tr class="govuk-table__row" hidden>' : '<tr class="govuk-table__row>">') +
+            courtItem.row.html() +
+          '</tr>';
       }
-      tableData += getDataStructure(value.name, value.updated_at ?? '',
-        value.displayed, value.slug, $(CourtsTableSearch.courtsFrontendUrl).val() as string);
+
+      tableData += getDataStructure(value);
     });
 
     return tableData;
