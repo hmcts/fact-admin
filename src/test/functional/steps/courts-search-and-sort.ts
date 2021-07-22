@@ -21,6 +21,9 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length; ++i) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
+    if (!isEqual) {
+      break;
+    }
   }
   expect(isEqual).equal(true);
 });
@@ -61,6 +64,9 @@ Then('Then All courts should be displayed sorted by name in a descending order',
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length; ++i) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
+    if (!isEqual) {
+      break;
+    }
   }
   expect(isEqual).equal(true);
 });
@@ -97,6 +103,9 @@ Then('Then All courts should be displayed in a ascending order', async () => {
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length; ++i) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
+    if (!isEqual) {
+      break;
+    }
   }
   expect(isEqual).equal(true);
 });
@@ -124,6 +133,9 @@ Then('Then All courts should be displayed in a descending order', async () => {
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length; ++i) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
+    if (!isEqual) {
+      break;
+    }
   }
   expect(isEqual).equal(true);
 });
