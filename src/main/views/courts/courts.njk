@@ -49,20 +49,23 @@
             type: 'name',
             name: court.slug
           },
-          text: court.name
+          text: court.name,
+          classes: 'courtTableColumnName'
         },
         {
           attributes: {
             type: 'displayed',
             value: court.displayed
           },
-          text: '' if court.displayed else 'closed'
+          text: '' if court.displayed else 'closed',
+          classes: 'courtTableColumnDisplayed'
         },
         {
          attributes: {
             type: 'updated_at'
           },
-         text: court.updated_at
+         text: court.updated_at,
+         classes: 'courtTableColumnLastUpdated'
         },
         {
           html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
