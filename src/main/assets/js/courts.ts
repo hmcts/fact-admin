@@ -32,8 +32,9 @@ export class CourtsController {
   private setUpToggleClosedCourtsDisplay(): void {
     $(this.contentId).on('change', `input[name=${this.toggleClosedCourtsDisplay}]`, e => {
       e.preventDefault();
-      $(this.courtsUpdatedAscToggleId).val() == orderToggleState.INACTIVE ?
-        CourtsTableSearch.setUpTable('name') : CourtsTableSearch.setUpTable('date');
+      $(this.courtsUpdatedAscToggleId).val() == orderToggleState.INACTIVE
+        ? CourtsTableSearch.setUpTable('name')
+        : CourtsTableSearch.setUpTable('date');
     });
   }
 
@@ -41,8 +42,11 @@ export class CourtsController {
     $(this.contentId).on('input', `input[name=${this.searchCourtsFilter}]`, e => {
       e.preventDefault();
       const updatedToggleValue = $(this.courtsUpdatedAscToggleId).val() as string;
-      (updatedToggleValue == orderToggleState.ASC || updatedToggleValue == orderToggleState.DESC) ?
-        CourtsTableSearch.setUpTable('date') : CourtsTableSearch.setUpTable('name');
+      // Depending on the active filter, sort the data using date or name filtering, whilst
+      // also including the search input value
+      (updatedToggleValue == orderToggleState.ASC || updatedToggleValue == orderToggleState.DESC)
+        ? CourtsTableSearch.setUpTable('date')
+        : CourtsTableSearch.setUpTable('name');
     });
   }
 

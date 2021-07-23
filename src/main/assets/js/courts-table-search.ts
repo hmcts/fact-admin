@@ -25,7 +25,7 @@ export class CourtsTableSearch {
    * @param filterName Either 'name' or 'date' depending on the type of toggle
    * @param defaultValue set to false by default on initial load
    */
-  static setUpTable(filterName: string, defaultValue = false): void {
+  static setUpTable(filterName: 'name' | 'date', defaultValue = false): void {
     defaultValue
       ? CourtsTableSearch.setUpTableData(
         $(this.searchCourtsFilterId).val() as string, // if the user clicks 'back' in the browser after view or editing
@@ -60,10 +60,8 @@ export class CourtsTableSearch {
       searchFilterValue, includeClosedCourts,
       orderNameAscendingFilter, orderUpdatedAscendingFilter);
     $(this.courtsResultsSection).html(CourtsTableSearch.getCourtsTableBody(filteredCourts));
-    searchFilterValue.length
-      ? $(this.numberOfCourts).show().text('Showing '
-        + filteredCourts.filter(d => d.visible).length + ' results')
-      : $(this.numberOfCourts).hide();
+    $(this.numberOfCourts).show().text('Showing '
+        + filteredCourts.filter(d => d.visible).length + ' results');
   }
 
   /**
@@ -84,14 +82,15 @@ export class CourtsTableSearch {
 
         switch ($(dataCell).attr('type')) {
           case 'name':
-            courtItem.name = $(dataCell).attr('value');
+            courtItem.name = $(dataCell).text();
             courtItem.slug = $(dataCell).attr('name');
             break;
           case 'displayed':
             courtItem.displayed = $(dataCell).attr('value') === 'true';
             break;
           case 'updated_at': {
-            const updatedAt = new Date($(dataCell).attr('value'));
+            const updatedAt = new Date($(dataCell).text());
+            // check if it is not a number, as otherwise the sorting will fail
             isNaN(updatedAt.getTime()) ? courtItem.updatedAt = new Date(0) :
               courtItem.updatedAt = updatedAt;
             break;
@@ -153,7 +152,6 @@ export class CourtsTableSearch {
     }));
   }
 
-
   /**
    *
    * Create and return the tbody of the table based on a list of table row elements that are created
@@ -164,17 +162,12 @@ export class CourtsTableSearch {
    */
   private static getCourtsTableBody(filteredCourts: CourtItem[]): string {
     let tableData = '';
-    $.each(filteredCourts,function(index,value) {
-      function getDataStructure(courtItem: CourtItem): string {
-        return (!courtItem.visible
-          ? '<tr class="govuk-table__row" hidden>' : '<tr class="govuk-table__row>">') +
-            courtItem.row.html() +
-          '</tr>';
-      }
-
-      tableData += getDataStructure(value);
+    $.each(filteredCourts,function(index,value): void {
+      tableData += (!value.visible
+        ? '<tr class="govuk-table__row" hidden>' : '<tr class="govuk-table__row>">') +
+        value.row.html() +
+        '</tr>';
     });
-
     return tableData;
   }
 

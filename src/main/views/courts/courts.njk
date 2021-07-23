@@ -45,26 +45,30 @@
     {% for court in courts|sort(false, true, 'name') %}
       {% set courtItems = (courtItems.push([
         {
-          'attributes': {
-            'type': 'name',
-            'value': court.name,
-            'name': court.slug
+          attributes: {
+            type: 'name',
+            name: court.slug
           },
-          'text': court.name
+          text: court.name
         },
         {
-          'attributes': {'type': 'displayed', 'value': court.displayed},
-          'text': '' if court.displayed else 'closed'
+          attributes: {
+            type: 'displayed',
+            value: court.displayed
+          },
+          text: '' if court.displayed else 'closed'
         },
         {
-         'attributes': {'type': 'updated_at', 'value': court.updated_at},
-         'text': court.updated_at
+         attributes: {
+            type: 'updated_at'
+          },
+         text: court.updated_at
         },
         {
-          'html': '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
+          html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
         },
         {
-          'html': '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
+          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
         }
         ]), courtItems) %}
     {% endfor %}
@@ -81,13 +85,14 @@
           attributes: {
             id: 'tableCourtsName'
           },
-          classes: 'govuk-!-width-one-half'
+          classes: 'govuk-!-width-one-half courts-table-header'
         }, {},
         {
           text: "Last updated",
           attributes: {
             id: 'tableCourtsUpdated'
-          }
+          },
+          classes: 'courts-table-header'
         },
         {},
         {}
