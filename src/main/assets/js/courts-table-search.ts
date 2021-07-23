@@ -90,9 +90,12 @@ export class CourtsTableSearch {
           case 'displayed':
             courtItem.displayed = $(dataCell).attr('value') === 'true';
             break;
-          case 'updated_at':
-            courtItem.updatedAt = $(dataCell).attr('value');
+          case 'updated_at': {
+            const updatedAt = new Date($(dataCell).attr('value'));
+            isNaN(updatedAt.getTime()) ? courtItem.updatedAt = new Date(0) :
+              courtItem.updatedAt = updatedAt;
             break;
+          }
           default:
             break;
         }
@@ -130,7 +133,7 @@ export class CourtsTableSearch {
         courtItem.visible = (includeClosedCourts || courtItem.displayed);
     });
 
-    const otherWayAround = courts.sort(((courtItemA, courtItemB) => {
+    return courts.sort(((courtItemA, courtItemB) => {
       switch (orderNameAscendingFilter) {
         case orderToggleState.ASC:
           return (courtItemA.name > courtItemB.name) ? 1 : -1;
@@ -141,16 +144,13 @@ export class CourtsTableSearch {
       }
       switch (orderUpdatedAscendingFilter) {
         case orderToggleState.ASC:
-          return (Date.parse(courtItemA.updatedAt) < Date.parse(courtItemB.updatedAt)) ? 1 : -1;
+          return ((courtItemA.updatedAt.getTime() < courtItemB.updatedAt.getTime()) ? 1 : -1);
         case orderToggleState.DESC:
-          return (Date.parse(courtItemA.updatedAt) > Date.parse(courtItemB.updatedAt)) ? 1 : -1;
+          return ((courtItemA.updatedAt.getTime() > courtItemB.updatedAt.getTime()) ? 1 : -1);
         default:
           break;
       }
     }));
-
-    console.log(otherWayAround);
-    return otherWayAround;
   }
 
 

@@ -1,6 +1,6 @@
 export interface CourtItem {
   name: string,
-  updatedAt: string,
+  updatedAt: Date,
   displayed: boolean,
   slug: string
   visible: boolean,
