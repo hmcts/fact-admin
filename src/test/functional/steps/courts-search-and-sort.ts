@@ -19,7 +19,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
   const sortedCourtNames: [string] = courtHtmlElementToSort.sort();
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length && isEqual; ++i && isEqual) {
+  for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
   }
   expect(isEqual).equal(true);
@@ -59,7 +59,7 @@ Then('Then All courts should be displayed sorted by name in a descending order',
   const courtHtmlElementToSort: [string] = await I.getHtmlFromElements(selector);
   const sortedCourtNames = courtHtmlElementToSort.sort().reverse();
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
+  for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
   }
   expect(isEqual).equal(true);
@@ -96,7 +96,7 @@ Then('Then All courts should be displayed in a ascending order', async () => {
     return new Date(b).getTime() - new Date(a).getTime()
   });
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
+  for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
 
   }
@@ -124,7 +124,7 @@ Then('Then All courts should be displayed in a descending order', async () => {
     return new Date(a).getTime() - new Date(b).getTime()
   });
   let isEqual = true;
-  for (let i = 0; i < courtHtmlElement.length; ++i && isEqual) {
+  for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] == sortedCourts[i];
   }
   expect(isEqual).equal(true);
