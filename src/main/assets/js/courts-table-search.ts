@@ -164,7 +164,7 @@ export class CourtsTableSearch {
     let tableData = '';
     $.each(filteredCourts,function(index,value): void {
       tableData += (!value.visible
-        ? '<tr class="govuk-table__row" hidden>' : '<tr class="govuk-table__row>">') +
+        ? '<tr class="govuk-table__row courtTableRowHidden" hidden>' : '<tr class="govuk-table__row>">') +
         value.row.html() +
         '</tr>';
     });
