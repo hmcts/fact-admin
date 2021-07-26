@@ -20,8 +20,6 @@ export class CourtsTableSearch {
    * Sets up the table view for the main page, on load the default configuration
    * is used, otherwise it is updated on each search toggle or courts search
    *
-   * @param filterName Either 'name' or 'date' depending on the type of toggle
-   * @param defaultValue set to false by default on initial load
    */
   public static setUpTable(): void {
     const toggleValues = CourtsTableSearch.getToggleStates();
