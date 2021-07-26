@@ -10,14 +10,14 @@ When('I enter {string} into search textbox', async (searchText: string) => {
 });
 
 Then('All courts that include {string} should be displayed sorted by name', async (searchText: string) => {
-  const selector = '.govuk-table__cell.courtTableColumnName';
-  const courtHtmlElement: [string] = await I.getHtmlFromElements(selector);
+  const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
+  const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
   courtHtmlElement.forEach(courtName => expect(courtName.toLocaleLowerCase().includes(searchText)).equal(true));
-  const courtHtmlElementToSort: [string] = await I.getHtmlFromElements(selector);
+  const courtHtmlElementToSort: string[] = await I.getHtmlFromElements(selector);
 
-  const sortedCourtNames: [string] = courtHtmlElementToSort.sort();
+  const sortedCourtNames: string[] = courtHtmlElementToSort.sort();
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
@@ -36,7 +36,7 @@ When('I select Include closed courts', async () => {
 });
 
 Then('All courts that include {string} should be displayed including closed clourts {string}', async (searchText: string, closedCourt: string) => {
-  const courtHtmlElement: [string] = await I.getHtmlFromElements('.govuk-table__cell.courtTableColumnName');
+  const courtHtmlElement: string[] = await I.getHtmlFromElements('tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName');
   expect(courtHtmlElement.length > 0).equal(true);
 
   expect(courtHtmlElement.some(courtName => courtName.trim() === closedCourt.trim())).equal(true);
@@ -51,26 +51,24 @@ When('I click on name to sort in a descending order', async () => {
 });
 
 Then('Then All courts should be displayed sorted by name in a descending order', async () => {
-
-  const selector = '.govuk-table__cell.courtTableColumnName';
-  const courtHtmlElement: [string] = await I.getHtmlFromElements(selector);
+  const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
+  const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
-  const courtHtmlElementToSort: [string] = await I.getHtmlFromElements(selector);
+  const courtHtmlElementToSort: string[] = await I.getHtmlFromElements(selector);
   const sortedCourtNames = courtHtmlElementToSort.sort().reverse();
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
     isEqual = courtHtmlElement[i] === sortedCourtNames[i];
   }
   expect(isEqual).equal(true);
-})
-;
+});
 
 Then('I should be able to see the message {string} correct number of {string}', async (firstHalfMsg: string, secondHalfMsg: string) => {
-  const selectorCourts = '.govuk-table__cell.courtTableColumnName';
+  const selectorCourts = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
   const selectorNumOfResults = '#numberOfCourts';
 
-  const courtHtmlElement: [string] = await I.getHtmlFromElements(selectorCourts);
+  const courtHtmlElement: string[] = await I.getHtmlFromElements(selectorCourts);
   const numberOfResults = courtHtmlElement.length;
 
   const elementExist = await I.checkElement(selectorNumOfResults);
@@ -87,13 +85,13 @@ When('I click on last updated to sort ascending', async () => {
 });
 
 Then('Then All courts should be displayed in a ascending order', async () => {
-  const selector = '.govuk-table__cell.courtTableColumnLastUpdated';
-  const courtHtmlElement: [Date] = await I.getHtmlFromElements(selector);
+  const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnLastUpdated';
+  const courtHtmlElement: Date[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
-  const courtHtmlElementToSort: [Date] = await I.getHtmlFromElements(selector);
+  const courtHtmlElementToSort: Date[] = await I.getHtmlFromElements(selector);
   const sortedCourts = courtHtmlElementToSort.sort(function (a: Date, b: Date) {
-    return new Date(b).getTime() - new Date(a).getTime()
+    return new Date(b).getTime() - new Date(a).getTime();
   });
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
@@ -113,15 +111,14 @@ When('I click on last updated to sort descending', async () => {
   await I.click(selector);
 });
 
-
 Then('Then All courts should be displayed in a descending order', async () => {
-  const selector = '.govuk-table__cell.courtTableColumnLastUpdated';
-  const courtHtmlElement: [Date] = await I.getHtmlFromElements(selector);
+  const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnLastUpdated';
+  const courtHtmlElement: Date[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
-  const courtHtmlElementToSort: [Date] = await I.getHtmlFromElements(selector);
+  const courtHtmlElementToSort: Date[] = await I.getHtmlFromElements(selector);
   const sortedCourts = courtHtmlElementToSort.sort(function (a: Date, b: Date) {
-    return new Date(a).getTime() - new Date(b).getTime()
+    return new Date(a).getTime() - new Date(b).getTime();
   });
   let isEqual = true;
   for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
