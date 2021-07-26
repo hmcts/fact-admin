@@ -17,8 +17,7 @@ export class CourtsTableSearch {
 
   /**
    *
-   * Sets up the table view for the main page, on load the default configuration
-   * is used, otherwise it is updated on each search toggle or courts search
+   * Sets up the table view for the main page. This is updated on each search toggle or courts search
    *
    */
   public static setUpTable(): void {
@@ -163,8 +162,7 @@ export class CourtsTableSearch {
    * heading
    *
    * @param thToToggle the jquery element parameter to toggle the visual symbol of
-   * @param toggleState
-   * @private
+   * @param toggleState the state that determines what it will will look like next
    */
   public static setTableClasses(thToToggle: JQuery, toggleState: orderToggleState): void {
 
