@@ -8,9 +8,6 @@
   <h1 class="govuk-heading-xl">Courts and tribunals</h1>
 
   <div id = 'tableContainer'>
-    <input type='hidden' name='courtsUpdatedAscToggle' id='courtsUpdatedAscToggle' value='INACTIVE' />
-    <input type='hidden' name='courtsNameAscToggle' id='courtsNameAscToggle' value='ASC' />
-
     <div id='courtOptionsRow' class='govuk-grid-row'>
       <div class='govuk-grid-column-one-half'>
         {{ govukInput({
@@ -88,14 +85,14 @@
           attributes: {
             id: 'tableCourtsName'
           },
-          classes: 'govuk-!-width-one-half courts-table-header'
+          classes: 'govuk-!-width-one-half courts-table-header courts-table-header-inactive'
         }, {},
         {
           text: "Last updated",
           attributes: {
             id: 'tableCourtsUpdated'
           },
-          classes: 'courts-table-header'
+          classes: 'courts-table-header courts-table-header-inactive'
         },
         {},
         {}

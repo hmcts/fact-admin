@@ -8,8 +8,6 @@ export class CourtsTableSearch {
   private static numberOfCourts = '#numberOfCourts';
   private static searchCourtsFilterId = '#searchCourts';
   private static tableData = '#courtResults';
-  private static courtsNameAscToggleId = '#courtsNameAscToggle';
-  private static courtsUpdatedAscToggleId = '#courtsUpdatedAscToggle';
   private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';
   private static courtsTableHeaderDesc = 'courts-table-header-desc';
@@ -25,22 +23,12 @@ export class CourtsTableSearch {
    * @param filterName Either 'name' or 'date' depending on the type of toggle
    * @param defaultValue set to false by default on initial load
    */
-  static setUpTable(filterName: 'name' | 'date', defaultValue = false): void {
-    defaultValue
-      ? CourtsTableSearch.setUpTableData(
-        $(this.searchCourtsFilterId).val() as string, // if the user clicks 'back' in the browser after view or editing
-        false, orderToggleState.ASC, orderToggleState.INACTIVE)
-      : CourtsTableSearch.setUpTableData(
+  public static setUpTable(): void {
+    const toggleValues = CourtsTableSearch.getToggleStates();
+    CourtsTableSearch.setUpTableData(
         $(this.searchCourtsFilterId).val() as string,
         $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
-        $(this.courtsNameAscToggleId).val() as string,
-        $(this.courtsUpdatedAscToggleId).val() as string);
-
-    filterName == 'name' ?
-      CourtsTableSearch.switchTableClasses($(this.courtsNameAscToggleId),
-        $(this.tableCourtsNameId), $(this.tableCourtsUpdatedId)) :
-      CourtsTableSearch.switchTableClasses($(this.courtsUpdatedAscToggleId),
-        $(this.tableCourtsUpdatedId), $(this.tableCourtsNameId));
+        toggleValues[0], toggleValues[1]);
   }
 
   /**
@@ -173,47 +161,16 @@ export class CourtsTableSearch {
 
   /**
    *
-   * Switch what toggle is active; i.e if name is clicked on, updated date will
-   * be reset to default and vise versa
-   *
-   * @param toToggle the jquery element parameter to toggle
-   * @param toReset the jquery element parameter to reset
-   */
-  static switchTableToggle(toToggle: JQuery, toReset: JQuery): void {
-    const toggleUpdatedVal = toToggle.val();
-
-    switch (toggleUpdatedVal) {
-      case orderToggleState.ASC: {
-        toToggle.val(orderToggleState.DESC);
-        break;
-      }
-      case orderToggleState.DESC: {
-        toToggle.val(orderToggleState.ASC);
-        break;
-      }
-      case orderToggleState.INACTIVE: {
-        toToggle.val(orderToggleState.ASC);
-        break;
-      }
-      default:
-        break;
-    }
-
-    toReset.val(orderToggleState.INACTIVE);
-  }
-
-  /**
-   *
    * Based on the toggle state, alter the visual symbol that appears to the side of the column
    * heading
    *
-   * @param tableState the state of the clicked on filter (name or updated date)
    * @param thToToggle the jquery element parameter to toggle the visual symbol of
-   * @param thToReset the jquery element parameter to reset the visual symbol of
+   * @param toggleState
    * @private
    */
-  private static switchTableClasses(tableState: JQuery, thToToggle: JQuery, thToReset: JQuery): void {
-    switch (tableState.val()) {
+  public static setTableClasses(thToToggle: JQuery, toggleState: orderToggleState): void {
+
+    switch (toggleState) {
       case orderToggleState.ASC: {
         thToToggle.removeClass(this.courtsTableHeaderInactive)
           .removeClass(this.courtsTableHeaderAsc)
@@ -234,9 +191,43 @@ export class CourtsTableSearch {
       default:
         break;
     }
+  }
 
+  /**
+   *
+   * Reset the provided table header to that of the class
+   * that shows that no search is active
+   *
+   * @param thToReset the element to reset
+   */
+  public static resetTableClasses(thToReset: JQuery): void {
     thToReset.removeClass(this.courtsTableHeaderAsc)
       .removeClass(this.courtsTableHeaderDesc)
       .addClass(this.courtsTableHeaderInactive);
+  }
+
+  /**
+   * Based on the two elements that display what sorting option is active,
+   * return what state they are both in
+   * @returns an array of states; index 0 for the name search state, index 1 for the date search state
+   */
+  public static getToggleStates(): orderToggleState[] {
+    const nameToggleValueClasses = $(this.tableCourtsNameId).attr('class');
+    const updatedToggleValueClasses = $(this.tableCourtsUpdatedId).attr('class');
+
+    if (nameToggleValueClasses.includes(this.courtsTableHeaderInactive)) {
+      if (updatedToggleValueClasses.includes(this.courtsTableHeaderAsc))
+        return [orderToggleState.INACTIVE, orderToggleState.ASC];
+      else if (updatedToggleValueClasses.includes(this.courtsTableHeaderDesc))
+        return [orderToggleState.INACTIVE, orderToggleState.DESC];
+      else return [orderToggleState.INACTIVE, orderToggleState.INACTIVE];
+    }
+    else if (updatedToggleValueClasses.includes(this.courtsTableHeaderInactive)) {
+      if (nameToggleValueClasses.includes(this.courtsTableHeaderAsc))
+        return [orderToggleState.ASC, orderToggleState.INACTIVE];
+      else if (nameToggleValueClasses.includes(this.courtsTableHeaderDesc))
+        return [orderToggleState.DESC, orderToggleState.INACTIVE];
+      else return [orderToggleState.INACTIVE, orderToggleState.INACTIVE];
+    }
   }
 }
