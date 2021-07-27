@@ -65,13 +65,13 @@ export class CourtsTableSearch {
       const courtItem = {} as CourtItem;
       $(row).find('td').each(function(i, dataCell) {
 
-        switch ($(dataCell).attr('type')) {
+        switch ($(dataCell).data('type')) {
           case 'name':
             courtItem.name = $(dataCell).text();
-            courtItem.slug = $(dataCell).attr('name');
+            courtItem.slug = $(dataCell).data('name');
             break;
           case 'displayed':
-            courtItem.displayed = $(dataCell).attr('value') === 'true';
+            courtItem.displayed = $(dataCell).data('displayed');
             break;
           case 'updated_at': {
             const updatedAt = new Date($(dataCell).text());

@@ -43,23 +43,23 @@
       {% set courtItems = (courtItems.push([
         {
           attributes: {
-            type: 'name',
-            name: court.slug
+            'data-type': 'name',
+            'data-name': court.slug
           },
           text: court.name,
           classes: 'courtTableColumnName'
         },
         {
           attributes: {
-            type: 'displayed',
-            value: court.displayed
+            'data-type': 'displayed',
+            'data-displayed': court.displayed
           },
           text: '' if court.displayed else 'closed',
           classes: 'courtTableColumnDisplayed'
         },
         {
          attributes: {
-            type: 'updated_at'
+            'data-type': 'updated_at'
           },
          text: court.updated_at,
          classes: 'courtTableColumnLastUpdated'
