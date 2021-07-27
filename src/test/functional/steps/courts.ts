@@ -1,5 +1,5 @@
-import { Given, Then, When } from 'cucumber';
-import { expect } from 'chai';
+import {Given, Then, When} from 'cucumber';
+import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
@@ -32,3 +32,20 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   await I.checkElementIsAnchor('#view-in-new-window');
   await I.checkElementIsAnchor('#general');
 });
+
+When('I click view next to court with {string}', async (courtSlug: string) => {
+  const selector = '#view-' + courtSlug;
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+});
+
+Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
+  const selector = '#main-content > div > div > h1';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  const viewCourtHeading = await I.getElement(selector);
+  expect(await I.getElementText(viewCourtHeading)).equal(courtName);
+});
+
+

@@ -8,8 +8,9 @@ Feature: General Info
   Scenario: Admin user can view and update urgent notices only
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
+    When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
     When I click the general tab
@@ -19,8 +20,9 @@ Feature: General Info
   Scenario: Super user can view and update all fields
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    When I select Include closed courts
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "aylesbury-magistrates-court-and-family-court"
+    When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
     When I click the general tab
