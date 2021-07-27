@@ -65,7 +65,7 @@ export const getHtmlFromElements = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerHTML));
   } catch (error) {
-    console.log("The element didn't appear.");
+    console.log(`Could not get element: ${el}`);
     return [];
   }
 };
