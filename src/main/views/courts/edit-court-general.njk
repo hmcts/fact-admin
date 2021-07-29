@@ -67,6 +67,9 @@
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
+            {% set casesHeardHtml %}
+                {% include "./tabs/casesHeard.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -125,8 +128,18 @@
                     panel: {
                     html: localAuthoritiesHtml
                     }
+                  }
+              %}
+
+              {% set casesHeardTab =
+                  {
+                    label: "Cases Heard",
+                    id: "cases-heard",
+                    panel: {
+                    html: casesHeardHtml
                     }
-                    %}
+                  }
+              %}
 
 
         {% if isSuperAdmin %}

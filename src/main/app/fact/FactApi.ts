@@ -219,9 +219,29 @@ export class FactApi {
       });
   }
 
+  public getAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/courtAreasOfLaw`) // bankrupty, housing, money claims
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getCourtAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtAreasOfLaw(slug: string, body: AreaOfLaw[]): Promise<AreaOfLaw[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
