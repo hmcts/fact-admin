@@ -80,7 +80,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-env": "^7.14.8",
     "@types/chai-as-promised": "^7.1.4",
     "@types/copy-webpack-plugin": "^6.0.0",
     "@types/cucumber": "^6.0.1",
