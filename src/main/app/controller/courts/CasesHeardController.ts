@@ -4,7 +4,7 @@ import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {Error} from '../../../types/Error';
 import {CasesHeardPageData} from '../../../types/CasesHeardPageData';
 
-export class CourtAreasOfLawController {
+export class CasesHeardController {
 
   getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
@@ -14,19 +14,19 @@ export class CourtAreasOfLawController {
     res: Response,
     error = '',
     updated = false,
-    areasOfLaw: AreaOfLaw[] = null,
+    allAreasOfLaw: AreaOfLaw[] = null,
     courtAreasOfLaw: AreaOfLaw[]): Promise<void> {
     const slug: string = req.params.slug as string;
 
-    if (!areasOfLaw ) {
+    if (!allAreasOfLaw ) {
       await req.scope.cradle.api.getAreasOfLaw(slug)
-        .then((value: AreaOfLaw[]) => areasOfLaw = value)
+        .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
         .catch(() => error += this.getAreasOfLawErrorMsg);
     }
 
     if (!courtAreasOfLaw ) {
       await req.scope.cradle.api.getCourtAreasOfLaw(slug)
-        .then((value: AreaOfLaw[]) => areasOfLaw = value)
+        .then((value: AreaOfLaw[]) => courtAreasOfLaw = value)
         .catch(() => error += this.getCourtAreasOfLawErrorMsg);
     }
 
@@ -38,13 +38,12 @@ export class CourtAreasOfLawController {
     }
 
     const pageData: CasesHeardPageData = {
-      areasOfLaw: areasOfLaw,
+      allAreasOfLaw: allAreasOfLaw,
       courtAreasOfLaw: courtAreasOfLaw,
       errorMsg: errors,
       updated: updated
     };
 
-    console.log(areasOfLaw);
     res.render('courts/tabs/casesHeardContent', pageData);
   }
 }

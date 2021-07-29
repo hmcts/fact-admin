@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+  {% from "govuk/components/button/macro.njk" import govukButton %}
 
 <h2 class="govuk-heading-l">Cases Heard</h2>
 
@@ -13,8 +14,33 @@
   }) }}
 {% endif %}
 
-{%- for areaOfLaw in areasOfLaw %}
+{% if allAreasOfLaw|length %}
 
-  {{ areaOfLaw.name }}
+    {% set allAreasOfLawItems = [] %}
+    {% for areaOfLaw in allAreasOfLaw %}
+      {% set allAreasOfLawItems =
+        (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id}), allAreasOfLawItems) %}
+    {% endfor %}
 
-{%- endfor %}
+    <div id="casesHeardList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+      {%- for items in allAreasOfLawItems | slice(2) %}
+        <div class="govuk-grid-column-one-half">
+            {{ govukCheckboxes({
+              idPrefix: "cases-heard-checkbox",
+              name: "casesHeardItems",
+              classes: "govuk-checkboxes--medium",
+              items: items
+            }) }}
+        </div>
+      {% endfor %}
+    </div>
+
+  {% endif %}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Update"
+    }) }}
+
+    <a class="govuk-link" href="#">Cancel</a>
+  </div>

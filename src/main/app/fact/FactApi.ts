@@ -221,7 +221,7 @@ export class FactApi {
 
   public getAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/courtAreasOfLaw`) // bankrupty, housing, money claims
+      .get(`${this.adminUrl}/courtAreasOfLaw`) // bankrupty, housing, money claims
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -271,7 +271,6 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
-
 
   public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
     return this.axios
