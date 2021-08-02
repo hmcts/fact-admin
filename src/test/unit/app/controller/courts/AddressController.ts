@@ -399,11 +399,46 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
-  // API will return 400 Bad Request when postcode(s) is invalid
-  test('Put should handle Bad Request response from API', async () => {
-    fail('TODO: Invalid postcode handling not yet implemented');
-  });
+  test('Put should handle Bad Request (invalid postcode) response from API', async () => {
+    const slug = 'central-london-county-court';
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
 
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 400;
+    req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
+
+    // Both postcodes invalid
+    errorResponse.response.data = [addresses.primary.postcode, addresses.secondary.postcode];
+    await controller.put(req, res);
+    let expectedError = [
+      { text: controller.primaryAddressPrefix + controller.postcodeNotFoundError },
+      { text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }
+    ];
+    let expectedResults: CourtAddressPageData =
+      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, true, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+    // Primary postcode invalid only
+    errorResponse.response.data = [addresses.primary.postcode];
+    await controller.put(req, res);
+    expectedError = [{ text: controller.primaryAddressPrefix + controller.postcodeNotFoundError }];
+    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+    // Secondary postcode invalid only
+    errorResponse.response.data = [addresses.secondary.postcode];
+    await controller.put(req, res);
+    expectedError = [{ text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }];
+    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
 
   test('Should not post court addresses if CSRF token is invalid', async() => {
     const addresses = getValidDisplayAddresses();

@@ -1,6 +1,7 @@
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
+import {AxiosError} from 'axios';
 import {CSRF} from '../../../modules/csrf';
 import {
   AddressType,
@@ -11,7 +12,6 @@ import {
 } from '../../../types/CourtAddress';
 import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
-import {AxiosError} from 'axios';
 
 @autobind
 export class AddressController {
@@ -25,10 +25,11 @@ export class AddressController {
   townRequiredError = 'Town is required.';
   invalidPostcodeError = 'Postcode is invalid.';
   postcodeMissingError = 'Postcode is required.';
-  primaryAddressPrefix = 'Primary Address: ';
-  secondaryAddressPrefix = 'Secondary Address: ';
+  postcodeNotFoundError = 'Postcode entered could not be found.';
   writeToUsAddressType = 'Write to us';
   visitOrContactUsAddressType = 'Visit or contact us';
+  primaryAddressPrefix = 'Primary Address: ';
+  secondaryAddressPrefix = 'Secondary Address: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -65,8 +66,15 @@ export class AddressController {
     await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
       .then(async (addressList: CourtAddress[]) => await this.render(req, res, true, this.convertToDisplayAddresses(addressList)) )
       .catch(async (reason: AxiosError) => {
-        // TODO: CATCH ERRORS RETURNED FROM API FOR INVALID POSTCODES (MAPIT CHECK) AND DISPLAY APPROPRIATE ERRORS
-        await this.render(req, res, false, addresses, [this.updateAddressError]);
+        if (reason.response.status === 400) {
+          const postcodeValidation = this.checkErrorResponseForPostcodeErrors(reason, addresses);
+          const errors = postcodeValidation.errors.length === 0
+            ? [this.updateAddressError] // we've encountered a 400 for a reason other than postcodes
+            : postcodeValidation.errors;
+          await this.render(req, res, false, addresses, errors, false, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid);
+        } else {
+          await this.render(req, res, false, addresses, [this.updateAddressError]);
+        }
       });
   }
 
@@ -194,6 +202,31 @@ export class AddressController {
     return isPrimaryAddress
       ? allAddressTypes
       : allAddressTypes.filter(at => at.text.toLowerCase() !== this.visitOrContactUsAddressType.toLowerCase());
+  }
+
+  private checkErrorResponseForPostcodeErrors(error: AxiosError, addresses: DisplayCourtAddresses):
+    { primaryInvalid: boolean; secondaryInvalid: boolean; errors: string[] } {
+
+    let primaryPostcodeInvalid = false;
+    let secondaryPostcodeInvalid = false;
+    const errors: string[] = [];
+
+    // We expect an array of invalid postcodes in the body of the response
+    if (Array.isArray(error.response.data)) {
+      const invalidPostcodes = error.response.data as string[];
+
+      invalidPostcodes.forEach(invalidPostcode => {
+        if (invalidPostcode === addresses.primary?.postcode) {
+          primaryPostcodeInvalid = true;
+          errors.push(this.primaryAddressPrefix + this.postcodeNotFoundError);
+        } else if (invalidPostcode === addresses.secondary?.postcode) {
+          secondaryPostcodeInvalid = true;
+          errors.push(this.secondaryAddressPrefix + this.postcodeNotFoundError);
+        }
+      });
+    }
+
+    return { primaryInvalid: primaryPostcodeInvalid, secondaryInvalid: secondaryPostcodeInvalid, errors: errors };
   }
 
   private convertToDisplayAddresses(addresses: CourtAddress[]): DisplayCourtAddresses {
