@@ -126,11 +126,17 @@ describe('AddressesController', () => {
   });
 
   test('Should get addresses view and render the page', async () => {
+    // When 2 addresses already exist
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
-    const expectedResults: CourtAddressPageData =
+    let expectedResults: CourtAddressPageData =
       getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, [], false, false, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
+    // When there is no secondary address
+    mockApi.getCourtAddresses = async () => { return [getValidCourtAddresses()[0]]; };
+    await controller.get(req, res);
+    expectedResults = getExpectedResults(expectedAddresses.primary, null, [], false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -437,6 +443,29 @@ describe('AddressesController', () => {
     await controller.put(req, res);
     expectedError = [{ text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }];
     expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
+  test('Put should handle error responses from API', async () => {
+    const slug = 'central-london-county-court';
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 404;
+    req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedError = [ { text: controller.updateAddressError } ];
+    const expectedResults: CourtAddressPageData =
+      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
