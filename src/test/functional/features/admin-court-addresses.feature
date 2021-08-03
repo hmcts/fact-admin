@@ -89,9 +89,9 @@ Feature: Court-addresses
     Then I enter "<town>" in the Town textbox
     Then I enter "<postcode>" in the postcode textbox
     And I click the Save Addresses button
-    Then The error message display is "A problem occurred when saving the court addresses."
+    Then The error message display is "Primary Address: Postcode entered could not be found."
 
     Examples:
       | address                       |  town     |  postcode |
       | The Court House, Cwmbach Road |  Aberdare |  BD9 6GS  |
-
+    
