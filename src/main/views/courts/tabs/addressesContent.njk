@@ -20,6 +20,11 @@
   }) }}
 {% endif %}
 
+{% set addressRequiredError = { text: 'Address is required' } %}
+{% set townRequiredError = { text: 'Town is required' } %}
+{% set postcodeRequiredError = { text: 'Postcode is required' } %}
+{% set postcodeInvalidError = { text: 'Postcode is invalid' } %}
+
 <div class="govuk-body">
   <p>A court can have up to 2 addresses. Only the second address can be removed.<p>
 </div>
@@ -45,7 +50,7 @@
   },
   classes: "govuk-input--width-30",
   value: addresses.primary.address_lines,
-  errorMessage: { text: 'Address is required' } if addresses.primary.address_lines === ''
+  errorMessage: addressRequiredError if addresses.primary.address_lines === ''
 }) }}
 
 {{ govukTextarea({
@@ -64,7 +69,7 @@
   label: { text: "Town" },
   classes: "govuk-input--width-30",
   value: addresses.primary.town,
-  errorMessage: { text: 'Town is required' } if addresses.primary.town === ''
+  errorMessage: townRequiredError if addresses.primary.town === ''
 }) }}
 
 {{ govukInput({
@@ -76,9 +81,9 @@
 }) }}
 
 {% if addresses.primary.postcode == '' %}
-  {% set primaryPostcodeError = { text: 'Postcode is required' } %}
+  {% set primaryPostcodeError = postcodeRequiredError %}
 {% elif primaryPostcodeInvalid %}
-  {% set primaryPostcodeError = { text: 'Postcode is invalid' } %}
+  {% set primaryPostcodeError = postcodeInvalidError %}
 {% endif %}
 
 {{ govukInput({
@@ -103,10 +108,10 @@
 
 {% if (addresses.secondary.address_lines) or (addresses.secondary.address_lines_cy) or (addresses.secondary.town) or (addresses.secondary.town_cy) or (addresses.secondary.postcode) %}
   {% if addresses.secondary.address_lines == '' %}
-    {% set secondaryAddressError = { text: 'Address is required' } %}
+    {% set secondaryAddressError = addressRequiredError %}
   {% endif %}
   {% if addresses.secondary.town == '' %}
-    {% set secondaryTownError = { text: 'Town is required' } %}
+    {% set secondaryTownError = townRequiredError %}
   {% endif %}
 {% endif %}
 
@@ -146,10 +151,10 @@
 
 {% if addresses.secondary.postcode == '' %}
   {% if addresses.secondary.address_lines or addresses.secondary.address_lines_cy or addresses.secondary.town or addresses.secondary.town_cy %}
-    {% set secondaryPostcodeError = { text: 'Postcode is required' } %}
+    {% set secondaryPostcodeError = postcodeRequiredError %}
   {% endif %}
 {% elif secondaryPostcodeInvalid %}
-  {% set secondaryPostcodeError = { text: 'Postcode is invalid' } %}
+  {% set secondaryPostcodeError = postcodeInvalidError %}
 {% endif %}
 
 {{ govukInput({

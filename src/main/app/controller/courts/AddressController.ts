@@ -12,6 +12,7 @@ import {
 } from '../../../types/CourtAddress';
 import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
+import {postcodeIsValidFormat} from '../../../utils/validation';
 
 @autobind
 export class AddressController {
@@ -40,7 +41,6 @@ export class AddressController {
       primary: req.body.primary,
       secondary: req.body.secondary,
     };
-    const writeToUsTypeId = req.body.writeToUsTypeId;
 
     // Validate token
     if(!CSRF.verify(req.body._csrf)) {
@@ -49,16 +49,11 @@ export class AddressController {
     }
 
     // Validate addresses
-    const primaryValidationResult = this.validateAddress(addresses.primary, true);
-    const secondaryValidationResult = this.validateAddress(addresses.secondary, false);
-    const addressTypeErrors  = this.validateAddressTypes(addresses.primary, addresses.secondary, writeToUsTypeId);
-    const addressesValid = primaryValidationResult.addressValid && primaryValidationResult.postcodeValid &&
-      secondaryValidationResult.addressValid && secondaryValidationResult.postcodeValid && addressTypeErrors.length === 0;
-
-    if (!addressesValid) {
-      const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors);
-      await this.render(req, res, false, addresses, allErrors,
-        !primaryValidationResult.postcodeValid, !secondaryValidationResult.postcodeValid);
+    const writeToUsTypeId = req.body.writeToUsTypeId;
+    const addressesValid = this.validateCourtAddresses(addresses, writeToUsTypeId);
+    if (addressesValid.errors.length > 0) {
+      await this.render(req, res, false, addresses, addressesValid.errors,
+        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid);
       return;
     }
 
@@ -106,6 +101,8 @@ export class AddressController {
         errorMsgs.push(this.getAddressTypesError);
         fatalError = true;
       });
+    // We expect a 'write to us' address type and use this to ensure that if 2 addresses are entered,
+    // at least one is of this type.
     const writeToUsTypes = addressTypes.filter(at => at.name.toLowerCase() === this.writeToUsAddressType.toLowerCase()).map(at => at.id);
 
     const pageData: CourtAddressPageData = {
@@ -123,8 +120,23 @@ export class AddressController {
     res.render('courts/tabs/addressesContent', pageData);
   }
 
-  private validateAddress(address: DisplayAddress, isPrimaryAddress: boolean): AddressValidationResult {
-    const typeErrors = this.validateType(address, isPrimaryAddress);
+  private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
+    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; errors: string[] } {
+
+    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true);
+    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false);
+    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress(addresses.primary, addresses.secondary, writeToUsTypeId);
+    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors);
+
+    return {
+      primaryPostcodeValid: primaryValidationResult.postcodeValid,
+      secondaryPostcodeValid: secondaryValidationResult.postcodeValid,
+      errors: allErrors
+    };
+  }
+
+  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean): AddressValidationResult {
+    const typeErrors = this.validateAddressTypeExists(address, isPrimaryAddress);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
     const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : this.secondaryAddressPrefix;
@@ -136,7 +148,7 @@ export class AddressController {
     };
   }
 
-  private validateType(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
+  private validateAddressTypeExists(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
     if (isPrimaryAddress || (!!address.postcode || this.addressFieldsNotEmpty(address))) {
       return !address.type_id ? [this.typeRequiredError] : [];
     }
@@ -167,14 +179,14 @@ export class AddressController {
       errors.push(this.postcodeMissingError);
     }
 
-    if (!postcodeEmpty && !this.postcodeIsValidFormat(courtAddress.postcode)) {
+    if (!postcodeEmpty && !postcodeIsValidFormat(courtAddress.postcode)) {
       errors.push(this.invalidPostcodeError);
     }
 
     return errors;
   }
 
-  private validateAddressTypes(primary: DisplayAddress, secondary: DisplayAddress, writeToUsTypeId: number): string[] {
+  private validateNoMoreThanOneVisitAddress(primary: DisplayAddress, secondary: DisplayAddress, writeToUsTypeId: number): string[] {
     return writeToUsTypeId && !!primary.type_id && !!secondary.type_id && // validate only if types selected in both addresses
     (this.addressFieldsNotEmpty(secondary) || secondary.postcode?.trim()) && // validate only if secondary has some fields entered
     (primary.type_id !== writeToUsTypeId && secondary.type_id !== writeToUsTypeId) // at least 1 write address should exist
@@ -185,15 +197,6 @@ export class AddressController {
   private addressFieldsNotEmpty(courtAddress: DisplayAddress): boolean {
     return !!courtAddress.address_lines?.trim() || !!courtAddress.address_lines_cy?.trim() ||
       !!courtAddress.town?.trim() || !!courtAddress.town_cy?.trim();
-  }
-
-  private postcodeIsValidFormat(postcode: string): boolean {
-    const postcodeRegex = new RegExp('([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|' +
-      '(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))' +
-      '\\s?[0-9][A-Za-z]{2})', 'g');
-
-    const match = postcode.match(postcodeRegex);
-    return match?.length === 1 && match[0] === postcode;
   }
 
   private getAddressTypesForSelect(addressTypes: AddressType[], isPrimaryAddress: boolean): SelectItem[] {
@@ -259,7 +262,7 @@ export class AddressController {
       'address_lines_cy': courtAddress.address_lines_cy?.trim().split(/\r?\n/),
       town: courtAddress.town?.trim(),
       'town_cy': courtAddress.town_cy?.trim(),
-      postcode: courtAddress.postcode?.trim()
+      postcode: courtAddress.postcode?.trim().toUpperCase()
     };
   }
 
