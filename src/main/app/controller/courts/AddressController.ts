@@ -57,7 +57,7 @@ export class AddressController {
 
     if (!addressesValid) {
       const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors);
-      await this.render(req, res, false, addresses, allErrors, false,
+      await this.render(req, res, false, addresses, allErrors,
         !primaryValidationResult.postcodeValid, !secondaryValidationResult.postcodeValid);
       return;
     }
@@ -71,7 +71,7 @@ export class AddressController {
           const errors = postcodeValidation.errors.length === 0
             ? [this.updateAddressError] // we've encountered a 400 for a reason other than postcodes
             : postcodeValidation.errors;
-          await this.render(req, res, false, addresses, errors, false, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid);
+          await this.render(req, res, false, addresses, errors, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid);
         } else {
           await this.render(req, res, false, addresses, [this.updateAddressError]);
         }
@@ -84,11 +84,11 @@ export class AddressController {
     updated = false,
     addresses: DisplayCourtAddresses = null,
     errorMsgs: string[] = [],
-    fatalError = false,
     primaryPostcodeInvalid = false,
     secondaryPostcodeInvalid = false) {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!addresses) {
       await req.scope.cradle.api.getCourtAddresses(slug)
