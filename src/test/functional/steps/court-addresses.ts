@@ -3,38 +3,29 @@ import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
+
+
+async function checkAndClearAddressField (addressFieldElement: string) {
+  expect(await I.checkElement(addressFieldElement)).equal(true);
+  await I.clearField(addressFieldElement);
+}
+async function populateField(fieldElement: string, value: string) {
+  expect(await I.checkElement(fieldElement)).equal(true);
+  await I.setElementValueForInputField(fieldElement, value);
+}
+
 Then('I click the Addresses tab', async () => {
   const selector = '#tab_addresses';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
+  expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Given('I will make sure to clear all entries of the primary address', async () => {
-  const selectorPrimaryAddressLines = '#primaryAddressLines';
-  const selectorPrimaryAddressLinesExist = await I.checkElement(selectorPrimaryAddressLines);
-  expect(selectorPrimaryAddressLinesExist).equal(true);
-  await I.clearField(selectorPrimaryAddressLines);
-
-  const selectorPrimaryAddressLinesWelsh = '#primaryAddressWelsh';
-  const selectorPrimaryAddressLinesWelshExist = await I.checkElement(selectorPrimaryAddressLinesWelsh);
-  expect(selectorPrimaryAddressLinesWelshExist).equal(true);
-  await I.clearField(selectorPrimaryAddressLinesWelsh);
-
-  const selectorPrimaryAddressTown = '#primaryAddressTown';
-  const selectorPrimaryAddressTownExist = await I.checkElement(selectorPrimaryAddressTown);
-  expect(selectorPrimaryAddressTownExist).equal(true);
-  await I.clearField(selectorPrimaryAddressTown);
-
-  const selectorPrimaryAddressTownWelsh = '#primaryAddressTownWelsh';
-  const selectorPrimaryAddressTownWelshExist = await I.checkElement(selectorPrimaryAddressTownWelsh);
-  expect(selectorPrimaryAddressTownWelshExist).equal(true);
-  await I.clearField(selectorPrimaryAddressTownWelsh);
-
-  const selectorPrimaryAddressPostcode = '#primaryAddressPostcode';
-  const selectorPrimaryAddressPostcodeExist = await I.checkElement(selectorPrimaryAddressPostcode);
-  expect(selectorPrimaryAddressPostcodeExist).equal(true);
-  await I.clearField(selectorPrimaryAddressPostcode);
+  await checkAndClearAddressField('#primaryAddressLines');
+  await checkAndClearAddressField('#primaryAddressWelsh');
+  await checkAndClearAddressField('#primaryAddressTown');
+  await checkAndClearAddressField('#primaryAddressTownWelsh');
+  await checkAndClearAddressField('#primaryAddressPostcode');
 });
 
 When('I select the Address Type {string}', async (addressType: string) => {
@@ -46,37 +37,28 @@ When('I select the Address Type {string}', async (addressType: string) => {
 
 Then('I enter court {string} in the Address textbox', async (address: string) => {
   const selector = '#primaryAddressLines';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,address);
+  await populateField(selector, address);
 });
 
 Then('I enter {string} in the Address Welsh textbox', async (welshAddress: string) => {
   const selector = '#primaryAddressWelsh';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,welshAddress);
+  await populateField(selector, welshAddress);
+
 });
 
 Then('I enter {string} in the Town textbox', async (town: string) => {
   const selector = '#primaryAddressTown';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,town);
+  await populateField(selector, town);
 });
 
 Then('I enter {string} in the town Welsh textbox', async (welshTown: string) => {
   const selector = '#primaryAddressTownWelsh';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,welshTown);
+  await populateField(selector, welshTown);
 });
 
 Then('I enter {string} in the postcode textbox', async (postcode: string) => {
   const selector = '#primaryAddressPostcode';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,postcode);
+  await populateField(selector, postcode);
 });
 
 Then('I click the Save Addresses button', async () => {
@@ -89,7 +71,7 @@ Then('I click the Save Addresses button', async () => {
 Then('A green message is displayed for the updated address {string}', async (message: string) => {
   const selector = '#addressesContent > div.govuk-panel.govuk-panel--confirmation > h1';
   expect(await I.checkElement(selector)).equal(true);
-  const messageUpdate = await I.getElement('#addressesContent > div.govuk-panel.govuk-panel--confirmation > h1');
+  const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
@@ -105,28 +87,21 @@ Then('I select the secondary address type as {string}', async (addressType: stri
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector,addressType);
-
 });
 
 Then('I enter the secondary court address {string} in the Address textbox', async (address: string) => {
   const selector = '#secondaryAddressLines';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,address);
+  await populateField(selector, address);
 });
 
 Then('I enter the secondary address town {string}', async (town: string) => {
   const selector = '#secondaryAddressTown';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,town);
+  await populateField(selector, town);
 });
 
 Then('I enter the secondary address postcode {string}', async (postcode: string) => {
   const selector = '#secondaryAddressPostcode';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.setElementValueForInputField(selector,postcode);
+  await populateField(selector, postcode);
 });
 
 Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string ) => {

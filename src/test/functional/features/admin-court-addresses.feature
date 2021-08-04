@@ -94,4 +94,3 @@ Feature: Court-addresses
     Examples:
       | address                       |  town     |  postcode |
       | The Court House, Cwmbach Road |  Aberdare |  BD9 6GS  |
-    
