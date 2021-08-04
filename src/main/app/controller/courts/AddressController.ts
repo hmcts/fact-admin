@@ -219,10 +219,10 @@ export class AddressController {
       const invalidPostcodes = error.response.data as string[];
 
       invalidPostcodes.forEach(invalidPostcode => {
-        if (invalidPostcode === addresses.primary?.postcode) {
+        if (!primaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.primary?.postcode?.toUpperCase()) {
           primaryPostcodeInvalid = true;
           errors.push(this.primaryAddressPrefix + this.postcodeNotFoundError);
-        } else if (invalidPostcode === addresses.secondary?.postcode) {
+        } else if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary?.postcode?.toUpperCase()) {
           secondaryPostcodeInvalid = true;
           errors.push(this.secondaryAddressPrefix + this.postcodeNotFoundError);
         }
@@ -273,7 +273,7 @@ export class AddressController {
       'address_lines_cy': address.address_lines_cy?.join('\n'),
       town: address.town?.trim(),
       'town_cy': address.town_cy?.trim(),
-      postcode: address.postcode?.trim()
+      postcode: address.postcode?.trim().toUpperCase()
     };
   }
 }
