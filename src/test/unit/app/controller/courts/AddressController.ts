@@ -232,6 +232,34 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).toBeCalledWith(slug, [getValidCourtAddresses()[0]]);
   });
 
+  test('Should not post court addresses if address type not selected', async() => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    addresses.primary['type_id'] = null;
+    addresses.secondary['type_id'] = null;
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API to save data
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+
+    // Should render page with error
+    const expectedError = [
+      { text: controller.primaryAddressPrefix + controller.typeRequiredError },
+      { text: controller.secondaryAddressPrefix + controller.typeRequiredError }
+    ];
+    const expectedResults: CourtAddressPageData =
+      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
   test('Should not post court addresses if primary address postcode is missing', async() => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
     addresses.primary.postcode = '';
@@ -310,6 +338,7 @@ describe('AddressesController', () => {
   test('Should not post court addresses if secondary address exists but address lines are missing', async() => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
     addresses.secondary['address_lines'] = '';
+    addresses.secondary.town = '';
 
     req.body = {
       primary: addresses.primary,
@@ -324,7 +353,10 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
 
     // Should render page with error
-    const expectedError = [{ text: controller.secondaryAddressPrefix + controller.addressRequiredError}];
+    const expectedError = [
+      { text: controller.secondaryAddressPrefix + controller.addressRequiredError},
+      { text: controller.secondaryAddressPrefix + controller.townRequiredError}
+    ];
     const expectedResults: CourtAddressPageData =
       getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
 
@@ -382,9 +414,6 @@ describe('AddressesController', () => {
   test('Should not post court addresses if more than one visit address is entered', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
 
-    addresses.primary['type_id'] = addressTypes[2].id; // Visit or contact us
-    addresses.secondary['type_id'] = addressTypes[0].id; // Visit us
-
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
@@ -392,22 +421,37 @@ describe('AddressesController', () => {
       '_csrf': CSRF.create()
     };
 
+    // Both have different visit us types
+    addresses.primary['type_id'] = addressTypes[2].id; // Visit or contact us
+    addresses.secondary['type_id'] = addressTypes[0].id; // Visit us
+
     await controller.put(req, res);
 
-    // Should not call API to save data
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
+    let expectedError = [{ text: controller.multipleVisitAddressError}];
+    let expectedResults: CourtAddressPageData =
+      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
 
-    // Should render page with error
-    const expectedError = [{ text: controller.multipleVisitAddressError}];
-    const expectedResults: CourtAddressPageData =
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+    // Both have same visit us type
+    addresses.primary['type_id'] = addressTypes[0].id; // Visit us
+    addresses.secondary['type_id'] = addressTypes[0].id; // Visit us
+
+    await controller.put(req, res);
+
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+    expectedError = [{ text: controller.multipleVisitAddressError}];
+    expectedResults =
       getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
-  test('Put should handle Bad Request (invalid postcode) response from API', async () => {
+  test('Put should handle Bad Request response from API', async () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
@@ -420,22 +464,11 @@ describe('AddressesController', () => {
     errorResponse.response.status = 400;
     req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
 
-    // Both postcodes invalid
-    errorResponse.response.data = [addresses.primary.postcode, addresses.secondary.postcode];
-    await controller.put(req, res);
-    let expectedError = [
-      { text: controller.primaryAddressPrefix + controller.postcodeNotFoundError },
-      { text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }
-    ];
-    let expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, true, false);
-    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
-
     // Primary postcode invalid only
     errorResponse.response.data = [addresses.primary.postcode];
     await controller.put(req, res);
-    expectedError = [{ text: controller.primaryAddressPrefix + controller.postcodeNotFoundError }];
-    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
+    let expectedError = [{ text: controller.primaryAddressPrefix + controller.postcodeNotFoundError }];
+    let expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
@@ -443,6 +476,25 @@ describe('AddressesController', () => {
     await controller.put(req, res);
     expectedError = [{ text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }];
     expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+    // Both postcodes invalid and same
+    addresses.primary.postcode = addresses.secondary.postcode;
+    errorResponse.response.data = [addresses.primary.postcode, addresses.secondary.postcode];
+    await controller.put(req, res);
+    expectedError = [
+      { text: controller.primaryAddressPrefix + controller.postcodeNotFoundError },
+      { text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }
+    ];
+    expectedResults =
+      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, true, false);
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+    // Bad Request for reasons other than postcodes
+    errorResponse.response.data = null;
+    await controller.put(req, res);
+    expectedError = [{ text: controller.updateAddressError }];
+    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
