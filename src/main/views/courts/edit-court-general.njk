@@ -64,6 +64,9 @@
             {% set postcodesHtml %}
                 {% include "./tabs/postcodes.njk" %}
             {% endset -%}
+            {% set courtFacilitiesHtml %}
+                {% include "./tabs/facilities.njk" %}
+            {% endset -%}
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
@@ -104,6 +107,13 @@
                     id: "court-types",
                     panel: {
                       html: courtTypesHtml
+                    }
+                  },
+                  {
+                    label: "Facilities",
+                    id: "court-facilities",
+                    panel: {
+                      html: courtFacilitiesHtml
                     }
                   }
                   ]%}
