@@ -24,6 +24,13 @@
 
  {% set isNew = (facility.isNew === true) or (facility.isNew === "true") %}
 
+ {% set nameError = false %}
+   {% if facility.name === '' %}
+     {% set nameError = { text: 'Name is required' } %}
+   {% elif facility.isDuplicated === true %}
+     {% set nameError = { text: 'Duplicated facility' } %}
+   {% endif %}
+
 {% call govukFieldset({
 
   }) %}
@@ -40,7 +47,7 @@
     label: {
         text: "Name"
     },
-    errorMessage: false,
+    errorMessage: nameError,
     items: facilitiesTypes | selectFilter(facility.name)
   }) }}
 
@@ -49,7 +56,7 @@
          Description
         </label>
       </h2>
-      <textarea class="govuk-textarea rich-editor" id="description" name="courtFacilities[{{ loop.index }}][description]"
+      <textarea class="govuk-textarea rich-editor" id="description-{{ loop.index }}"   name="courtFacilities[{{ loop.index }}][description]"
                 rows="3">{{ facility.description }}</textarea>
   </div>
 
@@ -58,7 +65,7 @@
            Description (Welsh)
           </label>
         </h2>
-        <textarea class="govuk-textarea rich-editor"  id="descriptionCy"  name="courtFacilities[{{ loop.index }}][descriptionCy]"
+        <textarea class="govuk-textarea rich-editor"  id="descriptionCy-{{ loop.index }}"  name="courtFacilities[{{ loop.index }}][descriptionCy]"
                   rows="3">{{ facility.descriptionCy }}</textarea>
     </div>
 
@@ -100,11 +107,11 @@ attributes: { id: "newFacilityTemplate", disabled: "disabled", hidden: true }
  <input type="hidden" name={{"courtFacilities[" + courtFacilities.length +"][isNew]"}} value="true"></input>
 
  {{ govukSelect({
-    name: "courtFacilities[" + loop.index +"][name]",
+    id: "name-" + courtFacilities.length,
+    name: "courtFacilities[" + courtFacilities.length +"][name]",
     label: {
       text: "Name"
     },
-    errorMessage: false,
     items: facilitiesTypes | selectFilter('')
   }) }}
 
@@ -113,7 +120,7 @@ attributes: { id: "newFacilityTemplate", disabled: "disabled", hidden: true }
          Description
         </label>
       </h2>
-      <textarea class="govuk-textarea rich-editor" name="courtFacilities[{{ loop.index }}][description]"
+      <textarea class="govuk-textarea rich-editor" id="description-{{ courtFacilities.length }}" name="courtFacilities[{{ courtFacilities.length }}][description]"
                 rows="3"></textarea>
   </div>
 
@@ -122,7 +129,7 @@ attributes: { id: "newFacilityTemplate", disabled: "disabled", hidden: true }
            Description (Welsh)
           </label>
         </h2>
-        <textarea class="govuk-textarea rich-editor" name="courtFacilities[{{ loop.index }}][descriptionCy]"
+        <textarea class="govuk-textarea rich-editor"  id="descriptionCy-{{ courtFacilities.length }}" name="courtFacilities[{{ courtFacilities.length }}][descriptionCy]"
                   rows="3"></textarea>
     </div>
 

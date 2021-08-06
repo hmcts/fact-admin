@@ -2,7 +2,6 @@ import $ from 'jquery';
 import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 
-
 const { initAll } = require('govuk-frontend');
 
 export class FacilitiesController {
@@ -19,7 +18,6 @@ export class FacilitiesController {
   private description = 'description';
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
-
 
   constructor() {
     this.initialize();
@@ -57,7 +55,6 @@ export class FacilitiesController {
   }
 
 
-
   private getCourtFacilities(): void {
     const slug = $('#slug').val();
 
@@ -76,9 +73,7 @@ export class FacilitiesController {
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
       e.preventDefault();
-
       tinymce.triggerSave();
-
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,
@@ -100,7 +95,6 @@ export class FacilitiesController {
         .removeAttr('hidden')
         .removeAttr('id');
       $(selector).before(copyFieldset);
-
       // Set the id and names of the elements in the table
       this.renameFormElements();
     });
@@ -108,14 +102,14 @@ export class FacilitiesController {
 
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearFacilityBtnClass}`, e => {
-      $(e.target.closest('fieldset')).find(':input,textarea:visible').val('');
+      $(e.target.closest('fieldset')).find(':input:visible').val('');
+      tinymce.activeEditor.setContent('');
     });
   }
 
   private setUpDeleteEventHandler(): void {
     $(this.tabId).on('click', `button.${this.deleteBtnClass}`, e => {
       e.target.closest('fieldset').remove();
-      this.renameFormElements();
     });
   }
 
@@ -123,7 +117,7 @@ export class FacilitiesController {
     return `facilities[${index}][${name}]`;
   }
 
-  private renameFormElement(type: 'input' | 'select' | 'textarea', name: string, id: string): void {
+  private renameFormElement(type: 'input' | 'select', name: string, id: string): void {
     $(`${this.tabId} ${type}[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
       .attr('id', idx => `${id}-` + idx)
