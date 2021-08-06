@@ -77,6 +77,8 @@ export class FacilitiesController {
     $(this.formId).on('submit', e => {
       e.preventDefault();
 
+      tinymce.triggerSave();
+
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,
@@ -131,9 +133,9 @@ export class FacilitiesController {
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    this.renameFormElement('select', this.facilityName, 'name');
-    this.renameFormElement('textarea', this.description, this.description);
-    this.renameFormElement('textarea', this.descriptionCy, this.descriptionCy);
+    this.renameFormElement('select', this.facilityName, this.facilityName);
+    this.renameFormElement('input', this.description, this.description);
+    this.renameFormElement('input', this.descriptionCy, this.descriptionCy);
     this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
   }
 

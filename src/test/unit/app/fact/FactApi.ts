@@ -483,7 +483,7 @@ describe('FactApi', () => {
     const mockAxios = { put: async () => results } as never;
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
-    await expect(api.updateCourtFacilities('slug')).resolves.toEqual(results.data);
+    await expect(api.updateCourtFacilities('slug',[])).resolves.toEqual(results.data);
   });
 
 
@@ -497,7 +497,7 @@ describe('FactApi', () => {
       info: (message: string) => message
     } as never;
     const api = new FactApi(mockAxios, mockLogger);
-    await expect(api.updateCourtFacilities('slug')).rejects.toEqual(mockError);
+    await expect(api.updateCourtFacilities('slug',[])).rejects.toEqual(mockError);
   });
 
   test('Should log error and reject promise for failed updateCourtFacility request', async () => {
@@ -508,7 +508,7 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.updateCourtFacilities('slug')).rejects.toBe(mockError);
+    await expect(api.updateCourtFacilities('slug',[])).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
 

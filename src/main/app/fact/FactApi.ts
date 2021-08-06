@@ -250,9 +250,9 @@ export class FactApi {
       });
   }
 
-  public updateCourtFacilities(slug: string): Promise<Facility[]> {
+  public updateCourtFacilities(slug: string, body: Facility[]): Promise<Facility[]> {
     return this.axios
-      .put(`${this.adminBaseUrl}/${slug}/facilities`)
+      .put(`${this.adminBaseUrl}/${slug}/facilities`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
