@@ -102,7 +102,7 @@ export class AddressController {
         fatalError = true;
       });
     // We expect a 'write to us' address type and use this to ensure that if 2 addresses are entered,
-    // at least one is of this type.
+    // at least one is of this type (2 'visit' addresses are not permitted).
     const writeToUsTypes = addressTypes.filter(at => at.name.toLowerCase() === this.writeToUsAddressType.toLowerCase()).map(at => at.id);
 
     const pageData: CourtAddressPageData = {
