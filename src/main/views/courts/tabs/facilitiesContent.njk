@@ -7,7 +7,7 @@
 
 <h2 class="govuk-heading-l">Facilities</h2>
 
-{% if errorMsg != '' %}
+{% if errors|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
     errorList: errors
@@ -100,7 +100,7 @@ attributes: { id: "newFacilityTemplate", disabled: "disabled", hidden: true }
  <input type="hidden" name={{"courtFacilities[" + courtFacilities.length +"][isNew]"}} value="true"></input>
 
  {{ govukSelect({
-    name: "courtFacilities[" + loop.index +"][name]"
+    name: "courtFacilities[" + loop.index +"][name]",
     label: {
       text: "Name"
     },

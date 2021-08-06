@@ -1,18 +1,19 @@
-import {AuthedRequest} from "../../../types/AuthedRequest";
-import {Response} from "express";
-import {CSRF} from "../../../modules/csrf";
-import autobind from "autobind-decorator";
-import {Facility, FacilityPageData, FacilityType} from "../../../types/Facility";
-import {SelectItem} from "../../../types/CourtPageData";
-import {validateDuplication} from "../../../utils/validation";
-import {Error} from "../../../types/Error";
+import {AuthedRequest} from '../../../types/AuthedRequest';
+import {Response} from 'express';
+import {CSRF} from '../../../modules/csrf';
+import autobind from 'autobind-decorator';
+import {Facility, FacilityPageData, FacilityType} from '../../../types/Facility';
+import {SelectItem} from '../../../types/CourtPageData';
+import {validateDuplication} from '../../../utils/validation';
+import {Error} from '../../../types/Error';
 
 @autobind
 export class CourtFacilitiesController {
 
-  emptyTypeOrDescriptionErrorMsg = 'Description is required for all court facilities.';
+  emptyNameOrDescriptionErrorMsg = 'Name and description is required for all court facilities.';
   facilityDuplicatedErrorMsg = 'All facilities must be unique.';
   getFacilityTypesErrorMsg = 'A problem occurred when retrieving the list of facility types.';
+  getCourtFacilityErrorMsg = 'A problem occurred when retrieving the court facilities.';
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
 
@@ -28,7 +29,7 @@ export class CourtFacilitiesController {
       const slug: string = req.params.slug as string;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
-        .catch(() => errorMsg.push(this.getFacilityTypesErrorMsg));
+        .catch(() => errorMsg.push(this.getCourtFacilityErrorMsg));
 
     }
 
@@ -71,8 +72,8 @@ export class CourtFacilitiesController {
     courtFacilities = courtFacilities.filter(cf => !this.facilityEntryIsEmpty(cf));
     const errorMsg: string[] = [];
 
-    if (courtFacilities.some(cf => !cf.name || cf.description === '' )) {
-      errorMsg.push(this.emptyTypeOrDescriptionErrorMsg);
+    if (courtFacilities.some(cf => cf.name === ''|| cf.description === '' )) {
+      errorMsg.push(this.emptyNameOrDescriptionErrorMsg);
     }
 
     if (!validateDuplication(courtFacilities, this.facilityDuplicated)) {
@@ -83,9 +84,9 @@ export class CourtFacilitiesController {
       return this.get(req, res, false, errorMsg, courtFacilities);
     }
 
-        await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
-          .then((value: Facility[]) => this.get(req, res, true, [], value))
-          .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
+    await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
+      .then((value: Facility[]) => this.get(req, res, true, [], value))
+      .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
 
   }
 

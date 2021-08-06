@@ -10,7 +10,7 @@ import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
 import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
-import {Facility, FacilityType} from "../../types/Facility";
+import {Facility, FacilityType} from '../../types/Facility';
 
 export class FactApi {
 

@@ -13,7 +13,7 @@ import {CourtTypesController} from '../../app/controller/courts/CourtTypesContro
 import {ListsController} from '../../app/controller/lists/ListsController';
 import {LocalAuthoritiesController} from '../../app/controller/courts/LocalAuthoritiesController';
 import {LocalAuthoritiesListController} from '../../app/controller/lists/LocalAuthoritiesListController';
-import {CourtFacilitiesController} from "../../app/controller/courts/CourtFacilitiesController";
+import {CourtFacilitiesController} from '../../app/controller/courts/CourtFacilitiesController';
 import {PostcodesController} from '../../app/controller/courts/PostcodesController';
 
 const { Logger } = require('@hmcts/nodejs-logging');

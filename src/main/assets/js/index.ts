@@ -12,7 +12,7 @@ import {EmailsController} from './emails';
 import {CourtGeneralInfoController} from './courtGeneralInfo';
 import {PhoneNumbersController} from './phone-numbers';
 import {CourtTypesController} from './court-types';
-import {FacilitiesController} from "./facilities";
+import {FacilitiesController} from './facilities';
 import {LocalAuthoritiesController} from './local-authorities';
 import {LocalAuthoritiesListController} from './local-authorities-list';
 import {PostcodesController} from './postcodes';
