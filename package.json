@@ -17,7 +17,7 @@
     "test:pa11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoke.config.js",
-    "test:cucumber": "cucumber-js --retry 3 --parallel 3",
+    "test:cucumber": "cucumber-js --retry 3 --parallel 5",
     "test:functional": "yarn test:cucumber && yarn test:pa11y",
     "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
