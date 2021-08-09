@@ -47,5 +47,3 @@ Then('I am redirected to the View Court page for the {string}', async (courtName
   const viewCourtHeading = await I.getElement(selector);
   expect(await I.getElementText(viewCourtHeading)).equal(courtName);
 });
-
-
