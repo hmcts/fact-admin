@@ -132,8 +132,6 @@ Then('an error message is displayed for phone number tab with summary {string} a
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
-
-  expect(await I.checkElement('#hours-' + fieldsetErrorIndex + '-error')).equal(false);
 });
 
 
