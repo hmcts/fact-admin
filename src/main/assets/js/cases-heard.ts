@@ -29,6 +29,9 @@ export class CasesHeardController {
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET cases heard failed.');
+        console.log(errorTextStatus);
+        console.log(err);
+        console.log('ERROR');
       }
     });
   }

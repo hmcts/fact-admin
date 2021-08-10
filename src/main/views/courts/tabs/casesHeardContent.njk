@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-  {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 <h2 class="govuk-heading-l">Cases Heard</h2>
 
@@ -14,12 +14,21 @@
   }) }}
 {% endif %}
 
-{% if allAreasOfLaw|length %}
+{% if allAreasOfLaw|length and courtAreasOfLaw|length %}
 
     {% set allAreasOfLawItems = [] %}
     {% for areaOfLaw in allAreasOfLaw %}
-      {% set allAreasOfLawItems =
-        (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id}), allAreasOfLawItems) %}
+      {% for courtAreaOfLaw in courtAreasOfLaw %}
+        {% if areaOfLaw.name === courtAreaOfLaw.name %}
+          {% set allAreasOfLawItems =
+            (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: true}), allAreasOfLawItems) %}
+        {% else %}
+          {% set allAreasOfLawItems =
+            (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: false}), allAreasOfLawItems) %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}git
+
     {% endfor %}
 
     <div id="casesHeardList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
@@ -44,3 +53,4 @@
 
     <a class="govuk-link" href="#">Cancel</a>
   </div>
+

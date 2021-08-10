@@ -19,7 +19,7 @@ export class CasesHeardController {
     const slug: string = req.params.slug as string;
 
     if (!allAreasOfLaw ) {
-      await req.scope.cradle.api.getAreasOfLaw(slug)
+      await req.scope.cradle.api.getAreasOfLaw()
         .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
         .catch(() => error += this.getAreasOfLawErrorMsg);
     }
@@ -31,11 +31,11 @@ export class CasesHeardController {
     }
 
     const errors: Error[] = [];
-    // If we have an error from validation when adding/removing or moving postcodes,
-    // append it
     if (error) {
       errors.push({text: error});
     }
+
+    console.log(errors);
 
     const pageData: CasesHeardPageData = {
       allAreasOfLaw: allAreasOfLaw,

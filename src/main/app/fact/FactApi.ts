@@ -219,9 +219,9 @@ export class FactApi {
       });
   }
 
-  public getAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
+  public getAreasOfLaw(): Promise<AreaOfLaw[]> {
     return this.axios
-      .get(`${this.adminUrl}/courtAreasOfLaw`) // bankrupty, housing, money claims
+      .get(`${this.adminUrl}/areasOfLaw`) // bankrupty, housing, money claims
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
