@@ -8,7 +8,7 @@ import {Facility, FacilityPageData, FacilityType} from '../../../../../main/type
 describe('FacilitiesController', () => {
 
   let mockApi: {
-    getAllFacilities: () => Promise<FacilityType[]>,
+    getAllFacilityTypes: () => Promise<FacilityType[]>,
     getCourtFacilities: () => Promise<Facility[]>,
     updateCourtFacilities: () => Promise<Facility[]> };
 
@@ -42,7 +42,7 @@ describe('FacilitiesController', () => {
     mockApi = {
       getCourtFacilities: async (): Promise<Facility[]> => getFacilities(),
       updateCourtFacilities: async (): Promise<Facility[]> => getFacilities(),
-      getAllFacilities: async (): Promise<FacilityType[]> => facilityTypes
+      getAllFacilityTypes: async (): Promise<FacilityType[]> => facilityTypes
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -175,7 +175,7 @@ describe('FacilitiesController', () => {
     const res = mockResponse();
 
     const expectedResults: FacilityPageData = {
-      errors: [{text: controller.getCourtFacilityErrorMsg}],
+      errors: [{text: controller.getCourtFacilitiesErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: null
@@ -192,7 +192,7 @@ describe('FacilitiesController', () => {
       slug: 'southport-county-court'
     };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.getAllFacilities = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.getAllFacilityTypes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 
     await controller.get(req, res);

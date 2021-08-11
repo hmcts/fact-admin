@@ -230,7 +230,7 @@ export class FactApi {
       });
   }
 
-  public getAllFacilities(): Promise<FacilityType[]> {
+  public getAllFacilityTypes(): Promise<FacilityType[]> {
     return this.axios
       .get(`${this.adminUrl}/facilities`)
       .then(results => results.data)
@@ -281,7 +281,6 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
-
 
   public getCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string): Promise<LocalAuthority[]> {
     return this.axios

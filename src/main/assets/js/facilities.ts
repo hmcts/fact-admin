@@ -110,14 +110,15 @@ export class FacilitiesController {
   private setUpDeleteEventHandler(): void {
     $(this.tabId).on('click', `button.${this.deleteBtnClass}`, e => {
       e.target.closest('fieldset').remove();
+      this.renameFormElements();
     });
   }
 
   private getInputName(name: string, index: number): string {
-    return `facilities[${index}][${name}]`;
+    return `courtFacilities[${index}][${name}]`;
   }
 
-  private renameFormElement(type: 'input' | 'select', name: string, id: string): void {
+  private renameFormElement(type: 'input' | 'select' | 'textarea', name: string, id: string): void {
     $(`${this.tabId} ${type}[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
       .attr('id', idx => `${id}-` + idx)
@@ -128,10 +129,8 @@ export class FacilitiesController {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
     this.renameFormElement('select', this.facilityName, this.facilityName);
-    this.renameFormElement('input', this.description, this.description);
-    this.renameFormElement('input', this.descriptionCy, this.descriptionCy);
+    this.renameFormElement('textarea', this.description, this.description);
+    this.renameFormElement('textarea', this.descriptionCy, this.descriptionCy);
     this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
   }
-
-
 }

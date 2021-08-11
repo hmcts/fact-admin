@@ -11,7 +11,6 @@ export interface Facility extends Element{
   name : string;
   description: string;
   descriptionCy : string;
-
 }
 
 export interface FacilityPageData {

@@ -10,13 +10,11 @@ import {Error} from '../../../types/Error';
 @autobind
 export class CourtFacilitiesController {
 
-  emptyNameOrDescriptionErrorMsg = 'Name and description is required for all court facilities.';
+  emptyNameOrDescriptionErrorMsg = 'Name and description are required for all court facilities.';
   facilityDuplicatedErrorMsg = 'All facilities must be unique.';
   getFacilityTypesErrorMsg = 'A problem occurred when retrieving the list of facility types.';
-  getCourtFacilityErrorMsg = 'A problem occurred when retrieving the court facilities.';
+  getCourtFacilitiesErrorMsg = 'A problem occurred when retrieving the court facilities.';
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
-  emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
-
 
   public async get(
     req: AuthedRequest,
@@ -25,17 +23,15 @@ export class CourtFacilitiesController {
     errorMsg: string[] = [],
     courtFacilities: Facility[] = null): Promise<void> {
     if (!courtFacilities) {
-
       const slug: string = req.params.slug as string;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
-        .catch(() => errorMsg.push(this.getCourtFacilityErrorMsg));
-
+        .catch(() => errorMsg.push(this.getCourtFacilitiesErrorMsg));
     }
 
     let allFacilitiesTypes: FacilityType[] = [];
 
-    await req.scope.cradle.api.getAllFacilities()
+    await req.scope.cradle.api.getAllFacilityTypes()
       .then((value: FacilityType[]) => allFacilitiesTypes = value)
       .catch(() => errorMsg.push(this.getFacilityTypesErrorMsg));
 
@@ -62,7 +58,6 @@ export class CourtFacilitiesController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
     courtFacilities.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
-
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, [this.updateErrorMsg], courtFacilities);
@@ -108,6 +103,10 @@ export class CourtFacilitiesController {
   }
 
   private facilityDuplicated(courFacilities: Facility[], index1: number, index2: number): boolean {
-    return courFacilities[index1].name && courFacilities[index1].name === courFacilities[index2].name;
+    return courFacilities[index1].name
+      && courFacilities[index2].name
+      // Make sure we don't have duplicated mutually exclusive (e.g. 'parking' vs. 'No parking') facility types
+      && (courFacilities[index1].name.toLowerCase().indexOf(courFacilities[index2].name.toLowerCase()) != -1
+        || courFacilities[index2].name.toLowerCase().indexOf(courFacilities[index1].name.toLowerCase()) != -1);
   }
 }

@@ -555,7 +555,7 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
   });
 
-  test('Should return results from getAllFacilities request', async () => {
+  test('Should return results from getAllFacilityTypes request', async () => {
     const results = {
       data: [
         { id: 1, name:'Facility1'},
@@ -568,10 +568,10 @@ describe('FactApi', () => {
 
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getAllFacilities()).resolves.toEqual(results.data);
+    await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
   });
 
-  test('Should return results and log error from getAllFacilities request', async () => {
+  test('Should return results and log error from getAllFacilityTypes request', async () => {
     const mockAxios = { get: async () => {
       throw mockError;
     }} as never;
@@ -582,10 +582,10 @@ describe('FactApi', () => {
     } as never;
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getAllFacilities()).rejects.toEqual(mockError);
+    await expect(api.getAllFacilityTypes()).rejects.toEqual(mockError);
   });
 
-  test('Should log error and reject promise for failed getAllFacilities request', async () => {
+  test('Should log error and reject promise for failed getAllFacilityTypes request', async () => {
     const mockAxios = { get: async () => {
       throw mockError;
     }} as any;
@@ -593,7 +593,7 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getAllFacilities()).rejects.toBe(mockError);
+    await expect(api.getAllFacilityTypes()).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
 
