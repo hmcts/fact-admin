@@ -219,7 +219,7 @@ export class FactApi {
       });
   }
 
-  public getAreasOfLaw(): Promise<AreaOfLaw[]> {
+  public getAllAreasOfLaw(): Promise<AreaOfLaw[]> {
     return this.axios
       .get(`${this.adminUrl}/areasOfLaw`) // bankrupty, housing, money claims
       .then(results => results.data)

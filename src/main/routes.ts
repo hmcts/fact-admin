@@ -30,6 +30,7 @@ export default function(app: Application): void {
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
+  app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
 
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);

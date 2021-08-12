@@ -16,23 +16,25 @@
 
 {% if allAreasOfLaw|length and courtAreasOfLaw|length %}
 
+  {% set courtAreasOfLawNames = [] %}
+    {% for areaOfLaw in courtAreasOfLaw %}
+        {% set allAreasOfLawItems =
+          (courtAreasOfLawNames.push(areaOfLaw.name), courtAreasOfLawNames) %}
+    {% endfor %}
+
     {% set allAreasOfLawItems = [] %}
     {% for areaOfLaw in allAreasOfLaw %}
-      {% for courtAreaOfLaw in courtAreasOfLaw %}
-        {% if areaOfLaw.name === courtAreaOfLaw.name %}
+       {% if areaOfLaw.name in courtAreasOfLawNames %}
           {% set allAreasOfLawItems =
             (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: true}), allAreasOfLawItems) %}
         {% else %}
           {% set allAreasOfLawItems =
             (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: false}), allAreasOfLawItems) %}
         {% endif %}
-      {% endfor %}
-    {% endfor %}git
-
     {% endfor %}
 
     <div id="casesHeardList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
-      {%- for items in allAreasOfLawItems | slice(2) %}
+      {%- for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
         <div class="govuk-grid-column-one-half">
             {{ govukCheckboxes({
               idPrefix: "cases-heard-checkbox",
@@ -48,7 +50,8 @@
 
   <div class="govuk-button-group">
     {{ govukButton({
-      text: "Update"
+      text: "Update",
+      id: "updateCasesHeardSelect"
     }) }}
 
     <a class="govuk-link" href="#">Cancel</a>
