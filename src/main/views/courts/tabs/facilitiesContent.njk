@@ -1,9 +1,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 <h2 class="govuk-heading-l">Facilities</h2>
 
@@ -30,6 +30,11 @@
     {% set nameError = { text: 'Duplicated facility' } %}
   {% endif %}
 
+  {% set descriptionError = false %}
+  {% if facility.description === '' %}
+    {% set descriptionError = { text: 'Description is required' } %}
+  {% endif %}
+
   {% call govukFieldset({
   }) %}
 
@@ -49,21 +54,26 @@
     items: facilitiesTypes | selectFilter(facility.name)
   }) }}
 
-  <div class="govuk-form-group">
-    <h2 class="govuk-label-wrapper">
-      <label class="govuk-label">Description</label>
-    </h2>
-    <textarea class="govuk-textarea rich-editor" id="description-{{ loop.index }}"   name="courtFacilities[{{ loop.index }}][description]"
-              rows="3">{{ facility.description }}</textarea>
-  </div>
+  {{ govukTextarea ({
+    label: {
+      text: "Description"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "description-" + loop.index,
+    name: "courtFacilities[" + loop.index +"][description]",
+    value: facility.description,
+    errorMessage: descriptionError
+  }) }}
 
-  <div class="govuk-form-group">
-    <h2 class="govuk-label-wrapper">
-      <label class="govuk-label">Description (Welsh)</label>
-    </h2>
-    <textarea class="govuk-textarea rich-editor"  id="descriptionCy-{{ loop.index }}"  name="courtFacilities[{{ loop.index }}][descriptionCy]"
-              rows="3">{{ facility.descriptionCy }}</textarea>
-  </div>
+  {{ govukTextarea ({
+    label: {
+      text: "Description (Welsh)"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "descriptionCy-" + loop.index,
+    name: "courtFacilities[" + loop.index +"][descriptionCy]",
+    value: facility.descriptionCy
+  }) }}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
@@ -111,21 +121,25 @@
     items: facilitiesTypes | selectFilter('')
   }) }}
 
-  <div class="govuk-form-group">
-    <h2 class="govuk-label-wrapper">
-      <label class="govuk-label">Description</label>
-    </h2>
-    <textarea class="govuk-textarea rich-editor" id="description-{{ courtFacilities.length }}" name="courtFacilities[{{ courtFacilities.length }}][description]"
-              rows="3"></textarea>
-  </div>
+  {{ govukTextarea ({
+    label: {
+      text: "Description"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "description-" + courtFacilities.length,
+    name: "courtFacilities[" + courtFacilities.length +"][description]",
+    value: facility.description
+  }) }}
 
-  <div class="govuk-form-group">
-    <h2 class="govuk-label-wrapper">
-      <label class="govuk-label">Description (Welsh)</label>
-    </h2>
-    <textarea class="govuk-textarea rich-editor"  id="descriptionCy-{{ courtFacilities.length }}" name="courtFacilities[{{ courtFacilities.length }}][descriptionCy]"
-              rows="3"></textarea>
-  </div>
+  {{ govukTextarea ({
+    label: {
+      text: "Description (Welsh)"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "descriptionCy-" + courtFacilities.length,
+    name: "courtFacilities[" + courtFacilities.length +"][descriptionCy]",
+    value: facility.descriptionCy
+  }) }}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
