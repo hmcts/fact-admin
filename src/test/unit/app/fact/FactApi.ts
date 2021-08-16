@@ -4,6 +4,7 @@ import {Contact} from '../../../../main/types/Contact';
 import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
 import {CourtAddress} from '../../../../main/types/CourtAddress';
+import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -877,6 +878,104 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.updateCourtAddresses('newcastle-crown-court', [])).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getAreasOfLaw request', async () => {
+    const results: { data: AreaOfLaw[] } = {
+      data: [
+        { id: 100, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+          'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+          'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce' }
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAreasOfLaw()).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getAreaOfLaw request', async () => {
+    const result: { data: AreaOfLaw } = {
+      data: { id: 1224, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+        'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+        'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce'
+      }};
+    const mockAxios = { get: async () => result } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAreaOfLaw('1224')).resolves.toEqual(result.data);
+  });
+
+  test('Should update area of law and return area of law from updateAreaOfLaw request', async () => {
+    const result: { data: AreaOfLaw } = {
+      data: { id: 1224, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+        'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+        'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce'
+      }};
+    const mockAxios = { put: async () => result } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateAreaOfLaw(result.data)).resolves.toEqual(result.data);
+  });
+
+  test('Should create area of law and return area of law from createAreaOfLaw request', async () => {
+    const result: { data: AreaOfLaw } = {
+      data: { id: 1224, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+        'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+        'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce'
+      }};
+    const mockAxios = { post: async () => result } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.createAreaOfLaw(result.data)).resolves.toEqual(result.data);
+  });
+
+  test('Should log error and reject promise for failed getAreasOfLaw request', async () => {
+    const mockAxios = { get: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAreasOfLaw()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed getAreaOfLaw request', async () => {
+    const mockAxios = { get: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAreaOfLaw('1222')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed createAreaOfLaw request', async () => {
+    const aol: AreaOfLaw = {
+      id: 1224, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+      'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+      'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce'
+    };
+
+    const mockAxios = { post: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createAreaOfLaw(aol)).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed updateAreaOfLaw request', async () => {
+    const aol: AreaOfLaw = {
+      id: 1224, name: 'Divorce', 'alt_name': 'Divorce hearings', 'alt_name_cy': 'Gwrandawiadau ysgariad',
+      'external_link': 'https%3A//www.gov.uk/divorce', 'external_link_desc': '', 'external_link_desc_cy': '',
+      'display_name': 'DIVORCE', 'display_name_cy': '', 'display_external_link': 'https%3A//www.gov.uk/divorce'
+    };
+
+    const mockAxios = { put: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateAreaOfLaw(aol)).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
 });

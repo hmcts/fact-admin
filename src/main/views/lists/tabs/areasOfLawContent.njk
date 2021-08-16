@@ -1,0 +1,45 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set areaOfLawItems = [] %}
+{% for areaOfLaw in areasOfLaw %}
+  {% set areaOfLawItems = (areaOfLawItems.push([
+    {
+      text: areaOfLaw.name
+    },
+    {
+      html: "<a class='edit-aol' href=" + editUrl + areaOfLaw.id + ">edit</a>"
+    }
+  ]), courtItems) %}
+{% endfor %}
+
+<h2 class="govuk-heading-l">Areas of Law</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Areas of Law Updated"
+  }) }}
+{% endif %}
+
+{% if errors.length == 0 %}
+
+  {{ govukTable({
+    firstCellIsHeader: false,
+    head: [ { text: "Name" }, { text: "" } ],
+    rows: areaOfLawItems
+  }) }}
+
+  <div class="govuk-button-group">
+    <a class="edit-aol govuk-link" href="{{editUrl}}">Add Area of Law</a>
+  </div>
+
+{% endif %}

@@ -131,7 +131,6 @@ export class FactApi {
       });
   }
 
-
   public getEmailTypes(): Promise<EmailType[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/emailTypes`)
@@ -297,6 +296,46 @@ export class FactApi {
   public getAddressTypes(): Promise<AddressType[]> {
     return this.axios
       .get(`${this.adminUrl}/addressTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getAreasOfLaw(): Promise<AreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminUrl}/areasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getAreaOfLaw(id: string): Promise<AreaOfLaw> {
+    return this.axios
+      .get(`${this.adminUrl}/areasOfLaw/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createAreaOfLaw(areaOfLaw: AreaOfLaw): Promise<AreaOfLaw> {
+    return this.axios
+      .post(`${this.adminUrl}/areasOfLaw`, areaOfLaw)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateAreaOfLaw(areaOfLaw: AreaOfLaw): Promise<AreaOfLaw> {
+    return this.axios
+      .put(`${this.adminUrl}/areasOfLaw`, areaOfLaw)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

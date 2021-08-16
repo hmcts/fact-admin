@@ -40,3 +40,14 @@ export function postcodeIsValidFormat(postcode: string): boolean {
   const match = postcode.match(postcodeRegex);
   return match?.length === 1 && match[0] === postcode;
 }
+
+export function urlIsValid(urlToCheck: string): boolean {
+  let url: URL;
+
+  try {
+    url = new URL(urlToCheck);
+  } catch {
+    return false;
+  }
+  return url.protocol === 'http:' || url.protocol === 'https:';
+}

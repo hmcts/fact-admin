@@ -33,9 +33,42 @@ describe('PostcodeController', () => {
     { id: 11417, name: 'Family Court', code: null }
   ];
   const apiAreasOfLawInput: AreaOfLaw[] = [
-    { id: 1, name:familyAreaOfLaw.bankruptcy},
-    { id: 2, name:familyAreaOfLaw.moneyClaims},
-    { id: 3, name:familyAreaOfLaw.housing}
+    {
+      id: 1,
+      name: familyAreaOfLaw.bankruptcy,
+      'external_link': 'https://www.gov.uk/apply-for-bankruptcy',
+      'external_link_desc': 'Bankruptcy',
+      'external_link_desc_cy': 'Bankruptcy',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    },
+    {
+      id: 2,
+      name:familyAreaOfLaw.moneyClaims,
+      'external_link': 'https://www.gov.uk/make-court-claim-for-money',
+      'external_link_desc': 'Money Claims',
+      'external_link_desc_cy': 'Money Claims',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    },
+    {
+      id: 3,
+      name:familyAreaOfLaw.housing,
+      'external_link': 'https://www.gov.uk/evicting-tenants',
+      'external_link_desc': 'Housing',
+      'external_link_desc_cy': 'Housing',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    }
   ];
   const courtTypesBodyInput = 'Crown_Court,County_Court,Family_Court';
   const areasOfLawBodyInput = familyAreaOfLaw.bankruptcy + ',' + familyAreaOfLaw.moneyClaims + ',' + familyAreaOfLaw.housing;

@@ -15,6 +15,7 @@ import {LocalAuthoritiesController} from '../../app/controller/courts/LocalAutho
 import {LocalAuthoritiesListController} from '../../app/controller/lists/LocalAuthoritiesListController';
 import {PostcodesController} from '../../app/controller/courts/PostcodesController';
 import {AddressController} from '../../app/controller/courts/AddressController';
+import {AreasOfLawController} from '../../app/controller/lists/AreasOfLawController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -46,6 +47,8 @@ export class Container {
       // List
       listsController: asClass(ListsController),
       localAuthoritiesListController : asClass(LocalAuthoritiesListController),
+      areasOfLawController: asClass(AreasOfLawController),
+
       errorController: asClass(ErrorController),
       exposeErrors: asValue(server.locals.env === 'development')
     });

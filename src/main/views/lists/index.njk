@@ -1,7 +1,6 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "macros/tabs/macro.njk" import factTabs %}
 
-
 {% extends "template.njk" %}
 
 {% block content %}
@@ -13,6 +12,9 @@
       {% set localAuthoritiesHtml %}
         {% include "./tabs/localAuthoritiesList.njk" %}
       {% endset -%}
+      {% set areasOfLawHtml %}
+        {% include "./tabs/areasOfLaw.njk" %}
+      {% endset %}
 
       {% set tabItems = [
         {
@@ -20,6 +22,13 @@
           id: "local-authorities",
           panel: {
             html: localAuthoritiesHtml
+          }
+        },
+        {
+          label: "Areas of Law",
+          id: "areas-of-law",
+          panel: {
+            html: areasOfLawHtml
           }
         }]
       %}

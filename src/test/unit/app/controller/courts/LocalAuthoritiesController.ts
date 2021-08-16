@@ -26,10 +26,54 @@ describe ( 'LocalAuthoritiesController', () => {
   };
 
   const courtAreasOfLaw: AreaOfLaw[] = [
-    { id: 1, name:'Adoption'},
-    { id: 2, name:'Children'},
-    { id: 3, name:'Civil partnership'},
-    { id: 4, name:'Divorce'}
+    {
+      id: 1,
+      name:'Adoption',
+      'external_link': 'https://www.gov.uk/child-adoption/applying-for-an-adoption-court-order',
+      'external_link_desc': 'Adoption',
+      'external_link_desc_cy': 'Adoption',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    },
+    {
+      id: 2,
+      name:'Children',
+      'external_link': 'https://www.gov.uk/looking-after-children-divorce',
+      'external_link_desc': 'Children',
+      'external_link_desc_cy': 'Children',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    },
+    {
+      id: 3,
+      name:'Civil partnership',
+      'external_link': 'https://www.gov.uk/end-civil-partnership',
+      'external_link_desc': 'Civil Partnership',
+      'external_link_desc_cy': 'Civil Partnership',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    },
+    {
+      id: 4,
+      name:'Divorce',
+      'external_link': 'https://www.gov.uk/divorce',
+      'external_link_desc': 'Divorce',
+      'external_link_desc_cy': 'Divorce',
+      'display_name': null,
+      'display_name_cy': null,
+      'display_external_link': null,
+      'alt_name': null,
+      'alt_name_cy': null
+    }
   ];
 
   const courtTypes: CourtType[] = [

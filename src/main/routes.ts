@@ -35,6 +35,10 @@ export default function(app: Application): void {
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
+  app.get('/lists/areas-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAll);
+  app.get('/lists/area-of-law/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
+  app.get('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
+  app.put('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.put);
 
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
