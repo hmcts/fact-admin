@@ -55,7 +55,6 @@ export class CasesHeardController {
       return this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, allAreasOfLaw, updatedCasesHeard);
     }
 
-    // Send the new postcodes to fact-api to add them to the database
     await req.scope.cradle.api.updateCourtAreasOfLaw(req.params.slug, updatedCasesHeard)
       .then(async (value: AreaOfLaw[]) =>
         await this.get(req, res, '', true, allAreasOfLaw, updatedCasesHeard))
