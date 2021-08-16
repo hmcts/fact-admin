@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
@@ -5,8 +6,8 @@ import {Error} from '../../../types/Error';
 import {CasesHeardPageData} from '../../../types/CasesHeardPageData';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
-// import {CSRF} from "../../../modules/csrf";
 
+@autobind
 export class CasesHeardController {
 
   getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
@@ -39,6 +40,7 @@ export class CasesHeardController {
     const pageData: CasesHeardPageData = {
       allAreasOfLaw: allAreasOfLaw,
       courtAreasOfLaw: courtAreasOfLaw,
+      slug: slug,
       errorMsg: errors,
       updated: updated
     };
@@ -49,21 +51,16 @@ export class CasesHeardController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCasesHeard = req.body.courtAreasOfLaw as AreaOfLaw[] ?? [];
     const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
-    console.log(req.body);
-    console.log(updatedCasesHeard);
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, allAreasOfLaw, updatedCasesHeard);
     }
 
-    // If there is no user input
-
     // Send the new postcodes to fact-api to add them to the database
     await req.scope.cradle.api.updateCourtAreasOfLaw(req.params.slug, updatedCasesHeard)
       .then(async (value: AreaOfLaw[]) =>
-        await this.get(req, res, '', true, null,
-          updatedCasesHeard))
+        await this.get(req, res, '', true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, null, null);
+        await this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 }

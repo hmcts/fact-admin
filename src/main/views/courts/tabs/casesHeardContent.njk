@@ -14,6 +14,12 @@
   }) }}
 {% endif %}
 
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Cases heard updated"
+  }) }}
+{% endif %}
+
 {% if allAreasOfLaw|length and courtAreasOfLaw|length %}
 
   {% set courtAreasOfLawNames = [] %}
@@ -26,16 +32,27 @@
     {% for areaOfLaw in allAreasOfLaw %}
        {% if areaOfLaw.name in courtAreasOfLawNames %}
           {% set allAreasOfLawItems =
-            (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: true}), allAreasOfLawItems) %}
+            (allAreasOfLawItems.push({
+              attributes: { 'data-inputType': 'cases-heard' },
+              'text': areaOfLaw.name, 'value': areaOfLaw.name,
+              'id': areaOfLaw.id,
+              checked: true
+            }), allAreasOfLawItems) %}
         {% else %}
           {% set allAreasOfLawItems =
-            (allAreasOfLawItems.push({'text': areaOfLaw.name, 'value': areaOfLaw.name, 'id': areaOfLaw.id, checked: false}), allAreasOfLawItems) %}
+            (allAreasOfLawItems.push({
+              attributes: { 'data-inputType': 'cases-heard' },
+              'text': areaOfLaw.name,
+              'value': areaOfLaw.name,
+              'id': areaOfLaw.id,
+              checked: false
+            }), allAreasOfLawItems) %}
         {% endif %}
     {% endfor %}
 
     <div id="casesHeardList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
       {%- for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
-        <div class="govuk-grid-column-one-half">
+        <div id="test" class="govuk-grid-column-one-half">
             {{ govukCheckboxes({
               idPrefix: "cases-heard-checkbox",
               name: "casesHeardItems",
@@ -53,7 +70,5 @@
       text: "Update",
       id: "updateCasesHeardSelect"
     }) }}
-
-    <a class="govuk-link" href="#">Cancel</a>
   </div>
 
