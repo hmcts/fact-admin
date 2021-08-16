@@ -37,13 +37,13 @@ When('I enter new facility by selecting at the index {int} and enter description
   // to keep the indexing the same as the select elements in the existing facility, where the
   // select element doesn't contain an empty entry.
   facilityInex += 1;
-  const selectorIndex =entryFormIdx+1;
+  const selectorIndex = entryFormIdx + 1;
 
   //const facilitySelector = '#courtFacilitiesTab select[name$="courtFacilities[1][name]"]';
   const facilitySelector = '#courtFacilitiesTab .govuk-select';
 
-  const englishDescriptionSelector = '#description-'+selectorIndex;
-  const welshDescriptionSelector = '#descriptionCy-'+selectorIndex;
+  const englishDescriptionSelector = '#description-' + selectorIndex;
+  const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
 
   await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityInex, 'select');
   await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
@@ -60,21 +60,42 @@ When('I click save in the facilities tab', async () => {
 
 });
 
-Then('the facility entry in second last position has index {int} description in english and welsh description {string}', async (index: number, englishDescription: string) => {
+Then('the facility entry in second last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
   const secondLastIndex = numFacilities - 4; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
+  const selectorIndex = secondLastIndex + 1;
 
-  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} select[name$="[type_id]"]`, secondLastIndex);
+  const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
+  const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
+
+  const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
+  expect(englishDescriptionTxt).equal(englishDescription);
+
+  const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
+  expect(welshDescriptionTxt).equal(welshDescription);
+
+  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} .govuk-select`, secondLastIndex);
   expect(facilityIdx).equal(index);
 });
 
-When('the facility entry in last position has index {int} description in english and welsh description {string}', async (index: number, englishDescription: string) => {
+Then('the facility entry in last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
   const lastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
 
-  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} select[name$="[type_id]"]`, lastIndex);
+  const selectorIndex = lastIndex + 1;
+
+  const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
+  const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
+
+  const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
+  expect(englishDescriptionTxt).equal(englishDescription);
+
+  const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
+  expect(welshDescriptionTxt).equal(welshDescription);
+
+  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} .govuk-select`, lastIndex);
   expect(facilityIdx).equal(index);
 });
 
@@ -104,7 +125,7 @@ When('An error is displayed for facilities with summary {string} and description
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
-  selector = '#Lift-error';
+  selector = '#name-1-error';
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);

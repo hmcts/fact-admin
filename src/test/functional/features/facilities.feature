@@ -23,8 +23,8 @@ Feature: Facilities
 #    And I enter new facility by selecting at the index 6 and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     Then a green message is displayed for updated facilities "Court Facilities updated"
-#    And the facility entry in second last position has name "name" description in english and welsh description "welshDescription"
-#   When the facility entry in last position has index 3 description in english and welsh description "welshDescription"
+#    And the facility entry in second last position has index 3 description in english "englishDescription" and welsh "welshDescription"
+    And the facility entry in last position has index 3 description in english "englishDescription" and welsh "welshDescription"
 #    And I click the remove button under newly added facility entries
     And I click the remove button under newly added facility entries
     And I click save in the facilities tab
@@ -49,5 +49,5 @@ Feature: Facilities
     Then a green message is displayed for updated facilities "Court Facilities updated"
     When I enter new facility by selecting at the index 6 and enter description in english " " and welsh " "
     And I click save in the facilities tab
-#    Then An error is displayed for facilities with summary "Name and description is required for all court facilities." and description field message "facility is mandatory"
+##    Then An error is displayed for facilities with summary "Name and description is required for all court facilities." and description field message "facility is mandatory"
 
