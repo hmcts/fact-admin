@@ -7,7 +7,6 @@ const { initAll } = require('govuk-frontend');
 export class FacilitiesController {
   private formId = '#courtFacilitiesForm';
   private tabId = '#courtFacilitiesTab';
-  private hiddenFacilityTemplateId = '#newFacilityTemplate';
   private facilitiesContentId = '#courtFacilitiesContent';
 
   private deleteBtnClass = 'deleteFacility';
@@ -50,10 +49,7 @@ export class FacilitiesController {
     });
 
     initAll({ scope: document.getElementById('courtFacilitiesTab') });
-
-    window.scrollTo(0, 0);
   }
-
 
   private getCourtFacilities(): void {
     const slug = $('#slug').val();
@@ -63,12 +59,12 @@ export class FacilitiesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res);
+        window.scrollTo(0, 0);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET court facilities failed.')
     });
   }
-
 
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
@@ -81,6 +77,7 @@ export class FacilitiesController {
         data: $(e.target).serialize()
       }).done(async res => {
         await this.updateContent(res);
+        window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST facilities failed.'));
     });
@@ -88,22 +85,28 @@ export class FacilitiesController {
 
   private setUpAddEventHandler(): void {
     $(this.tabId).on('click', `button.${this.addFacilityBtnClass}`, e => {
-      // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
-      const selector = `${this.tabId} ${this.hiddenFacilityTemplateId}`;
-      const copyFieldset = $(selector).clone()
-        .removeAttr('disabled')
-        .removeAttr('hidden')
-        .removeAttr('id');
-      $(selector).before(copyFieldset);
-      // Set the id and names of the elements in the table
-      this.renameFormElements();
+      e.preventDefault();
+      tinymce.triggerSave();
+
+      // Call the service to re-create the view with a new empty row
+      $.ajax({
+        url: '/courts/facilities/add-row',
+        method: 'put',
+        data: $(this.formId).serialize()
+      }).done(async res => {
+        await this.updateContent(res);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'add new facility row failed.'));
     });
   }
 
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearFacilityBtnClass}`, e => {
       $(e.target.closest('fieldset')).find(':input:visible').val('');
-      tinymce.activeEditor.setContent('');
+
+      const idIndex = $(tinymce.activeEditor.selection.getNode()).closest('body').data('id').split('-').pop();
+      tinymce.get(this.description + '-' + idIndex).setContent('');
+      tinymce.get(this.descriptionCy + '-' + idIndex).setContent('');
     });
   }
 

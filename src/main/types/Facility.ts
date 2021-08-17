@@ -17,5 +17,6 @@ export interface FacilityPageData {
   errors: Error[],
   updated: boolean,
   facilitiesTypes: SelectItem[],
-  courtFacilities: Facility[]
+  courtFacilities: Facility[],
+  requiresValidation: boolean
 }

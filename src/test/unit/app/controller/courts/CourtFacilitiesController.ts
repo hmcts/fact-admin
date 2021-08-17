@@ -13,27 +13,34 @@ describe('FacilitiesController', () => {
     updateCourtFacilities: () => Promise<Facility[]> };
 
   const getFacilities: () => Facility[] = () => [
-    { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1', isNew: false },
-    { name:'Facility2', description:'description2',descriptionCy:'descriptionCy2', isNew: false},
-    { name:'Facility3', description:'description3',descriptionCy:'descriptionCy3', isNew: false}
+    { name:'Facility1', description:'description1', descriptionCy:'descriptionCy1', isNew: false },
+    { name:'Facility2', description:'description2', descriptionCy:'descriptionCy2', isNew: false },
+    { name:'Facility3', description:'description3', descriptionCy:'descriptionCy3', isNew: false }
   ];
+  const newfacilityRow: Facility[] = [{ name: null, description: null, descriptionCy: null, isNew: true }];
 
   const facilityTypes: FacilityType[] = [
-    { id: 1, name:'Facility1'},
-    { id: 2, name:'Facility2'},
-    { id: 3, name:'Facility3'}
+    { id: 1, name:'Facility1' },
+    { id: 2, name:'Facility2' },
+    { id: 3, name:'Facility3' }
   ];
 
   const expectedSelectItems: SelectItem[] = [
-    { value: 'Facility1',
+    {
+      value: 'Facility1',
       text: 'Facility1',
-      selected: false },
-    { value: 'Facility2',
+      selected: false
+    },
+    {
+      value: 'Facility2',
       text: 'Facility2',
-      selected: false },
-    { value: 'Facility3',
+      selected: false
+    },
+    {
+      value: 'Facility3',
       text: 'Facility3',
-      selected: false },
+      selected: false
+    },
   ];
 
   const controller = new CourtFacilitiesController();
@@ -60,13 +67,14 @@ describe('FacilitiesController', () => {
     await controller.get(req, res);
 
     // Empty entry expected for adding new court facility
-    const expectedCourtFacilities = getFacilities().concat([{ name: null, description: null, descriptionCy: null, isNew: true }]);
+    const expectedCourtFacilities = getFacilities().concat(newfacilityRow);
 
     const expectedResults: FacilityPageData = {
       errors: [],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: expectedCourtFacilities
+      courtFacilities: expectedCourtFacilities,
+      requiresValidation: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -89,13 +97,13 @@ describe('FacilitiesController', () => {
     expect(mockApi.updateCourtFacilities).toBeCalledWith(slug, getFacilities());
   });
 
-  test('Should not post facilities if description or name is empty', async() => {
+  test('Should not post facilities if description is empty', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'Facility2', description:'', descriptionCy:'descriptionCy2'}
+      { name: 'Facility1', description: 'description1', descriptionCy:'descriptionCy1' },
+      { name: 'Facility2', description: '', descriptionCy: 'descriptionCy2'}
     ];
 
     req.body = {
@@ -108,17 +116,40 @@ describe('FacilitiesController', () => {
 
     await controller.put(req, res);
 
-    // Should not call API if opening times data is incomplete
+    // Should not call API for incomplete field
     expect(mockApi.updateCourtFacilities).not.toBeCalled();
   });
 
-  test('Should not post facilities if a facility is duplicated', async() => {
+  test('Should not post facilities if name is empty', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1'}
+      { name: 'Facility1', description: 'description1', descriptionCy:'descriptionCy1' },
+      { name: '', description: 'description2', descriptionCy: 'descriptionCy2'}
+    ];
+
+    req.body = {
+      'courtFacilities': postedFacilities,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtFacilities = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+
+    // Should not call API for incomplete field
+    expect(mockApi.updateCourtFacilities).not.toBeCalled();
+  });
+
+  test('Should not post facilities if the facility name is duplicated', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedFacilities: Facility[] = [
+      { name:'Facility1', description:'description1', descriptionCy: 'descriptionCy1' },
+      { name:'Facility1', description:'description2', descriptionCy: 'descriptionCy2' }
     ];
     req.body = {
       'courtFacilities': postedFacilities,
@@ -130,6 +161,48 @@ describe('FacilitiesController', () => {
 
     await controller.put(req, res);
     expect(mockApi.updateCourtFacilities).not.toBeCalled();
+  });
+
+  test('Should not post facilities if multiple facility names of the same type', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedFacilities: Facility[] = [
+      { name:'Parking', description:'description1', descriptionCy: 'descriptionCy1' },
+      { name:'No parking', description:'description2', descriptionCy: 'descriptionCy2' }
+    ];
+    req.body = {
+      'courtFacilities': postedFacilities,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtFacilities = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+    expect(mockApi.updateCourtFacilities).not.toBeCalled();
+  });
+
+  test('Should post court facilities if the facility description is duplicated', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const postedFacilities: Facility[] = [
+      { name:'Facility1', description:'description1', descriptionCy: 'descriptionCy1' },
+      { name:'Facility2', description:'description1', descriptionCy: 'descriptionCy1' }
+    ];
+    req.body = {
+      'courtFacilities': postedFacilities,
+      '_csrf': CSRF.create()
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtFacilities = jest.fn().mockResolvedValue(getFacilities());
+
+    await controller.put(req, res);
+
+    // Should call API to save data
+    expect(mockApi.updateCourtFacilities).toBeCalledWith(slug, postedFacilities);
   });
 
   test('Should not post facilities if CSRF token is invalid', async() => {
@@ -155,12 +228,12 @@ describe('FacilitiesController', () => {
       errors: [{text: controller.updateErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities
+      courtFacilities: postedFacilities,
+      requiresValidation: true
     };
 
     await controller.put(req, res);
 
-    // Should not call API if opening times data is incomplete
     expect(mockApi.updateCourtFacilities).not.toBeCalled();
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -178,10 +251,10 @@ describe('FacilitiesController', () => {
       errors: [{text: controller.getCourtFacilitiesErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: null
+      courtFacilities: null,
+      requiresValidation: true
     };
     await controller.get(req, res);
-
 
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -203,14 +276,15 @@ describe('FacilitiesController', () => {
       errors: [{text: controller.getFacilityTypesErrorMsg}],
       updated: false,
       facilitiesTypes: [],
-      courtFacilities: expectedCourtFacilities
+      courtFacilities: expectedCourtFacilities,
+      requiresValidation: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
 
   test('Should handle error with duplicated facilities when updating court facilities', async () => {
     const req = mockRequest();
-    const postedFacilities = getFacilities().concat([{ name:'Facility1', description:'description1',descriptionCy:'descriptionCy1', isNew: true }]);
+    const postedFacilities = getFacilities().concat([{ name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1', isNew: true }]);
     req.params = { slug: 'southport-county-court' };
     req.body = {
       'courtFacilities': postedFacilities,
@@ -226,7 +300,8 @@ describe('FacilitiesController', () => {
       errors: [{text: controller.facilityDuplicatedErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities
+      courtFacilities: postedFacilities,
+      requiresValidation: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -235,8 +310,8 @@ describe('FacilitiesController', () => {
   test('Should handle error with empty name and description when updating court facilities', async () => {
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'', description:'test', descriptionCy:'descriptionCy2'},
+      { name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1' },
+      { name: '', description: 'test', descriptionCy: 'descriptionCy2' },
       { name: null, description: null, descriptionCy: null, isNew: true }
     ];
     req.params = { slug: 'southport-county-court' };
@@ -254,7 +329,8 @@ describe('FacilitiesController', () => {
       errors: [{text: controller.emptyNameOrDescriptionErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities
+      courtFacilities: postedFacilities,
+      requiresValidation: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -262,9 +338,9 @@ describe('FacilitiesController', () => {
   test('Should handle multiple errors when updating court facilities', async () => {
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'', description:'test', descriptionCy:'descriptionCy2'},
+      { name: 'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
+      { name: 'Facility1', description: 'description2', descriptionCy: 'descriptionCy2' },
+      { name: '', description: 'description2', descriptionCy: 'descriptionCy2' },
       { name: null, description: null, descriptionCy: null, isNew: true }
     ];
     req.params = { slug: 'southport-county-court' };
@@ -285,9 +361,35 @@ describe('FacilitiesController', () => {
       ],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities
+      courtFacilities: postedFacilities,
+      requiresValidation: true
     };
 
+    expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
+  });
+
+  test('Should add new row to facilities view and render the page', async () => {
+    const req = mockRequest();
+
+    req.body = {
+      'courtFacilities': getFacilities(),
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+
+    const res = mockResponse();
+    await controller.addRow(req, res);
+
+    // Empty entry expected for adding new court facility
+    const expectedCourtFacilities = getFacilities().concat(newfacilityRow);
+
+    const expectedResults: FacilityPageData = {
+      errors: [],
+      updated: false,
+      facilitiesTypes: expectedSelectItems,
+      courtFacilities: expectedCourtFacilities,
+      requiresValidation: false
+    };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
 });

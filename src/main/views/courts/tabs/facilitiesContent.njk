@@ -23,16 +23,19 @@
 {% for facility in courtFacilities %}
   {% set isNew = (facility.isNew === true) or (facility.isNew === "true") %}
 
-  {% set nameError = false %}
-  {% if facility.name === '' %}
-    {% set nameError = { text: 'Name is required' } %}
-  {% elif facility.isDuplicated === true %}
-    {% set nameError = { text: 'Duplicated facility' } %}
-  {% endif %}
 
-  {% set descriptionError = false %}
-  {% if facility.description === '' %}
-    {% set descriptionError = { text: 'Description is required' } %}
+  {% if requiresValidation === true %}
+    {% set nameError = false %}
+    {% if facility.name === '' %}
+      {% set nameError = { text: 'Name is required' } %}
+    {% elif facility.isDuplicated === true %}
+      {% set nameError = { text: 'Duplicated facility' } %}
+    {% endif %}
+
+    {% set descriptionError = false %}
+    {% if facility.description === '' %}
+      {% set descriptionError = { text: 'Description is required' } %}
+    {% endif %}
   {% endif %}
 
   {% call govukFieldset({
@@ -42,7 +45,7 @@
     <h3 class="govuk-heading-s">Add New Court Facility</h3>
   {% endif %}
 
-  <input type="hidden" name={{"courtFacilities[" + loop.index +"][isNew]"}} value={{courtFacilities.isNew}}></input>
+  <input type="hidden" name={{"courtFacilities[" + loop.index +"][isNew]"}} value={{facility.isNew}}></input>
 
   {{ govukSelect({
     id: "name-" + loop.index,
@@ -102,59 +105,6 @@
   {% endcall %}
 
 {% endfor %}
-
-
-{% call govukFieldset({
-  attributes: { id: "newFacilityTemplate", disabled: "disabled", hidden: true }
-}) %}
-
- <h3 class="govuk-heading-s">Add New Court Facility</h3>
-
- <input type="hidden" name={{"courtFacilities[" + courtFacilities.length +"][isNew]"}} value="true"></input>
-
- {{ govukSelect({
-    id: "name-" + courtFacilities.length,
-    name: "courtFacilities[" + courtFacilities.length +"][name]",
-    label: {
-      text: "Name"
-    },
-    items: facilitiesTypes | selectFilter('')
-  }) }}
-
-  {{ govukTextarea ({
-    label: {
-      text: "Description"
-    },
-    classes: "govuk-textarea rich-editor",
-    id: "description-" + courtFacilities.length,
-    name: "courtFacilities[" + courtFacilities.length +"][description]",
-    value: facility.description
-  }) }}
-
-  {{ govukTextarea ({
-    label: {
-      text: "Description (Welsh)"
-    },
-    classes: "govuk-textarea rich-editor",
-    id: "descriptionCy-" + courtFacilities.length,
-    name: "courtFacilities[" + courtFacilities.length +"][descriptionCy]",
-    value: facility.descriptionCy
-  }) }}
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-three-quarters">
-       {{ govukButton({
-            text: "Clear",
-            name: "clearFacility",
-            type: "button",
-            classes: "govuk-button--secondary clearFacility"
-       }) }}
-    </div>
-  </div>
-
-  <hr/>
-
-{% endcall %}
 
 {{ govukButton({
   text: "Save",

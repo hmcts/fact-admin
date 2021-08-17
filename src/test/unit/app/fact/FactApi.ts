@@ -470,13 +470,11 @@ describe('FactApi', () => {
     await expect(api.updateEmails('No Slug', [])).rejects.toEqual(mockError);
   });
 
-
   test('Should update and return results from updateCourtFacility request', async () => {
     const results = {
       data: [
-        { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-        { name:'Facility2', description:'description2',descriptionCy:'descriptionCy2'}
-
+        { name:'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
+        { name:'Facility2', description: 'description2', descriptionCy: 'descriptionCy2' }
       ]
     };
 
@@ -515,9 +513,8 @@ describe('FactApi', () => {
   test('Should return results from getCourtFacilities request', async () => {
     const results = {
       data: [
-        { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-        { name:'Facility2', description:'description2',descriptionCy:'descriptionCy2'}
-
+        { name:'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
+        { name:'Facility2', description: 'description2', descriptionCy: 'descriptionCy2' }
       ]
     };
 
@@ -558,8 +555,8 @@ describe('FactApi', () => {
   test('Should return results from getAllFacilityTypes request', async () => {
     const results = {
       data: [
-        { id: 1, name:'Facility1'},
-        { id: 2, name:'Facility2'}
+        { id: 1, name: 'Facility1'},
+        { id: 2, name: 'Facility2'}
       ]
     };
 

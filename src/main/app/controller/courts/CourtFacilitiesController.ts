@@ -21,7 +21,8 @@ export class CourtFacilitiesController {
     res: Response,
     updated = false,
     errorMsg: string[] = [],
-    courtFacilities: Facility[] = null): Promise<void> {
+    courtFacilities: Facility[] = null,
+    requiresValidation = true): Promise<void> {
     if (!courtFacilities) {
       const slug: string = req.params.slug as string;
       await req.scope.cradle.api.getCourtFacilities(slug)
@@ -48,12 +49,12 @@ export class CourtFacilitiesController {
       errors: errors,
       updated: updated,
       facilitiesTypes: CourtFacilitiesController.getFacilityTypesForSelect(allFacilitiesTypes),
-      courtFacilities: courtFacilities
+      courtFacilities: courtFacilities,
+      requiresValidation: requiresValidation
     };
 
     res.render('courts/tabs/facilitiesContent', pageData);
   }
-
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
@@ -82,7 +83,13 @@ export class CourtFacilitiesController {
     await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
       .then((value: Facility[]) => this.get(req, res, true, [], value))
       .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
+  }
 
+  public async addRow(req: AuthedRequest, res: Response): Promise<void> {
+    const courtFacilities = req.body.courtFacilities as Facility[] ?? [];
+    courtFacilities.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
+    this.addEmptyFormsForNewEntries(courtFacilities);
+    await this.get(req, res, false, [], courtFacilities, false);
   }
 
   private static getFacilityTypesForSelect(standardTypes: FacilityType[]): SelectItem[] {
