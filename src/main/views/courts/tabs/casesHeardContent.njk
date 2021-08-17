@@ -30,13 +30,13 @@
 
   {% set allAreasOfLawItems = [] %}
   {% for areaOfLaw in allAreasOfLaw %}
-     {% set id = areaOfLaw.name | lower | replace(" ", "-") %}
      {% if areaOfLaw.name in courtAreasOfLawNames %}
         {% set allAreasOfLawItems =
           (allAreasOfLawItems.push({
             attributes: { 'data-inputType': 'cases-heard' },
-            'text': areaOfLaw.name, 'value': areaOfLaw.name,
-            'id': id,
+            'text': areaOfLaw.name,
+            'value': areaOfLaw.name,
+            'id': areaOfLaw.id,
             checked: true
           }), allAreasOfLawItems) %}
       {% else %}
@@ -45,7 +45,7 @@
             attributes: { 'data-inputType': 'cases-heard' },
             'text': areaOfLaw.name,
             'value': areaOfLaw.name,
-            'id': id,
+            'id': areaOfLaw.id,
             checked: false
           }), allAreasOfLawItems) %}
       {% endif %}
