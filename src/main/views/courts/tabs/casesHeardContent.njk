@@ -23,53 +23,58 @@
 {% if allAreasOfLaw|length %}
 
   {% set courtAreasOfLawNames = [] %}
-    {% for areaOfLaw in courtAreasOfLaw %}
+  {% for areaOfLaw in courtAreasOfLaw %}
+    {% set allAreasOfLawItems =
+      (courtAreasOfLawNames.push(areaOfLaw.name), courtAreasOfLawNames) %}
+  {% endfor %}
+
+  {% set allAreasOfLawItems = [] %}
+  {% for areaOfLaw in allAreasOfLaw %}
+     {% if areaOfLaw.name in courtAreasOfLawNames %}
         {% set allAreasOfLawItems =
-          (courtAreasOfLawNames.push(areaOfLaw.name), courtAreasOfLawNames) %}
-    {% endfor %}
+          (allAreasOfLawItems.push({
+            attributes: { 'data-inputType': 'cases-heard' },
+            'text': areaOfLaw.name, 'value': areaOfLaw.name,
+            'id': areaOfLaw.id,
+            checked: true
+          }), allAreasOfLawItems) %}
+      {% else %}
+        {% set allAreasOfLawItems =
+          (allAreasOfLawItems.push({
+            attributes: { 'data-inputType': 'cases-heard' },
+            'text': areaOfLaw.name,
+            'value': areaOfLaw.name,
+            'id': areaOfLaw.id,
+            checked: false
+          }), allAreasOfLawItems) %}
+      {% endif %}
+  {% endfor %}
 
-    {% set allAreasOfLawItems = [] %}
-    {% for areaOfLaw in allAreasOfLaw %}
-       {% if areaOfLaw.name in courtAreasOfLawNames %}
-          {% set allAreasOfLawItems =
-            (allAreasOfLawItems.push({
-              attributes: { 'data-inputType': 'cases-heard' },
-              'text': areaOfLaw.name, 'value': areaOfLaw.name,
-              'id': areaOfLaw.id,
-              checked: true
-            }), allAreasOfLawItems) %}
-        {% else %}
-          {% set allAreasOfLawItems =
-            (allAreasOfLawItems.push({
-              attributes: { 'data-inputType': 'cases-heard' },
-              'text': areaOfLaw.name,
-              'value': areaOfLaw.name,
-              'id': areaOfLaw.id,
-              checked: false
-            }), allAreasOfLawItems) %}
-        {% endif %}
-    {% endfor %}
-
-    <div id="casesHeardList" class="visible-scrollbar scrollable", role="scrollbar">
+  <div id="casesHeardList" class="visible-scrollbar scrollable", role="scrollbar">
+    <div id="postcodesMoveOrDelete" class="govuk-grid-row">
       {%- for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
-        <div id="test" class="govuk-grid-column-one-half">
+
+        <div class="govuk-grid-column-one-half">
+
             {{ govukCheckboxes({
               idPrefix: "cases-heard-checkbox",
               name: "casesHeardItems",
               classes: "govuk-checkboxes--medium",
               items: items
             }) }}
+
         </div>
+
       {% endfor %}
     </div>
-
-  {% endif %}
-
-  <div class="govuk-button-group">
-    {{ govukButton({
-      text: "Update",
-      name: "updateCasesHeard",
-      id: "updateCasesHeardSelect"
-    }) }}
   </div>
+{% endif %}
+
+<div class="govuk-button-group">
+  {{ govukButton({
+    text: "Update",
+    name: "updateCasesHeard",
+    id: "updateCasesHeardSelect"
+  }) }}
+</div>
 
