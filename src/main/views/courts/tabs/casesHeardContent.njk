@@ -50,7 +50,7 @@
         {% endif %}
     {% endfor %}
 
-    <div id="casesHeardList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+    <div id="casesHeardList" class="visible-scrollbar scrollable", role="scrollbar">
       {%- for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
         <div id="test" class="govuk-grid-column-one-half">
             {{ govukCheckboxes({
@@ -68,6 +68,7 @@
   <div class="govuk-button-group">
     {{ govukButton({
       text: "Update",
+      name: "updateCasesHeard",
       id: "updateCasesHeardSelect"
     }) }}
   </div>
