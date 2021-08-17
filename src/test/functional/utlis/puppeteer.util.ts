@@ -5,6 +5,7 @@ const scope = require('../support/scope');
 export const newPage = async () => {
   scope.page = await scope.browser.newPage();
 };
+
 export const reloadPage = async () => {
   await scope.page.reload();
 };
