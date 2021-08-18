@@ -121,11 +121,15 @@ export class FacilitiesController {
     return `courtFacilities[${index}][${name}]`;
   }
 
+  private getInputId(id: string, index: number): string {
+    return `${id}-${index}`;
+  }
+
   private renameFormElement(type: 'input' | 'select' | 'textarea', name: string, id: string): void {
     $(`${this.tabId} ${type}[name$="[${name}]"]`)
-      .attr('name', idx => this.getInputName(name, idx))
-      .attr('id', idx => `${id}-` + idx)
-      .siblings('label').attr('for', idx => `${id}-` + idx);
+      .attr('name', idx => this.getInputName(name, idx + 1))
+      .attr('id', idx => this.getInputId(id, idx + 1))
+      .siblings('label').attr('for', idx => this.getInputId(id, idx + 1));
   }
 
   private renameFormElements(): void {
