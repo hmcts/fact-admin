@@ -17,7 +17,16 @@ Then('I can view the existing facilities', async () => {
 });
 
 When('I remove all existing facility entries and save', async () => {
-  await FunctionalTestHelpers.clearFieldsetsAndSave('#courtFacilitiesTab', 'deleteFacility', 'saveFacilities');
+
+  const fieldsetSelector = '#courtFacilitiesContent > fieldset';
+  const fieldsetCount = await I.countElement(fieldsetSelector);
+  // Remove all fieldsets except the empty new one
+  for (let i = fieldsetCount; i > 1; i--) {
+    await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'deleteFacility');
+    const updatedFieldsetCount = await I.countElement(fieldsetSelector);
+    expect(i - updatedFieldsetCount).equal(1);
+  }
+  await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'saveFacilities');
 });
 
 Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
@@ -31,12 +40,12 @@ Then('a green message is displayed for updated facilities {string}', async (msgU
 
 When('I enter new facility by selecting at the index {int} and enter description in english {string} and welsh {string}', async (facilityInex: number, englishDescription: string, welshDescription: string) => {
   const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
-  const entryFormIdx = numFieldsets - 2;
-
+  const entryFormIdx = numFieldsets - 1;
+  facilityInex += 1;
   // The facilityIndex select element contains an empty entry in the 'add new' form only. We add 1 here
   // to keep the indexing the same as the select elements in the existing facility, where the
   // select element doesn't contain an empty entry.
-  facilityInex += 1;
+
   const selectorIndex = entryFormIdx + 1;
 
   //const facilitySelector = '#courtFacilitiesTab select[name$="courtFacilities[1][name]"]';
@@ -50,20 +59,35 @@ When('I enter new facility by selecting at the index {int} and enter description
   await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
 });
 
+When('I enter description in english {string}', async (englishDescription: string) => {
+
+  const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
+  const entryFormIdx = numFieldsets - 1;
+
+  // to keep the indexing the same as the select elements in the existing facility, where the
+  // select element doesn't contain an empty entry.
+
+  const selectorIndex = entryFormIdx + 1;
+  const englishDescriptionSelector = '#description-' + selectorIndex;
+  await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
+});
+
 When('I click on add new facility', async () => {
   await FunctionalTestHelpers.clickButtonAndCheckFieldsetAdded('#courtFacilitiesTab', 'addFacility');
 });
 
 When('I click save in the facilities tab', async () => {
-
   await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'saveFacilities');
+});
 
+When('I click clear in the facilities tab', async () => {
+  await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
 });
 
 Then('the facility entry in second last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
-  const secondLastIndex = numFacilities - 4; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
+  const secondLastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
   const selectorIndex = secondLastIndex + 1;
 
   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
@@ -82,7 +106,7 @@ Then('the facility entry in second last position has index {int} description in 
 Then('the facility entry in last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
-  const lastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
+  const lastIndex = numFacilities - 2; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
 
   const selectorIndex = lastIndex + 1;
 
@@ -102,18 +126,59 @@ Then('the facility entry in last position has index {int} description in english
 When('I click the remove button under newly added facility entries', async () => {
   const numFacilities = await I.countElement('#courtFacilitiesTab fieldset');
   await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'deleteFacility');
-
+  await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
   const updatedNumFacilities = await I.countElement('#courtFacilitiesTab fieldset');
   expect(numFacilities - updatedNumFacilities).equal(1);
 });
 
 Then('there are no facility entries', async () => {
   const numberOfFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
-  const numFacilities = numberOfFieldsets - 2; // we deduct the hidden template and the new facilities form
+  const numFacilities = numberOfFieldsets - 1; // we deduct the hidden template and the new facilities form
   expect(numFacilities).to.equal(0);
 });
 
+When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#courtFacilitiesContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summary);
+
+  selector = '#name-1-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(message);
+
+  selector = '#name-2-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement2 = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement2)).contains(message);
+});
+
 When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#courtFacilitiesContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(summary);
+
+  selector = '#description-1-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const descriptionErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(descriptionErrorElement)).contains(message);
+});
+
+When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
   expect(await I.checkElement(selector)).equal(true);
