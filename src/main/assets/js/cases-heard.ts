@@ -45,7 +45,7 @@ export class CasesHeardController {
         data: {
           courtAreasOfLaw: updatedCourtAreasOfLaw,
           allAreasOfLaw: allAreasOfLaw,
-          csrfToken: $('#casesHeardTab input[name="_csrf"]').val()
+          csrfToken: $(this.tabId + ' input[name="_csrf"]').val()
         }
       }).done(res => {
         $(this.casesHeardContentId).html(res);

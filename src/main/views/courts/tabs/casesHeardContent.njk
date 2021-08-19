@@ -24,31 +24,21 @@
 
   {% set courtAreasOfLawNames = [] %}
   {% for areaOfLaw in courtAreasOfLaw %}
-    {% set allAreasOfLawItems =
+    {% set courtAreasOfLawNames =
       (courtAreasOfLawNames.push(areaOfLaw.name), courtAreasOfLawNames) %}
   {% endfor %}
 
   {% set allAreasOfLawItems = [] %}
   {% for areaOfLaw in allAreasOfLaw %}
-     {% if areaOfLaw.name in courtAreasOfLawNames %}
-        {% set allAreasOfLawItems =
-          (allAreasOfLawItems.push({
-            attributes: { 'data-inputType': 'cases-heard' },
-            'text': areaOfLaw.name,
-            'value': areaOfLaw.name,
-            'id': areaOfLaw.id,
-            checked: true
-          }), allAreasOfLawItems) %}
-      {% else %}
-        {% set allAreasOfLawItems =
-          (allAreasOfLawItems.push({
-            attributes: { 'data-inputType': 'cases-heard' },
-            'text': areaOfLaw.name,
-            'value': areaOfLaw.name,
-            'id': areaOfLaw.id,
-            checked: false
-          }), allAreasOfLawItems) %}
-      {% endif %}
+    {% set checked = true if areaOfLaw.name in courtAreasOfLawNames else false %}
+    {% set allAreasOfLawItems =
+      (allAreasOfLawItems.push({
+        attributes: { 'data-inputType': 'cases-heard' },
+        'text': areaOfLaw.name,
+        'value': areaOfLaw.name,
+        'id': areaOfLaw.id,
+        'checked': checked
+      }), allAreasOfLawItems) %}
   {% endfor %}
 
   <div id="casesHeardList" class="visible-scrollbar scrollable", role="scrollbar">
