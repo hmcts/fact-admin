@@ -17,7 +17,7 @@ export class CasesHeardController {
   public async get(
     req: AuthedRequest,
     res: Response,
-    error = '',
+    errorMsg: string[] = [],
     updated = false,
     allAreasOfLaw: AreaOfLaw[] = null,
     courtAreasOfLaw: AreaOfLaw[]): Promise<void> {
@@ -25,16 +25,16 @@ export class CasesHeardController {
     if (!allAreasOfLaw) {
       await req.scope.cradle.api.getAllAreasOfLaw()
         .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
-        .catch(() => error += this.getAreasOfLawErrorMsg);
+        .catch(() => errorMsg.push(this.getAreasOfLawErrorMsg));
     }
     if (!courtAreasOfLaw) {
       await req.scope.cradle.api.getCourtAreasOfLaw(slug)
         .then((value: AreaOfLaw[]) => courtAreasOfLaw = value)
-        .catch(() => error += this.getCourtAreasOfLawErrorMsg);
+        .catch(() => errorMsg.push(this.getCourtAreasOfLawErrorMsg));
     }
     const errors: Error[] = [];
-    if (error) {
-      errors.push({text: error});
+    for (const msg of errorMsg) {
+      errors.push({text: msg});
     }
 
     const pageData: CasesHeardPageData = {
@@ -52,14 +52,14 @@ export class CasesHeardController {
     const updatedCasesHeard = req.body.courtAreasOfLaw as AreaOfLaw[] ?? [];
     const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
-      return this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, allAreasOfLaw, updatedCasesHeard);
+      return this.get(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
     }
 
     await req.scope.cradle.api.updateCourtAreasOfLaw(req.params.slug, updatedCasesHeard)
       .then(async (value: AreaOfLaw[]) =>
-        await this.get(req, res, '', true, allAreasOfLaw, updatedCasesHeard))
+        await this.get(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.get(req, res, this.putCourtAreasOfLawErrorMsg, false, allAreasOfLaw, updatedCasesHeard);
+        await this.get(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 }

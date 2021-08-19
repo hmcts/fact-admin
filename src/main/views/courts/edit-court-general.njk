@@ -40,131 +40,125 @@
 
         <div class="govuk-grid-column-one-quarter">
           <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank"
-             href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
+            href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
         </div>
       </div>
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% set generalHtml %}
-              {% include "./tabs/general.njk" %}
-            {% endset -%}
-            {% set openingHoursHtml %}
-              {% include "./tabs/openingHours.njk" %}
-            {% endset -%}
-            {% set phoneNumbersHtml %}
-               {% include "./tabs/phoneNumbers.njk" %}
-            {% endset -%}
-            {% set emailsHtml %}
-               {% include "./tabs/emails.njk" %}
-            {% endset -%}
-            {% set courtTypesHtml %}
-                {% include "./tabs/types.njk" %}
-            {% endset -%}
-            {% set postcodesHtml %}
-                {% include "./tabs/postcodes.njk" %}
-            {% endset -%}
-            {% set localAuthoritiesHtml %}
-                {% include "./tabs/localAuthorities.njk" %}
-            {% endset -%}
-<<<<<<< HEAD
-            {% set casesHeardHtml %}
-                {% include "./tabs/casesHeard.njk" %}
-=======
-            {% set addressesHtml %}
-                {% include "./tabs/addresses.njk" %}
->>>>>>> master
-            {% endset -%}
+          {% set generalHtml %}
+            {% include "./tabs/general.njk" %}
+          {% endset -%}
+          {% set openingHoursHtml %}
+            {% include "./tabs/openingHours.njk" %}
+          {% endset -%}
+          {% set phoneNumbersHtml %}
+             {% include "./tabs/phoneNumbers.njk" %}
+          {% endset -%}
+          {% set emailsHtml %}
+             {% include "./tabs/emails.njk" %}
+          {% endset -%}
+          {% set courtTypesHtml %}
+              {% include "./tabs/types.njk" %}
+          {% endset -%}
+          {% set postcodesHtml %}
+              {% include "./tabs/postcodes.njk" %}
+          {% endset -%}
+          {% set localAuthoritiesHtml %}
+              {% include "./tabs/localAuthorities.njk" %}
+          {% endset -%}
+          {% set casesHeardHtml %}
+              {% include "./tabs/casesHeard.njk" %}
+          {% endset -%}
+          {% set addressesHtml %}
+              {% include "./tabs/addresses.njk" %}
+          {% endset -%}
 
-             <input id='slug' type='hidden' value='{{slug}}'></input>
+          <input id='slug' type='hidden' value='{{slug}}'></input>
 
-             {% set tabItems = [
-                  {
-                    label: "General",
-                    id: "general",
-                    panel: {
-                      html: generalHtml
-                    }
-                  },
-                  {
-                    label: "Opening Hours",
-                    id: "opening-hours",
-                    panel: {
-                      html: openingHoursHtml
-                    }
-                  },
-                  {
-                    label: "Phone Numbers",
-                    id: "phone-numbers",
-                    panel: {
-                      html: phoneNumbersHtml
-                    }
-                  },
-                  {
-                    label: "Emails",
-                    id: "emails",
-                    panel: {
-                      html: emailsHtml
-                    }
-                  },
-                  {
-                    label: "Types",
-                    id: "court-types",
-                    panel: {
-                      html: courtTypesHtml
-                    }
-                  },
-                  {
-<<<<<<< HEAD
-                    label: "Cases Heard",
-                    id: "cases-heard",
-                    panel: {
-                      html: casesHeardHtml
-=======
-                    label: "Addresses",
-                    id: "addresses",
-                    panel: {
-                    html: addressesHtml
->>>>>>> master
-                    }
-                  }
-                  ]%}
+            {% set tabItems = [
+              {
+                label: "General",
+                id: "general",
+                panel: {
+                  html: generalHtml
+                }
+              },
+              {
+                label: "Opening Hours",
+                id: "opening-hours",
+                panel: {
+                  html: openingHoursHtml
+                }
+              },
+              {
+                label: "Phone Numbers",
+                id: "phone-numbers",
+                panel: {
+                  html: phoneNumbersHtml
+                }
+              },
+              {
+                label: "Emails",
+                id: "emails",
+                panel: {
+                  html: emailsHtml
+                }
+              },
+              {
+                label: "Types",
+                id: "court-types",
+                panel: {
+                  html: courtTypesHtml
+                }
+              },
+              {
+                label: "Cases Heard",
+                id: "cases-heard",
+                panel: {
+                  html: casesHeardHtml
+                }
+              },
+              {
+                label: "Addresses",
+                id: "addresses",
+                panel: {
+                  html: addressesHtml
+                }
+              }
+            ]%}
 
-              {% set postcodesTab =
-                  {
-                   label: "Postcodes",
-                   id: "postcodes",
-                   panel: {
-                      html: postcodesHtml
-                   }
-                  }
-              %}
+          {% set postcodesTab =
+            {
+              label: "Postcodes",
+              id: "postcodes",
+              panel: {
+                html: postcodesHtml
+              }
+            }
+          %}
 
-              {% set localAuthoritiesTab =
-                  {
-                    label: "Local Authorities",
-                    id: "local-authorities",
-                    panel: {
-                    html: localAuthoritiesHtml
-                    }
-                  }
-<<<<<<< HEAD
-              %}
+          {% set localAuthoritiesTab =
+            {
+              label: "Local Authorities",
+              id: "local-authorities",
+              panel: {
+                html: localAuthoritiesHtml
+              }
+            }
+          %}
 
-=======
-               %}
->>>>>>> master
+          {% if isSuperAdmin %}
 
-        {% if isSuperAdmin %}
+            {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
+            {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
 
-          {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+          {% endif %}
 
-        {% endif %}
           {{ factTabs({
-          id: 'Main',
+            id: 'Main',
             items: tabItems
-            }) }}
+          }) }}
         </div>
       </div>
     </div>

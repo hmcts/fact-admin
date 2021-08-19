@@ -63,7 +63,7 @@ describe('CasesHeardController', () => {
     };
     req.scope.cradle.api = mockApi;
 
-    await controller.get(req, res,'', false, null, null);
+    await controller.get(req, res,[], false, null, null);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: getAllAreasOfLawData,
@@ -85,7 +85,7 @@ describe('CasesHeardController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getAllAreasOfLaw = jest.fn().mockRejectedValue(new Error('Mock API Error'));
 
-    await controller.get(req, res,'', false, null, null);
+    await controller.get(req, res,[], false, null, null);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: null,
@@ -107,7 +107,7 @@ describe('CasesHeardController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getCourtAreasOfLaw = jest.fn().mockRejectedValue(new Error('Mock API Error'));
 
-    await controller.get(req, res,'', false, null, null);
+    await controller.get(req, res,[], false, null, null);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: getAllAreasOfLawData,
