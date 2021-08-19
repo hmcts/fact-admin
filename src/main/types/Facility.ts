@@ -7,7 +7,7 @@ export interface FacilityType {
   name: string,
 }
 
-export interface Facility extends Element{
+export interface Facility extends Element {
   name : string;
   description: string;
   descriptionCy : string;

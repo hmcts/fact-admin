@@ -18,7 +18,7 @@ import {LocalAuthoritiesListController} from './local-authorities-list';
 import {PostcodesController} from './postcodes';
 import {CourtsController} from './courts';
 
-const { initAll } = require('govuk-frontend');
+const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
 
 initTabs();

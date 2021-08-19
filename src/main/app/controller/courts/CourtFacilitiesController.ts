@@ -58,7 +58,13 @@ export class CourtFacilitiesController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
-    courtFacilities.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
+    courtFacilities.forEach(ot => {
+      ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true');
+      // Workaround for the issue where the the empty row is removed after the previous name selection.
+      if (!ot.name) {
+        ot.name = '';
+      }
+    });
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, [this.updateErrorMsg], courtFacilities);
@@ -68,7 +74,7 @@ export class CourtFacilitiesController {
     courtFacilities = courtFacilities.filter(cf => !this.facilityEntryIsEmpty(cf));
     const errorMsg: string[] = [];
 
-    if (courtFacilities.some(cf => cf.name === ''|| cf.description === '' )) {
+    if (courtFacilities.some(cf => cf.name === '' || cf.description === '')) {
       errorMsg.push(this.emptyNameOrDescriptionErrorMsg);
     }
 
