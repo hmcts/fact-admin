@@ -63,14 +63,15 @@ describe('CasesHeardController', () => {
     };
     req.scope.cradle.api = mockApi;
 
-    await controller.get(req, res,[], false, null, null);
+    await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: getAllAreasOfLawData,
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: false
+      updated: false,
+      renderUpdateButton: true
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -85,14 +86,15 @@ describe('CasesHeardController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getAllAreasOfLaw = jest.fn().mockRejectedValue(new Error('Mock API Error'));
 
-    await controller.get(req, res,[], false, null, null);
+    await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: null,
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.getAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      renderUpdateButton: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -107,14 +109,15 @@ describe('CasesHeardController', () => {
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getCourtAreasOfLaw = jest.fn().mockRejectedValue(new Error('Mock API Error'));
 
-    await controller.get(req, res,[], false, null, null);
+    await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
       allAreasOfLaw: getAllAreasOfLawData,
       courtAreasOfLaw: null,
       slug: testSlug,
       errorMsg: [{text: controller.getCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      renderUpdateButton: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -138,7 +141,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: true
+      updated: true,
+      renderUpdateButton: true
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -164,7 +168,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      renderUpdateButton: true
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -189,7 +194,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      renderUpdateButton: true
     });
     expect(mockApi.updateCourtAreasOfLaw).not.toBeCalled();
   });

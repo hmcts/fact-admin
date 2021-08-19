@@ -71,11 +71,12 @@
   </div>
 {% endif %}
 
-<div class="govuk-button-group">
-  {{ govukButton({
-    text: "Update",
-    name: "updateCasesHeard",
-    id: "updateCasesHeardSelect"
-  }) }}
-</div>
-
+{% if renderUpdateButton === true %}
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Update",
+      name: "updateCasesHeard",
+      id: "updateCasesHeardSelect"
+    }) }}
+  </div>
+{% endif %}
