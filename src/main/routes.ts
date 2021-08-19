@@ -8,6 +8,8 @@ export default function(app: Application): void {
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
+
+  // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
   app.put('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.put);
@@ -26,13 +28,17 @@ export default function(app: Application): void {
   app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
   app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
+  app.get('/courts/:slug/addresses', app.locals.container.cradle.addressController.get);
+  app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
+
+  // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
 
+  // General
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
-
 }

@@ -67,8 +67,13 @@
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
+<<<<<<< HEAD
             {% set casesHeardHtml %}
                 {% include "./tabs/casesHeard.njk" %}
+=======
+            {% set addressesHtml %}
+                {% include "./tabs/addresses.njk" %}
+>>>>>>> master
             {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
@@ -110,10 +115,17 @@
                     }
                   },
                   {
+<<<<<<< HEAD
                     label: "Cases Heard",
                     id: "cases-heard",
                     panel: {
                       html: casesHeardHtml
+=======
+                    label: "Addresses",
+                    id: "addresses",
+                    panel: {
+                    html: addressesHtml
+>>>>>>> master
                     }
                   }
                   ]%}
@@ -136,8 +148,12 @@
                     html: localAuthoritiesHtml
                     }
                   }
+<<<<<<< HEAD
               %}
 
+=======
+               %}
+>>>>>>> master
 
         {% if isSuperAdmin %}
 
