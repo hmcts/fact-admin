@@ -12,7 +12,7 @@ Feature: Court Types
     And they are in alphabetical order
 
 
-  Scenario Outline: Select a court type
+  Scenario Outline: Select and remove a court type
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over types nav element
@@ -21,22 +21,9 @@ Feature: Court Types
     When I check a court type
     And I click on save court type
     Then a green update message is displayed showing Court Types updated
-
-    Examples:
-      | view_court_slug                           |
-      | basingstoke-county-court-and-family-court |
-
-
-  Scenario Outline: Remove a court type
-    When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over types nav element
-    When I click the types tab
-    Then I can view the existing court types
     When I uncheck a court type
     Then I click on save court type
     Then a green update message is displayed showing Court Types updated
-
 
     Examples:
       | view_court_slug                           |

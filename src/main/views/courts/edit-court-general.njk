@@ -70,6 +70,9 @@
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
+            {% set addressesHtml %}
+                {% include "./tabs/addresses.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -110,6 +113,13 @@
                     }
                   },
                   {
+                    label: "Addresses",
+                    id: "addresses",
+                    panel: {
+                      html: addressesHtml
+                    }
+                  },
+                  {
                     label: "Facilities",
                     id: "court-facilities",
                     panel: {
@@ -135,9 +145,8 @@
                     panel: {
                     html: localAuthoritiesHtml
                     }
-                    }
-                    %}
-
+                  }
+               %}
 
         {% if isSuperAdmin %}
 

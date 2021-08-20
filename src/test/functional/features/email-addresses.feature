@@ -14,8 +14,7 @@ Feature: Email-addresses
     Then I click the Emails tab
     Then I can view the existing emails
 
-  Scenario: Add new Email Addresses
-    # Clear out potential left-over emails from the previous run before adding new ones
+  Scenario: Add and remove Email Addresses
     When I remove all existing email entries and save
     Then a green update message showing email updated is displayed
     When I add Description from the dropdown at index 6 and Address "abs@gmail.com" and Explanation "County Court" and Welsh Explanation "Llys sirol"
@@ -25,6 +24,12 @@ Feature: Email-addresses
     Then a green update message showing email updated is displayed
     And the second last email address is displayed with description at index 6 Address "abs@gmail.com" Explanation "County Court" and Welsh Explanation "Llys sirol"
     And the last email address is displayed with description at index 8 Address "functional.test1@testing.com" Explanation "Testing - English" and Welsh Explanation "Testing - Welsh"
+    When I click the remove button below a email section
+    And I click save button
+    Then a green update message showing email updated is displayed
+    When I click the remove button below a email section
+    And I click save button
+    Then a green update message showing email updated is displayed
 
   Scenario: Re-order email addresses
     When I remove all existing email entries and save
@@ -52,19 +57,10 @@ Feature: Email-addresses
     And I click save button
     Then A red error message display
 
-  Scenario: Remove emails
-    When I click the remove button below a email section
-    And I click save button
-    Then a green update message showing email updated is displayed
-    When I click the remove button below a email section
-    And I click save button
-    Then a green update message showing email updated is displayed
-
   Scenario: Email format validation
     When I add Description from the dropdown 6 and wrong Email-Address "abcef"
     And I click save button
     Then An error is displayed for email address with summary "Enter an email address in the correct format, like name@example.com" and address field message "Invalid email address format"
-
 
   Scenario: Prevent duplicated entries being added
     When I remove all existing email entries and save

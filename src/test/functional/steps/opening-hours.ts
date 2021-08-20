@@ -137,8 +137,6 @@ Then('An error is displayed for opening hours with summary {string} and descript
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
-
-  expect(await I.checkElement('#hours-' + fieldsetErrorIndex + '-error')).equal(false);
 });
 
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {

@@ -3,6 +3,7 @@ import {CourtGeneralInfo} from '../../../../main/types/CourtGeneralInfo';
 import {Contact} from '../../../../main/types/Contact';
 import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
+import {CourtAddress} from '../../../../main/types/CourtAddress';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -925,4 +926,80 @@ describe('FactApi', () => {
     await expect(api.updateCourtLocalAuthoritiesByAreaOfLaw('slug','areaOfLaw',[])).resolves.toEqual(results.data);
   });
 
+  test('Should return results from getAddressTypes request', async () => {
+    const results = {
+      data: [
+        { id: 100, name:'Visit us'},
+        { id: 200, name:'Write to us'},
+        { id: 200, name:'Visit or contact us'},
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAddressTypes()).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getAddressTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAddressTypes()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getCourtAddresses request', async () => {
+    const results: { data: CourtAddress[] } = {
+      data: [
+        { 'type_id': 100, 'address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
+        { 'type_id': 200, 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtAddresses('newcastle-crown-court')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getCourtAddresses request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtAddresses('newcastle-crown-court')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should update court addresses and return results from updateCourtAddresses request', async () => {
+    const addresses: { data: CourtAddress[] } = {
+      data: [
+        { 'type_id': 100, 'address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
+        { 'type_id': 200, 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+      ]
+    };
+    const mockAxios = { put: async () => addresses } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtAddresses('newcastle-crown-court', addresses.data)).resolves.toEqual(addresses.data);
+  });
+
+  test('Should log error and reject promise for failed updateCourtAddresses request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateCourtAddresses('newcastle-crown-court', [])).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
 });

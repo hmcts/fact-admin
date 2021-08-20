@@ -10,6 +10,7 @@ import {ContactType} from '../../types/ContactType';
 import {Contact} from '../../types/Contact';
 import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
+import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
 
 export class FactApi {
@@ -292,8 +293,6 @@ export class FactApi {
       });
   }
 
-
-
   public updateCourtLocalAuthoritiesByAreaOfLaw(slug: string, areaOfLaw: string, body: LocalAuthority[]): Promise<LocalAuthority[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/${areaOfLaw}/localAuthorities`, body)
@@ -304,7 +303,35 @@ export class FactApi {
       });
   }
 
+  public getCourtAddresses(slug: string): Promise<CourtAddress[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/addresses`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
 
+  public updateCourtAddresses(slug: string, body: CourtAddress[]): Promise<CourtAddress[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/addresses`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getAddressTypes(): Promise<AddressType[]> {
+    return this.axios
+      .get(`${this.adminUrl}/addressTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);
