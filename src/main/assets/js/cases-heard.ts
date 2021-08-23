@@ -60,7 +60,6 @@ export class CasesHeardController {
     return $.map(elementList, function(value: HTMLElement){
       if ($(value).prop('checked')) {
         return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false} as CasesHeard;
-
       }
     });
   }
