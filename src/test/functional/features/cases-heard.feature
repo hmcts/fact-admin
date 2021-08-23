@@ -15,15 +15,19 @@ Feature: Cases-Heard tab
     Then I can view the areas of law listed
 
 
-  Scenario: AS an admin user when I select and deselect areas of law and click update button I should be able to update it successfully.
+  Scenario Outline: AS an admin user when I select and deselect areas of law and click update button I should be able to update it successfully.
 
-    When I select area of law with id 34255 and 34247
+    When I select areas of law "<areaOfLaw1>" and "<areaOfLaw2>"
     And And I click on update cases heard
     Then Success message is displayed for cases heard with summary "Cases heard updated"
     When I reload the page
-    Then area of law with id 34255 and 34247 should be selected
-    When I unselect area of law with id 34255 and 34247
+    Then areas of law "<areaOfLaw1>" and "<areaOfLaw2>" should be selected
+    When I unselect area of law "<areaOfLaw1>" and "<areaOfLaw2>"
     And And I click on update cases heard
     Then Success message is displayed for cases heard with summary "Cases heard updated"
     When I reload the page
-    Then area of law with id 34255 and 34247 should be unselected
+    Then areas of law "<areaOfLaw1>" and "<areaOfLaw2>" should be unselected
+
+    Examples:
+      | areaOfLaw1 | areaOfLaw2        |
+      | bankruptcy | domestic-violence |

@@ -15,9 +15,10 @@ Then('I can view the areas of law listed', async () => {
   expect(elementExist).equal(true);
 });
 
-When('I select area of law with id {int} and {int}', async (areaOfLaw1: number, areaOfLaw2: number) => {
-  const selector1 = '#\\33 4255';
-  const selector2 = '#\\33 4247';
+
+When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
+  const selector1 = '#' + areaOfLaw1;
+  const selector2 = '#' + areaOfLaw2;
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
@@ -46,9 +47,9 @@ When('I reload the page', async () => {
   await I.reloadPage();
 });
 
-Then('area of law with id {int} and {int} should be selected', async (areaOfLaw1: number, areaOfLaw2: number) => {
-  const selector1 = '#\\33 4255';
-  const selector2 = '#\\33 4247';
+Then('areas of law {string} and {string} should be selected', async (areaOfLaw1: number, areaOfLaw2: number) => {
+  const selector1 = '#' + areaOfLaw1;
+  const selector2 = '#' + areaOfLaw2;
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
@@ -59,9 +60,9 @@ Then('area of law with id {int} and {int} should be selected', async (areaOfLaw1
   expect(element2Checked).equal(true);
 });
 
-When('I unselect area of law with id {int} and {int}', async (areaOfLaw1: number, areaOfLaw2: number) => {
-  const selector1 = '#\\33 4255';
-  const selector2 = '#\\33 4247';
+When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
+  const selector1 = '#' + areaOfLaw1;
+  const selector2 = '#' + areaOfLaw2;
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
@@ -76,9 +77,9 @@ When('I unselect area of law with id {int} and {int}', async (areaOfLaw1: number
   }
 });
 
-Then('area of law with id {int} and {int} should be unselected', async (areaOfLaw1: number, areaOfLaw2: number) => {
-  const selector1 = '#\\33 4255';
-  const selector2 = '#\\33 4247';
+Then('areas of law {string} and {string} should be unselected', async (areaOfLaw1: number, areaOfLaw2: number) => {
+  const selector1 = '#' + areaOfLaw1;
+  const selector2 = '#' + areaOfLaw2;
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
