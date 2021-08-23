@@ -822,11 +822,11 @@ describe('FactApi', () => {
       throw mockError;
     }} as any;
 
-    const spy = jest.spyOn(mockLogger, 'info');
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.getAllAreasOfLaw()).rejects.toBe(mockError);
-    await expect(spy).toBeCalled();
+    await expect(loggerSpy).toBeCalled();
   });
 
   test('Should return results from getCourtAreasOfLaw request', async () => {
@@ -848,10 +848,10 @@ describe('FactApi', () => {
       throw mockError;
     }} as any;
 
-    const spy = jest.spyOn(mockLogger, 'info');
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.getCourtAreasOfLaw('slug')).rejects.toBe(mockError);
-    await expect(spy).toBeCalled();
+    await expect(loggerSpy).toBeCalled();
   });
 
   test('Should return results from updateCourtAreasOfLaw request', async () => {
@@ -873,10 +873,10 @@ describe('FactApi', () => {
       throw mockError;
     }} as any;
 
-    const spy = jest.spyOn(mockLogger, 'info');
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.updateCourtAreasOfLaw('slug',[])).rejects.toBe(mockError);
-    await expect(spy).toBeCalled();
+    await expect(loggerSpy).toBeCalled();
   });
 
 
