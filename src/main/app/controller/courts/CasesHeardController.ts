@@ -15,21 +15,21 @@ export class CasesHeardController {
   putCourtAreasOfLawErrorMsg = 'A problem occurred when updating the court areas of law. ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
-    await this.render(req, res, [], false, true, null, null);
+    await this.render(req, res);
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCasesHeard = req.body.courtAreasOfLaw as AreaOfLaw[] ?? [];
     const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
     if (!CSRF.verify(req.body.csrfToken)) {
-      return this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, true, allAreasOfLaw, updatedCasesHeard);
+      return this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
     }
 
     await req.scope.cradle.api.updateCourtAreasOfLaw(req.params.slug, updatedCasesHeard)
       .then(async (value: AreaOfLaw[]) =>
-        await this.render(req, res, [], true, true, allAreasOfLaw, updatedCasesHeard))
+        await this.render(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, true, allAreasOfLaw, updatedCasesHeard);
+        await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 
@@ -38,9 +38,8 @@ export class CasesHeardController {
     res: Response,
     errorMsg: string[] = [],
     updated = false,
-    renderUpdateButton = true,
     allAreasOfLaw: AreaOfLaw[] = null,
-    courtAreasOfLaw: AreaOfLaw[]) {
+    courtAreasOfLaw: AreaOfLaw[] = null) {
 
     const slug: string = req.params.slug as string;
     if (!allAreasOfLaw) {
@@ -48,7 +47,6 @@ export class CasesHeardController {
         .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getAreasOfLawErrorMsg);
-          renderUpdateButton = false;
         });
     }
 
@@ -57,7 +55,6 @@ export class CasesHeardController {
         .then((value: AreaOfLaw[]) => courtAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getCourtAreasOfLawErrorMsg);
-          renderUpdateButton = false;
         });
     }
 
@@ -71,8 +68,7 @@ export class CasesHeardController {
       courtAreasOfLaw: courtAreasOfLaw,
       slug: slug,
       errorMsg: errors,
-      updated: updated,
-      renderUpdateButton: renderUpdateButton
+      updated: updated
     };
 
     res.render('courts/tabs/casesHeardContent', pageData);

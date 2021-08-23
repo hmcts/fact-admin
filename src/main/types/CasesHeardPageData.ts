@@ -6,6 +6,5 @@ export interface CasesHeardPageData {
   courtAreasOfLaw: AreaOfLaw[],
   slug: string,
   errorMsg: Error[],
-  updated: Boolean,
-  renderUpdateButton: Boolean
+  updated: Boolean
 }

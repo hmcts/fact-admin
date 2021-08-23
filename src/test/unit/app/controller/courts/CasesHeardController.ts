@@ -70,8 +70,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: false,
-      renderUpdateButton: true
+      updated: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -93,8 +92,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.getAreasOfLawErrorMsg}],
-      updated: false,
-      renderUpdateButton: false
+      updated: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -116,8 +114,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: null,
       slug: testSlug,
       errorMsg: [{text: controller.getCourtAreasOfLawErrorMsg}],
-      updated: false,
-      renderUpdateButton: false
+      updated: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -141,8 +138,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: true,
-      renderUpdateButton: true
+      updated: true
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -168,8 +164,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false,
-      renderUpdateButton: true
+      updated: false
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -194,8 +189,7 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false,
-      renderUpdateButton: true
+      updated: false
     });
     expect(mockApi.updateCourtAreasOfLaw).not.toBeCalled();
   });

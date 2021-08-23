@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {CasesHeard} from '../../types/CasesHeard';
 
 export class CasesHeardController {
   private formId = '#casesHeardForm';
@@ -55,19 +56,18 @@ export class CasesHeardController {
     });
   }
 
-  private static getSelectedCasesHeard(elementList: JQuery): object[] {
+  private static getSelectedCasesHeard(elementList: JQuery): CasesHeard[] {
     return $.map(elementList, function(value: HTMLElement){
       if ($(value).prop('checked')) {
-        console.log(value.dataset.id);
-        return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false};
+        return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false} as CasesHeard;
 
       }
     });
   }
 
-  private static getAllAreasOfLaw(elementList: JQuery): object[] {
+  private static getAllAreasOfLaw(elementList: JQuery): CasesHeard[] {
     return $.map(elementList, function(value: HTMLElement){
-      return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false};
+      return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false} as CasesHeard;
     });
   }
 }

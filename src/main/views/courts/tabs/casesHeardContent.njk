@@ -65,7 +65,7 @@
   </div>
 {% endif %}
 
-{% if renderUpdateButton === true %}
+{% if allAreasOfLaw|length and not errors %}
   <div class="govuk-button-group">
     {{ govukButton({
       text: "Update",
