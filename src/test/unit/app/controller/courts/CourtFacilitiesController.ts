@@ -325,11 +325,17 @@ describe('FacilitiesController', () => {
 
     await controller.put(req, res);
 
+    const expectedFacilities: Facility[] = [
+      { name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1', isNew: false },
+      { name: '', description: 'test', descriptionCy: 'descriptionCy2', isNew: false },
+      { name: null, description: null, descriptionCy: null, isNew: true }
+    ];
+
     const expectedResults: FacilityPageData = {
       errors: [{text: controller.emptyNameOrDescriptionErrorMsg}],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities,
+      courtFacilities: expectedFacilities,
       requiresValidation: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
@@ -354,6 +360,13 @@ describe('FacilitiesController', () => {
 
     await controller.put(req, res);
 
+    const expectedFacilities: Facility[] = [
+      { name: 'Facility1', description: 'description1', descriptionCy: 'descriptionCy1', isNew: false, isDuplicated: true },
+      { name: 'Facility1', description: 'description2', descriptionCy: 'descriptionCy2', isNew: false, isDuplicated: true },
+      { name: '', description: 'description2', descriptionCy: 'descriptionCy2', isNew: false },
+      { name: null, description: null, descriptionCy: null, isNew: true }
+    ];
+
     const expectedResults: FacilityPageData = {
       errors: [
         {text: controller.emptyNameOrDescriptionErrorMsg},
@@ -361,7 +374,7 @@ describe('FacilitiesController', () => {
       ],
       updated: false,
       facilitiesTypes: expectedSelectItems,
-      courtFacilities: postedFacilities,
+      courtFacilities: expectedFacilities,
       requiresValidation: true
     };
 

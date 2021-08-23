@@ -58,11 +58,11 @@ export class CourtFacilitiesController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
-    courtFacilities.forEach(ot => {
-      ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true');
+    courtFacilities.forEach(f => {
+      f.isNew = (f.isNew === true) || ((f.isNew as unknown as string) === 'true');
       // Workaround for the issue where the the empty row is removed after the previous name selection.
-      if (!ot.name) {
-        ot.name = '';
+      if (!f.name) {
+        f.name = '';
       }
     });
 
@@ -93,7 +93,7 @@ export class CourtFacilitiesController {
 
   public async addRow(req: AuthedRequest, res: Response): Promise<void> {
     const courtFacilities = req.body.courtFacilities as Facility[] ?? [];
-    courtFacilities.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
+    courtFacilities.forEach(f => f.isNew = (f.isNew === true) || ((f.isNew as unknown as string) === 'true'));
     this.addEmptyFormsForNewEntries(courtFacilities);
     await this.get(req, res, false, [], courtFacilities, false);
   }
