@@ -131,6 +131,7 @@
     "nodemon/update-notifier/latest-version/package-json/got/cacheable-request/normalize-url": "^6.0.1",
     "mini-css-extract-plugin/normalize-url": "^6.0.1",
     "html-webpack-plugin/pretty-error": "^3.0.4",
-    "uglifyjs-webpack-plugin/serialize-javascript": "^3.1.0"
+    "uglifyjs-webpack-plugin/serialize-javascript": "^3.1.0",
+    "launchdarkly-node-server-sdk/launchdarkly-eventsource/original/url-parse": "^1.5.2"
   }
 }
