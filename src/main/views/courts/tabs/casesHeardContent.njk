@@ -31,12 +31,13 @@
   {% set allAreasOfLawItems = [] %}
   {% for areaOfLaw in allAreasOfLaw %}
     {% set checked = true if areaOfLaw.name in courtAreasOfLawNames else false %}
+    {% set id = areaOfLaw.name | replace(" ", "-") | lower %}
     {% set allAreasOfLawItems =
       (allAreasOfLawItems.push({
-        attributes: { 'data-inputType': 'cases-heard', 'aria-checked': checked },
+        attributes: { 'data-inputType': 'cases-heard', 'aria-checked': checked, 'data-id': areaOfLaw.id },
         'text': areaOfLaw.name,
         'value': areaOfLaw.name,
-        'id': areaOfLaw.id,
+        'id': id,
         'checked': checked
       }), allAreasOfLawItems) %}
   {% endfor %}

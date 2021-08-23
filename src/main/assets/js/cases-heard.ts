@@ -58,14 +58,16 @@ export class CasesHeardController {
   private static getSelectedCasesHeard(elementList: JQuery): object[] {
     return $.map(elementList, function(value: HTMLElement){
       if ($(value).prop('checked')) {
-        return { name: value.getAttribute('value'), id: value.id, singlePointEntry: false};
+        console.log(value.dataset.id);
+        return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false};
+
       }
     });
   }
 
   private static getAllAreasOfLaw(elementList: JQuery): object[] {
     return $.map(elementList, function(value: HTMLElement){
-      return { name: value.getAttribute('value'), id: value.id, singlePointEntry: false};
+      return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false};
     });
   }
 }
