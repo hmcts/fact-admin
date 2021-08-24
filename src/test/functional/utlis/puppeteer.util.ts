@@ -124,6 +124,18 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
   }
 };
 
+export const getIframeContent = async (selector: string) => {
+  try {
+    await scope.page.waitForSelector(selector);
+    const elementHandle = await scope.page.$(selector);
+    const frame = await elementHandle.contentFrame();
+    return await frame.$eval('#tinymce > p', (element: HTMLElement) => element.innerText.trim());
+  } catch (error) {
+    console.log(`Could not get IframeContent with selector: ${selector}.`);
+    return null;
+  }
+};
+
 export const clearField = async (selector: string) => {
   try {
     const input = await scope.page.$(selector);

@@ -471,6 +471,129 @@ describe('FactApi', () => {
     await expect(api.updateEmails('No Slug', [])).rejects.toEqual(mockError);
   });
 
+  test('Should update and return results from updateCourtFacility request', async () => {
+    const results = {
+      data: [
+        { name:'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
+        { name:'Facility2', description: 'description2', descriptionCy: 'descriptionCy2' }
+      ]
+    };
+
+    const mockAxios = { put: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtFacilities('slug',[])).resolves.toEqual(results.data);
+  });
+
+
+  test('Should log error for failed updateCourtFacility request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtFacilities('slug',[])).rejects.toEqual(mockError);
+  });
+
+  test('Should log error and reject promise for failed updateCourtFacility request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateCourtFacilities('slug',[])).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getCourtFacilities request', async () => {
+    const results = {
+      data: [
+        { name:'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
+        { name:'Facility2', description: 'description2', descriptionCy: 'descriptionCy2' }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtFacilities('slug')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results and log error from getCourtFacilities request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtFacilities('slug')).rejects.toEqual(mockError);
+  });
+
+  test('Should log error and reject promise for failed getCourtFacilities request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtFacilities('slug')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getAllFacilityTypes request', async () => {
+    const results = {
+      data: [
+        { id: 1, name: 'Facility1'},
+        { id: 2, name: 'Facility2'}
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
+  });
+
+  test('Should return results and log error from getAllFacilityTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllFacilityTypes()).rejects.toEqual(mockError);
+  });
+
+  test('Should log error and reject promise for failed getAllFacilityTypes request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllFacilityTypes()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
 
   test('Should return results from getCourtTypes request', async () => {
     const results = {

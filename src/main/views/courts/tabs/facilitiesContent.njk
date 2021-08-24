@@ -1,0 +1,121 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+<h2 class="govuk-heading-l">Facilities</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Court Facilities updated"
+  }) }}
+{% endif %}
+
+{% for facility in courtFacilities %}
+  {% set isNew = (facility.isNew === true) or (facility.isNew === "true") %}
+
+
+  {% if requiresValidation === true %}
+    {% set nameError = false %}
+    {% if facility.name === '' %}
+      {% set nameError = { text: 'Name is required' } %}
+    {% elif facility.isDuplicated === true %}
+      {% set nameError = { text: 'Duplicated facility' } %}
+    {% endif %}
+
+    {% set descriptionError = false %}
+    {% if facility.description === '' %}
+      {% set descriptionError = { text: 'Description is required' } %}
+    {% endif %}
+  {% endif %}
+
+  {% call govukFieldset({
+  }) %}
+
+  {% if isNew === true%}
+    <h3 class="govuk-heading-s">Add New Court Facility</h3>
+  {% endif %}
+
+  <input type="hidden" name={{"courtFacilities[" + loop.index +"][isNew]"}} value={{facility.isNew}}></input>
+
+  {{ govukSelect({
+    id: "name-" + loop.index,
+    name: "courtFacilities[" + loop.index +"][name]",
+    label: {
+        text: "Name"
+    },
+    errorMessage: nameError,
+    items: facilitiesTypes | selectFilter(facility.name)
+  }) }}
+
+  {{ govukTextarea ({
+    label: {
+      text: "Description"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "description-" + loop.index,
+    name: "courtFacilities[" + loop.index +"][description]",
+    value: facility.description,
+    errorMessage: descriptionError
+  }) }}
+
+  {{ govukTextarea ({
+    label: {
+      text: "Description (Welsh)"
+    },
+    classes: "govuk-textarea rich-editor",
+    id: "descriptionCy-" + loop.index,
+    name: "courtFacilities[" + loop.index +"][descriptionCy]",
+    value: facility.descriptionCy
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {% if isNew === false %}
+          {{ govukButton({
+              text: "Remove",
+              name: "deleteFacility",
+              type: "button",
+              classes: "govuk-button--warning deleteFacility"
+          }) }}
+      {% endif %}
+
+      {% if isNew === true %}
+        {{ govukButton({
+          text: "Clear",
+          name: "clearFacility",
+          type: "button",
+          classes: "govuk-button--secondary clearFacility"
+        }) }}
+      {% endif %}
+    </div>
+  </div>
+
+  <hr/>
+
+  {% endcall %}
+
+{% endfor %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveFacilities"
+}) }}
+
+{{ govukButton({
+  text: "Add new facility",
+  name: "addFacility",
+  type: "button",
+  classes: "govuk-button--secondary addFacility"
+}) }}
+
+
