@@ -11,6 +11,7 @@ import {Contact} from '../../types/Contact';
 import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
+import {AdditionalLink} from '../../types/AdditionalLink';
 
 export class FactApi {
 
@@ -297,6 +298,26 @@ export class FactApi {
   public getAddressTypes(): Promise<AddressType[]> {
     return this.axios
       .get(`${this.adminUrl}/addressTypes`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtAdditionalLinks(slug: string): Promise<AdditionalLink[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/additionalLinks`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtAdditionalLinks(slug: string, body: AdditionalLink[]): Promise<AdditionalLink[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/additionalLinks`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

@@ -18,6 +18,11 @@ export function validateEmailFormat(emails: Email[]): boolean {
   return !hasInvalidFormat;
 }
 
+export function validateUrlFormat(url: string): boolean {
+  const regexp = new RegExp(/^(https?:\/\/)?((([A-Za-z\d]([A-Za-z\d-]*[A-Za-z\d])*)\.)+[A-Za-z]{2,}|((\d{1,3}\.){3}\\d{1,3}))(\:\d+)?(\/[-A-Za-z\d%_.~+]*)*(\?[;&A-Za-z\d%_.~+=-]*)?(\#[-A-Za-z\d_]*)?$/);
+  return regexp.test(url);
+}
+
 export function validateDuplication(elements: Element[], predicate: (elements: Element[], b: number, c: number) => boolean): boolean {
   let hasDuplicates = false;
   for (let i = 0; i < elements.length - 1; i++) {

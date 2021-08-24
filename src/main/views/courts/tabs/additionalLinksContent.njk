@@ -1,0 +1,208 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+<h2 class="govuk-heading-l">Additional Links</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Additional links updated"
+  }) }}
+{% endif %}
+
+{% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %}
+
+{% for link in links %}
+
+  {% set isNew = (link.isNew === true) or (link.isNew === "true") %}
+
+  {% set urlError = false %}
+  {% if link.url === '' %}
+    {% set urlError = { text: 'URL is required' } %}
+  {% elif link.isDuplicated === true %}
+    {% set urlError = { text: 'Duplicated URL' } %}
+  {% elif link.isInvalidFormat === true %}
+    {% set urlError = { text: 'Invalid URL format' } %}
+  {% endif %}
+
+  {% set displayNameError = false %}
+  {% if link.display_name === '' %}
+    {% set displayNameError = { text: 'Display name is required' } %}
+  {% endif %}
+
+  {% call govukFieldset({
+    classes: "can-reorder"
+  }) %}
+
+    {% if isNew === true %}
+      <h3 class="govuk-heading-s">Add New Additional Link</h3>
+    {% endif %}
+
+    <input type="hidden" name={{"additionalLinks[" + loop.index +"][isNew]"}} value={{link.isNew}}></input>
+
+    {{ govukInput({
+      label: {
+        text: "URL"
+      },
+      classes: "govuk-input--width-20",
+      id: "url-" + loop.index,
+      name: "additionalLinks[" + loop.index +"][url]",
+      value: link.url,
+      errorMessage: urlError
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Display Name"
+      },
+      classes: "govuk-input--width-20",
+      id: "display_name-" + loop.index,
+      name: "additionalLinks[" + loop.index +"][display_name]",
+      value: link.display_name,
+      errorMessage: displayNameError
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Display Name (Welsh)"
+      },
+      classes: "govuk-input--width-20",
+      id: "display_name_cy-" + loop.index,
+      name: "additionalLinks[" + loop.index +"][display_name_cy]",
+      value: link.display_name_cy
+    }) }}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+        {% if isNew === false %}
+          {{ govukButton({
+            text: "Remove",
+            name: "deleteAdditionalLink",
+            type: "button",
+            classes: "govuk-button--warning deleteAdditionalLink"
+          }) }}
+        {% else %}
+          {{ govukButton({
+            text: "Clear",
+            name: "clearAdditionalLink",
+            type: "button",
+            classes: "govuk-button--secondary clearAdditionalLink"
+          }) }}
+        {% endif %}
+      </div>
+
+      <div class="govuk-grid-column-one-quarter govuk-button-group">
+        {{ govukButton({
+          html: upArrowHtml,
+          name: "moveUp",
+          type: "button",
+          classes: "govuk-button--secondary move-up",
+          attributes: { "aria-label": "move up" }
+        }) }}
+
+        {{ govukButton({
+          html: downArrowHtml,
+          name: "moveDown",
+          type: "button",
+          classes: "govuk-button--secondary move-down",
+          attributes: { "aria-label": "move down" }
+        }) }}
+      </div>
+    </div>
+
+    <hr/>
+
+  {% endcall %}
+
+{% endfor %}
+
+{% call govukFieldset({
+  classes: "can-reorder",
+  attributes: { id: "newAdditionalLinkTemplate", disabled: "disabled", hidden: true }
+}) %}
+
+  <input type="hidden" name={{"additionalLinks[" + links.length +"][isNew]"}} value="true"/>
+
+  <h3 class="govuk-heading-s">Add New Additional Link</h3>
+
+  {{ govukInput({
+    label: {
+      text: "URL"
+    },
+    classes: "govuk-input--width-20",
+    id: "url-" + links.length,
+    name: "additionalLinks[" + links.length +"][url]"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Display Name"
+    },
+    classes: "govuk-input--width-20",
+    id: "display_name-" + links.length,
+    name: "additionalLinks[" + links.length +"][display_name]"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Display Name (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "display_name_cy-" + links.length,
+    name: "additionalLinks[" + links.length +"][display_name_cy]"
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukButton({
+        text: "Clear",
+        name: "clearAdditionalLink",
+        type: "button",
+        classes: "govuk-button--secondary clearAdditionalLink"
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+    </div>
+  </div>
+
+  <hr/>
+
+{% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveAdditionalLink"
+}) }}
+
+{{ govukButton({
+  text: "Add new additional link",
+  name: "addAdditionalLink",
+  type: "button",
+  classes: "govuk-button--secondary addAdditionalLink"
+}) }}
