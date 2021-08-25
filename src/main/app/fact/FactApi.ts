@@ -11,6 +11,7 @@ import {Contact} from '../../types/Contact';
 import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
+import {Facility, FacilityType} from '../../types/Facility';
 
 export class FactApi {
 
@@ -243,6 +244,36 @@ export class FactApi {
   public updateCourtAreasOfLaw(slug: string, body: AreaOfLaw[]): Promise<AreaOfLaw[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getAllFacilityTypes(): Promise<FacilityType[]> {
+    return this.axios
+      .get(`${this.adminUrl}/facilities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtFacilities(slug: string): Promise<Facility[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/facilities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtFacilities(slug: string, body: Facility[]): Promise<Facility[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/facilities`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
