@@ -1101,4 +1101,22 @@ describe('FactApi', () => {
     await expect(api.updateAreaOfLaw(aol)).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
+
+  test('Should delete area of law', async () => {
+    const id = '100';
+    const result = { data: id };
+    const mockAxios = { delete: async () => Promise.resolve(result) } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteAreaOfLaw(id)).resolves.toBe(id);
+  });
+
+  test('Should log error and reject promise for failed deleteAreaOfLaw request ', async () => {
+    const mockAxios = { delete: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteAreaOfLaw('100')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
 });

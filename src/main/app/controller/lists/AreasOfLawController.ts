@@ -10,29 +10,22 @@ import {urlIsValid} from '../../../utils/validation';
 export class AreasOfLawController {
 
   editAreaOfLawUrl = 'lists/area-of-law/';
+  deleteAreaOfLawUrl = 'lists/area-of-law/';
+  deleteConfirmUrl = 'lists/area-of-law/delete-confirm/';
+
   getAreasOfLawError = 'An error occurred when retrieving the areas of law.';
   getAreaOfLawError = 'A problem occurred when retrieving the area of law.';
   updateAreaOfLawError = 'A problem occurred when trying to save the area of law.';
   areaOfLawAlreadyExistsError = 'An area of law with the proposed name already exists. The name must be unique.';
+  deleteError = 'A problem occurred when trying to delete the area of law.';
+  areaOfLawInUseError = 'You cannot delete this area of law at the moment, as one or more courts are dependent on it. ' +
+    'Please remove the area of law from the relevant courts first';
   nameRequiredError = 'Name is required.';
   externalLinkInvalidError = 'External Link URL is invalid.';
   dispExternalLinkInvalidError = 'Display External Link URL is invalid.';
 
-  public async getAll(req: AuthedRequest, res: Response, updated = false): Promise<void> {
-    const errors: { text: string }[] = [];
-
-    let areasOfLaw: AreaOfLaw[] = [];
-    await req.scope.cradle.api.getAreasOfLaw()
-      .then((value: AreaOfLaw[]) => areasOfLaw = value)
-      .catch(() => errors.push({ text: this.getAreasOfLawError }));
-
-    const pageData = {
-      errors: errors,
-      updated: updated,
-      areasOfLaw: areasOfLaw?.sort((a, b) => a.name.localeCompare(b.name)),
-      editUrl: this.editAreaOfLawUrl
-    };
-    res.render('lists/tabs/areasOfLawContent', pageData);
+  public async getAll(req: AuthedRequest, res: Response): Promise<void> {
+    await this.renderAll(req, res);
   }
 
   public async getAreaOfLaw(req: AuthedRequest, res: Response): Promise<void> {
@@ -52,6 +45,12 @@ export class AreasOfLawController {
     this.renderAreaOfLaw(res, areaOfLaw, false, errors, fatalError);
   }
 
+  public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
+    const idToDelete = req.params.id;
+    const name = req.query?.name?.toString();
+    this.renderDeleteConfirmation(res, name, idToDelete);
+  }
+
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let areaOfLaw = req.body.areaOfLaw as AreaOfLaw;
 
@@ -69,7 +68,7 @@ export class AreasOfLawController {
         : (aol: AreaOfLaw): Promise<AreaOfLaw> => req.scope.cradle.api.createAreaOfLaw(aol);
 
       await api(areaOfLaw)
-        .then(async () => await this.getAll(req, res, true))
+        .then(async () => await this.renderAll(req, res, true))
         .catch((reason: AxiosError) => {
           const error = reason.response?.status === 409
             ? this.areaOfLawAlreadyExistsError
@@ -81,6 +80,35 @@ export class AreasOfLawController {
       this.renderAreaOfLaw(res, areaOfLaw, false, validationResult.errors, false, validationResult.nameValid,
         validationResult.linkValid, validationResult.displayLinkValid);
     }
+  }
+
+  public async delete(req: AuthedRequest, res: Response): Promise<void> {
+    const idToDelete = req.params.id;
+
+    await req.scope.cradle.api.deleteAreaOfLaw(idToDelete)
+      .then(() => this.renderAll(req, res, true))
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.areaOfLawInUseError
+          : this.deleteError;
+        this.renderAll(req, res, false, [{ text: error }]);
+      });
+  }
+
+  private async renderAll(req: AuthedRequest, res: Response, updated = false, errors: { text: string }[] = []): Promise<void> {
+    let areasOfLaw: AreaOfLaw[] = [];
+    await req.scope.cradle.api.getAreasOfLaw()
+      .then((value: AreaOfLaw[]) => areasOfLaw = value)
+      .catch(() => errors.push({ text: this.getAreasOfLawError }));
+
+    const pageData = {
+      errors: errors,
+      updated: updated,
+      areasOfLaw: areasOfLaw?.sort((a, b) => a.name.localeCompare(b.name)),
+      editUrl: this.editAreaOfLawUrl,
+      deleteUrl: this.deleteConfirmUrl
+    };
+    res.render('lists/tabs/areasOfLawContent', pageData);
   }
 
   private renderAreaOfLaw(
@@ -103,6 +131,15 @@ export class AreasOfLawController {
       fatalError: fatalError
     };
     res.render('lists/tabs/editAreaOfLaw', pageData);
+  }
+
+  private renderDeleteConfirmation(res: Response, areaOfLawName: string, areaOfLawId: string): void {
+    const deleteUrl = this.deleteAreaOfLawUrl + areaOfLawId;
+    const pageData = {
+      name: areaOfLawName,
+      deleteUrl: deleteUrl
+    };
+    res.render('lists/tabs/deleteAreaOfLawConfirm', pageData);
   }
 
   private validateAreaOfLaw(areaOfLaw: AreaOfLaw):

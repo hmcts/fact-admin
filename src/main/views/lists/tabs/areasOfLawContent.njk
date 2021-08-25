@@ -5,12 +5,16 @@
 
 {% set areaOfLawItems = [] %}
 {% for areaOfLaw in areasOfLaw %}
+  {% set deleteConfirmUrl = deleteUrl + areaOfLaw.id +"?name=" + areaOfLaw.name|urlencode %}
   {% set areaOfLawItems = (areaOfLawItems.push([
     {
       text: areaOfLaw.name
     },
     {
-      html: "<a class='edit-aol' href=" + editUrl + areaOfLaw.id + ">edit</a>"
+      html: "<a class='govuk-link edit-aol' href=" + editUrl + areaOfLaw.id + ">edit</a>"
+    },
+    {
+      html: "<a class='govuk-link delete-aol' href=" + deleteConfirmUrl + ">delete</a>"
     }
   ]), courtItems) %}
 {% endfor %}
@@ -30,11 +34,11 @@
   }) }}
 {% endif %}
 
-{% if errors.length == 0 %}
+{% if areaOfLawItems|length %}
 
   {{ govukTable({
     firstCellIsHeader: false,
-    head: [ { text: "Name" }, { text: "" } ],
+    head: [ { text: "Name" }, { text: "" }, { text: "" } ],
     rows: areaOfLawItems
   }) }}
 

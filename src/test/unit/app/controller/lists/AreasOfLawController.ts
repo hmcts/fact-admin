@@ -9,7 +9,8 @@ describe ( 'AreasOfLawController', () => {
     getAreasOfLaw: () => Promise<AreaOfLaw[]>,
     getAreaOfLaw: (id: string) => Promise<AreaOfLaw>,
     updateAreaOfLaw: (aol: AreaOfLaw) => Promise<AreaOfLaw>,
-    createAreaOfLaw: (aol: AreaOfLaw) => Promise<AreaOfLaw>
+    createAreaOfLaw: (aol: AreaOfLaw) => Promise<AreaOfLaw>,
+    deleteAreaOfLaw: (id: string) => Promise<void>
   };
 
   let mockAreasOfLaw: AreaOfLaw[] = [];
@@ -63,12 +64,14 @@ describe ( 'AreasOfLawController', () => {
       getAreaOfLaw: (id: string) => Promise.resolve(mockAreasOfLaw.filter(aol => aol.id.toString() === id.toString())[0]),
       getAreasOfLaw: () => Promise.resolve(mockAreasOfLaw),
       createAreaOfLaw: (aol: AreaOfLaw) => Promise.resolve(aol),
-      updateAreaOfLaw: (aol: AreaOfLaw) => Promise.reject(aol)
+      updateAreaOfLaw: (aol: AreaOfLaw) => Promise.reject(aol),
+      deleteAreaOfLaw: (id: string) => Promise.resolve()
     };
     req = mockRequest();
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.createAreaOfLaw = jest.fn().mockResolvedValue(res);
     req.scope.cradle.api.updateAreaOfLaw = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.deleteAreaOfLaw = jest.fn().mockResolvedValue(res);
   });
 
   test('Should get all areas of law and render summary view', async () => {
@@ -78,7 +81,8 @@ describe ( 'AreasOfLawController', () => {
       errors: Array.of(),
       updated: false,
       areasOfLaw: mockAreasOfLaw.sort((a,b) => a.name.localeCompare(b.name)),
-      editUrl: controller.editAreaOfLawUrl
+      editUrl: controller.editAreaOfLawUrl,
+      deleteUrl: controller.deleteConfirmUrl
     };
     expect(res.render).toBeCalledWith('lists/tabs/areasOfLawContent', expectedData);
   });
@@ -287,6 +291,61 @@ describe ( 'AreasOfLawController', () => {
     expect(res.render).toBeCalledWith('lists/tabs/editAreaOfLaw', expectedData);
   });
 
+  test('Delete should send delete request to API and render updated view', async () => {
+    req.params = { id: 100 };
+    await controller.delete(req, res);
+
+    const expectedData = {
+      errors: Array.of(),
+      updated: true,
+      areasOfLaw: mockAreasOfLaw.sort((a,b) => a.name.localeCompare(b.name)),
+      editUrl: controller.editAreaOfLawUrl,
+      deleteUrl: controller.deleteConfirmUrl
+    };
+    expect(mockApi.deleteAreaOfLaw).toBeCalled();
+    expect(res.render).toBeCalledWith('lists/tabs/areasOfLawContent', expectedData);
+  });
+
+  test('Delete should handle 409 Conflict response fromm API', async () => {
+    req.params = { id: 100 };
+    await controller.delete(req, res);
+
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409; // returned by API when there is a FK constraint violation
+    req.scope.cradle.api.deleteAreaOfLaw = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.delete(req, res);
+
+    const expectedData = {
+      errors: [{ text: controller.areaOfLawInUseError }],
+      updated: false,
+      areasOfLaw: mockAreasOfLaw.sort((a,b) => a.name.localeCompare(b.name)),
+      editUrl: controller.editAreaOfLawUrl,
+      deleteUrl: controller.deleteConfirmUrl
+    };
+    expect(res.render).toBeCalledWith('lists/tabs/areasOfLawContent', expectedData);
+  });
+
+  test('Delete should handle failed API calls', async () => {
+    req.params = { id: 100 };
+    await controller.delete(req, res);
+
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 404;
+    req.scope.cradle.api.deleteAreaOfLaw = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.delete(req, res);
+
+    const expectedData = {
+      errors: [{ text: controller.deleteError }],
+      updated: false,
+      areasOfLaw: mockAreasOfLaw.sort((a,b) => a.name.localeCompare(b.name)),
+      editUrl: controller.editAreaOfLawUrl,
+      deleteUrl: controller.deleteConfirmUrl
+    };
+    expect(res.render).toBeCalledWith('lists/tabs/areasOfLawContent', expectedData);
+  });
+
   test('Should handle failed API calls for all areas of law', async () => {
     const errorResponse = mockResponse();
     errorResponse.response.status = 400;
@@ -298,7 +357,8 @@ describe ( 'AreasOfLawController', () => {
       errors: [{ text: controller.getAreasOfLawError }],
       updated: false,
       areasOfLaw: [] as any,
-      editUrl: controller.editAreaOfLawUrl
+      editUrl: controller.editAreaOfLawUrl,
+      deleteUrl: controller.deleteConfirmUrl
     };
     expect(res.render).toBeCalledWith('lists/tabs/areasOfLawContent', expectedData);
   });

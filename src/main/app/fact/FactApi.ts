@@ -372,6 +372,16 @@ export class FactApi {
       });
   }
 
+  public deleteAreaOfLaw(id: string): Promise<void> {
+    return this.axios
+      .delete(`${this.adminUrl}/areasOfLaw/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);
   }
