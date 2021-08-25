@@ -1,0 +1,76 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-l">Cases Heard</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Cases heard updated"
+  }) }}
+{% endif %}
+
+{% if allAreasOfLaw|length %}
+
+  {% set courtAreasOfLawNames = [] %}
+  {% for areaOfLaw in courtAreasOfLaw %}
+    {% set courtAreasOfLawNames =
+      (courtAreasOfLawNames.push(areaOfLaw.name), courtAreasOfLawNames) %}
+  {% endfor %}
+
+  {% set allAreasOfLawItems = [] %}
+  {% for areaOfLaw in allAreasOfLaw %}
+    {% set checked = true if areaOfLaw.name in courtAreasOfLawNames else false %}
+    {% set id = areaOfLaw.name | replace(" ", "-") | lower %}
+    {% set allAreasOfLawItems =
+      (allAreasOfLawItems.push({
+        attributes: { 'data-inputType': 'cases-heard', 'aria-checked': checked, 'data-id': areaOfLaw.id },
+        'text': areaOfLaw.name,
+        'value': areaOfLaw.name,
+        'id': id,
+        'checked': checked
+      }), allAreasOfLawItems) %}
+  {% endfor %}
+
+  <div id="casesHeardList" class="visible-scrollbar scrollable" role="scrollbar"
+    aria-controls="casesHearCheckboxes"
+    aria-orientation="vertical"
+  >
+    <div id="casesHearCheckboxes" class="govuk-grid-row">
+      {% for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
+
+        <div class="govuk-grid-column-one-half">
+
+            {{ govukCheckboxes({
+              idPrefix: "cases-heard-checkbox",
+              name: "casesHeardItems",
+              classes: "govuk-checkboxes--medium",
+              items: items
+            }) }}
+
+        </div>
+
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% if allAreasOfLaw|length and not errors %}
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Update",
+      name: "updateCasesHeard",
+      id: "updateCasesHeardSelect"
+    }) }}
+  </div>
+{% endif %}

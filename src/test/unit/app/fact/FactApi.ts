@@ -927,6 +927,85 @@ describe('FactApi', () => {
     await expect(api.updateCourtLocalAuthoritiesByAreaOfLaw('slug','areaOfLaw',[])).resolves.toEqual(results.data);
   });
 
+  test('Should return results from getAllAreasOfLaw request', async () => {
+    const results = {
+      data: [
+        { id: 1, name: 'Area Of Law 1' },
+        { id: 2, name: 'Area Of Law 2' }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getAllAreasOfLaw()).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed getAllAreasOfLaw request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllAreasOfLaw()).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should return results from getCourtAreasOfLaw request', async () => {
+    const results = {
+      data: [
+        { id: 1, name: 'Area Of Law 1' },
+        { id: 2, name: 'Area Of Law 2' }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCourtAreasOfLaw('slug')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed getCourtAreasOfLaw request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCourtAreasOfLaw('slug')).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should return results from updateCourtAreasOfLaw request', async () => {
+    const results = {
+      data: [
+        { id: 1, name: 'Area Of Law 1' },
+        { id: 2, name: 'Area Of Law 2' }
+      ]
+    };
+
+    const mockAxios = { put: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtAreasOfLaw('slug',[])).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed updateCourtAreasOfLaw request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtAreasOfLaw('slug',[])).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
+
+
+
+
   test('Should return results from getAddressTypes request', async () => {
     const results = {
       data: [
@@ -949,7 +1028,6 @@ describe('FactApi', () => {
 
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
-
     await expect(api.getAddressTypes()).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
@@ -975,7 +1053,6 @@ describe('FactApi', () => {
 
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
-
     await expect(api.getCourtAddresses('newcastle-crown-court')).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
@@ -999,7 +1076,6 @@ describe('FactApi', () => {
 
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
-
     await expect(api.updateCourtAddresses('newcastle-crown-court', [])).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });

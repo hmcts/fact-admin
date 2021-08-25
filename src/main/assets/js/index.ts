@@ -17,6 +17,7 @@ import {LocalAuthoritiesController} from './local-authorities';
 import {LocalAuthoritiesListController} from './local-authorities-list';
 import {PostcodesController} from './postcodes';
 import {CourtsController} from './courts';
+import {CasesHeardController} from './cases-heard';
 import {AddressesController} from './addresses';
 import {AreasOfLawListController} from './areas-of-law-list';
 
@@ -38,3 +39,4 @@ new AddressesController();
 
 new LocalAuthoritiesListController();
 new AreasOfLawListController();
+new CasesHeardController();

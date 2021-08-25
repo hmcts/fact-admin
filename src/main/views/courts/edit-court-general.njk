@@ -40,7 +40,7 @@
 
         <div class="govuk-grid-column-one-quarter">
           <a id="view-in-new-window" class="govuk-link" rel="noreferrer noopener" target="_blank"
-             href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
+            href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
         </div>
       </div>
 
@@ -69,6 +69,9 @@
             {% endset -%}
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
+            {% endset -%}
+            {% set casesHeardHtml %}
+                {% include "./tabs/casesHeard.njk" %}
             {% endset -%}
             {% set addressesHtml %}
                 {% include "./tabs/addresses.njk" %}
@@ -113,6 +116,13 @@
                     }
                   },
                   {
+                    label: "Cases Heard",
+                    id: "cases-heard",
+                    panel: {
+                      html: casesHeardHtml
+                    }
+                  },
+                  {
                     label: "Addresses",
                     id: "addresses",
                     panel: {
@@ -154,10 +164,11 @@
           {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
 
         {% endif %}
+
           {{ factTabs({
-          id: 'Main',
+            id: 'Main',
             items: tabItems
-            }) }}
+          }) }}
         </div>
       </div>
     </div>
