@@ -1,7 +1,7 @@
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {validateDuplication, validateUrlFormat} from '../../../utils/validation';
+import {validateDuplication, validateNameDuplication, validateUrlFormat} from '../../../utils/validation';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink';
@@ -10,7 +10,8 @@ import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink'
 export class AdditionalLinksController {
 
   emptyUrlOrDisplayNameErrorMsg = 'URL and display name are required for all additional links.';
-  additionalLinkDuplicatedErrorMsg = 'All URLs must be unique.'
+  urlDuplicatedErrorMsg = 'All URLs must be unique.'
+  displayNameDuplicatedErrorMsg = 'All display names must be unique.'
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
@@ -82,8 +83,11 @@ export class AdditionalLinksController {
     return !link.url?.trim() && !link.display_name?.trim() && !link.display_name_cy?.trim();
   }
 
-  private additionalLinkDuplicated(links: AdditionalLink[], index1: number, index2: number): boolean {
+  private urlDuplicated(links: AdditionalLink[], index1: number, index2: number): boolean {
     return links[index1].url && links[index1].url.toLowerCase() === links[index2].url.toLowerCase();
+  }
+  private displayNameDuplicated(links: AdditionalLink[], index1: number, index2: number): boolean {
+    return links[index1].display_name && links[index1].display_name.toLowerCase() === links[index2].display_name.toLowerCase();
   }
 
   private getErrorMessages(links: AdditionalLink[]): string[] {
@@ -103,8 +107,12 @@ export class AdditionalLinksController {
       errorMsg.push(this.invalidUrlFormatErrorMsg);
     }
 
-    if (!validateDuplication(links, this.additionalLinkDuplicated)) {
-      errorMsg.push(this.additionalLinkDuplicatedErrorMsg);
+    if (!validateDuplication(links, this.urlDuplicated)) {
+      errorMsg.push(this.urlDuplicatedErrorMsg);
+    }
+
+    if (!validateNameDuplication(links, this.displayNameDuplicated)) {
+      errorMsg.push(this.displayNameDuplicatedErrorMsg);
     }
     return errorMsg;
   }

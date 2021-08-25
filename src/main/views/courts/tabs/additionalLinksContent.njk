@@ -38,6 +38,8 @@
   {% set displayNameError = false %}
   {% if link.display_name === '' %}
     {% set displayNameError = { text: 'Display name is required' } %}
+  {% elif link.isNameDuplicated === true %}
+    {% set displayNameError = { text: 'Duplicated display name' } %}
   {% endif %}
 
   {% call govukFieldset({

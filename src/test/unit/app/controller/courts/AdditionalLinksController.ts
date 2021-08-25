@@ -162,7 +162,33 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithDuplicatedUrl,
       updated: false,
-      errors: [{text: controller.additionalLinkDuplicatedErrorMsg}]
+      errors: [{text: controller.urlDuplicatedErrorMsg}]
+    };
+    expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
+  });
+
+  test('Should not post additional links if display name is duplicated', async () => {
+    const req = mockRequest();
+    const linksWithDuplicatedUrl = [
+      {url: 'www.test1.com', 'display_name': 'name', 'display_name_cy': 'name 1 cy', isNew: true},
+      {url: 'www.test2.com', 'display_name': 'name', 'display_name_cy': 'name 2 cy', isNew: true}
+    ];
+    req.body = {
+      additionalLinks: linksWithDuplicatedUrl,
+      '_csrf': CSRF.create()
+    };
+    req.params = {slug: 'royal-courts-of-justice'};
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtAdditionalLinks = jest.fn().mockResolvedValue(getLinks());
+
+    const res = mockResponse();
+    await controller.put(req, res);
+    expect(mockApi.updateCourtAdditionalLinks).not.toBeCalled();
+
+    const expectedResults: AdditionalLinkData = {
+      links: linksWithDuplicatedUrl,
+      updated: false,
+      errors: [{text: controller.displayNameDuplicatedErrorMsg}]
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -193,7 +219,7 @@ describe('AdditionalLinksController', () => {
       errors: [
         {text: controller.emptyUrlOrDisplayNameErrorMsg},
         {text: controller.invalidUrlFormatErrorMsg},
-        {text: controller.additionalLinkDuplicatedErrorMsg}
+        {text: controller.urlDuplicatedErrorMsg}
       ]
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
