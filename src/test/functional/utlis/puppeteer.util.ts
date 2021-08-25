@@ -6,6 +6,10 @@ export const newPage = async () => {
   scope.page = await scope.browser.newPage();
 };
 
+export const reloadPage = async () => {
+  await scope.page.reload();
+};
+
 export const newBrowser = async () => {
   await scope.browser.close();
   await launchBrowser();
@@ -121,6 +125,18 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
     await frame.$eval('#tinymce > p', (el: HTMLElement, value: string) => el.innerText = value, value);
   } catch (error) {
     console.log("The element didn't appear.");
+  }
+};
+
+export const getIframeContent = async (selector: string) => {
+  try {
+    await scope.page.waitForSelector(selector);
+    const elementHandle = await scope.page.$(selector);
+    const frame = await elementHandle.contentFrame();
+    return await frame.$eval('#tinymce > p', (element: HTMLElement) => element.innerText.trim());
+  } catch (error) {
+    console.log(`Could not get IframeContent with selector: ${selector}.`);
+    return null;
   }
 };
 
