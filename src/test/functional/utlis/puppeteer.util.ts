@@ -6,6 +6,10 @@ export const newPage = async () => {
   scope.page = await scope.browser.newPage();
 };
 
+export const reloadPage = async () => {
+  await scope.page.reload();
+};
+
 export const newBrowser = async () => {
   await scope.browser.close();
   await launchBrowser();
