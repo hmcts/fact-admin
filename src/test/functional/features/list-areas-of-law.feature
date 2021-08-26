@@ -13,7 +13,7 @@ Feature: Areas Of Law List
     Then I should see "Areas of Law" page
 
   Scenario: Edit Area Of Law
-    Given I click edit Financial Remedy
+    Given I click edit "Financial Remedy"
     Then I am redirected to the "Editing Area of Law: Financial Remedy" form
     Then I will make sure to clear all entries for the Area of law
     Then I enter "Finances application" in Display Name textbox

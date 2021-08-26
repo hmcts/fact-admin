@@ -1,6 +1,7 @@
 import {Then, When,Given} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
+import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
 
 async function checkAndClearField (aofFieldElement: string) {
   expect(await I.checkElement(aofFieldElement)).equal(true);
@@ -25,8 +26,11 @@ Then('I should see {string} page', async (editAreaofLawTitle: string) => {
   expect(await I.getElementText(pageTitleElement)).equal(editAreaofLawTitle);
 });
 
-Given('I click edit Financial Remedy', async () => {
-  const selector = '#areasOfLawListContent > table > tbody > tr:nth-child(14) > td:nth-child(2) > a';
+Given('I click edit {string}', async (areaOfLawName: string) => {
+  const tableRow = await getFirstTableRowIndexContainingText('#areasOfLawListContent', 1, areaOfLawName);
+  expect(tableRow).greaterThan(-1);
+  // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
+  const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
