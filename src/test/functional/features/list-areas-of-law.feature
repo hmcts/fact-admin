@@ -32,7 +32,8 @@ Feature: Areas Of Law List
     Then I am redirected to the "Add New Area of Law" form
     Then I enter "Financial Remedy" in Name textbox
     When I click Area Of Law save button
-    Then The error message display for the name already exist "An area of law with the proposed name already exists. The name must be unique."
+    Then The error message displays "An area of law with the proposed name already exists. The name must be unique."
+
 
   Scenario: Deleting new Area of law
     Then I click on Add new Area of law

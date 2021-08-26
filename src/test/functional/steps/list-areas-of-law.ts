@@ -117,16 +117,6 @@ Then('I enter {string} in Name textbox', async (newName: string) => {
   await populateField(selector, newName);
 });
 
-Then('The error message display for the name already exist {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
-  expect(errorTitle).equal(true);
-
-  const selector = '#areasOfLawListContent > div.govuk-error-summary > div > ul > li';
-  const eleErrMessage = await I.getElement(selector);
-  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
-});
-
-
 When('I click confirm delete button',async () => {
   const selector = '#confirmDelete';
   expect(await I.checkElement(selector)).equal(true);
