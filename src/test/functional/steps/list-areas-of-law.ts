@@ -112,12 +112,36 @@ Then('I click on Add new Area of law',async () => {
   await I.click(selector);
 });
 
-Then('I enter {string} in Name textbox', async (Newname: string) => {
+Then('I enter {string} in Name textbox', async (newName: string) => {
   const selector = '#aol-name';
-  await populateField(selector, Newname);
+  await populateField(selector, newName);
 });
 
-Then('The error message display for the name already exist {string}', async (errMessage: string) => {
+When('I click confirm delete button',async () => {
+  const selector = '#confirmDelete';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I click {string} delete button',async (aolTest: string) => {
+  const tableRow = await getFirstTableRowIndexContainingText('#areasOfLawListContent', 1, aolTest);
+  expect(tableRow).greaterThan(-1);
+  // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
+  const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+When('I click delete button for Area of law {string}',async (aolName: string) => {
+  const tableRow = await getFirstTableRowIndexContainingText('#areasOfLawListContent', 1, aolName);
+  expect(tableRow).greaterThan(-1);
+  // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
+  const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('The error message displays {string}', async (errMessage: string) => {
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
