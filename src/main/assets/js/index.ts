@@ -19,6 +19,7 @@ import {PostcodesController} from './postcodes';
 import {CourtsController} from './courts';
 import {CasesHeardController} from './cases-heard';
 import {AddressesController} from './addresses';
+import {AreasOfLawListController} from './areas-of-law-list';
 import {AdditionalLinksController} from './additionalLinks';
 
 const {initAll} = require('govuk-frontend');
@@ -39,4 +40,5 @@ new AddressesController();
 new AdditionalLinksController();
 
 new LocalAuthoritiesListController();
+new AreasOfLawListController();
 new CasesHeardController();

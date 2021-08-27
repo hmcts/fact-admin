@@ -7,7 +7,6 @@ describe('validation', () => {
       const results = isObjectEmpty(object);
       expect(results).toBe(true);
     });
-
     test('Should return false if object is not empty', async () => {
       const object = { test: 'test' };
       const results = isObjectEmpty(object);
