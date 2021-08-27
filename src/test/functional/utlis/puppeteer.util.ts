@@ -258,3 +258,15 @@ export const isElementChecked = async (selector: string) => {
     console.log(`The element with selector: ${selector} didn't appear.`);
   }
 };
+
+/**
+ * Returns the index (zero-based) of the first table row that contains the given text at the given table column number or -1 if not found.
+ * @param tableContainerSelector The container for the table
+ * @param tableColumnNumber The column number in which to look for the text. The first column is 1, second is 2 etc.
+ * @param text The search text.
+ */
+export const getFirstTableRowIndexContainingText = async (tableContainerSelector: string, tableColumnNumber: number, text: string) => {
+  const columnData: string[] = await scope.page.$$eval(`${tableContainerSelector} table tr td:nth-child(${tableColumnNumber}`,
+    (tds: HTMLTableDataCellElement[]) => tds.map((td) => td.innerText));
+  return columnData.indexOf(text);
+};

@@ -11,27 +11,31 @@ describe('CasesHeardController', () => {
     getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
     updateCourtAreasOfLaw: () => Promise<AreaOfLaw[]>};
 
-
   const testSlug = 'plymouth-combined-court';
-  const getAllAreasOfLawData = [
-    {id: 1, name: 'Adoption'},
-    {id: 2, name: 'Bankruptcy'},
-    {id: 3, name: 'Children'},
-    {id: 4, name: 'Civil Partnership'},
-    {id: 5, name: 'Court of Appeal'},
-    {id: 6, name: 'Crime'}
+
+  const getAreaOfLaw: (id: number, name: string) => AreaOfLaw =
+    (id: number, name: string) => { return { id: id, name: name, 'display_name': null, 'display_name_cy': null, 'display_external_link': null,
+      'external_link': null, 'external_link_desc': null, 'external_link_desc_cy': null, 'alt_name': null, 'alt_name_cy': null }; };
+
+  const getAllAreasOfLawData: AreaOfLaw[] = [
+    getAreaOfLaw(1, 'Adoption'),
+    getAreaOfLaw(2, 'Bankruptcy'),
+    getAreaOfLaw(3, 'Children'),
+    getAreaOfLaw(4, 'Civil Partnership'),
+    getAreaOfLaw(5, 'Court of Appeal'),
+    getAreaOfLaw(6, 'Crime')
   ];
-  const getCourtAreasOfLawData = [
-    {id: 1, name: 'Adoption'},
-    {id: 4, name: 'Civil Partnership'},
-    {id: 5, name: 'Court of Appeal'}
+  const getCourtAreasOfLawData: AreaOfLaw[] = [
+    getAreaOfLaw(1, 'Adoption'),
+    getAreaOfLaw(4, 'Civil Partnership'),
+    getAreaOfLaw(5, 'Court of Appeal'),
   ];
-  const updatedCourtAreasOfLawData = [
-    {id: 1, name: 'Adoption'},
-    {id: 2, name: 'Bankruptcy'},
-    {id: 3, name: 'Children'},
-    {id: 4, name: 'Civil Partnership'},
-    {id: 5, name: 'Court of Appeal'}
+  const updatedCourtAreasOfLawData: AreaOfLaw[] = [
+    getAreaOfLaw(1, 'Adoption'),
+    getAreaOfLaw(2, 'Bankruptcy'),
+    getAreaOfLaw(3, 'Children'),
+    getAreaOfLaw(4, 'Civil Partnership'),
+    getAreaOfLaw(5, 'Court of Appeal')
   ];
 
   const getAllAreasOfLaw: () => AreaOfLaw[] = () => getAllAreasOfLawData;

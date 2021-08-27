@@ -18,6 +18,17 @@ export function validateEmailFormat(emails: Email[]): boolean {
   return !hasInvalidFormat;
 }
 
+export function validateUrlFormat(url: string): boolean {
+  const regexp = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}'+ // domain name and extension
+    '(:\\d+)?'+ // port
+    '(\\/[-a-z\\d%@_.~+&:]*)*'+ // path
+    '(\\?[;&a-z\\d%@_.,~+&:=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+  return regexp.test(url);
+}
+
 export function validateDuplication(elements: Element[], predicate: (elements: Element[], b: number, c: number) => boolean): boolean {
   let hasDuplicates = false;
   for (let i = 0; i < elements.length - 1; i++) {
