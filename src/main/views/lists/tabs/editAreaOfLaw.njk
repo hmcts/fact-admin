@@ -45,10 +45,10 @@
 
       {{ govukInput({
         label: {
-          text: "Display Name"
+          text: "Display Name - Not-in-person courts/tribunals"
         },
         hint: {
-          text: "If set, this is how the area of law will appear in the 'find out more about' section for not-in-person courts and tribunals. The name will be used if this is not set."
+          text: "If not set, the 'Name' will be displayed."
         },
         id: "aol-display-name",
         name: "areaOfLaw[display_name]",
@@ -57,10 +57,7 @@
 
       {{ govukInput({
         label: {
-          text: "Display Name (Welsh)"
-        },
-        hint: {
-          text: "If set, this is how the area of law will appear in the 'find out more about' section for not-in-person courts and tribunals. The name will be used if this is not set."
+          text: "Display Name (Welsh) - Not-in-person courts/tribunals"
         },
         id: "aol-display-name-cy",
         name: "areaOfLaw[display_name_cy]",
@@ -69,10 +66,10 @@
 
       {{ govukInput({
         label: {
-          text: "Alternative Name"
+          text: "Display Name - In-person courts/tribunals"
         },
         hint: {
-          text: "If set, this is how the area of law will appear in the 'this location handles' section for in-person courts and tribunals. The name will be used if this is not set."
+          text: "If not set, the 'Name' will be displayed."
         },
         id: "aol-alt-name",
         name: "areaOfLaw[alt_name]",
@@ -81,10 +78,7 @@
 
       {{ govukInput({
         label: {
-          text: "Alternative Name (Welsh)"
-        },
-        hint: {
-          text: "If set, this is how the area of law will appear in the 'this location handles' section for in-person courts and tribunals. The name will be used if this is not set."
+          text: "Display Name (Welsh) - In-person courts/tribunals"
         },
         id: "aol-alt-name-cy",
         name: "areaOfLaw[alt_name_cy]",
@@ -93,10 +87,10 @@
 
       {{ govukInput({
         label: {
-          text: "External Link (URL)"
+          text: "External Link"
         },
         hint: {
-          text: "If set, the area of law will appear as a link in the 'find out more about' (in-person) or 'this location handles' (not-in-person) section and direct users to this URL."
+          text: "If set, the area of law will appear as a link and direct users to this URL."
         },
         id: "aol-external-link",
         name: "areaOfLaw[external_link]",
@@ -106,10 +100,20 @@
 
       {{ govukInput({
         label: {
+          text: "Display External Link"
+        },
+        hint: {
+          text: "If set, the area of law link will direct users to this URL rather than the External Link."
+        },
+        id: "aol-display-external-link",
+        name: "areaOfLaw[display_external_link]",
+        value: areaOfLaw.display_external_link,
+        errorMessage: { text: 'URL is invalid' } if displayLinkValid == false
+      }) }}
+
+      {{ govukInput({
+        label: {
             text: "External Link Description"
-          },
-          hint: {
-            text: "A description of the external link."
           },
           id: "aol-external-link-desc",
           name: "areaOfLaw[external_link_desc]",
@@ -120,25 +124,9 @@
           label: {
             text: "External Link Description (Welsh)"
           },
-          hint: {
-            text: "A description of the external link."
-          },
           id: "aol-external-link-desc-cy",
           name: "areaOfLaw[external_link_desc_cy]",
           value: areaOfLaw.external_link_desc_cy
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: "Display External Link (URL)"
-          },
-          hint: {
-            text: "If set, the area of law shown in the 'find out more about' (in-person) or 'this location handles' (not-in-person) section will direct users to this URL rather than the External Link."
-          },
-          id: "aol-display-external-link",
-          name: "areaOfLaw[display_external_link]",
-          value: areaOfLaw.display_external_link,
-          errorMessage: { text: 'URL is invalid' } if displayLinkValid == false
         }) }}
     </div>
   </div>

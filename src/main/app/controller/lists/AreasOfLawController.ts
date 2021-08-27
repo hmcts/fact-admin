@@ -4,7 +4,7 @@ import {Response} from 'express';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
-import {urlIsValid} from '../../../utils/validation';
+import {validateUrlFormat} from '../../../utils/validation';
 
 @autobind
 export class AreasOfLawController {
@@ -153,11 +153,11 @@ export class AreasOfLawController {
       nameValid = false;
       validationErrors.push({ text: this.nameRequiredError });
     }
-    if(areaOfLaw.external_link && !urlIsValid(areaOfLaw.external_link)) {
+    if(areaOfLaw.external_link && !validateUrlFormat(areaOfLaw.external_link)) {
       linkValid = false;
       validationErrors.push({ text: this.externalLinkInvalidError });
     }
-    if(areaOfLaw.display_external_link && !urlIsValid(areaOfLaw.display_external_link)) {
+    if(areaOfLaw.display_external_link && !validateUrlFormat(areaOfLaw.display_external_link)) {
       displayLinkValid = false;
       validationErrors.push({ text: this.dispExternalLinkInvalidError });
     }
@@ -166,15 +166,19 @@ export class AreasOfLawController {
   }
 
   sanitizeAreaOfLaw(areaOfLaw: AreaOfLaw): AreaOfLaw {
-    areaOfLaw['alt_name'] = areaOfLaw.alt_name?.trim() || null;
-    areaOfLaw['alt_name_cy'] = areaOfLaw.alt_name_cy?.trim() || null;
-    areaOfLaw['external_link'] = areaOfLaw.external_link?.trim() || null;
-    areaOfLaw['external_link_desc'] = areaOfLaw.external_link_desc?.trim() || null;
-    areaOfLaw['external_link_desc_cy'] = areaOfLaw.external_link_desc_cy?.trim() || null;
-    areaOfLaw['display_external_link'] = areaOfLaw.display_external_link?.trim() || null;
-    areaOfLaw['display_name'] = areaOfLaw.display_name?.trim() || null;
-    areaOfLaw['display_name_cy'] = areaOfLaw.display_name_cy?.trim() || null;
+    areaOfLaw['alt_name'] = this.sanitizeInput(areaOfLaw.alt_name);
+    areaOfLaw['alt_name_cy'] = this.sanitizeInput(areaOfLaw.alt_name_cy);
+    areaOfLaw['external_link'] = this.sanitizeInput(areaOfLaw.external_link);
+    areaOfLaw['external_link_desc'] = this.sanitizeInput(areaOfLaw.external_link_desc);
+    areaOfLaw['external_link_desc_cy'] = this.sanitizeInput(areaOfLaw.external_link_desc_cy);
+    areaOfLaw['display_external_link'] = this.sanitizeInput(areaOfLaw.display_external_link);
+    areaOfLaw['display_name'] = this.sanitizeInput(areaOfLaw.display_name);
+    areaOfLaw['display_name_cy'] = this.sanitizeInput(areaOfLaw.display_name_cy);
 
     return areaOfLaw;
+  }
+
+  private sanitizeInput(input: string): string {
+    return input?.trim() || null;
   }
 }

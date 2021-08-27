@@ -120,6 +120,21 @@ describe ( 'AreasOfLawController', () => {
     expect(res.render).toBeCalledWith('lists/tabs/editAreaOfLaw', expectedData);
   });
 
+  test('Should render delete confirmation view', async () => {
+    const id = 1234;
+    const name = 'Tax';
+    req.params = { id: id };
+    req.query.name = name;
+
+    await controller.getDeleteConfirmation(req, res);
+
+    const expectedData = {
+      name: name,
+      deleteUrl: `${controller.deleteAreaOfLawUrl}${id}`
+    };
+    expect(res.render).toBeCalledWith('lists/tabs/deleteAreaOfLawConfirm', expectedData);
+  });
+
   test('Put should send POST request to API for valid new area of law', async () => {
     req.body = {
       'areaOfLaw': mockAreasOfLaw[1], // has id - update expected
