@@ -19,7 +19,13 @@ export function validateEmailFormat(emails: Email[]): boolean {
 }
 
 export function validateUrlFormat(url: string): boolean {
-  const regexp = new RegExp(/^(https?:\/\/)?((([A-Za-z\d]([A-Za-z\d-]*[A-Za-z\d])*)\.)+[A-Za-z]{2,}|((\d{1,3}\.){3}\\d{1,3}))(\:\d+)?(\/[-A-Za-z\d%_.~+]*)*(\?[;&A-Za-z\d%_.~+=-]*)?(\#[-A-Za-z\d_]*)?$/);
+  const regexp = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}'+ // domain name and extension
+    '(:\\d+)?'+ // port
+    '(\\/[-a-z\\d%@_.~+&:]*)*'+ // path
+    '(\\?[;&a-z\\d%@_.,~+&:=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
   return regexp.test(url);
 }
 
