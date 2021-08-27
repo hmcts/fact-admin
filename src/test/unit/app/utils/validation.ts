@@ -31,7 +31,7 @@ describe('validation', () => {
     ];
 
     validUrlParameters.forEach((parameter) => {
-      it('Should return true for valid URL format \'' + parameter.url + '\'', async () => {
+      it('Should return true for valid URL format \'' + parameter.url + '\'', () => {
         expect(validateUrlFormat(parameter.url)).toBeTruthy();
       });
     });
@@ -51,7 +51,7 @@ describe('validation', () => {
     ];
 
     inValidUrlParameters.forEach((parameter) => {
-      it('Should return false for invalid URL format \'' + parameter.url + '\'', async () => {
+      it('Should return false for invalid URL format \'' + parameter.url + '\'', () => {
         expect(validateUrlFormat(parameter.url)).toBeFalsy();
       });
     });
