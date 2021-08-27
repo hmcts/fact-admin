@@ -32,17 +32,17 @@ Then('a green update message is displayed in the Additional Links tab {string}',
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
 
-When('I enter a new Additional Links entry by adding URL {string} display name {string} and welsh display name {string}', async (url: string, englishDescriptio: string, welshDescription: string) => {
+When('I enter a new Additional Links entry by adding URL {string} display name {string} and welsh display name {string}', async (url: string, englishDescriptio: string, welshDisplayName: string) => {
   const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
   const entryFormIdx = numFieldsets - 2;
 
   const urlSelector = '#additionalLinksTab input[name$="[url]"]';
-  const englishDescriptionSelector = '#additionalLinksTab input[name$="[display_name]"]';
-  const welshDescriptionSelector = '#additionalLinksTab input[name$="[display_name_cy]"]';
+  const englishDisplayNameSelector = '#additionalLinksTab input[name$="[display_name]"]';
+  const welshDisplayNameSelector = '#additionalLinksTab input[name$="[display_name_cy]"]';
 
   await I.setElementValueAtIndex(urlSelector, entryFormIdx, url, 'input');
-  await I.setElementValueAtIndex(englishDescriptionSelector, entryFormIdx, englishDescriptio, 'input');
-  await I.setElementValueAtIndex(welshDescriptionSelector, entryFormIdx, welshDescription, 'input');
+  await I.setElementValueAtIndex(englishDisplayNameSelector, entryFormIdx, englishDescriptio, 'input');
+  await I.setElementValueAtIndex(welshDisplayNameSelector, entryFormIdx, welshDisplayName, 'input');
 });
 
 When('I click the Add new additional link button in the Additional Links tab', async () => {
@@ -53,7 +53,7 @@ When('I click save Additional Links', async () => {
   await FunctionalTestHelpers.clickButton('#additionalLinksTab', 'saveAdditionalLink');
 });
 
-Then('the second last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDescription: string, welshDescription: string) => {
+Then('the second last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDisplayName: string, welshDisplayName: string) => {
   const fieldsetSelector = '#additionalLinksTab fieldset';
   const numAdditionalLinks = await I.countElement(fieldsetSelector);
   const secondLastIndex = numAdditionalLinks - 4; // we deduct one each for zero-based index, hidden template fieldset, new additional links fieldset and the last entry.
@@ -61,14 +61,14 @@ Then('the second last Additional link is displayed with URL {string} display nam
   const getURL = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[url]"]`, secondLastIndex);
   expect(getURL).equal(url);
 
-  const getDescription = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name]"]`, secondLastIndex);
-  expect(getDescription).equal(englishDescription);
+  const getDisplayName = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name]"]`, secondLastIndex);
+  expect(getDisplayName).equal(englishDisplayName);
 
-  const getWelshDescription = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name_cy]"]`, secondLastIndex);
-  expect(getWelshDescription).equal(welshDescription);
+  const getWelshDisplayName = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name_cy]"]`, secondLastIndex);
+  expect(getWelshDisplayName).equal(welshDisplayName);
 });
 
-Then('the last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDescription: string, welshDescription: string) => {
+Then('the last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDisplayName: string, welshDisplayName: string) => {
   const fieldsetSelector = '#additionalLinksTab fieldset';
   const numAdditionalLinks = await I.countElement(fieldsetSelector);
   const lastIndex = numAdditionalLinks - 3; // we deduct one each for zero-based index, hidden template fieldset and new additional links fieldset.
@@ -76,11 +76,11 @@ Then('the last Additional link is displayed with URL {string} display name {stri
   const getURL = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[url]"]`, lastIndex);
   expect(getURL).equal(url);
 
-  const getDescription = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name]"]`, lastIndex);
-  expect(getDescription).equal(englishDescription);
+  const getDisplayName = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name]"]`, lastIndex);
+  expect(getDisplayName).equal(englishDisplayName);
 
-  const getWelshDescription = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name_cy]"]`, lastIndex);
-  expect(getWelshDescription).equal(welshDescription);
+  const getWelshDisplayName = await I.getElementValueAtIndex(`${fieldsetSelector} input[name$="[display_name_cy]"]`, lastIndex);
+  expect(getWelshDisplayName).equal(welshDisplayName);
 });
 
 When('I click the remove button under an Additional link entry', async () => {
@@ -96,4 +96,137 @@ Then('there are no  Additional Link entries', async () => {
   const numberOfAdditionalLinks = numberOfFieldsets - 2; // we deduct the hidden template and the new additional links form
   expect(numberOfAdditionalLinks).to.equal(0);
 });
+
+When('I click the move up button on the last additional links entry', async () => {
+  const fieldsetSelector = '#additionalLinksTab fieldset.can-reorder';
+  const numEntries = await I.countElement(fieldsetSelector);
+  const lastIndex = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
+
+  // Click the move up button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveUp"]`, lastIndex);
+});
+
+When('I click the move down button on the second last additional links entry', async () => {
+  const fieldsetSelector = '#additionalLinksTab fieldset.can-reorder';
+  const numEntries = await I.countElement(fieldsetSelector);
+  // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last additional links entry.
+  const secondLastIndex = numEntries - 4;
+
+  // Click the move down button
+  await I.clickElementAtIndex(`${fieldsetSelector} button[name="moveDown"]`, secondLastIndex);
+});
+
+When('When I enter a new Additional Links entry by adding URL {string} and leave display name field blank', async (url: string) => {
+  const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
+  const entryFormIdx = numFieldsets - 2;
+  const urlSelector = '#additionalLinksTab input[name$="[url]"]';
+  await I.setElementValueAtIndex(urlSelector, entryFormIdx, url, 'input');
+});
+
+Then('An error is displayed for additional links with summary {string} and display name field message {string}', async (msgSummery: string, errorMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#additionalLinksContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(msgSummery);
+
+  const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#display_name-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const displayNameErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
+});
+
+
+When('When I enter a new Additional Links entry by adding english display name {string} and leave URL field blank', async (displayName: string) => {
+  const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
+  const entryFormIdx = numFieldsets - 2;
+  const englishDisplyNameSelector = '#additionalLinksTab input[name$="[display_name]"]';
+  await I.setElementValueAtIndex(englishDisplyNameSelector, entryFormIdx, displayName, 'input');
+});
+
+
+Then('An error is displayed for additional links with summary {string} and URL field message {string}', async (msgSummery: string, errorMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#additionalLinksContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(msgSummery);
+
+  const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
+  const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
+  selector = '#url-' + fieldsetErrorIndex + '-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const urlErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
+});
+
+When('I clear additional link fields', async () => {
+  await FunctionalTestHelpers.clickButton('#additionalLinksTab', 'clearAdditionalLink');
+});
+
+
+Then('An error is displayed for additional links with summary {string} and URL field messages {string}', async (msgSummery: string, errorMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#additionalLinksContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(msgSummery);
+
+  selector = '#url-1-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const urlErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
+
+  selector = '#url-2-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const url2ErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(url2ErrorElement)).contains(errorMsg);
+});
+
+
+Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '#error-summary-title';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorTitleElement = await I.getElement(selector);
+  expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
+
+  selector = '#additionalLinksContent > div > div > ul > li';
+  expect(await I.checkElement(selector)).equal(true);
+  const errorListElement = await I.getElement(selector);
+  expect(await I.getElementText(errorListElement)).equal(msgSummery);
+
+  selector = '#display_name-1-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const displayNameErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
+
+  selector = '#display_name-2-error';
+  expect(await I.checkElement(selector)).equal(true);
+  const displayName2ErrorElement = await I.getElement(selector);
+  expect(await I.getElementText(displayName2ErrorElement)).contains(errorMsg);
+});
+
+
+
+
+
+
 
