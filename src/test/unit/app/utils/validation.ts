@@ -23,12 +23,11 @@ describe('validation', () => {
       { url: 'www.my-test.com' }, // Domain name including a hyphen
       { url: 'test123.uk' }, // Alphanumeric domain name
       { url: 'www.test.com:8080' }, // With port
-      { url: 'http://uk.testing.com?q=testing' }, // With query parameter
+      { url: 'http://uk.testing.com?q=testing' }, // With a query parameter
       { url: 'http://employeeInfo.com?name=peter&id=D%20123' }, // With multiple query parameters
       { url: 'www.gov.uk/tax-tribunal' }, // valid gok uk site
       { url: 'gov.uk/tax-tribunal' }, // gov uk site without 'www'
       { url: 'https://www.gov.uk/government/collections/female-genital-mutilation' } // multiple levels of path
-
     ];
 
     validUrlParameters.forEach((parameter) => {
