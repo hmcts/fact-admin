@@ -1,5 +1,5 @@
-import { Application } from 'express';
-import { isSuperAdmin } from './modules/oidc';
+import {Application} from 'express';
+import {isSuperAdmin} from './modules/oidc';
 
 export default function(app: Application): void {
 
@@ -32,8 +32,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
-  app.get('/courts/:slug/additionalLinks', app.locals.container.cradle.additionalLinksController.get);
-  app.put('/courts/:slug/additionalLinks', app.locals.container.cradle.additionalLinksController.put);
+  app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
+  app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
 
   // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
