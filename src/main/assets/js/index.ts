@@ -20,6 +20,7 @@ import {CourtsController} from './courts';
 import {CasesHeardController} from './cases-heard';
 import {AddressesController} from './addresses';
 import {AreasOfLawListController} from './areas-of-law-list';
+import {ContactTypesListController} from './contact-type-list';
 
 const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
@@ -39,4 +40,5 @@ new AddressesController();
 
 new LocalAuthoritiesListController();
 new AreasOfLawListController();
+new ContactTypesListController();
 new CasesHeardController();

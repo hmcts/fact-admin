@@ -15,6 +15,9 @@
       {% set areasOfLawHtml %}
         {% include "./tabs/areasOfLaw.njk" %}
       {% endset %}
+       {% set contactTypesHtml %}
+         {% include "./tabs/contactTypes/contactTypes.njk" %}
+      {% endset %}
 
       {% set tabItems = [
         {
@@ -30,6 +33,13 @@
           panel: {
             html: areasOfLawHtml
           }
+        },
+        {
+          label: "Contact Types",
+          id: "contact-types",
+          panel: {
+            html: contactTypesHtml
+           }
         }]
       %}
 

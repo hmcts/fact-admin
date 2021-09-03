@@ -1,0 +1,49 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set contactTypeItems = [] %}
+{% for contactType in contactTypes %}
+  {% set deleteConfirmUrl = deleteUrl + contactType.id +"?type=" + contactType.type|urlencode %}
+  {% set contactTypeItems = (contactTypeItems.push([
+    {
+      text: contactType.type
+    },
+    {
+      html: "<a class='govuk-link edit-ct' href=" + editUrl + contactType.id + ">edit</a>"
+    },
+    {
+      html: "<a class='govuk-link delete-ct' href=" + deleteConfirmUrl + ">delete</a>"
+    }
+  ]), courtItems) %}
+{% endfor %}
+
+<h2 class="govuk-heading-l">Contact Types</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Contact Types Updated"
+  }) }}
+{% endif %}
+
+{% if contactTypeItems|length %}
+
+  {{ govukTable({
+    firstCellIsHeader: false,
+    head: [ { text: "Name" }, { text: "" }, { text: "" } ],
+    rows: contactTypeItems
+  }) }}
+
+  <div class="govuk-button-group">
+    <a class="edit-ct govuk-link" href="{{editUrl}}">Add Contact Type</a>
+  </div>
+
+{% endif %}

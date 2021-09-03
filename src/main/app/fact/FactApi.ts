@@ -162,7 +162,7 @@ export class FactApi {
 
   public getContactTypes(): Promise<ContactType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/contactTypes`)
+      .get(`${this.adminUrl}/contactTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -396,6 +396,46 @@ export class FactApi {
   public deleteAreaOfLaw(id: string): Promise<void> {
     return this.axios
       .delete(`${this.adminUrl}/areasOfLaw/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getContactType(id: string): Promise<ContactType> {
+    return this.axios
+      .get(`${this.adminUrl}/contactTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .post(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .put(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteContactType(id: string): Promise<void> {
+    return this.axios
+      .delete(`${this.adminUrl}/contactTypes/${id}`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
