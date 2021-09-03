@@ -26,17 +26,17 @@ describe ( 'ContactTypesController', () => {
       {
         id: 100,
         type: 'Admin',
-        type_cy:''
+        'type_cy':''
       },
       {
         id: 200,
         type: 'Adoption',
-        type_cy:''
+        'type_cy':''
       },
       {
         id: 300,
         type: 'Appeals',
-        type_cy:''
+        'type_cy':''
       }
     ];
 
@@ -297,7 +297,7 @@ describe ( 'ContactTypesController', () => {
     let before = {
       id: 300,
       type: '',
-      type_cy: '   '
+      'type_cy': '   '
     };
     let after = controller.sanitizeContactType(before);
 
@@ -307,7 +307,7 @@ describe ( 'ContactTypesController', () => {
     before = {
       id: 300,
       type: null,
-      type_cy: null
+      'type_cy': null
     };
     after = controller.sanitizeContactType(before);
 

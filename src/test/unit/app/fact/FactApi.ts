@@ -1198,7 +1198,7 @@ describe('FactApi', () => {
 
   test('Should return results from getContactType request', async () => {
     const result: { data: ContactType } = {
-      data: { id: 123, type: 'Admin', type_cy: ''}};
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
     const mockAxios = { get: async () => result } as any;
     const mockLogger = {} as any;
     const api = new FactApi(mockAxios, mockLogger);
@@ -1217,7 +1217,7 @@ describe('FactApi', () => {
 
   test('Should update contact type and return updated contact type', async () => {
     const result: { data: ContactType } = {
-      data: { id: 123, type: 'Admin', type_cy: ''}};
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
     const mockAxios = { put: async () => result } as any;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.updateContactType(result.data)).resolves.toEqual(result.data);
@@ -1225,7 +1225,7 @@ describe('FactApi', () => {
 
   test('Should log error and reject promise for failed updateContactType request', async () => {
     const ct: { data: ContactType } = {
-      data: { id: 123, type: 'Admin', type_cy: ''}};
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
 
     const mockAxios = { put: async () => { throw mockError; }} as any;
     const spy = jest.spyOn(mockLogger, 'info');
@@ -1238,7 +1238,7 @@ describe('FactApi', () => {
 
   test('Should create contact type and return created contact type', async () => {
     const result: { data: ContactType } = {
-      data: { id: 123, type: 'Admin', type_cy: ''}};
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
     const mockAxios = { post: async () => result } as any;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.createContactType(result.data)).resolves.toEqual(result.data);
@@ -1246,7 +1246,7 @@ describe('FactApi', () => {
 
   test('Should log error and reject promise for failed createContactType request', async () => {
     const ct: { data: ContactType } = {
-      data: { id: 123, type: 'Admin', type_cy: ''}};
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
 
     const mockAxios = { post: async () => { throw mockError; }} as any;
     const spy = jest.spyOn(mockLogger, 'info');
