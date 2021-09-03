@@ -1,8 +1,8 @@
-import {ContactType} from "../../../../../main/types/ContactType";
-import {mockResponse} from "../../../utils/mockResponse";
-import {CSRF} from "../../../../../main/modules/csrf";
-import {ContactTypesController} from "../../../../../main/app/controller/lists/ContactTypesController";
-import {mockRequest} from "../../../utils/mockRequest";
+import {ContactType} from '../../../../../main/types/ContactType';
+import {mockResponse} from '../../../utils/mockResponse';
+import {CSRF} from '../../../../../main/modules/csrf';
+import {ContactTypesController} from '../../../../../main/app/controller/lists/ContactTypesController';
+import {mockRequest} from '../../../utils/mockRequest';
 
 describe ( 'ContactTypesController', () => {
   let mockApi: {

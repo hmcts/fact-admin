@@ -1,9 +1,9 @@
-import autobind from "autobind-decorator";
-import {AuthedRequest} from "../../../types/AuthedRequest";
-import {Response} from "express";
-import {ContactType} from "../../../types/ContactType";
-import {CSRF} from "../../../modules/csrf";
-import {AxiosError} from "axios";
+import autobind from 'autobind-decorator';
+import {AuthedRequest} from '../../../types/AuthedRequest';
+import {Response} from 'express';
+import {ContactType} from '../../../types/ContactType';
+import {CSRF} from '../../../modules/csrf';
+import {AxiosError} from 'axios';
 
 @autobind
 export class ContactTypesController {
