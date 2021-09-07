@@ -15,7 +15,7 @@ export class ContactTypesController {
   getContactTypesError = 'An error occurred when retrieving the contact types.';
   getContactTypeError = 'A problem occurred when retrieving the contact type.';
   updateContactTypeError = 'A problem occurred when trying to save the contact type.';
-  contactTypeAlreadyExistsError = 'An contact type with the proposed name already exists. The name must be unique.';
+  contactTypeAlreadyExistsError = 'A contact type with the proposed name already exists. The name must be unique.';
   deleteError = 'A problem occurred when trying to delete the contact type.';
   contactTypeInUseError = 'You cannot delete this contact type at the moment, as one or more courts are dependent on it. ' +
     'Please remove the contact type from the relevant courts first';
