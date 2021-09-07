@@ -1,7 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
-import {getFirstTableRowIndexContainingText} from "../utlis/puppeteer.util";
+import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
 
 When('I click on contact type list', async () => {
   const selector = '#tab_contact-types';
