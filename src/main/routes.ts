@@ -1,5 +1,5 @@
-import { Application } from 'express';
-import { isSuperAdmin } from './modules/oidc';
+import {Application} from 'express';
+import {isSuperAdmin} from './modules/oidc';
 
 export default function(app: Application): void {
 
@@ -46,6 +46,9 @@ export default function(app: Application): void {
   app.get('/lists/area-of-law/delete-confirm/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getDeleteConfirmation);
   app.put('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.put);
   app.delete('/lists/area-of-law/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.delete);
+
+  // Audits
+  app.get('/audits', isSuperAdmin, app.locals.container.cradle.auditController.get);
 
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
