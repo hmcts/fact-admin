@@ -2,12 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set isNewContactType = true %}
-{% if contactType.id %}
-  {% set isNewContactType = false %}
-{% endif %}
-
-{% if isNewContactType %}
+{% if contactType.id is not null %}
   <h2 class="govuk-heading-l">Add New Contact Type</h2>
 {% else %}
   <h2 class="govuk-heading-l">Editing Contact Type: {{contactType.type}}</h2>
@@ -35,11 +30,7 @@
           errorMessage: { text: 'Name is required' } if nameValid == false
         }) }}
 
-
-
-
       <input id='contactTypeId' type='hidden' name='contactType[id]' value={{contactType.id}}></input>
-
 
       {{ govukInput({
         label: {
