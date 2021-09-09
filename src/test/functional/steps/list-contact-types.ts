@@ -1,7 +1,12 @@
 import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
-import {getFirstTableRowIndexContainingText} from "../utlis/puppeteer.util";
+import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
+
+async function populateField(fieldElement: string, value: string) {
+  expect(await I.checkElement(fieldElement)).equal(true);
+  await I.setElementValueForInputField(fieldElement, value);
+}
 
 When('I click on contact type list', async () => {
   const selector = '#tab_contact-types';
@@ -35,14 +40,12 @@ Given('I will make sure to clear entries for the Contact Type', async () => {
 
 Then('I enter {string} in name textbox', async (name: string) => {
   const selector = '#ct-type';
-  expect(await I.checkElement(selector)).equal(true);
-  await I.setElementValueForInputField(selector, name);
+  await populateField(selector, name);
 });
 
 Then('I enter {string} in name welsh textbox', async (nameCy: string) => {
   const selector = '#ct-type-cy';
-  expect(await I.checkElement(selector)).equal(true);
-  await I.setElementValueForInputField(selector, nameCy);
+  await populateField(selector, nameCy);
 });
 
 When('I click Contact Type save button', async () => {
