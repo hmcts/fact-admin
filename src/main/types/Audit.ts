@@ -1,3 +1,8 @@
+export interface AuditPageData {
+  audits: Audit[],
+  errorMsg: string
+}
+
 export interface Audit {
   id: number,
   action: Action,

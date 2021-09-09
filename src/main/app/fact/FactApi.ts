@@ -12,6 +12,7 @@ import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
+import {Audit} from '../../types/Audit';
 
 export class FactApi {
 
@@ -29,6 +30,18 @@ export class FactApi {
       .get(`${this.baseURL}/all`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
+  }
+
+  public getAudits(page: number, size: number, location: string, email: string,
+    dateFrom: string, dateTo: string): Promise<Audit[]> {
+    return this.axios
+      .get(`${this.adminUrl}/audit?page=${page}&size=${size}
+        &location=${location}&email=${email}&dateFrom=${dateFrom}&dateTo=${dateTo}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 
   public getPostcodes(slug: string): Promise<string[]> {
