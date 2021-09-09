@@ -39,6 +39,7 @@ export class ContactTypesController {
           fatalError = true;
         });
     }
+
     this.renderContactType(res, contactType, false, errors, fatalError);
   }
 
@@ -148,7 +149,7 @@ export class ContactTypesController {
     res.render('lists/tabs/contactTypes/deleteContactTypeConfirm', pageData);
   }
 
-  sanitizeContactType(contactType: ContactType): ContactType {
+  public sanitizeContactType(contactType: ContactType): ContactType {
     contactType['type'] = this.sanitizeInput(contactType.type);
     contactType['type_cy'] = this.sanitizeInput(contactType.type_cy);
 
