@@ -40,12 +40,22 @@ export default function(app: Application): void {
   app.put('/courts/facilities/add-row', app.locals.container.cradle.courtFacilitiesController.addRow);
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
+
   app.get('/lists/areas-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAll);
   app.get('/lists/area-of-law/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
   app.get('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
   app.get('/lists/area-of-law/delete-confirm/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getDeleteConfirmation);
   app.put('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.put);
   app.delete('/lists/area-of-law/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.delete);
+
+  app.get('/lists/facility-types', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getAll);
+  app.get('/lists/facility-type/:id', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getFacilityType);
+  app.get('/lists/facility-type', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getFacilityType);
+  app.get('/lists/facility-types/delete-confirm/:id', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getDeleteConfirmation);
+  app.put('/lists/facility-types', isSuperAdmin, app.locals.container.cradle.facilityTypesController.put);
+  app.delete('/lists/facility-types/:id', isSuperAdmin, app.locals.container.cradle.facilityTypesController.delete);
+  app.get('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getAllReorder);
+  app.put('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.reorder);
 
   // General
   app.use(app.locals.container.cradle.errorController.notFound);

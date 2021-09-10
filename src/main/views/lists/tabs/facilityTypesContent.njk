@@ -1,0 +1,102 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+<h2 class="govuk-heading-l">Facility Types</h2>
+
+{% if editMode %}
+  <div class="govuk-button-group">
+    <a class="order-facility-type govuk-link" href="#"> Change global facility type ordering</a>
+  </div>
+{% else %}
+  <h3 class="govuk-heading-m">Global facility type ordering</h3>
+{% endif %}
+
+{% set facilityTypeItems = [] %}
+{% if editMode %}
+  {% for facilityType in facilityTypes %}
+    {% set deleteConfirmUrl = deleteConfirmBaseUrl + facilityType.id +"?name=" + facilityType.name|urlencode %}
+    {% set facilityTypeItems = (facilityTypeItems.push([
+      {
+        text: facilityType.name
+      },
+      {
+        html: "<a class='govuk-link edit-facility-type' href=" + editBaseUrl + facilityType.id + ">edit</a>"
+      },
+      {
+        html: "<a class='govuk-link delete-facility-type' href=" + deleteConfirmUrl + ">delete</a>"
+      }
+    ]), facilityTypeItems) %}
+  {% endfor %}
+
+{% else %}
+
+  {% set upArrowHtml = "&#11014" %}
+  {% set downArrowHtml = "&#11015" %}
+
+  {% for facilityType in facilityTypes %}
+    {% set facilityTypeItems = (facilityTypeItems.push([
+      {
+        text: facilityType.name
+      },
+      {
+        html: "<input type='hidden' name='facilityIds' value='" + facilityType.id +"'></input>"
+      },
+      {
+        html: "<div class='govuk-button-group govuk-!-margin-bottom-0'>" +
+                "<button type='button' class='govuk-button govuk-button--secondary govuk-!-margin-bottom-0 facility-move-up' data-module='govuk-button'>" + upArrowHtml + "</button>" +
+                "<button type='button' class='govuk-button govuk-button--secondary govuk-!-margin-bottom-0 facility-move-down' data-module='govuk-button'>" + downArrowHtml + "</button>" +
+              "</div>"
+      }
+    ]), facilityTypeItems) %}
+  {% endfor %}
+
+{% endif %}
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Facility Types Updated"
+  }) }}
+{% endif %}
+
+{% if facilityTypeItems|length %}
+
+  {{ govukTable({
+    firstCellIsHeader: false,
+    head: [ { text: "Name" }, { text: "" }, { text: "" } ],
+    rows: facilityTypeItems
+  }) }}
+
+  {% if editMode %}
+
+    <div class="govuk-button-group">
+      <a class="edit-facility-type govuk-link" href="{{editBaseUrl}}">Add New Facility Type</a>
+    </div>
+
+  {% else %}
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Save Updated Order",
+        attributes: { id: "saveFacilityTypeReorder" }
+      }) }}
+
+      {{ govukButton({
+        text: "Cancel",
+        type: "button",
+        attributes: { id: "cancelFacilityTypeReorder" },
+        classes: "govuk-button--secondary cancel-changes"
+      }) }}
+    </div>
+
+  {% endif %}
+
+{% endif %}
