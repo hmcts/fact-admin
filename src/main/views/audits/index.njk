@@ -1,7 +1,90 @@
-test
-test
-test
-test
-test
-test
-test
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Audits</h1>
+
+  <div id = 'tableContainer'>
+    <div id='auditOptionsRow' class='govuk-grid-row'>
+      <div class='govuk-grid-column-one-half'>
+        {{ govukInput({
+          attributes: {
+            placeholder: 'Username'
+          },
+          id: 'searchUser',
+          name: 'searchUser'
+        }) }}
+      </div>
+    </div>
+
+    {% set auditItems = [] %}
+    {% for audit in audits %}
+      {% set auditItems = (auditItems.push([
+        {
+          text: audit.user_email
+        },
+        {
+          text: audit.action.name
+        },
+        {
+          text: audit.location
+        },
+        {
+          html: '<div>Before: </br>'
+            + audit.action_data_before
+            + '</br></br> After: </br>'
+            + audit.action_data_after + '</div>',
+          classes: 'govuk-!-width-one-quarter'
+        },
+        {
+          text: audit.creationTimeDisplayed
+        }
+        ]), auditItems) %}
+    {% endfor %}
+
+    {{ govukTable({
+      id: 'auditResults',
+      name: 'auditResults',
+      attributes: {
+        id: 'auditResults'
+      },
+      head: [
+        {
+          text: "Username",
+          attributes: {
+            id: 'tableAuditUserEmail'
+          }
+        },
+        {
+          text: 'Action',
+          attributes: {
+            id: 'tableAuditAction'
+          }
+        },
+        {
+          text: "Location",
+          attributes: {
+            id: 'tableAuditLocation'
+          }
+        },
+        {
+          text: "Changes",
+          attributes: {
+            id: 'tableAuditActionDataBefore'
+          }
+        },
+        {
+          text: "Created At",
+          attributes: {
+            id: 'tableAuditCreatedAt'
+          }
+        }
+      ],
+      rows: auditItems
+    }) }}
+  </div>
+
+{% endblock %}
