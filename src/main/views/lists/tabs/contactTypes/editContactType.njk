@@ -2,7 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% if contactType.id is null %}
+{% if not contactType.id  %}
   <h2 class="govuk-heading-l">Add New Contact Type</h2>
 {% else %}
   <h2 class="govuk-heading-l">Editing Contact Type: {{contactType.type}}</h2>
