@@ -50,4 +50,4 @@ Feature: Contact Types List
     Then I will make sure to clear entries for the Contact Type
     Then I enter "Adoption" in name textbox
     When I click Contact Type save button
-    #Then The error message displays for a Contact type "A contact type with the proposed name already exists. The name must be unique."
+    Then The error message displays for a Contact type "A contact type with the proposed name already exists. The name must be unique."
