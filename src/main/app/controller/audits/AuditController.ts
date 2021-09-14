@@ -2,17 +2,25 @@ import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {Audit, AuditPageData} from '../../../types/Audit';
+import {Court} from '../../../types/Court';
 
 @autobind
 export class AuditController {
 
   getAuditsErrorMsg = 'A problem occurred when retrieving the audit data.';
+  getCourtsErrorMsg = 'A problem occurred when retrieving the courts data.';
 
-  public async get(
+  public async get(req: AuthedRequest,
+    res: Response): Promise<void> {
+    res.render('audits/index');
+  }
+
+  public async getAuditData(
     req: AuthedRequest,
     res: Response,
     error = '',
-    audits: Audit[] = null): Promise<void> {
+    audits: Audit[] = null,
+    courts: Court[] = null): Promise<void> {
 
     // Access the provided query parameters for the audits
     // The page and limit are mandatory. Limit will default to 20,
@@ -31,6 +39,12 @@ export class AuditController {
     console.log(dateFrom);
     console.log(dateTo);
 
+    if (!courts) {
+      await req.scope.cradle.api.getCourts()
+        .then((value: Court[]) => courts = value)
+        .catch(() => error = this.getCourtsErrorMsg);
+    }
+
     if (!audits) {
       await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
         .then((value: Audit[]) => audits = value)
@@ -38,15 +52,17 @@ export class AuditController {
     }
 
     if (audits)
-      audits.forEach(a => a.creationTimeDisplayed = new Date(a.creation_time).toLocaleString());
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      audits.forEach(a => a.creation_time = new Date(a.creation_time).toLocaleString());
 
     const pageData: AuditPageData = {
       audits: audits,
+      courts: courts,
       errorMsg: error
     };
 
     console.log(pageData.audits);
 
-    res.render('audits/index', pageData);
+    res.render('audits/auditContent', pageData);
   }
 }

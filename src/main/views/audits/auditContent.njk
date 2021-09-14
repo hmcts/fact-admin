@@ -1,0 +1,151 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  <div id = 'auditsPageId'>
+    <h1 class="govuk-heading-xl">Audits</h1>
+
+    {% set auditItems = [] %}
+    {% for audit in audits %}
+      {% set auditItems = (auditItems.push([
+        {
+          text: audit.user_email
+        },
+        {
+          text: audit.action.name
+        },
+        {
+          text: audit.location
+        },
+        {
+          html: '<div>Before: </br>'
+            + audit.action_data_before
+            + '</br></br> After: </br>'
+            + audit.action_data_after + '</div>',
+          classes: 'govuk-!-width-one-quarter'
+        },
+        {
+          text: audit.creation_time
+        }
+        ]), auditItems) %}
+    {% endfor %}
+
+    {% set courtItems = [] %}
+    {% for court in courts|sort(false, true, 'name') %}
+      {% set courtItems = (courtItems.push(
+          {
+            attributes: {
+              'data-type': 'name',
+              'data-name': court.slug
+            },
+            value: court.name,
+            text: court.name
+          }
+        ), courtItems) %}
+    {% endfor %}
+
+    <div id="auditsSearchOptions" class='govuk-grid-row'>
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: "Username"
+          },
+          attributes: {
+            placeholder: 'Username'
+          },
+          id: 'searchUser',
+          name: 'searchUser'
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukSelect({
+          label: {
+            text: 'Court'
+          },
+          id: 'searchLocation',
+          name: 'searchLocation',
+          items: courtItems
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: 'Between'
+          },
+          id: 'searchDateFrom',
+          name: 'searchDateFrom',
+          type: 'datetime-local'
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: 'And'
+          },
+          id: 'searchDateTo',
+          name: 'searchDateTo',
+          type: 'datetime-local'
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukButton({
+          text: "Search",
+          name: "searchAuditsBtn",
+          attributes: { id: "searchAuditsBtn" },
+          classes: "govuk-button--primary"
+        }) }}
+      </div>
+    </div>
+
+    <div id = 'tableContainer'>
+
+      {{ govukTable({
+        id: 'auditResults',
+        name: 'auditResults',
+        attributes: {
+          id: 'auditResults'
+        },
+        head: [
+          {
+            text: "Username",
+            attributes: {
+              id: 'tableAuditUserEmail'
+            }
+          },
+          {
+            text: 'Action',
+            attributes: {
+              id: 'tableAuditAction'
+            }
+          },
+          {
+            text: "Location",
+            attributes: {
+              id: 'tableAuditLocation'
+            }
+          },
+          {
+            text: "Changes",
+            attributes: {
+              id: 'tableAuditActionDataBefore'
+            }
+          },
+          {
+            text: "Created At",
+            attributes: {
+              id: 'tableAuditCreatedAt'
+            }
+          }
+        ],
+        rows: auditItems
+      }) }}
+    </div>
+  </div>
+{% endblock %}

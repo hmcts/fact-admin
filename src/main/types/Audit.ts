@@ -1,5 +1,8 @@
+import {Court} from './Court';
+
 export interface AuditPageData {
   audits: Audit[],
+  courts: Court[],
   errorMsg: string
 }
 
@@ -10,8 +13,7 @@ export interface Audit {
   user_email: string,
   action_data_before: string,
   action_data_after: string,
-  creation_time: Date
-  creationTimeDisplayed: string,
+  creation_time: string
 }
 
 export interface Action {
