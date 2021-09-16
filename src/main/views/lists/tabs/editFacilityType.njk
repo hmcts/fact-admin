@@ -10,7 +10,7 @@
 {% if isNewFacilityType %}
   <h2 class="govuk-heading-l">Add New Facility Type</h2>
 {% else %}
-  <h2 class="govuk-heading-l">Edit Facility Type</h2>
+  <h2 class="govuk-heading-l">Edit Facility Type: {{facilityType.name}}</h2>
   <input type="hidden" name="facilityType[id]" value="{{facilityType.id}}"></input>
   <input type="hidden" name="facilityType[order]" value="{{facilityType.order}}"></input>
 {% endif %}
