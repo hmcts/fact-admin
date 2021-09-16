@@ -24,11 +24,11 @@ Feature: Facility Types List
     Then I am redirected to the "Add New Facility Type" facility type form
     Then I enter "Test123" in facility name textbox
     When I click facility type save button
-    Then A green message is displayed for the updated Facility Type "Facility Types Updated"
+    Then A green message is displayed "Facility Types Updated"
     When I click delete button for facility type "Test123"
     Then I am redirected to the "Delete Facility Type: Test123" facility type form
     When I click confirm delete button
-    Then A green message is displayed for the updated Facility Type "Facility Types Updated"
+    Then A green message is displayed "Facility Types Updated"
 
   Scenario: Deleting existing Facility type
     When I click delete button for facility type "Parking"
@@ -38,16 +38,16 @@ Feature: Facility Types List
 
   Scenario: Edit Facility Type
     Given I click edit facility type "Parking"
-    Then I am redirected to the "Edit Facility Type" facility type form
+    Then I am redirected to the "Edit Facility Type: Parking" facility type form
     Then I will make sure to clear all entries for the facility type
     Then I enter "Parking" in facility name textbox
     Then I enter "Parcio" in facility welsh name textbox
     When I click facility type save button
-    Then A green message is displayed for the updated Facility Type "Facility Types Updated"
+    Then A green message is displayed "Facility Types Updated"
 
   Scenario: Editing Facility Type with the name already exist
     Given I click edit facility type "Lift"
-    Then I am redirected to the "Edit Facility Type" facility type form
+    Then I am redirected to the "Edit Facility Type: Lift" facility type form
     Then I will make sure to clear all entries for the facility type
     Then I enter "Parking" in facility name textbox
     When I click facility type save button

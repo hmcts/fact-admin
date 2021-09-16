@@ -2,6 +2,7 @@ import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function checkAndClearField (FieldElement: string) {
   expect(await I.checkElement(FieldElement)).equal(true);
@@ -74,11 +75,9 @@ Then('I click delete button for facility type {string}',async (facilityType: str
   await I.click(selector);
 });
 
-Then('A green message is displayed for the updated Facility Type {string}', async (message: string) => {
+Then('A green message is displayed {string}', async (message: string) => {
   const selector = '#facilityTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.checkElement(selector)).equal(true);
-  const messageUpdate = await I.getElement(selector);
-  expect(await I.getElementText(messageUpdate)).equal(message);
+  await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
 Given('I click edit facility type {string}', async (facilityType: string) => {
