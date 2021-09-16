@@ -58,7 +58,14 @@ export class AuditController {
     const pageData: AuditPageData = {
       audits: audits,
       courts: courts,
-      errorMsg: error
+      errorMsg: error,
+      currentPage: page,
+      searchOptions: {
+        username: email,
+        location: location,
+        dateFrom: dateFrom,
+        dateTo: dateTo
+      }
     };
 
     console.log(pageData.audits);

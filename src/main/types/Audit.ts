@@ -3,7 +3,14 @@ import {Court} from './Court';
 export interface AuditPageData {
   audits: Audit[],
   courts: Court[],
-  errorMsg: string
+  errorMsg: string,
+  currentPage: number,
+  searchOptions: {
+    username: string,
+    location: string,
+    dateFrom: string,
+    dateTo: string
+  }
 }
 
 export interface Audit {

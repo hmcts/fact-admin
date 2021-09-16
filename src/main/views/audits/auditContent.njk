@@ -41,13 +41,15 @@
               'data-type': 'name',
               'data-name': court.slug
             },
-            value: court.name,
-            text: court.name
+            value: court.slug,
+            text: court.name,
+            selected: court.slug == searchOptions.location
           }
         ), courtItems) %}
     {% endfor %}
 
     <div id="auditsSearchOptions" class='govuk-grid-row'>
+      <input id='currentPage' type='hidden' value='{{currentPage}}'></input>
       <div class='govuk-grid-column-one-quarter'>
         {{ govukInput({
           label: {
@@ -56,6 +58,7 @@
           attributes: {
             placeholder: 'Username'
           },
+          value: searchOptions.username,
           id: 'searchUser',
           name: 'searchUser'
         }) }}
@@ -68,6 +71,7 @@
           },
           id: 'searchLocation',
           name: 'searchLocation',
+          value: searchOptions.location,
           items: courtItems
         }) }}
       </div>
@@ -79,7 +83,8 @@
           },
           id: 'searchDateFrom',
           name: 'searchDateFrom',
-          type: 'datetime-local'
+          type: 'datetime-local',
+          value: searchOptions.dateFrom
         }) }}
       </div>
 
@@ -90,7 +95,8 @@
           },
           id: 'searchDateTo',
           name: 'searchDateTo',
-          type: 'datetime-local'
+          type: 'datetime-local',
+          value: searchOptions.dateTo
         }) }}
       </div>
 

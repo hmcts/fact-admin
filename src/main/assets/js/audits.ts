@@ -34,24 +34,28 @@ export class AuditController {
 
   private setUpSearchSubmitEventHandler(): void {
 
-    $(this.auditsSearchForm).on('submit', e => {
+    $(this.auditsSearchForm).on('submit', async e => {
       e.preventDefault();
 
-      const formData = $(this.auditsSearchForm).serializeArray() as any;
-      console.log(formData);
-      console.log(formData['searchLocation']);
+      const formData = $(this.auditsSearchForm).serializeArray() as any, dataObj = {} as any;
 
+      $(formData).each(function(i, field){
+        dataObj[field.name] = field.value;
+      });
 
-      const page = 1;
-      const size = 10;
-      const courtLocation = 'abc';
-      const email = '';
-      const dateFrom = '';
-      const dateTo = '';
+      const username = dataObj['searchUser'];
+      const location = dataObj['searchLocation'];
+      const dateFrom = dataObj['searchDateFrom'];
+      const dateTo = dataObj['searchDateTo'];
+      const page = $('#currentPage').val() as number;
 
-      this.getAuditContent(page, size, courtLocation, email, dateFrom, dateTo);
+      console.log('page ' + page);
+      console.log('location ' + location);
+      console.log('username ' + username);
+      console.log('dateFrom ' + dateFrom);
+      console.log('dateTo ' + dateTo);
 
+      await this.getAuditContent(page, 10, location, username, dateFrom, dateTo);
     });
   }
-
 }
