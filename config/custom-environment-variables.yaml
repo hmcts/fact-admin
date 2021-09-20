@@ -19,3 +19,4 @@ csrf:
   tokenSecret: CSRF_TOKEN_SECRET
 launchDarkly:
   sdkKey: LAUNCHDARKLY_SDK_KEY
+storageAccountConnectionString: STORAGE_ACCOUNT_CONNECTION_STRING

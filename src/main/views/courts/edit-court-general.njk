@@ -76,6 +76,9 @@
             {% set addressesHtml %}
                 {% include "./tabs/addresses.njk" %}
             {% endset -%}
+            {% set photoHtml %}
+                {% include "./tabs/photo.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -134,6 +137,13 @@
                     id: "court-facilities",
                     panel: {
                       html: courtFacilitiesHtml
+                    }
+                  },
+                  {
+                    label: "Photo",
+                    id: "photo",
+                    panel: {
+                      html: photoHtml
                     }
                   }
                   ]%}

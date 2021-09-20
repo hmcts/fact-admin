@@ -10,6 +10,7 @@ nodejs:
         - AppInsightsInstrumentationKey
         - csrf-token-secret
         - launchdarkly-sdk-key
+        - storage-account-connection-string
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:

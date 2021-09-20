@@ -407,6 +407,16 @@ export class FactApi {
     return this.axios.put(`${this.baseURL}/info`, body);
   }
 
+  public getCourtImage(slug: string): Promise<string> {
+    return this.axios
+      .get(`${this.baseURL}/${slug}/courtPhoto`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logError(err);

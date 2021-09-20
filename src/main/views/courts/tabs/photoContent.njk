@@ -1,0 +1,45 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-l">Delete or update photo</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Photo updated"
+  }) }}
+{% endif %}
+
+{% if courtPhoto|length %}
+  <h2 class="govuk-heading-m">Existing photo</h2>
+
+  {{ courtPhoto }}
+
+  {{ govukButton({
+    text: "Delete photo",
+    classes: "govuk-button--secondary"
+  }) }}
+{% else %}
+  <p class="govuk-body">There is currently no existing photo.</p>
+{% endif %}
+
+<h2 class="govuk-heading-m">Upload a new photo</h2>
+
+{{ govukFileUpload({
+  id: "file-upload-1",
+  name: "file-upload-1",
+  label: {
+    text: "Ideally upload a JPEG or PNG image of a high quality. It will be resized and aspect ratio will be tretained."
+  },
+  errorMessage: {
+    text: "File must be a JPEG or PNG"
+  }
+}) }}
