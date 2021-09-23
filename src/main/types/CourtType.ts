@@ -1,3 +1,5 @@
+import {DxCode} from "./DxCode";
+
 export interface CourtType {
   id: number,
   name?: string,
@@ -7,7 +9,9 @@ export interface CourtType {
 export interface CourtTypePageData {
   errorMsg: string,
   updated: boolean,
-  items: CourtTypeItem[]
+  items: CourtTypeItem[],
+  gbs? : string,
+  dxCodes?: DxCode[];
 }
 
 export interface CourtTypeItem {

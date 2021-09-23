@@ -3,7 +3,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 <h2 class="govuk-heading-l">Court Types and Codes</h2>
 
 {% if errorMsg != '' %}
@@ -19,7 +19,7 @@
 
 {% if updated === true %}
   {{ govukPanel({
-    titleText: "Court Types updated"
+    titleText: "Court Types and Codes updated"
   }) }}
 {% endif %}
 
@@ -106,18 +106,154 @@
 
 {% endfor %}
 
-
 {{ govukCheckboxes({
   idPrefix: "court_types",
   name: "types",
-
-
   items: items
 }) }}
 
+{% if isSuperAdmin %}
+<hr/>
+<br/>
+
+<h2 class="govuk-heading-l">GBS Code</h2>
+
+{{ govukInput({
+  id: "gbsCode",
+  name: "gbsCode",
+  value: gbs,
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: "GBS Code"
+  }
+}) }}
 
 <hr/>
+<br/>
 
+<h2 class="govuk-heading-l">Dx Codes</h2>
+
+{% for dxCode in dxCodes %}
+
+ {% set codeError = false %}
+  {% if dxCode.code === '' %}
+   {% set codeError = { text: 'Code is required' } %}
+    {% elif dxCode.isDuplicated === true %}
+       {% set codeError = { text: 'Duplicated code' } %}
+  {% endif %}
+
+{% call govukFieldset({
+  }) %}
+
+
+  {{ govukInput({
+         id: "code-" + loop.index0,
+         name: "dxCodes[" + loop.index0 +"][code]",
+         value: dxCode.code,
+         errorMessage: codeError,
+         classes: "govuk-!-width-one-half",
+         label: {
+           text: "Code"
+         }
+       }) }}
+
+  {{ govukInput({
+         id: "explanation-" + loop.index0,
+         name: "dxCodes[" + loop.index0 +"][explanation]",
+         value: dxCode.explanation,
+         classes: "govuk-!-width-one-half",
+         label: {
+             text: "Explanation"
+           }
+         }) }}
+
+  {{ govukInput({
+         id: "explanationCy-" + loop.index0,
+         name: "dxCodes[" + loop.index0 +"][explanationCy]",
+         value: dxCode.explanationCy,
+         classes: "govuk-!-width-one-half",
+         label: {
+              text: "Explanation (Welsh)"
+              }
+         }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+
+        {{ govukButton({
+          text: "Remove",
+          name: "deleteDxCode",
+          type: "button",
+          classes: "govuk-button--warning deleteDxCode"
+        }) }}
+
+    </div>
+
+  </div>
+
+  <hr/>
+
+  {% endcall %}
+
+  {% endfor %}
+
+  </br>
+
+  {% call govukFieldset({
+  attributes: { id: "newDxCodeTemplate", disabled: "disabled", hidden: true }
+    }) %}
+
+  <h3 class="govuk-heading-s">Add New Dx Code</h3>
+
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][code]",
+           classes: "govuk-!-width-one-half",
+           label: {
+             text: "Code"
+           }
+         }) }}
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][explanation]",
+           classes: "govuk-!-width-one-half",
+           label: {
+               text: "Explanation"
+             }
+           }) }}
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][explanationCy]",
+           classes: "govuk-!-width-one-half",
+           label: {
+                text: "Explanation (Welsh)"
+                }
+           }) }}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+
+          {{ govukButton({
+            text: "Remove",
+            name: "deleteDxCode",
+            type: "button",
+            classes: "govuk-button--warning deleteDxCode"
+          }) }}
+
+          {{ govukButton({
+            text: "Clear",
+            name: "clearDxCode",
+            type: "button",
+            classes: "govuk-button--secondary clearDxCode"
+          }) }}
+      </div>
+    </div>
+
+    <hr/>
+
+    {% endcall %}
+
+{% endif %}
 {{ govukButton({
   text: "Save",
   name: "saveCourtTypes"
@@ -125,5 +261,13 @@
 
 
 
+{% if isSuperAdmin %}
+{{ govukButton({
+  text: "Add new Dx code",
+  name: "addDxCode",
+  type: "button",
+  classes: "govuk-button--secondary addDxCode"
+}) }}
+{% endif %}
 
 

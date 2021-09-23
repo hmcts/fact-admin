@@ -1,7 +1,6 @@
 import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {CourtType} from '../../../types/CourtType';
 import {
   LocalAuthoritiesAreaOfLaw,
   LocalAuthoritiesPageData,
@@ -12,7 +11,8 @@ import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {SelectItem} from '../../../types/CourtPageData';
 import {CSRF} from '../../../modules/csrf';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
-
+import {CourtTypesAndCodes} from "../../../types/CourtTypesAndCodes";
+import {CourtType} from "../../../types/CourtType";
 @autobind
 export class LocalAuthoritiesController {
 
@@ -45,8 +45,8 @@ export class LocalAuthoritiesController {
     }
 
     let courtTypes: CourtType[] = [];
-    await req.scope.cradle.api.getCourtCourtTypes(slug)
-      .then((value: CourtType[]) => courtTypes = value)
+    await req.scope.cradle.api.getCourtTypesAndCodes(slug)
+      .then((value: CourtTypesAndCodes) => courtTypes = value.types)
       .catch(() => error += this.getCourtTypesErrorMsg);
 
     const pageData: LocalAuthoritiesAreaOfLaw = {

@@ -3,14 +3,15 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {CourtTypesController} from '../../../../../main/app/controller/courts/CourtTypesController';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../../../main/types/CourtType';
 import {CSRF} from '../../../../../main/modules/csrf';
+import {CourtTypesAndCodes} from "../../../../../main/types/CourtTypesAndCodes";
 
 
 describe ( 'CourtTypesController', () =>{
 
   let mockApi: {
     getCourtTypes: () => Promise<CourtType[]>,
-    getCourtCourtTypes: () => Promise<CourtType[]>,
-    updateCourtCourtTypes: () => Promise<CourtType[]> };
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>,
+    updateCourtTypesAndCodes: () => Promise<CourtTypesAndCodes> };
 
 
   const courtTypes: CourtType[] = [
@@ -28,12 +29,17 @@ describe ( 'CourtTypesController', () =>{
 
   ];
 
-  const courtCourtTypes: CourtType[] =[
-    { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:'County Court', code: 456},
-    { id: 3, name:'Crown Court', code: 789},
-    { id: 4, name:'Family Court', code: null}
-  ];
+  const courtTypesAndCodes: CourtTypesAndCodes ={
+    "types": [
+      { id: 1, name:"Magistrates' Court", code: 123},
+      { id: 2, name:'County Court', code: 456},
+      { id: 3, name:'Crown Court', code: 789},
+      { id: 4, name:'Family Court', code: null}
+
+    ],
+    "gbsCode": null,
+    "dxCodes": []
+  };
 
 
   const controller = new CourtTypesController();
@@ -41,8 +47,8 @@ describe ( 'CourtTypesController', () =>{
   beforeEach(() => {
     mockApi = {
       getCourtTypes: async (): Promise<CourtType[]> => courtTypes,
-      updateCourtCourtTypes: async (): Promise<CourtType[]> => courtTypes,
-      getCourtCourtTypes: async (): Promise<CourtType[]> => courtCourtTypes
+      updateCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => courtTypesAndCodes,
+      getCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => courtTypesAndCodes
     };
   });
 
@@ -50,7 +56,7 @@ describe ( 'CourtTypesController', () =>{
   test('Should get court types view and render the page', async () => {
     const req = mockRequest();
     req.params = {
-      slug: 'southport-county-court'
+      slug: 'another-county-court'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -60,17 +66,18 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: '',
-      items: courtTypeItems
+      items: courtTypeItems,
+      gbs:null,
+      dxCodes:[]
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
 
-  test('Should post court court types if court types are valid', async () => {
-    const slug = 'southport-county-court';
+  test('Should post court types and codes if court types are valid', async () => {
+    const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
-
 
     const types: string[]= [
       '{"id":1, "name":"Magistrates\' Court","code":123}',
@@ -84,17 +91,20 @@ describe ( 'CourtTypesController', () =>{
       'magistratesCourtCode' : '123',
       'countyCourtCode' : '456',
       'crownCourtCode': '789',
+      'gbsCode' : null ,
+      'dxCodes':[],
       '_csrf': CSRF.create()
 
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateCourtCourtTypes = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockResolvedValue(res);
 
     await controller.put(req, res);
 
+
     // Should call API to save data
-    expect(mockApi.updateCourtCourtTypes).toBeCalledWith(slug, courtCourtTypes);
+    expect(mockApi.updateCourtTypesAndCodes).toBeCalledWith(slug, courtTypesAndCodes);
   });
 
   test('Should not post court types if no csrf token provided', async() => {
@@ -107,19 +117,21 @@ describe ( 'CourtTypesController', () =>{
       'magistratesCourtCode' : '123',
       'countyCourtCode' : '456',
       'crownCourtCode': '789',
+      'gbs':null,
+      'dxCodes':[],
     };
 
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateCourtCourtTypes = jest.fn().mockReturnValue(res);
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
 
     await controller.put(req, res);
 
     // Should not call API if court types data is incomplete
-    expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.updateCourtTypesAndCodes).not.toBeCalled();
   });
 
-  test('Should not post court types if no court types is selected', async() => {
+  test('Should not post court types codes if no court types is selected', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
@@ -129,20 +141,22 @@ describe ( 'CourtTypesController', () =>{
       'magistratesCourtCode' : '123',
       'countyCourtCode' : '456',
       'crownCourtCode': '789',
+      'gbs':null,
+      'dxCodes':[],
       '_csrf': CSRF.create()
     };
 
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateCourtCourtTypes = jest.fn().mockReturnValue(res);
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
 
     await controller.put(req, res);
 
     // Should not call API if court types data is incomplete
-    expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.updateCourtTypesAndCodes).not.toBeCalled();
   });
 
-  test('Should not post court types if no code code is entered', async() => {
+  test('Should not post court types if no court code code is entered', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
@@ -158,37 +172,40 @@ describe ( 'CourtTypesController', () =>{
       'magistratesCourtCode' : '',
       'countyCourtCode': '',
       'crownCourtCode': '',
+      'gbs':null,
+      'dxCodes':[],
       '_csrf': CSRF.create()
     };
 
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateCourtCourtTypes = jest.fn().mockReturnValue(res);
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
 
     await controller.put(req, res);
 
     // Should not call API if court types data is incomplete
-    expect(mockApi.updateCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.updateCourtTypesAndCodes).not.toBeCalled();
   });
 
 
 
-  test('Should handle errors when getting court court types data from API', async () => {
+  test('Should handle errors when getting court types and codes data from API', async () => {
     const slug = 'another-county-court';
     const req = mockRequest();
 
-    req.params = { slug: slug
-    };
+    req.params = { slug: slug};
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.getCourtCourtTypes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.getCourtTypesAndCodes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 
     await controller.get(req, res);
 
     const expectedResults: CourtTypePageData = {
       updated: false,
-      errorMsg: controller.getCourtTypesErrorMsg,
-      items: []
+      errorMsg: controller.getCourtTypesAndCodesErrorMsg,
+      items: [],
+      gbs:null,
+      dxCodes:[]
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
@@ -209,7 +226,9 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.getCourtTypesErrorMsg,
-      items: []
+      items: [],
+      gbs: null,
+      dxCodes: []
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });

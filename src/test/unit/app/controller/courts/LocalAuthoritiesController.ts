@@ -1,6 +1,6 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
-import {CourtType} from '../../../../../main/types/CourtType';
+
 import {
   LocalAuthoritiesAreaOfLaw,
   LocalAuthoritiesPageData,
@@ -10,19 +10,20 @@ import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {LocalAuthoritiesController} from '../../../../../main/app/controller/courts/LocalAuthoritiesController';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
+import {CourtTypesAndCodes} from "../../../../../main/types/CourtTypesAndCodes";
 
 describe ( 'LocalAuthoritiesController', () => {
 
   let mockApi: {
     getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtCourtTypes: () => Promise<CourtType[]>,
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>,
     getAllLocalAuthorities: () => Promise<LocalAuthority[]>,
     getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>,
     updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]> };
 
   let mockApiAreaOfLaw: {
     getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtCourtTypes: () => Promise<CourtType[]>
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>
   };
 
   const courtAreasOfLaw: AreaOfLaw[] = [
@@ -76,12 +77,18 @@ describe ( 'LocalAuthoritiesController', () => {
     }
   ];
 
-  const courtTypes: CourtType[] = [
-    { id: 1, name:"Magistrates' Court", code: 123},
-    { id: 2, name:'County Court', code: 456},
-    { id: 3, name:'Crown Court', code: 789},
-    { id: 4, name:'Family Court', code: null}
-  ];
+
+  const courtTypesAndCodes : CourtTypesAndCodes = {
+    "types": [
+      { id: 1, name:"Magistrates' Court", code: 123},
+      { id: 2, name:'County Court', code: 456},
+      { id: 3, name:'Crown Court', code: 789},
+      { id: 4, name:'Family Court', code: null}
+
+    ],
+    "gbsCode": "123",
+    "dxCodes": []
+  }
 
   const localAuthorites: LocalAuthority[] = [
     { id: 1, name:'Barnet Borough Council'},
@@ -116,7 +123,7 @@ describe ( 'LocalAuthoritiesController', () => {
   beforeEach(() => {
     mockApi = {
       getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => courtAreasOfLaw,
-      getCourtCourtTypes: async (): Promise<CourtType[]> => courtTypes,
+      getCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => courtTypesAndCodes,
       getAllLocalAuthorities: async (): Promise<LocalAuthority[]> => localAuthorites,
       getCourtLocalAuthoritiesByAreaOfLaw: async (): Promise<LocalAuthority[]> => courtlocalAuthorites,
       updateCourtLocalAuthoritiesByAreaOfLaw: async (): Promise<LocalAuthority[]> => courtlocalAuthorites
@@ -171,7 +178,7 @@ describe ( 'LocalAuthoritiesController', () => {
     req.params = { slug: slug
     };
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.getCourtCourtTypes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.getCourtTypesAndCodes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 
     await controller.getAreasOfLaw(req, res);
@@ -189,7 +196,7 @@ describe ( 'LocalAuthoritiesController', () => {
     const slug = 'another-county-court';
     const req = mockRequest();
     mockApiAreaOfLaw = {getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => [],
-      getCourtCourtTypes: async (): Promise<CourtType[]> => courtTypes,};
+      getCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => courtTypesAndCodes,};
 
 
     req.params = { slug: slug

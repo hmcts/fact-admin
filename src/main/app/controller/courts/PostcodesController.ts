@@ -6,8 +6,8 @@ import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
-import {CourtType} from '../../../types/CourtType';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
+import {CourtTypesAndCodes} from "../../../types/CourtTypesAndCodes";
 
 @autobind
 export class PostcodesController {
@@ -61,8 +61,8 @@ export class PostcodesController {
     }
 
     if (!courtTypes) {
-      await req.scope.cradle.api.getCourtCourtTypes(slug)
-        .then((value: CourtType[]) => courtTypes = value.map(ct => ct.name.replace(/\s/g, '_')))
+      await req.scope.cradle.api.getCourtTypesAndCodes(slug)
+        .then((value: CourtTypesAndCodes) => courtTypes = value.types.map(ct => ct.name.replace(/\s/g, '_')))
         .catch(() => errors.push({text: this.getCourtTypesErrorMsg}));
     }
 
