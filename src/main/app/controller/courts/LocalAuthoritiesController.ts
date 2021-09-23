@@ -11,8 +11,8 @@ import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {SelectItem} from '../../../types/CourtPageData';
 import {CSRF} from '../../../modules/csrf';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
-import {CourtTypesAndCodes} from "../../../types/CourtTypesAndCodes";
-import {CourtType} from "../../../types/CourtType";
+import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
+import {CourtType} from '../../../types/CourtType';
 @autobind
 export class LocalAuthoritiesController {
 

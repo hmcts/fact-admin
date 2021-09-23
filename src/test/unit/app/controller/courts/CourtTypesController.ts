@@ -3,7 +3,7 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {CourtTypesController} from '../../../../../main/app/controller/courts/CourtTypesController';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../../../main/types/CourtType';
 import {CSRF} from '../../../../../main/modules/csrf';
-import {CourtTypesAndCodes} from "../../../../../main/types/CourtTypesAndCodes";
+import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 
 describe ( 'CourtTypesController', () =>{
@@ -30,15 +30,15 @@ describe ( 'CourtTypesController', () =>{
   ];
 
   const courtTypesAndCodes: CourtTypesAndCodes ={
-    "types": [
+    'types': [
       { id: 1, name:"Magistrates' Court", code: 123},
       { id: 2, name:'County Court', code: 456},
       { id: 3, name:'Crown Court', code: 789},
       { id: 4, name:'Family Court', code: null}
 
     ],
-    "gbsCode": null,
-    "dxCodes": []
+    'gbsCode': null,
+    'dxCodes': []
   };
 
 

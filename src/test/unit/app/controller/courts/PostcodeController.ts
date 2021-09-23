@@ -4,7 +4,7 @@ import {CSRF} from '../../../../../main/modules/csrf';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
 import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {familyAreaOfLaw} from '../../../../../main/enums/familyAreaOfLaw';
-import {CourtTypesAndCodes} from "../../../../../main/types/CourtTypesAndCodes";
+import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 describe('PostcodeController', () => {
 
@@ -25,20 +25,20 @@ describe('PostcodeController', () => {
   const newPostcodes = 'PL4,PL5,PL6';
   const getPostcodes: () => string[] = () => getPostcodeData;
   const apiCourtTypesInput: CourtTypesAndCodes = {
-      "types": [
-        { id: 11420, name: 'Crown Court', code: 446 },
-        { id: 11419, name: 'County Court', code: 296 },
-        { id: 11417, name: 'Family Court', code: null }
-      ],
-      "gbsCode": "123",
-      "dxCodes": []
-    };
-  const apiCourtTypesInputInvalid: CourtTypesAndCodes = {
-    "types": [
+    'types': [
+      { id: 11420, name: 'Crown Court', code: 446 },
+      { id: 11419, name: 'County Court', code: 296 },
       { id: 11417, name: 'Family Court', code: null }
     ],
-    "gbsCode": "123",
-    "dxCodes": []
+    'gbsCode': '123',
+    'dxCodes': []
+  };
+  const apiCourtTypesInputInvalid: CourtTypesAndCodes = {
+    'types': [
+      { id: 11417, name: 'Family Court', code: null }
+    ],
+    'gbsCode': '123',
+    'dxCodes': []
   };
   const apiAreasOfLawInput: AreaOfLaw[] = [
     {

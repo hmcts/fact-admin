@@ -12,7 +12,7 @@ import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
-import {CourtTypesAndCodes} from "../../types/CourtTypesAndCodes";
+import {CourtTypesAndCodes} from '../../types/CourtTypesAndCodes';
 
 export class FactApi {
 

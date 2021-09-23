@@ -3,9 +3,9 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtType';
 import {CSRF} from '../../../modules/csrf';
-import {CourtTypesAndCodes} from "../../../types/CourtTypesAndCodes";
-import {DxCode} from "../../../types/DxCode";
-import {validateDuplication} from "../../../utils/validation";
+import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
+import {DxCode} from '../../../types/DxCode';
+import {validateDuplication} from '../../../utils/validation';
 
 export enum courtType {
   magistrate = "Magistrates' Court",
@@ -61,7 +61,7 @@ export class CourtTypesController {
     let courtTypesAndCodes: CourtTypesAndCodes = null;
 
     req.session.user.isSuperAdmin ? courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode.trim(), dxCodes: req.body.dxCodes}:
-      courtTypesAndCodes = {types: req.body.types, gbsCode:null , dxCodes:[]}
+      courtTypesAndCodes = {types: req.body.types, gbsCode:null , dxCodes:[]};
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateErrorMsg, null);

@@ -7,7 +7,7 @@ import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
-import {CourtTypesAndCodes} from "../../../types/CourtTypesAndCodes";
+import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 
 @autobind
 export class PostcodesController {

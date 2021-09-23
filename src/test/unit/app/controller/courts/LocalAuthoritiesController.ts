@@ -10,7 +10,7 @@ import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {LocalAuthoritiesController} from '../../../../../main/app/controller/courts/LocalAuthoritiesController';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
-import {CourtTypesAndCodes} from "../../../../../main/types/CourtTypesAndCodes";
+import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 describe ( 'LocalAuthoritiesController', () => {
 
@@ -78,17 +78,17 @@ describe ( 'LocalAuthoritiesController', () => {
   ];
 
 
-  const courtTypesAndCodes : CourtTypesAndCodes = {
-    "types": [
+  const courtTypesAndCodes: CourtTypesAndCodes = {
+    'types': [
       { id: 1, name:"Magistrates' Court", code: 123},
       { id: 2, name:'County Court', code: 456},
       { id: 3, name:'Crown Court', code: 789},
       { id: 4, name:'Family Court', code: null}
 
     ],
-    "gbsCode": "123",
-    "dxCodes": []
-  }
+    'gbsCode': '123',
+    'dxCodes': []
+  };
 
   const localAuthorites: LocalAuthority[] = [
     { id: 1, name:'Barnet Borough Council'},
