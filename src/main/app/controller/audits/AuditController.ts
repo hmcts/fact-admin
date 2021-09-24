@@ -9,6 +9,8 @@ export class AuditController {
 
   getAuditsErrorMsg = 'A problem occurred when retrieving the audit data.';
   getCourtsErrorMsg = 'A problem occurred when retrieving the courts data.';
+  bothDateToAndFromErrorMsg = 'Both date from and to options need to be entered; not one or the other.'
+  afterDateBeforeToDateError = 'The before date cannot be higher than the to date.'
 
   public async get(req: AuthedRequest,
     res: Response): Promise<void> {
@@ -18,7 +20,7 @@ export class AuditController {
   public async getAuditData(
     req: AuthedRequest,
     res: Response,
-    error = '',
+    error:  '',
     audits: Audit[] = null,
     courts: Court[] = null): Promise<void> {
 
@@ -31,24 +33,24 @@ export class AuditController {
     const email = req.query?.email ? req.query.email as string : '';
     const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
     const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
-
-    console.log(page);
-    console.log(limit);
-    console.log(location);
-    console.log(email);
-    console.log(dateFrom);
-    console.log(dateTo);
+    const errors: { text: string }[] = [];
 
     if (!courts) {
       await req.scope.cradle.api.getCourts()
         .then((value: Court[]) => courts = value)
-        .catch(() => error = this.getCourtsErrorMsg);
+        .catch(() => errors.push({text: this.getCourtsErrorMsg}));
     }
 
-    if (!audits) {
+    if (dateFrom == '' && dateTo != '' || dateFrom != '' && dateTo == '') {
+      errors.push({text: this.bothDateToAndFromErrorMsg});
+    }
+    else if (Date.parse(dateTo) < Date.parse(dateFrom)) {
+      errors.push({text: this.afterDateBeforeToDateError});
+    }
+    else if (!audits) {
       await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
         .then((value: Audit[]) => audits = value)
-        .catch(() => error = this.getAuditsErrorMsg);
+        .catch(() => errors.push({text: this.getAuditsErrorMsg}));
     }
 
     if (audits)
@@ -58,7 +60,7 @@ export class AuditController {
     const pageData: AuditPageData = {
       audits: audits,
       courts: courts,
-      errorMsg: error,
+      errors: errors,
       currentPage: page,
       searchOptions: {
         username: email,
@@ -67,8 +69,6 @@ export class AuditController {
         dateTo: dateTo
       }
     };
-
-    console.log(pageData.audits);
 
     res.render('audits/auditContent', pageData);
   }

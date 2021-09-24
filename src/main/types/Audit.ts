@@ -3,7 +3,7 @@ import {Court} from './Court';
 export interface AuditPageData {
   audits: Audit[],
   courts: Court[],
-  errorMsg: string,
+  errors: { text: string }[],
   currentPage: number,
   searchOptions: {
     username: string,

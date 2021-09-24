@@ -8,7 +8,7 @@ Feature: Postcodes
     And click the Sign In button
     When I select Include closed courts
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "aldershot-justice-centre"
+    When I click edit next to court with "mold-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     And I hover over types nav element
     When I click the types tab
@@ -48,4 +48,4 @@ Feature: Postcodes
 
     Examples:
       | view_court_slug             |
-      | bankruptcy-court-high-court |
+      | kingston-upon-hull-combined-court-centre |

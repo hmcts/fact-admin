@@ -74,3 +74,15 @@
 .table-data-overflow {
     overflow: scroll;
 }
+
+.link-right {
+  float: right;
+  border: 3px solid red;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
