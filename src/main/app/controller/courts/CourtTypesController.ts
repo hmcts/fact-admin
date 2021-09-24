@@ -48,7 +48,7 @@ export class CourtTypesController {
     const pageData: CourtTypePageData = {
       errorMsg: error,
       updated: updated,
-      items: courtTypesAndCodes ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : [],
+      items: courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
       gbs: courtTypesAndCodes ? courtTypesAndCodes.gbsCode : null,
       dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : []
     };
@@ -82,7 +82,6 @@ export class CourtTypesController {
         return this.get(req, res, false, this.emptyDxCodeErrorMsg, courtTypesAndCodes);
       }
 
-
       if (!validateDuplication(courtTypesAndCodes.dxCodes, this.dxCodesDuplicated)) {
         return this.get(req, res, false, this.duplicatedDxCodeErrorMsg, courtTypesAndCodes);
       }
@@ -96,6 +95,8 @@ export class CourtTypesController {
     }
     else
     {
+
+
       return this.get(req, res, false, this.emptyCourtTypesErrorMsg, courtTypesAndCodes);
     }
 
