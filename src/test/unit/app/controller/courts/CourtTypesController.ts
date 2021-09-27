@@ -6,6 +6,7 @@ import {CSRF} from '../../../../../main/modules/csrf';
 import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 
+
 describe ( 'CourtTypesController', () =>{
 
   let mockApi: {
@@ -29,6 +30,7 @@ describe ( 'CourtTypesController', () =>{
 
   ];
 
+
   const courtTypesAndCodes: CourtTypesAndCodes ={
     'types': [
       { id: 1, name:"Magistrates' Court", code: 123},
@@ -37,8 +39,11 @@ describe ( 'CourtTypesController', () =>{
       { id: 4, name:'Family Court', code: null}
 
     ],
-    'gbsCode': null,
-    'dxCodes': []
+    'gbsCode': '123',
+    'dxCodes': [
+      { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false },
+      { code: null, explanation: null, explanationCy: null, isNew: true }
+    ]
   };
 
 
@@ -67,8 +72,8 @@ describe ( 'CourtTypesController', () =>{
       updated: false,
       errorMsg: '',
       items: courtTypeItems,
-      gbs:null,
-      dxCodes:[]
+      gbs:courtTypesAndCodes.gbsCode,
+      dxCodes:courtTypesAndCodes.dxCodes
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
@@ -79,32 +84,47 @@ describe ( 'CourtTypesController', () =>{
     const res = mockResponse();
     const req = mockRequest();
 
+
     const types: string[]= [
-      '{"id":1, "name":"Magistrates\' Court","code":123}',
+      '{"id":1,"name":"Magistrates\' Court","code":123}',
       '{"id":2,"name":"County Court","code":456}',
       '{"id":3,"name":"Crown Court","code":789}',
       '{"id":4,"name":"Family Court","code":1}'
     ];
 
+    const expectedCourtTypesAndCodes: CourtTypesAndCodes ={
+      'types': [
+        { id: 1, name:"Magistrates' Court", code: 123},
+        { id: 2, name:'County Court', code: 456},
+        { id: 3, name:'Crown Court', code: 789},
+        { id: 4, name:'Family Court', code: null}
+
+      ],
+      'gbsCode': null,
+      'dxCodes': []
+
+    };
     req.body = {
       'types': types,
       'magistratesCourtCode' : '123',
       'countyCourtCode' : '456',
       'crownCourtCode': '789',
-      'gbsCode' : null ,
-      'dxCodes':[],
+      'gbsCode' : expectedCourtTypesAndCodes.gbsCode ,
+      'dxCodes':expectedCourtTypesAndCodes.dxCodes,
       '_csrf': CSRF.create()
 
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
+    req.session.user.isSuperAdmin = false;
     req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockResolvedValue(res);
+
 
     await controller.put(req, res);
 
 
     // Should call API to save data
-    expect(mockApi.updateCourtTypesAndCodes).toBeCalledWith(slug, courtTypesAndCodes);
+    expect(mockApi.updateCourtTypesAndCodes).toBeCalledWith(slug, expectedCourtTypesAndCodes);
   });
 
   test('Should not post court types if no csrf token provided', async() => {
@@ -135,6 +155,7 @@ describe ( 'CourtTypesController', () =>{
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
+
 
     req.body = {
       'types': null,
@@ -167,6 +188,8 @@ describe ( 'CourtTypesController', () =>{
       '{"id":3,"name":"Crown Court","code":3}'
     ];
 
+
+
     req.body = {
       'types': types,
       'magistratesCourtCode' : '',
@@ -195,15 +218,24 @@ describe ( 'CourtTypesController', () =>{
 
     req.params = { slug: slug};
     req.scope.cradle.api = mockApi;
+    req.session.user.isSuperAdmin = true;
     req.scope.cradle.api.getCourtTypesAndCodes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 
     await controller.get(req, res);
 
+    const courtTypeItems: CourtTypeItem[] = [
+      {value:'{"id":1,"name":"Magistrates\' Court","code":123}',text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: false, code:null},
+      {value:'{"id":2,"name":"County Court","code":456}', text:'County Court', magistrate:false, county:true, crown:false, checked: false, code:null},
+      {value:'{"id":3,"name":"Crown Court","code":789}', text:'Crown Court',magistrate:false, county:false, crown:true, checked:false, code:null},
+      {value:'{"id":4,"name":"Family Court","code":null}', text:'Family Court', magistrate:false, county:false, crown:false, checked:false, code:null}
+
+    ];
+
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.getCourtTypesAndCodesErrorMsg,
-      items: [],
+      items: courtTypeItems,
       gbs:null,
       dxCodes:[]
     };
@@ -227,8 +259,8 @@ describe ( 'CourtTypesController', () =>{
       updated: false,
       errorMsg: controller.getCourtTypesErrorMsg,
       items: [],
-      gbs: null,
-      dxCodes: []
+      gbs: courtTypesAndCodes.gbsCode,
+      dxCodes: courtTypesAndCodes.dxCodes
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });

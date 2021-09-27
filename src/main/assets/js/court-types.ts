@@ -86,6 +86,8 @@ export class CourtTypesController {
         .removeAttr('hidden')
         .removeAttr('id');
       $(selector).before(copyFieldset);
+      // Set the id and names of the elements in the table
+      this.renameFormElements();
 
     });
   }

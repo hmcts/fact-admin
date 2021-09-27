@@ -30,7 +30,7 @@ export class CourtTypesController {
     res: Response,
     updated = false,
     error = '',
-    courtTypesAndCodes: CourtTypesAndCodes = null): Promise<void> {
+    courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
     const slug: string = req.params.slug as string;
     if (!courtTypesAndCodes) {
 
@@ -38,6 +38,13 @@ export class CourtTypesController {
         .then((value: CourtTypesAndCodes) => courtTypesAndCodes = value)
         .catch(() => error += this.getCourtTypesAndCodesErrorMsg);
     }
+
+    if(courtTypesAndCodes) {
+      if (!courtTypesAndCodes.dxCodes?.some(ot => ot.isNew === true)) {
+        this.addEmptyFormsForNewEntries(courtTypesAndCodes.dxCodes);
+      }
+    }
+
 
     let courtTypes: CourtType[] = [];
     await req.scope.cradle.api.getCourtTypes(slug)
@@ -48,7 +55,7 @@ export class CourtTypesController {
     const pageData: CourtTypePageData = {
       errorMsg: error,
       updated: updated,
-      items: courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
+      items: courtTypesAndCodes && courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
       gbs: courtTypesAndCodes ? courtTypesAndCodes.gbsCode : null,
       dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : []
     };
@@ -77,6 +84,9 @@ export class CourtTypesController {
 
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtTypesAndCodes);
       }
+
+      // Remove fully empty entries
+      courtTypesAndCodes.dxCodes = courtTypesAndCodes.dxCodes.filter(dx => !this.dxCodeEntryIsEmpty(dx));
 
       if (courtTypesAndCodes.dxCodes.some(dx => dx.code === '')) {
         return this.get(req, res, false, this.emptyDxCodeErrorMsg, courtTypesAndCodes);
@@ -180,6 +190,18 @@ export class CourtTypesController {
 
   private dxCodesDuplicated(dxCodes: DxCode[], index1: number, index2: number): boolean {
     return dxCodes[index1].code && dxCodes[index1].code === dxCodes[index2].code;
+  }
+
+  private dxCodeEntryIsEmpty(dxCode: DxCode): boolean {
+    return (!dxCode.code?.trim() && !dxCode.explanation?.trim() && !dxCode.explanationCy?.trim());
+  }
+
+  private addEmptyFormsForNewEntries(dxCodes: DxCode[], numberOfForms = 1): void {
+    if (dxCodes) {
+      for (let i = 0; i < numberOfForms; i++) {
+        dxCodes.push({code: null, explanation: null, explanationCy: null, isNew: true});
+      }
+    }
   }
 
 

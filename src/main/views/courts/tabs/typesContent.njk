@@ -145,10 +145,15 @@
 {% call govukFieldset({
   }) %}
 
+  {% if dxCode.isNew === true %}
+    <h3 class="govuk-heading-s">Add New Dx Code</h3>
+  {% endif %}
+
+    <input type="hidden" name={{"dxCodes[" + loop.index +"][isNew]"}} value={{dxCodes.isNew}}></input>
 
   {{ govukInput({
-         id: "code-" + loop.index0,
-         name: "dxCodes[" + loop.index0 +"][code]",
+         id: "code-" + loop.index,
+         name: "dxCodes[" + loop.index +"][code]",
          value: dxCode.code,
          errorMessage: codeError,
          classes: "govuk-!-width-one-half",
@@ -158,8 +163,8 @@
        }) }}
 
   {{ govukInput({
-         id: "explanation-" + loop.index0,
-         name: "dxCodes[" + loop.index0 +"][explanation]",
+         id: "explanation-" + loop.index,
+         name: "dxCodes[" + loop.index +"][explanation]",
          value: dxCode.explanation,
          classes: "govuk-!-width-one-half",
          label: {
@@ -168,8 +173,8 @@
          }) }}
 
   {{ govukInput({
-         id: "explanationCy-" + loop.index0,
-         name: "dxCodes[" + loop.index0 +"][explanationCy]",
+         id: "explanationCy-" + loop.index,
+         name: "dxCodes[" + loop.index +"][explanationCy]",
          value: dxCode.explanationCy,
          classes: "govuk-!-width-one-half",
          label: {
@@ -179,13 +184,23 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
-
+      {% if not dxCode.isNew %}
         {{ govukButton({
           text: "Remove",
           name: "deleteDxCode",
           type: "button",
           classes: "govuk-button--warning deleteDxCode"
         }) }}
+        {% endif %}
+
+      {% if dxCode.isNew %}
+           {{ govukButton({
+             text: "Clear",
+             name: "clearDxCode",
+             type: "button",
+             classes: "govuk-button--secondary clearDxCode"
+           }) }}
+      {% endif %}
 
     </div>
 
