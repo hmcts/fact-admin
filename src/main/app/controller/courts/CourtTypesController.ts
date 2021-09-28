@@ -32,8 +32,7 @@ export class CourtTypesController {
     error = '',
     courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
     const slug: string = req.params.slug as string;
-    if (!courtTypesAndCodes) {
-
+    if (courtTypesAndCodes == null) {
       await req.scope.cradle.api.getCourtTypesAndCodes(slug)
         .then((value: CourtTypesAndCodes) => courtTypesAndCodes = value)
         .catch(() => error += this.getCourtTypesAndCodesErrorMsg);
@@ -45,12 +44,10 @@ export class CourtTypesController {
       }
     }
 
-
     let courtTypes: CourtType[] = [];
     await req.scope.cradle.api.getCourtTypes(slug)
       .then((value: CourtType[]) => courtTypes = value)
       .catch(() => error += this.getCourtTypesErrorMsg);
-
 
     const pageData: CourtTypePageData = {
       errorMsg: error,
@@ -99,14 +96,12 @@ export class CourtTypesController {
       else
       {
         await req.scope.cradle.api.updateCourtTypesAndCodes(req.params.slug, courtTypesAndCodes)
-          .then((value: CourtTypesAndCodes) => this.get(req, res, true, '', value))
+          .then(() => this.get(req, res, true, '', courtTypesAndCodes))
           .catch(() => this.get(req, res, false, this.updateErrorMsg, courtTypesAndCodes));
       }
     }
     else
     {
-
-
       return this.get(req, res, false, this.emptyCourtTypesErrorMsg, courtTypesAndCodes);
     }
 
@@ -131,7 +126,6 @@ export class CourtTypesController {
     else
       return [];
   }
-
 
   private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
@@ -189,7 +183,7 @@ export class CourtTypesController {
   }
 
   private dxCodesDuplicated(dxCodes: DxCode[], index1: number, index2: number): boolean {
-    return dxCodes[index1].code && dxCodes[index1].code === dxCodes[index2].code;
+    return dxCodes[index1].code.toLowerCase() === dxCodes[index2].code.toLowerCase();
   }
 
   private dxCodeEntryIsEmpty(dxCode: DxCode): boolean {
@@ -203,7 +197,4 @@ export class CourtTypesController {
       }
     }
   }
-
-
 }
-

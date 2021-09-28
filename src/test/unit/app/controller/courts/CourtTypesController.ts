@@ -79,7 +79,7 @@ describe ( 'CourtTypesController', () =>{
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
 
-  test('Should post court types and codes if court types are valid', async () => {
+  test('Should post court types if court types are valid for admin', async () => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
@@ -101,7 +101,9 @@ describe ( 'CourtTypesController', () =>{
 
       ],
       'gbsCode': null,
-      'dxCodes': []
+      'dxCodes': [
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ]
 
     };
     req.body = {
@@ -125,6 +127,44 @@ describe ( 'CourtTypesController', () =>{
 
     // Should call API to save data
     expect(mockApi.updateCourtTypesAndCodes).toBeCalledWith(slug, expectedCourtTypesAndCodes);
+  });
+
+
+  test('Should post valid court types and codes for SuperAdmin', async () => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+
+
+    const types: string[]= [
+      '{"id":1,"name":"Magistrates\' Court","code":123}',
+      '{"id":2,"name":"County Court","code":456}',
+      '{"id":3,"name":"Crown Court","code":789}',
+      '{"id":4,"name":"Family Court","code":1}'
+    ];
+
+
+    req.body = {
+      'types': types,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+      'gbsCode' : courtTypesAndCodes.gbsCode ,
+      'dxCodes':courtTypesAndCodes.dxCodes,
+      '_csrf': CSRF.create()
+
+    };
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.session.user.isSuperAdmin = true;
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockResolvedValue(res);
+
+
+    await controller.put(req, res);
+
+
+    // Should call API to save data
+    expect(mockApi.updateCourtTypesAndCodes).toBeCalledWith(slug, courtTypesAndCodes);
   });
 
   test('Should not post court types if no csrf token provided', async() => {
@@ -177,6 +217,101 @@ describe ( 'CourtTypesController', () =>{
     expect(mockApi.updateCourtTypesAndCodes).not.toBeCalled();
   });
 
+  test('Should display error message if dx code is duplicated ', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const types: string[]= [
+      '{"id":1,"name":"Magistrates\' Court","code":1}',
+      '{"id":2,"name":"County Court","code":2}',
+      '{"id":3,"name":"Crown Court","code":3}',
+      '{"id":4,"name":"Family Court","code":null}'
+
+    ];
+
+    req.body = {
+      'types': types,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+      'gbsCode':courtTypesAndCodes.gbsCode,
+      'dxCodes':[
+        { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false },
+        { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false },
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ],
+      '_csrf': CSRF.create()
+    };
+
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.session.user.isSuperAdmin = true;
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: CourtTypePageData = {
+      updated: false,
+      errorMsg: controller.duplicatedDxCodeErrorMsg,
+      items: courtTypeItems,
+      gbs: courtTypesAndCodes.gbsCode,
+      dxCodes:[
+        { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false, isDuplicated: true },
+        { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false, isDuplicated: true },
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
+  });
+
+
+  test('Should display error message if dx code is empty ', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    const types: string[]= [
+      '{"id":1,"name":"Magistrates\' Court","code":1}',
+      '{"id":2,"name":"County Court","code":2}',
+      '{"id":3,"name":"Crown Court","code":3}',
+      '{"id":4,"name":"Family Court","code":null}'
+
+    ];
+
+    req.body = {
+      'types': types,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+      'gbsCode':courtTypesAndCodes.gbsCode,
+      'dxCodes':[
+        { code: '', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false },
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ],
+      '_csrf': CSRF.create()
+    };
+
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.session.user.isSuperAdmin = true;
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: CourtTypePageData = {
+      updated: false,
+      errorMsg: controller.emptyDxCodeErrorMsg,
+      items: courtTypeItems,
+      gbs: courtTypesAndCodes.gbsCode,
+      dxCodes:[
+        { code: '', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false,},
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ]
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
+  });
+
+
+
   test('Should not post court types if no court code code is entered', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
@@ -187,8 +322,6 @@ describe ( 'CourtTypesController', () =>{
       '{"id":2,"name":"County Court","code":2}',
       '{"id":3,"name":"Crown Court","code":3}'
     ];
-
-
 
     req.body = {
       'types': types,
