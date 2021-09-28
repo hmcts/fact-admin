@@ -5,6 +5,7 @@ import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
 import {CourtAddress} from '../../../../main/types/CourtAddress';
 import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
+import {Action, Audit} from "../../../../main/types/Audit";
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -1193,6 +1194,32 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.deleteAreaOfLaw('100')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should return audits', async () => {
+    const results: { data: Audit[] } = {
+      data: [
+        { id: 1, action: { name: 'test', id : 1  } as Action,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          creation_time: 'a time', action_data_after: 'data after', action_data_before: 'data before', location: 'location', user_email: 'user email'}
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAudits(1, 1, 'location', 'email', 'date from', 'date to'))
+      .resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed get audits request', async () => {
+    const mockAxios = { get: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAudits(1, 1, 'location', 'email', 'date from', 'date to'))
+      .rejects.toBe(mockError);
     expect(loggerSpy).toBeCalled();
   });
 });
