@@ -5,7 +5,7 @@ import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
 import {CourtAddress} from '../../../../main/types/CourtAddress';
 import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
-import {Action, Audit} from "../../../../main/types/Audit";
+import {Action, Audit} from '../../../../main/types/Audit';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
