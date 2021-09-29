@@ -5,6 +5,7 @@ import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
 import {CourtAddress} from '../../../../main/types/CourtAddress';
 import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
+import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -1194,5 +1195,55 @@ describe('FactApi', () => {
 
     await expect(api.deleteAreaOfLaw('100')).rejects.toBe(mockError);
     expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should return results from getCourtAdditionalLinks request', async () => {
+    const results: { data: AdditionalLink[] } = {
+      data: [
+        { 'url': 'http://www.test1.com', 'display_name': 'Test site 1', 'display_name_cy': 'Test site 1 cy' },
+        { 'url': 'http://www.test2.com', 'display_name': 'Test site 2', 'display_name_cy': 'Test site 2 cy' }
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtAdditionalLinks('newcastle-crown-court')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getCourtAdditionalLinks request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtAdditionalLinks('newcastle-crown-court')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should update court additional links and return results from updateCourtAdditionalLinks request', async () => {
+    const additionalLinks: { data: AdditionalLink[] } = {
+      data: [
+        { 'url': 'http://www.test1.com', 'display_name': 'Test site 1', 'display_name_cy': 'Test site 1 cy' },
+        { 'url': 'http://www.test2.com', 'display_name': 'Test site 2', 'display_name_cy': 'Test site 2 cy' }
+      ]
+    };
+    const mockAxios = { put: async () => additionalLinks } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtAdditionalLinks('newcastle-crown-court', additionalLinks.data)).resolves.toEqual(additionalLinks.data);
+  });
+
+  test('Should log error and reject promise for failed updateCourtAdditionalLinks request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateCourtAdditionalLinks('newcastle-crown-court', [])).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
   });
 });
