@@ -12,6 +12,9 @@ export class AuditController {
   bothDateToAndFromErrorMsg = 'Both date from and to options need to be entered; not one or the other.'
   afterDateBeforeToDateError = 'The before date cannot be higher than the to date.'
 
+  // Need to have the render separately
+  // This method renders the header/footer and the div, and the subsequent one will constitute the content
+  // which includes the table of audits
   public async get(req: AuthedRequest,
     res: Response): Promise<void> {
     res.render('audits/index');
@@ -19,10 +22,7 @@ export class AuditController {
 
   public async getAuditData(
     req: AuthedRequest,
-    res: Response,
-    error:  '',
-    audits: Audit[] = null,
-    courts: Court[] = null): Promise<void> {
+    res: Response): Promise<void> {
 
     // Access the provided query parameters for the audits
     // The page and limit are mandatory. Limit will default to 20,
@@ -34,23 +34,27 @@ export class AuditController {
     const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
     const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
     const errors: { text: string }[] = [];
+    let audits: Audit[] = null;
+    let courts: Court[] = null;
 
-    if (!courts) {
-      await req.scope.cradle.api.getCourts()
-        .then((value: Court[]) => courts = value)
-        .catch(() => errors.push({text: this.getCourtsErrorMsg}));
-    }
+    await req.scope.cradle.api.getCourts()
+      .then((value: Court[]) => courts = value)
+      .catch(() => errors.push({text: this.getCourtsErrorMsg}));
 
-    if (dateFrom == '' && dateTo != '' || dateFrom != '' && dateTo == '') {
-      errors.push({text: this.bothDateToAndFromErrorMsg});
-    }
-    else if (Date.parse(dateTo) < Date.parse(dateFrom)) {
-      errors.push({text: this.afterDateBeforeToDateError});
-    }
-    else if (!audits) {
-      await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
-        .then((value: Audit[]) => audits = value)
-        .catch(() => errors.push({text: this.getAuditsErrorMsg}));
+    // If we can get the courts back without an error,
+    // Perform date validation and get the audit data
+    if(!errors.length) {
+
+      if (dateFrom == '' && dateTo != '' || dateFrom != '' && dateTo == '') {
+        errors.push({text: this.bothDateToAndFromErrorMsg});
+      } else if (Date.parse(dateTo) < Date.parse(dateFrom)) {
+        errors.push({text: this.afterDateBeforeToDateError});
+      } else if (!audits) {
+
+        await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
+          .then((value: Audit[]) => audits = value)
+          .catch(() => errors.push({text: this.getAuditsErrorMsg}));
+      }
     }
 
     if (audits)
