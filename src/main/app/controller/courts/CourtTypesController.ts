@@ -18,7 +18,7 @@ export class CourtTypesController {
 
   emptyCourtCodeErrorMsg = 'Court code is required and must be numeric and start with 1-9';
   emptyDxCodeErrorMsg = 'Code is required for all Dx code entries.';
-  duplicatedDxCodeErrorMsg = 'All dx codes must be unique..';
+  duplicatedDxCodeErrorMsg = 'All dx codes must be unique.';
   getCourtTypesAndCodesErrorMsg = 'A problem occurred when retrieving the list of court types and codes.';
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court types.';
@@ -37,22 +37,24 @@ export class CourtTypesController {
         .then((value: CourtTypesAndCodes) => courtTypesAndCodes = value)
         .catch(() => error += this.getCourtTypesAndCodesErrorMsg);
     }
+    let courtTypes: CourtType[] = [];
 
     if(courtTypesAndCodes) {
       if (!courtTypesAndCodes.dxCodes?.some(ot => ot.isNew === true)) {
         this.addEmptyFormsForNewEntries(courtTypesAndCodes.dxCodes);
       }
+
+      await req.scope.cradle.api.getCourtTypes(slug)
+        .then((value: CourtType[]) => courtTypes = value)
+        .catch(() => error += this.getCourtTypesErrorMsg);
     }
 
-    let courtTypes: CourtType[] = [];
-    await req.scope.cradle.api.getCourtTypes(slug)
-      .then((value: CourtType[]) => courtTypes = value)
-      .catch(() => error += this.getCourtTypesErrorMsg);
+
 
     const pageData: CourtTypePageData = {
       errorMsg: error,
       updated: updated,
-      items: courtTypesAndCodes && courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
+      courtTypes: courtTypesAndCodes && courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
       gbs: courtTypesAndCodes ? courtTypesAndCodes.gbsCode : null,
       dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : []
     };

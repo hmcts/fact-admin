@@ -9,7 +9,7 @@ export interface CourtType {
 export interface CourtTypePageData {
   errorMsg: string,
   updated: boolean,
-  items: CourtTypeItem[],
+  courtTypes: CourtTypeItem[],
   gbs? : string,
   dxCodes?: DxCode[];
 }

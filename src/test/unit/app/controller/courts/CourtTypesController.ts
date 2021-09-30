@@ -71,7 +71,7 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: '',
-      items: courtTypeItems,
+      courtTypes: courtTypeItems,
       gbs:courtTypesAndCodes.gbsCode,
       dxCodes:courtTypesAndCodes.dxCodes
     };
@@ -253,7 +253,7 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.duplicatedDxCodeErrorMsg,
-      items: courtTypeItems,
+      courtTypes: courtTypeItems,
       gbs: courtTypesAndCodes.gbsCode,
       dxCodes:[
         { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false, isDuplicated: true },
@@ -300,7 +300,7 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.emptyDxCodeErrorMsg,
-      items: courtTypeItems,
+      courtTypes: courtTypeItems,
       gbs: courtTypesAndCodes.gbsCode,
       dxCodes:[
         { code: '', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false,},
@@ -357,18 +357,10 @@ describe ( 'CourtTypesController', () =>{
 
     await controller.get(req, res);
 
-    const courtTypeItems: CourtTypeItem[] = [
-      {value:'{"id":1,"name":"Magistrates\' Court","code":123}',text:"Magistrates' Court", magistrate:true, county:false, crown:false, checked: false, code:null},
-      {value:'{"id":2,"name":"County Court","code":456}', text:'County Court', magistrate:false, county:true, crown:false, checked: false, code:null},
-      {value:'{"id":3,"name":"Crown Court","code":789}', text:'Crown Court',magistrate:false, county:false, crown:true, checked:false, code:null},
-      {value:'{"id":4,"name":"Family Court","code":null}', text:'Family Court', magistrate:false, county:false, crown:false, checked:false, code:null}
-
-    ];
-
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.getCourtTypesAndCodesErrorMsg,
-      items: courtTypeItems,
+      courtTypes: [],
       gbs:null,
       dxCodes:[]
     };
@@ -391,7 +383,7 @@ describe ( 'CourtTypesController', () =>{
     const expectedResults: CourtTypePageData = {
       updated: false,
       errorMsg: controller.getCourtTypesErrorMsg,
-      items: [],
+      courtTypes: [],
       gbs: courtTypesAndCodes.gbsCode,
       dxCodes: courtTypesAndCodes.dxCodes
     };

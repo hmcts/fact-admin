@@ -23,12 +23,12 @@
   }) }}
 {% endif %}
 
-{% for item in items %}
+{% for courtType in courtTypes %}
 
-{% if item.magistrate  %}
+{% if courtType.magistrate  %}
 
  {% set magistratesCodeError = false %}
-  {% if item.checked and item.code | valid === false %}
+  {% if courtType.checked and courtType.code | valid === false %}
    {% set magistratesCodeError = { text: 'Magistrates code is required and must be numeric. eg(1234)' } %}
   {% endif %}
 
@@ -41,23 +41,23 @@
   id: "magistratesCourtCode",
   name: "magistratesCourtCode",
   type: "text",
-  value: item.code,
+  value: courtType.code,
   errorMessage: magistratesCodeError
 
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: magistratesCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: magistratesCourtCodeHtml }) %}
 
 {% endif %}
 
 
 
 
-{% if item.county %}
+{% if courtType.county %}
 
 {% set countyCourtCode = false %}
- {% if item.checked and  item.code | valid === false  %}
+ {% if courtType.checked and  courtType.code | valid === false  %}
    {% set countyCourtCode = { text: 'County code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
@@ -66,7 +66,7 @@
   id: "countyCourtCode",
   name: "countyCourtCode",
   type: "text",
-  value: item.code,
+  value: courtType.code,
   errorMessage: countyCourtCode,
   classes: "govuk-!-width-one-third",
   label: {
@@ -75,14 +75,14 @@
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: countyCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: countyCourtCodeHtml }) %}
 
 {% endif %}
 
-{% if item.crown %}
+{% if courtType.crown %}
 
 {% set crownCourtCode = false %}
- {% if item.checked and item.code | valid === false  %}
+ {% if courtType.checked and courtType.code | valid === false  %}
    {% set crownCourtCode = { text: 'Crown code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
@@ -91,7 +91,7 @@
   id: "crownCourtCode",
   name: "crownCourtCode",
   type: "text",
-  value : item.code,
+  value : courtType.code,
   errorMessage: crownCourtCode,
   classes: "govuk-!-width-one-third",
   label: {
@@ -100,7 +100,7 @@
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: crownCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: crownCourtCodeHtml }) %}
 
 {% endif %}
 
@@ -109,12 +109,12 @@
 {{ govukCheckboxes({
   idPrefix: "court_types",
   name: "types",
-  items: items
+  items: courtTypes
 }) }}
 
 {% if isSuperAdmin %}
-<hr/>
-<br/>
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
 <h2 class="govuk-heading-l">GBS Code</h2>
 
@@ -128,9 +128,8 @@
   }
 }) }}
 
-<hr/>
-<br/>
 
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 <h2 class="govuk-heading-l">Dx Codes</h2>
 
 {% for dxCode in dxCodes %}
@@ -206,13 +205,13 @@
 
   </div>
 
-  <hr/>
+   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
   {% endcall %}
 
   {% endfor %}
 
-  </br>
+
 
   {% call govukFieldset({
   attributes: { id: "newDxCodeTemplate", disabled: "disabled", hidden: true }
@@ -264,7 +263,7 @@
       </div>
     </div>
 
-    <hr/>
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
     {% endcall %}
 
