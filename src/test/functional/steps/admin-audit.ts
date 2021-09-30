@@ -39,6 +39,9 @@ Then('I click search audit button', async () => {
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
+
+  //it takes half a second for a javascript to load new audits
+  await new Promise(f => setTimeout(f, 1000));
 });
 
 Then('I enter between and end date', async () => {
@@ -57,10 +60,6 @@ Then('I enter between and end date', async () => {
   await I.fillField(selectorDateFrom,startTime);
   await I.fillField(selectorDateTo,endTime);
 
-  const selector = '#searchAuditsBtn';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
-  await I.click(selector);
 });
 
 When('I can see the expected audits', async () => {
