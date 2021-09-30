@@ -270,3 +270,12 @@ export const getFirstTableRowIndexContainingText = async (tableContainerSelector
     (tds: HTMLTableDataCellElement[]) => tds.map((td) => td.innerText));
   return columnData.indexOf(text);
 };
+
+export const getTextFromElements = async (el: string) => {
+  try {
+    return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerText));
+  } catch (error) {
+    console.log("The element didn't appear.");
+    return [];
+  }
+};
