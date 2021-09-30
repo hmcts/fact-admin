@@ -76,6 +76,9 @@
             {% set addressesHtml %}
                 {% include "./tabs/addresses.njk" %}
             {% endset -%}
+            {% set additionalLinksHtml %}
+              {% include "./tabs/additionalLinks.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -136,7 +139,7 @@
                       html: courtFacilitiesHtml
                     }
                   }
-                  ]%}
+                ]%}
 
               {% set postcodesTab =
                   {
@@ -153,15 +156,26 @@
                     label: "Local Authorities",
                     id: "local-authorities",
                     panel: {
-                    html: localAuthoritiesHtml
+                      html: localAuthoritiesHtml
                     }
                   }
-               %}
+              %}
+
+              {% set additionalLinksTab =
+                {
+                  label: "Additional Links",
+                  id: "additional-links",
+                  panel: {
+                    html: additionalLinksHtml
+                  }
+                }
+              %}
 
         {% if isSuperAdmin %}
 
           {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
           {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
 
         {% endif %}
 
