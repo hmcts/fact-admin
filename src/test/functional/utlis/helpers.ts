@@ -30,4 +30,10 @@ export class FunctionalTestHelpers {
     expect(elementExist).equal(true);
     await I.click(selector);
   }
+
+  public static async checkGreenMessageSuccess(selector: string, message: string)  {
+    expect(await I.checkElement(selector)).equal(true);
+    const messageUpdate = await I.getElement(selector);
+    expect(await I.getElementText(messageUpdate)).equal(message);
+  }
 }

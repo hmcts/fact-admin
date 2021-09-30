@@ -15,6 +15,9 @@
       {% set areasOfLawHtml %}
         {% include "./tabs/areasOfLaw.njk" %}
       {% endset %}
+      {% set facilitiesHtml %}
+        {% include "./tabs/facilityTypes.njk" %}
+      {% endset %}
 
       {% set tabItems = [
         {
@@ -30,6 +33,13 @@
           panel: {
             html: areasOfLawHtml
           }
+        },
+        {
+           label: "Facilities",
+           id: "facilities",
+           panel: {
+             html: facilitiesHtml
+           }
         }]
       %}
 

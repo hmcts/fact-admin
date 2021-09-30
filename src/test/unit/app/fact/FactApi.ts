@@ -5,6 +5,7 @@ import {ContactType} from '../../../../main/types/ContactType';
 import {OpeningTime} from '../../../../main/types/OpeningTime';
 import {CourtAddress} from '../../../../main/types/CourtAddress';
 import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
+import {FacilityType} from '../../../../main/types/Facility';
 import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 
 describe('FactApi', () => {
@@ -1197,6 +1198,21 @@ describe('FactApi', () => {
     expect(loggerSpy).toBeCalled();
   });
 
+  test('Should return results from getAllFacilityTypes request', async () => {
+    const results: { data: FacilityType[] } = {
+      data: [
+        { id: 100, name: 'Test FT 1', nameCy: 'Test FT 1 cy', order: 1 },
+        { id: 200, name: 'Test FT 2', nameCy: 'Test FT 2 cy', order: 2 },
+        { id: 300, name: 'Test FT 3', nameCy: 'Test FT 3 cy', order: 3 }
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
+  });
+
   test('Should return results from getCourtAdditionalLinks request', async () => {
     const results: { data: AdditionalLink[] } = {
       data: [
@@ -1208,7 +1224,112 @@ describe('FactApi', () => {
     const mockLogger = {} as any;
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourtAdditionalLinks('newcastle-crown-court')).resolves.toEqual(results.data);
+    await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
+  });
+
+  test('Should return results from getFacilityType request', async () => {
+    const results: { data: FacilityType } = {
+      data: { id: 100, name: 'Test FT 1', nameCy: 'Test FT 1 cy', order: 1 }
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getFacilityType('100')).resolves.toEqual(results.data);
+  });
+
+  test('Should create facility type and return facility type from createFacilityType request', async () => {
+    const results: { data: FacilityType } = {
+      data: { id: 300, name: 'Test FT 1', nameCy: 'Test FT 1 cy', order: 1 }
+    };
+    const mockAxios = { post: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createFacilityType(results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should update facility type and return facility type from updateFacilityType request', async () => {
+    const results: { data: FacilityType } = {
+      data: { id: 500, name: 'Test FT 1', nameCy: 'Test FT 1 cy', order: 1 }
+    };
+    const mockAxios = { put: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateFacilityType(results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should delete facility type and return ID of deleted entity from deleteFacilityType request', async () => {
+    const results: { data: number } = {
+      data: 500
+    };
+    const mockAxios = { delete: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteFacilityType('500')).resolves.toEqual(results.data);
+  });
+
+  test('Should reorder facility types and return updated facility types from reorderFacilityTypes request', async () => {
+    const idsInOrder = ['300', '100', '200'];
+    const results: { data: FacilityType[] } = {
+      data: [
+        { id: 100, name: 'Test FT 1', nameCy: 'Test FT 1 cy', order: 2 },
+        { id: 200, name: 'Test FT 2', nameCy: 'Test FT 2 cy', order: 3 },
+        { id: 300, name: 'Test FT 3', nameCy: 'Test FT 3 cy', order: 1 }
+      ]
+    };
+    const mockAxios = { put: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.reorderFacilityTypes(idsInOrder)).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getFacilityTypes request ', async () => {
+    const mockAxios = { get: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllFacilityTypes()).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed getFacilityType request ', async () => {
+    const mockAxios = { get: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getFacilityType('100')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed createFacilityType request ', async () => {
+    const mockAxios = { post: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createFacilityType({ id: null, name: 'Test FT', nameCy: 'Test FT cy' })).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed updateFacilityType request ', async () => {
+    const mockAxios = { put: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateFacilityType({ id: 4321, name: 'Test FT', nameCy: 'Test FT cy' })).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed deleteFacilityType request ', async () => {
+    const mockAxios = { delete: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteFacilityType('3321')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
   });
 
   test('Should log error and reject promise for failed getCourtAdditionalLinks request', async () => {

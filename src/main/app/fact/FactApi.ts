@@ -428,6 +428,66 @@ export class FactApi {
     return this.axios.put(`${this.baseURL}/info`, body);
   }
 
+  public getFacilityTypes(): Promise<FacilityType[]> {
+    return this.axios
+      .get(`${this.adminUrl}/facilities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getFacilityType(id: string): Promise<FacilityType> {
+    return this.axios
+      .get(`${this.adminUrl}/facilities/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createFacilityType(facilityType: FacilityType): Promise<FacilityType> {
+    return this.axios
+      .post(`${this.adminUrl}/facilities`, facilityType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateFacilityType(facilityType: FacilityType): Promise<FacilityType>{
+    return this.axios
+      .put(`${this.adminUrl}/facilities`, facilityType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteFacilityType(id: string): Promise<number> {
+    return this.axios
+      .delete(`${this.adminUrl}/facilities/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public reorderFacilityTypes(ids: string[]): Promise<FacilityType[]> {
+    return this.axios
+      .put(`${this.adminUrl}/facilities/reorder`, ids)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logError(err);
