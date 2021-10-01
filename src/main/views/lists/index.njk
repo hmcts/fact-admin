@@ -18,6 +18,9 @@
        {% set contactTypesHtml %}
          {% include "./tabs/contactTypes/contactTypes.njk" %}
       {% endset %}
+      {% set facilitiesHtml %}
+        {% include "./tabs/facilityTypes.njk" %}
+      {% endset %}
 
       {% set tabItems = [
         {
@@ -39,6 +42,13 @@
           id: "contact-types",
           panel: {
             html: contactTypesHtml
+          }
+        },
+        {
+           label: "Facilities",
+           id: "facilities",
+           panel: {
+             html: facilitiesHtml
            }
         }]
       %}
