@@ -12,11 +12,11 @@ Feature: Contact Types List
     And I click on contact type list
 
   Scenario: Edit Contact Type
-    Given I click edit contact type "Adoption"
-    Then I am redirected to the contact type "Editing Contact Type: Adoption" form
+    Given I click edit contact type "Civil court"
+    Then I am redirected to the contact type "Editing Contact Type: Civil court" form
     Then I will make sure to clear entries for the Contact Type
-    Then I enter "Adoption" in name textbox
-    Then I enter "Mabwysiadu" in name welsh textbox
+    Then I enter "Civil court" in name textbox
+    Then I enter "Llys sifil" in name welsh textbox
     When I click Contact Type save button
     Then A green message is displayed for the updated Contact Type "Contact Types Updated"
 

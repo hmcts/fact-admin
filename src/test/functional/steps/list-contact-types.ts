@@ -1,7 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
-import {expect} from 'chai';
 import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
+import {expect} from 'chai';
 
 async function populateField(fieldElement: string, value: string) {
   expect(await I.checkElement(fieldElement)).equal(true);
@@ -31,11 +31,11 @@ Then('I am redirected to the contact type {string} form', async (editContactType
 });
 
 Given('I will make sure to clear entries for the Contact Type', async () => {
-  expect(await I.checkElement('#ct-type')).equal(true);
-  await I.clearField('#ct-type');
-
   expect(await I.checkElement('#ct-type-cy')).equal(true);
   await I.clearField('#ct-type-cy');
+
+  expect(await I.checkElement('#ct-type')).equal(true);
+  await I.clearField('#ct-type');
 });
 
 Then('I enter {string} in name textbox', async (name: string) => {
