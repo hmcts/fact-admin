@@ -295,7 +295,7 @@ export class FactApi {
     return this.axios
       .put(`${this.adminUrl }/localauthorities/${id}`, name, {
         headers: {
-          'content-type': 'application/json'
+          'Content-Type': 'text/plain'
         }})
       .then(results => results.data)
       .catch(err => {
