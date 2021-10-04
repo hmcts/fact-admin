@@ -1,0 +1,28 @@
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+
+{% extends "template.njk" %}
+
+
+{% block content %}
+  <h1 class="govuk-heading-xl">My Account</h1>
+
+   {% set inviteUserHtml %}
+      {% include "./tabs/inviteUser.njk" %}
+   {% endset -%}
+
+{{ govukTabs({
+            id: 'Main',
+            items: [
+            {
+              label: "Invite user",
+              id: "invite-user",
+            panel: {
+                html: inviteUserHtml
+                }
+            }
+            ]
+          }) }}
+
+{% endblock %}
+

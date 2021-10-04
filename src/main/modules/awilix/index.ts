@@ -20,6 +20,8 @@ import {AddressController} from '../../app/controller/courts/AddressController';
 import {AreasOfLawController} from '../../app/controller/lists/AreasOfLawController';
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
+import {AccountController} from '../../app/controller/account/AccountController';
+import {InviteUserController} from "../../app/controller/account/InviteUserController";
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -36,6 +38,7 @@ export class Container {
       bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
       courtsDownloadController: asClass(CourtsDownloadController),
+
 
       // Edit Court
       editCourtController: asClass(EditCourtController),
@@ -57,7 +60,11 @@ export class Container {
       areasOfLawController: asClass(AreasOfLawController),
       facilityTypesController: asClass(FacilityTypesController),
       errorController: asClass(ErrorController),
-      exposeErrors: asValue(server.locals.env === 'development')
+      exposeErrors: asValue(server.locals.env === 'development'),
+
+      //Account
+      accountController : asClass(AccountController),
+      inviteUserController : asClass(InviteUserController)
     });
   }
 }

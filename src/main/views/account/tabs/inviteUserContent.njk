@@ -1,0 +1,100 @@
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+
+<h2 class="govuk-heading-l">Invite new user to Find a Court or Tribunal</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Account created successfully"
+  }) }}
+{% endif %}
+
+
+{% call govukFieldset({
+  }) %}
+
+
+  {{ govukInput({
+    label: {
+      text: "Email"
+    },
+    classes: "govuk-input--width-20",
+    id: "email",
+    name: "email",
+    value: '',
+    errorMessage: false
+  }) }}
+
+{{ govukInput({
+    label: {
+      text: "First Name"
+    },
+    classes: "govuk-input--width-20",
+    id: "firstName",
+    name: "firstName",
+    value: '',
+    errorMessage: false
+  }) }}
+
+{{ govukInput({
+    label: {
+      text: "Last Name"
+    },
+    classes: "govuk-input--width-20",
+    id: "lastName",
+    name: "lastName",
+    value: '',
+    errorMessage: false
+  }) }}
+
+
+
+
+{{ govukRadios({
+  idPrefix: "assigned-roles",
+  name: "assigned-roles",
+  fieldset: {
+    legend: {
+      text: "Assigned Roles",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--m"
+    }
+  },
+  hint: {
+      text: "Select the role that is assigned to this user."
+   },
+  items: [
+    {
+      value: "fact-admin",
+      text: "fact-admin"
+    },
+    {
+      value: "fact-super-admin",
+      text: "fact-super-admin"
+    }
+  ]
+}) }}
+
+  {% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "createUser"
+}) }}
+
+{{ govukButton({
+  text: "Cancel",
+  name: "cancelCreateUser"
+}) }}
