@@ -6811,6 +6811,11 @@ jest-watcher@^25.5.0:
     jest-util "^25.5.0"
     string-length "^3.1.0"
 
+jest-when@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/jest-when/-/jest-when-3.4.0.tgz#2f78b80371cb2920067cb4cf8d88ee009a5dabd8"
+  integrity sha512-c7cj+uwoqik7w+CDpsKb5B5A7DhDU6MN9/KcXC+K4WdZHyAdV8zWWy7F+M42TYcQIgQNI2iRtFIf0zXUmVBSOQ==
+
 jest-worker@^25.5.0:
   version "25.5.0"
   resolved "https://registry.npmjs.org/jest-worker/-/jest-worker-25.5.0.tgz"
