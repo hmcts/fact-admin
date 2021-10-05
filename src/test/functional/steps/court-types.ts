@@ -74,7 +74,7 @@ Then('I will make sure that one of the court type is selected', async () => {
 
 Then('I will clear the existing gbs code and enter new the one {string}', async (gbCode: string) => {
   const selector = 'input[name=gbsCode]';
-  const elementExist = await I.checkElement('input[name=gbsCode]');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 
   await I.clearField(selector);
