@@ -21,6 +21,9 @@ import {CasesHeardController} from './cases-heard';
 import {AddressesController} from './addresses';
 import {AreasOfLawListController} from './areas-of-law-list';
 import {PhotoController} from './photo';
+import {ContactTypesListController} from './contact-type-list';
+import {FacilityTypesController} from './facility-types-list';
+import {AdditionalLinksController} from './additionalLinks';
 
 const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
@@ -37,8 +40,11 @@ new PostcodesController();
 new LocalAuthoritiesController();
 new CourtsController();
 new AddressesController();
+new AdditionalLinksController();
 
 new LocalAuthoritiesListController();
 new AreasOfLawListController();
+new ContactTypesListController();
 new CasesHeardController();
 new PhotoController();
+new FacilityTypesController();
