@@ -20,6 +20,7 @@ import {CourtsController} from './courts';
 import {CasesHeardController} from './cases-heard';
 import {AddressesController} from './addresses';
 import {AreasOfLawListController} from './areas-of-law-list';
+import {ContactTypesListController} from './contact-type-list';
 import {FacilityTypesController} from './facility-types-list';
 import {AdditionalLinksController} from './additionalLinks';
 
@@ -42,5 +43,6 @@ new AdditionalLinksController();
 
 new LocalAuthoritiesListController();
 new AreasOfLawListController();
+new ContactTypesListController();
 new CasesHeardController();
 new FacilityTypesController();

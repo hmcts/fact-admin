@@ -1,0 +1,8 @@
+{% from "macros/csrf.njk" import csrfProtection %}
+
+<div id="contactTypeListTab">
+  <form id="contactTypeListForm" method="PUT" action="/lists/contact-type">
+    {{ csrfProtection(csrf) }}
+    <div id='contactTypeListContent'></div>
+  </form>
+</div>

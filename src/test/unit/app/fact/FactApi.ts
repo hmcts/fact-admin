@@ -1198,6 +1198,84 @@ describe('FactApi', () => {
     expect(loggerSpy).toBeCalled();
   });
 
+  test('Should return results from getContactType request', async () => {
+    const result: { data: ContactType } = {
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
+    const mockAxios = { get: async () => result } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getContactType('123')).resolves.toEqual(result.data);
+  });
+
+  test('Should log error and reject promise for failed getContactType request', async () => {
+    const mockAxios = { get: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getContactType('123')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should update contact type and return updated contact type', async () => {
+    const result: { data: ContactType } = {
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
+    const mockAxios = { put: async () => result } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateContactType(result.data)).resolves.toEqual(result.data);
+  });
+
+  test('Should log error and reject promise for failed updateContactType request', async () => {
+    const ct: { data: ContactType } = {
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
+
+    const mockAxios = { put: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateContactType(ct.data)).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+
+  test('Should create contact type and return created contact type', async () => {
+    const result: { data: ContactType } = {
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
+    const mockAxios = { post: async () => result } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.createContactType(result.data)).resolves.toEqual(result.data);
+  });
+
+  test('Should log error and reject promise for failed createContactType request', async () => {
+    const ct: { data: ContactType } = {
+      data: { id: 123, type: 'Admin', 'type_cy': ''}};
+
+    const mockAxios = { post: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createContactType(ct.data)).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should delete contact type', async () => {
+    const id = '100';
+    const result = { data: id };
+    const mockAxios = { delete: async () => Promise.resolve(result) } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteContactType(id)).resolves.toBe(id);
+  });
+
+  test('Should log error and reject promise for failed deleteContactType request ', async () => {
+    const mockAxios = { delete: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteContactType('100')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+    
   test('Should return results from getAllFacilityTypes request', async () => {
     const results: { data: FacilityType[] } = {
       data: [
@@ -1211,6 +1289,7 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
+
   });
 
   test('Should return results from getCourtAdditionalLinks request', async () => {
