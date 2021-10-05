@@ -4,12 +4,6 @@ import {Response} from 'express';
 import {Error} from '../../../types/Error';
 import {PhotoPageData} from '../../../types/PhotoPageData';
 import config from 'config';
-// import {CSRF} from "../../../modules/csrf";
-// import {AxiosError} from "axios";
-// import { BlobServiceClient} from '@azure/storage-blob';
-// import getStream from 'into-stream';
-// import { v1 as uuidv1 } from 'uuid';
-
 
 @autobind
 export class PhotoController {
@@ -22,9 +16,11 @@ export class PhotoController {
   }
 
   public async post(req: AuthedRequest, res: Response): Promise<void> {
-    const updatedPhoto = req.body;
-    console.log('photoController put updated photo: ', updatedPhoto);
+
+    console.log(req.file);
     console.log(req.body.csrfToken);
+    console.log(req.body.name);
+
     // const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
     // if (!CSRF.verify(req.body.csrfToken)) {
     //   return this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);

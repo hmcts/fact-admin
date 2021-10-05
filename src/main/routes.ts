@@ -1,7 +1,13 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
 
+const multer = require('multer');
+
 export default function(app: Application): void {
+
+  const upload = multer({
+    limits : {fileSize : 2000000} // 2 mb's
+  });
 
   app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
@@ -33,7 +39,7 @@ export default function(app: Application): void {
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
   app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
-  app.post('/courts/:slug/photo', app.locals.container.cradle.photoController.post);
+  app.post('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.post);
   app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
   app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
 

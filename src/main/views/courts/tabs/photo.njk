@@ -1,7 +1,7 @@
 {% from "macros/csrf.njk" import csrfProtection %}
 
 <div id='photoTab'>
-  <form id="photoForm" method="POST" action="/courts/{{slug}}/photo">
+  <form id="photoForm" method="POST">
     {{ csrfProtection(csrfToken) }}
     <div id='photoContent'></div>
   </form>
