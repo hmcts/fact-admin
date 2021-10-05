@@ -79,15 +79,19 @@ When('I will make sure County court type is selected', async () => {
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
+
+  const codeSelector = await I.checkElement('#countyCourtCode');
+  expect(codeSelector).equal(true);
+
   if (!elementChecked) {
     await I.click(selector);
+    await I.setElementValueForInputField('#countyCourtCode','123');
   }
 });
 
 When('I will make sure to delete the existing postcodes', async () => {
   const selector = '#postcodes-select-all';
   const selectorDelete = 'button[name="deletePostcodes"]';
-
   const elementExist = await I.checkElement(selector);
   if (elementExist) {
     await I.click(selector);

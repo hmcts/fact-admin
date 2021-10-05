@@ -3,8 +3,13 @@ import {Element} from "./Element";
 import {Error} from "./Error";
 
 export interface FacilityType {
-  id: number,
-  name: string,
+  id: number;
+  name: string;
+  nameCy?: string;
+  order?: number;
+  image?: string;
+  imageDescription?: string;
+  imageFilePath?: string;
 }
 
 export interface Facility extends Element {

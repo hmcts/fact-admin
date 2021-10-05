@@ -1,4 +1,6 @@
 export interface Element {
   isNew?: boolean,
-  isDuplicated?: boolean
+  isDuplicated?: boolean,
+  isNameDuplicated?: boolean,
+  isInvalidFormat?: boolean
 }
