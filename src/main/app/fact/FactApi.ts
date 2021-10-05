@@ -13,6 +13,7 @@ import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
 import {Audit} from '../../types/Audit';
+import {AdditionalLink} from '../../types/AdditionalLink';
 
 export class FactApi {
 
@@ -175,7 +176,7 @@ export class FactApi {
 
   public getContactTypes(): Promise<ContactType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/contactTypes`)
+      .get(`${this.adminUrl}/contactTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -307,7 +308,7 @@ export class FactApi {
     return this.axios
       .put(`${this.adminUrl }/localauthorities/${id}`, name, {
         headers: {
-          'content-type': 'application/json'
+          'Content-Type': 'text/plain'
         }})
       .then(results => results.data)
       .catch(err => {
@@ -366,6 +367,26 @@ export class FactApi {
       });
   }
 
+  public getCourtAdditionalLinks(slug: string): Promise<AdditionalLink[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/additionalLinks`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtAdditionalLinks(slug: string, body: AdditionalLink[]): Promise<AdditionalLink[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/additionalLinks`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getAreasOfLaw(): Promise<AreaOfLaw[]> {
     return this.axios
       .get(`${this.adminUrl}/areasOfLaw`)
@@ -416,8 +437,108 @@ export class FactApi {
       });
   }
 
+  public getContactType(id: string): Promise<ContactType> {
+    return this.axios
+      .get(`${this.adminUrl}/contactTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .post(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .put(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteContactType(id: string): Promise<void> {
+    return this.axios
+      .delete(`${this.adminUrl}/contactTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.axios.put(`${this.baseURL}/info`, body);
+  }
+
+  public getFacilityTypes(): Promise<FacilityType[]> {
+    return this.axios
+      .get(`${this.adminUrl}/facilities`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getFacilityType(id: string): Promise<FacilityType> {
+    return this.axios
+      .get(`${this.adminUrl}/facilities/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createFacilityType(facilityType: FacilityType): Promise<FacilityType> {
+    return this.axios
+      .post(`${this.adminUrl}/facilities`, facilityType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateFacilityType(facilityType: FacilityType): Promise<FacilityType>{
+    return this.axios
+      .put(`${this.adminUrl}/facilities`, facilityType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteFacilityType(id: string): Promise<number> {
+    return this.axios
+      .delete(`${this.adminUrl}/facilities/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public reorderFacilityTypes(ids: string[]): Promise<FacilityType[]> {
+    return this.axios
+      .put(`${this.adminUrl}/facilities/reorder`, ids)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 
   private errorHandler<T>(defaultValue: T) {

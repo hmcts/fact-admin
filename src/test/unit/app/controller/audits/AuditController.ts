@@ -103,7 +103,7 @@ describe ( 'AuditController', () => {
     await controller.getAuditData(req, res);
 
     const expectedResults: AuditPageData = {
-      audits: null,
+      audits: [],
       courts: [],
       errors: [{text: controller.afterDateBeforeToDateError}],
       currentPage: 1,
@@ -132,7 +132,7 @@ describe ( 'AuditController', () => {
     await controller.getAuditData(req, res);
 
     const expectedResults: AuditPageData = {
-      audits: null,
+      audits: [],
       courts: [],
       errors: [{text: controller.bothDateToAndFromErrorMsg}],
       currentPage: 1,
@@ -154,8 +154,8 @@ describe ( 'AuditController', () => {
     await controller.getAuditData(req, res);
 
     const expectedResults: AuditPageData = {
-      audits: null,
-      courts: null,
+      audits: [],
+      courts: [],
       errors: [{text: controller.getCourtsErrorMsg}],
       currentPage: 0,
       searchOptions: {
@@ -176,7 +176,7 @@ describe ( 'AuditController', () => {
     await controller.getAuditData(req, res);
 
     const expectedResults: AuditPageData = {
-      audits: null,
+      audits: [],
       courts: [],
       errors: [{text: controller.getAuditsErrorMsg}],
       currentPage: 0,

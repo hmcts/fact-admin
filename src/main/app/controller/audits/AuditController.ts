@@ -34,8 +34,8 @@ export class AuditController {
     const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
     const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
     const errors: { text: string }[] = [];
-    let audits: Audit[] = null;
-    let courts: Court[] = null;
+    let audits: Audit[] = [];
+    let courts: Court[] = [];
 
     await req.scope.cradle.api.getCourts()
       .then((value: Court[]) => courts = value)
@@ -49,7 +49,7 @@ export class AuditController {
         errors.push({text: this.bothDateToAndFromErrorMsg});
       } else if (Date.parse(dateTo) < Date.parse(dateFrom)) {
         errors.push({text: this.afterDateBeforeToDateError});
-      } else if (!audits) {
+      } else if (!audits.length) {
 
         await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
           .then((value: Audit[]) => audits = value)
@@ -57,7 +57,7 @@ export class AuditController {
       }
     }
 
-    if (audits)
+    if (audits.length)
       // eslint-disable-next-line @typescript-eslint/camelcase
       audits.forEach(a => a.creation_time = new Date(a.creation_time).toLocaleString());
 
@@ -73,6 +73,8 @@ export class AuditController {
         dateTo: dateTo
       }
     };
+
+    console.log(pageData);
 
     res.render('audits/auditContent', pageData);
   }
