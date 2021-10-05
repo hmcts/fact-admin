@@ -6,8 +6,7 @@ export interface Email extends Element {
   adminEmailTypeId: number,
   explanation: string,
   explanationCy: string,
-  address: string,
-  isInvalidFormat?: boolean
+  address: string
 }
 
 export interface EmailData {

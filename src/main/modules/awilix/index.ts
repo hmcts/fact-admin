@@ -1,4 +1,4 @@
-import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
+import {asClass, asValue, createContainer, InjectionMode} from 'awilix';
 import {Application} from 'express';
 import {CourtsController} from '../../app/controller/courts/CourtsController';
 import {CourtsDownloadController} from '../../app/controller/courts/CourtsDownloadController';
@@ -18,6 +18,9 @@ import {PostcodesController} from '../../app/controller/courts/PostcodesControll
 import {CasesHeardController} from '../../app/controller/courts/CasesHeardController';
 import {AddressController} from '../../app/controller/courts/AddressController';
 import {AreasOfLawController} from '../../app/controller/lists/AreasOfLawController';
+import {ContactTypesController} from '../../app/controller/lists/ContactTypesController';
+import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
+import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -45,6 +48,7 @@ export class Container {
       courtTypesController: asClass(CourtTypesController),
       localAuthoritiesController: asClass(LocalAuthoritiesController),
       addressController: asClass(AddressController),
+      additionalLinksController: asClass(AdditionalLinksController),
 
       // List
       listsController: asClass(ListsController),
@@ -52,6 +56,8 @@ export class Container {
       courtFacilitiesController : asClass(CourtFacilitiesController),
       casesHeardController: asClass(CasesHeardController),
       areasOfLawController: asClass(AreasOfLawController),
+      contactTypesController : asClass(ContactTypesController),
+      facilityTypesController: asClass(FacilityTypesController),
       errorController: asClass(ErrorController),
       exposeErrors: asValue(server.locals.env === 'development')
     });
