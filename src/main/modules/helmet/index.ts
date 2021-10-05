@@ -7,6 +7,7 @@ export interface HelmetConfig {
 
 const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
+const azureBlob = '*.blob.core.windows.net';
 
 /**
  * Module that enables helmet in the application
@@ -29,7 +30,7 @@ export class Helmet {
           connectSrc: [self],
           defaultSrc: ["'none'"],
           fontSrc: [self, 'data:'],
-          imgSrc: [self, googleAnalyticsDomain],
+          imgSrc: [self, googleAnalyticsDomain, azureBlob],
           objectSrc: [self],
           scriptSrc: [self, googleAnalyticsDomain, "'unsafe-eval'", "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"],
           styleSrc: [self]

@@ -12,34 +12,46 @@
   }) }}
 {% endif %}
 
-{% if updated === true %}
-  {{ govukPanel({
-    titleText: "Photo updated"
+{% if courtPhotoFileName|length and not errors %}
+  {% if updated === true %}
+    {{ govukPanel({
+      titleText: "Photo updated"
+    }) }}
+  {% endif %}
+
+  {% if courtPhotoFileName|length %}
+    <h2 class="govuk-heading-m">Existing photo</h2>
+    <img src="{{ courtPhotoFileName }}" alt="" class="govuk-!-padding-bottom-4">
+    <div>
+      {{ govukButton({
+        text: "Delete photo",
+        classes: "govuk-button--secondary"
+      }) }}
+    </div>
+  {% else %}
+    <p class="govuk-body">There is currently no existing photo.</p>
+  {% endif %}
+
+  <h2 class="govuk-heading-m">Upload a new photo</h2>
+
+  {{ govukFileUpload({
+    id: "court-photo-file-upload",
+    name: "court-photo",
+    "accept": ".jpeg,.png",
+    input: "file",
+    label: {
+      text: "Ideally upload a JPEG or PNG image of a high quality. It will be resized and aspect ratio will be retained."
+    },
+    errorMessage: {
+      text: "File must be a JPEG or PNG"
+    }
   }) }}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Update",
+      name: "updatePhoto",
+      id: "updatePhotoUpload"
+    }) }}
+  </div>
 {% endif %}
-
-{% if courtPhoto|length %}
-  <h2 class="govuk-heading-m">Existing photo</h2>
-
-  {{ courtPhoto }}
-
-  {{ govukButton({
-    text: "Delete photo",
-    classes: "govuk-button--secondary"
-  }) }}
-{% else %}
-  <p class="govuk-body">There is currently no existing photo.</p>
-{% endif %}
-
-<h2 class="govuk-heading-m">Upload a new photo</h2>
-
-{{ govukFileUpload({
-  id: "file-upload-1",
-  name: "file-upload-1",
-  label: {
-    text: "Ideally upload a JPEG or PNG image of a high quality. It will be resized and aspect ratio will be tretained."
-  },
-  errorMessage: {
-    text: "File must be a JPEG or PNG"
-  }
-}) }}

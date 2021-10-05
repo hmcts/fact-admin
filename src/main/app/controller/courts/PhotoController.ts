@@ -4,7 +4,9 @@ import {Response} from 'express';
 import {Error} from '../../../types/Error';
 import {PhotoPageData} from '../../../types/PhotoPageData';
 import config from 'config';
-import { BlobServiceClient} from '@azure/storage-blob';
+// import {CSRF} from "../../../modules/csrf";
+// import {AxiosError} from "axios";
+// import { BlobServiceClient} from '@azure/storage-blob';
 // import getStream from 'into-stream';
 // import { v1 as uuidv1 } from 'uuid';
 
@@ -19,25 +21,42 @@ export class PhotoController {
     await this.render(req, res);
   }
 
+  public async post(req: AuthedRequest, res: Response): Promise<void> {
+    const updatedPhoto = req.body;
+    console.log('photoController put updated photo: ', updatedPhoto);
+    console.log(req.body.csrfToken);
+    // const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
+    // if (!CSRF.verify(req.body.csrfToken)) {
+    //   return this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
+    // }
+    //
+    // await req.scope.cradle.api.updateCourtAreasOfLaw(req.params.slug, updatedCasesHeard)
+    //   .then(async (value: AreaOfLaw[]) =>
+    //     await this.render(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
+    //   .catch(async (reason: AxiosError) => {
+    //     await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
+    //   });
+  }
+
   private async render(
     req: AuthedRequest,
     res: Response,
     errorMsg: string[] = [],
     updated = false,
-    courtPhoto: string = null) {
+    courtPhotoFileName: string = null) {
     const slug: string = req.params.slug as string;
-    if (!courtPhoto) {
+    if (!courtPhotoFileName) {
       await req.scope.cradle.api.getCourtImage(slug)
         .then((value: string) => {
-          courtPhoto = value;
-          // this.uploadPhotoToStorage(courtPhoto);
-          this.getPhotoFromStorage()
-            .then((result) => console.log(result))
-            .catch((ex) => console.log(ex.message));
+          courtPhotoFileName = value;
         })
         .catch(() => {
           errorMsg.push(this.getCourtPhotoErrorMsg);
         });
+    }
+
+    if (courtPhotoFileName) {
+      courtPhotoFileName = config.get('services.image-store.url') + '/' + courtPhotoFileName;
     }
 
     const errors: Error[] = [];
@@ -46,7 +65,7 @@ export class PhotoController {
     }
 
     const pageData: PhotoPageData = {
-      courtPhoto: courtPhoto,
+      courtPhotoFileName: courtPhotoFileName,
       slug: slug,
       errorMsg: errors,
       updated: updated
@@ -54,63 +73,4 @@ export class PhotoController {
 
     res.render('courts/tabs/photoContent', pageData);
   }
-
-  // private async uploadPhotoToStorage(courtPhoto: string) {
-  //
-  //   const blockBlobClient = await this.connectToStorage();
-  //
-  //   await blockBlobClient.upload(courtPhoto, courtPhoto.length);
-  // }
-
-  private async getPhotoFromStorage() {
-    //
-    // const blockBlobClient = await this.connectToStorage();
-    //
-    // const courtPhoto = await blockBlobClient.download(0);
-
-    const clientSecret: string = config.get('storageAccountConnectionString');
-    const blobServiceClient = BlobServiceClient.fromConnectionString(clientSecret);
-
-    let viewData;
-
-    try {
-      const containerClient = blobServiceClient.getContainerClient('quickstart1b153980-0cc1-11ec-9eae-69e436d6c807');
-      const listBlobsResponse = await containerClient.listBlobFlatSegment();
-
-      viewData = {
-        title: 'Home',
-        viewName: 'index',
-        accountName: 'factaat',
-        containerName: 'quickstart1b153980-0cc1-11ec-9eae-69e436d6c807'
-      };
-
-      if (listBlobsResponse.segment.blobItems.length) {
-        viewData.thumbnails = listBlobsResponse.segment.blobItems;
-      }
-    } catch (err) {
-      viewData = {
-        title: 'Error',
-        viewName: 'error',
-        message: 'There was an error contacting the blob storage container.',
-        error: err
-      };
-    }
-
-    return viewData;
-  }
-
-  // private async connectToStorage() {
-  //   const clientSecret: string = config.get('storageAccountConnectionString');
-  //
-  //   // Create the BlobServiceClient object which will be used to create a container client
-  //   const blobServiceClient = BlobServiceClient.fromConnectionString(clientSecret);
-  //
-  //   // Get a reference to a container
-  //   const containerClient = blobServiceClient.getContainerClient('quickstart1b153980-0cc1-11ec-9eae-69e436d6c807');
-  //
-  //   // Get a block blob client
-  //   return containerClient.getBlockBlobClient('quickstart1b5af510-0cc1-11ec-9eae-69e436d6c807.txt');
-  // }
-
-
 }

@@ -9,6 +9,8 @@ services:
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+  image-store:
+    url: IMAGE_BASE_URL
 port: PORT
 session:
   redis:

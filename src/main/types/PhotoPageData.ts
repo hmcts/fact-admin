@@ -1,7 +1,7 @@
 import {Error} from "./Error";
 
 export interface PhotoPageData {
-  courtPhoto: string,
+  courtPhotoFileName: string,
   slug: string,
   errorMsg: Error[],
   updated: Boolean
