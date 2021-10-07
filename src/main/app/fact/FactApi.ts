@@ -12,6 +12,7 @@ import {LocalAuthority} from '../../types/LocalAuthority';
 import {AreaOfLaw} from '../../types/AreaOfLaw';
 import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
+import {CourtTypesAndCodes} from '../../types/CourtTypesAndCodes';
 import {AdditionalLink} from '../../types/AdditionalLink';
 import config from 'config';
 
@@ -165,7 +166,7 @@ export class FactApi {
 
   public getContactTypes(): Promise<ContactType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/contactTypes`)
+      .get(`${this.adminUrl}/contactTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -195,7 +196,7 @@ export class FactApi {
 
   public getCourtTypes(): Promise<CourtType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/courtTypes/all`)
+      .get(`${this.adminBaseUrl}/courtTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -203,9 +204,9 @@ export class FactApi {
       });
   }
 
-  public getCourtCourtTypes(slug: string): Promise<CourtType[]> {
+  public getCourtTypesAndCodes(slug: string): Promise<CourtTypesAndCodes> {
     return this.axios
-      .get(`${this.adminBaseUrl}/${slug}/courtTypes`)
+      .get(`${this.adminBaseUrl}/${slug}/courtTypesAndCodes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -213,9 +214,9 @@ export class FactApi {
       });
   }
 
-  public updateCourtCourtTypes(slug: string, body: CourtType[]): Promise<CourtType[]> {
+  public updateCourtTypesAndCodes(slug: string, body: CourtTypesAndCodes): Promise<CourtTypesAndCodes> {
     return this.axios
-      .put(`${this.adminBaseUrl}/${slug}/courtTypes`, body)
+      .put(`${this.adminBaseUrl}/${slug}/courtTypesAndCodes`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -297,7 +298,7 @@ export class FactApi {
     return this.axios
       .put(`${this.adminUrl }/localauthorities/${id}`, name, {
         headers: {
-          'content-type': 'application/json'
+          'Content-Type': 'text/plain'
         }})
       .then(results => results.data)
       .catch(err => {
@@ -419,6 +420,46 @@ export class FactApi {
   public deleteAreaOfLaw(id: string): Promise<void> {
     return this.axios
       .delete(`${this.adminUrl}/areasOfLaw/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getContactType(id: string): Promise<ContactType> {
+    return this.axios
+      .get(`${this.adminUrl}/contactTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .post(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateContactType(contactType: ContactType): Promise<ContactType> {
+    return this.axios
+      .put(`${this.adminUrl}/contactTypes`, contactType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteContactType(id: string): Promise<void> {
+    return this.axios
+      .delete(`${this.adminUrl}/contactTypes/${id}`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

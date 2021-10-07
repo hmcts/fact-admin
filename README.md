@@ -75,6 +75,11 @@ $ yarn test:a11y
 
 Make sure all the paths in your application are covered by accessibility tests (see [a11y.ts](src/test/a11y/a11y.ts)).
 
+#### Environment Variables
+
+To run the functional tests, you will need to add environment variables that denote the OAUTH credentials.
+Refer to the HMCTS confluence page, admin portal section, for more information on how to set these.
+
 ### Security
 
 #### CSRF prevention
