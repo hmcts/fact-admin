@@ -5,19 +5,18 @@ Feature: Court Types
     Given I am on new browser
     Given I am on FACT homepage
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials
+    When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
-
-
-  Scenario Outline: Select and remove a court type
-    When I click edit next to court with "<view_court_slug>"
+    When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over types nav element
     When I click the types tab
     Then I can view the existing court types
+
+  Scenario: Select and remove a court type
     When I check a court type
     And I click on save court type
     Then a green update message is displayed showing Court Types updated
@@ -25,21 +24,32 @@ Feature: Court Types
     Then I click on save court type
     Then a green update message is displayed showing Court Types updated
 
-    Examples:
-      | view_court_slug                           |
-      | basingstoke-county-court-and-family-court |
-
-
-  Scenario Outline: Select a court type and leave court code blank
-    When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over types nav element
-    When I click the types tab
-    Then I can view the existing court types
+  Scenario: Select a court type and leave court code blank
     When I check a court type which has code associated with it
     Then I click on save court type
     Then a court types error message is displayed
 
-    Examples:
-      | view_court_slug                           |
-      | basingstoke-county-court-and-family-court |
+  Scenario: Adding and deleting GBS Code
+    Then I will make sure that one of the court type is selected
+    Then I will clear the existing gbs code and enter new the one "Test Gbs Code"
+    Then I click on save court type
+    Then a green update message is displayed showing Court Types updated
+
+  Scenario: Adding and removing DX Codes
+    When I remove all existing DX Codes entries and save
+    Then a green update message is displayed showing Court Types updated
+    Then I click add new Dx Code button
+    When I enter a new DX Code "Test123" explanation "test" and explanation Cy "test"
+    Then I click on save court type
+    Then a green update message is displayed showing Court Types updated
+
+  Scenario: Prevent duplicated entries being added for Dx Code
+    When I remove all existing DX Codes entries and save
+    Then a green update message is displayed showing Court Types updated
+    When I enter a new DX Code "Test123" explanation "test" and explanation Cy "test"
+    Then I click on save court type
+    Then a green update message is displayed showing Court Types updated
+    Then I click add new Dx Code button
+    When I enter a new DX Code "Test123" explanation "test" and explanation Cy "test"
+    Then I click on save court type
+    Then a court types error message is displayed
