@@ -11,7 +11,8 @@ export default function(app: Application): void {
 
   //Account
   app.get('/account',app.locals.container.cradle.accountController.get);
-  app.get('/account/invite-user', app.locals.container.cradle.inviteUserController.get)
+  app.get('/account/invite-user', app.locals.container.cradle.inviteUserController.get);
+  app.post('/account/invite-user', app.locals.container.cradle.inviteUserController.post);
 
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);

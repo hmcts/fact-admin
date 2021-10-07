@@ -22,7 +22,7 @@ import {AddressesController} from './addresses';
 import {AreasOfLawListController} from './areas-of-law-list';
 import {FacilityTypesController} from './facility-types-list';
 import {AdditionalLinksController} from './additionalLinks';
-import {InviteUserController} from './invite-user';
+import {InviteUserController} from './account/invite-user';
 
 const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');

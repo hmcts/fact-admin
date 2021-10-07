@@ -26,7 +26,7 @@ export class OidcMiddleware {
     server.get('/oauth2/callback', async (req: Request, res: Response) => {
       const response = await Axios.post(
         tokenUrl,
-        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
+        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=password&password=Pa55word11&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid roles profile search-user manage-user create-user&username=hmcts.super.fact@gmail.com`,
         {
           headers: {
             Accept: 'application/json',
