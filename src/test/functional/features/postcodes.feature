@@ -8,7 +8,7 @@ Feature: Postcodes
     And click the Sign In button
     When I select Include closed courts
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "mold-justice-centre"
+    When I click edit next to court with "county-court-money-claims-centre-ccmcc"
     Then I am redirected to the Edit Court page for the chosen court
     And I hover over types nav element
     When I click the types tab
@@ -40,7 +40,7 @@ Feature: Postcodes
     Then I click the add postcode button
     Then A green message is displayed for the postcodes "Postcodes updated"
     Then I will make sure to delete the existing postcodes for the court "<view_court_slug>"
-    Then I go back to the editing postcodes for source court "aldershot-justice-centre"
+    Then I go back to the editing postcodes for source court "county-court-money-claims-centre-ccmcc"
     When I choose the postcodes "BD4" and "BD2" to move them from the source court to the destination court
     Then I choose the destination court as "<view_court_slug>"
     Then I click the move button
