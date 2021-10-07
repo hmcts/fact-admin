@@ -641,7 +641,7 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
   });
 
-  test('Should return results from getCourtCourtTypes request', async () => {
+  test('Should return results from getCourtTypesAndCodes request', async () => {
     const results = {
       data: [
         { id: 1, name:"Magistrates' Court", code: 123},
@@ -655,10 +655,10 @@ describe('FactApi', () => {
 
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourtCourtTypes('London')).resolves.toEqual(results.data);
+    await expect(api.getCourtTypesAndCodes('London')).resolves.toEqual(results.data);
   });
 
-  test('Should return results and log error from getCourtCourtTypes request', async () => {
+  test('Should return results and log error from getCourtTypesAndCodes request', async () => {
     const mockAxios = { get: async () => {
       throw mockError;
     }} as never;
@@ -669,7 +669,7 @@ describe('FactApi', () => {
     } as never;
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourtCourtTypes('No slug')).rejects.toEqual(mockError);
+    await expect(api.getCourtTypesAndCodes('No slug')).rejects.toEqual(mockError);
   });
 
   test('Should log error and reject promise for failed getCourtCourtTypes request', async () => {
@@ -680,7 +680,7 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
 
-    await expect(api.getCourtCourtTypes('No Slug')).rejects.toBe(mockError);
+    await expect(api.getCourtTypesAndCodes('No Slug')).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
 
@@ -696,10 +696,10 @@ describe('FactApi', () => {
     const mockAxios = { put: async () => results } as never;
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
-    await expect(api.updateCourtCourtTypes('slug',[])).resolves.toEqual(results.data);
+    await expect(api.updateCourtTypesAndCodes('slug',null)).resolves.toEqual(results.data);
   });
 
-  test('Should log error for failed updateCourtCourtTypes request', async () => {
+  test('Should log error for failed updateCourtTypesAndCodes request', async () => {
     const mockAxios = { put: async () => {
       throw mockError;
     }} as never;
@@ -709,7 +709,7 @@ describe('FactApi', () => {
       info: (message: string) => message
     } as never;
     const api = new FactApi(mockAxios, mockLogger);
-    await expect(api.updateCourtCourtTypes('No Slug', [])).rejects.toEqual(mockError);
+    await expect(api.updateCourtTypesAndCodes('No Slug', null)).rejects.toEqual(mockError);
   });
 
   test('Should return results from getCourtAreasOfLaw request', async () => {
