@@ -1,7 +1,5 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
-// import { BlobServiceClient } from '@azure/storage-blob';
-// import config from "config";
 
 export class PhotoController {
   private formId = '#photoForm';
@@ -36,21 +34,25 @@ export class PhotoController {
   }
 
   private setUpUpdateEventHandler(): void {
-    $(this.formId).on('submit', e => {
+    $(this.formId).on('submit', async e => {
       e.preventDefault();
       const newCourtPhoto = (document.getElementById('court-photo-file-upload') as HTMLInputElement).files[0];
-      console.log(newCourtPhoto);
 
+      let buffer = null;
+      await this.getBufferFromFile(newCourtPhoto).then((res) => { buffer = res; });
+      console.log(buffer);
       const formData = new FormData();
       const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
       formData.append('name', newCourtPhoto.name);
       formData.append('photo', newCourtPhoto, newCourtPhoto.name);
+      formData.append('arrayBuffer', buffer);
+      formData.append('fileType', newCourtPhoto.type as string);
       formData.append('csrfToken', csrfToken as string);
 
       const slug = $('#slug').val();
       $.ajax({
         url: `/courts/${slug}/photo`,
-        method: 'post',
+        method: 'put',
         processData: false,
         contentType: false,
         data: formData
@@ -60,5 +62,13 @@ export class PhotoController {
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT photo failed.'));
     });
+  }
+
+  private async getBufferFromFile(file: File): Promise<ArrayBuffer> {
+    let buffer = null;
+    await file.arrayBuffer().then(res => {
+      buffer = res;
+    });
+    return buffer;
   }
 }

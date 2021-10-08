@@ -33,7 +33,7 @@
   {% endif %}
 
   <h2 class="govuk-heading-m">Upload a new photo</h2>
-
+  {% set error = {text: uploadError} if uploadError else false %}
   {{ govukFileUpload({
     id: "court-photo-file-upload",
     name: "court-photo",
@@ -42,9 +42,7 @@
     label: {
       text: "Ideally upload a JPEG or PNG image of a high quality. It will be resized and aspect ratio will be retained."
     },
-    errorMessage: {
-      text: "File must be a JPEG or PNG"
-    }
+    errorMessage: error
   }) }}
 
   <div class="govuk-button-group">

@@ -478,6 +478,19 @@ export class FactApi {
       });
   }
 
+  public updateCourtImage(slug: string, imageFileName: string): Promise<string> {
+    return this.axios
+      .put(`${this.baseURL}/${slug}/courtPhoto`, imageFileName, {
+        headers: {
+          'Content-Type': 'text/plain'
+        }})
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getFacilityTypes(): Promise<FacilityType[]> {
     return this.axios
       .get(`${this.adminUrl}/facilities`)
