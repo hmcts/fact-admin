@@ -48,4 +48,4 @@ Feature: Postcodes
 
     Examples:
       | view_court_slug             |
-      | kingston-upon-hull-combined-court-centre |
+      | county-court-business-centre-ccbc |
