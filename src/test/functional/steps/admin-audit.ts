@@ -41,7 +41,7 @@ Then('I click search audit button', async () => {
   await I.click(selector);
 
   //it takes half a second for a javascript to load new audits
-  await new Promise(f => setTimeout(f, 2000));
+  await new Promise(f => setTimeout(f, 5000));
 });
 
 Then('I enter between and end date', async () => {
