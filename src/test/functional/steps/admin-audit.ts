@@ -70,7 +70,7 @@ Then('I enter between and end date', async () => {
 When('I can see the expected audits', async () => {
   const rows = (await I.getTextFromElements('#auditResults > tbody > tr > td:nth-child(5)')) as string[];
   const size = rows.length;
-
+   console.log('.................size' + size);
   const lastActionCreatedTime = Date.parse(rows[size-1]);
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
