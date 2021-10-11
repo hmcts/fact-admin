@@ -41,7 +41,7 @@ Then('I click search audit button', async () => {
   await I.click(selector);
 
   //it takes half a second for a javascript to load new audits
-  await new Promise(f => setTimeout(f, 1000));
+  await new Promise(f => setTimeout(f, 2000));
 });
 
 Then('I enter between and end date', async () => {
@@ -60,7 +60,7 @@ Then('I enter between and end date', async () => {
 
   const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + end.getHours() + ':' + (end.getMinutes() + 1);
 
-  console.log('........start time............' + endTime);
+  console.log('........End time............' + endTime);
 
   await I.fillField(selectorDateFrom,startTime);
   await I.fillField(selectorDateTo,endTime);
