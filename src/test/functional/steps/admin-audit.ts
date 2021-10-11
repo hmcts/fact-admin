@@ -72,6 +72,8 @@ When('I can see the expected audits', async () => {
   const size = rows.length;
   console.log('.................size' + size);
   const lastActionCreatedTime = Date.parse(rows[size-1]);
+  console.log('.................action time ' + rows[size-1]);
+
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
   const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(2)';
