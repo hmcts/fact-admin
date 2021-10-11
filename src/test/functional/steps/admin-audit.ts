@@ -56,11 +56,11 @@ Then('I enter between and end date', async () => {
   // two zeros are require to put the date correctly
   const startTime = start.getDate() + '/' + (start.getMonth() + 1) + '/00' + start.getFullYear() + 'T' + start.getHours() + ':' + start.getMinutes();
 
-  console.log("........start time............" + startTime);
+  console.log('........start time............' + startTime);
 
   const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + end.getHours() + ':' + (end.getMinutes() + 1);
 
-  console.log("........start time............" + endTime);
+  console.log('........start time............' + endTime);
 
   await I.fillField(selectorDateFrom,startTime);
   await I.fillField(selectorDateTo,endTime);
