@@ -58,7 +58,7 @@ Then('I enter between and end date', async () => {
 
   console.log('........start time............' + startTime);
 
-  await new Promise(f => setTimeout(f, 10000));
+  await new Promise(f => setTimeout(f, 70000));
 
   const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + end.getHours() + ':' + (end.getMinutes() + 1);
 
