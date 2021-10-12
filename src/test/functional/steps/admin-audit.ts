@@ -57,25 +57,14 @@ Then('I enter between and end date', async () => {
   const startTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + start.getHours() + ':' + start.getMinutes();
   const endTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + (start.getHours() + 1) + ':' + start.getMinutes();
 
-  console.log(startTime);
-  console.log(endTime);
-
   await I.setInputField(selectorDateFrom, startTime);
   await I.setInputField(selectorDateTo, endTime);
-
-  console.log('\ncourt selected: ' + await I.getTextFromSelector('#searchLocation'));
-  console.log('\nstart time used: ' + startTime);
-  console.log('\nstart time element: ' + await I.getTextFromSelector(selectorDateFrom));
-  console.log('\nEnd time used: ' + endTime);
-  console.log('\nend time element: ' + await I.getTextFromSelector(selectorDateTo));
 });
 
 When('I can see the expected audits', async () => {
   const rows = (await I.getTextFromElements('#auditResults > tbody > tr > td:nth-child(5)')) as string[];
   const size = rows.length;
-  console.log('.................size: ' + size);
   const lastActionCreatedTime = Date.parse(rows[size-1]);
-  console.log('.................last row: ' + rows[size-1]);
 
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
