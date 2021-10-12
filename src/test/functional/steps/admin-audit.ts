@@ -55,34 +55,16 @@ Then('I enter between and end date', async () => {
 
   // two zeros are require to put the date correctly
   const startTime = start.getDate() + '/' + (start.getMonth() + 1) + '/00' + start.getFullYear() + 'T' + start.getHours() + ':' + start.getMinutes();
-
-  console.log('\nstart time: ' + startTime);
-
   const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + (end.getHours() + 1) + ':' + (end.getMinutes());
 
-  console.log('\nEnd time: ' + endTime);
-
   await I.fillField(selectorDateFrom,startTime);
   await I.fillField(selectorDateTo,endTime);
 
-  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
-  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
-  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
-
-  await I.fillField(selectorDateFrom,startTime);
-  await I.fillField(selectorDateTo,endTime);
-
-  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
-  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
-  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
-
-  await I.fillField(selectorDateFrom,startTime);
-  await I.fillField(selectorDateTo,endTime);
-
-  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
-  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
-  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
-
+  console.log('\ncourt selected: ' + await I.getTextFromSelector('#searchLocation'));
+  console.log('\nstart time used: ' + startTime);
+  console.log('\nstart time element: ' + await I.getTextFromSelector(selectorDateFrom));
+  console.log('\nEnd time used: ' + endTime);
+  console.log('\nend time element: ' + await I.getTextFromSelector(selectorDateTo));
 });
 
 When('I can see the expected audits', async () => {
