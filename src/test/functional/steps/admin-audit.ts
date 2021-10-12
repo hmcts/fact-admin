@@ -1,6 +1,6 @@
-import { When,Then } from 'cucumber';
+import {Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
-import { expect } from 'chai';
+import {expect} from 'chai';
 
 let start: Date;
 let end: Date;
@@ -41,7 +41,7 @@ Then('I click search audit button', async () => {
   await I.click(selector);
 
   //it takes half a second for a javascript to load new audits
-  await new Promise(f => setTimeout(f, 5000));
+  await new Promise(f => setTimeout(f, 10000));
 });
 
 Then('I enter between and end date', async () => {
@@ -58,6 +58,8 @@ Then('I enter between and end date', async () => {
 
   console.log('........start time............' + startTime);
 
+  await new Promise(f => setTimeout(f, 10000));
+
   const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + end.getHours() + ':' + (end.getMinutes() + 1);
 
   console.log('........End time............' + endTime);
@@ -70,9 +72,9 @@ Then('I enter between and end date', async () => {
 When('I can see the expected audits', async () => {
   const rows = (await I.getTextFromElements('#auditResults > tbody > tr > td:nth-child(5)')) as string[];
   const size = rows.length;
-  console.log('.................size' + size);
+  console.log('.................size: ' + size);
   const lastActionCreatedTime = Date.parse(rows[size-1]);
-  console.log('.................action time ' + rows[size-1]);
+  console.log('.................last row: ' + rows[size-1]);
 
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
