@@ -56,16 +56,18 @@ Then('I enter between and end date', async () => {
   // two zeros are require to put the date correctly
   const startTime = start.getDate() + '/' + (start.getMonth() + 1) + '/00' + start.getFullYear() + 'T' + start.getHours() + ':' + start.getMinutes();
 
-  console.log('........start time............' + startTime);
+  console.log('\nstart time: ' + startTime);
 
-  await new Promise(f => setTimeout(f, 70000));
+  const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + (end.getHours() + 1) + ':' + (end.getMinutes());
 
-  const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + end.getHours() + ':' + (end.getMinutes() + 1);
-
-  console.log('........End time............' + endTime);
+  console.log('\nEnd time: ' + endTime);
 
   await I.fillField(selectorDateFrom,startTime);
   await I.fillField(selectorDateTo,endTime);
+
+  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
+  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
+  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
 
 });
 
