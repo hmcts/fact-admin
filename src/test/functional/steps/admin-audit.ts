@@ -69,6 +69,20 @@ Then('I enter between and end date', async () => {
   console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
   console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
 
+  await I.fillField(selectorDateFrom,startTime);
+  await I.fillField(selectorDateTo,endTime);
+
+  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
+  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
+  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
+
+  await I.fillField(selectorDateFrom,startTime);
+  await I.fillField(selectorDateTo,endTime);
+
+  console.log('\ncourt selected: ' + await I.getElementText('#searchLocation'));
+  console.log('\nstart time element: ' + await I.getElementText(selectorDateFrom));
+  console.log('\nend time element: ' + await I.getElementText(selectorDateTo));
+
 });
 
 When('I can see the expected audits', async () => {
