@@ -65,6 +65,10 @@ export default function(app: Application): void {
   app.get('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getAllReorder);
   app.put('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.reorder);
 
+  // Audits
+  app.get('/audits', isSuperAdmin, app.locals.container.cradle.auditController.get);
+  app.get('/audit-data', isSuperAdmin, app.locals.container.cradle.auditController.getAuditData);
+
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
