@@ -53,12 +53,15 @@ Then('I enter between and end date', async () => {
   const elementExistTO = await I.checkElement(selectorDateTo);
   expect(elementExistTO).equal(true);
 
-  // two zeros are require to put the date correctly
-  const startTime = start.getDate() + '/' + (start.getMonth() + 1) + '/00' + start.getFullYear() + 'T' + start.getHours() + ':' + start.getMinutes();
-  const endTime = end.getDate() + '/' + (end.getMonth() + 1) + '/00' + end.getFullYear() + 'T' + (end.getHours() + 1) + ':' + (end.getMinutes());
+  // Date time on select picker is yyyy-mm-ddThh:mm
+  const startTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + start.getHours() + ':' + start.getMinutes();
+  const endTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + (start.getHours() + 1) + ':' + start.getMinutes();
 
-  await I.fillField(selectorDateFrom,startTime);
-  await I.fillField(selectorDateTo,endTime);
+  console.log(startTime);
+  console.log(endTime);
+
+  await I.setInputField(selectorDateFrom, startTime);
+  await I.setInputField(selectorDateTo, endTime);
 
   console.log('\ncourt selected: ' + await I.getTextFromSelector('#searchLocation'));
   console.log('\nstart time used: ' + startTime);
