@@ -22,9 +22,41 @@
 {% endif %}
 
 
+{% set emailsError = false %}
+  {% if account.email === '' %}
+    {% set emailsError = { text: 'Email address is required' } %}
+  {% elif account.isInvalidFormat === true %}
+    {% set emailsError = { text: 'Invalid email address format' } %}
+  {% endif %}
+
+{% set firstNameError = false %}
+  {% if account.firstName === '' %}
+   {% set firstNameError = { text: 'First Name is required' } %}
+  {% endif %}
+
+ {% set lastNameError = false %}
+   {% if account.lastName === '' %}
+    {% set lastNameError = { text: 'Last Name is required' } %}
+  {% endif %}
+
+ {% set rolesError = false %}
+   {% if not account.roles|length and errors|length  %}
+   {% set rolesError = { text: 'Assigned role is required' } %}
+ {% endif %}
+
+ {% set adminRoleChecked = false %}
+ {%  if account.roles|length and account.roles[0] === 'fact-admin'  %}
+  {% set adminRoleChecked = true %}
+ {% endif %}
+
+ {% set superAdminRoleChecked = false %}
+ {%  if account.roles|length and account.roles[0] === 'fact-super-admin'  %}
+   {% set superAdminRoleChecked = true %}
+  {% endif %}
+
+
 {% call govukFieldset({
   }) %}
-
 
   {{ govukInput({
     label: {
@@ -32,20 +64,20 @@
     },
     classes: "govuk-input--width-20",
     id: "email",
-    name: "email",
+    name: "account[email]",
     value: account.email,
-    errorMessage: false
+    errorMessage: emailsError
   }) }}
 
-{{ govukInput({
+  {{ govukInput({
     label: {
       text: "First Name"
     },
     classes: "govuk-input--width-20",
     id: "firstName",
-    name: "firstName",
+    name: "account[firstName]",
     value: account.firstName,
-    errorMessage: false
+    errorMessage: firstNameError
   }) }}
 
 {{ govukInput({
@@ -54,15 +86,16 @@
     },
     classes: "govuk-input--width-20",
     id: "lastName",
-    name: "lastName",
+    name: "account[lastName]",
     value: account.lastName,
-    errorMessage: false
+    errorMessage: lastNameError
   }) }}
 
 
 {{ govukRadios({
   id: "roles",
-  name: "roles",
+  name: "account[roles][]",
+  errorMessage: rolesError,
   fieldset: {
     legend: {
       text: "Assigned Roles",
@@ -76,23 +109,30 @@
   items: [
     {
       value: "fact-admin",
-      text: "fact-admin"
+      text: "fact-admin",
+      checked: adminRoleChecked
     },
     {
       value: "fact-super-admin",
-      text: "fact-super-admin"
+      text: "fact-super-admin",
+      checked: superAdminRoleChecked
     }
   ]
 }) }}
 
-  {% endcall %}
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
+<div class="govuk-button-group">
 {{ govukButton({
-  text: "Save",
-  name: "createUser"
+  text: "Invite User",
+  name: "inviteUser"
 }) }}
 
 {{ govukButton({
   text: "Cancel",
-  name: "cancelCreateUser"
+  name: "cancelInviteUser",
+   attributes: { id: "cancelInviteUserChangesBtn" },
+   classes: "govuk-button--secondary clear-changes"
 }) }}
+</div>
+{% endcall %}

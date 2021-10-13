@@ -6,11 +6,13 @@ export interface AccountPageData {
   csrfToken: string
 }
 
+export interface PasswordPageData {
+  errors: Error[],
+  account : string
+}
 
 export interface AddUserPageData {
   errors: Error[],
-  updated: Boolean
-  isSuperAdmin: boolean,
-  csrfToken: string,
+  updated: Boolean,
   account: Account
 }

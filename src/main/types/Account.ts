@@ -1,6 +1,8 @@
-export interface Account{
-  email: String,
-  firstName: String,
-  lastName: String,
-  roles: String[]
+import {Element} from "./Element";
+export interface Account extends Element{
+  email: string,
+  firstName: string,
+  lastName: string,
+  roles: string[],
 }
+

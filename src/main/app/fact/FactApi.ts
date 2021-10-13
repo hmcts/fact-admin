@@ -14,14 +14,12 @@ import {AddressType, CourtAddress} from '../../types/CourtAddress';
 import {Facility, FacilityType} from '../../types/Facility';
 import {CourtTypesAndCodes} from '../../types/CourtTypesAndCodes';
 import {AdditionalLink} from '../../types/AdditionalLink';
-import config from 'config';
 
 export class FactApi {
 
   private readonly baseURL = '/courts';
   private readonly adminBaseUrl = '/admin/courts';
   private readonly adminUrl = '/admin';
-  private readonly addUser = config.get('services.idam.addNewUserURL');
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -524,19 +522,6 @@ export class FactApi {
   public reorderFacilityTypes(ids: string[]): Promise<FacilityType[]> {
     return this.axios
       .put(`${this.adminUrl}/facilities/reorder`, ids)
-      .then(results => results.data)
-      .catch(err => {
-        this.logError(err);
-        return Promise.reject(err);
-      });
-  }
-
-  public registerUser(account : Account, accessToken: string): Promise<Account>{
-    return this.axios
-      .post(`${this.addUser }`, account, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken
-        }})
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

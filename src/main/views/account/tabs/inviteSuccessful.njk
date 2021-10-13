@@ -1,0 +1,18 @@
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+
+  {{ govukPanel({
+      titleText: "User invited successfully"
+    }) }}
+
+{{ govukInsetText({
+  text: "The user has been registered and should now receive an email. They will need to active their account using the link in the email before they can sign in."
+}) }}
+
+{{ govukButton({
+  text: "Invite another User",
+  name: "InviteAnotherUser",
+  classes: "cancel-changes"
+}) }}
