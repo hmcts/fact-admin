@@ -7,6 +7,7 @@ import {CourtAddress} from '../../../../main/types/CourtAddress';
 import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
 import {FacilityType} from '../../../../main/types/Facility';
 import {AdditionalLink} from '../../../../main/types/AdditionalLink';
+import {Action, Audit} from '../../../../main/types/Audit';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -1275,7 +1276,7 @@ describe('FactApi', () => {
     await expect(api.deleteContactType('100')).rejects.toBe(mockError);
     expect(loggerSpy).toBeCalled();
   });
-    
+
   test('Should return results from getAllFacilityTypes request', async () => {
     const results: { data: FacilityType[] } = {
       data: [
@@ -1302,7 +1303,6 @@ describe('FactApi', () => {
     const mockAxios = { get: async () => results } as any;
     const mockLogger = {} as any;
     const api = new FactApi(mockAxios, mockLogger);
-
     await expect(api.getAllFacilityTypes()).resolves.toEqual(results.data);
   });
 
@@ -1445,5 +1445,31 @@ describe('FactApi', () => {
 
     await expect(api.updateCourtAdditionalLinks('newcastle-crown-court', [])).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
+  });
+
+  test('Should return audits', async () => {
+    const results: { data: Audit[] } = {
+      data: [
+        { id: 1, action: { name: 'test', id : 1  } as Action,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          creation_time: 'a time', action_data_after: 'data after', action_data_before: 'data before', location: 'location', user_email: 'user email'}
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAudits(1, 1, 'location', 'email', 'date from', 'date to'))
+      .resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed get audits request', async () => {
+    const mockAxios = { get: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAudits(1, 1, 'location', 'email', 'date from', 'date to'))
+      .rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
   });
 });

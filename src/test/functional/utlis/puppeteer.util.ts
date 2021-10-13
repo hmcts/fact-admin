@@ -31,6 +31,13 @@ export const click = async (selector: string) => {
   await scope.page.$eval(selector, (elem: HTMLElement) => elem.click());
 };
 
+export const setInputField = async (selector: string, value: string) => {
+  // Programatically set the value of the field, rather than typing
+  await scope.page.evaluate((selector: string, value: string) => {
+    (document.querySelector(selector) as HTMLInputElement).value = value;
+  }, selector, value);
+};
+
 export const fillField = async (selector: string, value: string) => {
   await scope.page.type(selector, value);
 };
@@ -62,6 +69,15 @@ export const getElements = async (selector: string) => {
   } catch (error) {
     console.log('Could not get element.');
     return null;
+  }
+};
+
+export const getTextFromSelector = async (el: string) => {
+  try {
+    return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.value));
+  } catch (error) {
+    console.log(`Could not get element: ${el}`);
+    return [];
   }
 };
 
@@ -269,4 +285,13 @@ export const getFirstTableRowIndexContainingText = async (tableContainerSelector
   const columnData: string[] = await scope.page.$$eval(`${tableContainerSelector} table tr td:nth-child(${tableColumnNumber}`,
     (tds: HTMLTableDataCellElement[]) => tds.map((td) => td.innerText));
   return columnData.indexOf(text);
+};
+
+export const getTextFromElements = async (el: string) => {
+  try {
+    return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerText));
+  } catch (error) {
+    console.log("The element didn't appear.");
+    return [];
+  }
 };

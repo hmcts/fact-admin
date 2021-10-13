@@ -18,6 +18,7 @@ import {PostcodesController} from '../../app/controller/courts/PostcodesControll
 import {CasesHeardController} from '../../app/controller/courts/CasesHeardController';
 import {AddressController} from '../../app/controller/courts/AddressController';
 import {AreasOfLawController} from '../../app/controller/lists/AreasOfLawController';
+import {AuditController} from '../../app/controller/audits/AuditController';
 import {ContactTypesController} from '../../app/controller/lists/ContactTypesController';
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
@@ -40,7 +41,6 @@ export class Container {
       courtsController: asClass(CourtsController),
       courtsDownloadController: asClass(CourtsDownloadController),
 
-
       // Edit Court
       editCourtController: asClass(EditCourtController),
       openingTimesController: asClass(OpeningTimesController),
@@ -62,7 +62,12 @@ export class Container {
       contactTypesController : asClass(ContactTypesController),
       facilityTypesController: asClass(FacilityTypesController),
       errorController: asClass(ErrorController),
+
+      // Audits
+      auditController: asClass(AuditController),
+
       exposeErrors: asValue(server.locals.env === 'development'),
+
 
       //Account
       accountController : asClass(AccountController),

@@ -67,3 +67,11 @@
 .no-display {
   display: none;
 }
+
+.table-fixed {
+  table-layout: fixed;
+}
+
+.table-data-overflow {
+  overflow: scroll;
+}
