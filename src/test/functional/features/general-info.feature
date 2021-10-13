@@ -29,4 +29,4 @@ Feature: General Info
     Then I can view the open checkbox
     And I can view the access scheme checkbox
     And I can view the urgent notices
-    And I can view the additional info notices
+    And I can view the additional information notices

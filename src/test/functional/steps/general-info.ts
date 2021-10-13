@@ -41,7 +41,7 @@ Then('I can view the access scheme checkbox', async () => {
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
-Then('I can view the additional info notices', async () => {
+Then('I can view the additional information notices', async () => {
   const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
   const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
   expect(additionalInfoExists).equal(true);
