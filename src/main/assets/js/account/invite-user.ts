@@ -40,7 +40,7 @@ export class InviteUserController {
 
   private get(): void{
     $.ajax({
-      url: `/account/invite/user`,
+      url: '/account/invite/user',
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.inviteUserContentId);
@@ -54,7 +54,7 @@ export class InviteUserController {
   private setUpInviteEventHandler(): void {
     $(this.formId).on('submit', e => {
       e.preventDefault();
-      const url = `/account/invite/user`;
+      const url = '/account/invite/user';
       $.ajax({
         url: url,
         method: 'post',
@@ -76,9 +76,9 @@ export class InviteUserController {
         method: 'post',
         data: {password: $('#password').val()}
       }).done( async res => {
-        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), false)
-        }).fail(async response =>
-        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), true))
+        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), false);
+      }).fail(async response =>
+        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), true));
     });
   }
 
@@ -87,7 +87,7 @@ export class InviteUserController {
     $(this.tabId).on('click', `button.${this.clearInviteUserBtnClass}`, e => {
       e.preventDefault();
       $(e.target.closest('fieldset')).find(':input:visible').val('');
-      $("input[type=radio]").prop('checked', false);
+      $('input[type=radio]').prop('checked', false);
     });
   }
 
@@ -98,20 +98,20 @@ export class InviteUserController {
     });
   }
 
-    private postUserInvite(account: string, csrf:string, error: Boolean ): void {
+  private postUserInvite(account: string, csrf: string, error: boolean ): void {
 
-       $.ajax({
-        url: '/account/password',
-        method: 'post',
-        data: { account: account, _csrf: csrf, error: error}
-      }).done( async res => {
-        await this.updateContent(res, this.inviteUserContentId);
-        window.scrollTo(0, 0);
-      }).fail(response =>
-        AjaxErrorHandler.handleError(response, 'POST confirm user failed.'));
-    };
+    $.ajax({
+      url: '/account/password',
+      method: 'post',
+      data: { account: account, _csrf: csrf, error: error}
+    }).done( async res => {
+      await this.updateContent(res, this.inviteUserContentId);
+      window.scrollTo(0, 0);
+    }).fail(response =>
+      AjaxErrorHandler.handleError(response, 'POST confirm user failed.'));
+  }
 
 
- }
+}
 
 

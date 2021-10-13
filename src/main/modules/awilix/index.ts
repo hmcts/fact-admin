@@ -22,7 +22,7 @@ import {ContactTypesController} from '../../app/controller/lists/ContactTypesCon
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
 import {AccountController} from '../../app/controller/account/AccountController';
-import {InviteUserController} from "../../app/controller/account/InviteUserController";
+import {InviteUserController} from '../../app/controller/account/InviteUserController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');

@@ -1,5 +1,5 @@
-import {AuthedRequest} from "../../../types/AuthedRequest";
-import {Response} from "express";
+import {AuthedRequest} from '../../../types/AuthedRequest';
+import {Response} from 'express';
 
 
 export class AccountController {

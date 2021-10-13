@@ -1,11 +1,11 @@
-import {AuthedRequest} from "../../../types/AuthedRequest";
-import {Response} from "express";
-import { AddUserPageData, PasswordPageData} from "../../../types/AccountPageData";
+import {AuthedRequest} from '../../../types/AuthedRequest';
+import {Response} from 'express';
+import { AddUserPageData, PasswordPageData} from '../../../types/AccountPageData';
 import {Account} from '../../../types/Account';
-import {CSRF} from "../../../modules/csrf";
-import autobind from "autobind-decorator";
-import {AxiosError} from "axios";
-import {validateEmail} from "../../../utils/validation";
+import {CSRF} from '../../../modules/csrf';
+import autobind from 'autobind-decorator';
+import {AxiosError} from 'axios';
+import {validateEmail} from '../../../utils/validation';
 
 @autobind
 export class InviteUserController {
@@ -19,10 +19,10 @@ export class InviteUserController {
 
 
   public async renderUserInvite(req: AuthedRequest,
-                                res: Response,
-                                updated = false,
-                                errors:{ text: string }[] = [],
-                                account: Account = null): Promise<void> {
+    res: Response,
+    updated = false,
+    errors: { text: string }[] = [],
+    account: Account = null): Promise<void> {
 
     const pageData: AddUserPageData = {
       errors: errors,
@@ -30,29 +30,29 @@ export class InviteUserController {
       account : account
     };
     res.render('account/tabs/inviteUserContent', pageData);
-  };
+  }
 
   public async renderPassword(req: AuthedRequest,
-                              res: Response,
-                              errors:{ text: string }[] = [],
-                              account: Account = null): Promise<void> {
+    res: Response,
+    errors: { text: string }[] = [],
+    account: Account = null): Promise<void> {
 
     const pageData: PasswordPageData = {
       errors: errors,
       account : JSON.stringify(account)
     };
     res.render('account/tabs/password', pageData);
-  };
+  }
 
   public async renderInviteSuccessful(req: AuthedRequest,
-                                      res: Response) : Promise<void> {
-    res.render('account/tabs/inviteSuccessful')
+    res: Response): Promise<void> {
+    res.render('account/tabs/inviteSuccessful');
   }
 
 
   public async postUserInvite(req: AuthedRequest, res: Response): Promise<void> {
 
-    let account = req.body.account as Account;
+    const account = req.body.account as Account;
 
 
     if(!CSRF.verify(req.body._csrf)) {
@@ -68,7 +68,7 @@ export class InviteUserController {
 
     return await this.renderPassword(req, res, [], account);
 
-  };
+  }
 
   public async postPassword (req: AuthedRequest, res: Response): Promise<void> {
 
@@ -83,9 +83,9 @@ export class InviteUserController {
     await req.scope.cradle.idamApi.registerUser(JSON.parse(req.body.account), req.session.user.access_token)
       .then(() => res.render('account/tabs/inviteSuccessful'))
       .catch(async (reason: AxiosError) => {
-          return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.account));
-        });
-  };
+        return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.account));
+      });
+  }
 
   private getErrorMessages(account: Account): {text: string }[] {
     const errorMsg: {text: string }[] = [];

@@ -15,7 +15,7 @@ export default function(app: Application): void {
   app.post('/account/invite/user', app.locals.container.cradle.inviteUserController.postUserInvite);
   app.get('/account/password', app.locals.container.cradle.inviteUserController.renderPassword);
   app.post('/account/password', app.locals.container.cradle.inviteUserController.postPassword);
-  app.get('account/invite/successful', app.locals.container.cradle.inviteUserController.renderInviteSuccessful)
+  app.get('account/invite/successful', app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
 
 
   // Edit court

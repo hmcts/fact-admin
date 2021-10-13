@@ -1,14 +1,14 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { InviteUserController } from '../../../../../main/app/controller/account/InviteUserController';
-import {AddUserPageData, PasswordPageData} from "../../../../../main/types/AccountPageData";
-import {CSRF} from "../../../../../main/modules/csrf";
-import {Account} from "../../../../../main/types/Account";
+import {AddUserPageData, PasswordPageData} from '../../../../../main/types/AccountPageData';
+import {CSRF} from '../../../../../main/modules/csrf';
+import {Account} from '../../../../../main/types/Account';
 
 describe('InviteUserController', () => {
 
   let mockApi: {
-    registerUser: (account: Account,access_token : string) => Promise<Account>,
+    registerUser: (account: Account,accessToken: string) => Promise<Account>
 
   };
   const controller = new InviteUserController();
@@ -23,13 +23,14 @@ describe('InviteUserController', () => {
     account = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
 
     mockApi = {
-      registerUser: (account: Account, access_token : string) => Promise.resolve(account)
+      registerUser: (account: Account, accessToken: string) => Promise.resolve(account)
 
     };
 
     req.scope.cradle.idamApi = mockApi;
 
     req.scope.cradle.idamApi.registerUser = jest.fn().mockResolvedValue(res);
+    req.session.user.accessToken = 'accessToken';
 
   });
 
@@ -112,7 +113,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account),
       'error': false,
     };
-    req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     expect(mockApi.registerUser).toBeCalled();
@@ -125,10 +126,10 @@ describe('InviteUserController', () => {
     req.body = {
       '_csrf': CSRF.create(),
       'account': JSON.stringify(account),
-        'error': 'true'
+      'error': 'true'
     };
 
-    req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     const pageData: PasswordPageData = {
@@ -146,7 +147,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account)
     };
     CSRF.verify = jest.fn().mockReturnValue(false);
-    req.session.user.access_token = 'access_token';
+    //req.session.user.access_token = 'access_token';
     await controller.postPassword(req, res);
 
     const pageData: PasswordPageData = {
@@ -167,7 +168,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account),
       'error': false,
     };
-    req.session.user.access_token = 'access_token';
+
     CSRF.verify = jest.fn().mockReturnValue(true);
     await controller.postPassword(req, res);
 
@@ -191,7 +192,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account),
       'error': false,
     };
-    req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     const pageData: AddUserPageData = {
@@ -214,7 +215,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account),
       'error': false,
     };
-    req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     const pageData: AddUserPageData = {
@@ -236,7 +237,7 @@ describe('InviteUserController', () => {
       'account': JSON.stringify(account),
       'error': false,
     };
-    req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     const pageData: AddUserPageData = {
