@@ -1,6 +1,6 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
-import { InviteUserController } from '../../../../../main/app/controller/account/InviteUserController';
+import { InviteUserController } from '../../../../../main/app/controller/users/InviteUserController';
 import {AddUserPageData, PasswordPageData} from '../../../../../main/types/AccountPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
 import {Account} from '../../../../../main/types/Account';
@@ -44,7 +44,7 @@ describe('InviteUserController', () => {
       account : null
     };
 
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
   });
 
 
@@ -63,7 +63,7 @@ describe('InviteUserController', () => {
       account : ({ email: '', lastName: '', firstName: '', roles: []})
     };
 
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent',pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
   });
 
   test('Should display invalid email format message with invalid email', async () => {
@@ -80,7 +80,7 @@ describe('InviteUserController', () => {
       account : ({ email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin'], isInvalidFormat: true})
     };
 
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent',pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
   });
 
   test('Should POST account details and render password view', async () => {
@@ -96,7 +96,7 @@ describe('InviteUserController', () => {
       account : JSON.stringify(account)
     };
 
-    expect(res.render).toBeCalledWith('account/tabs/password',pageData);
+    expect(res.render).toBeCalledWith('users/tabs/password',pageData);
   });
 
   test('Should render the invite successful user page', async () => {
@@ -104,7 +104,7 @@ describe('InviteUserController', () => {
     await controller.renderInviteSuccessful(req, res);
 
 
-    expect(res.render).toBeCalledWith('account/tabs/inviteSuccessful');
+    expect(res.render).toBeCalledWith('users/tabs/inviteSuccessful');
   });
 
   test('Should POST account details and render invite successful view when valid password is entered', async () => {
@@ -117,7 +117,7 @@ describe('InviteUserController', () => {
     await controller.postPassword(req, res);
 
     expect(mockApi.registerUser).toBeCalled();
-    expect(res.render).toBeCalledWith('account/tabs/inviteSuccessful');
+    expect(res.render).toBeCalledWith('users/tabs/inviteSuccessful');
 
   });
 
@@ -136,7 +136,7 @@ describe('InviteUserController', () => {
       errors: [{ text: controller.invalidPasswordMsg }],
       account: JSON.stringify(account)
     };
-    expect(res.render).toBeCalledWith('account/tabs/password', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/password', pageData);
 
   });
 
@@ -154,7 +154,7 @@ describe('InviteUserController', () => {
       errors: [{ text: controller.updateErrorMsg }],
       account: JSON.stringify(account)
     };
-    expect(res.render).toBeCalledWith('account/tabs/password', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/password', pageData);
 
   });
 
@@ -177,7 +177,7 @@ describe('InviteUserController', () => {
       updated: false,
       account : account
     };
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
   });
 
@@ -200,7 +200,7 @@ describe('InviteUserController', () => {
       updated: false,
       account : account
     };
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
   });
 
@@ -223,7 +223,7 @@ describe('InviteUserController', () => {
       updated: false,
       account : account
     };
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
   });
 
@@ -245,7 +245,7 @@ describe('InviteUserController', () => {
       updated: false,
       account : account
     };
-    expect(res.render).toBeCalledWith('account/tabs/inviteUserContent', pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
   });
 });

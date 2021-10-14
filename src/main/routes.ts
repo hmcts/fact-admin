@@ -10,12 +10,12 @@ export default function(app: Application): void {
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
 
   //Account
-  app.get('/account',app.locals.container.cradle.accountController.get);
-  app.get('/account/invite/user', app.locals.container.cradle.inviteUserController.renderUserInvite);
-  app.post('/account/invite/user', app.locals.container.cradle.inviteUserController.postUserInvite);
-  app.get('/account/password', app.locals.container.cradle.inviteUserController.renderPassword);
-  app.post('/account/password', app.locals.container.cradle.inviteUserController.postPassword);
-  app.get('account/invite/successful', app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
+  app.get('/users',app.locals.container.cradle.accountController.get);
+  app.get('/users/invite/user', app.locals.container.cradle.inviteUserController.renderUserInvite);
+  app.post('/users/invite/user', app.locals.container.cradle.inviteUserController.postUserInvite);
+  app.get('/users/password', app.locals.container.cradle.inviteUserController.renderPassword);
+  app.post('/users/password', app.locals.container.cradle.inviteUserController.postPassword);
+  app.get('user/invite/successful', app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
 
 
   // Edit court

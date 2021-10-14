@@ -5,7 +5,7 @@
 
 
 {% block content %}
-  <h1 class="govuk-heading-xl">My Account</h1>
+  <h1 class="govuk-heading-xl">Manage Users</h1>
 
    {% set inviteUserHtml %}
       {% include "./tabs/inviteUser.njk" %}
@@ -15,7 +15,7 @@
             id: 'Main',
             items: [
             {
-              label: "Invite user",
+              label: "Create user",
               id: "invite-user",
             panel: {
                 html: inviteUserHtml

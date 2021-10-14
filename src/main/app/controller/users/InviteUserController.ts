@@ -29,7 +29,7 @@ export class InviteUserController {
       updated: updated,
       account : account
     };
-    res.render('account/tabs/inviteUserContent', pageData);
+    res.render('users/tabs/inviteUserContent', pageData);
   }
 
   public async renderPassword(req: AuthedRequest,
@@ -41,12 +41,12 @@ export class InviteUserController {
       errors: errors,
       account : JSON.stringify(account)
     };
-    res.render('account/tabs/password', pageData);
+    res.render('users/tabs/password', pageData);
   }
 
   public async renderInviteSuccessful(req: AuthedRequest,
     res: Response): Promise<void> {
-    res.render('account/tabs/inviteSuccessful');
+    res.render('users/tabs/inviteSuccessful');
   }
 
 
@@ -81,7 +81,7 @@ export class InviteUserController {
     }
 
     await req.scope.cradle.idamApi.registerUser(JSON.parse(req.body.account), req.session.user.access_token)
-      .then(() => res.render('account/tabs/inviteSuccessful'))
+      .then(() => res.render('users/tabs/inviteSuccessful'))
       .catch(async (reason: AxiosError) => {
         return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.account));
       });
@@ -89,7 +89,7 @@ export class InviteUserController {
 
   private getErrorMessages(account: Account): {text: string }[] {
     const errorMsg: {text: string }[] = [];
-    if (account.email === ''|| account.firstName === '' || account.lastName === '' || !account.roles.length) {
+    if (account.email === ''|| account.firstName === '' || account.lastName === '' || !account.roles ) {
       errorMsg.push({ text: this.emptyErrorMsg});
     }
 

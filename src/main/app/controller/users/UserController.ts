@@ -2,11 +2,11 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 
 
-export class AccountController {
+export class UserController {
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
 
-    res.render('account/index');
+    res.render('users/index');
   }
 
 

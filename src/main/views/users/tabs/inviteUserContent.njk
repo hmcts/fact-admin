@@ -6,7 +6,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-<h2 class="govuk-heading-l">Invite new user to Find a Court or Tribunal</h2>
+<h2 class="govuk-heading-l">Create user to Find a Court or Tribunal</h2>
 
 {% if errors|length %}
   {{ govukErrorSummary({
@@ -124,7 +124,7 @@
 
 <div class="govuk-button-group">
 {{ govukButton({
-  text: "Invite User",
+  text: "Create User",
   name: "inviteUser"
 }) }}
 

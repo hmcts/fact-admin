@@ -22,8 +22,8 @@ import {AuditController} from '../../app/controller/audits/AuditController';
 import {ContactTypesController} from '../../app/controller/lists/ContactTypesController';
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
-import {AccountController} from '../../app/controller/account/AccountController';
-import {InviteUserController} from '../../app/controller/account/InviteUserController';
+import {UserController} from '../../app/controller/users/UserController';
+import {InviteUserController} from '../../app/controller/users/InviteUserController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -70,7 +70,7 @@ export class Container {
 
 
       //Account
-      accountController : asClass(AccountController),
+      accountController : asClass(UserController),
       inviteUserController : asClass(InviteUserController)
     });
   }

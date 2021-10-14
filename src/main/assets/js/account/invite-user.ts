@@ -40,7 +40,7 @@ export class InviteUserController {
 
   private get(): void{
     $.ajax({
-      url: '/account/invite/user',
+      url: '/users/invite/user',
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.inviteUserContentId);
@@ -54,7 +54,7 @@ export class InviteUserController {
   private setUpInviteEventHandler(): void {
     $(this.formId).on('submit', e => {
       e.preventDefault();
-      const url = '/account/invite/user';
+      const url = '/users/invite/user';
       $.ajax({
         url: url,
         method: 'post',
@@ -100,7 +100,7 @@ export class InviteUserController {
   private postUserInvite(account: string, csrf: string, error: boolean ): void {
 
     $.ajax({
-      url: '/account/password',
+      url: '/users/password',
       method: 'post',
       data: { account: account, _csrf: csrf, error: error}
     }).done( async res => {
