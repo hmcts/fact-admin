@@ -41,11 +41,11 @@ Then('I can view the access scheme checkbox', async () => {
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
-Then('I can view the Covid-19 notices', async () => {
-  const covidNoticeExists = await I.checkElement('#generalInfoTab #info');
-  const welshCovidNoticeExists = await I.checkElement('#generalInfoTab #info_cy');
-  expect(covidNoticeExists).equal(true);
-  expect(welshCovidNoticeExists).equal(true);
+Then('I can view the additional information notices', async () => {
+  const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
+  const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
+  expect(additionalInfoExists).equal(true);
+  expect(welshAdditionalInfoExists).equal(true);
 });
 
 Then('a success message is displayed on the tab {string}', async (successMsg: string) => {

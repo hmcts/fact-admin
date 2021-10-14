@@ -2,7 +2,7 @@
   {
     "name": "Birmingham Civil and Family Justice Centre",
     "slug": "birmingham-civil-and-family-justice-centre",
-    "info": "Test additional info message.",
+    "info": "Test additional information message.",
     "open": true,
     "directions": null,
     "image_file": "birmingham_civil_justice_centre_and_family_courts.jpg",
@@ -295,7 +295,7 @@
   {
     "name": "Aberdeen Tribunal Hearing Centre",
     "slug": "Aberdeen-Tribunal-Hearing-Centre",
-    "info": "Test additional info message",
+    "info": "Test additional information message",
     "open": true,
     "directions": null,
     "image_file": null,
