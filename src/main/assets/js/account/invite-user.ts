@@ -86,8 +86,7 @@ export class InviteUserController {
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearInviteUserBtnClass}`, e => {
       e.preventDefault();
-      $(e.target.closest('fieldset')).find(':input:visible').val('');
-      $('input[type=radio]').prop('checked', false);
+      location.reload();
     });
   }
 
