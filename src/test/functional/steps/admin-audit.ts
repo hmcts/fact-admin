@@ -55,7 +55,7 @@ Then('I enter between and end date', async () => {
 
   // Date time on select picker is yyyy-mm-ddThh:mm
   const startTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + start.getHours() + ':' + start.getMinutes();
-  const endTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + (start.getHours() + 1) + ':' + start.getMinutes();
+  const endTime = end.getFullYear() + '-' + (end.getMonth() + 1) + '-' + end.getDate() + 'T' + end.getHours() + ':' + (end.getMinutes() + 2);
 
   await I.setInputField(selectorDateFrom, startTime);
   await I.setInputField(selectorDateTo, endTime);
