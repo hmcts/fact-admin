@@ -66,8 +66,7 @@ export class CourtTypesController {
 
     let courtTypesAndCodes: CourtTypesAndCodes = null;
 
-    req.session.user.isSuperAdmin ? courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode.trim(), dxCodes: req.body.dxCodes ? req.body.dxCodes : []}:
-      courtTypesAndCodes = {types: req.body.types, gbsCode:null , dxCodes:[]};
+    courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode.trim(), dxCodes: req.body.dxCodes ? req.body.dxCodes : []};
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateErrorMsg, null);
