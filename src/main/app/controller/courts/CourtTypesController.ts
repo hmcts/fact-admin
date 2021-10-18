@@ -66,7 +66,7 @@ export class CourtTypesController {
 
     let courtTypesAndCodes: CourtTypesAndCodes = null;
 
-    courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode.trim(), dxCodes: req.body.dxCodes ? req.body.dxCodes : []};
+    courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode ? req.body.gbsCode.trim() : req.body.gbsCode, dxCodes: req.body.dxCodes ? req.body.dxCodes : []};
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateErrorMsg, null);
