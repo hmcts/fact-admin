@@ -60,10 +60,7 @@ export class CourtFacilitiesController {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
     courtFacilities.forEach(f => {
       f.isNew = (f.isNew === true) || ((f.isNew as unknown as string) === 'true');
-      // Workaround for the issue where the the empty row is removed after the previous name selection.
-      if (!f.name) {
-        f.name = '';
-      }
+
     });
 
     if(!CSRF.verify(req.body._csrf)) {
@@ -74,7 +71,7 @@ export class CourtFacilitiesController {
     courtFacilities = courtFacilities.filter(cf => !this.facilityEntryIsEmpty(cf));
     const errorMsg: string[] = [];
 
-    if (courtFacilities.some(cf => cf.name === '' || cf.description === '')) {
+    if (courtFacilities.some(cf => cf.id == null  || cf.description === '')) {
       errorMsg.push(this.emptyNameOrDescriptionErrorMsg);
     }
 
@@ -106,20 +103,20 @@ export class CourtFacilitiesController {
   private addEmptyFormsForNewEntries(courFacilities: Facility[], numberOfForms = 1): void {
     if (courFacilities) {
       for (let i = 0; i < numberOfForms; i++) {
-        courFacilities.push({id: null,name:null,description: null, descriptionCy: null, isNew: true});
+        courFacilities.push({id: null,description: null, descriptionCy: null, isNew: true});
       }
     }
   }
 
   private facilityEntryIsEmpty(courtFacility: Facility): boolean {
-    return (!courtFacility.name && !courtFacility.description && !courtFacility.descriptionCy?.trim());
+    return (!courtFacility.id && !courtFacility.description && !courtFacility.descriptionCy?.trim());
   }
 
   private facilityDuplicated(courFacilities: Facility[], index1: number, index2: number): boolean {
-    return courFacilities[index1].name
-      && courFacilities[index2].name
+    return courFacilities[index1].id
+      && courFacilities[index2].id
       // Make sure we don't have duplicated mutually exclusive (e.g. 'parking' vs. 'No parking') facility types
-      && (courFacilities[index1].name.toLowerCase().indexOf(courFacilities[index2].name.toLowerCase()) != -1
-        || courFacilities[index2].name.toLowerCase().indexOf(courFacilities[index1].name.toLowerCase()) != -1);
+      && (courFacilities[index1].id.toString().indexOf(courFacilities[index2].id.toString()) != -1
+        || courFacilities[index2].id.toString().indexOf(courFacilities[index1].id.toString()) != -1);
   }
 }

@@ -14,7 +14,6 @@ export interface FacilityType {
 
 export interface Facility extends Element {
   id : number;
-  name : string;
   description: string;
   descriptionCy : string;
 }
