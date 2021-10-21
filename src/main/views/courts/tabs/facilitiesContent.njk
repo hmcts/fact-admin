@@ -54,7 +54,7 @@
         text: "Name"
     },
     errorMessage: nameError,
-    items: facilitiesTypes | selectFilter(facility.name)
+    items: facilitiesTypes | selectFilter(facility.id)
   }) }}
 
   {{ govukTextarea ({

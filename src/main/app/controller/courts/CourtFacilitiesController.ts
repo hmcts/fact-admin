@@ -100,13 +100,13 @@ export class CourtFacilitiesController {
 
   private static getFacilityTypesForSelect(standardTypes: FacilityType[]): SelectItem[] {
     return standardTypes.map((ft: FacilityType) => (
-      {value: ft.name, text: ft.name, selected: false}));
+      {value: ft.id, text: ft.name, selected: false}));
   }
 
   private addEmptyFormsForNewEntries(courFacilities: Facility[], numberOfForms = 1): void {
     if (courFacilities) {
       for (let i = 0; i < numberOfForms; i++) {
-        courFacilities.push({name:null,description: null, descriptionCy: null, isNew: true});
+        courFacilities.push({id: null,name:null,description: null, descriptionCy: null, isNew: true});
       }
     }
   }
