@@ -147,7 +147,7 @@ describe('InviteUserController', () => {
       'user': JSON.stringify(user)
     };
     CSRF.verify = jest.fn().mockReturnValue(false);
-    //req.session.user.access_token = 'access_token';
+
     await controller.postPassword(req, res);
 
     const pageData: PasswordPageData = {
