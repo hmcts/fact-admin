@@ -17,34 +17,34 @@
 
 
 {% set emailsError = false %}
-  {% if account.email === '' %}
+  {% if user.email === '' %}
     {% set emailsError = { text: 'Email address is required' } %}
-  {% elif account.isInvalidFormat === true %}
+  {% elif user.isInvalidFormat === true %}
     {% set emailsError = { text: 'Invalid email address format' } %}
   {% endif %}
 
 {% set firstNameError = false %}
-  {% if account.firstName === '' %}
+  {% if user.firstName === '' %}
    {% set firstNameError = { text: 'First Name is required' } %}
   {% endif %}
 
  {% set lastNameError = false %}
-   {% if account.lastName === '' %}
+   {% if user.lastName === '' %}
     {% set lastNameError = { text: 'Last Name is required' } %}
   {% endif %}
 
  {% set rolesError = false %}
-   {% if not account.roles|length and errors|length  %}
+   {% if not user.roles|length and errors|length  %}
    {% set rolesError = { text: 'Assigned role is required' } %}
  {% endif %}
 
  {% set adminRoleChecked = false %}
- {%  if account.roles|length and account.roles[0] === 'fact-admin'  %}
+ {%  if user.roles|length and user.roles[0] === 'fact-admin'  %}
   {% set adminRoleChecked = true %}
  {% endif %}
 
  {% set superAdminRoleChecked = false %}
- {%  if account.roles|length and account.roles[0] === 'fact-super-admin'  %}
+ {%  if user.roles|length and user.roles[0] === 'fact-super-admin'  %}
    {% set superAdminRoleChecked = true %}
   {% endif %}
 
@@ -58,8 +58,8 @@
     },
     classes: "govuk-input--width-20",
     id: "email",
-    name: "account[email]",
-    value: account.email,
+    name: "user[email]",
+    value: user.email,
     errorMessage: emailsError
   }) }}
 
@@ -69,8 +69,8 @@
     },
     classes: "govuk-input--width-20",
     id: "firstName",
-    name: "account[firstName]",
-    value: account.firstName,
+    name: "user[firstName]",
+    value: user.firstName,
     errorMessage: firstNameError
   }) }}
 
@@ -80,8 +80,8 @@
     },
     classes: "govuk-input--width-20",
     id: "lastName",
-    name: "account[lastName]",
-    value: account.lastName,
+    name: "user[lastName]",
+    value: user.lastName,
     errorMessage: lastNameError
   }) }}
 
@@ -89,7 +89,7 @@
 {{ govukRadios({
   classes: "govuk-radios--small",
   id: "roles",
-  name: "account[roles][]",
+  name: "user[roles][]",
   errorMessage: rolesError,
   fieldset: {
     legend: {

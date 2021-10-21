@@ -1,18 +1,18 @@
-import {Account} from "./Account";
+import {User} from "./User";
 import {Error} from "./Error";
 
-export interface AccountPageData {
+export interface UserPageData {
   isSuperAdmin: boolean,
   csrfToken: string
 }
 
 export interface PasswordPageData {
   errors: Error[],
-  account : string
+  user : string
 }
 
 export interface AddUserPageData {
   errors: Error[],
   updated: Boolean,
-  account: Account
+  user: User
 }

@@ -69,7 +69,7 @@ export class Container {
       exposeErrors: asValue(server.locals.env === 'development'),
 
 
-      //Account
+      //User
       accountController : asClass(UserController),
       inviteUserController : asClass(InviteUserController)
     });

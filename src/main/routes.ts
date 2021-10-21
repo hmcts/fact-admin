@@ -9,13 +9,13 @@ export default function(app: Application): void {
   app.get('/courts', app.locals.container.cradle.courtsController.get);
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
 
-  //Account
-  app.get('/users',app.locals.container.cradle.accountController.get);
-  app.get('/users/invite/user', app.locals.container.cradle.inviteUserController.renderUserInvite);
-  app.post('/users/invite/user', app.locals.container.cradle.inviteUserController.postUserInvite);
-  app.get('/users/password', app.locals.container.cradle.inviteUserController.renderPassword);
-  app.post('/users/password', app.locals.container.cradle.inviteUserController.postPassword);
-  app.get('user/invite/successful', app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
+  //Users
+  app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
+  app.get('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderUserInvite);
+  app.post('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.postUserInvite);
+  app.get('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderPassword);
+  app.post('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.postPassword);
+  app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
 
 
   // Edit court

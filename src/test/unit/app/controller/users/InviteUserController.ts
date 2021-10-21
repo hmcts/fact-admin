@@ -1,29 +1,29 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { InviteUserController } from '../../../../../main/app/controller/users/InviteUserController';
-import {AddUserPageData, PasswordPageData} from '../../../../../main/types/AccountPageData';
+import {AddUserPageData, PasswordPageData} from '../../../../../main/types/UserPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
-import {Account} from '../../../../../main/types/Account';
+import {User} from '../../../../../main/types/User';
 
 describe('InviteUserController', () => {
 
   let mockApi: {
-    registerUser: (account: Account,accessToken: string) => Promise<Account>
+    registerUser: (account: User, accessToken: string) => Promise<User>
 
   };
   const controller = new InviteUserController();
 
-  let account: Account = null;
+  let user: User = null;
   const res = mockResponse();
   const req = mockRequest();
   CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
   CSRF.verify = jest.fn().mockReturnValue(true);
 
   beforeEach(() => {
-    account = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
+    user = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
 
     mockApi = {
-      registerUser: (account: Account, accessToken: string) => Promise.resolve(account)
+      registerUser: (user: User, accessToken: string) => Promise.resolve(user)
 
     };
 
@@ -41,7 +41,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: Array.of(),
       updated: false,
-      account : null
+      user : null
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
@@ -53,14 +53,14 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': { email: '', lastName: '', firstName: '', roles: []}
+      'user': { email: '', lastName: '', firstName: '', roles: []}
     };
     await controller.postUserInvite(req, res);
 
     const pageData: AddUserPageData = {
       errors: [{ text: controller.emptyErrorMsg }],
       updated: false,
-      account : ({ email: '', lastName: '', firstName: '', roles: []})
+      user : ({ email: '', lastName: '', firstName: '', roles: []})
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
@@ -70,14 +70,14 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': { email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}
+      'user': { email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}
     };
     await controller.postUserInvite(req, res);
 
     const pageData: AddUserPageData = {
       errors: [{ text: controller.getEmailAddressFormatErrorMsg }],
       updated: false,
-      account : ({ email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin'], isInvalidFormat: true})
+      user : ({ email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin'], isInvalidFormat: true})
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
@@ -87,13 +87,13 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': account
+      'user': user
     };
     await controller.postUserInvite(req, res);
 
     const pageData: PasswordPageData = {
       errors: Array.of(),
-      account : JSON.stringify(account)
+      user : JSON.stringify(user)
     };
 
     expect(res.render).toBeCalledWith('users/tabs/password',pageData);
@@ -110,7 +110,7 @@ describe('InviteUserController', () => {
   test('Should POST account details and render invite successful view when valid password is entered', async () => {
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': false,
     };
 
@@ -125,7 +125,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': 'true'
     };
 
@@ -134,7 +134,7 @@ describe('InviteUserController', () => {
 
     const pageData: PasswordPageData = {
       errors: [{ text: controller.invalidPasswordMsg }],
-      account: JSON.stringify(account)
+      user: JSON.stringify(user)
     };
     expect(res.render).toBeCalledWith('users/tabs/password', pageData);
 
@@ -144,7 +144,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': '',
-      'account': JSON.stringify(account)
+      'user': JSON.stringify(user)
     };
     CSRF.verify = jest.fn().mockReturnValue(false);
     //req.session.user.access_token = 'access_token';
@@ -152,7 +152,7 @@ describe('InviteUserController', () => {
 
     const pageData: PasswordPageData = {
       errors: [{ text: controller.updateErrorMsg }],
-      account: JSON.stringify(account)
+      user: JSON.stringify(user)
     };
     expect(res.render).toBeCalledWith('users/tabs/password', pageData);
 
@@ -165,7 +165,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': false,
     };
 
@@ -175,7 +175,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.updateErrorMsg }],
       updated: false,
-      account : account
+      user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
@@ -189,7 +189,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': false,
     };
 
@@ -198,7 +198,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.duplicatedErrorMsg }],
       updated: false,
-      account : account
+      user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
@@ -212,7 +212,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': false,
     };
 
@@ -221,7 +221,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
-      account : account
+      user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
@@ -234,7 +234,7 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'account': JSON.stringify(account),
+      'user': JSON.stringify(user),
       'error': false,
     };
 
@@ -243,7 +243,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
-      account : account
+      user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 

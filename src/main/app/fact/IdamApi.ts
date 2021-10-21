@@ -1,7 +1,7 @@
 import config from 'config';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
-import {Account} from '../../types/Account';
+import {User} from "../../types/User";
 
 export class IdamApi {
 
@@ -12,9 +12,9 @@ export class IdamApi {
     private readonly logger: Logger
   ) {}
 
-  public registerUser(account: Account, accessToken: string): Promise<Account>{
+  public registerUser(user: User, accessToken: string): Promise<User>{
     return this.axios
-      .post(`${this.addUser}`, account, {
+      .post(`${this.addUser}`, user, {
         headers: {
           Authorization: 'Bearer ' + accessToken
         }})

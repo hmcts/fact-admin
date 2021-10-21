@@ -46,7 +46,7 @@ export class InviteUserController {
         await this.updateContent(res, this.inviteUserContentId);
       },
       error: (jqxhr, errorTextStatus, err) =>
-        AjaxErrorHandler.handleError(jqxhr, 'GET invite user of law failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET invite user failed.')
     });
 
   }
@@ -76,9 +76,9 @@ export class InviteUserController {
         method: 'post',
         data: {password: $('#password').val()}
       }).done( async res => {
-        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), false);
+        await this.postUserInvite($('#user').val().toString(), $("[name='_csrf']").val().toString(), false);
       }).fail(async response =>
-        await this.postUserInvite($('#account').val().toString(), $("[name='_csrf']").val().toString(), true));
+        await this.postUserInvite($('#user').val().toString(), $("[name='_csrf']").val().toString(), true));
     });
   }
 
@@ -97,12 +97,12 @@ export class InviteUserController {
     });
   }
 
-  private postUserInvite(account: string, csrf: string, error: boolean ): void {
+  private postUserInvite(user: string, csrf: string, error: boolean ): void {
 
     $.ajax({
       url: '/users/password',
       method: 'post',
-      data: { account: account, _csrf: csrf, error: error}
+      data: { user: user, _csrf: csrf, error: error}
     }).done( async res => {
       await this.updateContent(res, this.inviteUserContentId);
       window.scrollTo(0, 0);

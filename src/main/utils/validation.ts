@@ -1,6 +1,6 @@
 import {Email} from '../types/Email';
 import {Element} from '../types/Element';
-import {Account} from '../types/Account';
+import {User} from '../types/User';
 
 export const isObjectEmpty = (obj: {}): boolean => {
   return Object.keys(obj).length === 0;
@@ -19,11 +19,11 @@ export function validateEmailFormat(emails: Email[]): boolean {
   return !hasInvalidFormat;
 }
 
-export function validateEmail(account: Account): boolean {
+export function validateEmail(user: User): boolean {
   const regexp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-  const isValid = regexp.test(account.email);
+  const isValid = regexp.test(user.email);
   if (!isValid) {
-    account.isInvalidFormat = true;
+    user.isInvalidFormat = true;
   }
   return isValid;
 }

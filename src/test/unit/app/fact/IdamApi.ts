@@ -1,6 +1,5 @@
 import {IdamApi} from '../../../../main/app/fact/IdamApi';
-import {Account} from '../../../../main/types/Account';
-
+import {User} from '../../../../main/types/User';
 
 
 describe('IdamApi', () => {
@@ -19,7 +18,7 @@ describe('IdamApi', () => {
 
 
   test('Should post register user request', async () => {
-    const result: { data: Account } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
 
     const mockAxios = { post: async () => result } as never;
     const api = new IdamApi(mockAxios, mockLogger);
@@ -27,7 +26,7 @@ describe('IdamApi', () => {
   });
 
   test('Should log error and reject promise for failed register user request', async () => {
-    const result: { data: Account } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
 
     const mockAxios = { post: async () => { throw mockError; }} as any;
     const api = new IdamApi(mockAxios, mockLogger);

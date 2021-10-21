@@ -1,7 +1,7 @@
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import { AddUserPageData, PasswordPageData} from '../../../types/AccountPageData';
-import {Account} from '../../../types/Account';
+import { AddUserPageData, PasswordPageData} from '../../../types/UserPageData';
+import {User} from '../../../types/User';
 import {CSRF} from '../../../modules/csrf';
 import autobind from 'autobind-decorator';
 import {AxiosError} from 'axios';
@@ -22,12 +22,12 @@ export class InviteUserController {
     res: Response,
     updated = false,
     errors: { text: string }[] = [],
-    account: Account = null): Promise<void> {
+    user: User = null): Promise<void> {
 
     const pageData: AddUserPageData = {
       errors: errors,
       updated: updated,
-      account : account
+      user : user
     };
     res.render('users/tabs/inviteUserContent', pageData);
   }
@@ -35,11 +35,11 @@ export class InviteUserController {
   public async renderPassword(req: AuthedRequest,
     res: Response,
     errors: { text: string }[] = [],
-    account: Account = null): Promise<void> {
+    user: User = null): Promise<void> {
 
     const pageData: PasswordPageData = {
       errors: errors,
-      account : JSON.stringify(account)
+      user : JSON.stringify(user)
     };
     res.render('users/tabs/password', pageData);
   }
@@ -52,42 +52,42 @@ export class InviteUserController {
 
   public async postUserInvite(req: AuthedRequest, res: Response): Promise<void> {
 
-    const account = req.body.account as Account;
+    const user = req.body.user as User;
 
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.renderUserInvite(req, res, false,[{ text: this.updateErrorMsg }] , account);
+      return this.renderUserInvite(req, res, false,[{ text: this.updateErrorMsg }] , user);
     }
 
-    const errorMsg = this.getErrorMessages(account);
+    const errorMsg = this.getErrorMessages(user);
 
 
     if (errorMsg.length > 0) {
-      return this.renderUserInvite(req, res, false, errorMsg, account);
+      return this.renderUserInvite(req, res, false, errorMsg, user);
     }
 
-    return await this.renderPassword(req, res, [], account);
+    return await this.renderPassword(req, res, [], user);
 
   }
 
   public async postPassword (req: AuthedRequest, res: Response): Promise<void> {
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.renderPassword(req, res, [{ text: this.updateErrorMsg }],JSON.parse(req.body.account) );
+      return this.renderPassword(req, res, [{ text: this.updateErrorMsg }],JSON.parse(req.body.user) );
     }
 
     if(req.body.error === 'true') {
-      return this.renderPassword(req, res, [{ text: this.invalidPasswordMsg }] ,JSON.parse(req.body.account));
+      return this.renderPassword(req, res, [{ text: this.invalidPasswordMsg }] ,JSON.parse(req.body.user));
     }
 
-    await req.scope.cradle.idamApi.registerUser(JSON.parse(req.body.account), req.session.user.access_token)
+    await req.scope.cradle.idamApi.registerUser(JSON.parse(req.body.user), req.session.user.access_token)
       .then(() => res.render('users/tabs/inviteSuccessful'))
       .catch(async (reason: AxiosError) => {
-        return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.account));
+        return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.user));
       });
   }
 
-  private getErrorMessages(account: Account): {text: string }[] {
+  private getErrorMessages(account: User): {text: string }[] {
     const errorMsg: {text: string }[] = [];
     if (account.email === ''|| account.firstName === '' || account.lastName === '' || !account.roles ) {
       errorMsg.push({ text: this.emptyErrorMsg});

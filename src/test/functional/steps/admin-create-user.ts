@@ -37,7 +37,7 @@ When('I enter First Name {string}', async (firstName: string) => {
 });
 
 Then('I select the user role as fact-admin', async () => {
-  const selector = '#account\\[roles\\]\\[\\]';
+  const selector = '#user\\[roles\\]\\[\\]';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
