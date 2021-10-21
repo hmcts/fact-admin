@@ -13,7 +13,7 @@ export class FacilitiesController {
   private addFacilityBtnClass = 'addFacility';
   private clearFacilityBtnClass = 'clearFacility';
 
-  private facilityName = 'name';
+  private facilityId = 'id';
   private description = 'description';
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
@@ -135,7 +135,7 @@ export class FacilitiesController {
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    this.renameFormElement('select', this.facilityName, this.facilityName);
+    this.renameFormElement('select', this.facilityId, this.facilityId);
     this.renameFormElement('textarea', this.description, this.description);
     this.renameFormElement('textarea', this.descriptionCy, this.descriptionCy);
     this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
