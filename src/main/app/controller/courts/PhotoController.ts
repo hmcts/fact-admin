@@ -7,11 +7,7 @@ import config from 'config';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 // import getStream from 'into-stream';
-import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  newPipeline, ContainerClient
-} from '@azure/storage-blob';
+import {BlobServiceClient, ContainerClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
 
 // const { Readable } = require('stream');
 
@@ -28,7 +24,7 @@ export class PhotoController {
     await this.render(req, res);
   }
 
-  public async createBlobInContainer(file: File) {
+  public async createBlobInContainer(file: File, fileName: string) {
     const sharedKeyCredential = new StorageSharedKeyCredential(
       config.get('services.image-store.account-name'),
       config.get('services.image-store.account-key'));
@@ -39,12 +35,17 @@ export class PhotoController {
       pipeline
     );
     const containerClient = blobServiceClient.getContainerClient('images');
+    // await containerClient.createIfNotExists({
+    //   access: 'container',
+    // });
     // create blobClient for container
-    const blobClient = containerClient.getBlockBlobClient(file.name);
+    console.log('file name with file.name: ', fileName);
+
+    const blobClient = containerClient.getBlockBlobClient(fileName);
     // set mimetype as determined from browser with file upload control
     const options = { blobHTTPHeaders: { blobContentType: file.type } };
     // upload file
-    await blobClient.uploadData(file, options);
+    return await blobClient.uploadData(file, options);
   }
 
   public async getBlobsInContainer(containerClient: ContainerClient) {
@@ -99,7 +100,9 @@ export class PhotoController {
         //   console.log('calling uploadImageFile');
         //   await this.render(req, res, [], true, null, imageFileName);
         // });
-        await this.createBlobInContainer(imageFile);
+        console.log('goes in here');
+        const response: any = await this.createBlobInContainer(imageFile, imageFileName);
+        console.log(response);
         const blobsInContainer: string[] = await this.getBlobsInContainer(containerClient);
         console.log(blobsInContainer);
       })
