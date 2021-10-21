@@ -38,14 +38,14 @@ export class PhotoController {
       e.preventDefault();
       const newCourtPhoto = (document.getElementById('court-photo-file-upload') as HTMLInputElement).files[0];
 
-      let buffer = null;
-      await this.getBufferFromFile(newCourtPhoto).then((res) => { buffer = res; });
-      console.log(buffer);
+      // let buffer = null;
+      // await this.getBufferFromFile(newCourtPhoto).then((res) => { buffer = res; });
+      // console.log(buffer);
       const formData = new FormData();
       const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
       formData.append('name', newCourtPhoto.name);
-      formData.append('photo', newCourtPhoto, newCourtPhoto.name);
-      formData.append('arrayBuffer', buffer);
+      formData.append('photo', newCourtPhoto);
+      // formData.append('arrayBuffer', buffer);
       formData.append('fileType', newCourtPhoto.type as string);
       formData.append('csrfToken', csrfToken as string);
 
@@ -64,11 +64,11 @@ export class PhotoController {
     });
   }
 
-  private async getBufferFromFile(file: File): Promise<ArrayBuffer> {
-    let buffer = null;
-    await file.arrayBuffer().then(res => {
-      buffer = res;
-    });
-    return buffer;
-  }
+  // private async getBufferFromFile(file: File): Promise<ArrayBuffer> {
+  //   let buffer = null;
+  //   await file.arrayBuffer().then(res => {
+  //     buffer = res;
+  //   });
+  //   return buffer;
+  // }
 }
