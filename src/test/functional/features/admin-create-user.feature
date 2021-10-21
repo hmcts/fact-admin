@@ -7,7 +7,7 @@ Feature: create admin user
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click on my account link
-    Then I am redirected to the page "Create user for Find a Court or Tribunal"
+    Then I am redirected to the page "Create A User"
 
   Scenario: creating new user with valid e-mail and password
     When I enter Email "test@gmail.com"
