@@ -1,7 +1,7 @@
 import config from 'config';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
-import {User} from "../../types/User";
+import {User} from '../../types/User';
 
 export class IdamApi {
 
