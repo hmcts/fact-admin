@@ -36,6 +36,7 @@ export class PhotoController {
   private setUpUpdateEventHandler(): void {
     $(this.formId).on('submit', async e => {
       e.preventDefault();
+      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
       const newCourtPhoto = (document.getElementById('court-photo-file-upload') as HTMLInputElement).files[0];
 
       // let buffer = null;
@@ -45,7 +46,7 @@ export class PhotoController {
       const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
       formData.append('name', newCourtPhoto.name);
       formData.append('photo', newCourtPhoto);
-      // formData.append('arrayBuffer', buffer);
+      formData.append('oldCourtPhoto', oldCourtPhoto);
       formData.append('fileType', newCourtPhoto.type as string);
       formData.append('csrfToken', csrfToken as string);
 

@@ -21,7 +21,7 @@
 
   {% if courtPhotoFileName|length %}
     <h2 class="govuk-heading-m">Existing photo</h2>
-    <img src="{{ courtPhotoFileName }}" alt="" class="govuk-!-padding-bottom-4">
+    <img id="current-court-photo" src="{{ courtPhotoFileURL }}" alt="" class="govuk-!-padding-bottom-4" name={{ courtPhotoFileName }}>
     <div>
       {{ govukButton({
         text: "Delete photo",
