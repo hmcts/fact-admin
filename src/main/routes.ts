@@ -9,6 +9,15 @@ export default function(app: Application): void {
   app.get('/courts', app.locals.container.cradle.courtsController.get);
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
 
+  //Users
+  app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
+  app.get('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderUserInvite);
+  app.post('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.postUserInvite);
+  app.get('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderPassword);
+  app.post('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.postPassword);
+  app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
+
+
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
@@ -72,4 +81,6 @@ export default function(app: Application): void {
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
+
+
 }
