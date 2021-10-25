@@ -1,0 +1,28 @@
+{% from "macros/tabs/macro.njk" import factTabs %}
+
+
+{% extends "template.njk" %}
+
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Manage Users</h1>
+
+   {% set inviteUserHtml %}
+      {% include "./tabs/inviteUser.njk" %}
+   {% endset -%}
+
+{{ factTabs({
+            id: 'Main',
+            items: [
+            {
+              label: "Create User",
+              id: "invite-user",
+            panel: {
+                html: inviteUserHtml
+                }
+            }
+            ]
+          }) }}
+
+{% endblock %}
+

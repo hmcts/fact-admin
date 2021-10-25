@@ -112,7 +112,7 @@
   items: courtTypes
 }) }}
 
-{% if isSuperAdmin %}
+
 
 <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
@@ -267,7 +267,7 @@
 
     {% endcall %}
 
-{% endif %}
+
 {{ govukButton({
   text: "Save",
   name: "saveCourtTypes"
@@ -275,13 +275,13 @@
 
 
 
-{% if isSuperAdmin %}
+
 {{ govukButton({
   text: "Add new Dx code",
   name: "addDxCode",
   type: "button",
   classes: "govuk-button--secondary addDxCode"
 }) }}
-{% endif %}
+
 
 
