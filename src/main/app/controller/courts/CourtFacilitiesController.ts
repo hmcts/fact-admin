@@ -60,6 +60,10 @@ export class CourtFacilitiesController {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
     courtFacilities.forEach(f => {
       f.isNew = (f.isNew === true) || ((f.isNew as unknown as string) === 'true');
+      // Workaround for the issue where the the empty row is removed after the previous name selection.
+      if (!f.id) {
+        f.id = null;
+      }
 
     });
 

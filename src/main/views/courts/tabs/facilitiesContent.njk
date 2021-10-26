@@ -26,7 +26,7 @@
 
   {% if requiresValidation === true %}
     {% set nameError = false %}
-    {% if facility.name === '' %}
+    {% if facility.id is null and errors|length  %}
       {% set nameError = { text: 'Name is required' } %}
     {% elif facility.isDuplicated === true %}
       {% set nameError = { text: 'Duplicated facility' } %}
