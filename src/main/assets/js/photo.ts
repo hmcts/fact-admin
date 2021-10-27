@@ -39,15 +39,12 @@ export class PhotoController {
     $(this.formId).on('submit', async e => {
       e.preventDefault();
       const oldCourtPhotoExists = !!document.getElementById('current-court-photo');
-      let oldCourtPhotoName = '';
-      if (oldCourtPhotoExists) {
-        oldCourtPhotoName = document.getElementById('current-court-photo').getAttribute('name');
-      }
+      const oldCourtPhotoName = oldCourtPhotoExists ?
+        document.getElementById('current-court-photo').getAttribute('name') : '';
       const newCourtPhoto = (document.getElementById('court-photo-file-upload') as HTMLInputElement).files[0];
-
+      const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
 
       const formData = new FormData();
-      const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
       formData.append('name', newCourtPhoto.name);
       formData.append('photo', newCourtPhoto);
       formData.append('oldCourtPhoto', oldCourtPhotoName);
