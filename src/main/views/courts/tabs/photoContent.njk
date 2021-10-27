@@ -12,20 +12,21 @@
   }) }}
 {% endif %}
 
-{% if courtPhotoFileName|length and not errors %}
+{% if not errors %}
   {% if updated === true %}
     {{ govukPanel({
       titleText: "Photo updated"
     }) }}
   {% endif %}
 
-  {% if courtPhotoFileName|length %}
+  {% if courtPhotoFileURL|length %}
     <h2 class="govuk-heading-m">Existing photo</h2>
     <img id="current-court-photo" src="{{ courtPhotoFileURL }}" alt="" class="govuk-!-padding-bottom-4" name={{ courtPhotoFileName }}>
     <div>
       {{ govukButton({
         text: "Delete photo",
-        classes: "govuk-button--secondary"
+        classes: "govuk-button--secondary deletePhoto",
+        name: "deletePhoto"
       }) }}
     </div>
   {% else %}

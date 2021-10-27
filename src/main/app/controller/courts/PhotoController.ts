@@ -6,7 +6,14 @@ import {PhotoPageData} from '../../../types/PhotoPageData';
 import config from 'config';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
-import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
+import {
+  BlobServiceClient,
+  BlockBlobClient,
+  BlockBlobUploadHeaders,
+  newPipeline,
+  StorageSharedKeyCredential
+} from '@azure/storage-blob';
+import {CourtPhoto} from '../../../types/CourtPhoto';
 
 @autobind
 export class PhotoController {
@@ -33,11 +40,34 @@ export class PhotoController {
     if (!CSRF.verify(req.body.csrfToken)) {
       return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
     }
+
     await this.uploadImageFileToAzure(imageFile, imageFileName)
       .then(async () => {
-        await this.deleteImageFileFromAzure(oldCourtPhoto);
-        await req.scope.cradle.api.updateCourtImage(slug, imageFileName);
+        const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
+        await req.scope.cradle.api.updateCourtImage(slug, courtPhoto);
+        if (oldCourtPhoto) {
+          await this.deleteImageFileFromAzure(oldCourtPhoto);
+        }
         await this.render(req, res, [], true, null, imageFileName);
+      })
+      .catch(async (reason: AxiosError) => {
+        await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+        console.log(reason);
+      });
+  }
+
+  public async delete(req: AuthedRequest, res: Response): Promise<void> {
+    const slug: string = req.params.slug as string;
+    const oldCourtPhoto = req.body.oldCourtPhoto as string;
+
+    if (!CSRF.verify(req.body.csrfToken)) {
+      return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+    }
+
+    await req.scope.cradle.api.updateCourtImage(slug, {'image_name': null} as CourtPhoto)
+      .then(async () => {
+        await this.deleteImageFileFromAzure(oldCourtPhoto);
+        await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {
         await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
@@ -52,7 +82,7 @@ export class PhotoController {
     updated = false,
     uploadError: string = null,
     courtPhotoFileName: string = null,
-    courtPhotoFileURL: string = null) {
+    courtPhotoFileURL: string = null): Promise<void> {
     const slug: string = req.params.slug as string;
     if (!courtPhotoFileName) {
       await req.scope.cradle.api.getCourtImage(slug)
@@ -85,7 +115,7 @@ export class PhotoController {
     res.render('courts/tabs/photoContent', pageData);
   }
 
-  public async uploadImageFileToAzure(file: File, fileName: string) {
+  public async uploadImageFileToAzure(file: File, fileName: string): Promise<BlockBlobUploadHeaders> {
     const blobClient = this.getAzureBlockBlobClient(fileName);
 
     // set mimetype as determined from browser with file upload control
@@ -95,7 +125,7 @@ export class PhotoController {
     return await blobClient.uploadData(file, options);
   }
 
-  private async deleteImageFileFromAzure(imageFileName: string) {
+  private async deleteImageFileFromAzure(imageFileName: string): Promise<void> {
     const blockBlobClient = this.getAzureBlockBlobClient(imageFileName);
     try {
       await blockBlobClient.delete();
@@ -104,7 +134,7 @@ export class PhotoController {
     }
   }
 
-  private getAzureBlockBlobClient(imageFileName: string) {
+  private getAzureBlockBlobClient(imageFileName: string): BlockBlobClient {
     const sharedKeyCredential = new StorageSharedKeyCredential(
       config.get('services.image-store.account-name'),
       config.get('services.image-store.account-key'));
@@ -117,5 +147,4 @@ export class PhotoController {
     const containerClient = blobServiceClient.getContainerClient('images');
     return containerClient.getBlockBlobClient(imageFileName);
   }
-
 }

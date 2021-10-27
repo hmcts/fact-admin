@@ -5,6 +5,7 @@ export class PhotoController {
   private formId = '#photoForm';
   private tabId = '#photoTab';
   private photoContentId = '#photoContent';
+  private deleteBtnClass = '.deletePhoto'
 
   constructor() {
     this.initialize();
@@ -26,6 +27,7 @@ export class PhotoController {
       success: async (res) => {
         await $(this.photoContentId).html(res);
         this.setUpUpdateEventHandler();
+        this.setUpDeleteEventHandler();
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET photo failed.');
@@ -36,17 +38,19 @@ export class PhotoController {
   private setUpUpdateEventHandler(): void {
     $(this.formId).on('submit', async e => {
       e.preventDefault();
-      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
+      const oldCourtPhotoExists = !!document.getElementById('current-court-photo');
+      let oldCourtPhotoName = '';
+      if (oldCourtPhotoExists) {
+        oldCourtPhotoName = document.getElementById('current-court-photo').getAttribute('name');
+      }
       const newCourtPhoto = (document.getElementById('court-photo-file-upload') as HTMLInputElement).files[0];
 
-      // let buffer = null;
-      // await this.getBufferFromFile(newCourtPhoto).then((res) => { buffer = res; });
-      // console.log(buffer);
+
       const formData = new FormData();
       const csrfToken = $(this.tabId + ' input[name="_csrf"]').val();
       formData.append('name', newCourtPhoto.name);
       formData.append('photo', newCourtPhoto);
-      formData.append('oldCourtPhoto', oldCourtPhoto);
+      formData.append('oldCourtPhoto', oldCourtPhotoName);
       formData.append('fileType', newCourtPhoto.type as string);
       formData.append('csrfToken', csrfToken as string);
 
@@ -65,11 +69,25 @@ export class PhotoController {
     });
   }
 
-  // private async getBufferFromFile(file: File): Promise<ArrayBuffer> {
-  //   let buffer = null;
-  //   await file.arrayBuffer().then(res => {
-  //     buffer = res;
-  //   });
-  //   return buffer;
-  // }
+  private setUpDeleteEventHandler(): void {
+    $(this.tabId).on('click', `button${this.deleteBtnClass}`, e => {
+      e.preventDefault();
+      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
+      const slug = $('#slug').val();
+
+      $.ajax({
+        url: `/courts/${slug}/photo`,
+        method: 'delete',
+        data: {
+          oldCourtPhoto: oldCourtPhoto,
+          slug: slug,
+          csrfToken: $(this.tabId + ' input[name="_csrf"]').val()
+        }
+      }).done(res => {
+        $(this.photoContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'DELETE photo failed.'));
+    });
+  }
 }

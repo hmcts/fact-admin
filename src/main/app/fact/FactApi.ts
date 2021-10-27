@@ -478,12 +478,9 @@ export class FactApi {
       });
   }
 
-  public updateCourtImage(slug: string, imageFileName: string): Promise<string> {
+  public updateCourtImage(slug: string, body: {}): Promise<string> {
     return this.axios
-      .put(`${this.baseURL}/${slug}/courtPhoto`, imageFileName, {
-        headers: {
-          'Content-Type': 'text/plain'
-        }})
+      .put(`${this.baseURL}/${slug}/courtPhoto`, body)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
