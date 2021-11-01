@@ -1,0 +1,3 @@
+services:
+  image-store:
+    url: IMAGE_BASE_URL

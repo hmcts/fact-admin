@@ -21,6 +21,7 @@ export class PhotoController {
   getCourtPhotoErrorMsg = 'A problem occurred when retrieving the court photo. ';
   putCourtPhotoErrorMsg = 'A problem occurred when updating the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
+  imageSizeError = 'File must be a less than 2mb.';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -33,8 +34,12 @@ export class PhotoController {
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
     const imageFile = req.file;
 
-    if (fileType !== ('image/jpeg' || 'image/png')) {
+    if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
       return this.render(req, res, [this.imageTypeError], false, this.imageTypeError, null);
+    }
+
+    if (imageFile.size > 2000000) {
+      return this.render(req, res, [this.imageSizeError], false, this.imageSizeError, null);
     }
 
     if (!CSRF.verify(req.body.csrfToken)) {

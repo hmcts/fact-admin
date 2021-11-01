@@ -5,9 +5,7 @@ const multer = require('multer');
 
 export default function(app: Application): void {
 
-  const upload = multer({
-    limits : {fileSize : 2000000} // 2 mb's
-  });
+  const upload = multer();
 
   app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
