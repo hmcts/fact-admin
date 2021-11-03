@@ -6,14 +6,8 @@ import {PhotoPageData} from '../../../types/PhotoPageData';
 import config from 'config';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
-import {
-  BlobServiceClient,
-  BlockBlobClient,
-  BlockBlobUploadHeaders,
-  newPipeline,
-  StorageSharedKeyCredential
-} from '@azure/storage-blob';
 import {CourtPhoto} from '../../../types/CourtPhoto';
+import {AzureBlobStorage} from '../../azure/AzureBlobStorage';
 
 @autobind
 export class PhotoController {
@@ -22,6 +16,8 @@ export class PhotoController {
   putCourtPhotoErrorMsg = 'A problem occurred when updating the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
+
+  azureBlobStorage = new AzureBlobStorage();
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -46,12 +42,12 @@ export class PhotoController {
       return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
     }
 
-    await this.uploadImageFileToAzure(imageFile, imageFileName)
+    await this.azureBlobStorage.uploadImageFileToAzure(imageFile, imageFileName)
       .then(async () => {
         const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
         await req.scope.cradle.api.updateCourtImage(slug, courtPhoto);
         if (oldCourtPhoto) {
-          await this.deleteImageFileFromAzure(oldCourtPhoto);
+          await this.azureBlobStorage.deleteImageFileFromAzure(oldCourtPhoto);
         }
         await this.render(req, res, [], true, null, imageFileName);
       })
@@ -71,7 +67,7 @@ export class PhotoController {
 
     await req.scope.cradle.api.updateCourtImage(slug, {'image_name': null} as CourtPhoto)
       .then(async () => {
-        await this.deleteImageFileFromAzure(oldCourtPhoto);
+        await this.azureBlobStorage.deleteImageFileFromAzure(oldCourtPhoto);
         await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {
@@ -118,38 +114,5 @@ export class PhotoController {
     };
 
     res.render('courts/tabs/photoContent', pageData);
-  }
-
-  public async uploadImageFileToAzure(file: File, fileName: string): Promise<BlockBlobUploadHeaders> {
-    const blobClient = this.getAzureBlockBlobClient(fileName);
-
-    // set mimetype as determined from browser with file upload control
-    const options = { blobHTTPHeaders: { blobContentType: file.type } };
-
-    // upload file
-    return await blobClient.uploadData(file, options);
-  }
-
-  private async deleteImageFileFromAzure(imageFileName: string): Promise<void> {
-    const blockBlobClient = this.getAzureBlockBlobClient(imageFileName);
-    try {
-      await blockBlobClient.delete();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  private getAzureBlockBlobClient(imageFileName: string): BlockBlobClient {
-    const sharedKeyCredential = new StorageSharedKeyCredential(
-      config.get('services.image-store.account-name'),
-      config.get('services.image-store.account-key'));
-    const pipeline = newPipeline(sharedKeyCredential);
-
-    const blobServiceClient = new BlobServiceClient(
-      `https://${config.get('services.image-store.account-name')}.blob.core.windows.net`,
-      pipeline
-    );
-    const containerClient = blobServiceClient.getContainerClient('images');
-    return containerClient.getBlockBlobClient(imageFileName);
   }
 }

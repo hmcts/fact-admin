@@ -15,6 +15,8 @@ describe('PhotoController', () => {
   const getCourtImageData = 'plymouth-combined-court.jpeg';
   const updateCourtImageData = 'plymouth-combined-court-updated.jpeg';
   const courtImageURLData = `IMAGE_BASE_URL/${getCourtImageData}`;
+  const updatedCourtImageURLData = `IMAGE_BASE_URL/${updateCourtImageData}`;
+  const imageFile = new File([''], 'filename', { type: 'image/jpeg' });
 
   const getCourtImage: (testSlug: string) => string = () => getCourtImageData;
   const updateCourtImage: (testSlug: string, updateCourtImageData: string) => string = () => updateCourtImageData;
@@ -75,6 +77,32 @@ describe('PhotoController', () => {
       uploadError: null
     });
     expect(mockApi.getCourtImage).toBeCalledWith(testSlug);
+  });
+
+  test('Should update court photo', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/jpeg',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = imageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: updateCourtImageData,
+      courtPhotoFileURL: updatedCourtImageURLData,
+      slug: testSlug,
+      errorMsg: [],
+      updated: true,
+      uploadError: null
+    });
+    expect(mockApi.updateCourtImage).toBeCalledWith(testSlug, updateCourtImageData);
   });
 
 });
