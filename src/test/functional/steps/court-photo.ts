@@ -2,7 +2,7 @@ import { Then, When } from 'cucumber';
 import { expect } from 'chai';
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
-const scope = require('../support/scope');
+//const scope = require('../support/scope');
 
 When('I hover over nav element', async () => {
   const selector = '#nav';
@@ -36,13 +36,8 @@ When('I check for existing photo then delete it',  async () => {
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
   expect(await I.checkElement(fileSelector)).equal(true);
-  //await I.click(fileSelector);
-  const [fileChooser] = await Promise.all([
-    scope.page.waitForFileChooser(),
-    scope.page.click(fileSelector)
-  ]);
-  //await I.click('button[name="updatePhoto"]');
-  await fileChooser.accept(['src/test/SampleJPGImage_100kbmb (1).jpg']);
+  const filePath = 'src/test/SampleJPGImage_100kbmb (1).jpg';
+  await I.uploadFile(fileSelector,filePath);
 });
 
 When('I click update photo button', async () => {

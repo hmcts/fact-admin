@@ -19,9 +19,3 @@ Feature: Update court photo
     Then I upload new photo
     Then I click update photo button
     Then A green message is displayed for "Photo updated"
-
-#  Scenario: Adding photo of greater than 2MB
-#    When I check for existing photo then delete it
-#    Then I upload new photo of size greater than 2MB
-#    Then I click update photo button
-#    Then A error message displayed "File must be a less than 2mb."
