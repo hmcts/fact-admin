@@ -16,7 +16,8 @@ describe('PhotoController', () => {
   const courtImageURLData = `IMAGE_BASE_URL/${getCourtImageData}`;
   const updatedCourtImageURLData = `IMAGE_BASE_URL/${updateCourtImageData}`;
 
-  const imageFile = { size: 10};
+  const imageFile = {size: 10};
+  const largeImageFile = {size: 3000000};
 
   const getCourtImage: (testSlug: string) => string = () => getCourtImageData;
   const updateCourtImage: (testSlug: string, updateCourtImageData: string) => string = () => updateCourtImageData;
@@ -47,6 +48,9 @@ describe('PhotoController', () => {
 
     jest.spyOn(mockApi, 'getCourtImage');
     jest.spyOn(mockApi, 'updateCourtImage');
+
+    jest.spyOn(mockAzureBlobStorage, 'uploadImageFileToAzure');
+    jest.spyOn(mockAzureBlobStorage, 'deleteImageFileFromAzure');
   });
 
   test('Should get photo view and render the page', async () => {
@@ -119,11 +123,187 @@ describe('PhotoController', () => {
       uploadError: null
     });
     expect(mockApi.updateCourtImage).toBeCalledWith(testSlug, {'image_name': updateCourtImageData });
-
-    // expect(mockAzureBlobStorage.deleteImageFileFromAzure).toBeCalledWith(testSlug, {'image_name': updateCourtImageData });
-    
-    jest.spyOn(mockAzureBlobStorage, 'uploadImageFileToAzure');
-    jest.spyOn(mockAzureBlobStorage, 'deleteImageFileFromAzure');
+    expect(mockAzureBlobStorage.uploadImageFileToAzure).toBeCalledWith(imageFile, updateCourtImageData);
+    expect(mockAzureBlobStorage.deleteImageFileFromAzure).toBeCalledWith(getCourtImageData);
   });
 
+  test('Should not update court image if file is too big', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/jpeg',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = largeImageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'File must be a less than 2mb.'}],
+      updated: false,
+      uploadError: 'File must be a less than 2mb.'
+    });
+  });
+
+  test('Should not update court image if file type is not jpeg or png', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/gif',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = imageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'File must be a JPEG or PNG.'}],
+      updated: false,
+      uploadError: 'File must be a JPEG or PNG.'
+    });
+  });
+
+  test('Should not update court image if api returns an error', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    const errorResponse = mockResponse();
+
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/jpeg',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = imageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtImage = jest.fn().mockRejectedValue(errorResponse);
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A problem occurred when updating the court photo. '}],
+      updated: false,
+      uploadError: null
+    });
+  });
+
+  test('Should not update court image if CSRF token is invalid', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    CSRF.verify = jest.fn().mockReturnValue(false);
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/jpeg',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = imageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A problem occurred when updating the court photo. '}],
+      updated: false,
+      uploadError: null
+    });
+  });
+
+  test('Should delete court photo', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.body = {
+      'oldCourtPhoto': getCourtImageData,
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.delete(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [],
+      updated: true,
+      uploadError: null
+    });
+    expect(mockApi.updateCourtImage).toBeCalledWith(testSlug, {'image_name': null });
+    expect(mockAzureBlobStorage.deleteImageFileFromAzure).toBeCalledWith(getCourtImageData);
+  });
+
+  test('Should not delete court photo if CSRF token is invalid', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    CSRF.verify = jest.fn().mockReturnValue(false);
+    req.body = {
+      'oldCourtPhoto': getCourtImageData,
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.delete(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A problem occurred when deleting the court photo. '}],
+      updated: false,
+      uploadError: null
+    });
+  });
+
+  test('Should not delete court photo if api returns an error', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+    const errorResponse = mockResponse();
+    req.body = {
+      'oldCourtPhoto': getCourtImageData,
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtImage = jest.fn().mockRejectedValue(errorResponse);
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.delete(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A problem occurred when deleting the court photo. '}],
+      updated: false,
+      uploadError: null
+    });
+  });
 });

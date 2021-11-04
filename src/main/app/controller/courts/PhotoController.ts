@@ -13,6 +13,7 @@ export class PhotoController {
 
   getCourtPhotoErrorMsg = 'A problem occurred when retrieving the court photo. ';
   putCourtPhotoErrorMsg = 'A problem occurred when updating the court photo. ';
+  deleteCourtPhotoErrorMsg = 'A problem occurred when deleting the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
 
@@ -59,7 +60,7 @@ export class PhotoController {
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
 
     if (!CSRF.verify(req.body.csrfToken)) {
-      return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+      return this.render(req, res, [this.deleteCourtPhotoErrorMsg], false);
     }
 
     await req.scope.cradle.api.updateCourtImage(slug, {'image_name': null} as CourtPhoto)
@@ -68,7 +69,7 @@ export class PhotoController {
         await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+        await this.render(req, res, [this.deleteCourtPhotoErrorMsg], false);
         console.log(reason);
       });
   }
