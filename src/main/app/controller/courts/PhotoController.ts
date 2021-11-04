@@ -7,7 +7,6 @@ import config from 'config';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {CourtPhoto} from '../../../types/CourtPhoto';
-import {AzureBlobStorage} from '../../azure/AzureBlobStorage';
 
 @autobind
 export class PhotoController {
@@ -16,8 +15,6 @@ export class PhotoController {
   putCourtPhotoErrorMsg = 'A problem occurred when updating the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
-
-  azureBlobStorage = new AzureBlobStorage();
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -42,12 +39,12 @@ export class PhotoController {
       return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
     }
 
-    await this.azureBlobStorage.uploadImageFileToAzure(imageFile, imageFileName)
+    await req.scope.cradle.azure.uploadImageFileToAzure(imageFile, imageFileName)
       .then(async () => {
         const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
         await req.scope.cradle.api.updateCourtImage(slug, courtPhoto);
         if (oldCourtPhoto) {
-          await this.azureBlobStorage.deleteImageFileFromAzure(oldCourtPhoto);
+          await req.scope.cradle.azure.deleteImageFileFromAzure(oldCourtPhoto);
         }
         await this.render(req, res, [], true, null, imageFileName);
       })
@@ -67,7 +64,7 @@ export class PhotoController {
 
     await req.scope.cradle.api.updateCourtImage(slug, {'image_name': null} as CourtPhoto)
       .then(async () => {
-        await this.azureBlobStorage.deleteImageFileFromAzure(oldCourtPhoto);
+        await req.scope.cradle.azure.deleteImageFileFromAzure(oldCourtPhoto);
         await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {

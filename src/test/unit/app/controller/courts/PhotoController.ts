@@ -9,17 +9,25 @@ describe('PhotoController', () => {
     getCourtImage: () => Promise<string>,
     updateCourtImage: () => Promise<string>};
 
-
   const testSlug = 'plymouth-combined-court';
 
   const getCourtImageData = 'plymouth-combined-court.jpeg';
   const updateCourtImageData = 'plymouth-combined-court-updated.jpeg';
   const courtImageURLData = `IMAGE_BASE_URL/${getCourtImageData}`;
   const updatedCourtImageURLData = `IMAGE_BASE_URL/${updateCourtImageData}`;
-  const imageFile = new File([''], 'filename', { type: 'image/jpeg' });
+
+  const imageFile = { size: 10};
 
   const getCourtImage: (testSlug: string) => string = () => getCourtImageData;
   const updateCourtImage: (testSlug: string, updateCourtImageData: string) => string = () => updateCourtImageData;
+
+  let mockAzureBlobStorage: {
+    uploadImageFileToAzure: () => Promise<void>,
+    deleteImageFileFromAzure: () => Promise<void>};
+
+  const uploadImageFileToAzure: (object: {}, imageFileName: string) => Promise<void> = () => null;
+  const deleteImageFileFromAzure: (imageFileName: string) => Promise<void> = () => null;
+
 
   const controller = new PhotoController();
 
@@ -27,6 +35,11 @@ describe('PhotoController', () => {
     mockApi = {
       getCourtImage: async (): Promise<string> => getCourtImage(testSlug),
       updateCourtImage: async (): Promise<string> => updateCourtImage(testSlug, updateCourtImageData)
+    };
+
+    mockAzureBlobStorage = {
+      uploadImageFileToAzure: async (): Promise<void> => uploadImageFileToAzure(imageFile, getCourtImageData),
+      deleteImageFileFromAzure: async (): Promise<void> => deleteImageFileFromAzure(getCourtImageData)
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -43,6 +56,7 @@ describe('PhotoController', () => {
       slug: testSlug
     };
     req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
 
     await controller.get(req, res);
 
@@ -64,6 +78,7 @@ describe('PhotoController', () => {
       slug: testSlug
     };
     req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
     req.scope.cradle.api.getCourtImage = jest.fn().mockRejectedValue(new Error('Mock API Error'));
 
     await controller.get(req, res);
@@ -91,6 +106,7 @@ describe('PhotoController', () => {
     req.file = imageFile;
     req.params = { slug: testSlug };
     req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
 
     await controller.put(req, res);
 
@@ -102,7 +118,12 @@ describe('PhotoController', () => {
       updated: true,
       uploadError: null
     });
-    expect(mockApi.updateCourtImage).toBeCalledWith(testSlug, updateCourtImageData);
+    expect(mockApi.updateCourtImage).toBeCalledWith(testSlug, {'image_name': updateCourtImageData });
+
+    // expect(mockAzureBlobStorage.deleteImageFileFromAzure).toBeCalledWith(testSlug, {'image_name': updateCourtImageData });
+    
+    jest.spyOn(mockAzureBlobStorage, 'uploadImageFileToAzure');
+    jest.spyOn(mockAzureBlobStorage, 'deleteImageFileFromAzure');
   });
 
 });

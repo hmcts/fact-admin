@@ -6,6 +6,7 @@ import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import jwt_decode from 'jwt-decode';
+import {AzureBlobStorage} from "../../app/azure/AzureBlobStorage";
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -56,7 +57,8 @@ export class OidcMiddleware {
               Authorization: 'Bearer ' + req.session.user.id_token
             }
           })),
-          api: asClass(FactApi)
+          api: asClass(FactApi),
+          azure: asClass(AzureBlobStorage)
         });
 
         res.locals.isLoggedIn = true;

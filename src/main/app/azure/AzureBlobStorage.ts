@@ -1,10 +1,6 @@
-import autobind from 'autobind-decorator';import config from 'config';
-import {
-  BlobServiceClient,
-  ContainerClient,
-  newPipeline,
-  StorageSharedKeyCredential
-} from '@azure/storage-blob';
+import autobind from 'autobind-decorator';
+import config from 'config';
+import {BlobServiceClient, ContainerClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
 
 @autobind
 export class AzureBlobStorage {
