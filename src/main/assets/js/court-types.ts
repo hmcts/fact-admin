@@ -14,6 +14,15 @@ export class CourtTypesController {
   private localAuthoritiesTabId ='#tab_local-authorities';
   private postcodesNavTab = '#tab_postcodes'
 
+  private deleteBtnClass = 'deleteDxCode';
+  private hiddenDxCodesTemplateId = '#newDxCodeTemplate';
+  private addDxCodeBtnClass = 'addDxCode';
+  private clearDxCodeBtnClass = 'clearDxCode';
+
+  private codeInputName = 'code';
+  private explanationInputName = 'explanation';
+  private explanationCyInputName = 'explanationCy';
+
   constructor() {
     this.initialize();
   }
@@ -23,6 +32,9 @@ export class CourtTypesController {
       if ($(this.tabId).length > 0) {
         this.getCourtTypes();
         this.setUpSubmitEventHandler();
+        this.setUpAddEventHandler();
+        this.setUpDeleteEventHandler();
+        this.setUpClearEventHandler();
       }
     });
   }
@@ -63,6 +75,53 @@ export class CourtTypesController {
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST court types failed.'));
     });
+  }
+
+  private setUpAddEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.addDxCodeBtnClass}`, e => {
+      // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
+      const selector = `${this.tabId} ${this.hiddenDxCodesTemplateId}`;
+      const copyFieldset = $(selector).clone()
+        .removeAttr('disabled')
+        .removeAttr('hidden')
+        .removeAttr('id');
+      $(selector).before(copyFieldset);
+      // Set the id and names of the elements in the table
+      this.renameFormElements();
+
+    });
+  }
+
+  private setUpClearEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.clearDxCodeBtnClass}`, e => {
+      $(e.target.closest('fieldset')).find(':input:visible').val('');
+    });
+  }
+
+  private setUpDeleteEventHandler(): void {
+    $(this.tabId).on('click', `button.${this.deleteBtnClass}`, e => {
+      e.target.closest('fieldset').remove();
+      this.renameFormElements();
+    });
+  }
+
+  private getInputName(name: string, index: number): string {
+    return `dxCodes[${index}][${name}]`;
+  }
+
+  private renameFormElement(type: 'input', name: string, id: string): void {
+    $(`${this.tabId} ${type}[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('id', idx => `${id}-` + idx)
+      .siblings('label').attr('for', idx => `${id}-` + idx);
+  }
+
+  private renameFormElements(): void {
+    // Rename the input fields so that the index values are in order,
+    // which affects the order when the form is posted.
+    this.renameFormElement('input', this.codeInputName, this.codeInputName);
+    this.renameFormElement('input', this.explanationInputName, this.explanationInputName);
+    this.renameFormElement('input', this.explanationCyInputName, this.explanationCyInputName);
   }
 
   //added below methods to make sure local authorities tabs is enabled and disabled when family court type is updated.

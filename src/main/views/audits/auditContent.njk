@@ -1,0 +1,202 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+  <div id = 'auditsPageId'>
+    <h1 class="govuk-heading-xl">Audits</h1>
+
+    {% set auditItems = [] %}
+    {% for audit in audits %}
+      {% set auditItems = (auditItems.push([
+        {
+          text: audit.user_email,
+          classes: 'table-data-overflow'
+        },
+        {
+          text: audit.action.name
+        },
+        {
+          text: audit.location
+        },
+        {
+          html: '<div>Before: </br>'
+            + audit.action_data_before
+            + '</br></br> After: </br>'
+            + audit.action_data_after + '</div>',
+          classes: 'table-data-overflow'
+        },
+        {
+          text: audit.creation_time
+        }
+        ]), auditItems) %}
+    {% endfor %}
+
+    {% set courtItems = [] %}
+    {% set courtItems = (courtItems.push(
+        {
+          attributes: {
+            'data-type': 'name',
+            'data-name': base
+          },
+          value: 'select-court',
+          text: 'Select Court',
+          selected: true
+        }
+      ), courtItems) %}
+    {% for court in courts|sort(false, true, 'name') %}
+      {% set courtItems = (courtItems.push(
+          {
+            attributes: {
+              'data-type': 'name',
+              'data-name': court.slug
+            },
+            value: court.slug,
+            text: court.name,
+            selected: court.slug == searchOptions.location
+          }
+        ), courtItems) %}
+    {% endfor %}
+
+    {% if errors|length %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errors
+      }) }}
+    {% endif %}
+
+    <div id="auditsSearchOptions" class='govuk-grid-row'>
+      <input id='currentPage' type='hidden' value='{{currentPage}}'></input>
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: "Email Address"
+          },
+          attributes: {
+            placeholder: 'Email Address'
+          },
+          value: searchOptions.username,
+          id: 'searchUser',
+          name: 'searchUser'
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukSelect({
+          label: {
+            text: 'Court'
+          },
+          id: 'searchLocation',
+          name: 'searchLocation',
+          value: searchOptions.location,
+          items: courtItems
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: 'Between'
+          },
+          id: 'searchDateFrom',
+          name: 'searchDateFrom',
+          type: 'datetime-local',
+          value: searchOptions.dateFrom
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukInput({
+          label: {
+            text: 'And'
+          },
+          id: 'searchDateTo',
+          name: 'searchDateTo',
+          type: 'datetime-local',
+          value: searchOptions.dateTo
+        }) }}
+      </div>
+
+      <div class='govuk-grid-column-one-quarter'>
+        {{ govukButton({
+          text: "Search",
+          name: "searchAuditsBtn",
+          attributes: { id: "searchAuditsBtn" },
+          classes: "govuk-button--primary"
+        }) }}
+      </div>
+    </div>
+
+    <div id = 'tableContainer'>
+      {% if auditItems|length %}
+        {{ govukTable({
+          id: 'auditResults',
+          name: 'auditResults',
+          attributes: {
+            id: 'auditResults'
+          },
+          classes: 'table-fixed',
+          head: [
+            {
+              text: "Username",
+              attributes: {
+                id: 'tableAuditUserEmail'
+              }
+            },
+            {
+              text: 'Action',
+              attributes: {
+                id: 'tableAuditAction'
+              }
+            },
+            {
+              text: "Location",
+              attributes: {
+                id: 'tableAuditLocation'
+              }
+            },
+            {
+              text: "Changes",
+              attributes: {
+                id: 'tableAuditActionDataBefore'
+              },
+              classes: 'govuk-!-width-one-third table-data-overflow '
+            },
+            {
+              text: "Created At",
+              attributes: {
+                id: 'tableAuditCreatedAt'
+              }
+            }
+          ],
+          rows: auditItems
+        }) }}
+      {% else %}
+        <div class="govuk-grid-row">
+          <div class='govuk-grid-column-two-thirds'>
+            <p>There are no more audits, or the search returned no results</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {# A basic previous and next, until pagination has been included in gov uk design kit (currently marked as to-do)
+      https://design-system.service.gov.uk/community/backlog/ 24/09/2021 #}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <a name='auditPrevious' id='auditPrevious' class='govuk-link govuk-link--no-visited-state' href='/audits'><< Previous</a>
+      </div>
+
+      <div class="govuk-grid-column-one-third">
+        <a class='govuk-link govuk-link--no-visited-state'>Page: {{ (currentPage | int) + 1 }}</p>
+      </div>
+
+      <div class='govuk-grid-column-one-third'>
+        <a name='auditNext' id='auditNext' class='govuk-link govuk-link--no-visited-state' href='/audits'>Next >></a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

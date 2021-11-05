@@ -13,8 +13,9 @@
 
 // sass-lint:disable class-name-format
 .govuk-tabs__list-item {
-  font-size: 1.1495rem;
+  font-size: 1.4rem;
 }
+
 
 .courts-table-header-inactive {
 
@@ -65,4 +66,12 @@
 
 .no-display {
   display: none;
+}
+
+.table-fixed {
+  table-layout: fixed;
+}
+
+.table-data-overflow {
+  overflow: scroll;
 }

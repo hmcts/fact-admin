@@ -6,7 +6,8 @@ import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import jwt_decode from 'jwt-decode';
-import {AzureBlobStorage} from "../../app/azure/AzureBlobStorage";
+import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
+import {IdamApi} from '../../app/fact/IdamApi';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -47,6 +48,33 @@ export class OidcMiddleware {
       res.render('logout');
     });
 
+    server.post('/getAccessToken', async (req: Request, res: Response) => {
+
+      const response = await Axios.post(
+        tokenUrl,
+        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=password&password=${encodeURIComponent(req.body.password)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid roles profile search-user manage-user create-user&username=${encodeURIComponent(req.session.user.jwt.sub)}`,
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      ).catch((error) => {
+        res.status(400);
+        return error;
+      });
+
+      if (response.data) {
+        req.session.user = response.data;
+        req.session.user.jwt = jwt_decode(response.data.id_token);
+        req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+
+      }
+
+      res.send();
+
+    });
+
     server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
       if (req.session.user) {
         req.scope = req.app.locals.container.createScope();
@@ -58,7 +86,8 @@ export class OidcMiddleware {
             }
           })),
           api: asClass(FactApi),
-          azure: asClass(AzureBlobStorage)
+          azure: asClass(AzureBlobStorage),
+          idamApi : asClass(IdamApi)
         });
 
         res.locals.isLoggedIn = true;

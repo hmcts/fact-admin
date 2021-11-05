@@ -3,6 +3,9 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {CourtType, CourtTypeItem, CourtTypePageData} from '../../../types/CourtType';
 import {CSRF} from '../../../modules/csrf';
+import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
+import {DxCode} from '../../../types/DxCode';
+import {validateDuplication} from '../../../utils/validation';
 
 export enum courtType {
   magistrate = "Magistrates' Court",
@@ -14,6 +17,9 @@ export enum courtType {
 export class CourtTypesController {
 
   emptyCourtCodeErrorMsg = 'Court code is required and must be numeric and start with 1-9';
+  emptyDxCodeErrorMsg = 'Code is required for all Dx code entries.';
+  duplicatedDxCodeErrorMsg = 'All dx codes must be unique.';
+  getCourtTypesAndCodesErrorMsg = 'A problem occurred when retrieving the list of court types and codes.';
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
@@ -24,64 +30,80 @@ export class CourtTypesController {
     res: Response,
     updated = false,
     error = '',
-    courtCourtTypes: CourtType[] = null): Promise<void> {
-    if (!courtCourtTypes) {
+    courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
+    const slug: string = req.params.slug as string;
+    if (courtTypesAndCodes == null) {
+      await req.scope.cradle.api.getCourtTypesAndCodes(slug)
+        .then((value: CourtTypesAndCodes) => courtTypesAndCodes = value)
+        .catch(() => error += this.getCourtTypesAndCodesErrorMsg);
+    }
+    let courtTypes: CourtType[] = [];
 
-      const slug: string = req.params.slug as string;
-      await req.scope.cradle.api.getCourtCourtTypes(slug)
-        .then((value: CourtType[]) => courtCourtTypes = value)
+    if(courtTypesAndCodes) {
+      if (!courtTypesAndCodes.dxCodes?.some(ot => ot.isNew === true)) {
+        this.addEmptyFormsForNewEntries(courtTypesAndCodes.dxCodes);
+      }
+
+      await req.scope.cradle.api.getCourtTypes(slug)
+        .then((value: CourtType[]) => courtTypes = value)
         .catch(() => error += this.getCourtTypesErrorMsg);
-
     }
 
-    let allCourtTypes: CourtType[] = [];
-
-    await req.scope.cradle.api.getCourtTypes()
-      .then((value: CourtType[]) => allCourtTypes = value)
-      .catch(() => error += this.getCourtTypesErrorMsg);
 
 
     const pageData: CourtTypePageData = {
       errorMsg: error,
       updated: updated,
-      items: this.mapCourtTypeToCourtTypeItem(allCourtTypes, courtCourtTypes)
-
+      courtTypes: courtTypesAndCodes && courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
+      gbs: courtTypesAndCodes ? courtTypesAndCodes.gbsCode : null,
+      dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : []
     };
 
     res.render('courts/tabs/typesContent', pageData);
   }
 
-
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
-    let courtCourtTypes: CourtType[] = null;
+    let courtTypesAndCodes: CourtTypesAndCodes = null;
+
+    courtTypesAndCodes = {types: req.body.types, gbsCode: req.body.gbsCode ? req.body.gbsCode.trim() : req.body.gbsCode, dxCodes: req.body.dxCodes ? req.body.dxCodes : []};
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateErrorMsg, courtCourtTypes);
+      return this.get(req, res, false, this.updateErrorMsg, null);
     }
 
     if (req.body.types) {
 
-      courtCourtTypes = this.mapBodyToCourtType(req);
+      courtTypesAndCodes.types = this.mapBodyToCourtType(req);
 
-      if(courtCourtTypes.find( c => (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))
+      if(courtTypesAndCodes.types.find( c => (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))
       || (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))
       || (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )){
 
-        return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtCourtTypes);
+        return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtTypesAndCodes);
       }
 
+      // Remove fully empty entries
+      courtTypesAndCodes.dxCodes = courtTypesAndCodes.dxCodes.filter(dx => !this.dxCodeEntryIsEmpty(dx));
+
+      if (courtTypesAndCodes.dxCodes.some(dx => dx.code === '')) {
+        return this.get(req, res, false, this.emptyDxCodeErrorMsg, courtTypesAndCodes);
+      }
+
+      if (!validateDuplication(courtTypesAndCodes.dxCodes, this.dxCodesDuplicated)) {
+        return this.get(req, res, false, this.duplicatedDxCodeErrorMsg, courtTypesAndCodes);
+      }
 
       else
       {
-        await req.scope.cradle.api.updateCourtCourtTypes(req.params.slug, courtCourtTypes)
-          .then((value: CourtType[]) => this.get(req, res, true, '', value))
-          .catch(() => this.get(req, res, false, this.updateErrorMsg, courtCourtTypes));
+        await req.scope.cradle.api.updateCourtTypesAndCodes(req.params.slug, courtTypesAndCodes)
+          .then(() => this.get(req, res, true, '', courtTypesAndCodes))
+          .catch(() => this.get(req, res, false, this.updateErrorMsg, courtTypesAndCodes));
       }
     }
     else
     {
-      return this.get(req, res, false, this.emptyCourtTypesErrorMsg, courtCourtTypes);
+      return this.get(req, res, false, this.emptyCourtTypesErrorMsg, courtTypesAndCodes);
     }
 
   }
@@ -105,7 +127,6 @@ export class CourtTypesController {
     else
       return [];
   }
-
 
   private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
@@ -162,6 +183,19 @@ export class CourtTypesController {
     return !code || isNaN(code);
   }
 
+  private dxCodesDuplicated(dxCodes: DxCode[], index1: number, index2: number): boolean {
+    return dxCodes[index1].code.toLowerCase() === dxCodes[index2].code.toLowerCase();
+  }
 
+  private dxCodeEntryIsEmpty(dxCode: DxCode): boolean {
+    return (!dxCode.code?.trim() && !dxCode.explanation?.trim() && !dxCode.explanationCy?.trim());
+  }
+
+  private addEmptyFormsForNewEntries(dxCodes: DxCode[], numberOfForms = 1): void {
+    if (dxCodes) {
+      for (let i = 0; i < numberOfForms; i++) {
+        dxCodes.push({code: null, explanation: null, explanationCy: null, isNew: true});
+      }
+    }
+  }
 }
-

@@ -26,7 +26,7 @@
 
   {% if requiresValidation === true %}
     {% set nameError = false %}
-    {% if facility.name === '' %}
+    {% if facility.id is null and errors|length  %}
       {% set nameError = { text: 'Name is required' } %}
     {% elif facility.isDuplicated === true %}
       {% set nameError = { text: 'Duplicated facility' } %}
@@ -49,12 +49,12 @@
 
   {{ govukSelect({
     id: "name-" + loop.index,
-    name: "courtFacilities[" + loop.index +"][name]",
+    name: "courtFacilities[" + loop.index +"][id]",
     label: {
         text: "Name"
     },
     errorMessage: nameError,
-    items: facilitiesTypes | selectFilter(facility.name)
+    items: facilitiesTypes | selectFilter(facility.id)
   }) }}
 
   {{ govukTextarea ({

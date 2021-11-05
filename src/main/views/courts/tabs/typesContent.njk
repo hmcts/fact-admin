@@ -3,7 +3,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 <h2 class="govuk-heading-l">Court Types and Codes</h2>
 
 {% if errorMsg != '' %}
@@ -19,16 +19,16 @@
 
 {% if updated === true %}
   {{ govukPanel({
-    titleText: "Court Types updated"
+    titleText: "Court Types and Codes updated"
   }) }}
 {% endif %}
 
-{% for item in items %}
+{% for courtType in courtTypes %}
 
-{% if item.magistrate  %}
+{% if courtType.magistrate  %}
 
  {% set magistratesCodeError = false %}
-  {% if item.checked and item.code | valid === false %}
+  {% if courtType.checked and courtType.code | valid === false %}
    {% set magistratesCodeError = { text: 'Magistrates code is required and must be numeric. eg(1234)' } %}
   {% endif %}
 
@@ -41,23 +41,23 @@
   id: "magistratesCourtCode",
   name: "magistratesCourtCode",
   type: "text",
-  value: item.code,
+  value: courtType.code,
   errorMessage: magistratesCodeError
 
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: magistratesCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: magistratesCourtCodeHtml }) %}
 
 {% endif %}
 
 
 
 
-{% if item.county %}
+{% if courtType.county %}
 
 {% set countyCourtCode = false %}
- {% if item.checked and  item.code | valid === false  %}
+ {% if courtType.checked and  courtType.code | valid === false  %}
    {% set countyCourtCode = { text: 'County code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
@@ -66,7 +66,7 @@
   id: "countyCourtCode",
   name: "countyCourtCode",
   type: "text",
-  value: item.code,
+  value: courtType.code,
   errorMessage: countyCourtCode,
   classes: "govuk-!-width-one-third",
   label: {
@@ -75,14 +75,14 @@
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: countyCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: countyCourtCodeHtml }) %}
 
 {% endif %}
 
-{% if item.crown %}
+{% if courtType.crown %}
 
 {% set crownCourtCode = false %}
- {% if item.checked and item.code | valid === false  %}
+ {% if courtType.checked and courtType.code | valid === false  %}
    {% set crownCourtCode = { text: 'Crown code is required and must be numeric. eg(1234)' } %}
  {% endif %}
 
@@ -91,7 +91,7 @@
   id: "crownCourtCode",
   name: "crownCourtCode",
   type: "text",
-  value : item.code,
+  value : courtType.code,
   errorMessage: crownCourtCode,
   classes: "govuk-!-width-one-third",
   label: {
@@ -100,23 +100,173 @@
 }) }}
 {% endset -%}
 
-{% set item = item | setAttribute('conditional',{ html: crownCourtCodeHtml }) %}
+{% set courtType = courtType | setAttribute('conditional',{ html: crownCourtCodeHtml }) %}
 
 {% endif %}
 
 {% endfor %}
 
-
 {{ govukCheckboxes({
   idPrefix: "court_types",
   name: "types",
-
-
-  items: items
+  items: courtTypes
 }) }}
 
 
-<hr/>
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+<h2 class="govuk-heading-l">GBS Code</h2>
+
+{{ govukInput({
+  id: "gbsCode",
+  name: "gbsCode",
+  value: gbs,
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: "GBS Code"
+  }
+}) }}
+
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+<h2 class="govuk-heading-l">Dx Codes</h2>
+
+{% for dxCode in dxCodes %}
+
+ {% set codeError = false %}
+  {% if dxCode.code === '' %}
+   {% set codeError = { text: 'Code is required' } %}
+    {% elif dxCode.isDuplicated === true %}
+       {% set codeError = { text: 'Duplicated code' } %}
+  {% endif %}
+
+{% call govukFieldset({
+  }) %}
+
+  {% if dxCode.isNew === true %}
+    <h3 class="govuk-heading-s">Add New Dx Code</h3>
+  {% endif %}
+
+    <input type="hidden" name={{"dxCodes[" + loop.index +"][isNew]"}} value={{dxCodes.isNew}}></input>
+
+  {{ govukInput({
+         id: "code-" + loop.index,
+         name: "dxCodes[" + loop.index +"][code]",
+         value: dxCode.code,
+         errorMessage: codeError,
+         classes: "govuk-!-width-one-half",
+         label: {
+           text: "Code"
+         }
+       }) }}
+
+  {{ govukInput({
+         id: "explanation-" + loop.index,
+         name: "dxCodes[" + loop.index +"][explanation]",
+         value: dxCode.explanation,
+         classes: "govuk-!-width-one-half",
+         label: {
+             text: "Explanation"
+           }
+         }) }}
+
+  {{ govukInput({
+         id: "explanationCy-" + loop.index,
+         name: "dxCodes[" + loop.index +"][explanationCy]",
+         value: dxCode.explanationCy,
+         classes: "govuk-!-width-one-half",
+         label: {
+              text: "Explanation (Welsh)"
+              }
+         }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {% if not dxCode.isNew %}
+        {{ govukButton({
+          text: "Remove",
+          name: "deleteDxCode",
+          type: "button",
+          classes: "govuk-button--warning deleteDxCode"
+        }) }}
+        {% endif %}
+
+      {% if dxCode.isNew %}
+           {{ govukButton({
+             text: "Clear",
+             name: "clearDxCode",
+             type: "button",
+             classes: "govuk-button--secondary clearDxCode"
+           }) }}
+      {% endif %}
+
+    </div>
+
+  </div>
+
+   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+  {% endcall %}
+
+  {% endfor %}
+
+
+
+  {% call govukFieldset({
+  attributes: { id: "newDxCodeTemplate", disabled: "disabled", hidden: true }
+    }) %}
+
+  <h3 class="govuk-heading-s">Add New Dx Code</h3>
+
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][code]",
+           classes: "govuk-!-width-one-half",
+           label: {
+             text: "Code"
+           }
+         }) }}
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][explanation]",
+           classes: "govuk-!-width-one-half",
+           label: {
+               text: "Explanation"
+             }
+           }) }}
+
+    {{ govukInput({
+           name: "dxCodes[" + dxCodes.length +"][explanationCy]",
+           classes: "govuk-!-width-one-half",
+           label: {
+                text: "Explanation (Welsh)"
+                }
+           }) }}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+
+          {{ govukButton({
+            text: "Remove",
+            name: "deleteDxCode",
+            type: "button",
+            classes: "govuk-button--warning deleteDxCode"
+          }) }}
+
+          {{ govukButton({
+            text: "Clear",
+            name: "clearDxCode",
+            type: "button",
+            classes: "govuk-button--secondary clearDxCode"
+          }) }}
+      </div>
+    </div>
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    {% endcall %}
+
 
 {{ govukButton({
   text: "Save",
@@ -124,6 +274,14 @@
 }) }}
 
 
+
+
+{{ govukButton({
+  text: "Add new Dx code",
+  name: "addDxCode",
+  type: "button",
+  classes: "govuk-button--secondary addDxCode"
+}) }}
 
 
 

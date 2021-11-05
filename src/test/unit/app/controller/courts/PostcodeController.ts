@@ -3,8 +3,8 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {CSRF} from '../../../../../main/modules/csrf';
 import {PostcodesController} from '../../../../../main/app/controller/courts/PostcodesController';
 import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
-import {CourtType} from '../../../../../main/types/CourtType';
 import {familyAreaOfLaw} from '../../../../../main/enums/familyAreaOfLaw';
+import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 describe('PostcodeController', () => {
 
@@ -15,7 +15,7 @@ describe('PostcodeController', () => {
     deletePostcodes: () => Promise<object>,
     movePostcodes: () => Promise<object[]>,
     getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtCourtTypes: () => Promise<CourtType[]>};
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>};
 
   const testSlug = 'plymouth-combined-court';
   const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
@@ -24,14 +24,22 @@ describe('PostcodeController', () => {
   const getMovedPostcodes = ['PL11 1YY', 'PL1 1'];
   const newPostcodes = 'PL4,PL5,PL6';
   const getPostcodes: () => string[] = () => getPostcodeData;
-  const apiCourtTypesInput: CourtType[] = [
-    { id: 11420, name: 'Crown Court', code: 446 },
-    { id: 11419, name: 'County Court', code: 296 },
-    { id: 11417, name: 'Family Court', code: null }
-  ];
-  const apiCourtTypesInputInvalid: CourtType[] = [
-    { id: 11417, name: 'Family Court', code: null }
-  ];
+  const apiCourtTypesInput: CourtTypesAndCodes = {
+    'types': [
+      { id: 11420, name: 'Crown Court', code: 446 },
+      { id: 11419, name: 'County Court', code: 296 },
+      { id: 11417, name: 'Family Court', code: null }
+    ],
+    'gbsCode': '123',
+    'dxCodes': []
+  };
+  const apiCourtTypesInputInvalid: CourtTypesAndCodes = {
+    'types': [
+      { id: 11417, name: 'Family Court', code: null }
+    ],
+    'gbsCode': '123',
+    'dxCodes': []
+  };
   const apiAreasOfLawInput: AreaOfLaw[] = [
     {
       id: 1,
@@ -87,7 +95,7 @@ describe('PostcodeController', () => {
       deletePostcodes: async (): Promise<object[]> => [],
       movePostcodes: async (): Promise<object[]> => [],
       getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => apiAreasOfLawInput,
-      getCourtCourtTypes: async (): Promise<CourtType[]> => apiCourtTypesInput
+      getCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => apiCourtTypesInput
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -97,7 +105,7 @@ describe('PostcodeController', () => {
     jest.spyOn(mockApi, 'deletePostcodes');
     jest.spyOn(mockApi, 'movePostcodes');
     jest.spyOn(mockApi, 'getCourtAreasOfLaw');
-    jest.spyOn(mockApi, 'getCourtCourtTypes');
+    jest.spyOn(mockApi, 'getCourtTypesAndCodes');
   });
 
   test('Should get postcodes view and render the page', async () => {
@@ -122,7 +130,7 @@ describe('PostcodeController', () => {
       courtTypes: courtTypesMethodOutput
     });
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
-    expect(mockApi.getCourtCourtTypes).toBeCalledWith(testSlug);
+    expect(mockApi.getCourtTypesAndCodes).toBeCalledWith(testSlug);
   });
 
   test('Should display an error if courts cant be retrieved when getting postcodes', async () => {
@@ -148,7 +156,7 @@ describe('PostcodeController', () => {
       courtTypes: courtTypesMethodOutput
     });
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
-    expect(mockApi.getCourtCourtTypes).toBeCalledWith(testSlug);
+    expect(mockApi.getCourtTypesAndCodes).toBeCalledWith(testSlug);
   });
 
   test('Should get postcodes view and render the page with invalid court court type', async () => {
@@ -164,7 +172,7 @@ describe('PostcodeController', () => {
       deletePostcodes: async (): Promise<object[]> => [],
       movePostcodes: async (): Promise<object[]> => [],
       getCourtAreasOfLaw: async (): Promise<AreaOfLaw[]> => apiAreasOfLawInput,
-      getCourtCourtTypes: async (): Promise<CourtType[]> => apiCourtTypesInputInvalid
+      getCourtTypesAndCodes: async (): Promise<CourtTypesAndCodes> => apiCourtTypesInputInvalid
     };
 
     await controller.get(req, res);
@@ -211,7 +219,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not add postcodes if they are not the right length constraint', async() => {
@@ -243,7 +251,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should add postcodes if all are verified', async() => {
@@ -274,7 +282,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).toBeCalledWith(testSlug, newPostcodes.split(','));
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not add postcodes if the api returns with an error', async() => {
@@ -308,7 +316,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).toBeCalledWith(testSlug, newPostcodes.split(','));
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not post postcodes if CSRF token is invalid', async() => {
@@ -341,7 +349,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should handle new postcode blank error', async() => {
@@ -373,7 +381,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not delete postcodes if CSRF token is invalid', async() => {
@@ -406,7 +414,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.deletePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should handle delete postcode no selection error', async() => {
@@ -438,7 +446,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.deletePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should delete postcodes if all are verified', async() => {
@@ -469,7 +477,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, getDeletedPostcodes);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not delete postcodes if the api returns with an error', async() => {
@@ -503,7 +511,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, ['PL1','PL2','PL3']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not move postcodes if CSRF token is invalid', async() => {
@@ -540,7 +548,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.movePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should move postcodes if there are no errors', async() => {
@@ -573,7 +581,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should handle move postcode no selection error', async() => {
@@ -605,7 +613,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.movePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not move postcodes if the api returns with an error', async() => {
@@ -640,7 +648,7 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
   test('Should not move postcodes if the api returns with a conflict error', async() => {
@@ -677,6 +685,6 @@ describe('PostcodeController', () => {
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
-    expect(mockApi.getCourtCourtTypes).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 });

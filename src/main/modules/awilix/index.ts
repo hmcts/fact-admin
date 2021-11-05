@@ -19,9 +19,12 @@ import {CasesHeardController} from '../../app/controller/courts/CasesHeardContro
 import {AddressController} from '../../app/controller/courts/AddressController';
 import {AreasOfLawController} from '../../app/controller/lists/AreasOfLawController';
 import {PhotoController} from '../../app/controller/courts/PhotoController';
+import {AuditController} from '../../app/controller/audits/AuditController';
 import {ContactTypesController} from '../../app/controller/lists/ContactTypesController';
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
+import {UserController} from '../../app/controller/users/UserController';
+import {InviteUserController} from '../../app/controller/users/InviteUserController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -61,7 +64,15 @@ export class Container {
       contactTypesController : asClass(ContactTypesController),
       facilityTypesController: asClass(FacilityTypesController),
       errorController: asClass(ErrorController),
-      exposeErrors: asValue(server.locals.env === 'development')
+
+      // Audits
+      auditController: asClass(AuditController),
+
+      exposeErrors: asValue(server.locals.env === 'development'),
+
+      //User
+      accountController : asClass(UserController),
+      inviteUserController : asClass(InviteUserController)
     });
   }
 }

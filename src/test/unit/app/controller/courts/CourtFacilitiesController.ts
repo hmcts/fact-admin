@@ -13,11 +13,11 @@ describe('FacilitiesController', () => {
     updateCourtFacilities: () => Promise<Facility[]> };
 
   const getFacilities: () => Facility[] = () => [
-    { name:'Facility1', description:'description1', descriptionCy:'descriptionCy1', isNew: false },
-    { name:'Facility2', description:'description2', descriptionCy:'descriptionCy2', isNew: false },
-    { name:'Facility3', description:'description3', descriptionCy:'descriptionCy3', isNew: false }
+    { id: 1, description:'description1', descriptionCy:'descriptionCy1', isNew: false },
+    { id: 2, description:'description2', descriptionCy:'descriptionCy2', isNew: false },
+    { id: 3, description:'description3', descriptionCy:'descriptionCy3', isNew: false }
   ];
-  const newfacilityRow: Facility[] = [{ name: null, description: null, descriptionCy: null, isNew: true }];
+  const newfacilityRow: Facility[] = [{ id: null, description: null, descriptionCy: null, isNew: true }];
 
   const facilityTypes: FacilityType[] = [
     { id: 1, name:'Facility1' },
@@ -27,17 +27,17 @@ describe('FacilitiesController', () => {
 
   const expectedSelectItems: SelectItem[] = [
     {
-      value: 'Facility1',
+      value: 1,
       text: 'Facility1',
       selected: false
     },
     {
-      value: 'Facility2',
+      value: 2,
       text: 'Facility2',
       selected: false
     },
     {
-      value: 'Facility3',
+      value: 3,
       text: 'Facility3',
       selected: false
     },
@@ -102,8 +102,8 @@ describe('FacilitiesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1', descriptionCy:'descriptionCy1' },
-      { name: 'Facility2', description: '', descriptionCy: 'descriptionCy2'}
+      { id: 1, description: 'description1', descriptionCy:'descriptionCy1' },
+      {id: 2, description: '', descriptionCy: 'descriptionCy2'}
     ];
 
     req.body = {
@@ -125,8 +125,8 @@ describe('FacilitiesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1', descriptionCy:'descriptionCy1' },
-      { name: '', description: 'description2', descriptionCy: 'descriptionCy2'}
+      {id: 1, description: 'description1', descriptionCy:'descriptionCy1' },
+      {id: null, description: 'description2', descriptionCy: 'descriptionCy2'}
     ];
 
     req.body = {
@@ -143,33 +143,14 @@ describe('FacilitiesController', () => {
     expect(mockApi.updateCourtFacilities).not.toBeCalled();
   });
 
-  test('Should not post facilities if the facility name is duplicated', async() => {
+
+  test('Should not post facilities if multiple facility of the same type selected', async() => {
     const slug = 'another-county-court';
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1', descriptionCy: 'descriptionCy1' },
-      { name:'Facility1', description:'description2', descriptionCy: 'descriptionCy2' }
-    ];
-    req.body = {
-      'courtFacilities': postedFacilities,
-      '_csrf': CSRF.create()
-    };
-    req.params = { slug: slug };
-    req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateCourtFacilities = jest.fn().mockReturnValue(res);
-
-    await controller.put(req, res);
-    expect(mockApi.updateCourtFacilities).not.toBeCalled();
-  });
-
-  test('Should not post facilities if multiple facility names of the same type', async() => {
-    const slug = 'another-county-court';
-    const res = mockResponse();
-    const req = mockRequest();
-    const postedFacilities: Facility[] = [
-      { name:'Parking', description:'description1', descriptionCy: 'descriptionCy1' },
-      { name:'No parking', description:'description2', descriptionCy: 'descriptionCy2' }
+      {id: 1, description:'description1', descriptionCy: 'descriptionCy1' },
+      {id: 1, description:'description2', descriptionCy: 'descriptionCy2' }
     ];
     req.body = {
       'courtFacilities': postedFacilities,
@@ -188,8 +169,8 @@ describe('FacilitiesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1', descriptionCy: 'descriptionCy1' },
-      { name:'Facility2', description:'description1', descriptionCy: 'descriptionCy1' }
+      { id: 1, description:'description1', descriptionCy: 'descriptionCy1' },
+      { id: 2, description:'description1', descriptionCy: 'descriptionCy1' }
     ];
     req.body = {
       'courtFacilities': postedFacilities,
@@ -210,8 +191,8 @@ describe('FacilitiesController', () => {
     const res = mockResponse();
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name:'Facility1', description:'description1',descriptionCy:'descriptionCy1' },
-      { name:'Facility2', description:'description2',descriptionCy:'descriptionCy2'}
+      { id: 1, description:'description1',descriptionCy:'descriptionCy1' },
+      { id: 2, description:'description2',descriptionCy:'descriptionCy2'}
     ];
 
     (CSRF.verify as jest.Mock).mockReturnValue(false);
@@ -270,7 +251,7 @@ describe('FacilitiesController', () => {
 
     await controller.get(req, res);
 
-    const expectedCourtFacilities = getFacilities().concat([{ name: null, description: null, descriptionCy: null, isNew: true }]);
+    const expectedCourtFacilities = getFacilities().concat([{id:null, description: null, descriptionCy: null, isNew: true }]);
 
     const expectedResults: FacilityPageData = {
       errors: [{text: controller.getFacilityTypesErrorMsg}],
@@ -284,7 +265,7 @@ describe('FacilitiesController', () => {
 
   test('Should handle error with duplicated facilities when updating court facilities', async () => {
     const req = mockRequest();
-    const postedFacilities = getFacilities().concat([{ name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1', isNew: true }]);
+    const postedFacilities = getFacilities().concat([{id:1, description: 'description1',descriptionCy: 'descriptionCy1', isNew: true }]);
     req.params = { slug: 'southport-county-court' };
     req.body = {
       'courtFacilities': postedFacilities,
@@ -307,12 +288,12 @@ describe('FacilitiesController', () => {
   });
 
 
-  test('Should handle error with empty name and description when updating court facilities', async () => {
+  test('Should handle error with empty description when updating court facilities', async () => {
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1' },
-      { name: '', description: 'test', descriptionCy: 'descriptionCy2' },
-      { name: null, description: null, descriptionCy: null, isNew: true }
+      { id: 1, description: 'description1',descriptionCy: 'descriptionCy1' },
+      { id: 2, description: '', descriptionCy: 'descriptionCy2' },
+      { id: null, description: null, descriptionCy: null, isNew: true }
     ];
     req.params = { slug: 'southport-county-court' };
     req.body = {
@@ -326,9 +307,9 @@ describe('FacilitiesController', () => {
     await controller.put(req, res);
 
     const expectedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1',descriptionCy: 'descriptionCy1', isNew: false },
-      { name: '', description: 'test', descriptionCy: 'descriptionCy2', isNew: false },
-      { name: null, description: null, descriptionCy: null, isNew: true }
+      { id: 1, description: 'description1',descriptionCy: 'descriptionCy1', isNew: false },
+      { id: 2, description: '', descriptionCy: 'descriptionCy2', isNew: false },
+      { id: null, description: null, descriptionCy: null, isNew: true }
     ];
 
     const expectedResults: FacilityPageData = {
@@ -344,10 +325,10 @@ describe('FacilitiesController', () => {
   test('Should handle multiple errors when updating court facilities', async () => {
     const req = mockRequest();
     const postedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1', descriptionCy: 'descriptionCy1' },
-      { name: 'Facility1', description: 'description2', descriptionCy: 'descriptionCy2' },
-      { name: '', description: 'description2', descriptionCy: 'descriptionCy2' },
-      { name: null, description: null, descriptionCy: null, isNew: true }
+      { id: 1, description: 'description1', descriptionCy: 'descriptionCy1' },
+      { id: 1, description: 'description2', descriptionCy: 'descriptionCy2' },
+      { id: null, description: 'description2', descriptionCy: 'descriptionCy2' },
+      { id: null, description: null, descriptionCy: null, isNew: true }
     ];
     req.params = { slug: 'southport-county-court' };
     req.body = {
@@ -361,10 +342,10 @@ describe('FacilitiesController', () => {
     await controller.put(req, res);
 
     const expectedFacilities: Facility[] = [
-      { name: 'Facility1', description: 'description1', descriptionCy: 'descriptionCy1', isNew: false, isDuplicated: true },
-      { name: 'Facility1', description: 'description2', descriptionCy: 'descriptionCy2', isNew: false, isDuplicated: true },
-      { name: '', description: 'description2', descriptionCy: 'descriptionCy2', isNew: false },
-      { name: null, description: null, descriptionCy: null, isNew: true }
+      { id: 1, description: 'description1', descriptionCy: 'descriptionCy1', isDuplicated:true , isNew:false},
+      { id: 1, description: 'description2', descriptionCy: 'descriptionCy2', isDuplicated:true, isNew:false },
+      { id: null, description: 'description2', descriptionCy: 'descriptionCy2' ,isNew: false},
+      { id: null, description: null, descriptionCy: null, isNew: true }
     ];
 
     const expectedResults: FacilityPageData = {
