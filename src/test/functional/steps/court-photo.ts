@@ -36,7 +36,7 @@ When('I check for existing photo then delete it',  async () => {
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
   expect(await I.checkElement(fileSelector)).equal(true);
-  const filePath = 'src/test/SampleJPGImage_100kbmb (1).jpg';
+  const filePath = 'src/test/functional/SampleJPGImage_100kbmb (1).jpg';
   await I.uploadFile(fileSelector,filePath);
 });
 
