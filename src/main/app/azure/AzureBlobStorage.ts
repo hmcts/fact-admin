@@ -17,7 +17,6 @@ export class AzureBlobStorage {
       pipeline
     );
     AzureBlobStorage.containerClient = blobServiceClient.getContainerClient('images');
-    console.log('Azure instance created');
   }
 
   public async uploadImageFileToAzure(file: File, imageFileName: string): Promise<void> {

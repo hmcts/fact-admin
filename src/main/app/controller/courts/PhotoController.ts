@@ -74,6 +74,20 @@ export class PhotoController {
       });
   }
 
+  public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
+    const courtPhotoFileName = req.params.imageToDelete;
+    const courtPhotoFileURL = config.get('services.image-store.url') + '/' + courtPhotoFileName;
+    this.renderDeleteConfirmation(res, courtPhotoFileName, courtPhotoFileURL);
+  }
+
+  private renderDeleteConfirmation(res: Response, courtPhotoFileName: string, courtPhotoFileURL: string): void {
+    const pageData = {
+      courtPhotoFileName: courtPhotoFileName,
+      courtPhotoFileURL: courtPhotoFileURL
+    };
+    res.render('courts/tabs/deletePhotoConfirm', pageData);
+  }
+
   private async render(
     req: AuthedRequest,
     res: Response,

@@ -46,6 +46,7 @@ export default function(app: Application): void {
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
   app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
+  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', app.locals.container.cradle.photoController.getDeleteConfirmation);
   app.put('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.put);
   app.delete('/courts/:slug/photo', app.locals.container.cradle.photoController.delete);
   app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);

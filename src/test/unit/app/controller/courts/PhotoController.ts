@@ -236,6 +236,25 @@ describe('PhotoController', () => {
     });
   });
 
+  test('Should render delete confirmation view', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.body = {
+      'oldCourtPhoto': getCourtImageData,
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.azure = mockAzureBlobStorage;
+    req.params.imageToDelete = getCourtImageData;
+
+    await controller.getDeleteConfirmation(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/deletePhotoConfirm', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData
+    });
+  });
+
   test('Should delete court photo', async() => {
     const res = mockResponse();
     const req = mockRequest();

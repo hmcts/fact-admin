@@ -6,6 +6,8 @@ export class PhotoController {
   private tabId = '#photoTab';
   private photoContentId = '#photoContent';
   private deleteBtnClass = '.deletePhoto'
+  private deleteConfirmBtnId = '#confirmDelete'
+  private cancelBtnId = '#cancelDeletePhotoBtn';
 
   constructor() {
     this.initialize();
@@ -28,6 +30,8 @@ export class PhotoController {
         await $(this.photoContentId).html(res);
         this.setUpUpdateEventHandler();
         this.setUpDeleteEventHandler();
+        this.setUpDeleteConfirmEventHandler();
+        this.setUpCancelEventHandler();
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET photo failed.');
@@ -69,8 +73,25 @@ export class PhotoController {
   private setUpDeleteEventHandler(): void {
     $(this.tabId).on('click', `button${this.deleteBtnClass}`, e => {
       e.preventDefault();
-      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
       const slug = $('#slug').val();
+      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
+
+      $.ajax({
+        url: `/courts/${slug}/photo/${oldCourtPhoto}/confirm-delete`,
+        method: 'get'
+      }).done(res => {
+        $(this.photoContentId).html(res);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'DELETE photo failed.'));
+    });
+  }
+
+  private setUpDeleteConfirmEventHandler(): void {
+    $(this.tabId).on('click', `${this.deleteConfirmBtnId}`, e => {
+      e.preventDefault();
+      const slug = $('#slug').val();
+      const oldCourtPhoto = $('#oldCourtPhoto').val();
 
       $.ajax({
         url: `/courts/${slug}/photo`,
@@ -85,6 +106,12 @@ export class PhotoController {
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'DELETE photo failed.'));
+    });
+  }
+
+  private setUpCancelEventHandler(): void {
+    $(this.tabId).on('click', this.cancelBtnId, e => {
+      this.getPhoto();
     });
   }
 }
