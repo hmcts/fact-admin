@@ -30,6 +30,9 @@ When('I check for existing photo then delete it',  async () => {
     const selector = 'button[name="deletePhoto"]';
     expect(await I.checkElement(selector)).equal(true);
     await I.click(selector);
+    const confirmDeleteSelector = '#confirmDelete';
+    expect(await I.checkElement(confirmDeleteSelector)).equal(true);
+    await I.click(confirmDeleteSelector);
   }
 });
 
