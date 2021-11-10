@@ -91,7 +91,7 @@ export class PhotoController {
     $(this.tabId).on('click', `${this.deleteConfirmBtnId}`, e => {
       e.preventDefault();
       const slug = $('#slug').val();
-      const oldCourtPhoto = $('#oldCourtPhoto').val();
+      const oldCourtPhoto = document.getElementById('current-court-photo').getAttribute('name');
 
       $.ajax({
         url: `/courts/${slug}/photo`,

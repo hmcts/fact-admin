@@ -1472,4 +1472,54 @@ describe('FactApi', () => {
       .rejects.toBe(mockError);
     expect(loggerSpy).toBeCalled();
   });
+
+  test('Should return image file name from getCourtImage request', async () => {
+    const results = {
+      data: [
+        { name: 'image-file.jpeg' }
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCourtImage('slug')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed getCourtImage request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtImage('slug')).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should update image file name for updateCourtImage request', async () => {
+    const results = {
+      data: [
+        { name: 'image-file.jpeg' }
+      ]
+    };
+
+    const mockAxios = { put: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtImage('slug', {name: 'image-file.jpeg'})).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed updateCourtImage request', async () => {
+    const mockAxios = { put: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateCourtImage('slug', {name: 'image-file.jpeg'})).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
 });

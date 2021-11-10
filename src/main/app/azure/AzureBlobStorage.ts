@@ -1,29 +1,19 @@
 import autobind from 'autobind-decorator';
-import config from 'config';
-import {BlobServiceClient, ContainerClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
+import {ContainerClient} from '@azure/storage-blob';
 
 @autobind
 export class AzureBlobStorage {
-  private static containerClient: ContainerClient
+  private containerClient: ContainerClient;
 
-  constructor() {
-    const sharedKeyCredential = new StorageSharedKeyCredential(
-      config.get('services.image-store.account-name'),
-      config.get('services.image-store.account-key'));
-    const pipeline = newPipeline(sharedKeyCredential);
-
-    const blobServiceClient = new BlobServiceClient(
-      `https://${config.get('services.image-store.account-name')}.blob.core.windows.net`,
-      pipeline
-    );
-    AzureBlobStorage.containerClient = blobServiceClient.getContainerClient('images');
+  public constructor(containerClient: ContainerClient) {
+    this.containerClient = containerClient;
   }
 
   public async uploadImageFileToAzure(file: File, imageFileName: string): Promise<void> {
-    const blockBlobClient = AzureBlobStorage.containerClient.getBlockBlobClient(imageFileName);
+    const blockBlobClient = this.containerClient.getBlockBlobClient(imageFileName);
 
     // set mimetype as determined from browser with file upload control
-    const options = { blobHTTPHeaders: { blobContentType: file.type } };
+    const options = { blobHTTPHeaders: { blobContentType: 'image/*' } };
 
     try {
       await blockBlobClient.uploadData(file, options);
@@ -33,7 +23,7 @@ export class AzureBlobStorage {
   }
 
   public async deleteImageFileFromAzure(imageFileName: string): Promise<void> {
-    const blockBlobClient = AzureBlobStorage.containerClient.getBlockBlobClient(imageFileName);
+    const blockBlobClient = this.containerClient.getBlockBlobClient(imageFileName);
     try {
       await blockBlobClient.delete();
     } catch (err) {
