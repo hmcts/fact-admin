@@ -12,8 +12,8 @@ services:
     callbackURL: OAUTH_CLIENT_REDIRECT
   image-store:
     url: IMAGE_BASE_URL
-    account-name: ACCOUNT_NAME
-    account-key: ACCOUNT_KEY
+    account-name: STORAGE_ACCOUNT_NAME
+    account-key: STORAGE_ACCOUNT_PRIMARY_KEY
 port: PORT
 session:
   redis:
