@@ -54,6 +54,7 @@ export const checkElement = async (selector: string) => {
 
 export const uploadFile = async (selector: string, path: string) => {
   try {
+    await scope.page.mouse.move(1000, 40);
     const [fileChooser] = await Promise.all([
       scope.page.waitForFileChooser(),
       scope.page.click(selector)
