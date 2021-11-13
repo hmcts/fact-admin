@@ -1,0 +1,5 @@
+services:
+  image-store:
+    url: IMAGE_BASE_URL
+    account-name: 'test-name'
+    account-key: 'test-key'

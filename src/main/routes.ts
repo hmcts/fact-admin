@@ -1,7 +1,11 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
 
+const multer = require('multer');
+
 export default function(app: Application): void {
+
+  const upload = multer();
 
   app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
@@ -41,6 +45,10 @@ export default function(app: Application): void {
   app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
+  app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
+  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', app.locals.container.cradle.photoController.getDeleteConfirmation);
+  app.put('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.put);
+  app.delete('/courts/:slug/photo', app.locals.container.cradle.photoController.delete);
   app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
   app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
 

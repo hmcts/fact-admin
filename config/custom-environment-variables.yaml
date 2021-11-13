@@ -10,6 +10,10 @@ services:
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+  image-store:
+    url: IMAGE_BASE_URL
+    account-name: STORAGE_ACCOUNT_NAME
+    account-key: STORAGE_ACCOUNT_PRIMARY_KEY
 port: PORT
 session:
   redis:
@@ -20,3 +24,4 @@ csrf:
   tokenSecret: CSRF_TOKEN_SECRET
 launchDarkly:
   sdkKey: LAUNCHDARKLY_SDK_KEY
+storageAccountConnectionString: STORAGE_ACCOUNT_CONNECTION_STRING

@@ -1,0 +1,21 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-l">Delete photo:</h2>
+<img id="current-court-photo" src="{{ courtPhotoFileURL }}" alt="" class="govuk-!-padding-bottom-4"
+      name={{ courtPhotoFileName }} width="256px">
+
+<div class="govuk-button-group">
+  {{ govukButton({
+    text: "Confirm Delete",
+    type: "button",
+    attributes: { id: "confirmDelete"},
+    classes: "govuk-button--warning"
+  }) }}
+
+  {{ govukButton({
+    text: "Cancel",
+    type: "button",
+    attributes: { id: "cancelDeletePhotoBtn" },
+    classes: "govuk-button--secondary"
+  }) }}
+</div>

@@ -10,6 +10,9 @@ nodejs:
         - AppInsightsInstrumentationKey
         - csrf-token-secret
         - launchdarkly-sdk-key
+        - storage-account-connection-string
+        - storage-account-name
+        - storage-account-primary-key
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:
@@ -20,5 +23,6 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: "https://fact-admin.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
     REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
+    IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
 idam-pr:
   enabled: false

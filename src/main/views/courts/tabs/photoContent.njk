@@ -1,0 +1,58 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-l">Delete or update photo</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if not errors %}
+  {% set updateMessage = "Photo deleted" if not courtPhotoFileURL else "Photo updated" %}
+  {% if updated === true %}
+    {{ govukPanel({
+      titleText: updateMessage
+    }) }}
+  {% endif %}
+
+  {% if courtPhotoFileURL|length %}
+    <h2 class="govuk-heading-m">Existing photo</h2>
+    <img id="current-court-photo" src="{{ courtPhotoFileURL }}" alt="" class="govuk-!-padding-bottom-4"
+      name={{ courtPhotoFileName }} width="256px">
+    <div>
+      {{ govukButton({
+        text: "Delete photo",
+        classes: "govuk-button--secondary deletePhoto",
+        name: "deletePhoto"
+      }) }}
+    </div>
+  {% else %}
+    <p class="govuk-body">There is currently no existing photo.</p>
+  {% endif %}
+
+  <h2 class="govuk-heading-m">Upload a new photo</h2>
+  {% set error = {text: uploadError} if uploadError else false %}
+  {{ govukFileUpload({
+    id: "court-photo-file-upload",
+    name: "court-photo",
+    "accept": ".jpeg,.png",
+    input: "file",
+    label: {
+      text: "Ideally upload a JPEG or PNG image of a high quality. It will be resized and aspect ratio will be retained."
+    },
+    errorMessage: error
+  }) }}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Update",
+      name: "updatePhoto",
+      id: "updatePhotoUpload"
+    }) }}
+  </div>
+{% endif %}

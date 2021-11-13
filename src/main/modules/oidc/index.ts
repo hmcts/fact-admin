@@ -6,7 +6,9 @@ import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import jwt_decode from 'jwt-decode';
+import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
+import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -76,6 +78,18 @@ export class OidcMiddleware {
 
     server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
       if (req.session.user) {
+
+        const sharedKeyCredential = new StorageSharedKeyCredential(
+          config.get('services.image-store.account-name'),
+          config.get('services.image-store.account-key'));
+        const pipeline = newPipeline(sharedKeyCredential);
+
+        const blobServiceClient = new BlobServiceClient(
+          `https://${config.get('services.image-store.account-name')}.blob.core.windows.net`,
+          pipeline
+        );
+        const containerClient = blobServiceClient.getContainerClient('images');
+
         req.scope = req.app.locals.container.createScope();
         req.scope.register({
           axios: asValue(Axios.create({
@@ -85,6 +99,7 @@ export class OidcMiddleware {
             }
           })),
           api: asClass(FactApi),
+          azure: asValue(new AzureBlobStorage(containerClient)),
           idamApi : asClass(IdamApi)
         });
 

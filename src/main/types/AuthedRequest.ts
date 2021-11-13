@@ -4,6 +4,7 @@ import {AwilixContainer} from 'awilix';
 
 interface Auth {
   user?: AuthedUser,
+  file?: File
   isAuthenticated: () => boolean,
   scope: AwilixContainer
 }

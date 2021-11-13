@@ -76,6 +76,9 @@
             {% set addressesHtml %}
                 {% include "./tabs/addresses.njk" %}
             {% endset -%}
+            {% set photoHtml %}
+                {% include "./tabs/photo.njk" %}
+            {% endset -%}
             {% set additionalLinksHtml %}
               {% include "./tabs/additionalLinks.njk" %}
             {% endset -%}
@@ -137,6 +140,13 @@
                     id: "court-facilities",
                     panel: {
                       html: courtFacilitiesHtml
+                    }
+                  },
+                  {
+                    label: "Photo",
+                    id: "photo",
+                    panel: {
+                      html: photoHtml
                     }
                   }
                 ]%}

@@ -41,3 +41,13 @@ data "azurerm_key_vault_secret" "launchdarkly_sdk_key" {
   name          = "launchdarkly-sdk-key"
   key_vault_id  = data.azurerm_key_vault.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "storage-account-name" {
+ name          = "storage-account-name"
+  key_vault_id  = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "storage-account-primary-key" {
+ name          = "storage-account-primary-key"
+  key_vault_id  = data.azurerm_key_vault.key_vault.id
+}
