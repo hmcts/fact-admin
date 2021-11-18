@@ -21,6 +21,10 @@
       {% set facilitiesHtml %}
         {% include "./tabs/facilityTypes.njk" %}
       {% endset %}
+      {% set openingsHtml %}
+         {% include "./tabs/openingTypes/openingTypes.njk" %}
+      {% endset %}
+
 
       {% set tabItems = [
         {
@@ -50,7 +54,14 @@
            panel: {
              html: facilitiesHtml
            }
-        }]
+        },
+        {
+           label: "Opening Types",
+           id: "opening-types",
+           panel: {
+             html: openingsHtml
+           }
+         }]
       %}
 
       {{ factTabs({

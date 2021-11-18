@@ -8,6 +8,7 @@ import {AreaOfLaw} from '../../../../main/types/AreaOfLaw';
 import {FacilityType} from '../../../../main/types/Facility';
 import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 import {Action, Audit} from '../../../../main/types/Audit';
+import {OpeningType} from '../../../../main/types/OpeningType';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -1522,4 +1523,94 @@ describe('FactApi', () => {
     await expect(api.updateCourtImage('slug', {name: 'image-file.jpeg'})).rejects.toBe(mockError);
     await expect(loggerSpy).toBeCalled();
   });
+
+  test('Should return results from getOpeningType request', async () => {
+    const results = {
+      data: [
+        { id: 1, type: 'Opening1', 'type_cy': 'Opening1_cy' },
+      ]
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getOpeningType('1')).resolves.toEqual(results.data);
+  });
+
+  test('Should return results and log error from getOpeningType request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getOpeningType('1')).rejects.toEqual(mockError);
+  });
+
+  test('Should create opening type and return facility type from createOpeningType request', async () => {
+    const results: { data: OpeningType } = {
+      data: { id: 300, type: 'Opening 1', 'type_cy': 'Opening 1 cy' }
+    };
+    const mockAxios = { post: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createOpeningType(results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should update opening type and return updateOpeningType request', async () => {
+    const results: { data: OpeningType } = {
+      data: { id: 500, type: 'Opening 1', 'type_cy': 'Opening 1 cy' }
+    };
+    const mockAxios = { put: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateOpeningType(results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should delete opening type  from deleteOpeningType request', async () => {
+    const results: { data: number } = {
+      data: 500
+    };
+    const mockAxios = { delete: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteOpeningType('500')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed createOpeningType request ', async () => {
+    const mockAxios = { post: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.createOpeningType({ id: null, type: 'Opening 1', 'type_cy': 'Opening 1 cy' })).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed updateOpeningType request ', async () => {
+    const mockAxios = { put: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateOpeningType({ id: 4321, type: 'Opening 1', 'type_cy': 'Opening 1 cy' })).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
+  test('Should log error and reject promise for failed deleteOpeningType request ', async () => {
+    const mockAxios = { delete: async () => { throw mockError; } } as any;
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.deleteFacilityType('3321')).rejects.toBe(mockError);
+    expect(loggerSpy).toBeCalled();
+  });
+
 });

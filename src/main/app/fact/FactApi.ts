@@ -121,12 +121,54 @@ export class FactApi {
 
   public getOpeningTimeTypes(): Promise<OpeningType[]> {
     return this.axios
-      .get(`${this.adminBaseUrl}/openingTypes`)
+      .get(`${this.adminUrl}/openingTypes`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
         return Promise.reject(err);
       });  }
+
+
+  public getOpeningType(id: string): Promise<OpeningType> {
+    return this.axios
+      .get(`${this.adminUrl}/openingTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public createOpeningType(openingType: OpeningType): Promise<OpeningType> {
+    return this.axios
+      .post(`${this.adminUrl}/openingTypes`, openingType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateOpeningType(openingType: OpeningType): Promise<OpeningType>{
+    return this.axios
+      .put(`${this.adminUrl}/openingTypes`, openingType)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public deleteOpeningType(id: string): Promise<number> {
+    return this.axios
+      .delete(`${this.adminUrl}/openingTypes/${id}`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
 
   public getOpeningTimes(slug: string): Promise<OpeningTime[]> {
     return this.axios

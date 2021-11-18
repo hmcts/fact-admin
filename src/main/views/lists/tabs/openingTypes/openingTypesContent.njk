@@ -1,0 +1,49 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set openingTypeItems = [] %}
+{% for openingType in openingTypes %}
+  {% set deleteConfirmUrl = deleteConfirmBaseUrl + openingType.id +"?type=" + openingType.type|urlencode %}
+  {% set openingTypeItems = (openingTypeItems.push([
+    {
+      text: openingType.type
+    },
+    {
+      html: "<a class='govuk-link edit-opening-type' href=" + editBaseUrl + openingType.id + ">edit</a>"
+    },
+    {
+      html: "<a class='govuk-link delete-opening-type' href=" + deleteConfirmUrl + ">delete</a>"
+    }
+  ]), courtItems) %}
+{% endfor %}
+
+<h2 class="govuk-heading-l">Opening Types</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Opening Types Updated"
+  }) }}
+{% endif %}
+
+{% if openingTypeItems|length %}
+
+  {{ govukTable({
+    firstCellIsHeader: false,
+    head: [ { text: "Name" }, { text: "" }, { text: "" } ],
+    rows: openingTypeItems
+  }) }}
+
+  <div class="govuk-button-group">
+    <a class="edit-opening-type govuk-link" href="{{editBaseUrl}}">Add Opening Type</a>
+  </div>
+
+{% endif %}

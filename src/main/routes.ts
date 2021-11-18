@@ -82,6 +82,13 @@ export default function(app: Application): void {
   app.get('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getAllReorder);
   app.put('/lists/facility-types/reorder', isSuperAdmin, app.locals.container.cradle.facilityTypesController.reorder);
 
+  app.get('/lists/opening-types', isSuperAdmin, app.locals.container.cradle.openingTypesController.getAll);
+  app.get('/lists/opening-type/:id', isSuperAdmin, app.locals.container.cradle.openingTypesController.getOpeningType);
+  app.get('/lists/opening-type', isSuperAdmin, app.locals.container.cradle.openingTypesController.getOpeningType);
+  app.get('/lists/opening-types/delete-confirm/:id', isSuperAdmin, app.locals.container.cradle.openingTypesController.getDeleteConfirmation);
+  app.put('/lists/opening-type', isSuperAdmin, app.locals.container.cradle.openingTypesController.put);
+  app.delete('/lists/opening-type/:id', isSuperAdmin, app.locals.container.cradle.openingTypesController.delete);
+
   // Audits
   app.get('/audits', isSuperAdmin, app.locals.container.cradle.auditController.get);
   app.get('/audit-data', isSuperAdmin, app.locals.container.cradle.auditController.getAuditData);

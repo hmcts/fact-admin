@@ -1,0 +1,19 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-l">Delete Opening Type: {{name}}</h2>
+
+<div class="govuk-button-group">
+  {{ govukButton({
+    text: "Confirm Delete",
+    type: "button",
+    attributes: { id: "confirmDelete", 'data-url': deleteUrl },
+    classes: "govuk-button--warning"
+  }) }}
+
+  {{ govukButton({
+    text: "Cancel",
+    type: "button",
+    attributes: { id: "cancelOpeningTypeChangesBtn" },
+    classes: "govuk-button--secondary cancel-changes"
+  }) }}
+</div>
