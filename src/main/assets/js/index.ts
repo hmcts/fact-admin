@@ -26,6 +26,7 @@ import {ContactTypesListController} from './contact-type-list';
 import {FacilityTypesController} from './facility-types-list';
 import {AdditionalLinksController} from './additionalLinks';
 import {InviteUserController} from './users/invite-user';
+import {FormBehaviourController} from "./form-behaviour";
 
 const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
@@ -52,3 +53,4 @@ new ContactTypesListController();
 new CasesHeardController();
 new PhotoController();
 new FacilityTypesController();
+new FormBehaviourController();

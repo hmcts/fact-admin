@@ -54,10 +54,6 @@ export class OpeningHoursController {
   }
 
   private setUpSubmitEventHandler(): void {
-    $(document).on('keydown', 'input, select', function(event) {
-      return event.key != 'Enter';
-    });
-
     $(this.formId).on('submit', e => {
       e.preventDefault();
 
