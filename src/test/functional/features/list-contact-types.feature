@@ -44,7 +44,7 @@ Feature: Contact Types List
     When I click confirm delete button
     Then The error message displays for a Contact type "You cannot delete this contact type at the moment, as one or more courts are dependent on it. Please remove the contact type from the relevant courts first"
 
-  Scenario: Editing Area Of Law with the name already exist
+  Scenario: Editing contact type with the name already exist
     Given I click edit contact type "Enquiries"
     Then I am redirected to the contact type "Editing Contact Type: Enquiries" form
     Then I will make sure to clear entries for the Contact Type
