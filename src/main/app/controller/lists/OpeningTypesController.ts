@@ -10,7 +10,6 @@ export class OpeningTypesController {
   editBaseUrl = 'lists/opening-type/';
   deleteBaseUrl = 'lists/opening-type/';
   deleteConfirmBaseUrl = 'lists/opening-types/delete-confirm/';
-
   getOpeningsError = 'An error occurred when retrieving the opening types list.';
   getOpeningError = 'An error occurred when retrieving the opening type data.';
   updateOpeningError = 'An error occurred when trying to save the opening type data.';
