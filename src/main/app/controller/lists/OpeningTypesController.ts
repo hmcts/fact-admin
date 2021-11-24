@@ -150,6 +150,4 @@ export class OpeningTypesController {
     return input?.trim() || null;
   }
 
-
-
 }
