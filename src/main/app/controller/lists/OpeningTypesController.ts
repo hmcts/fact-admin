@@ -88,7 +88,6 @@ export class OpeningTypesController {
     this.renderDeleteConfirmation(res, idToDelete, name);
   }
 
-
   private async renderAll(
     req: AuthedRequest,
     res: Response,
