@@ -142,7 +142,6 @@ export class OpeningTypesController {
   public sanitizeOpeningType(openingType: OpeningType): OpeningType {
     openingType['type'] = this.sanitizeInput(openingType.type);
     openingType['type_cy'] = this.sanitizeInput(openingType.type_cy);
-
     return openingType;
   }
 
