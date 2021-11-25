@@ -24,6 +24,7 @@ import {PhotoController} from './photo';
 import {AuditController} from './audits';
 import {ContactTypesListController} from './contact-type-list';
 import {FacilityTypesController} from './facility-types-list';
+import {OpeningTypesController} from './opening-types-list';
 import {AdditionalLinksController} from './additionalLinks';
 import {InviteUserController} from './users/invite-user';
 
@@ -52,3 +53,4 @@ new ContactTypesListController();
 new CasesHeardController();
 new PhotoController();
 new FacilityTypesController();
+new OpeningTypesController();

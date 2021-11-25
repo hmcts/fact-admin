@@ -22,6 +22,7 @@ import {PhotoController} from '../../app/controller/courts/PhotoController';
 import {AuditController} from '../../app/controller/audits/AuditController';
 import {ContactTypesController} from '../../app/controller/lists/ContactTypesController';
 import {FacilityTypesController} from '../../app/controller/lists/FacilityTypesController';
+import {OpeningTypesController} from '../../app/controller/lists/OpeningTypesController';
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
 import {UserController} from '../../app/controller/users/UserController';
 import {InviteUserController} from '../../app/controller/users/InviteUserController';
@@ -63,6 +64,7 @@ export class Container {
       areasOfLawController: asClass(AreasOfLawController),
       contactTypesController : asClass(ContactTypesController),
       facilityTypesController: asClass(FacilityTypesController),
+      openingTypesController: asClass(OpeningTypesController),
       errorController: asClass(ErrorController),
 
       // Audits

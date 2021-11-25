@@ -1,0 +1,62 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% if not openingType.id  %}
+  <h2 class="govuk-heading-l">Add New Opening Type</h2>
+{% else %}
+  <h2 class="govuk-heading-l">Editing Opening Type: {{openingType.type}}</h2>
+{% endif %}
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if fatalError == false %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {{ govukInput({
+          label: {
+            text: "Name"
+          },
+          id: "ct-type",
+          name: "openingType[type]",
+          value: openingType.type,
+          errorMessage: { text: 'Name is required' } if nameValid == false
+        }) }}
+
+      <input id='openingTypeId' type='hidden' name='openingType[id]' value={{openingType.id}}></input>
+
+      {{ govukInput({
+        label: {
+          text: "Name (Welsh)"
+        },
+        id: "ct-type-cy",
+        name: "openingType[type_cy]",
+        value: openingType.type_cy
+      }) }}
+
+
+    </div>
+  </div>
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Save",
+      attributes: { id: "saveOpeningTypeBtn" }
+    }) }}
+
+    {{ govukButton({
+      text: "Cancel",
+      type: "button",
+      attributes: { id: "cancelOpeningTypeChangesBtn" },
+      classes: "govuk-button--secondary cancel-changes"
+    }) }}
+  </div>
+
+{% endif %}
