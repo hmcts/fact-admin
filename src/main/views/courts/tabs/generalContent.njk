@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 <h2 class="govuk-heading-l">General</h2>
 
@@ -24,6 +25,16 @@
 {% endif %}
 
 {% if isSuperAdmin %}
+  {{ govukInput({
+    label: {
+      text: "Name",
+      classes: "govuk-label--m"
+    },
+    id: "edit-name",
+    name: "name",
+    value: generalInfo.name
+  }) }}
+
   {{ govukCheckboxes({
     name: "open",
     items: [

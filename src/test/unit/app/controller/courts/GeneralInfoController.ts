@@ -12,6 +12,7 @@ describe('GeneralInfoController', () => {
   };
 
   const courtGeneralInfo: CourtGeneralInfo = {
+    name: 'court name',
     open: true,
     'access_scheme': false,
     info: 'info',

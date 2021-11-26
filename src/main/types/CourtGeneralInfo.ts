@@ -1,4 +1,5 @@
 export interface CourtGeneralInfo {
+  name: string;
   open: boolean;
   access_scheme: boolean;
   info: string;
