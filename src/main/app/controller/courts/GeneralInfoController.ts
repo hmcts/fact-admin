@@ -41,6 +41,10 @@ export class GeneralInfoController {
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, generalInfo);
     }
+
+    if (generalInfo.name.trim() === '') {
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, generalInfo);
+    }
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
 
