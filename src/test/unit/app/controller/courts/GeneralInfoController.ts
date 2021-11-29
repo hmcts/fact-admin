@@ -22,6 +22,17 @@ describe('GeneralInfoController', () => {
     'in_person': true
   };
 
+  const courtGeneralInfoBlankNameField: CourtGeneralInfo = {
+    name: '',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
   const controller = new GeneralInfoController();
 
   beforeEach(() => {
@@ -87,6 +98,32 @@ describe('GeneralInfoController', () => {
     const expectedResults: CourtGeneralInfoData = {
       generalInfo: {
         ...courtGeneralInfo,
+        _csrf: CSRF.create()
+      },
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false
+    } as CourtGeneralInfoData;
+    await controller.put(req, res);
+
+    //expect(mockApi.updateGeneralInfo).not.toBeCalled();
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResults);
+  });
+
+  test('Should not put court general info if name is left blank', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = {
+      ...courtGeneralInfoBlankNameField,
+      _csrf: CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockResolvedValue(res);
+
+    const expectedResults: CourtGeneralInfoData = {
+      generalInfo: {
+        ...courtGeneralInfoBlankNameField,
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
