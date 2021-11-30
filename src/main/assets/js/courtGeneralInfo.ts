@@ -70,11 +70,10 @@ export class CourtGeneralInfoController {
         method: 'put',
         data: $(e.target).serialize()
       }).done(async res => {
-        await this.updateContent(res).then(() => {
-          if (slug !== updatedSlug) {
-            window.location.href = '/courts/' + updatedSlug + '/edit#general';
-          }
-        });
+        await this.updateContent(res);
+        if (!$(this.generalTabContentId).has('.govuk-error-summary').length && slug !== updatedSlug) {
+          window.location.href = '/courts/' + updatedSlug + '/edit#general';
+        }
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST general info failed.'));
     });
