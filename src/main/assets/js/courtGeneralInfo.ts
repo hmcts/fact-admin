@@ -61,13 +61,20 @@ export class CourtGeneralInfoController {
       tinymce.triggerSave();
 
       const url = $(e.target).attr('action');
+      const slug = $('#slug').val();
+      const updatedName = $('#edit-name').val() as string;
+      const updatedSlug = updatedName.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-');
 
       $.ajax({
         url: url,
         method: 'put',
         data: $(e.target).serialize()
       }).done(async res => {
-        await this.updateContent(res);
+        await this.updateContent(res).then(() => {
+          if (slug !== updatedSlug) {
+            window.location.href = '/courts/' + updatedSlug + '/edit#general';
+          }
+        });
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST general info failed.'));
     });
