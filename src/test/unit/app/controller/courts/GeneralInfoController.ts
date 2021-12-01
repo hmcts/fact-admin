@@ -58,7 +58,8 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: '',
-      updated: false
+      updated: false,
+      duplicatedName: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -101,7 +102,8 @@ describe('GeneralInfoController', () => {
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      duplicatedName: false
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -127,7 +129,8 @@ describe('GeneralInfoController', () => {
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      duplicatedName: false
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -150,27 +153,54 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: null,
       errorMsg: controller.getGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      duplicatedName: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
   test('Should handle errors when posting court general info to API', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 500;
     const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
     req.body = courtGeneralInfo;
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
 
     await controller.put(req, res);
 
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      duplicatedName: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should handle errors when posting court general info to with a duplicate name', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + undefined,
+      updated: false,
+      duplicatedName: true
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);

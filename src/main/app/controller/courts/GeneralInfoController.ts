@@ -10,7 +10,7 @@ export class GeneralInfoController {
 
   updateGeneralInfoErrorMsg = 'A problem occurred when saving the general information.';
   getGeneralInfoErrorMsg = 'A problem occurred when retrieving the general information.';
-  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique.';
+  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. ';
 
 
   public async get(
@@ -57,10 +57,11 @@ export class GeneralInfoController {
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => this.get(req, res, true, '', false, value))
       .catch(async (reason: AxiosError) => {
-        await this.get(req, res, false,
-          reason.response?.status === 409
-            ? this.updateDuplicateGeneralInfoErrorMsg + reason.response?.data
-            : this.updateGeneralInfoErrorMsg, true, generalInfo);
+        const duplicated = reason.response?.status === 409 ? true : false;
+        const error = reason.response?.status === 409
+          ? this.updateDuplicateGeneralInfoErrorMsg + reason.response?.data
+          : this.updateGeneralInfoErrorMsg;
+        await this.get(req, res, false, error, duplicated, generalInfo);
       });
   }
 }
