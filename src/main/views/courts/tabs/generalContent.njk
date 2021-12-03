@@ -25,10 +25,8 @@
 {% endif %}
 
 {% set nameError = false %}
-{% if generalInfo.name === '' %}
- {% set nameError = { text: 'Name is required' } %}
-{% elif duplicatedName %}
- {% set nameError = { text: 'Duplicated name' } %}
+{% if nameFieldError %}
+ {% set nameError = { text: nameFieldError } %}
 {% endif %}
 
 {% if isSuperAdmin %}

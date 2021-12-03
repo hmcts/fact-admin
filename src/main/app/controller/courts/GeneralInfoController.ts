@@ -11,15 +11,17 @@ export class GeneralInfoController {
 
   updateGeneralInfoErrorMsg = 'A problem occurred when saving the general information.';
   getGeneralInfoErrorMsg = 'A problem occurred when retrieving the general information.';
-  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. ';
-
+  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. Court already exists with name: ';
+  duplicateNameErrorMsg = 'Duplicated name';
+  blankNameErrorMsg = 'Name is required';
+  specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
 
   public async get(
     req: AuthedRequest,
     res: Response,
     updated = false,
     error = '',
-    duplicatedName = false,
+    nameFieldErrorMsg = '',
     generalInfo: CourtGeneralInfo = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
@@ -34,7 +36,7 @@ export class GeneralInfoController {
       generalInfo: generalInfo,
       errorMsg: error,
       updated: updated,
-      duplicatedName: duplicatedName
+      nameFieldError: nameFieldErrorMsg
     };
 
     res.render('courts/tabs/generalContent', pageData);
@@ -46,12 +48,17 @@ export class GeneralInfoController {
     const updatedSlug = generalInfo.name.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-');
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, false, generalInfo);
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', generalInfo);
     }
 
     if (generalInfo.name.trim() === '') {
-      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, false, generalInfo);
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.blankNameErrorMsg, generalInfo);
     }
+
+    if (this.checkNameForInvalidCharacters(generalInfo.name)) {
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
+    }
+
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
 
@@ -59,17 +66,17 @@ export class GeneralInfoController {
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
-          this.get(req, res, true, '', false, value);
+          this.get(req, res, true, '', '', value);
         } else {
           this.renderRedirect(res, '/courts/' + updatedSlug + '/edit#general');
         }
       })
       .catch(async (reason: AxiosError) => {
-        const duplicated = reason.response?.status === 409;
+        const nameFieldErrorMsg = reason.response?.status === 409 ? this.duplicateNameErrorMsg : '';
         const error = reason.response?.status === 409
-          ? this.updateDuplicateGeneralInfoErrorMsg + reason.response?.data
+          ? this.updateDuplicateGeneralInfoErrorMsg + generalInfo.name
           : this.updateGeneralInfoErrorMsg;
-        await this.get(req, res, false, error, duplicated, generalInfo);
+        await this.get(req, res, false, error, nameFieldErrorMsg, generalInfo);
       });
   }
 
@@ -78,5 +85,10 @@ export class GeneralInfoController {
       redirectURL: redirectURL
     };
     res.render('courts/tabs/generalRedirect', pageData);
+  }
+
+  private checkNameForInvalidCharacters(name: string): boolean {
+    const inValidCharacters = /[!@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
+    return inValidCharacters.test(name);
   }
 }

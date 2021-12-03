@@ -33,6 +33,17 @@ describe('GeneralInfoController', () => {
     'in_person': true
   };
 
+  const courtGeneralInfoInvalidCharacters: CourtGeneralInfo = {
+    name: 'invalid name!',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
   const slug = 'southport-county-court';
 
   const controller = new GeneralInfoController();
@@ -61,7 +72,7 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfo,
       errorMsg: '',
       updated: false,
-      duplicatedName: false
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -103,7 +114,7 @@ describe('GeneralInfoController', () => {
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      duplicatedName: false
+      nameFieldError: ''
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -129,7 +140,7 @@ describe('GeneralInfoController', () => {
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      duplicatedName: false
+      nameFieldError: controller.blankNameErrorMsg
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -153,7 +164,7 @@ describe('GeneralInfoController', () => {
       generalInfo: null,
       errorMsg: controller.getGeneralInfoErrorMsg,
       updated: false,
-      duplicatedName: false
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -175,7 +186,26 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      duplicatedName: false
+      nameFieldError: ''
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should not put court general info if name has invalid characters', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfoInvalidCharacters;
+    req.scope.cradle.api = mockApi;
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfoInvalidCharacters,
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false,
+      nameFieldError: controller.specialCharacterErrorMsg
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -195,9 +225,9 @@ describe('GeneralInfoController', () => {
 
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
-      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + undefined,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
       updated: false,
-      duplicatedName: true
+      nameFieldError: controller.duplicateNameErrorMsg
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);

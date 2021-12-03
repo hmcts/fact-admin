@@ -13,5 +13,5 @@ export interface CourtGeneralInfoData {
   generalInfo: CourtGeneralInfo;
   errorMsg: string;
   updated: boolean;
-  duplicatedName: boolean;
+  nameFieldError: string;
 }
