@@ -8,6 +8,7 @@ export class CourtGeneralInfoController {
   private generalTabId = '#generalInfoTab';
   private generalTabContentId = '#generalInfoContent';
   private generalFormId = '#generalInfoForm';
+  private redirectBtnId = '#redirectBtnId';
 
   constructor() {
     this.initialize();
@@ -18,6 +19,7 @@ export class CourtGeneralInfoController {
       if ($(this.generalTabId).length > 0) {
         this.getGeneralInfo();
         this.setUpSubmitEventHandler();
+        this.setUpRedirectHandler();
       }
     });
   }
@@ -61,9 +63,6 @@ export class CourtGeneralInfoController {
       tinymce.triggerSave();
 
       const url = $(e.target).attr('action');
-      const slug = $('#slug').val();
-      const updatedName = $('#edit-name').val() as string;
-      const updatedSlug = updatedName.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-');
 
       $.ajax({
         url: url,
@@ -71,11 +70,15 @@ export class CourtGeneralInfoController {
         data: $(e.target).serialize()
       }).done(async res => {
         await this.updateContent(res);
-        if (!$(this.generalTabContentId).has('.govuk-error-summary').length && slug !== updatedSlug) {
-          window.location.href = '/courts/' + updatedSlug + '/edit#general';
-        }
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST general info failed.'));
+    });
+  }
+
+  private setUpRedirectHandler() {
+    $(this.generalFormId).on('click', `${this.redirectBtnId}`, e => {
+      const redirectURL = e.target.getAttribute('href');
+      window.location.href = redirectURL;
     });
   }
 }

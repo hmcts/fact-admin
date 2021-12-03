@@ -33,6 +33,8 @@ describe('GeneralInfoController', () => {
     'in_person': true
   };
 
+  const slug = 'southport-county-court';
+
   const controller = new GeneralInfoController();
 
   beforeEach(() => {
@@ -66,7 +68,6 @@ describe('GeneralInfoController', () => {
   });
 
   test('Should put court general info', async () => {
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -84,7 +85,6 @@ describe('GeneralInfoController', () => {
   });
 
   test('Should not put court general info if CSRF token is invalid', async () => {
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -112,7 +112,6 @@ describe('GeneralInfoController', () => {
   });
 
   test('Should not put court general info if name is left blank', async () => {
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -141,7 +140,7 @@ describe('GeneralInfoController', () => {
   test('Should handle errors when getting court general info from API', async () => {
     const req = mockRequest();
     req.params = {
-      slug: 'southport-county-court'
+      slug: slug
     };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
@@ -163,7 +162,6 @@ describe('GeneralInfoController', () => {
   test('Should handle errors when posting court general info to API', async () => {
     const errorResponse = mockResponse();
     errorResponse.response.status = 500;
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -186,7 +184,6 @@ describe('GeneralInfoController', () => {
   test('Should handle errors when posting court general info to with a duplicate name', async () => {
     const errorResponse = mockResponse();
     errorResponse.response.status = 409;
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };

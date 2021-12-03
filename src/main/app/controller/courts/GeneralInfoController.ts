@@ -4,6 +4,7 @@ import {Response} from 'express';
 import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../types/CourtGeneralInfo';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
+import {CourtGeneralInfoRedirect} from '../../../types/CourtGeneralInfoRedirect';
 
 @autobind
 export class GeneralInfoController {
@@ -42,6 +43,7 @@ export class GeneralInfoController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const generalInfo = req.body as CourtGeneralInfo;
     const slug: string = req.params.slug as string;
+    const updatedSlug = generalInfo.name.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-');
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, false, generalInfo);
@@ -55,13 +57,26 @@ export class GeneralInfoController {
 
 
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
-      .then((value: CourtGeneralInfo) => this.get(req, res, true, '', false, value))
+      .then((value: CourtGeneralInfo) => {
+        if (updatedSlug === slug) {
+          this.get(req, res, true, '', false, value);
+        } else {
+          this.renderRedirect(res, '/courts/' + updatedSlug + '/edit#general');
+        }
+      })
       .catch(async (reason: AxiosError) => {
-        const duplicated = reason.response?.status === 409 ? true : false;
+        const duplicated = reason.response?.status === 409;
         const error = reason.response?.status === 409
           ? this.updateDuplicateGeneralInfoErrorMsg + reason.response?.data
           : this.updateGeneralInfoErrorMsg;
         await this.get(req, res, false, error, duplicated, generalInfo);
       });
+  }
+
+  public renderRedirect(res: Response, redirectURL: string): void {
+    const pageData: CourtGeneralInfoRedirect = {
+      redirectURL: redirectURL
+    };
+    res.render('courts/tabs/generalRedirect', pageData);
   }
 }
