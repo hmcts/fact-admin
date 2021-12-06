@@ -30,3 +30,48 @@ Feature: General Info
     And I can view the access scheme checkbox
     And I can view the urgent notices
     And I can view the additional information notices
+
+  Scenario: Super user can view and edit the name field
+    When I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    When I select Include closed courts
+    Then I can view the courts or tribunals in a list format
+    When I click edit next to court with "basildon-combined-court"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    Then I enter "Basildon Combined Court test" in the Name textbox
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
+    When I click on continue button
+    When I click on courts link
+    When I click edit next to court with "basildon-combined-court-test"
+    Then I enter "Basildon Combined Court" in the Name textbox
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
+
+  Scenario: Cant leave the name blank
+    When I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    When I select Include closed courts
+    Then I can view the courts or tribunals in a list format
+    When I click edit next to court with "amersham-law-courts"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    Then I enter "" in the Name textbox
+    And I click the general info save button
+    Then The error message displays for general info "A problem occurred when saving the general information."
+
+  Scenario: Editing general info with the court name already exist
+    When I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    When I select Include closed courts
+    Then I can view the courts or tribunals in a list format
+    When I click edit next to court with "bankruptcy-court-high-court"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    Then I enter "Amersham Law Courts" in the Name textbox
+    And I click the general info save button
+    Then The error message displays for general info "All names must be unique. Court already exists with name: Amersham Law Courts"

@@ -3,6 +3,11 @@ import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 
+async function populateField(fieldElement: string, value: string) {
+  expect(await I.checkElement(fieldElement)).equal(true);
+  await I.setElementValueForInputField(fieldElement, value);
+}
+
 When('I hover over general nav element', async () => {
   const selector = '#nav';
   const elementExist = await I.checkElement(selector);
@@ -48,13 +53,31 @@ Then('I can view the additional information notices', async () => {
   expect(welshAdditionalInfoExists).equal(true);
 });
 
-Then('a success message is displayed on the tab {string}', async (successMsg: string) => {
+Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
   const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
 
-
-Given('I click the save button', async () => {
+Given('I click the general info save button', async () => {
   await I.click('#saveGeneralInfoBtn');
+  await new Promise(f => setTimeout(f, 10000));
+});
+
+Then('I enter {string} in the Name textbox', async (name: string) => {
+  const selector = '#edit-name';
+  await populateField(selector, name);
+});
+
+Then('The error message displays for general info {string}', async (errMessage: string) => {
+  const errorTitle = await I.checkElement('#error-summary-title');
+  expect(errorTitle).equal(true);
+
+  const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
+Given('I click on continue button', async () => {
+  await I.click('#redirectBtnId');
 });
