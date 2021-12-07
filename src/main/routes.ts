@@ -11,6 +11,8 @@ export default function(app: Application): void {
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);
+  app.get('/courts/add-court', isSuperAdmin, app.locals.container.cradle.newCourtController.get);
+  app.post('/courts/add-court', isSuperAdmin, app.locals.container.cradle.newCourtController.addNewCourt);
   app.get('/courts/download', app.locals.container.cradle.courtsDownloadController.get);
 
   //Users
@@ -20,7 +22,6 @@ export default function(app: Application): void {
   app.get('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderPassword);
   app.post('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.postPassword);
   app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
-
 
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
@@ -96,6 +97,4 @@ export default function(app: Application): void {
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
-
-
 }

@@ -1,0 +1,47 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "macros/csrf.njk" import csrfProtection %}
+
+
+{% extends "template.njk" %}
+{% block content %}
+<div id="addNewCourtContent">
+  <form id="addNewCourtForm" method="POST" class='govuk-grid-row'>
+    {{ csrfProtection(csrfToken) }}
+    <h1 class="govuk-heading-xl">Add new court</h1>
+
+    {% if errors|length %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: errors
+      }) }}
+    {% endif %}
+
+    {{ errors|length }}
+    {{ errors }}
+
+    <p class="govuk-body-l">
+      Court will be opened by default.
+      After entering a name you will be redirected to the edit page for the new court and can fill out
+      any remaining information.
+    </p>
+
+    {{ govukInput({
+      id: "newCourtName",
+      name: "newCourtName",
+      label: {
+        text: "Name"
+      },
+      classes: "govuk-input--width-20"
+    }) }}
+
+    {{ govukButton({
+      text: "Add court",
+      name: "saveNewCourt",
+      attributes: { href: redirectUrl if redirectUrl else '', id: 'saveNewCourtBtn' }
+    }) }}
+  </form>
+</div>
+
+{% endblock %}
