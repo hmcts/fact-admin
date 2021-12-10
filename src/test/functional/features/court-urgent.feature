@@ -14,12 +14,12 @@ Feature: Court Update Urgent Message
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Urgent Notice" in the field provided "#generalInfoTab #urgent-notice"
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
 
   Scenario: Welsh Translation
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I have added the "Welsh translation of the urgent notice" in the Urgent Notice Welsh field
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"

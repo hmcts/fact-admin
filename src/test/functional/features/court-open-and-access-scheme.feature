@@ -16,11 +16,11 @@ Feature: Court Open and Access Scheme flags
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
     When I click the open checkbox
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
     When I click the close checkbox
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
 
     Examples:
       | view_court_slug                            |
@@ -30,15 +30,13 @@ Feature: Court Open and Access Scheme flags
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
     When I click the Participates in access scheme checkbox
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
     When I unclick the Participates in access scheme checkbox
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
 
     Examples:
       | view_court_slug                            |
       | birmingham-civil-and-family-justice-centre |
-
-
-
+    
