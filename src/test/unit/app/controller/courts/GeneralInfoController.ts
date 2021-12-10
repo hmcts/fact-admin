@@ -125,6 +125,7 @@ describe('GeneralInfoController', () => {
   test('Should not put court general info if name is left blank', async () => {
     const res = mockResponse();
     const req = mockRequest();
+    req.session.user.isSuperAdmin = true;
     req.params = { slug: slug };
     req.body = {
       ...courtGeneralInfoBlankNameField,
