@@ -46,7 +46,7 @@ export class GeneralInfoController {
     const generalInfo = req.body as CourtGeneralInfo;
     const slug: string = req.params.slug as string;
     const updatedSlug = generalInfo.name
-      ? generalInfo.name.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-')
+      ? generalInfo.name.toLowerCase().replace(/[^\w\s-]|_/g, '').split(' ').join('-')
       : slug;
 
     if(!CSRF.verify(req.body._csrf)) {
@@ -90,7 +90,7 @@ export class GeneralInfoController {
   }
 
   private checkNameForInvalidCharacters(name: string): boolean {
-    const inValidCharacters = /[!@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
+    const inValidCharacters = /[!@#$%^&*_+=[\]{};:"\\|,.<>/?]+/;
     return inValidCharacters.test(name);
   }
 }
