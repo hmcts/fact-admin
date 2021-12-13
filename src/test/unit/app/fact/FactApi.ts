@@ -90,6 +90,7 @@ describe('FactApi', () => {
   test('Should return results from getGeneralInfo request', async () => {
     const results: { data: CourtGeneralInfo } =
       { data: {
+        name: 'court name',
         open: true,
         'access_scheme': true,
         info: 'information',
@@ -123,6 +124,7 @@ describe('FactApi', () => {
     }} as any;
 
     const mockBody: CourtGeneralInfo = {
+      name: 'court name',
       open: true,
       'in_person': true,
       'access_scheme': false,

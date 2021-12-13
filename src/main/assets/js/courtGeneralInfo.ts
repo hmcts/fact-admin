@@ -8,6 +8,7 @@ export class CourtGeneralInfoController {
   private generalTabId = '#generalInfoTab';
   private generalTabContentId = '#generalInfoContent';
   private generalFormId = '#generalInfoForm';
+  private redirectBtnId = '#redirectBtnId';
 
   constructor() {
     this.initialize();
@@ -18,6 +19,7 @@ export class CourtGeneralInfoController {
       if ($(this.generalTabId).length > 0) {
         this.getGeneralInfo();
         this.setUpSubmitEventHandler();
+        this.setUpRedirectHandler();
       }
     });
   }
@@ -70,6 +72,13 @@ export class CourtGeneralInfoController {
         await this.updateContent(res);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST general info failed.'));
+    });
+  }
+
+  private setUpRedirectHandler() {
+    $(this.generalFormId).on('click', `${this.redirectBtnId}`, e => {
+      const redirectURL = e.target.getAttribute('href');
+      window.location.href = redirectURL;
     });
   }
 }
