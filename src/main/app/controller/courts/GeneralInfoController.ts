@@ -45,13 +45,15 @@ export class GeneralInfoController {
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const generalInfo = req.body as CourtGeneralInfo;
     const slug: string = req.params.slug as string;
-    const updatedSlug = generalInfo.name.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-');
+    const updatedSlug = generalInfo.name
+      ? generalInfo.name.toLowerCase().replace(/[^\w\s]|_/g, '').split(' ').join('-')
+      : slug;
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', generalInfo);
     }
 
-    if (generalInfo.name.trim() === '') {
+    if (req.session.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.blankNameErrorMsg, generalInfo);
     }
 
