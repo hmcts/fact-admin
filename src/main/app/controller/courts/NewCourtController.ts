@@ -21,9 +21,6 @@ export class NewCourtController {
     serviceAreaChecked = false,
     errorMsg: string[] = []): Promise<void> {
 
-    console.log(serviceAreaChecked);
-    console.log(typeof serviceAreaChecked);
-
     res.render('courts/addNewCourt', {
       created: created,
       nameValidationPassed: nameValidationPassed,
@@ -41,6 +38,7 @@ export class NewCourtController {
       newCourtName: req.body.newCourtName,
       serviceCentre: req.body.serviceCentre == 'true'
     } as NewCourt;
+    console.log(typeof newCourt);
     const newCourtName = newCourt.newCourtName;
     const serviceAreaChecked = newCourt.serviceCentre;
 
@@ -65,7 +63,6 @@ export class NewCourtController {
     // Otherwise, add the new court
 
     // TODOs
-    // add service area flag to the list of selections on the page
     // make call to the api to add a new court
     // make sure the redirect on the javascript forwards on to the /courts/{slug}/generalinfo bit
     // unit tests etc
