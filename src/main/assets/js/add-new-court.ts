@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 
+const { initAll } = require('govuk-frontend');
+
 export class NewCourtController {
 
   private addNewCourtContentId = '#addNewCourtContent';
@@ -14,10 +16,27 @@ export class NewCourtController {
   private initialise(): void {
     console.log('goes into outside of if statement');
     $(() => {
-      if ($(this.formId).length > 0) {
-        console.log('goes into if statement');
+      console.log('goes into if statement');
+      this.getAddNewCourtData();
+    });
+  }
+
+  private getAddNewCourtData(): void{
+    $.ajax({
+      url: '/courts/add-court-data',
+      method: 'get',
+      success: async (res) => {
+
+        console.log(res);
+
+        // await $(this.addNewCourtContentId).html(res);
+        await initAll({scope: document.getElementById(this.formId)});
+
         this.setUpSubmitEventHandler();
-      }
+        window.scrollTo(0, 0);
+      },
+      error: (jqxhr) =>
+        AjaxErrorHandler.handleError(jqxhr, 'GET court data failed.')
     });
   }
 

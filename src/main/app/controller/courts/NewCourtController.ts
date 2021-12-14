@@ -7,55 +7,38 @@ import {CSRF} from '../../../modules/csrf';
 export class NewCourtController {
 
   addNewCourtErrorMsg = 'A problem occurred when adding the new court';
+  emptyCourtNameMsg = 'A new court name value is required';
 
-  // Need to have the render separately
-  // This method renders the header/footer and the div, and the subsequent one will constitute the content
   public async get(req: AuthedRequest,
     res: Response,
     created = false,
+    nameValidationPassed = true,
+    emptyCourtName = false,
     redirectUrl: string,
-    errors: string[] = []): Promise<void> {
+    errorMsg: string[] = []): Promise<void> {
+
     res.render('courts/addNewCourt', {
       created: created,
+      nameValidationPassed: nameValidationPassed,
+      emptyCourtName: emptyCourtName,
       redirectUrl: redirectUrl,
-      errors: errors,
+      errorMsg: errorMsg,
       csrfToken: CSRF.create()
     });
   }
 
-  public async getNewCourtData(req: AuthedRequest,
-    res: Response): Promise<void> {
-
-    console.log('goes into GET data controller');
-
-    res.render('courts/addNewCourtContent', {
-      created: false,
-      redirectUrl: '/courts',
-      errors: [],
-      csrfToken: CSRF.create()
-    });
-  }
-
-  /**
-   * POST /courts/add-court
-   */
   public async addNewCourt(req: AuthedRequest, res: Response): Promise<void> {
+    const newCourtName = req.body.newCourtName;
 
-    console.log('goes into POST controller');
-
-    console.log('body is = ' + req.body);
-    console.log('csrf token = ' + req.body._csrf);
-    console.log('csrf token = ' + req.body.newCourtName);
-
-    if(CSRF.verify(req.body._csrf)) {
-      console.log('goes into csrf failure');
-      return this.get(req, res, false, '', [this.addNewCourtErrorMsg]);
+    if (newCourtName === '') {
+      return this.get(req, res, false, true, true,
+        '/courts', [this.emptyCourtNameMsg]);
     }
 
-    console.log('gets after csrf check');
-
-    const newCourtName = req.body.newCourtName;
-    console.log(newCourtName);
+    if(!CSRF.verify(req.body._csrf)) {
+      return this.get(req, res, false, true, false,
+        '/courts', [this.addNewCourtErrorMsg]);
+    }
 
     const updatedSlug = newCourtName.toLowerCase()
       .replace(/[^\w\s]|_/g, '').split(' ').join('-');
@@ -73,7 +56,8 @@ export class NewCourtController {
     // unit tests etc
     // functional tests
 
-    return this.get(req, res, true,'/courts/' + updatedSlug + '/edit#general', []);
+    return this.get(req, res, true, true, false,
+      '/courts/' + updatedSlug + '/edit#general', []);
   }
 
 }

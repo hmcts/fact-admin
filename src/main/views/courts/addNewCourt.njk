@@ -5,43 +5,48 @@
 
 
 {% extends "template.njk" %}
+
 {% block content %}
-<div id="addNewCourtContent">
+
+{{ redirectUrl }}
+
   <form id="addNewCourtForm" method="POST" class='govuk-grid-row'>
     {{ csrfProtection(csrfToken) }}
-    <h1 class="govuk-heading-xl">Add new court</h1>
 
-    {% if errors|length %}
-      {{ govukErrorSummary({
-        titleText: "There is a problem",
-        errorList: errors
-      }) }}
-    {% endif %}
+  <h1 class="govuk-heading-l">Add new court</h1>
 
-    {{ errors|length }}
-    {{ errors }}
-
-    <p class="govuk-body-l">
-      Court will be opened by default.
-      After entering a name you will be redirected to the edit page for the new court and can fill out
-      any remaining information.
-    </p>
-
-    {{ govukInput({
-      id: "newCourtName",
-      name: "newCourtName",
-      label: {
-        text: "Name"
-      },
-      classes: "govuk-input--width-20"
+  {% if errorMsg != '' %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        {
+          text: errorMsg
+        }
+      ]
     }) }}
+  {% endif %}
 
-    {{ govukButton({
-      text: "Add court",
-      name: "saveNewCourt",
-      attributes: { href: redirectUrl if redirectUrl else '', id: 'saveNewCourtBtn' }
-    }) }}
+  <p class="govuk-body-l">
+    Court will be opened by default.
+    After entering a name you will be redirected to the edit page for the new court and can fill out
+    any remaining information.
+  </p>
+
+  {{ govukInput({
+    id: "newCourtName",
+    name: "newCourtName",
+    label: {
+      text: "Name"
+    },
+    errorMessage: false if not emptyCourtName else { text: 'A new court name value is required' },
+    classes: "govuk-input--width-20"
+  }) }}
+
+  {{ govukButton({
+    text: "Add court",
+    name: "saveNewCourt",
+    attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
+  }) }}
   </form>
 </div>
-
 {% endblock %}
