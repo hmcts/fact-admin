@@ -72,7 +72,7 @@ describe('FeatureToggleService', () => {
     const mockNextController = jest.fn();
     let mockController: Mock;
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       when(mockFeatureFlagClient.getFlagValue)
         .calledWith('test-feature-flag', false)
         .mockReturnValue(Promise.resolve(true));
@@ -92,7 +92,7 @@ describe('FeatureToggleService', () => {
     const mockController = jest.fn();
     let mockNextController: Mock;
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       when(mockFeatureFlagClient.getFlagValue)
         .calledWith('test-feature-flag', false)
         .mockReturnValue(Promise.resolve(false));
