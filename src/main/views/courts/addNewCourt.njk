@@ -1,4 +1,5 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "macros/csrf.njk" import csrfProtection %}
@@ -8,45 +9,80 @@
 
 {% block content %}
 
-{{ redirectUrl }}
+<form id="addNewCourtForm" method="POST" class='govuk-grid-row'>
+  {{ csrfProtection(csrfToken) }}
 
-  <form id="addNewCourtForm" method="POST" class='govuk-grid-row'>
-    {{ csrfProtection(csrfToken) }}
+<h1 class="govuk-heading-l">Add new court</h1>
 
-  <h1 class="govuk-heading-l">Add new court</h1>
+{% if errorMsg != '' %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: errorMsg
+      }
+    ]
+  }) }}
+{% endif %}
 
-  {% if errorMsg != '' %}
-    {{ govukErrorSummary({
-      titleText: "There is a problem",
-      errorList: [
-        {
-          text: errorMsg
-        }
-      ]
-    }) }}
-  {% endif %}
+<p class="govuk-body-l">
+  Court will be opened by default.
+  After entering a name you will be redirected to the edit page for the new court and can fill out
+  any remaining information.
+</p>
 
-  <p class="govuk-body-l">
-    Court will be opened by default.
-    After entering a name you will be redirected to the edit page for the new court and can fill out
-    any remaining information.
-  </p>
+{% set newCourtNameErrorDesc = false %}
+{% if emptyCourtName %}
+  {% set newCourtNameErrorDesc = { text: 'A new court name value is required' } %}
+{% endif %}
+{% if not nameValidationPassed %}
+  {% set newCourtNameErrorDesc = { text: 'Invalid court name: please amend and try again.
+    Valid characters are: A-Z, a-z, 0-9, apostrophes and hyphens' } %}
+{% endif %}
 
-  {{ govukInput({
-    id: "newCourtName",
-    name: "newCourtName",
-    label: {
-      text: "Name"
+{{ govukInput({
+  id: "newCourtName",
+  name: "newCourtName",
+  label: {
+    text: "Name"
+  },
+  errorMessage: newCourtNameErrorDesc,
+  value: nameEntered,
+  classes: "govuk-input--width-20"
+}) }}
+
+{{ govukRadios({
+  classes: "govuk-radios--small",
+  id: "serviceCentre",
+  name: "serviceCentre",
+  fieldset: {
+    legend: {
+      text: "Service Centre",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--m"
+    }
+  },
+  hint: {
+      text: "Will the court be a service centre?"
+   },
+  items: [
+    {
+      value: true,
+      text: "Yes",
+      checked: serviceAreaChecked
     },
-    errorMessage: false if not emptyCourtName else { text: 'A new court name value is required' },
-    classes: "govuk-input--width-20"
-  }) }}
+    {
+      value: false,
+      text: "No",
+      checked: not serviceAreaChecked
+    }
+  ]
+}) }}
 
-  {{ govukButton({
-    text: "Add court",
-    name: "saveNewCourt",
-    attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
-  }) }}
-  </form>
-</div>
+{{ govukButton({
+  text: "Add court",
+  name: "saveNewCourt",
+  attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
+}) }}
+</form>
 {% endblock %}

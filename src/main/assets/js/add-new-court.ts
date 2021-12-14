@@ -8,6 +8,7 @@ export class NewCourtController {
   private addNewCourtContentId = '#addNewCourtContent';
   private formId = '#addNewCourtForm';
   private newCourtName = '#newCourtName';
+  // private serviceArea = '#serviceArea';
 
   constructor() {
     this.initialise();
@@ -54,6 +55,7 @@ export class NewCourtController {
         method: 'post',
         data: {
           newCourtName: $(this.newCourtName).val(),
+
           _csrf: $(this.formId + '> input[name="_csrf"]').val()
         }
       }).done(res => {
