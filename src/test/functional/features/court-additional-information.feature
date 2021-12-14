@@ -14,12 +14,12 @@ Feature: Court Additional Information Message
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Additional Information" in the rich editor field provided "#info"
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
 
   Scenario: Welsh Translation
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_cy"
-    And I click the save button
-    Then a success message is displayed on the tab "General Information updated"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"

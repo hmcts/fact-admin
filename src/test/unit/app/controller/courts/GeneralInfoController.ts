@@ -12,6 +12,7 @@ describe('GeneralInfoController', () => {
   };
 
   const courtGeneralInfo: CourtGeneralInfo = {
+    name: 'court name',
     open: true,
     'access_scheme': false,
     info: 'info',
@@ -20,6 +21,30 @@ describe('GeneralInfoController', () => {
     'alert_cy': 'an alert cy',
     'in_person': true
   };
+
+  const courtGeneralInfoBlankNameField: CourtGeneralInfo = {
+    name: '',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
+  const courtGeneralInfoInvalidCharacters: CourtGeneralInfo = {
+    name: 'invalid name!',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
+  const slug = 'southport-county-court';
 
   const controller = new GeneralInfoController();
 
@@ -46,14 +71,14 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: '',
-      updated: false
+      updated: false,
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
   test('Should put court general info', async () => {
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -71,7 +96,6 @@ describe('GeneralInfoController', () => {
   });
 
   test('Should not put court general info if CSRF token is invalid', async () => {
-    const slug = 'southport-county-court';
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
@@ -89,7 +113,35 @@ describe('GeneralInfoController', () => {
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      nameFieldError: ''
+    } as CourtGeneralInfoData;
+    await controller.put(req, res);
+
+    //expect(mockApi.updateGeneralInfo).not.toBeCalled();
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResults);
+  });
+
+  test('Should not put court general info if name is left blank', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.session.user.isSuperAdmin = true;
+    req.params = { slug: slug };
+    req.body = {
+      ...courtGeneralInfoBlankNameField,
+      _csrf: CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockResolvedValue(res);
+
+    const expectedResults: CourtGeneralInfoData = {
+      generalInfo: {
+        ...courtGeneralInfoBlankNameField,
+        _csrf: CSRF.create()
+      },
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false,
+      nameFieldError: controller.blankNameErrorMsg
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -100,7 +152,7 @@ describe('GeneralInfoController', () => {
   test('Should handle errors when getting court general info from API', async () => {
     const req = mockRequest();
     req.params = {
-      slug: 'southport-county-court'
+      slug: slug
     };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.getGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
@@ -112,27 +164,71 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: null,
       errorMsg: controller.getGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
   test('Should handle errors when posting court general info to API', async () => {
-    const slug = 'southport-county-court';
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 500;
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
     req.body = courtGeneralInfo;
     req.scope.cradle.api = mockApi;
-    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
 
     await controller.put(req, res);
 
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      updated: false
+      updated: false,
+      nameFieldError: ''
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should not put court general info if name has invalid characters', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfoInvalidCharacters;
+    req.scope.cradle.api = mockApi;
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfoInvalidCharacters,
+      errorMsg: controller.updateGeneralInfoErrorMsg,
+      updated: false,
+      nameFieldError: controller.specialCharacterErrorMsg
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should handle errors when posting court general info to with a duplicate name', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
+      updated: false,
+      nameFieldError: controller.duplicateNameErrorMsg
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
