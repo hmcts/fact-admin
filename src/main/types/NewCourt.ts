@@ -1,4 +1,4 @@
 export interface NewCourt {
-  newCourtName: string,
-  serviceCentre: boolean
+  new_court_name: string,
+  service_centre: boolean
 }
