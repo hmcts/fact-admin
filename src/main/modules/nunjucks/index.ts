@@ -43,6 +43,10 @@ export class Nunjucks {
       return dictionary;
     });
 
+    env.addFilter('is_string', function(obj) {
+      return typeof obj == 'string';
+    });
+
     env.addFilter('valid', function(string){
       const regExp = /[a-zA-Z]/g;
       return (!(regExp.test(string) || isNaN(string)) );

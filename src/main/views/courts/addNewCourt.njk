@@ -32,12 +32,33 @@
 </p>
 
 {% set newCourtNameErrorDesc = false %}
-{% if emptyCourtName %}
-  {% set newCourtNameErrorDesc = { text: 'A new court name value is required' } %}
+{% set newCourtLatErrorDesc = false %}
+{% set newCourtLonErrorDesc = false %}
+{% if emptyValueFound %}
+  {% if nameEntered == '' %}
+    {% set newCourtNameErrorDesc = { text: 'A new court name value is required' } %}
+  {% endif %}
+  {% if latEntered == '' %}
+    {% set newCourtLatErrorDesc = { text: 'A latitude value is required' } %}
+  {% endif %}
+  {% if lonEntered == '' %}
+    {% set newCourtLonErrorDesc = { text: 'A longitude value is required' } %}
+  {% endif %}
 {% endif %}
+
+{% if invalidLonOrLat %}
+  {# The lat/lon cannot be a string, so return an error if so #}
+  {% if latEntered|is_string %}
+    {% set newCourtLatErrorDesc = { text: 'The latitude value needs to be a number' } %}
+  {% endif %}
+  {% if lonEntered|is_string %}
+    {% set newCourtLonErrorDesc = { text: 'The latitude value needs to be a number' } %}
+  {% endif %}
+{% endif %}
+
 {% if not nameValidationPassed %}
   {% set newCourtNameErrorDesc = { text: 'Invalid court name: please amend and try again.
-    Valid characters are: A-Z, a-z, 0-9, apostrophes and hyphens' } %}
+    Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens' } %}
 {% endif %}
 
 {{ govukInput({
@@ -49,6 +70,28 @@
   errorMessage: newCourtNameErrorDesc,
   value: nameEntered,
   classes: "govuk-input--width-20"
+}) }}
+
+{{ govukInput({
+  id: "lon",
+  name: "lon",
+  label: {
+    text: "Longitude"
+  },
+  errorMessage: newCourtLonErrorDesc,
+  value: lonEntered,
+  classes: "govuk-input--width-5"
+}) }}
+
+{{ govukInput({
+  id: "lat",
+  name: "lat",
+  label: {
+    text: "Latitude"
+  },
+  errorMessage: newCourtLatErrorDesc,
+  value: latEntered,
+  classes: "govuk-input--width-5"
 }) }}
 
 {{ govukRadios({
