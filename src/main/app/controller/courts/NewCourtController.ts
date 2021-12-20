@@ -94,7 +94,6 @@ export class NewCourtController {
       });
 
     // TODOs
-    // make sure the redirect on the javascript forwards on to the /courts/{slug}/generalinfo bit
     // unit tests etc
     // functional tests
   }

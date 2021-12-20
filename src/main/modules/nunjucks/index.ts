@@ -43,8 +43,8 @@ export class Nunjucks {
       return dictionary;
     });
 
-    env.addFilter('is_string', function(obj) {
-      return typeof obj == 'string';
+    env.addFilter('is_not_a_number', function(obj) {
+      return isNaN(obj);
     });
 
     env.addFilter('valid', function(string){

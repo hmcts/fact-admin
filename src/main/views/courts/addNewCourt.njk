@@ -1,131 +1,136 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "macros/csrf.njk" import csrfProtection %}
 
-
 {% extends "template.njk" %}
 
 {% block content %}
+  {% if created === true %}
+    {{ govukPanel({
+      titleText: "New court has been created, you will be redirected to the edit page shortly"
+    }) }}
+  {% endif %}
 
-<form id="addNewCourtForm" method="POST" class='govuk-grid-row'>
-  {{ csrfProtection(csrfToken) }}
+  <form id="addNewCourtForm" method="POST">
+    {{ csrfProtection(csrfToken) }}
 
-<h1 class="govuk-heading-l">Add new court</h1>
+  <h1 class="govuk-heading-l">Add new court</h1>
 
-{% if errorMsg != '' %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: [
+  {% if errorMsg != '' %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        {
+          text: errorMsg
+        }
+      ]
+    }) }}
+  {% endif %}
+
+  <p class="govuk-body-l">
+    Court will be opened by default.
+    After entering a name you will be redirected to the edit page for the new court and can fill out
+    any remaining information.
+  </p>
+
+  {% set newCourtNameErrorDesc = false %}
+  {% set newCourtLatErrorDesc = false %}
+  {% set newCourtLonErrorDesc = false %}
+  {% if emptyValueFound %}
+    {% if nameEntered == '' %}
+      {% set newCourtNameErrorDesc = { text: 'A new court name value is required' } %}
+    {% endif %}
+    {% if latEntered == '' %}
+      {% set newCourtLatErrorDesc = { text: 'A latitude value is required' } %}
+    {% endif %}
+    {% if lonEntered == '' %}
+      {% set newCourtLonErrorDesc = { text: 'A longitude value is required' } %}
+    {% endif %}
+  {% endif %}
+
+  {% if invalidLonOrLat %}
+    {# The lat/lon cannot be a string, so return an error if so #}
+    {% if latEntered|is_not_a_number %}
+      {% set newCourtLatErrorDesc = { text: 'The latitude value needs to be a number' } %}
+    {% endif %}
+    {% if lonEntered|is_not_a_number %}
+      {% set newCourtLonErrorDesc = { text: 'The latitude value needs to be a number' } %}
+    {% endif %}
+  {% endif %}
+
+  {% if not nameValidationPassed %}
+    {% set newCourtNameErrorDesc = { text: 'Invalid court name: please amend and try again.
+      Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens' } %}
+  {% endif %}
+
+  {{ govukInput({
+    id: "newCourtName",
+    name: "newCourtName",
+    label: {
+      text: "Name"
+    },
+    errorMessage: newCourtNameErrorDesc,
+    value: nameEntered,
+    classes: "govuk-input--width-20"
+  }) }}
+
+  {{ govukInput({
+    id: "lon",
+    name: "lon",
+    label: {
+      text: "Longitude"
+    },
+    errorMessage: newCourtLonErrorDesc,
+    value: lonEntered,
+    classes: "govuk-input--width-5"
+  }) }}
+
+  {{ govukInput({
+    id: "lat",
+    name: "lat",
+    label: {
+      text: "Latitude"
+    },
+    errorMessage: newCourtLatErrorDesc,
+    value: latEntered,
+    classes: "govuk-input--width-5"
+  }) }}
+
+  {{ govukRadios({
+    classes: "govuk-radios--small",
+    id: "serviceCentre",
+    name: "serviceCentre",
+    fieldset: {
+      legend: {
+        text: "Service Centre",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    hint: {
+        text: "Will the court be a service centre?"
+     },
+    items: [
       {
-        text: errorMsg
+        value: true,
+        text: "Yes",
+        checked: serviceAreaChecked
+      },
+      {
+        value: false,
+        text: "No",
+        checked: not serviceAreaChecked
       }
     ]
   }) }}
-{% endif %}
 
-<p class="govuk-body-l">
-  Court will be opened by default.
-  After entering a name you will be redirected to the edit page for the new court and can fill out
-  any remaining information.
-</p>
-
-{% set newCourtNameErrorDesc = false %}
-{% set newCourtLatErrorDesc = false %}
-{% set newCourtLonErrorDesc = false %}
-{% if emptyValueFound %}
-  {% if nameEntered == '' %}
-    {% set newCourtNameErrorDesc = { text: 'A new court name value is required' } %}
-  {% endif %}
-  {% if latEntered == '' %}
-    {% set newCourtLatErrorDesc = { text: 'A latitude value is required' } %}
-  {% endif %}
-  {% if lonEntered == '' %}
-    {% set newCourtLonErrorDesc = { text: 'A longitude value is required' } %}
-  {% endif %}
-{% endif %}
-
-{% if invalidLonOrLat %}
-  {# The lat/lon cannot be a string, so return an error if so #}
-  {% if latEntered|is_string %}
-    {% set newCourtLatErrorDesc = { text: 'The latitude value needs to be a number' } %}
-  {% endif %}
-  {% if lonEntered|is_string %}
-    {% set newCourtLonErrorDesc = { text: 'The latitude value needs to be a number' } %}
-  {% endif %}
-{% endif %}
-
-{% if not nameValidationPassed %}
-  {% set newCourtNameErrorDesc = { text: 'Invalid court name: please amend and try again.
-    Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens' } %}
-{% endif %}
-
-{{ govukInput({
-  id: "newCourtName",
-  name: "newCourtName",
-  label: {
-    text: "Name"
-  },
-  errorMessage: newCourtNameErrorDesc,
-  value: nameEntered,
-  classes: "govuk-input--width-20"
-}) }}
-
-{{ govukInput({
-  id: "lon",
-  name: "lon",
-  label: {
-    text: "Longitude"
-  },
-  errorMessage: newCourtLonErrorDesc,
-  value: lonEntered,
-  classes: "govuk-input--width-5"
-}) }}
-
-{{ govukInput({
-  id: "lat",
-  name: "lat",
-  label: {
-    text: "Latitude"
-  },
-  errorMessage: newCourtLatErrorDesc,
-  value: latEntered,
-  classes: "govuk-input--width-5"
-}) }}
-
-{{ govukRadios({
-  classes: "govuk-radios--small",
-  id: "serviceCentre",
-  name: "serviceCentre",
-  fieldset: {
-    legend: {
-      text: "Service Centre",
-      isPageHeading: true,
-      classes: "govuk-fieldset__legend--m"
-    }
-  },
-  hint: {
-      text: "Will the court be a service centre?"
-   },
-  items: [
-    {
-      value: true,
-      text: "Yes",
-      checked: serviceAreaChecked
-    },
-    {
-      value: false,
-      text: "No",
-      checked: not serviceAreaChecked
-    }
-  ]
-}) }}
-
-{{ govukButton({
-  text: "Add court",
-  name: "saveNewCourt",
-  attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
-}) }}
-</form>
+  {{ govukButton({
+    text: "Add court",
+    name: "saveNewCourt",
+    attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
+  }) }}
+  </form>
 {% endblock %}
