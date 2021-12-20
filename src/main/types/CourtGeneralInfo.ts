@@ -1,4 +1,5 @@
 export interface CourtGeneralInfo {
+  name: string;
   open: boolean;
   access_scheme: boolean;
   info: string;
@@ -12,4 +13,5 @@ export interface CourtGeneralInfoData {
   generalInfo: CourtGeneralInfo;
   errorMsg: string;
   updated: boolean;
+  nameFieldError: string;
 }

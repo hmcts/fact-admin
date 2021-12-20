@@ -26,6 +26,7 @@ export default function(app: Application): void {
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
+  app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.renderRedirect);
   app.put('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.put);
   app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
   app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);

@@ -1,0 +1,15 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{{ govukPanel({
+  titleText: "General Information updated",
+  classes: "govuk-body govuk-!-margin-bottom-4"
+}) }}
+
+<p class="govuk-body-m">Click 'Continue' to be redirected to the updated court or tribunal.</p>
+
+{{ govukButton({
+  text: "Continue",
+  type: "button",
+  attributes: { id: "redirectBtnId", href: redirectURL }
+}) }}
