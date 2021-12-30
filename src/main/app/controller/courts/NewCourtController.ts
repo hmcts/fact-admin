@@ -20,10 +20,10 @@ export class NewCourtController {
     nameValidationPassed = true,
     emptyValueFound = false,
     invalidLonOrLat = false,
-    redirectUrl: string,
-    nameEntered: string,
-    lonEntered: number,
-    latEntered: number,
+    redirectUrl = '',
+    nameEntered = '',
+    lonEntered = 0,
+    latEntered = 0,
     serviceAreaChecked = false,
     errorMsg: string[] = []): Promise<void> {
 
@@ -48,13 +48,6 @@ export class NewCourtController {
     const lon = req.body.lon;
     const lat = req.body.lat;
 
-    console.log(newCourtName);
-    console.log(serviceCentreChecked);
-    console.log(lon);
-    console.log(lat);
-    console.log(typeof lon);
-    console.log(typeof lat);
-
     if (newCourtName === '' || lon === '' || lat === '') {
       return this.get(req, res, false, true, true, false,
         '', newCourtName, lon, lat, serviceCentreChecked, [this.emptyOrInvalidValueMsg]);
@@ -72,7 +65,7 @@ export class NewCourtController {
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, true, false, false,
-        '/courts', newCourtName, lon, lat, serviceCentreChecked, [this.addNewCourtErrorMsg]);
+        '', newCourtName, lon, lat, serviceCentreChecked, [this.addNewCourtErrorMsg]);
     }
 
     // If all validation passes, add the court
@@ -92,10 +85,6 @@ export class NewCourtController {
             ? [this.duplicateCourtErrorMsg + newCourtName]
             : [this.addNewCourtErrorMsg]);
       });
-
-    // TODOs
-    // unit tests etc
-    // functional tests
   }
 
   private static isInvalidCourtName(name: string): boolean {

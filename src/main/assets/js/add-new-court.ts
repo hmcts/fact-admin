@@ -16,7 +16,7 @@ export class NewCourtController {
           Utilities.toggleTabEnabled('#addNewCourtForm', false);
           setTimeout(function(){
             window.location.href = redirectUrl;
-          },4000);
+          }, 3000);
         }
       });
     });
