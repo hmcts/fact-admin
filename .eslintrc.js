@@ -41,7 +41,9 @@ module.exports = {
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single", { "avoidEscape": true }],
         "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/no-empty-function": "off"
+        "@typescript-eslint/no-empty-function": "off",        "@typescript-eslint/no-empty-function": "off",
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": ["warn"]
       },
     }
   ]
