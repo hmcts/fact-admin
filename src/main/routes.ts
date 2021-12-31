@@ -21,6 +21,9 @@ export default function(app: Application): void {
   app.post('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.postPassword);
   app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
 
+  // Add court
+  app.get('/courts/add-court', isSuperAdmin, app.locals.container.cradle.newCourtController.get);
+  app.post('/courts/add-court', isSuperAdmin, app.locals.container.cradle.newCourtController.addNewCourt);
 
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);

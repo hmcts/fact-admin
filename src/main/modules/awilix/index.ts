@@ -26,6 +26,7 @@ import {OpeningTypesController} from '../../app/controller/lists/OpeningTypesCon
 import {AdditionalLinksController} from '../../app/controller/courts/AdditionalLinksController';
 import {UserController} from '../../app/controller/users/UserController';
 import {InviteUserController} from '../../app/controller/users/InviteUserController';
+import {NewCourtController} from '../../app/controller/courts/NewCourtController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -42,6 +43,7 @@ export class Container {
       bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
       courtsDownloadController: asClass(CourtsDownloadController),
+      newCourtController: asClass(NewCourtController),
 
       // Edit Court
       editCourtController: asClass(EditCourtController),
