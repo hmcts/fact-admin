@@ -38,6 +38,10 @@ export class Nunjucks {
 
     env.addFilter('selectFilter', this.selectFilter);
 
+    env.addFilter('is_not_a_number', function(obj) {
+      return isNaN(obj);
+    });
+
     env.addFilter('setAttribute', function(dictionary , key , value){
       dictionary[key] = value;
       return dictionary;
