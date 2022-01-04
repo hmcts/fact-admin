@@ -65,6 +65,3 @@ Then('The error message displays for invalid name {string}', async (errMessage: 
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal('Error:\n' + errMessage);
 });
-
-
-

@@ -23,10 +23,3 @@ Feature: Add new court
     Then I entered the latitude "0"
     And I click on add new court button
     Then The error message displays for invalid name "Invalid court name: please amend and try again. Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens"
-
-
-
-
-
-
-
