@@ -15,6 +15,7 @@ export class GeneralInfoController {
   duplicateNameErrorMsg = 'Duplicated name';
   blankNameErrorMsg = 'Name is required';
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
+  updateAlertErrorMsg = 'Urgent notices are limited to 250 characters including spaces.';
 
   public async get(
     req: AuthedRequest,
@@ -59,6 +60,10 @@ export class GeneralInfoController {
 
     if (this.checkNameForInvalidCharacters(generalInfo.name)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
+    }
+
+    if (generalInfo.alert.length > 300 || generalInfo.alert_cy.length > 300) {
+      return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);
     }
 
     generalInfo.open = generalInfo.open ?? false;
