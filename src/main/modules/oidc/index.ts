@@ -18,6 +18,7 @@ export class OidcMiddleware {
   public enableFor(server: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
     const tokenUrl: string = config.get('services.idam.tokenURL');
+    const sessionUrl: string = config.get('services.idam.sessionURL');
     const clientId: string = config.get('services.idam.clientID');
     const clientSecret: string = config.get('services.idam.clientSecret');
     const redirectUri: string = config.get('services.idam.callbackURL');
@@ -44,7 +45,18 @@ export class OidcMiddleware {
       res.render('redirect');
     });
 
-    server.get('/logout', function(req, res){
+    server.get('/logout', async function(req, res){
+      await Axios.delete(
+        sessionUrl + '/' + req.session.user.access_token,
+        {
+          headers: {
+            Authorization: 'Basic ZmFjdF9hZG1pbjpmYWN0X2FkbWluX3NlY3JldA=='
+          }
+        }
+      ).catch((error) => {
+        res.status(400);
+        return error;
+      });
       req.session.user = undefined;
       res.render('logout');
     });
