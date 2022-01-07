@@ -9,6 +9,7 @@ services:
   idam:
     authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/login'
     tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
+    sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
     addNewUserURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/registration'
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
