@@ -51,7 +51,6 @@ export class PhotoController {
       })
       .catch(async (reason: AxiosError) => {
         await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
-        console.log(reason);
       });
   }
 
@@ -70,7 +69,6 @@ export class PhotoController {
       })
       .catch(async (reason: AxiosError) => {
         await this.render(req, res, [this.deleteCourtPhotoErrorMsg], false);
-        console.log(reason);
       });
   }
 

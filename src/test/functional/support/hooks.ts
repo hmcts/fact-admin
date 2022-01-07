@@ -1,4 +1,4 @@
-import { BeforeAll, AfterAll, After, setDefaultTimeout } from 'cucumber';
+import {BeforeAll, AfterAll, After, setDefaultTimeout, Before} from 'cucumber';
 import puppeteer from 'puppeteer';
 import { puppeteerConfig } from '../puppeteer.config';
 
@@ -27,4 +27,8 @@ AfterAll(async () => {
   if (scope.browser) {
     await scope.browser.close();
   }
+});
+
+Before( { tags: '@ignore' }, function () {
+  return 'skipped' as any;
 });

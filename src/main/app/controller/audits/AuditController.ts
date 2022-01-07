@@ -74,8 +74,6 @@ export class AuditController {
       }
     };
 
-    console.log(pageData);
-
     res.render('audits/auditContent', pageData);
   }
 }

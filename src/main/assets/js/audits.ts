@@ -18,7 +18,6 @@ export class AuditController {
   private initialize(): void {
     $(() => {
       if ($(this.auditsPageContent).length > 0) {
-        console.log('registered this view');
         this.getAuditContent(0, 10, '', '', '', '');
         this.setUpSearchSubmitEventHandler();
       }
