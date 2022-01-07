@@ -15,6 +15,8 @@ import {Facility, FacilityType} from '../../types/Facility';
 import {Audit} from '../../types/Audit';
 import {CourtTypesAndCodes} from '../../types/CourtTypesAndCodes';
 import {AdditionalLink} from '../../types/AdditionalLink';
+import {Court} from '../../types/Court';
+import {NewCourt} from '../../types/NewCourt';
 
 export class FactApi {
 
@@ -32,6 +34,16 @@ export class FactApi {
       .get(`${this.baseURL}/all`)
       .then(results => results.data)
       .catch(this.errorHandler([]));
+  }
+
+  public addCourt(newCourt: NewCourt): Promise<Court> {
+    return this.axios
+      .post(`${this.baseURL}/`, newCourt)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 
   public getAudits(page: number, size: number, location: string, email: string,

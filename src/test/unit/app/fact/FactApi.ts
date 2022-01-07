@@ -9,6 +9,7 @@ import {FacilityType} from '../../../../main/types/Facility';
 import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 import {Action, Audit} from '../../../../main/types/Audit';
 import {OpeningType} from '../../../../main/types/OpeningType';
+import {NewCourt} from '../../../../main/types/NewCourt';
 
 describe('FactApi', () => {
   const mockError = new Error('Error') as any;
@@ -189,6 +190,40 @@ describe('FactApi', () => {
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.getPostcodes('Plymouth')).resolves.toEqual(results.data);
+  });
+
+  test('Should add and return result from addCourt request', async () => {
+    const results = {
+      data: {}
+    };
+
+    const mockAxios = { post: async () => results } as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.addCourt({
+      new_court_name: 'a new court name',
+      service_centre: 'a new court service centre',
+      lon: 10,
+      lat: 12
+    } as unknown as NewCourt)).resolves.toEqual(results.data);
+  });
+
+
+  test('Should log error and reject promise for failed addCourts request', async () => {
+    const mockAxios = { post: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.addCourt({
+      new_court_name: 'a new court name',
+      service_centre: 'a new court service centre',
+      lon: 10,
+      lat: 12
+    } as unknown as NewCourt)).rejects.toEqual(mockError);
+    await expect(spy).toBeCalled();
   });
 
   test('Should add and return results from addPostcodes request', async () => {
