@@ -46,11 +46,12 @@ export class OidcMiddleware {
     });
 
     server.get('/logout', async function(req, res){
+      const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
       await Axios.delete(
         sessionUrl + '/' + req.session.user.access_token,
         {
           headers: {
-            Authorization: 'Basic TODO'
+            Authorization: 'Basic ' + encode(clientId + ':' + clientSecret)
           }
         }
       ).catch((error) => {
