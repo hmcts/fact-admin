@@ -47,20 +47,22 @@ export class OidcMiddleware {
 
     server.get('/logout', async function(req, res){
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
-      await Axios.delete(
-        sessionUrl + '/' + req.session.user.access_token,
-        {
-          headers: {
-            Authorization: 'Basic ' + encode(clientId + ':' + clientSecret)
+      if (req.session.user) {
+        await Axios.delete(
+          sessionUrl + '/' + req.session.user.access_token,
+          {
+            headers: {
+              Authorization: 'Basic ' + encode(clientId + ':' + clientSecret)
+            }
           }
-        }
-      ).catch((error) => {
-        res.status(400);
-        return error;
-      });
-      req.session.user = undefined;
-      res.render('logout');
+        ).catch((error) => {
+          res.status(400);
+          return error;
+        });
+        req.session.destroy(() => res.render('logout'));
+      } else res.render('logout');
     });
+
     server.post('/getAccessToken', async (req: Request, res: Response) => {
 
       const response = await Axios.post(
