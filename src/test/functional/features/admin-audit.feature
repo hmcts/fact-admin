@@ -1,5 +1,4 @@
 
-@ignore
 Feature: courts audits
 
   Background:
@@ -9,6 +8,7 @@ Feature: courts audits
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
 
+  @ignore
   Scenario: view audits for super admin user
     When I click edit next to court with "havant-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
