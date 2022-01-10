@@ -66,39 +66,29 @@
   }) }}
 {% endif %}
 
-{{ govukCharacterCount({
-  name: "alert",
-  id: "urgent-notice",
-  maxlength: 250,
-  rows: "3",
-  value: generalInfo.alert,
-  label: {
-    text: "Urgent notice",
-    classes: "govuk-label--m"
-  },
-  hint: {
-    text: "Use this field to display a temporary notice of building closure or temporary disruption to court
-    services. This is limited to 250 characters including spaces."
-  },
-  attributes: {
-    maxlength: 250
-  }
-}) }}
+<div class="govuk-form-group">
+  <h2 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m" for="info">
+          Urgent notice
+      </label>
+  </h2>
+  <span class="govuk-caption-m govuk-!-margin-bottom-3">
+    Use this field to display a temporary notice of building closure or temporary disruption to court
+    services. This is limited to 250 characters including spaces.
+  </span>
+  <textarea class="govuk-textarea rich-editor" id="urgent-notice" name="alert"
+            rows="2" maxlength="250">{{ generalInfo.alert }}</textarea>
+</div>
 
-{{ govukCharacterCount({
-  name: "alert_cy",
-  id: "urgent-notice-welsh",
-  maxlength: 250,
-  rows: "3",
-  value: generalInfo.alert_cy,
-  label: {
-    text: "Urgent notice (Welsh)",
-    classes: "govuk-label--m"
-  },
-  attributes: {
-    maxlength: 250
-  }
-}) }}
+<div class="govuk-form-group">
+  <h2 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m" for="info_cy">
+          Urgent notice (Welsh)
+      </label>
+  </h2>
+  <textarea class="govuk-textarea rich-editor" id="urgent-notice-welsh" name="alert_cy"
+            rows="2" maxlength="250">{{ generalInfo.alert_cy }}</textarea>
+</div>
 
 {% if isSuperAdmin %}
   <div class="govuk-form-group">

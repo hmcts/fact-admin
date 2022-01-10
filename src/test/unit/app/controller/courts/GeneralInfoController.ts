@@ -44,6 +44,17 @@ describe('GeneralInfoController', () => {
     'in_person': true
   };
 
+  const courtGeneralInfoOverCharacterLimit: CourtGeneralInfo = {
+    name: '',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
+    'alert_cy': 'an alert cy',
+    'in_person': true
+  };
+
   const slug = 'southport-county-court';
 
   const controller = new GeneralInfoController();
@@ -229,6 +240,25 @@ describe('GeneralInfoController', () => {
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
       updated: false,
       nameFieldError: controller.duplicateNameErrorMsg
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should not put court general info if alerts have over 300 characters', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfoOverCharacterLimit;
+    req.scope.cradle.api = mockApi;
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfoOverCharacterLimit,
+      errorMsg: controller.updateAlertErrorMsg,
+      updated: false,
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
