@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 const { initAll } = require('govuk-frontend');
 
 export class CourtGeneralInfoController {
@@ -27,15 +28,7 @@ export class CourtGeneralInfoController {
   private async updateContent(content: any): Promise<void> {
     $(this.generalTabContentId).html(content);
 
-    tinymce.remove();
-    await tinymce.init({
-      selector: '.rich-editor',
-      plugins: 'autolink link paste',
-      menubar: '',
-      toolbar: 'link bold italic underline',
-      'paste_as_text': true,
-      statusbar: false,
-    });
+    await Utilities.setUpTinymce();
 
     initAll({ scope: document.getElementById('generalInfoTab') });
 

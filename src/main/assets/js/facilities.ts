@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {Utilities} from './utilities';
 
 const { initAll } = require('govuk-frontend');
 
@@ -37,16 +38,7 @@ export class FacilitiesController {
   private async updateContent(content: any): Promise<void> {
     $(this.facilitiesContentId).html(content);
 
-    tinymce.remove();
-    await tinymce.init({
-      selector: '.rich-editor',
-      plugins: 'autolink link paste ',
-      menubar: '',
-      toolbar: 'link bold italic underline',
-      height: 120,
-      'paste_as_text': true,
-      statusbar: false,
-    });
+    await Utilities.setUpTinymce();
 
     initAll({ scope: document.getElementById('courtFacilitiesTab') });
   }
