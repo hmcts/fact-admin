@@ -22,7 +22,7 @@ export class PhotoController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    //const imageFileName = req.body.name as string;
+    const imageFileName = req.body.name as string;
     //const slug: string = req.params.slug as string;
     //const fileType = req.body.fileType as string;
    // const oldCourtPhoto = req.body.oldCourtPhoto as string;
@@ -40,6 +40,7 @@ export class PhotoController {
       return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
     }
 
+    this.render(req, res, [], true, null, imageFileName);
     // await req.scope.cradle.azure.uploadImageFileToAzure(imageFile, imageFileName)
     //   .then(async () => {
     //     const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
