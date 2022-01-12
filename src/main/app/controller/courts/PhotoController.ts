@@ -22,15 +22,15 @@ export class PhotoController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    const imageFileName = req.body.name as string;
-    const slug: string = req.params.slug as string;
-    const fileType = req.body.fileType as string;
-    const oldCourtPhoto = req.body.oldCourtPhoto as string;
+    //const imageFileName = req.body.name as string;
+    //const slug: string = req.params.slug as string;
+    //const fileType = req.body.fileType as string;
+   // const oldCourtPhoto = req.body.oldCourtPhoto as string;
     const imageFile = req.file as File;
 
-    if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
-      return this.render(req, res, [this.imageTypeError], false, this.imageTypeError, null);
-    }
+    // if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
+    //   return this.render(req, res, [this.imageTypeError], false, this.imageTypeError, null);
+    // }
 
     if (imageFile.size > 2000000) {
       return this.render(req, res, [this.imageSizeError], false, this.imageSizeError, null);
@@ -40,18 +40,18 @@ export class PhotoController {
       return this.render(req, res, [this.putCourtPhotoErrorMsg], false);
     }
 
-    await req.scope.cradle.azure.uploadImageFileToAzure(imageFile, imageFileName)
-      .then(async () => {
-        const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
-        await req.scope.cradle.api.updateCourtImage(slug, courtPhoto);
-        if (oldCourtPhoto) {
-          await req.scope.cradle.azure.deleteImageFileFromAzure(oldCourtPhoto);
-        }
-        await this.render(req, res, [], true, null, imageFileName);
-      })
-      .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
-      });
+    // await req.scope.cradle.azure.uploadImageFileToAzure(imageFile, imageFileName)
+    //   .then(async () => {
+    //     const courtPhoto = {'image_name': imageFileName} as CourtPhoto;
+    //     await req.scope.cradle.api.updateCourtImage(slug, courtPhoto);
+    //     if (oldCourtPhoto) {
+    //       await req.scope.cradle.azure.deleteImageFileFromAzure(oldCourtPhoto);
+    //     }
+    //     await this.render(req, res, [], true, null, imageFileName);
+    //   })
+    //   .catch(async (reason: AxiosError) => {
+    //     await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+    //   });
   }
 
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
