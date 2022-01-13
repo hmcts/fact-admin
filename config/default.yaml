@@ -15,7 +15,7 @@ services:
     clientSecret: 'get from AAT vault'
     callbackURL: 'http://localhost:3300/oauth2/callback'
   image-store:
-    url: 'https://factaat.blob.core.windows.net/images'
+    url: 'https://factaat.blob.core.windows.net/images/'
     account-name:
     account-key:
 health:
