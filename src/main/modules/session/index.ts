@@ -12,7 +12,7 @@ export class SessionStorage {
   readonly developmentMode: boolean;
 
   constructor(developmentMode: boolean) {
-      this.developmentMode = developmentMode
+    this.developmentMode = developmentMode;
   }
 
   public enableFor(server: Application) {
