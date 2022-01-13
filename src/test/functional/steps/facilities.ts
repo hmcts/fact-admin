@@ -101,12 +101,7 @@ Then('the facility entry in second last position has index {int} description in 
   expect(welshDescriptionTxt).equal(welshDescription);
 
   const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} .govuk-select`, secondLastIndex);
-  console.log(facilityIdx);
-  console.log(secondLastIndex);
-  console.log(await I.getElementValueAtIndex(`${fieldsetSelector} .govuk-select`,secondLastIndex));
-
   expect(facilityIdx).equal(index);
-
 });
 
 Then('the facility entry in last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {

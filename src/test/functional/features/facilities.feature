@@ -63,4 +63,3 @@ Feature: Facilities
     And I enter description in english "english"
     And I click save in the facilities tab
     Then An error is displayed for facilities with summary "Name and description are required for all court facilities." and name field message "Name is required"
-
