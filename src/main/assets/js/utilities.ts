@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import tinymce from 'tinymce';
 
 export class Utilities {
 
@@ -96,5 +97,17 @@ export class Utilities {
       $(tabId).removeClass('disable-tab');
       $(tabId).removeAttr('disabled') ;
     }
+  }
+
+  public static async setUpTinymce() {
+    tinymce.remove();
+    await tinymce.init({
+      selector: '.rich-editor',
+      plugins: 'autolink link paste ',
+      menubar: '',
+      toolbar: 'link bold italic underline',
+      height: 120,
+      statusbar: false,
+    });
   }
 }
