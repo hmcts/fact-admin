@@ -9,6 +9,11 @@ const RedisStore = ConnectRedis(session);
 const FileStore = FileStoreFactory(session);
 
 export class SessionStorage {
+  readonly developmentMode: boolean;
+
+  constructor(developmentMode: boolean) {
+      this.developmentMode = developmentMode
+  }
 
   public enableFor(server: Application) {
     server.use(session({
@@ -19,7 +24,7 @@ export class SessionStorage {
       cookie: {
         httpOnly: true,
         sameSite: true,
-        secure: true
+        secure: !this.developmentMode
       },
       store: this.getStore()
     }));
