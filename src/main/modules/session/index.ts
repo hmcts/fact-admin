@@ -15,11 +15,11 @@ export class SessionStorage {
     this.developmentMode = developmentMode;
   }
 
-public enableFor(server: Application) {
+  public enableFor(server: Application) {
 
-  if (!this.developmentMode) {
-    server.set('trust proxy', 1)
-  }
+    if (!this.developmentMode) {
+      server.set('trust proxy', 1);
+    }
     server.use(session({
       name: 'fact-session',
       resave: false,
