@@ -18,7 +18,8 @@ export class SessionStorage {
       secret: config.get('session.secret'),
       cookie: {
         httpOnly: true,
-        sameSite: true
+        sameSite: true,
+        secure: true
       },
       store: this.getStore()
     }));
