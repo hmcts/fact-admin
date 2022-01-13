@@ -25,7 +25,7 @@ export class PhotoController {
     const imageFileName = req.body.name as string;
     //const slug: string = req.params.slug as string;
     //const fileType = req.body.fileType as string;
-   // const oldCourtPhoto = req.body.oldCourtPhoto as string;
+    // const oldCourtPhoto = req.body.oldCourtPhoto as string;
     const imageFile = req.file as File;
 
     // if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
