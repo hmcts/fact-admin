@@ -18,7 +18,8 @@ export class Helmet {
   public enableFor(app: express.Express): void {
     // include default helmet functions
     app.use(helmet());
-
+    app.use(helmet.hidePoweredBy());
+    app.use(helmet.xssFilter());
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
   }
@@ -46,4 +47,5 @@ export class Helmet {
 
     app.use(helmet.referrerPolicy({ policy }));
   }
+
 }

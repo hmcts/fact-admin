@@ -42,7 +42,7 @@ setupDev(server,developmentMode);
 
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
-new SessionStorage().enableFor(server);
+new SessionStorage(developmentMode).enableFor(server);
 new FeatureToggleService(LaunchDarkly.getInstance());
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
