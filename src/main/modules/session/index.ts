@@ -17,6 +17,9 @@ export class SessionStorage {
 
   public enableFor(server: Application) {
 
+
+    console.log('developement mode set: ' + this.developmentMode);
+
     if (!this.developmentMode) {
       server.set('trust proxy', 1);
     }
