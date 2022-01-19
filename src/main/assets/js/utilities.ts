@@ -101,6 +101,16 @@ export class Utilities {
 
   public static async setUpTinymce() {
     tinymce.remove();
+
+    await tinymce.init({
+      selector: '.urgent-notice-rich-editor',
+      plugins: 'autolink link paste ',
+      menubar: '',
+      toolbar: 'link',
+      height: 120,
+      statusbar: false,
+    });
+
     await tinymce.init({
       selector: '.rich-editor',
       plugins: 'autolink link paste ',
