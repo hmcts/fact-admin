@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import {Application} from 'express';
 import session from 'express-session';
 import ConnectRedis from 'connect-redis';
 import * as redis from 'redis';
@@ -28,7 +28,7 @@ export class SessionStorage {
       cookie: {
         httpOnly: true,
         sameSite: true,
-        secure: !this.developmentMode
+        secure: true
       },
       store: this.getStore()
     }));
