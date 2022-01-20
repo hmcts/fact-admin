@@ -40,6 +40,8 @@ server.use((req, res, next) => {
 
 setupDev(server,developmentMode);
 
+console.log('process env node: ' + process.env.NODE_ENV);
+
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
 new SessionStorage(developmentMode).enableFor(server);
