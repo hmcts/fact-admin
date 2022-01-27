@@ -52,7 +52,9 @@
     ]
   }) }}
 
-  {% set disableAccessScheme = generalInfo.in_person == false %}
+  <input name='in_person' type='hidden' value='{{generalInfo.in_person}}'></input>
+
+  {% set disableAccessScheme = generalInfo.serviceCentre == true %}
   {{ govukCheckboxes({
     name: "access_scheme",
     items: [

@@ -69,7 +69,6 @@ export class GeneralInfoController {
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
 
-
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
