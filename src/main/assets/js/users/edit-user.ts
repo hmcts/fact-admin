@@ -49,6 +49,7 @@ export class EditUserController {
     $(this.searchFormId).on('submit', e => {
       e.preventDefault();
       const userEmail = $('#user-email').val();
+      console.log('from javascript: ' + userEmail);
       $.ajax({
         url: '/users/search/user',
         method: 'get',

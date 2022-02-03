@@ -29,17 +29,25 @@ export class EditUserController {
     errors: { text: string }[] = [],
     user: User = null): Promise<void> {
 
-    const userEmail: string = req.query['user-email'] as string;
+    const userEmail: string = req.query['userEmail'] as string;
+
+    // console.log(req.query);
+    // console.log(req);
+    console.log('from controller: ' + userEmail);
 
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       // .then(() => res.render('users/tabs/searchUserContent'))
-      .then(() => {
+      .then((returnedUser: User) => {
         console.log('api response');
-        console.log(res);
+        // console.log(res);
+        console.log(res.statusCode);
+        // console.log(res.json);
+        console.log(returnedUser);
+
         res.render('users/tabs/searchUserContent');
       })
       .catch(async (reason: AxiosError) => {
-        console.log(reason);
+        // console.log(reason);
         return await this.renderSearchUser(req, res, false, [{ text: this.searchErrorMsg }]);
       });
 

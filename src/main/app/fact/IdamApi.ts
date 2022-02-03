@@ -29,16 +29,16 @@ export class IdamApi {
   }
 
   public getUserByEmail(userEmail: string, accessToken: string): Promise<User>{
-    console.log(config.get('services.idam.addNewUserURL'));
-    console.log(config.get('services.idam.searchUserURL'));
+    // console.log(config.get('services.idam.addNewUserURL'));
+    // console.log(config.get('services.idam.searchUserURL'));
+    // console.log(userEmail);
     return this.axios
-      .get(`${this.searchUser}`,  {
+      .get(`${this.searchUser}?email=` + userEmail,  {
+        baseURL: '',
         headers: {
           Authorization: 'Bearer ' + accessToken
-        },
-        params: {
-          email: userEmail
-        }})
+        }
+      })
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
