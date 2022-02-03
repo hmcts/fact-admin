@@ -1,0 +1,8 @@
+{% from "macros/csrf.njk" import csrfProtection %}
+
+<div id='editUserTab'>
+  <form id="rditUserForm" method="POST" action="/users/edit/user">
+   {{ csrfProtection(csrf) }}
+    <div id='editUserContent'></div>
+  </form>
+</div>

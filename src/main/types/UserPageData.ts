@@ -16,3 +16,14 @@ export interface AddUserPageData {
   updated: Boolean,
   user: User
 }
+
+export interface SearchUserPageData {
+  errors: Error[],
+  updated: Boolean
+}
+
+export interface EditUserPageData {
+  errors: Error[],
+  updated: Boolean,
+  user: User
+}

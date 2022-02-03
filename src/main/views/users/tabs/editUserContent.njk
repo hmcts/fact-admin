@@ -1,0 +1,133 @@
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+<h2 class="govuk-heading-l">Edit User</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+
+{% set emailsError = false %}
+  {% if user.email === '' %}
+    {% set emailsError = { text: 'Email address is required' } %}
+  {% elif user.isInvalidFormat === true %}
+    {% set emailsError = { text: 'Invalid email address format' } %}
+  {% endif %}
+
+{% set firstNameError = false %}
+  {% if user.firstName === '' %}
+   {% set firstNameError = { text: 'First Name is required' } %}
+  {% endif %}
+
+ {% set lastNameError = false %}
+   {% if user.lastName === '' %}
+    {% set lastNameError = { text: 'Last Name is required' } %}
+  {% endif %}
+
+ {% set rolesError = false %}
+   {% if not user.roles|length and errors|length  %}
+   {% set rolesError = { text: 'Assigned role is required' } %}
+ {% endif %}
+
+ {% set adminRoleChecked = false %}
+ {%  if user.roles|length and user.roles[0] === 'fact-admin'  %}
+  {% set adminRoleChecked = true %}
+ {% endif %}
+
+ {% set superAdminRoleChecked = false %}
+ {%  if user.roles|length and user.roles[0] === 'fact-super-admin'  %}
+   {% set superAdminRoleChecked = true %}
+  {% endif %}
+
+
+{% call govukFieldset({
+  }) %}
+
+  {{ govukInput({
+    label: {
+      text: "Email"
+    },
+    classes: "govuk-input--width-20",
+    id: "email",
+    name: "user[email]",
+    value: user.email,
+    errorMessage: emailsError
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "First Name"
+    },
+    classes: "govuk-input--width-20",
+    id: "firstName",
+    name: "user[firstName]",
+    value: user.firstName,
+    errorMessage: firstNameError
+  }) }}
+
+{{ govukInput({
+    label: {
+      text: "Last Name"
+    },
+    classes: "govuk-input--width-20",
+    id: "lastName",
+    name: "user[lastName]",
+    value: user.lastName,
+    errorMessage: lastNameError
+  }) }}
+
+
+{{ govukRadios({
+  classes: "govuk-radios--small",
+  id: "roles",
+  name: "user[roles][]",
+  errorMessage: rolesError,
+  fieldset: {
+    legend: {
+      text: "Assigned Roles",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--m"
+    }
+  },
+  hint: {
+      text: "Select the role that is assigned to this user."
+   },
+  items: [
+    {
+      value: "fact-admin",
+      text: "fact-admin",
+      checked: adminRoleChecked
+    },
+    {
+      value: "fact-super-admin",
+      text: "fact-super-admin",
+      checked: superAdminRoleChecked
+    }
+  ]
+}) }}
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+<div class="govuk-button-group">
+{{ govukButton({
+  text: "Create User",
+  name: "inviteUser"
+}) }}
+
+{{ govukButton({
+  text: "Cancel",
+  name: "cancelInviteUser",
+   attributes: { id: "cancelInviteUserChangesBtn" },
+   classes: "govuk-button--secondary clear-changes"
+}) }}
+</div>
+{% endcall %}
