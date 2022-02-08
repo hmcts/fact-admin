@@ -82,6 +82,9 @@
             {% set additionalLinksHtml %}
               {% include "./tabs/additionalLinks.njk" %}
             {% endset -%}
+            {% set spoeHtml %}
+              {% include "./tabs/spoe.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -181,11 +184,22 @@
                 }
               %}
 
+              {% set spoeTab =
+                  {
+                    label: "Spoe",
+                    id: "spoe",
+                    panel: {
+                      html: spoeHtml
+                    }
+                  }
+              %}
+
         {% if isSuperAdmin %}
 
           {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
           {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
           {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
+          {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
 
         {% endif %}
 
