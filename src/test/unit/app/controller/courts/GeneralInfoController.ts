@@ -19,7 +19,9 @@ describe('GeneralInfoController', () => {
     'info_cy': 'info cy',
     alert: 'an alert',
     'alert_cy': 'an alert cy',
-    'in_person': true
+    'in_person': true,
+    'sc_intro_paragraph': '',
+    'sc_intro_paragraph_cy': ''
   };
 
   const courtGeneralInfoBlankNameField: CourtGeneralInfo = {
@@ -30,7 +32,9 @@ describe('GeneralInfoController', () => {
     'info_cy': 'info cy',
     alert: 'an alert',
     'alert_cy': 'an alert cy',
-    'in_person': true
+    'in_person': true,
+    'sc_intro_paragraph': '',
+    'sc_intro_paragraph_cy': ''
   };
 
   const courtGeneralInfoInvalidCharacters: CourtGeneralInfo = {
@@ -41,7 +45,9 @@ describe('GeneralInfoController', () => {
     'info_cy': 'info cy',
     alert: 'an alert',
     'alert_cy': 'an alert cy',
-    'in_person': true
+    'in_person': true,
+    'sc_intro_paragraph': '',
+    'sc_intro_paragraph_cy': ''
   };
 
   const courtGeneralInfoOverCharacterLimit: CourtGeneralInfo = {
@@ -52,7 +58,9 @@ describe('GeneralInfoController', () => {
     'info_cy': 'info cy',
     alert: 'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
     'alert_cy': 'an alert cy',
-    'in_person': true
+    'in_person': true,
+    'sc_intro_paragraph': '',
+    'sc_intro_paragraph_cy': ''
   };
 
   const slug = 'southport-county-court';

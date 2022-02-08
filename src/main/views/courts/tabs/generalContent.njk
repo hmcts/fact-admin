@@ -68,6 +68,34 @@
   }) }}
 {% endif %}
 
+{% if generalInfo.serviceCentre %}
+
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--m" for="sc-intro-paragraph">
+            Intro Paragraph
+        </label>
+    </h2>
+    <span class="govuk-caption-m govuk-!-margin-bottom-3">
+      Use this field to overwrite the default text for the first paragraph found on service centres through
+      the public facing service.
+    </span>
+    <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
+              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph }}</textarea>
+  </div>
+
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--m" for="sc-intro-paragraph-cy">
+            Intro Paragraph (Welsh)
+        </label>
+    </h2>
+    <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
+              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
+  </div>
+
+{% endif %}
+
 <div class="govuk-form-group">
   <h2 class="govuk-label-wrapper">
       <label class="govuk-label govuk-label--m" for="info">
