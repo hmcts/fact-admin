@@ -21,7 +21,7 @@ Feature: Spoe tab
     And  I click spoe update
     Then Success message is displayed for spoe with summary "Single point of entries updated"
     When I reload the page
-    #Then spoe area of law  "<aolAdoption>" and "<aolChildren>" should be selected
+    Then spoe area of law  "<aolAdoption>" and "<aolChildren>" should be selected
     When I unselect spoe area of law "<aolAdoption>" and "<aolChildren>"
     And  I click spoe update
     Then Success message is displayed for spoe with summary "Single point of entries updated"
@@ -30,4 +30,4 @@ Feature: Spoe tab
 
     Examples:
       | aolAdoption | aolChildren    |
-      | adoption    | children       |
+      | adoption1    | children1       |

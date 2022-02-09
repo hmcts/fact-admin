@@ -29,7 +29,7 @@
 {% set allSpoeAreasOfLawItems = [] %}
 {% for areaOfLaw in allSpoeAreasOfLaw %}
     {% set checked = true if areaOfLaw.name in courtSpoeAreasOfLawNames else false %}
-    {% set id = areaOfLaw.name | replace(" ", "-") | lower %}
+    {% set id = areaOfLaw.name | replace(" ", "-") | lower + '1' %}
     {% set allSpoeAreasOfLawItems =
       (allSpoeAreasOfLawItems.push({
         attributes: { 'data-inputType': 'spoe-area-of-law', 'aria-checked': checked, 'data-id': areaOfLaw.id },
@@ -41,7 +41,6 @@
   {% endfor %}
 
 {{ govukCheckboxes({
-  idPrefix: "court_spoe_areas_of_law",
   name: "court_spoe_areas_of_law",
   items: allSpoeAreasOfLawItems|sort(false, true, 'text')
 }) }}
