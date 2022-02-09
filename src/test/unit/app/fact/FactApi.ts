@@ -98,7 +98,9 @@ describe('FactApi', () => {
         'info_cy': 'information_cy',
         alert: 'alert',
         'alert_cy': 'alert_cy',
-        'in_person': true
+        'in_person': true,
+        'sc_intro_paragraph': '',
+        'sc_intro_paragraph_cy': ''
       }
       };
     const mockAxios = { get: async () => results } as any;
@@ -132,7 +134,9 @@ describe('FactApi', () => {
       info: '',
       'info_cy': '',
       alert: '',
-      'alert_cy': ''
+      'alert_cy': '',
+      'sc_intro_paragraph': '',
+      'sc_intro_paragraph_cy': ''
     };
 
     const spy = jest.spyOn(mockLogger, 'info');
