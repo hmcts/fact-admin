@@ -24,6 +24,7 @@ export default function(app: Application): void {
   app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
   app.get('/users/search', app.locals.container.cradle.editUserController.renderSearchUser);
   app.get('/users/search/user', app.locals.container.cradle.editUserController.getUser);
+  app.patch('/users/update/user', app.locals.container.cradle.editUserController.patchUser);
 
   // Edit court
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);

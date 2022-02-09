@@ -18,6 +18,7 @@ export interface AddUserPageData {
 }
 
 export interface SearchUserPageData {
+  userEmail: string,
   errors: Error[],
   updated: Boolean
 }

@@ -7,8 +7,10 @@ const { initAll } = require('govuk-frontend');
 export class EditUserController {
 
   private searchFormId = '#searchUserForm';
-  private tabId = '#searchUserTab';
+  private searchTabId = '#searchUserTab';
   private searchUserContentId = '#searchUserContent';
+  private cancelEditButtonClass = '#cancelEditUserBtn'
+  private submitEditButtonClass = '#submitEditUserBtn'
 
 
   constructor() {
@@ -17,15 +19,17 @@ export class EditUserController {
 
   private initialize(): void {
     $(() => {
-      if ($(this.tabId).length > 0) {
+      if ($(this.searchTabId).length > 0) {
         this.get();
         this.setUpSearchEventHandler();
+        this.setUpCancelEventHandler();
+        this.setUpUpdateEventHandler();
       }
     });
   }
 
   private async updateContent(content: any, contentId: string): Promise<void> {
-    $(this.searchUserContentId).html(content);
+    $(contentId).html(content);
 
     initAll({ scope: document.getElementById('searchUserTab') });
 
@@ -49,7 +53,6 @@ export class EditUserController {
     $(this.searchFormId).on('submit', e => {
       e.preventDefault();
       const userEmail = $('#user-email').val();
-      console.log('from javascript: ' + userEmail);
       $.ajax({
         url: '/users/search/user',
         method: 'get',
@@ -60,6 +63,34 @@ export class EditUserController {
         this.updateContent(res, this.searchUserContentId);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT cases heard failed.'));
+    });
+  }
+
+  private setUpUpdateEventHandler(): void {
+    $(this.searchFormId).on('click', `${this.submitEditButtonClass}`, e => {
+      e.preventDefault();
+      const userId = $('#userId').val();
+      const forename = $('#forename').val();
+      const surname = $('#surname').val();
+      $.ajax({
+        url: '/users/update/user',
+        method: 'patch',
+        data: {
+          userId: userId,
+          forename: forename,
+          surname: surname
+        }
+      }).done(res => {
+        this.get();
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'PATCH user details failed.'));
+    });
+  }
+
+  private setUpCancelEventHandler(): void {
+    $(this.searchFormId).on('click', `${this.cancelEditButtonClass}`, e => {
+      e.preventDefault();
+      this.get();
     });
   }
 }
