@@ -50,13 +50,38 @@ describe('GeneralInfoController', () => {
     'sc_intro_paragraph_cy': ''
   };
 
+  const courtGeneralInfoTooManyCharsForIntroParagraph: CourtGeneralInfo = {
+    name: 'court name',
+    open: true,
+    'access_scheme': false,
+    info: 'info',
+    'info_cy': 'info cy',
+    alert: 'an alert',
+    'alert_cy': 'an alert cy',
+    'in_person': true,
+    'sc_intro_paragraph': 'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20',
+    'sc_intro_paragraph_cy': 'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'
+  };
+
   const courtGeneralInfoOverCharacterLimit: CourtGeneralInfo = {
     name: '',
     open: true,
     'access_scheme': false,
     info: 'info',
     'info_cy': 'info cy',
-    alert: 'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
+    alert: 'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
     'alert_cy': 'an alert cy',
     'in_person': true,
     'sc_intro_paragraph': '',
@@ -226,6 +251,25 @@ describe('GeneralInfoController', () => {
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
       nameFieldError: controller.specialCharacterErrorMsg
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should not update general info if intro paragraph more than 300 chars', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfoTooManyCharsForIntroParagraph;
+    req.scope.cradle.api = mockApi;
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfoTooManyCharsForIntroParagraph,
+      errorMsg: controller.updateIntroParagraphErrorMsg,
+      updated: false,
+      nameFieldError: ''
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
