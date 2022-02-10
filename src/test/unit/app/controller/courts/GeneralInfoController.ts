@@ -20,6 +20,7 @@ describe('GeneralInfoController', () => {
     alert: 'an alert',
     'alert_cy': 'an alert cy',
     'in_person': true,
+    'service_centre': false,
     'sc_intro_paragraph': '',
     'sc_intro_paragraph_cy': ''
   };
@@ -33,6 +34,7 @@ describe('GeneralInfoController', () => {
     alert: 'an alert',
     'alert_cy': 'an alert cy',
     'in_person': true,
+    'service_centre': false,
     'sc_intro_paragraph': '',
     'sc_intro_paragraph_cy': ''
   };
@@ -46,6 +48,7 @@ describe('GeneralInfoController', () => {
     alert: 'an alert',
     'alert_cy': 'an alert cy',
     'in_person': true,
+    'service_centre': false,
     'sc_intro_paragraph': '',
     'sc_intro_paragraph_cy': ''
   };
@@ -59,6 +62,7 @@ describe('GeneralInfoController', () => {
     alert: 'an alert',
     'alert_cy': 'an alert cy',
     'in_person': true,
+    'service_centre': true,
     'sc_intro_paragraph': 'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
@@ -84,6 +88,7 @@ describe('GeneralInfoController', () => {
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
     'alert_cy': 'an alert cy',
     'in_person': true,
+    'service_centre': false,
     'sc_intro_paragraph': '',
     'sc_intro_paragraph_cy': ''
   };

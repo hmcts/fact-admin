@@ -99,6 +99,7 @@ describe('FactApi', () => {
         alert: 'alert',
         'alert_cy': 'alert_cy',
         'in_person': true,
+        'service_centre': false,
         'sc_intro_paragraph': '',
         'sc_intro_paragraph_cy': ''
       }
@@ -135,6 +136,7 @@ describe('FactApi', () => {
       'info_cy': '',
       alert: '',
       'alert_cy': '',
+      'service_centre': false,
       'sc_intro_paragraph': '',
       'sc_intro_paragraph_cy': ''
     };

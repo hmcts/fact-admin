@@ -53,8 +53,9 @@
   }) }}
 
   <input name='in_person' type='hidden' value='{{generalInfo.in_person}}'></input>
+  <input name='service_centre' type='hidden' value='{{generalInfo.service_centre}}'></input>
 
-  {% set disableAccessScheme = generalInfo.serviceCentre == true %}
+  {% set disableAccessScheme = generalInfo.service_centre == true %}
   {{ govukCheckboxes({
     name: "access_scheme",
     items: [
@@ -68,7 +69,7 @@
   }) }}
 {% endif %}
 
-{% if generalInfo.serviceCentre %}
+{% if generalInfo.service_centre %}
 
   <div class="govuk-form-group">
     <h2 class="govuk-label-wrapper">

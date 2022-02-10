@@ -67,7 +67,8 @@ export class GeneralInfoController {
       return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);
     }
 
-    if (generalInfo.sc_intro_paragraph.length > 300 || generalInfo.sc_intro_paragraph_cy.length > 300) {
+    if (((/true/i).test(String(generalInfo.service_centre))) // JavaScript sends boolean as a string...
+      && (generalInfo.sc_intro_paragraph.length > 300 || generalInfo.sc_intro_paragraph_cy.length > 300)) {
       return this.get(req, res, false, this.updateIntroParagraphErrorMsg, '', generalInfo);
     }
 
