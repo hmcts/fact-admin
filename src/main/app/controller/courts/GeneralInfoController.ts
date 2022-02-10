@@ -69,6 +69,9 @@ export class GeneralInfoController {
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
 
+    console.log(updatedSlug);
+    console.log(slug);
+
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
@@ -94,7 +97,7 @@ export class GeneralInfoController {
   }
 
   private checkNameForInvalidCharacters(name: string): boolean {
-    const inValidCharacters = /[!@#$%^&*_+=[\]{};:"\\|,.<>/?]+/;
+    const inValidCharacters = /[!@#$%^&*_+=[\]{};:"\\|.<>/?]+/;
     return inValidCharacters.test(name);
   }
 }
