@@ -6,7 +6,7 @@ home: https://github.com/hmcts/fact-admin
 version: 0.0.15
 dependencies:
   - name: nodejs
-    version: 2.3.7
+    version: 2.4.0
     repository: '@hmctspublic'
   - name: idam-pr
     version: 2.2.6
