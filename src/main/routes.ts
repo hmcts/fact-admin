@@ -7,6 +7,7 @@ export default function(app: Application): void {
 
   const upload = multer();
 
+
   app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
@@ -24,6 +25,8 @@ export default function(app: Application): void {
   app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
 
   // Edit court
+  app.get('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
+  app.put('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
   app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.renderRedirect);
