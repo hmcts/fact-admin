@@ -88,6 +88,6 @@ export class NewCourtController {
   }
 
   private static isInvalidCourtName(name: string): boolean {
-    return /[!@#$%^&*_+=[\]{};:"\\|,.<>/?]+/.test(name);
+    return /[!@#$%^&*_+=[\]{};:"\\|.<>/?]+/.test(name);
   }
 }

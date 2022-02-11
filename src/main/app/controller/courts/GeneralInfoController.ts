@@ -94,7 +94,7 @@ export class GeneralInfoController {
   }
 
   private checkNameForInvalidCharacters(name: string): boolean {
-    const inValidCharacters = /[!@#$%^&*_+=[\]{};:"\\|,.<>/?]+/;
+    const inValidCharacters = /[!@#$%^&*_+=[\]{};:"\\|.<>/?]+/;
     return inValidCharacters.test(name);
   }
 }
