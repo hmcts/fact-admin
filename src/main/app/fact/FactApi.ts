@@ -17,6 +17,7 @@ import {CourtTypesAndCodes} from '../../types/CourtTypesAndCodes';
 import {AdditionalLink} from '../../types/AdditionalLink';
 import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
+import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
 
 export class FactApi {
 
@@ -555,6 +556,37 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
+
+  public getAllSpoeAreasOfLaw(): Promise<SpoeAreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/SpoeAreasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCourtSpoeAreasOfLaw(slug: string): Promise<SpoeAreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/SpoeAreasOfLaw`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateCourtSpoeAreasOfLaw(slug: string, body: SpoeAreaOfLaw[]): Promise<SpoeAreaOfLaw[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/SpoeAreasOfLaw`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
 
   public getFacilityTypes(): Promise<FacilityType[]> {
     return this.axios
