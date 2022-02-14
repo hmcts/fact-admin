@@ -10,16 +10,10 @@ Feature: Court Additional Information Message
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-  Scenario: Additional Information
+  Scenario: Adding additional info English and Welsh
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
-    When I add an "Additional Information" in the rich editor field provided "#info"
-    And I click the general info save button
-    Then a success message is displayed on the general info tab "General Information updated"
-
-  Scenario: Welsh Translation
-    When I click edit next to court with "birmingham-civil-and-family-justice-centre"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I add an "Welsh translation of the additional information" in the rich editor field provided "#info_cy"
+    When I add an "Additional Information test" in the rich editor field provided "#info"
+    When I add an "Welsh translation of the additional information test" in the rich editor field provided "#info_cy"
     And I click the general info save button
     Then a success message is displayed on the general info tab "General Information updated"
