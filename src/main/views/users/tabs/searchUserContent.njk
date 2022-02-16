@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 
 <h2 class="govuk-heading-l">Edit a User</h2>
 
@@ -9,6 +10,12 @@
   {{ govukErrorSummary({
     titleText: "There is a problem",
     errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "User details updated"
   }) }}
 {% endif %}
 

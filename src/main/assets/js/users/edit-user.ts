@@ -72,16 +72,22 @@ export class EditUserController {
       const userId = $('#userId').val();
       const forename = $('#forename').val();
       const surname = $('#surname').val();
+      const role = this.getUserRole();
       $.ajax({
         url: '/users/update/user',
         method: 'patch',
         data: {
           userId: userId,
           forename: forename,
-          surname: surname
+          surname: surname,
+          role: [
+            {
+              role
+            }
+          ]
         }
       }).done(res => {
-        this.get();
+        this.updateContent(res, this.searchUserContentId);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PATCH user details failed.'));
     });
@@ -93,6 +99,13 @@ export class EditUserController {
       this.get();
     });
   }
+
+  private getUserRole(): string {
+    if ($('#userRole-2').prop('checked')) {
+      return $('#userRole-2').val() as string;
+    } else return $('#userRole').val() as string;
+  }
+
 }
 
 

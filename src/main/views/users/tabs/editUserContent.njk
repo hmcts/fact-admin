@@ -71,7 +71,7 @@
   {{ govukRadios({
     classes: "govuk-radios--small",
     id: "roles",
-    name: "user[roles][]",
+    name: "userRole",
     errorMessage: rolesError,
     fieldset: {
       legend: {
@@ -85,12 +85,12 @@
      },
     items: [
       {
-        value: "3ff4e24b-f12e-40a9-8bdf-a41ed04312bf",
+        value: "fact-admin",
         text: "fact-admin",
         checked: adminRoleChecked
       },
       {
-        value: "e8fcf2fc-d309-454c-b864-d94d361b6d18",
+        value: "fact-super-admin",
         text: "fact-super-admin",
         checked: superAdminRoleChecked
       }

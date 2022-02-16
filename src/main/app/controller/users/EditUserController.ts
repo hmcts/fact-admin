@@ -9,6 +9,7 @@ import {AxiosError} from 'axios';
 export class EditUserController {
 
   searchErrorMsg = 'A problem occurred when searching for the user. '
+  editErrorMsg = 'A problem occurred when editing the user. '
   userNotFoundErrorMsg = 'No account was found for user:'
 
   public async renderSearchUser(req: AuthedRequest,
@@ -70,23 +71,28 @@ export class EditUserController {
     const userId = req.body.userId;
     const forename = req.body.forename;
     const surname = req.body.surname;
+    const role = req.body.role.valueOf();
+    const roleToRemove = role[0]['name'] === 'fact-admin' ? 'fact-super-admin' : 'fact-admin';
 
     await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
-      .then((returnedUser: User) => {
-        console.log(returnedUser);
+      .then(() => {
+        this.updateUserRole(req, res, userId, role, roleToRemove);
       })
       .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req, res, false, '', [{ text: this.searchErrorMsg }]);
+        return await this.renderEditUser(req,res, false, user, [{ text: this.editErrorMsg }]);
       });
+  }
 
-    // await req.scope.cradle.idamApi.updateUserRole(userId, roleId, req.session.user.access_token)
-    //   .then(() => {
-    //     console.log(res);
-    //   })
-    //   .catch(async (reason: AxiosError) => {
-    //     return await this.renderSearchUser(req, res, false, '', [{ text: this.searchErrorMsg }]);
-    //   });
-
+  private async updateUserRole(req: AuthedRequest,
+    res: Response,
+    userId: string,
+    role: object,
+    roleToRemove: string): Promise<void> {
+    req.scope.cradle.idamApi.grantUserRole(userId, role, req.session.user.access_token)
+      .then(() => { req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token)
+        .then(() => this.renderSearchUser(req, res, true, '', []))
+        .catch(async (reason: AxiosError) => this.renderSearchUser(req, res, true, '', []));
+      });
   }
 
 

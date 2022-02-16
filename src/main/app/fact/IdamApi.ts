@@ -1,5 +1,5 @@
 import config from 'config';
-import {AxiosError, AxiosInstance} from 'axios';
+import {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
 import {Logger} from '../../types/Logger';
 import {User} from '../../types/User';
 import autobind from 'autobind-decorator';
@@ -47,30 +47,39 @@ export class IdamApi {
   public updateUserDetails(userId: string, forename: string, surname: string, accessToken: string): Promise<User>{
     return this.axios
       .patch(`${this.updateUserDetailsUserURL}` + userId,  {
-        baseURL: '',
+        forename: forename,
+        surname: surname
+      }, {
         headers: {
           Authorization: 'Bearer ' + accessToken
-        },
-        body: {
-          forename: forename,
-          surname: surname
         }
       })
       .then(results => {
-        console.log('RESULTS: ', results);
         return results.data;
       })
       .catch(err => {
-        console.log('ERROR: ',err);
         this.logError(err);
         return Promise.reject(err);
       });
   }
 
-  public updateUserRole(userId: string, roleId: string, accessToken: string): Promise<User>{
+  public grantUserRole(userId: string, role: object, accessToken: string): Promise<AxiosResponse<any>>{
     return this.axios
-      .patch(`${this.userURL}` + userId + '/roles/' + roleId,  {
-        baseURL: '',
+      .post(`${this.updateUserDetailsUserURL}` + userId + '/roles/',  role,{
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      })
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public removeUserRole(userId: string, roleName: string, accessToken: string): Promise<AxiosResponse<any>>{
+    return this.axios
+      .delete(`${this.updateUserDetailsUserURL}` + userId + '/roles/' + roleName,{
         headers: {
           Authorization: 'Bearer ' + accessToken
         }
