@@ -9,11 +9,14 @@ Then('I am redirected to the Edit Court page for the chosen court', async () => 
 });
 
 When('I add an {string} in the field provided {string}', async (message: string, id: string) => {
+  expect(await I.checkElement(id)).equal(true);
   await I.clearField(id);
   await I.fillField(id, message);
 });
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
+  expect(await I.checkElement(id)).equal(true);
+  await I.clearField(id);
   await I.fillFieldInIframe(id, message);
 });
 
