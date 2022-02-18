@@ -75,3 +75,41 @@ Then('The error message display for creating user {string}', async (errMessage: 
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
+
+When('I click on edit user', async () => {
+  const selector = '#tab_edit-user';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+When('I enter User Email {string}', async (email: string) => {
+  const selector = '#user-email';
+  await populateField(selector, email);
+});
+
+Then('I click search user button', async () => {
+  const selector = 'button[name="searchUser"]';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I click edit user button', async () => {
+  const selector = 'button[name="editUser"]';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I select the user role as fact-super-admin', async () => {
+  const selector = '#userRole-2';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+});
+
+Then('I can see user details updated message {string}', async (message: string) => {
+  const selector = '#searchUserContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
+});
+
+
+

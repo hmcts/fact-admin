@@ -36,3 +36,16 @@ Feature: create admin user
     Then I select the user role as fact-admin
     Then I click create user button
     Then The error message display for creating user "All fields are required."
+
+  Scenario: Updating admin user role to super-admin
+    When I click on edit user
+    When I enter User Email "hmcts.fact@gmail.com"
+    Then I click search user button
+    Then I select the user role as fact-super-admin
+    Then I click edit user button
+    Then I can see user details updated message "User details updated"
+    When I enter User Email "hmcts.fact@gmail.com"
+    Then I click search user button
+    Then I select the user role as fact-admin
+    Then I click edit user button
+    Then I can see user details updated message "User details updated"
