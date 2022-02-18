@@ -3,12 +3,13 @@
 <h2 class="govuk-heading-l">Delete user: {{ userEmail }}</h2>
 
 <input type="hidden" id="user-id" name="user-id" value={{ userId }}>
+<input type="hidden" id="user-email" name="user-email" value={{ userEmail }}>
 
 <div class="govuk-button-group">
   {{ govukButton({
     text: "Confirm Delete",
     type: "button",
-    attributes: { id: "confirmDeleteUser" },
+    attributes: { id: "confirmDeleteUserBtn" },
     classes: "govuk-button--warning"
   }) }}
 

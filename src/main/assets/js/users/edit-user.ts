@@ -12,7 +12,7 @@ export class EditUserController {
   private cancelEditButtonId = '#cancelEditUserBtn'
   private submitEditButtonId = '#submitEditUserBtn'
   private deleteUserButtonId = '#deleteUserBtn'
-
+  private deleteConfirmBtnId = '#confirmDeleteUserBtn'
 
   constructor() {
     this.initialize();
@@ -26,6 +26,7 @@ export class EditUserController {
         this.setUpCancelEventHandler();
         this.setUpUpdateEventHandler();
         this.setUpDeleteEventHandler();
+        this.setUpDeleteConfirmEventHandler();
       }
     });
   }
@@ -72,6 +73,7 @@ export class EditUserController {
     $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
       const userId = $('#user-id').val();
+      const userEmail = $('#user-email').val();
       const forename = $('#forename').val();
       const surname = $('#surname').val();
       const role = this.getUserRole();
@@ -80,6 +82,7 @@ export class EditUserController {
         method: 'patch',
         data: {
           userId: userId,
+          userEmail: userEmail,
           forename: forename,
           surname: surname,
           role: [
@@ -107,6 +110,22 @@ export class EditUserController {
           'userEmail': userEmail,
           'userId': userId
         }
+      }).done(res => {
+        this.updateContent(res, this.searchUserContentId);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'DELETE user failed.'));
+    });
+  }
+
+  private setUpDeleteConfirmEventHandler(): void {
+    $(this.searchFormId).on('click', `${this.deleteConfirmBtnId}`, e => {
+      e.preventDefault();
+      const userId = $('#user-id').val();
+
+      $.ajax({
+        url: `/users/delete/user/${userId}`,
+        method: 'delete',
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
         window.scrollTo(0, 0);
