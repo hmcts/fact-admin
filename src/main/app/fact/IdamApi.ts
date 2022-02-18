@@ -91,6 +91,20 @@ export class IdamApi {
       });
   }
 
+  public deleteUser(userId: string, accessToken: string): Promise<AxiosResponse<any>>{
+    return this.axios
+      .delete(`${this.updateUserDetailsUserURL}` + userId,{
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      })
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   private logError(err: AxiosError) {
     this.logger.error(err.message);
 
