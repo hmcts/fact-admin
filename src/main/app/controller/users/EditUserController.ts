@@ -78,14 +78,9 @@ export class EditUserController {
 
     await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
       .then(() => {
-        console.log(role[0]['name'], 'equal to', this.getUserRole(user), '?');
         if (role[0]['name'] === this.getUserRole(user)) {
-          console.log('true');
           return this.renderSearchUser(req, res, true, '', []);
-        } else {
-          console.log('false');
-          this.updateUserRole(req, res, userId, role, roleToRemove);
-        }
+        } else this.updateUserRole(req, res, userId, role, roleToRemove);
       })
       .catch(async (reason: AxiosError) => {
         return await this.renderEditUser(req,res, false, user, [{ text: this.editErrorMsg }]);
@@ -101,7 +96,15 @@ export class EditUserController {
   }
 
   public async deleteUser(req: AuthedRequest, res: Response): Promise<void> {
-    console.log(req, res);
+    const userId = req.params.userId;
+
+    await req.scope.cradle.idamApi.deleteUser(userId, req.session.user.access_token)
+      .then(() => {
+        this.renderSearchUser(req, res, true, '', []);
+      })
+      .catch(async (reason: AxiosError) => {
+        return await this.renderSearchUser(req, res, false, '',[{ text: this.editErrorMsg }]);
+      });
   }
 
   private async updateUserRole(req: AuthedRequest,
