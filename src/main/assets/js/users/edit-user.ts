@@ -9,8 +9,9 @@ export class EditUserController {
   private searchFormId = '#searchUserForm';
   private searchTabId = '#searchUserTab';
   private searchUserContentId = '#searchUserContent';
-  private cancelEditButtonClass = '#cancelEditUserBtn'
-  private submitEditButtonClass = '#submitEditUserBtn'
+  private cancelEditButtonId = '#cancelEditUserBtn'
+  private submitEditButtonId = '#submitEditUserBtn'
+  private deleteUserButtonId = '#deleteUserBtn'
 
 
   constructor() {
@@ -24,6 +25,7 @@ export class EditUserController {
         this.setUpSearchEventHandler();
         this.setUpCancelEventHandler();
         this.setUpUpdateEventHandler();
+        this.setUpDeleteEventHandler();
       }
     });
   }
@@ -67,9 +69,9 @@ export class EditUserController {
   }
 
   private setUpUpdateEventHandler(): void {
-    $(this.searchFormId).on('click', `${this.submitEditButtonClass}`, e => {
+    $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
-      const userId = $('#userId').val();
+      const userId = $('#user-id').val();
       const forename = $('#forename').val();
       const surname = $('#surname').val();
       const role = this.getUserRole();
@@ -82,7 +84,7 @@ export class EditUserController {
           surname: surname,
           role: [
             {
-              role
+              'name': role
             }
           ]
         }
@@ -93,8 +95,28 @@ export class EditUserController {
     });
   }
 
+  private setUpDeleteEventHandler(): void {
+    $(this.searchFormId).on('click', `${this.deleteUserButtonId}`, e => {
+      e.preventDefault();
+      const userId = $('#user-id').val();
+      const userEmail = $('#user-email').val();
+      $.ajax({
+        url: '/users/confirm-delete/user/',
+        method: 'get',
+        data: {
+          'userEmail': userEmail,
+          'userId': userId
+        }
+      }).done(res => {
+        this.updateContent(res, this.searchUserContentId);
+        window.scrollTo(0, 0);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'DELETE user failed.'));
+    });
+  }
+
   private setUpCancelEventHandler(): void {
-    $(this.searchFormId).on('click', `${this.cancelEditButtonClass}`, e => {
+    $(this.searchFormId).on('click', `${this.cancelEditButtonId}`, e => {
       e.preventDefault();
       this.get();
     });

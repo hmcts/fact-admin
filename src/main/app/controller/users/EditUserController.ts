@@ -83,17 +83,27 @@ export class EditUserController {
       });
   }
 
+  public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
+    const pageData = {
+      userId: req.query.userId,
+      userEmail: req.query.userEmail
+    };
+    res.render('users/tabs/deleteUserConfirm', pageData);
+  }
+
   private async updateUserRole(req: AuthedRequest,
     res: Response,
     userId: string,
     role: object,
     roleToRemove: string): Promise<void> {
-    req.scope.cradle.idamApi.grantUserRole(userId, role, req.session.user.access_token)
-      .then(() => { req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token)
-        .then(() => this.renderSearchUser(req, res, true, '', []))
-        .catch(async (reason: AxiosError) => this.renderSearchUser(req, res, true, '', []));
+    await req.scope.cradle.idamApi.grantUserRole(userId, role, req.session.user.access_token)
+      .then(async () => {
+        await req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token);
+        await this.renderSearchUser(req, res, true, '', []);
+      })
+      .catch(async (reason: AxiosError) => {
+        return await this.renderSearchUser(req, res, false, '',[{ text: this.editErrorMsg }]);
       });
   }
-
-
 }
+
