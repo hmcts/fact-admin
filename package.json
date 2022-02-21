@@ -141,6 +141,7 @@
     "axios/follow-redirects": "^1.14.8",
     "@azure/storage-blob/@azure/core-http/node-fetch": "^2.6.7",
     "sass-lint/eslint/shelljs": "^0.8.5",
-    "puppeteer/node-fetch": "^2.6.7"
+    "puppeteer/node-fetch": "^2.6.7",
+    "launchdarkly-node-server-sdk/launchdarkly-eventsource/original/url-parse" : "^1.5.6"
   }
 }
