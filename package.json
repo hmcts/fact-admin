@@ -133,7 +133,7 @@
     "mini-css-extract-plugin/normalize-url": "^6.0.1",
     "html-webpack-plugin/pretty-error": "^3.0.4",
     "uglifyjs-webpack-plugin/serialize-javascript": "^3.1.0",
-    "launchdarkly-node-server-sdk/launchdarkly-eventsource/original/url-parse": "^1.5.2",
+    "launchdarkly-node-server-sdk/launchdarkly-eventsource/original/url-parse": "^1.5.6",
     "copy-webpack-plugin/cacache/ssri": "^8.0.1",
     "webpack/watchpack/watchpack-chokidar2/chokidar/glob-parent": "^5.1.2",
     "copy-webpack-plugin/cacache/tar": "^6.1.11",
@@ -141,7 +141,6 @@
     "axios/follow-redirects": "^1.14.8",
     "@azure/storage-blob/@azure/core-http/node-fetch": "^2.6.7",
     "sass-lint/eslint/shelljs": "^0.8.5",
-    "puppeteer/node-fetch": "^2.6.7",
-    "launchdarkly-node-server-sdk/launchdarkly-eventsource/original/url-parse" : "^1.5.6"
+    "puppeteer/node-fetch": "^2.6.7"
   }
 }
