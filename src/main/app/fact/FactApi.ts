@@ -300,6 +300,16 @@ export class FactApi {
       });
   }
 
+  public getAllServiceAreas(): Promise<AreaOfLaw[]> {
+    return this.axios
+      .get(`${this.adminUrl}/serviceAreas`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   public getCourtAreasOfLaw(slug: string): Promise<AreaOfLaw[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/courtAreasOfLaw`)

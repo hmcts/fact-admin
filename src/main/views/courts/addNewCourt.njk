@@ -129,19 +129,19 @@
       ]
     }) }}
 
-    {% if allAreasOfLaw|length %}
-      {% set allAreasOfLawItems = [] %}
-      {% for areaOfLaw in allAreasOfLaw %}
+    {% if allServiceAreas|length %}
+      {% set allServiceAreasItems = [] %}
+      {% for areaOfLaw in allServiceAreas %}
       {% set id = areaOfLaw.name | replace(" ", "-") | lower %}
       {% set checked = true if areaOfLaw.name in serviceAreas else false %}
-      {% set allAreasOfLawItems =
-        (allAreasOfLawItems.push({
+      {% set allServiceAreasItems =
+        (allServiceAreasItems.push({
           attributes: { 'data-inputType': 'cases-heard', 'aria-checked': checked, 'data-id': areaOfLaw.id },
           'text': areaOfLaw.name,
           'value': areaOfLaw.name,
           'id': id,
           'checked': checked
-        }), allAreasOfLawItems) %}
+        }), allServiceAreasItems) %}
       {% endfor %}
 
       <div id="serviceAreasContainer">
@@ -159,7 +159,7 @@
         <div id="serviceAreasList" class="visible-scrollbar scrollable" role="scrollbar"
           aria-controls="casesHearCheckboxes" aria-orientation="vertical">
 
-          {% for items in allAreasOfLawItems|sort(false, true, 'text') | slice(2) %}
+          {% for items in allServiceAreasItems|sort(false, true, 'text') | slice(2) %}
 
             <div class="govuk-grid-column-one-half">
 

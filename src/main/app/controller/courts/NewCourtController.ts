@@ -31,7 +31,7 @@ export class NewCourtController {
     serviceAreas: AreaOfLaw[] = [],
     errorMsg: string[] = []): Promise<void> {
 
-    const allAreasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
+    const allServiceAreas = await req.scope.cradle.api.getAllServiceAreas()
       .catch(() => {
         errorMsg.push(this.getAreasOfLawErrorMsg);
       });
@@ -47,7 +47,7 @@ export class NewCourtController {
       latEntered: latEntered,
       serviceAreaChecked: serviceAreaChecked,
       serviceAreas: serviceAreas,
-      allAreasOfLaw: allAreasOfLaw,
+      allServiceAreas: allServiceAreas,
       errorMsg: errorMsg,
       csrfToken: CSRF.create()
     });
