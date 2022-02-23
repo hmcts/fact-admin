@@ -10,7 +10,7 @@ export class EditUserController {
 
   searchErrorMsg = 'A problem occurred when searching for the user. '
   editErrorMsg = 'A problem occurred when editing the user. '
-  userNotFoundErrorMsg = 'No account was found for user:'
+  userNotFoundErrorMsg = 'No account was found with the email address:'
 
   public async renderSearchUser(req: AuthedRequest,
     res: Response,
@@ -51,13 +51,12 @@ export class EditUserController {
 
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       .then((returnedUser: User) => {
+        if (returnedUser === undefined) {
+          return this.renderSearchUser(req, res, false, userEmail, [{ text: `${this.userNotFoundErrorMsg} ${userEmail}.` }]);
+        }
         this.renderEditUser(req,res, false, returnedUser, []);
       })
       .catch(async (reason: AxiosError) => {
-        // // Do we need a different error is user isn't found? How do we access error code?
-        // if (res.statusCode === 404) {
-        //   return await this.renderSearchUser(req, res, false, userEmail, [{ text: `${this.userNotFoundErrorMsg} ${userEmail}.` }]);
-        // }
         return await this.renderSearchUser(req, res, false, userEmail,[{ text: this.searchErrorMsg }]);
       });
   }
