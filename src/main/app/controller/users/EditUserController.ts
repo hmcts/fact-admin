@@ -123,9 +123,9 @@ export class EditUserController {
   }
 
   private getUserRole(user: User): string {
-    if (user.roles.includes('e8fcf2fc-d309-454c-b864-d94d361b6d18')) {
+    if (user.roles.includes('fact-super-admin')) {
       return 'fact-super-admin';
-    } else if (user.roles.includes('3ff4e24b-f12e-40a9-8bdf-a41ed04312bf')) {
+    } else if (user.roles.includes('fact-admin')) {
       return 'fact-admin';
     } else return '';
   }

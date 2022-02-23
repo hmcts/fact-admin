@@ -31,12 +31,12 @@
  {% endif %}
 
  {% set adminRoleChecked = false %}
- {%  if '3ff4e24b-f12e-40a9-8bdf-a41ed04312bf' in user.roles %}
+ {%  if 'fact-admin' in user.roles %}
   {% set adminRoleChecked = true %}
  {% endif %}
 
  {% set superAdminRoleChecked = false %}
- {%  if 'e8fcf2fc-d309-454c-b864-d94d361b6d18' in user.roles %}
+ {%  if 'fact-super-admin' in user.roles %}
    {% set superAdminRoleChecked = true %}
  {% endif %}
 

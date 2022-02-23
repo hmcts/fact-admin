@@ -8,7 +8,6 @@ import autobind from 'autobind-decorator';
 export class IdamApi {
 
   private readonly addUserURL: string = config.get('services.idam.addNewUserURL');
-  private readonly userURL: string = config.get('services.idam.userURL');
   private readonly updateUserDetailsUserURL: string = config.get('services.idam.updateUserDetailsURL');
 
   constructor(
@@ -31,13 +30,14 @@ export class IdamApi {
 
   public getUserByEmail(userEmail: string, accessToken: string): Promise<User>{
     return this.axios
-      .get(`${this.userURL}?email=` + userEmail,  {
+      .get(`${this.updateUserDetailsUserURL}`,{
         baseURL: '',
         headers: {
           Authorization: 'Bearer ' + accessToken
-        }
+        },
+        params: {query: `email:${userEmail}`}
       })
-      .then(results => results.data)
+      .then(results => results.data[0])
       .catch(err => {
         this.logError(err);
         return Promise.reject(err);
