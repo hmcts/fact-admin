@@ -58,7 +58,9 @@ export class NewCourtController {
     const serviceCentreChecked = req.body.serviceCentre == 'true';
     const lon = req.body.lon;
     const lat = req.body.lat;
-    const serviceAreas = serviceCentreChecked ? req.body.serviceAreaItems as AreaOfLaw[] ?? []: [];
+    const serviceAreas = serviceCentreChecked ? (Array.isArray(req.body.serviceAreaItems)
+      ? req.body.serviceAreaItems as AreaOfLaw[] ?? []
+      : (!req.body.serviceAreaItems ? [] : Array(req.body.serviceAreaItems))) : [];
 
     if (newCourtName === '' || lon === '' || lat === '') {
       return this.get(req, res, false, true, true, false,
