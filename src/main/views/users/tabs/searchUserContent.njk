@@ -15,7 +15,13 @@
 
 {% if updated === true %}
   {{ govukPanel({
-    titleText: "User updated"
+    titleText: "User details successfully updated"
+  }) }}
+{% endif %}
+
+{% if userDeleted === true %}
+  {{ govukPanel({
+    titleText: "User roles successfully removed"
   }) }}
 {% endif %}
 

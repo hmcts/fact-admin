@@ -107,11 +107,13 @@
       attributes: { id: "submitEditUserBtn" }
     }) }}
 
-    {{ govukButton({
-      text: "Delete account",
-      attributes: { id: "deleteUserBtn" },
-      classes: "govuk-button--warning"
-    }) }}
+    {% if ('fact-admin' in user.roles) or ('fact-super-admin' in user.roles) %}
+      {{ govukButton({
+        text: "Remove Roles",
+        attributes: { id: "deleteUserRolesBtn" },
+        classes: "govuk-button--warning"
+      }) }}
+    {% endif %}
 
     {{ govukButton({
       text: "Cancel",

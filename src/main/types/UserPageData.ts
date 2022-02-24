@@ -20,7 +20,8 @@ export interface AddUserPageData {
 export interface SearchUserPageData {
   userEmail: string,
   errors: Error[],
-  updated: Boolean
+  updated: Boolean,
+  userRolesRemoved: Boolean
 }
 
 export interface EditUserPageData {

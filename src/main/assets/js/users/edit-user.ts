@@ -11,8 +11,8 @@ export class EditUserController {
   private searchUserContentId = '#searchUserContent';
   private cancelEditButtonId = '#cancelEditUserBtn'
   private submitEditButtonId = '#submitEditUserBtn'
-  private deleteUserButtonId = '#deleteUserBtn'
-  private deleteConfirmBtnId = '#confirmDeleteUserBtn'
+  private deleteUserButtonId = '#deleteUserRolesBtn'
+  private deleteConfirmBtnId = '#confirmDeleteUserRolesBtn'
 
   constructor() {
     this.initialize();
@@ -103,12 +103,14 @@ export class EditUserController {
       e.preventDefault();
       const userId = $('#user-id').val();
       const userEmail = $('#user-email').val();
+      const role = this.getUserRole();
       $.ajax({
         url: '/users/confirm-delete/user/',
         method: 'get',
         data: {
           'userEmail': userEmail,
-          'userId': userId
+          'userId': userId,
+          'userRole': role
         }
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
@@ -122,10 +124,11 @@ export class EditUserController {
     $(this.searchFormId).on('click', `${this.deleteConfirmBtnId}`, e => {
       e.preventDefault();
       const userId = $('#user-id').val();
-
+      const userRole = $('#user-role').val();
+      console.log(userRole);
       $.ajax({
-        url: `/users/delete/user/${userId}`,
-        method: 'delete',
+        url: `/users/delete/user/${userId}/${userRole}`,
+        method: 'delete'
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
         window.scrollTo(0, 0);
@@ -144,7 +147,9 @@ export class EditUserController {
   private getUserRole(): string {
     if ($('#userRole-2').prop('checked')) {
       return $('#userRole-2').val() as string;
-    } else return $('#userRole').val() as string;
+    } else if ($('#userRole').prop('checked')) {
+      return $('#userRole').val() as string;
+    } else return '';
   }
 
 }

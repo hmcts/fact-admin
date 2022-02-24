@@ -15,13 +15,15 @@ export class EditUserController {
   public async renderSearchUser(req: AuthedRequest,
     res: Response,
     updated = false,
+    userRolesRemoved = false,
     userEmail= '',
     errors: { text: string }[] = []): Promise<void> {
 
     const pageData: SearchUserPageData = {
       userEmail: userEmail,
       errors: errors,
-      updated: updated
+      updated: updated,
+      userRolesRemoved: userRolesRemoved
     };
 
     res.render('users/tabs/searchUserContent', pageData);
@@ -52,12 +54,12 @@ export class EditUserController {
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       .then((returnedUser: User) => {
         if (returnedUser === undefined) {
-          return this.renderSearchUser(req, res, false, userEmail, [{ text: `${this.userNotFoundErrorMsg} ${userEmail}.` }]);
+          return this.renderSearchUser(req, res, false, false, userEmail, [{ text: `${this.userNotFoundErrorMsg} ${userEmail}.` }]);
         }
         this.renderEditUser(req,res, false, returnedUser, []);
       })
       .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req, res, false, userEmail,[{ text: this.searchErrorMsg }]);
+        return await this.renderSearchUser(req, res, false, false, userEmail,[{ text: this.searchErrorMsg }]);
       });
   }
 
@@ -72,13 +74,13 @@ export class EditUserController {
     const forename = req.body.forename;
     const surname = req.body.surname;
     const role = req.body.role.valueOf();
-    const roleToRemove = role[0]['name'] === 'fact-admin' ? 'fact-super-admin' : 'fact-admin';
     user = await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token);
+    const roleToRemove = this.getUserRole(user) === '' ? '' : this.getUserRoleToRemove(role[0]['name']);
 
     await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
       .then(() => {
         if (role[0]['name'] === this.getUserRole(user)) {
-          return this.renderSearchUser(req, res, true, '', []);
+          return this.renderSearchUser(req, res, true, false, '', []);
         } else this.updateUserRole(req, res, userId, role, roleToRemove);
       })
       .catch(async (reason: AxiosError) => {
@@ -96,13 +98,13 @@ export class EditUserController {
 
   public async deleteUser(req: AuthedRequest, res: Response): Promise<void> {
     const userId = req.params.userId;
-
-    await req.scope.cradle.idamApi.deleteUser(userId, req.session.user.access_token)
+    const roleToRemove = this.getUserRoleToRemove(req.params.userRole);
+    await req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token)
       .then(() => {
-        this.renderSearchUser(req, res, true, '', []);
+        this.renderSearchUser(req, res, false, true, '', []);
       })
       .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req, res, false, '',[{ text: this.editErrorMsg }]);
+        return await this.renderSearchUser(req, res, false, false, '',[{ text: this.editErrorMsg }]);
       });
   }
 
@@ -113,11 +115,13 @@ export class EditUserController {
     roleToRemove: string): Promise<void> {
     await req.scope.cradle.idamApi.grantUserRole(userId, role, req.session.user.access_token)
       .then(async () => {
-        await req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token);
-        await this.renderSearchUser(req, res, true, '', []);
+        if (roleToRemove !== '') {
+          await req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token);
+        }
+        await this.renderSearchUser(req, res, true, false, '', []);
       })
       .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req, res, false, '',[{ text: this.editErrorMsg }]);
+        return await this.renderSearchUser(req, res, false, false, '',[{ text: this.editErrorMsg }]);
       });
   }
 
@@ -127,6 +131,10 @@ export class EditUserController {
     } else if (user.roles.includes('fact-admin')) {
       return 'fact-admin';
     } else return '';
+  }
+
+  private getUserRoleToRemove(role: string): string {
+    return role === 'fact-admin' ? 'fact-super-admin' : 'fact-admin';
   }
 }
 
