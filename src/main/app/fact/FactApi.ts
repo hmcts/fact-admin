@@ -18,6 +18,7 @@ import {AdditionalLink} from '../../types/AdditionalLink';
 import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
+import {ServiceArea} from '../../types/ServiceArea';
 
 export class FactApi {
 
@@ -300,7 +301,7 @@ export class FactApi {
       });
   }
 
-  public getAllServiceAreas(): Promise<AreaOfLaw[]> {
+  public getAllServiceAreas(): Promise<ServiceArea[]> {
     return this.axios
       .get(`${this.adminUrl}/serviceAreas`)
       .then(results => results.data)

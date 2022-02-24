@@ -5,12 +5,12 @@ import {CSRF} from '../../../modules/csrf';
 import {NewCourt} from '../../../types/NewCourt';
 import {Court} from '../../../types/Court';
 import {AxiosError} from 'axios';
-import {AreaOfLaw} from '../../../types/AreaOfLaw';
+import {ServiceArea} from '../../../types/ServiceArea';
 
 @autobind
 export class NewCourtController {
 
-  getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
+  getServiceAreasErrorMsg = 'A problem occurred when retrieving the service areas. ';
   addNewCourtErrorMsg = 'A problem occurred when adding the new court';
   duplicateCourtErrorMsg = 'A court already exists for court provided: '
   emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again. '
@@ -28,13 +28,15 @@ export class NewCourtController {
     lonEntered = 0,
     latEntered = 0,
     serviceAreaChecked = false,
-    serviceAreas: AreaOfLaw[] = [],
+    serviceAreas: ServiceArea[] = [],
     errorMsg: string[] = []): Promise<void> {
 
     const allServiceAreas = await req.scope.cradle.api.getAllServiceAreas()
       .catch(() => {
-        errorMsg.push(this.getAreasOfLawErrorMsg);
+        errorMsg.push(this.getServiceAreasErrorMsg);
       });
+
+    console.log(allServiceAreas);
 
     res.render('courts/addNewCourt', {
       created: created,
@@ -59,7 +61,7 @@ export class NewCourtController {
     const lon = req.body.lon;
     const lat = req.body.lat;
     const serviceAreas = serviceCentreChecked ? (Array.isArray(req.body.serviceAreaItems)
-      ? req.body.serviceAreaItems as AreaOfLaw[] ?? []
+      ? req.body.serviceAreaItems as ServiceArea[] ?? []
       : (!req.body.serviceAreaItems ? [] : Array(req.body.serviceAreaItems))) : [];
 
     if (newCourtName === '' || lon === '' || lat === '') {
@@ -96,7 +98,7 @@ export class NewCourtController {
       'service_areas': serviceAreas
     } as NewCourt)
       .then((court: Court) => this.get(req, res, true, true, false, false,
-        '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, []))
+        '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, serviceAreas))
       .catch(async (reason: AxiosError) => {
         // Check if we have a duplicated court response (409), cater error response accordingly
         await this.get(req, res, false, true, false, false,
