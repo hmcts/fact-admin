@@ -29,7 +29,6 @@ export class NewCourtController {
           }
           // Base selection on whether to hide the service area list or not
           if ($(serviceCentreSelection).val() === 'false') {
-            console.log('is false');
             $(serviceAreasContainer).hide();
           }
           $(serviceCentre).on('change', () => {
