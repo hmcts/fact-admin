@@ -26,6 +26,5 @@ export interface SearchUserPageData {
 
 export interface EditUserPageData {
   errors: Error[],
-  updated: Boolean,
   user: User
 }

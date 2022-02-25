@@ -125,9 +125,11 @@ export class EditUserController {
       e.preventDefault();
       const userId = $('#user-id').val();
       const userRole = $('#user-role').val();
-      console.log(userRole);
       $.ajax({
-        url: `/users/delete/user/${userId}/${userRole}`,
+        url: `/users/delete/user/${userId}`,
+        data: {
+          'userRole': userRole
+        },
         method: 'delete'
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);

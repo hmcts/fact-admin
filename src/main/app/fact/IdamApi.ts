@@ -1,5 +1,5 @@
 import config from 'config';
-import {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 import {User} from '../../types/User';
 import autobind from 'autobind-decorator';
@@ -63,7 +63,7 @@ export class IdamApi {
       });
   }
 
-  public grantUserRole(userId: string, role: object, accessToken: string): Promise<AxiosResponse<any>>{
+  public grantUserRole(userId: string, role: object, accessToken: string): Promise<User>{
     return this.axios
       .post(`${this.updateUserDetailsUserURL}` + userId + '/roles/',  role,{
         headers: {
@@ -77,7 +77,7 @@ export class IdamApi {
       });
   }
 
-  public removeUserRole(userId: string, roleName: string, accessToken: string): Promise<AxiosResponse<any>>{
+  public removeUserRole(userId: string, roleName: string, accessToken: string): Promise<User>{
     return this.axios
       .delete(`${this.updateUserDetailsUserURL}` + userId + '/roles/' + roleName,{
         headers: {
