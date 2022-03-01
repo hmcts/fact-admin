@@ -52,7 +52,10 @@
     ]
   }) }}
 
-  {% set disableAccessScheme = generalInfo.in_person == false %}
+  <input name='in_person' type='hidden' value='{{generalInfo.in_person}}'></input>
+  <input name='service_centre' type='hidden' value='{{generalInfo.service_centre}}'></input>
+
+  {% set disableAccessScheme = generalInfo.service_centre == true %}
   {{ govukCheckboxes({
     name: "access_scheme",
     items: [
@@ -64,6 +67,34 @@
       }
     ]
   }) }}
+{% endif %}
+
+{% if generalInfo.service_centre %}
+
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--m" for="sc-intro-paragraph">
+            Intro Paragraph
+        </label>
+    </h2>
+    <span class="govuk-caption-m govuk-!-margin-bottom-3">
+      Use this field to overwrite the default text for the first paragraph found on service centres through
+      the public facing service. This is limited to 250 characters including spaces.
+    </span>
+    <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
+              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph }}</textarea>
+  </div>
+
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--m" for="sc-intro-paragraph-cy">
+            Intro Paragraph (Welsh)
+        </label>
+    </h2>
+    <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
+              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
+  </div>
+
 {% endif %}
 
 <div class="govuk-form-group">

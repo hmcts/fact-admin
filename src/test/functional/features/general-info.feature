@@ -75,3 +75,18 @@ Feature: General Info
     Then I enter "Amersham Law Courts" in the Name textbox
     And I click the general info save button
     Then The error message displays for general info "All names must be unique. Court already exists with name: Amersham Law Courts"
+
+  Scenario: Adding intro paragraph welsh and English
+    When I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    When I select Include closed courts
+    Then I can view the courts or tribunals in a list format
+    When I click edit next to court with "north-west-regional-divorce-centre"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    When I add an "intro paragraph test" in the rich editor field provided "#sc_intro_paragraph"
+    When I add an "intro paragraph welsh test" in the rich editor field provided "#sc_intro_paragraph_cy"
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"
+    

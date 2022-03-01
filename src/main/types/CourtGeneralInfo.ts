@@ -7,6 +7,9 @@ export interface CourtGeneralInfo {
   alert: string;
   alert_cy: string;
   in_person: boolean;
+  service_centre: boolean;
+  sc_intro_paragraph: string;
+  sc_intro_paragraph_cy: string;
 }
 
 export interface CourtGeneralInfoData {
