@@ -39,13 +39,13 @@ Feature: create admin user
 
   Scenario: Updating admin user role to super-admin
     When I click on edit user
-    When I enter User Email "hmcts.fact@gmail.com"
+    When I enter User Email "test@fact.com"
     Then I click search user button
     Then I select the user role as fact-super-admin
     Then I click edit user button
-    Then I can see user details updated message "User details updated"
-    When I enter User Email "hmcts.fact@gmail.com"
+    Then I can see user details updated message "User details successfully updated"
+    When I enter User Email "test@fact.com"
     Then I click search user button
     Then I select the user role as fact-admin
     Then I click edit user button
-    Then I can see user details updated message "User details updated"
+    Then I can see user details updated message "User details successfully updated"
