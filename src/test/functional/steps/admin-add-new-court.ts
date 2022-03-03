@@ -65,3 +65,16 @@ Then('The error message displays for invalid name {string}', async (errMessage: 
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal('Error:\n' + errMessage);
 });
+
+Then('The error message displays for not adding service area {string}', async (errMessage: string) => {
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > ul > li';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
+Then('I select no for the court be service centre', async () => {
+  const selector = '#serviceCentre-2';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+});
