@@ -18,6 +18,7 @@ import {AdditionalLink} from '../../types/AdditionalLink';
 import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
+import {ApplicationProgression} from '../../types/ApplicationProgression';
 
 export class FactApi {
 
@@ -214,6 +215,15 @@ export class FactApi {
   public getEmails(slug: string): Promise<Email[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/emails`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });  }
+
+  public getApplicationUpdates(slug: string): Promise<ApplicationProgression[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/application-progression`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
@@ -671,3 +681,4 @@ interface UpdateCourtsInfoRequest {
   'info_cy': string,
   'courts': string[]
 }
+

@@ -1,0 +1,39 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+<h2 class="govuk-heading-l">Application Progression</h2>
+
+<div class="govuk-grid-row" id="applicationUpdates">
+  <h4 class="govuk-heading-m">Get an update on your application</h4>
+  <dl class="govuk-summary-list">
+    {% for applicationUpdate in application_progression %}
+      <div class="govuk-summary-list__row">
+        <dd class="govuk-summary-list__key">
+          {% if applicationUpdate.email %}
+            {{ applicationUpdate.type }}
+            <a class="govuk-link" href="mailto:{{ applicationUpdate.email }}">{{ applicationUpdate.email }}</a>
+          {% endif %}
+        </dd>
+        <dd class="govuk-summary-list__value">
+          {% if applicationUpdate.external_link %}
+            {{ applicationUpdate.type }}
+            <a class="govuk-link" href="{{ applicationUpdate.external_link }}">{{ applicationUpdate.external_link_description }}</a>
+          {% endif %}
+        </dd>
+      </div>
+    {% endfor %}
+  </dl>
+</div>
+
+
+
+
+{{ govukButton({
+  text: "Save",
+  name: "saveEmail"
+}) }}
