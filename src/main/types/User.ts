@@ -1,8 +1,8 @@
 import {Element} from "./Element";
 export interface User extends Element{
   email: string,
-  firstName: string,
-  lastName: string,
+  forename: string,
+  surname: string,
   roles: string[],
 }
 

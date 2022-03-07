@@ -89,7 +89,7 @@ export class InviteUserController {
 
   private getErrorMessages(account: User): {text: string }[] {
     const errorMsg: {text: string }[] = [];
-    if (account.email === ''|| account.firstName === '' || account.lastName === '' || !account.roles ) {
+    if (account.email === ''|| account.forename === '' || account.surname === '' || !account.roles ) {
       errorMsg.push({ text: this.emptyErrorMsg});
     }
 

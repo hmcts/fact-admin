@@ -71,15 +71,23 @@ export class EditUserController {
     user = await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token);
     const roleToRemove = this.getUserRole(user) === '' ? '' : this.getUserRoleToRemove(role[0]['name']);
 
-    await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
-      .then(() => {
-        if (role[0]['name'] === this.getUserRole(user)) {
-          return this.renderSearchUser(req, res, true, false, '', []);
-        } else this.updateUserRole(req, res, userId, role, roleToRemove);
-      })
-      .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req,res, false, false, '', [{ text: this.editErrorMsg }]);
-      });
+    if (user.forename !== forename || user.surname !== surname) {
+      await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
+        .then(() => {
+          if (role[0]['name'] === this.getUserRole(user)) {
+            return this.renderSearchUser(req, res, true, false, '', []);
+          } else this.updateUserRole(req, res, userId, role, roleToRemove);
+        })
+        .catch(async (reason: AxiosError) => {
+          return await this.renderSearchUser(req,res, false, false, '', [{ text: this.editErrorMsg }]);
+        });
+    } else if (role[0]['name'] !== this.getUserRole(user)) {
+      await this.updateUserRole(req, res, userId, role, roleToRemove)
+        .catch(async (reason: AxiosError) => {
+          return await this.renderSearchUser(req,res, false, false, '', [{ text: this.editErrorMsg }]);
+        });
+    } else await this.renderSearchUser(req, res, false, false, '', []);
+
   }
 
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
