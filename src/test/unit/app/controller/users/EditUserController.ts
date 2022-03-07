@@ -14,14 +14,14 @@ describe('EditUserController', () => {
     removeUserRole(userId: string, roleName: string, accessToken: string): Promise<User>
   };
 
-  const user: User = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
-  const updatedUserName: User = { email: 'name@test.com', lastName: 'newLastName', firstName: 'newFirstName', roles: ['fact-admin']};
-  const updatedUserRole: User = { email: 'name@test.com', lastName: 'newLastName', firstName: 'newFirstName', roles: ['fact-super-admin']};
-  const updatedUserRemovedRole: User = { email: 'name@test.com', lastName: 'newLastName', firstName: 'newFirstName', roles: []};
+  const user: User = { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']};
+  const updatedUserName: User = { email: 'name@test.com', surname: 'newSurname', forename: 'newForename', roles: ['fact-admin']};
+  const updatedUserRole: User = { email: 'name@test.com', surname: 'newSurname', forename: 'newForename', roles: ['fact-super-admin']};
+  const updatedUserRemovedRole: User = { email: 'name@test.com', surname: 'newSurname', forename: 'newForename', roles: []};
   const email = 'name@test.com';
   const userId = 'testId';
-  const updatedFirstName = 'newFirstName';
-  const updatedLastName = 'newLastName';
+  const updatedForename = 'newForename';
+  const updatedSurname = 'newSurname';
   const role = [{'name': 'fact-admin'}];
   const updatedRole = [{'name': 'fact-super-admin'}];
 
@@ -61,7 +61,7 @@ describe('EditUserController', () => {
     await controller.renderSearchUser(req, res);
 
     const pageData: SearchUserPageData = {
-      errors: Array.of(),
+      errors: [],
       userEmail: '',
       updated: false,
       userRolesRemoved: false
@@ -75,7 +75,7 @@ describe('EditUserController', () => {
     await controller.renderEditUser(req, res);
 
     const pageData: EditUserPageData = {
-      errors: Array.of(),
+      errors: [],
       user: null
     };
 
@@ -157,8 +157,8 @@ describe('EditUserController', () => {
     req.body = {
       userId: userId,
       userEmail: email,
-      forename: updatedFirstName,
-      surname: updatedLastName,
+      forename: updatedForename,
+      surname: updatedSurname,
       role: role
     };
 
@@ -183,8 +183,8 @@ describe('EditUserController', () => {
     req.body = {
       userId: userId,
       userEmail: email,
-      forename: updatedFirstName,
-      surname: updatedLastName,
+      forename: updatedForename,
+      surname: updatedSurname,
       role: updatedRole
     };
 
@@ -211,8 +211,8 @@ describe('EditUserController', () => {
     req.body = {
       userId: userId,
       userEmail: email,
-      forename: updatedFirstName,
-      surname: updatedLastName,
+      forename: updatedForename,
+      surname: updatedSurname,
       role: updatedRole
     };
 
