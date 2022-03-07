@@ -24,7 +24,7 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
 
     server.get('/login', (req, res) => {
-      res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
+      res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri));
     });
 
     server.get('/oauth2/callback', async (req: Request, res: Response) => {
