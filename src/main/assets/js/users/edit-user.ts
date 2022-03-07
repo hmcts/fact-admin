@@ -65,7 +65,7 @@ export class EditUserController {
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
       }).fail(response =>
-        AjaxErrorHandler.handleError(response, 'PUT cases heard failed.'));
+        AjaxErrorHandler.handleError(response, 'GET user failed.'));
     });
   }
 
