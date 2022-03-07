@@ -77,3 +77,6 @@ Feature: create admin user
     Then I click remove role button
     When I click on confirm remove role button
     Then I can see user details updated message "User roles successfully removed"
+    When I enter User Email "test@fact.com"
+    Then I click search user button
+    Then I make sure both of the roles are unchecked for test user

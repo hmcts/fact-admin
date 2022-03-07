@@ -137,3 +137,12 @@ When('I enter First Name {string} to update user', async (lastName: string) => {
   await I.clearField(selector);
   await populateField(selector, lastName);
 });
+
+Then('I make sure both of the roles are unchecked for test user', async () => {
+  const selectorAdmin = '#userRole';
+  const selectorSuper = '#userRole-2';
+  expect(await I.checkElement(selectorAdmin)).equal(true);
+  expect(await I.checkElement(selectorSuper)).equal(true);
+  expect(await I.isElementChecked(selectorAdmin)).equal(false) && expect(await I.isElementChecked(selectorSuper)).equal(false);
+});
+
