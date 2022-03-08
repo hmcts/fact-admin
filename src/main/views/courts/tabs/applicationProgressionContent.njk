@@ -8,27 +8,97 @@
 
 <h2 class="govuk-heading-l">Application Progression</h2>
 
-<div class="govuk-grid-row" id="applicationUpdates">
-  <h4 class="govuk-heading-m">Get an update on your application</h4>
-  <dl class="govuk-summary-list">
-    {% for applicationUpdate in application_progression %}
-      <div class="govuk-summary-list__row">
-        <dd class="govuk-summary-list__key">
-          {% if applicationUpdate.email %}
-            {{ applicationUpdate.type }}
-            <a class="govuk-link" href="mailto:{{ applicationUpdate.email }}">{{ applicationUpdate.email }}</a>
-          {% endif %}
-        </dd>
-        <dd class="govuk-summary-list__value">
-          {% if applicationUpdate.external_link %}
-            {{ applicationUpdate.type }}
-            <a class="govuk-link" href="{{ applicationUpdate.external_link }}">{{ applicationUpdate.external_link_description }}</a>
-          {% endif %}
-        </dd>
+{% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %}
+
+{% for applicationUpdate in application_progression %}
+
+  {% set isNew = (applicationUpdate.isNew === true) or (applicationUpdate.isNew === "true") %}
+
+  {% if isNew === true %}
+    <h3 class="govuk-heading-s">Add New Email Address</h3>
+  {% endif %}
+
+  {{ govukInput({
+    label: {
+      text: "Type"
+    },
+    classes: "govuk-input--width-20",
+    id: "type-" + loop.index,
+    name: "applicationUpdate[" + loop.index +"][type]",
+    value: applicationUpdate.type
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Email"
+    },
+    classes: "govuk-input--width-20",
+    id: "email-" + loop.index,
+    name: "applicationUpdate[" + loop.index +"][email]",
+    value: applicationUpdate.email
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link"
+    },
+    classes: "govuk-input--width-20",
+    id: "external_link-" + loop.index,
+    name: "applicationUpdate[" + loop.index +"][external_link]",
+    value: applicationUpdate.external_link
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link Description"
+    },
+    classes: "govuk-input--width-20",
+    id: "external_link_description-" + loop.index,
+    name: "applicationUpdate[" + loop.index +"][external_link_description]",
+    value: applicationUpdate.external_link_description
+  }) }}
+
+  <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-quarters">
+      {% if isNew === false %}
+        {{ govukButton({
+          text: "Remove",
+          name: "deleteEmail",
+          type: "button",
+          classes: "govuk-button--warning deleteEmail"
+        }) }}
+      {% else %}
+        {{ govukButton({
+          text: "Clear",
+          name: "clearEmail",
+          type: "button",
+          classes: "govuk-button--secondary clearEmail"
+        }) }}
+      {% endif %}
       </div>
-    {% endfor %}
-  </dl>
-</div>
+      <div class="govuk-grid-column-one-quarter govuk-button-group">
+        {{ govukButton({
+          html: upArrowHtml,
+          name: "moveUp",
+          type: "button",
+          classes: "govuk-button--secondary move-up",
+          attributes: { "aria-label": "move up" }
+        }) }}
+        {{ govukButton({
+          html: downArrowHtml,
+          name: "moveDown",
+          type: "button",
+          classes: "govuk-button--secondary move-down",
+          attributes: { "aria-label": "move down" }
+        }) }}
+      </div>
+  </div>
+  <hr/>
+{% endfor %}
+
+
+
 
 
 
