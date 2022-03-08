@@ -72,7 +72,6 @@ export class EditUserController {
   private setUpUpdateEventHandler(): void {
     $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
-      const userId = $('#user-id').val();
       const userEmail = $('#user-email').val();
       const forename = $('#forename').val();
       const surname = $('#surname').val();
@@ -81,7 +80,7 @@ export class EditUserController {
         url: '/users/update/user',
         method: 'patch',
         data: {
-          userId: userId,
+          // userId: userId,
           userEmail: userEmail,
           forename: forename,
           surname: surname,
@@ -101,7 +100,6 @@ export class EditUserController {
   private setUpDeleteEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteUserButtonId}`, e => {
       e.preventDefault();
-      const userId = $('#user-id').val();
       const userEmail = $('#user-email').val();
       const role = this.getUserRole();
       $.ajax({
@@ -109,7 +107,7 @@ export class EditUserController {
         method: 'get',
         data: {
           'userEmail': userEmail,
-          'userId': userId,
+          // 'userId': userId,
           'userRole': role
         }
       }).done(res => {
@@ -123,12 +121,13 @@ export class EditUserController {
   private setUpDeleteConfirmEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteConfirmBtnId}`, e => {
       e.preventDefault();
-      const userId = $('#user-id').val();
       const userRole = $('#user-role').val();
+      const userEmail = $('#user-email').val();
       $.ajax({
-        url: `/users/delete/user/${userId}`,
+        url: '/users/delete/user/',
         data: {
-          'userRole': userRole
+          'userRole': userRole,
+          'userEmail': userEmail
         },
         method: 'delete'
       }).done(res => {

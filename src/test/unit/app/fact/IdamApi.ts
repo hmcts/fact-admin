@@ -18,7 +18,7 @@ describe('IdamApi', () => {
 
 
   test('Should post register user request', async () => {
-    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']}};
 
     const mockAxios = { post: async () => result } as never;
     const api = new IdamApi(mockAxios, mockLogger);
@@ -26,7 +26,7 @@ describe('IdamApi', () => {
   });
 
   test('Should log error and reject promise for failed register user request', async () => {
-    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']}};
 
     const mockAxios = { post: async () => { throw mockError; }} as any;
     const api = new IdamApi(mockAxios, mockLogger);
@@ -35,7 +35,7 @@ describe('IdamApi', () => {
   });
 
   test('Should get user by email', async () => {
-    const result: { data: User[] } = { data: [{ email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}]};
+    const result: { data: User[] } = { data: [{ email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']}]};
 
     const mockAxios = { get: async () => result } as any;
     const api = new IdamApi(mockAxios, mockLogger);
@@ -52,11 +52,11 @@ describe('IdamApi', () => {
   });
 
   test('Should update user details', async () => {
-    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']}};
 
     const mockAxios = { patch: async () => result } as any;
     const api = new IdamApi(mockAxios, mockLogger);
-    await expect(api.updateUserDetails('userId', 'firstName', 'lastname', 'accessToken')).resolves.toEqual(result.data);
+    await expect(api.updateUserDetails('userId', 'forename', 'surname', 'accessToken')).resolves.toEqual(result.data);
   });
 
   test('Should log error and reject promise for failed update user details request', async () => {
@@ -64,11 +64,11 @@ describe('IdamApi', () => {
     const mockAxios = { patch: async () => { throw mockError; }} as any;
     const api = new IdamApi(mockAxios, mockLogger);
 
-    await expect(api.updateUserDetails('userId', 'firstName', 'lastname', 'accessToken')).rejects.toBe(mockError);
+    await expect(api.updateUserDetails('userId', 'forename', 'surname', 'accessToken')).rejects.toBe(mockError);
   });
 
   test('Should grant user role', async () => {
-    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}};
+    const result: { data: User } = { data: { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']}};
 
     const mockAxios = { post: async () => result } as any;
     const api = new IdamApi(mockAxios, mockLogger);
@@ -84,7 +84,7 @@ describe('IdamApi', () => {
   });
 
   test('Should delete user role', async () => {
-    const result: { data: User } = { data: { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: []}};
+    const result: { data: User } = { data: { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: []}};
 
     const mockAxios = { delete: async () => result } as any;
     const api = new IdamApi(mockAxios, mockLogger);

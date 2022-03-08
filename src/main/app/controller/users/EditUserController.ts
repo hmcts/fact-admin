@@ -63,7 +63,6 @@ export class EditUserController {
     errors: { text: string }[] = [],
     user: User = null): Promise<void> {
 
-    const userId = req.body.userId;
     const userEmail = req.body.userEmail;
     const forename = req.body.forename;
     const surname = req.body.surname;
@@ -72,17 +71,17 @@ export class EditUserController {
     const roleToRemove = this.getUserRole(user) === '' ? '' : this.getUserRoleToRemove(role[0]['name']);
 
     if (user.forename !== forename || user.surname !== surname) {
-      await req.scope.cradle.idamApi.updateUserDetails(userId, forename, surname, req.session.user.access_token)
+      await req.scope.cradle.idamApi.updateUserDetails(user.id, forename, surname, req.session.user.access_token)
         .then(() => {
           if (role[0]['name'] === this.getUserRole(user)) {
             return this.renderSearchUser(req, res, true, false, '', []);
-          } else this.updateUserRole(req, res, userId, role, roleToRemove);
+          } else this.updateUserRole(req, res, user.id, role, roleToRemove);
         })
         .catch(async (reason: AxiosError) => {
           return await this.renderSearchUser(req,res, false, false, '', [{ text: this.editErrorMsg }]);
         });
     } else if (role[0]['name'] !== this.getUserRole(user)) {
-      await this.updateUserRole(req, res, userId, role, roleToRemove)
+      await this.updateUserRole(req, res, user.id, role, roleToRemove)
         .catch(async (reason: AxiosError) => {
           return await this.renderSearchUser(req,res, false, false, '', [{ text: this.editErrorMsg }]);
         });
@@ -91,8 +90,9 @@ export class EditUserController {
   }
 
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
+    const user = await req.scope.cradle.idamApi.getUserByEmail(req.query.userEmail, req.session.user.access_token);
     const pageData = {
-      userId: req.query.userId,
+      userId: user.id,
       userEmail: req.query.userEmail,
       userRole: req.query.userRole
     };
@@ -100,9 +100,9 @@ export class EditUserController {
   }
 
   public async removeUserRole(req: AuthedRequest, res: Response): Promise<void> {
-    const userId = req.params.userId;
+    const user = await req.scope.cradle.idamApi.getUserByEmail(req.body.userEmail, req.session.user.access_token);
     const roleToRemove = req.body.userRole;
-    await req.scope.cradle.idamApi.removeUserRole(userId, roleToRemove, req.session.user.access_token)
+    await req.scope.cradle.idamApi.removeUserRole(user.id, roleToRemove, req.session.user.access_token)
       .then(() => {
         this.renderSearchUser(req, res, false, true, '', []);
       })

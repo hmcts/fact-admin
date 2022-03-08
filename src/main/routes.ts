@@ -27,7 +27,7 @@ export default function(app: Application): void {
   app.get('/users/search/user', app.locals.container.cradle.editUserController.getUser);
   app.patch('/users/update/user',isSuperAdmin, app.locals.container.cradle.editUserController.patchUser);
   app.get('/users/confirm-delete/user/', app.locals.container.cradle.editUserController.getDeleteConfirmation);
-  app.delete('/users/delete/user/:userId/',isSuperAdmin, app.locals.container.cradle.editUserController.removeUserRole);
+  app.delete('/users/delete/user/',isSuperAdmin, app.locals.container.cradle.editUserController.removeUserRole);
 
   // Edit court
   app.get('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
