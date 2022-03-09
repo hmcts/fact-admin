@@ -127,13 +127,13 @@ When('I click on confirm remove role button', async () => {
 });
 
 When('I enter Last Name {string} to update user', async (lastName: string) => {
-  const selector = '#surname';
+  const selector = '#edit-surname';
   await I.clearField(selector);
   await populateField(selector, lastName);
 });
 
 When('I enter First Name {string} to update user', async (lastName: string) => {
-  const selector = '#forename';
+  const selector = '#edit-forename';
   await I.clearField(selector);
   await populateField(selector, lastName);
 });

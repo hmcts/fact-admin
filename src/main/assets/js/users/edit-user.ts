@@ -73,14 +73,13 @@ export class EditUserController {
     $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
       const userEmail = $('#user-email').val();
-      const forename = $('#forename').val();
-      const surname = $('#surname').val();
+      const forename = $('#edit-forename').val();
+      const surname = $('#edit-surname').val();
       const role = this.getUserRole();
       $.ajax({
         url: '/users/update/user',
         method: 'patch',
         data: {
-          // userId: userId,
           userEmail: userEmail,
           forename: forename,
           surname: surname,
@@ -107,7 +106,6 @@ export class EditUserController {
         method: 'get',
         data: {
           'userEmail': userEmail,
-          // 'userId': userId,
           'userRole': role
         }
       }).done(res => {
