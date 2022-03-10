@@ -26,13 +26,13 @@ When('I enter Email {string}', async (email: string) => {
 });
 
 When('I enter Last Name {string} to create new user', async (lastName: string) => {
-  const selector = '#lastName';
+  const selector = '#surname';
   await I.clearField(selector);
   await populateField(selector, lastName);
 });
 
 When('I enter First Name {string} to create new user', async (firstName: string) => {
-  const selector = '#firstName';
+  const selector = '#forename';
   await I.clearField(selector);
   await populateField(selector, firstName);
 });
