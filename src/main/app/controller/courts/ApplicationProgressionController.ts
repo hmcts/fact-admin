@@ -36,12 +36,9 @@ export class ApplicationProgressionController {
         .catch(() => errorMsg.push(this.getEmailsErrorMsg));
     }
 
-    /*
     if (!applicationUpdates?.some(e => e.isNew === true)) {
-      this.addEmptyFormsForNewEntries(emails);
+      this.addEmptyFormsForNewEntries(applicationUpdates);
     }
-
-     */
 
     const errors: Error[] = [];
     for (const msg of errorMsg) {
@@ -58,6 +55,15 @@ export class ApplicationProgressionController {
 
     res.render('courts/tabs/applicationProgressionContent', pageData);
   }
+
+  private addEmptyFormsForNewEntries(applicationUpdates: ApplicationProgression[], numberOfForms = 1): void {
+    if (applicationUpdates) {
+      for (let i = 0; i < numberOfForms; i++) {
+        applicationUpdates.push({ type: null, email: null, external_link: null, external_link_description: null, isNew: true });
+      }
+    }
+  }
+
 }
 /*
 
@@ -65,32 +71,10 @@ export class ApplicationProgressionController {
 
 
 
-    let types: EmailType[] = [];
-    await req.scope.cradle.api.getEmailTypes()
-      .then((value: EmailType[]) => types = value)
-      .catch(() => errorMsg.push(this.getEmailTypesErrorMsg));
-
-    if (!emails?.some(e => e.isNew === true)) {
-      this.addEmptyFormsForNewEntries(emails);
-    }
 
 
 
-    const errors: Error[] = [];
-    for (const msg of errorMsg) {
-      errors.push({text: msg});
-    }
 
-    const pageData: ApplicationProgression = {
-      type: 'type',
-      email: ,
-      external_link: external_links,
-      external_link_description: external_link_description
-    };
-
-
-
-  }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let emails = req.body.emails as Email[] ?? [];
@@ -118,13 +102,7 @@ export class ApplicationProgressionController {
       {value: ott.id, text: ott.description, selected: false}));
   }
 
-  private addEmptyFormsForNewEntries(emails: Email[], numberOfForms = 1): void {
-    if (emails) {
-      for (let i = 0; i < numberOfForms; i++) {
-        emails.push({ adminEmailTypeId: null, address: null, explanation: null, explanationCy: null, isNew: true });
-      }
-    }
-  }
+
 
   private emailEntryIsEmpty(email: Email): boolean {
     return (!email.adminEmailTypeId && !email.address?.trim() && !email.explanation?.trim() && !email.explanationCy?.trim());

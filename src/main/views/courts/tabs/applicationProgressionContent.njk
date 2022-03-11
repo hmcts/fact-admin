@@ -15,8 +15,20 @@
 
   {% set isNew = (applicationUpdate.isNew === true) or (applicationUpdate.isNew === "true") %}
 
+  {% set descriptionError = false %}
+  {% if applicationUpdate.type === '' %}
+    {% set descriptionError = { text: 'Type is required' } %}
+  {% endif %}
+
+  {% set emailsError = false %}
+  {% if email.isDuplicated === true %}
+    {% set emailsError = { text: 'Duplicated address' } %}
+  {% elif email.isInvalidFormat === true %}
+    {% set emailsError = { text: 'Invalid email address format' } %}
+  {% endif %}
+
   {% if isNew === true %}
-    <h3 class="govuk-heading-s">Add New Email Address</h3>
+    <h3 class="govuk-heading-s">Add New Application Progression</h3>
   {% endif %}
 
   {{ govukInput({
@@ -60,7 +72,8 @@
   }) }}
 
   <div class="govuk-grid-row">
-      <div class="govuk-grid-column-three-quarters">
+
+    <div class="govuk-grid-column-three-quarters">
       {% if isNew === false %}
         {{ govukButton({
           text: "Remove",
@@ -76,25 +89,29 @@
           classes: "govuk-button--secondary clearEmail"
         }) }}
       {% endif %}
-      </div>
-      <div class="govuk-grid-column-one-quarter govuk-button-group">
-        {{ govukButton({
-          html: upArrowHtml,
-          name: "moveUp",
-          type: "button",
-          classes: "govuk-button--secondary move-up",
-          attributes: { "aria-label": "move up" }
-        }) }}
-        {{ govukButton({
-          html: downArrowHtml,
-          name: "moveDown",
-          type: "button",
-          classes: "govuk-button--secondary move-down",
-          attributes: { "aria-label": "move down" }
-        }) }}
-      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+    </div>
+
   </div>
-  <hr/>
+
+<hr/>
+
 {% endfor %}
 
 
