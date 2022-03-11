@@ -23,14 +23,14 @@
     {% set emailsError = { text: 'Invalid email address format' } %}
   {% endif %}
 
-{% set firstNameError = false %}
-  {% if user.firstName === '' %}
-   {% set firstNameError = { text: 'First Name is required' } %}
+{% set forenameError = false %}
+  {% if user.forename === '' %}
+   {% set forenameError = { text: 'First Name is required' } %}
   {% endif %}
 
- {% set lastNameError = false %}
-   {% if user.lastName === '' %}
-    {% set lastNameError = { text: 'Last Name is required' } %}
+ {% set surnameError = false %}
+   {% if user.surname === '' %}
+    {% set surnameError = { text: 'Last Name is required' } %}
   {% endif %}
 
  {% set rolesError = false %}
@@ -68,10 +68,10 @@
       text: "First Name"
     },
     classes: "govuk-input--width-20",
-    id: "firstName",
-    name: "user[firstName]",
-    value: user.firstName,
-    errorMessage: firstNameError
+    id: "forename",
+    name: "user[forename]",
+    value: user.forename,
+    errorMessage: forenameError
   }) }}
 
 {{ govukInput({
@@ -79,10 +79,10 @@
       text: "Last Name"
     },
     classes: "govuk-input--width-20",
-    id: "lastName",
-    name: "user[lastName]",
-    value: user.lastName,
-    errorMessage: lastNameError
+    id: "surname",
+    name: "user[surname]",
+    value: user.surname,
+    errorMessage: surnameError
   }) }}
 
 

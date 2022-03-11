@@ -20,7 +20,7 @@ describe('InviteUserController', () => {
   CSRF.verify = jest.fn().mockReturnValue(true);
 
   beforeEach(() => {
-    user = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
+    user = { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']};
 
     mockApi = {
       registerUser: (user: User, accessToken: string) => Promise.resolve(user)
@@ -53,14 +53,14 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'user': { email: '', lastName: '', firstName: '', roles: []}
+      'user': { email: '', surname: '', forename: '', roles: []}
     };
     await controller.postUserInvite(req, res);
 
     const pageData: AddUserPageData = {
       errors: [{ text: controller.emptyErrorMsg }],
       updated: false,
-      user : ({ email: '', lastName: '', firstName: '', roles: []})
+      user : ({ email: '', surname: '', forename: '', roles: []})
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
@@ -70,14 +70,14 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'user': { email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}
+      'user': { email: 'test@', surname: 'surname', forename: 'forename', roles: ['fact-admin']}
     };
     await controller.postUserInvite(req, res);
 
     const pageData: AddUserPageData = {
       errors: [{ text: controller.getEmailAddressFormatErrorMsg }],
       updated: false,
-      user : ({ email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin'], isInvalidFormat: true})
+      user : ({ email: 'test@', surname: 'surname', forename: 'forename', roles: ['fact-admin'], isInvalidFormat: true})
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);

@@ -29,6 +29,7 @@ import {OpeningTypesController} from './opening-types-list';
 import {AdditionalLinksController} from './additionalLinks';
 import {InviteUserController} from './users/invite-user';
 import {NewCourtController} from './add-new-court';
+import {EditUserController} from './users/edit-user';
 import {SpoeController} from './spoe';
 
 const {initAll} = require('govuk-frontend');
@@ -48,6 +49,7 @@ new CourtsController();
 new AddressesController();
 new AdditionalLinksController();
 new InviteUserController();
+new EditUserController();
 
 new LocalAuthoritiesListController();
 new AreasOfLawListController();
