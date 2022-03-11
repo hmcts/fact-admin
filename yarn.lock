@@ -6973,20 +6973,18 @@ latest-version@^5.0.0:
   dependencies:
     package-json "^6.3.0"
 
-launchdarkly-eventsource@1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/launchdarkly-eventsource/-/launchdarkly-eventsource-1.4.2.tgz#ee4bc8df654d203d1ef5a06ad47fb6544f0e524b"
-  integrity sha512-L9wjaQX9x9f11YInggl/fgXkMmr7A6T38lATjcax9lys2YuV0O+km98SpYgcW0Y4j53pQbtGTO8rbfytxhh/nA==
-  dependencies:
-    original "^1.0.2"
+launchdarkly-eventsource@1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/launchdarkly-eventsource/-/launchdarkly-eventsource-1.4.4.tgz#fa595af8602e487c61520787170376c6a1104459"
+  integrity sha512-GL+r2Y3WccJlhFyL2buNKel+9VaMnYpbE/FfCkOST5jSNSFodahlxtGyrE8o7R+Qhobyq0Ree4a7iafJDQi9VQ==
 
-launchdarkly-node-server-sdk@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/launchdarkly-node-server-sdk/-/launchdarkly-node-server-sdk-6.3.0.tgz#0c2f596c3ebd4a83a4701719062353c13cc392f1"
-  integrity sha512-HLEQLMNV6G7NgLqeXGLmVN4Fq/BWvfXg+jpdnPawBe+Pwnr/ruygJPVGTbqR/F6fid5vjnjpJQ4V7K1Pd8lb7g==
+launchdarkly-node-server-sdk@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/launchdarkly-node-server-sdk/-/launchdarkly-node-server-sdk-6.3.1.tgz#f7aa35f2b3aca31ec38b4144ec73d005bd170837"
+  integrity sha512-l3t7rnPXE/dcE13g1+nY2WqKRiS1QxXYNKEyV5USjNuVWD4Hr7tLrFprWp1i7k1a2Fm6lLamI1l6llxoXhcooA==
   dependencies:
     async "^3.1.0"
-    launchdarkly-eventsource "1.4.2"
+    launchdarkly-eventsource "1.4.4"
     lru-cache "^6.0.0"
     node-cache "^5.1.0"
     semver "^7.3.0"
@@ -7915,13 +7913,6 @@ optionator@^0.8.1, optionator@^0.8.3:
     type-check "~0.3.2"
     word-wrap "~1.2.3"
 
-original@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/original/-/original-1.0.2.tgz"
-  integrity sha512-hyBVl6iqqUOJ8FqRe+l/gS8H+kKYjrEndd5Pm1MfBtsEKA038HkkdbAl/72EAXGyonD/PFsvmVG+EvcIpliMBg==
-  dependencies:
-    url-parse "^1.4.3"
-
 os-homedir@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/os-homedir/-/os-homedir-1.0.2.tgz"
@@ -8434,11 +8425,6 @@ qs@~6.5.2:
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-querystringify@^2.1.1:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz"
-  integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
-
 quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
@@ -8784,11 +8770,6 @@ require-uncached@^1.0.2:
   dependencies:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
-
-requires-port@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz"
-  integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
 resolve-cwd@^3.0.0:
   version "3.0.0"
@@ -10446,14 +10427,6 @@ url-parse-lax@^3.0.0:
   integrity sha1-FrXK/Afb42dsGxmZF3gj1lA6yww=
   dependencies:
     prepend-http "^2.0.0"
-
-url-parse@^1.4.3:
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.9.tgz#05ff26484a0b5e4040ac64dcee4177223d74675e"
-  integrity sha512-HpOvhKBvre8wYez+QhHcYiVvVmeF6DVnuSOOPhe3cTum3BnqHhvKaZm8FU5yTiOu/Jut2ZpB2rA/SbBA1JIGlQ==
-  dependencies:
-    querystringify "^2.1.1"
-    requires-port "^1.0.0"
 
 use@^3.1.0:
   version "3.1.1"
