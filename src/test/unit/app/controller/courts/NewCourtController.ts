@@ -3,11 +3,15 @@ import {NewCourtController} from '../../../../../main/app/controller/courts/NewC
 import {CSRF} from '../../../../../main/modules/csrf';
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
+import {ServiceArea} from '../../../../../main/types/ServiceArea';
+import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
+import {ServiceAreaCourt} from '../../../../../main/types/ServiceAreaCourt';
 
 describe('NewCourtController', () => {
 
   let mockApi: {
-    addCourt: () => Promise<Court>
+    addCourt: () => Promise<Court>,
+    getAllServiceAreas: () => Promise<ServiceArea[]>
   };
 
   const controller = new NewCourtController();
@@ -16,11 +20,45 @@ describe('NewCourtController', () => {
     // eslint-disable-next-line @typescript-eslint/camelcase
     urgent_message: '', urgent_message_cy: ''
   };
+
+  const getAreaOfLaw: (id: number, name: string) => AreaOfLaw =
+    (id: number, name: string) => { return { id: id, name: name, 'display_name': null, 'display_name_cy': null, 'display_external_link': null,
+      'external_link': null, 'external_link_desc': null, 'external_link_desc_cy': null, 'alt_name': null, 'alt_name_cy': null }; };
+
+  const getServiceAreaCourt: (slug: string, catchmentType: string, courtName: string) => ServiceAreaCourt =
+    (slug: string, catchmentType: string, courtName: string) => { return { 'slug': slug, 'catchmentType': catchmentType, 'courtName': courtName}; };
+
+  const getAllServiceAreaCourts: ServiceAreaCourt[] = [
+    getServiceAreaCourt('a-test-court', 'national', 'a test court'),
+    getServiceAreaCourt('a-test-court-2', 'national', 'a test court 2'),
+    getServiceAreaCourt('a-test-court-3', 'national', 'a test court 3'),
+  ];
+
+  const getServiceArea: (name: string, description: string, slug: string, serviceAreaType: string, onlineUrl: string,
+                         onlineText: string, text: string) => ServiceArea =
+    (name: string, description: string, slug: string, serviceAreaType: string, onlineUrl: string, onlineText: string, text: string) => {
+      return {
+        'name': name, 'description': description, 'slug': slug, 'serviceAreaType': serviceAreaType,
+        'onlineUrl': onlineUrl, 'onlineText': onlineText, 'areaOfLawName': getAreaOfLaw(1, 'Adoption'),
+        'serviceAreaCourts': getAllServiceAreaCourts, 'text': text};};
+
+  const getAllServiceAreasData: ServiceArea[] = [
+    getServiceArea('Housing', 'Tenant evictions and rent or mortgage disputes.', 'housing',
+      'civil', 'a url', 'Make or respond to a possession claim online', null),
+    getServiceArea('Childcare arrangements if you separate from your partner',
+      'Making child arrangements if you divorce or separate.', 'childcare-arrangements',
+      'family', 'a url 2', 'online text', null),
+    getServiceArea('Other criminal offences', 'Criminal cases at a Crown or Magistrates\' Court',
+      'major-criminal-offences', 'other', 'a url 2', 'online text',
+      'We manage major criminal offences at our central service centre. Find where to send your documents or ask about your case.')
+  ];
   const getCourt: () => Court = () => getCourtData;
+  const getAllServiceAreas: () => ServiceArea[] = () => getAllServiceAreasData;
 
   beforeEach(() => {
     mockApi = {
-      addCourt: async (): Promise<Court> => getCourt()
+      addCourt: async (): Promise<Court> => getCourt(),
+      getAllServiceAreas: async (): Promise<ServiceArea[]> => getAllServiceAreas()
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -33,6 +71,7 @@ describe('NewCourtController', () => {
     const req = mockRequest();
     const res = mockResponse();
 
+    req.scope.cradle.api = mockApi;
     await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
@@ -47,6 +86,8 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': false,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': []
     });
   });
 
@@ -66,7 +107,8 @@ describe('NewCourtController', () => {
       'csrfToken': 'validCSRFToken',
       'emptyValueFound': true,
       'errorMsg':
-        ['One or more mandatory fields are empty or have invalid values, please check allow and try again'],
+        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
+        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
       'invalidLonOrLat': true,
       'latEntered': 0,
       'lonEntered': 0,
@@ -74,6 +116,44 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': false,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': []
+    });
+    expect(mockApi.addCourt).not.toBeCalled();
+
+  });
+
+  test('Should not add new court if a service centre and no areas added', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      newCourtName: 'mosh court',
+      serviceCentre: 'true',
+      lon: 'abc',
+      lat: 'abc',
+      serviceAreaItems: []
+    };
+    req.scope.cradle.api = mockApi;
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': false,
+      'csrfToken': 'validCSRFToken',
+      'emptyValueFound': true,
+      'errorMsg':
+        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
+        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
+      'invalidLonOrLat': false,
+      'latEntered': 'abc',
+      'lonEntered': 'abc',
+      'nameEntered': 'mosh court',
+      'nameValidationPassed': true,
+      'redirectUrl': '',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': []
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -87,7 +167,8 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
       lon: 'abc',
-      lat: '10'
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
     };
     req.scope.cradle.api = mockApi;
 
@@ -98,7 +179,8 @@ describe('NewCourtController', () => {
       'csrfToken': 'validCSRFToken',
       'emptyValueFound': true,
       'errorMsg':
-        ['One or more mandatory fields are empty or have invalid values, please check allow and try again'],
+        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
+        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
       'invalidLonOrLat': true,
       'latEntered': '10',
       'lonEntered': 'abc',
@@ -106,6 +188,8 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three']
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -119,7 +203,8 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court @£@!£',
       serviceCentre: 'true',
       lon: '10',
-      lat: '10'
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
     };
     req.scope.cradle.api = mockApi;
 
@@ -138,6 +223,8 @@ describe('NewCourtController', () => {
       'nameValidationPassed': false,
       'redirectUrl': '',
       'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three']
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -150,7 +237,8 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
       lon: '10',
-      lat: '10'
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
     };
     req.scope.cradle.api = mockApi;
     CSRF.verify = jest.fn().mockReturnValue(false);
@@ -170,6 +258,8 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three']
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -186,7 +276,8 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
       lon: '10',
-      lat: '10'
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
     };
 
     await controller.addNewCourt(req, res);
@@ -204,9 +295,12 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three']
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
-      'new_court_name': 'mosh court', 'service_centre': true});
+      'new_court_name': 'mosh court', 'service_centre': true,
+      'service_areas': ['one', 'two', 'three']});
   });
 
   test('Should add new court success', async() => {
@@ -216,7 +310,8 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
       lon: '10',
-      lat: '10'
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
     };
     req.scope.cradle.api = mockApi;
 
@@ -234,8 +329,11 @@ describe('NewCourtController', () => {
       'nameValidationPassed': true,
       'redirectUrl': '/courts/mosh-court/edit#general',
       'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three']
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
-      'new_court_name': 'mosh court', 'service_centre': true});
+      'new_court_name': 'mosh court', 'service_centre': true,
+      'service_areas': ['one', 'two', 'three']});
   });
 });

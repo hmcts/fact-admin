@@ -89,6 +89,39 @@ describe('FactApi', () => {
     await expect(api.getCourt('London')).resolves.toEqual(results.data);
   });
 
+  test('Should return results from get all service areas request', async () => {
+    const results = {
+      data:   {
+        name: 'Bankruptcy',
+        description: 'Opposing a bankruptcy petition, support for a person at risk of violence order, cancelling a bankruptcy.',
+        slug: 'bankruptcy',
+        serviceAreaType: 'civil',
+        onlineUrl: 'https://www.gov.uk/apply-for-bankruptcy',
+        onlineText: '',
+        areaOfLawName: 'Bankruptcy',
+        serviceAreaCourts: [ {}, {}],
+        text: ''
+      },
+    };
+
+    const mockAxios = { get: async () => results } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllServiceAreas()).resolves.toEqual(results.data);
+  });
+
+  test('Should log error for failed get all service areas request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const loggerSpy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getAllServiceAreas()).rejects.toBe(mockError);
+    await expect(loggerSpy).toBeCalled();
+  });
+
   test('Should return results from getGeneralInfo request', async () => {
     const results: { data: CourtGeneralInfo } =
       { data: {
@@ -208,10 +241,11 @@ describe('FactApi', () => {
     const mockLogger = {} as never;
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.addCourt({
-      new_court_name: 'a new court name',
-      service_centre: 'a new court service centre',
+      'new_court_name': 'a new court name',
+      'service_centre': 'a new court service centre',
       lon: 10,
-      lat: 12
+      lat: 12,
+      'service_areas': ['one', 'two', 'three']
     } as unknown as NewCourt)).resolves.toEqual(results.data);
   });
 
@@ -225,10 +259,11 @@ describe('FactApi', () => {
     const api = new FactApi(mockAxios, mockLogger);
 
     await expect(api.addCourt({
-      new_court_name: 'a new court name',
-      service_centre: 'a new court service centre',
+      'new_court_name': 'a new court name',
+      'service_centre': 'a new court service centre',
       lon: 10,
-      lat: 12
+      lat: 12,
+      'service_areas': ['one', 'two', 'three']
     } as unknown as NewCourt)).rejects.toEqual(mockError);
     await expect(spy).toBeCalled();
   });
