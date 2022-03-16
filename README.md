@@ -31,7 +31,7 @@ Run:
 $ yarn start:dev
 ```
 
-The applications's home page will be available at https://localhost:3300
+The applications' home page will be available at https://localhost:3300
 
 ## Developing
 
