@@ -27,6 +27,10 @@
     {% set emailsError = { text: 'Invalid email address format' } %}
   {% endif %}
 
+  {% call govukFieldset({
+    classes: "can-reorder"
+  }) %}
+
   {% if isNew === true %}
     <h3 class="govuk-heading-s">Add New Application Progression</h3>
   {% endif %}
@@ -77,16 +81,16 @@
       {% if isNew === false %}
         {{ govukButton({
           text: "Remove",
-          name: "deleteEmail",
+          name: "deleteUpdate",
           type: "button",
-          classes: "govuk-button--warning deleteEmail"
+          classes: "govuk-button--warning deleteUpdate"
         }) }}
       {% else %}
         {{ govukButton({
           text: "Clear",
-          name: "clearEmail",
+          name: "clearUpdate",
           type: "button",
-          classes: "govuk-button--secondary clearEmail"
+          classes: "govuk-button--secondary clearUpdate"
         }) }}
       {% endif %}
     </div>
@@ -112,6 +116,8 @@
 
 <hr/>
 
+{% endcall %}
+
 {% endfor %}
 
 
@@ -122,5 +128,5 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveEmail"
+  name: "addUpdate"
 }) }}
