@@ -57,7 +57,7 @@ export default function(app: Application): void {
   app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
   app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
   app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
-//  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
+  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
 
   // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);

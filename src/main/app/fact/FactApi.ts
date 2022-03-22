@@ -221,15 +221,6 @@ export class FactApi {
         return Promise.reject(err);
       });  }
 
-  public getApplicationUpdates(slug: string): Promise<ApplicationProgression[]> {
-    return this.axios
-      .get(`${this.adminBaseUrl}/${slug}/application-progression`)
-      .then(results => results.data)
-      .catch(err => {
-        this.logError(err);
-        return Promise.reject(err);
-      });  }
-
   public updateEmails(slug: string, body: Email[]): Promise<Email[]> {
     return this.axios
       .put(`${this.adminBaseUrl}/${slug}/emails`, body)
@@ -673,6 +664,26 @@ export class FactApi {
       this.logger.info(err.response.data);
       this.logger.info(err.response.headers);
     }
+  }
+
+  public getApplicationUpdates(slug: string): Promise<ApplicationProgression[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/application-progression`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateApplicationUpdates(slug: string, body: ApplicationProgression[]): Promise<ApplicationProgression[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/application-progression`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
   }
 }
 
