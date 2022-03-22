@@ -9,7 +9,20 @@ export class ApplicationProgressionController {
   private applicationProgressionTabId = '#applicationProgressionTab';
   private applicationProgressionContentId = '#applicationProgressionContent';
   private applicationProgressionFormId = '#applicationProgressionForm';
-  private redirectBtnId = '#redirectBtnId';
+  private hiddenNewUpdateTemplateId = '#newUpdateTemplate';
+
+  private deleteUpdateBtnClass = 'deleteUpdate';
+  private addUpdateBtnClass = 'addUpdate';
+  private clearUpdateBtnClass = 'clearUpdate';
+  private moveUpBtnClass = 'move-up';
+  private moveDownBtnClass = 'move-down';
+
+  private typeInputName = 'applicationUpdateType';
+  private emailInputName = 'email';
+  private externalLinkInputName = 'externalLink';
+  private externalLinkDescriptionInputName = 'externalLinkDescription';
+  //private hiddenNewInputName = 'isNew';
+
 
   constructor() {
     this.initialize();
@@ -19,9 +32,26 @@ export class ApplicationProgressionController {
     $(() => {
       if ($(this.applicationProgressionTabId).length > 0) {
         this.getApplicationProgression();
+        this.setUpAddEventHandler();
+        this.setUpDeleteEventHandler();
         this.setUpSubmitEventHandler();
-        this.setUpRedirectHandler();
+        this.setUpClearEventHandler();
+        Utilities.addFieldsetReordering(this.applicationProgressionTabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
       }
+    });
+  }
+
+  private getApplicationProgression(): void {
+    const slug = $('#slug').val();
+
+    $.ajax({
+      url: `/courts/${slug}/application-progression`,
+      method: 'get',
+      success: async (res) => {
+        await this.updateContent(res);
+      },
+      error: (jqxhr, errorTextStatus, err) =>
+        AjaxErrorHandler.handleError(jqxhr, 'GET application progression failed.')
     });
   }
 
@@ -35,25 +65,10 @@ export class ApplicationProgressionController {
     window.scrollTo(0, 0);
   }
 
-  private getApplicationProgression(): void {
-    const slug = $('#slug').val();
-
-    console.log('PINGPING');
-
-    $.ajax({
-      url: `/courts/${slug}/application-progression`,
-      method: 'get',
-      success: async (res) => {
-        await this.updateContent(res);
-      },
-      error: (jqxhr, errorTextStatus, err) =>
-        AjaxErrorHandler.handleError(jqxhr, 'GET application progression failed.')
-    });
-  }
-
   private setUpSubmitEventHandler() {
     $(this.applicationProgressionFormId).on('submit', e => {
       e.preventDefault();
+
 
       tinymce.triggerSave();
 
@@ -64,16 +79,62 @@ export class ApplicationProgressionController {
         method: 'put',
         data: $(e.target).serialize()
       }).done(async res => {
+        console.log('PINGPING');
         await this.updateContent(res);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST application progression failed.'));
     });
   }
 
-  private setUpRedirectHandler() {
-    $(this.applicationProgressionFormId).on('click', `${this.redirectBtnId}`, e => {
-      const redirectURL = e.target.getAttribute('href');
-      window.location.href = redirectURL;
+  private setUpAddEventHandler(): void {
+    $(this.applicationProgressionFormId).on('click', `button.${this.addUpdateBtnClass}`, e => {
+      // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
+      const selector = `${this.applicationProgressionFormId} ${this.hiddenNewUpdateTemplateId}`;
+      const copyFieldset = $(selector).clone()
+        .removeAttr('disabled')
+        .removeAttr('hidden')
+        .removeAttr('id');
+      $(selector).before(copyFieldset);
+
+      // Set the id and names of the elements in the table
+      this.renameFormElements();
     });
   }
+
+  private setUpClearEventHandler(): void {
+    $(this.applicationProgressionFormId).on('click', `button.${this.clearUpdateBtnClass}`, e => {
+      $(e.target.closest('fieldset')).find(':input:visible').val('');
+    });
+  }
+
+  private setUpDeleteEventHandler(): void {
+    $(this.applicationProgressionFormId).on('click', `button.${this.deleteUpdateBtnClass}`, e => {
+      e.target.closest('fieldset').remove();
+      this.renameFormElements();
+    });
+  }
+
+
+
+  private renameFormElements(): void {
+    // Rename the input fields so that the index values are in order,
+    // which affects the order when the form is posted.
+    //this.renameSelectElement(this.typeSelectName, this.typeSelectName);
+    this.renameInputElement(this.typeInputName, this.typeInputName);
+    this.renameInputElement(this.emailInputName, this.emailInputName);
+    this.renameInputElement(this.externalLinkInputName, this.externalLinkInputName);
+    this.renameInputElement(this.externalLinkDescriptionInputName, this.externalLinkDescriptionInputName);
+  }
+
+  private renameInputElement(attributeInputName: string, attributeInputId: string): void {
+    $(`${this.applicationProgressionFormId} input[name$="[${attributeInputName}]"]`)
+      .attr('type', idx => ApplicationProgressionController.getInputName(attributeInputName, idx))
+      .attr('id', idx => `${attributeInputId}-${idx}`)
+      .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);
+  }
+
+  private static getInputName(name: string, index: number): string {
+    return `applicationUpdates[${index}][${name}]`;
+  }
+
 }
