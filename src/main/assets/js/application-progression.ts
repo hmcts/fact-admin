@@ -87,9 +87,10 @@ export class ApplicationProgressionController {
   }
 
   private setUpAddEventHandler(): void {
-    $(this.applicationProgressionFormId).on('click', `button.${this.addUpdateBtnClass}`, e => {
+    console.log('inside add event handler');
+    $(this.applicationProgressionTabId).on('click', `button.${this.addUpdateBtnClass}`, e => {
       // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
-      const selector = `${this.applicationProgressionFormId} ${this.hiddenNewUpdateTemplateId}`;
+      const selector = `${this.applicationProgressionTabId} ${this.hiddenNewUpdateTemplateId}`;
       const copyFieldset = $(selector).clone()
         .removeAttr('disabled')
         .removeAttr('hidden')
@@ -124,6 +125,7 @@ export class ApplicationProgressionController {
     this.renameInputElement(this.emailInputName, this.emailInputName);
     this.renameInputElement(this.externalLinkInputName, this.externalLinkInputName);
     this.renameInputElement(this.externalLinkDescriptionInputName, this.externalLinkDescriptionInputName);
+    //this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
