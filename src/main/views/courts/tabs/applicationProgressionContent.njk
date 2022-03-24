@@ -1,12 +1,24 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 <h2 class="govuk-heading-l">Application Progression</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Application Progressions updated"
+  }) }}
+{% endif %}
 
 {% set upArrowHtml = "&#11014" %}
 {% set downArrowHtml = "&#11015" %}
@@ -34,6 +46,9 @@
   {% if isNew === true %}
     <h3 class="govuk-heading-s">Add New Application Progression</h3>
   {% endif %}
+
+  <input type="hidden" name={{"applicationUpdates[" + loop.index +"][isNew]"}} value={{applicationUpdate.isNew}}></input>
+
 
   {{ govukInput({
     label: {
@@ -111,15 +126,97 @@
         attributes: { "aria-label": "move down" }
       }) }}
     </div>
-
   </div>
 
-<hr/>
+  <hr/>
 
-{% endcall %}
+  {% endcall %}
 
 {% endfor %}
 
+
+
+{% call govukFieldset({
+    classes: "can-reorder",
+    attributes: { id: "newUpdateTemplate", disabled: "disabled", hidden: true }
+}) %}
+
+  <input type="hidden" name={{"applicationUpdates[" + applicationUpdates.length +"][isNew]"}} value="true"></input>
+
+  <h3 class="govuk-heading-s">Add New Application Progression</h3>
+
+  {{ govukInput({
+      label: {
+        text: "Type"
+      },
+      classes: "govuk-input--width-20",
+      id: "type-" + loop.index,
+      name: "applicationUpdate[" + loop.index +"][type]",
+      value: applicationUpdate.type
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Email"
+      },
+      classes: "govuk-input--width-20",
+      id: "email-" + loop.index,
+      name: "applicationUpdate[" + loop.index +"][email]",
+      value: applicationUpdate.email
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "External Link"
+      },
+      classes: "govuk-input--width-20",
+      id: "external_link-" + loop.index,
+      name: "applicationUpdate[" + loop.index +"][external_link]",
+      value: applicationUpdate.external_link
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "External Link Description"
+      },
+      classes: "govuk-input--width-20",
+      id: "external_link_description-" + loop.index,
+      name: "applicationUpdate[" + loop.index +"][external_link_description]",
+      value: applicationUpdate.external_link_description
+    }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukButton({
+          text: "Clear",
+          name: "clearUpdate",
+          type: "button",
+          classes: "govuk-button--secondary clearUpdate"
+        }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+      </div>
+  </div>
+
+  <hr/>
+
+{% endcall %}
 
 
 
@@ -129,4 +226,11 @@
 {{ govukButton({
   text: "Save",
   name: "addUpdate"
+}) }}
+
+{{ govukButton({
+  text: "Add new application progression",
+  name: "addUpdate",
+  type: "button",
+  classes: "govuk-button--secondary addUpdate"
 }) }}
