@@ -49,6 +49,8 @@
 
   <input type="hidden" name={{"applicationUpdates[" + loop.index +"][isNew]"}} value={{applicationUpdate.isNew}}></input>
 
+  <input name={{"applicationUpdates[" + loop.index +"][updateOrder]"}} value={{applicationUpdate.updateOrder}}></input>
+
 
   {{ govukInput({
     label: {
@@ -225,7 +227,7 @@
 
 {{ govukButton({
   text: "Save",
-  name: "addUpdate"
+  name: "saveUpdate"
 }) }}
 
 {{ govukButton({

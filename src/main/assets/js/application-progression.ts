@@ -12,6 +12,7 @@ export class ApplicationProgressionController {
   private hiddenNewUpdateTemplateId = '#newUpdateTemplate';
 
   private deleteUpdateBtnClass = 'deleteUpdate';
+  //private saveUpdateBtnClass = 'saveUpdate';
   private addUpdateBtnClass = 'addUpdate';
   private clearUpdateBtnClass = 'clearUpdate';
   private moveUpBtnClass = 'move-up';
@@ -21,7 +22,7 @@ export class ApplicationProgressionController {
   private emailInputName = 'email';
   private externalLinkInputName = 'externalLink';
   private externalLinkDescriptionInputName = 'externalLinkDescription';
-  //private hiddenNewInputName = 'isNew';
+  private hiddenNewInputName = 'isNew';
 
 
   constructor() {
@@ -125,7 +126,7 @@ export class ApplicationProgressionController {
     this.renameInputElement(this.emailInputName, this.emailInputName);
     this.renameInputElement(this.externalLinkInputName, this.externalLinkInputName);
     this.renameInputElement(this.externalLinkDescriptionInputName, this.externalLinkDescriptionInputName);
-    //this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
+    this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
