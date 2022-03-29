@@ -6,7 +6,7 @@ import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {validateDuplication} from '../../../utils/validation';
 //import {app} from "../../../server";
-
+//validateEmailFormat
 @autobind
 export class ApplicationProgressionController {
 
