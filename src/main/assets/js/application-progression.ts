@@ -1,8 +1,8 @@
 import $ from 'jquery';
-import tinymce from 'tinymce';
+//import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
-const { initAll } = require('govuk-frontend');
+//const { initAll } = require('govuk-frontend');
 
 export class ApplicationProgressionController {
 
@@ -48,14 +48,14 @@ export class ApplicationProgressionController {
     $.ajax({
       url: `/courts/${slug}/application-progression`,
       method: 'get',
-      success: async (res) => {
-        await this.updateContent(res);
+      success: (res) => {
+        $(this.applicationProgressionContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET application progression failed.')
     });
   }
-
+  /*
   private async updateContent(content: any): Promise<void> {
     $(this.applicationProgressionContentId).html(content);
 
@@ -66,12 +66,14 @@ export class ApplicationProgressionController {
     window.scrollTo(0, 0);
   }
 
+ */
+
   private setUpSubmitEventHandler() {
     $(this.applicationProgressionFormId).on('submit', e => {
       e.preventDefault();
 
 
-      tinymce.triggerSave();
+      //tinymce.triggerSave();
 
       const url = $(e.target).attr('action');
 
@@ -81,14 +83,14 @@ export class ApplicationProgressionController {
         data: $(e.target).serialize()
       }).done(async res => {
         console.log('PINGPING');
-        await this.updateContent(res);
+        $(this.applicationProgressionContentId).html(res);
+        window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST application progression failed.'));
     });
   }
 
   private setUpAddEventHandler(): void {
-    console.log('inside add event handler');
     $(this.applicationProgressionTabId).on('click', `button.${this.addUpdateBtnClass}`, e => {
       // Copy hidden template to main table for adding new entry, removing hidden and ID attributes
       const selector = `${this.applicationProgressionTabId} ${this.hiddenNewUpdateTemplateId}`;
@@ -104,13 +106,13 @@ export class ApplicationProgressionController {
   }
 
   private setUpClearEventHandler(): void {
-    $(this.applicationProgressionFormId).on('click', `button.${this.clearUpdateBtnClass}`, e => {
+    $(this.applicationProgressionTabId).on('click', `button.${this.clearUpdateBtnClass}`, e => {
       $(e.target.closest('fieldset')).find(':input:visible').val('');
     });
   }
 
   private setUpDeleteEventHandler(): void {
-    $(this.applicationProgressionFormId).on('click', `button.${this.deleteUpdateBtnClass}`, e => {
+    $(this.applicationProgressionTabId).on('click', `button.${this.deleteUpdateBtnClass}`, e => {
       e.target.closest('fieldset').remove();
       this.renameFormElements();
     });
@@ -130,7 +132,7 @@ export class ApplicationProgressionController {
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
-    $(`${this.applicationProgressionFormId} input[name$="[${attributeInputName}]"]`)
+    $(`${this.applicationProgressionTabId} input[name$="[${attributeInputName}]"]`)
       .attr('type', idx => ApplicationProgressionController.getInputName(attributeInputName, idx))
       .attr('id', idx => `${attributeInputId}-${idx}`)
       .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);

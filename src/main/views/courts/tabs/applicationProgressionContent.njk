@@ -23,12 +23,12 @@
 {% set upArrowHtml = "&#11014" %}
 {% set downArrowHtml = "&#11015" %}
 
-{% for applicationUpdate in application_progression %}
+{% for progression in application_progression %}
 
-  {% set isNew = (applicationUpdate.isNew === true) or (applicationUpdate.isNew === "true") %}
+  {% set isNew = (progression.isNew === true) or (progression.isNew === "true") %}
 
   {% set descriptionError = false %}
-  {% if applicationUpdate.type === '' %}
+  {% if progression.type === '' %}
     {% set descriptionError = { text: 'Type is required' } %}
   {% endif %}
 
@@ -47,10 +47,7 @@
     <h3 class="govuk-heading-s">Add New Application Progression</h3>
   {% endif %}
 
-  <input type="hidden" name={{"applicationUpdates[" + loop.index +"][isNew]"}} value={{applicationUpdate.isNew}}></input>
-
-  <input name={{"applicationUpdates[" + loop.index +"][updateOrder]"}} value={{applicationUpdate.updateOrder}}></input>
-
+  <input type="hidden" name={{"progression[" + loop.index +"][isNew]"}} value={{progression.isNew}}></input>
 
   {{ govukInput({
     label: {
@@ -58,8 +55,8 @@
     },
     classes: "govuk-input--width-20",
     id: "type-" + loop.index,
-    name: "applicationUpdate[" + loop.index +"][type]",
-    value: applicationUpdate.type
+    name: "progression[" + loop.index +"][type]",
+    value: progression.type
   }) }}
 
   {{ govukInput({
@@ -68,8 +65,8 @@
     },
     classes: "govuk-input--width-20",
     id: "email-" + loop.index,
-    name: "applicationUpdate[" + loop.index +"][email]",
-    value: applicationUpdate.email
+    name: "progression[" + loop.index +"][email]",
+    value: progression.email
   }) }}
 
   {{ govukInput({
@@ -78,8 +75,8 @@
     },
     classes: "govuk-input--width-20",
     id: "external_link-" + loop.index,
-    name: "applicationUpdate[" + loop.index +"][external_link]",
-    value: applicationUpdate.external_link
+    name: "progression[" + loop.index +"][external_link]",
+    value: progression.external_link
   }) }}
 
   {{ govukInput({
@@ -88,8 +85,8 @@
     },
     classes: "govuk-input--width-20",
     id: "external_link_description-" + loop.index,
-    name: "applicationUpdate[" + loop.index +"][external_link_description]",
-    value: applicationUpdate.external_link_description
+    name: "progression[" + loop.index +"][external_link_description]",
+    value: progression.external_link_description
   }) }}
 
   <div class="govuk-grid-row">
@@ -143,7 +140,7 @@
     attributes: { id: "newUpdateTemplate", disabled: "disabled", hidden: true }
 }) %}
 
-  <input type="hidden" name={{"applicationUpdates[" + applicationUpdates.length +"][isNew]"}} value="true"></input>
+  <input type="hidden" name={{"progression[" + progression.length +"][isNew]"}} value="true"></input>
 
   <h3 class="govuk-heading-s">Add New Application Progression</h3>
 
@@ -153,8 +150,8 @@
       },
       classes: "govuk-input--width-20",
       id: "type-" + loop.index,
-      name: "applicationUpdate[" + loop.index +"][type]",
-      value: applicationUpdate.type
+      name: "progression[" + loop.index +"][type]",
+      value: progression.type
     }) }}
 
     {{ govukInput({
@@ -163,8 +160,8 @@
       },
       classes: "govuk-input--width-20",
       id: "email-" + loop.index,
-      name: "applicationUpdate[" + loop.index +"][email]",
-      value: applicationUpdate.email
+      name: "progression[" + loop.index +"][email]",
+      value: progression.email
     }) }}
 
     {{ govukInput({
@@ -173,8 +170,8 @@
       },
       classes: "govuk-input--width-20",
       id: "external_link-" + loop.index,
-      name: "applicationUpdate[" + loop.index +"][external_link]",
-      value: applicationUpdate.external_link
+      name: "progression[" + loop.index +"][external_link]",
+      value: progression.external_link
     }) }}
 
     {{ govukInput({
@@ -183,8 +180,8 @@
       },
       classes: "govuk-input--width-20",
       id: "external_link_description-" + loop.index,
-      name: "applicationUpdate[" + loop.index +"][external_link_description]",
-      value: applicationUpdate.external_link_description
+      name: "progression[" + loop.index +"][external_link_description]",
+      value: progression.external_link_description
     }) }}
 
   <div class="govuk-grid-row">
@@ -227,7 +224,7 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveUpdate"
+  name: "addUpdate"
 }) }}
 
 {{ govukButton({
