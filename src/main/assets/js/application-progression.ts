@@ -18,10 +18,10 @@ export class ApplicationProgressionController {
   private moveUpBtnClass = 'move-up';
   private moveDownBtnClass = 'move-down';
 
-  private typeInputName = 'applicationUpdateType';
+  private typeInputName = 'type';
   private emailInputName = 'email';
-  private externalLinkInputName = 'externalLink';
-  private externalLinkDescriptionInputName = 'externalLinkDescription';
+  private externalLinkInputName = 'external_link';
+  private externalLinkDescriptionInputName = 'external_link_description';
   private hiddenNewInputName = 'isNew';
 
 
@@ -131,15 +131,16 @@ export class ApplicationProgressionController {
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
+
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.applicationProgressionTabId} input[name$="[${attributeInputName}]"]`)
-      .attr('type', idx => ApplicationProgressionController.getInputName(attributeInputName, idx))
+      .attr('name', idx => ApplicationProgressionController.getInputName(attributeInputName, idx))
       .attr('id', idx => `${attributeInputId}-${idx}`)
-      .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);
+      .siblings('label').attr('for', idx => `${attributeInputName}-${idx}`);
   }
 
   private static getInputName(name: string, index: number): string {
-    return `applicationUpdates[${index}][${name}]`;
+    return `progression[${index}][${name}]`;
   }
 
 }
