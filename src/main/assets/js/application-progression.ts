@@ -1,8 +1,6 @@
 import $ from 'jquery';
-//import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
-//const { initAll } = require('govuk-frontend');
 
 export class ApplicationProgressionController {
 
@@ -12,7 +10,6 @@ export class ApplicationProgressionController {
   private hiddenNewUpdateTemplateId = '#newUpdateTemplate';
 
   private deleteUpdateBtnClass = 'deleteUpdate';
-  //private saveUpdateBtnClass = 'saveUpdate';
   private addUpdateBtnClass = 'addUpdate';
   private clearUpdateBtnClass = 'clearUpdate';
   private moveUpBtnClass = 'move-up';
@@ -37,14 +34,14 @@ export class ApplicationProgressionController {
         this.setUpDeleteEventHandler();
         this.setUpSubmitEventHandler();
         this.setUpClearEventHandler();
-        Utilities.addFieldsetReordering(this.applicationProgressionTabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
+        Utilities.addFieldsetReordering(this.applicationProgressionTabId, this.moveUpBtnClass, this.moveDownBtnClass,
+          this.renameFormElements.bind(this));
       }
     });
   }
 
   private getApplicationProgression(): void {
     const slug = $('#slug').val();
-
     $.ajax({
       url: `/courts/${slug}/application-progression`,
       method: 'get',
@@ -55,34 +52,16 @@ export class ApplicationProgressionController {
         AjaxErrorHandler.handleError(jqxhr, 'GET application progression failed.')
     });
   }
-  /*
-  private async updateContent(content: any): Promise<void> {
-    $(this.applicationProgressionContentId).html(content);
-
-    await Utilities.setUpTinymce();
-
-    initAll({ scope: document.getElementById('applicationProgressionTab') });
-
-    window.scrollTo(0, 0);
-  }
-
- */
 
   private setUpSubmitEventHandler() {
     $(this.applicationProgressionFormId).on('submit', e => {
       e.preventDefault();
-
-
-      //tinymce.triggerSave();
-
       const url = $(e.target).attr('action');
-
       $.ajax({
         url: url,
         method: 'put',
         data: $(e.target).serialize()
       }).done(async res => {
-        console.log('PINGPING');
         $(this.applicationProgressionContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response =>
@@ -118,12 +97,9 @@ export class ApplicationProgressionController {
     });
   }
 
-
-
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    //this.renameSelectElement(this.typeSelectName, this.typeSelectName);
     this.renameInputElement(this.typeInputName, this.typeInputName);
     this.renameInputElement(this.emailInputName, this.emailInputName);
     this.renameInputElement(this.externalLinkInputName, this.externalLinkInputName);
@@ -131,10 +107,10 @@ export class ApplicationProgressionController {
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
-
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
     $(`${this.applicationProgressionTabId} input[name$="[${attributeInputName}]"]`)
-      .attr('name', idx => ApplicationProgressionController.getInputName(attributeInputName, idx))
+      .attr('name', idx => ApplicationProgressionController.getInputName(
+        attributeInputName, idx))
       .attr('id', idx => `${attributeInputId}-${idx}`)
       .siblings('label').attr('for', idx => `${attributeInputName}-${idx}`);
   }
