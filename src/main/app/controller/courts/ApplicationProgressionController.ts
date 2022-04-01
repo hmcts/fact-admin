@@ -12,6 +12,8 @@ export class ApplicationProgressionController {
   error1 = 'error with CSRF';
   error2 = 'error with PUT';
   emptyTypeErrorMsg = 'Type is needed for all application progressions.';
+  emptyFieldsErrorMsg = 'Enter an email address or an external link';
+  linkFieldsErrorMsg = 'Description and link are required to add an external link';
   updateErrorMsg = 'A problem occurred when saving the application progression.';
   emailDuplicatedErrorMsg = 'All email addresses must be unique.'
   getApplicationUpdatesErrorMsg = 'A problem occurred when retrieving the application progressions.';
@@ -68,9 +70,20 @@ export class ApplicationProgressionController {
       return this.get(req, res, false, errorMsg, applicationProgressions);
     }
 
-    await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
-      .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.error2], applicationProgressions));
+    if (applicationProgressions.some(ap => (!ap.type))){
+      return this.get(req, res, false, [this.emptyTypeErrorMsg], applicationProgressions);
+    }
+    else if (applicationProgressions.some(ap => (ap.type && !ap.email && !ap.external_link && !ap.external_link_description))){
+      return this.get(req, res, false, [this.emptyFieldsErrorMsg], applicationProgressions);
+    }
+    else if (applicationProgressions.some(ap => (ap.external_link && !ap.external_link_description || !ap.external_link && ap.external_link_description))){
+      return this.get(req, res, false, [this.linkFieldsErrorMsg], applicationProgressions);
+
+    } else {
+      await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
+        .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
+        .catch((err: any) => this.get(req, res, false, [this.error2], applicationProgressions));
+    }
   }
 
 
