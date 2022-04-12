@@ -31,6 +31,7 @@ describe('EditCourtController', () => {
 
     const expectedResults: CourtPageData = {
       isSuperAdmin: true,
+      isServiceCentre: false,
       slug: slug,
       name: name,
       csrfToken: expect.any(String)
@@ -57,6 +58,7 @@ describe('EditCourtController', () => {
 
     const expectedResults: CourtPageData = {
       isSuperAdmin: false,
+      isServiceCentre: false,
       slug: slug,
       name: name,
       csrfToken: expect.any(String)
