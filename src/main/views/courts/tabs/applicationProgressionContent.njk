@@ -23,6 +23,8 @@
 {% set upArrowHtml = "&#11014" %}
 {% set downArrowHtml = "&#11015" %}
 
+<input type="hidden" name="applicationProgressionsEnabled" id='applicationProgressionsEnabled' value="{{ isEnabled }}">
+
 {% for progression in application_progression %}
 
   {% set isNew = (progression.isNew === true) or (progression.isNew === "true") %}

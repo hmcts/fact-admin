@@ -2,9 +2,12 @@ import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
 
+const { initAll } = require('govuk-frontend');
+
 export class ApplicationProgressionController {
 
   private applicationProgressionTabId = '#applicationProgressionTab';
+  private applicationProgressionNavTab = '#tab_application-progression'
   private applicationProgressionContentId = '#applicationProgressionContent';
   private applicationProgressionFormId = '#applicationProgressionForm';
   private hiddenNewUpdateTemplateId = '#newUpdateTemplate';
@@ -29,6 +32,7 @@ export class ApplicationProgressionController {
   private initialize() {
     $(() => {
       if ($(this.applicationProgressionTabId).length > 0) {
+        Utilities.toggleTabEnabled(this.applicationProgressionTabId, false);
         this.getApplicationProgression();
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();
@@ -46,7 +50,7 @@ export class ApplicationProgressionController {
       url: `/courts/${slug}/application-progression`,
       method: 'get',
       success: (res) => {
-        $(this.applicationProgressionContentId).html(res);
+        this.updateContent(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET application progression failed.')
@@ -117,6 +121,13 @@ export class ApplicationProgressionController {
 
   private static getInputName(name: string, index: number): string {
     return `progression[${index}][${name}]`;
+  }
+
+  private updateContent(res: any): void {
+    $(this.applicationProgressionContentId).html(res);
+    Utilities.toggleTabEnabled(this.applicationProgressionNavTab, $('#applicationProgressionsEnabled').val()  === 'true');
+    Utilities.toggleTabEnabled(this.applicationProgressionTabId, $('#applicationProgressionsEnabled').val()  === 'true');
+    initAll({ scope: document.getElementById('applicationProgressionTab')});
   }
 
 }
