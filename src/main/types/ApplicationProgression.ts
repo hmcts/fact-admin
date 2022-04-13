@@ -1,7 +1,6 @@
 import {Error} from "./Error";
 import {Element} from "./Element";
 
-
 export interface ApplicationProgression extends Element{
   type: string;
   email: string;
@@ -11,6 +10,7 @@ export interface ApplicationProgression extends Element{
 
 export interface ApplicationProgressionData {
   application_progression: ApplicationProgression[],
+  isEnabled : boolean,
   errors: Error[],
   updated: boolean
 }

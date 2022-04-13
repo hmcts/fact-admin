@@ -5,6 +5,7 @@ import {ApplicationProgression, ApplicationProgressionData} from '../../../types
 import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {validateDuplication, validateStringEmailFormat, validateUrlFormat} from '../../../utils/validation';
+import {CourtGeneralInfo} from '../../../types/CourtGeneralInfo';
 
 @autobind
 export class ApplicationProgressionController {
@@ -13,17 +14,17 @@ export class ApplicationProgressionController {
   emptyFieldsErrorMsg = 'Enter an email address or an external link';
   linkFieldsErrorMsg = 'Description and link are required to add an external link';
   updateErrorMsg = 'A problem occurred when saving the application progression.';
-  emailDuplicatedErrorMsg = 'All email addresses must be unique.'
+  emailDuplicatedErrorMsg = 'All email addresses must be unique.';
   getApplicationUpdatesErrorMsg = 'A problem occurred when retrieving the application progressions.';
   invalidEmailFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
-
 
   public async get(
     req: AuthedRequest,
     res: Response,
     updated = false,
     errorMsg: string[] = [],
+    generalInfo: boolean = null,
     applicationProgressions: ApplicationProgression[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
@@ -34,6 +35,11 @@ export class ApplicationProgressionController {
         .then((value: ApplicationProgression[]) => applicationProgressions = value.map(e => {
           e.isNew = false; return e; }))
         .catch(() => errorMsg.push(this.getApplicationUpdatesErrorMsg));
+    }
+
+    if (!generalInfo) {
+      await req.scope.cradle.api.getGeneralInfo(slug)
+        .then((value: CourtGeneralInfo) => generalInfo = value.service_centre);
     }
 
     if (!applicationProgressions?.some(e => e.isNew === true)) {
@@ -47,6 +53,7 @@ export class ApplicationProgressionController {
 
     const pageData: ApplicationProgressionData = {
       'application_progression': applicationProgressions,
+      isEnabled: generalInfo ?? false,
       errors: errors,
       updated: updated
     };
@@ -55,11 +62,12 @@ export class ApplicationProgressionController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
+    const generalInfo = req.body.general_info as boolean;
     let applicationProgressions = req.body.progression as ApplicationProgression[] ?? [];
     applicationProgressions.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, [this.updateErrorMsg], applicationProgressions);
+      return this.get(req, res, false, [this.updateErrorMsg], generalInfo, applicationProgressions);
     }
 
     // Remove fully empty entries
@@ -67,12 +75,12 @@ export class ApplicationProgressionController {
 
     const errorMsg = this.getErrorMessages(applicationProgressions);
     if (errorMsg.length > 0) {
-      return this.get(req, res, false, errorMsg, applicationProgressions);
+      return this.get(req, res, false, errorMsg, generalInfo, applicationProgressions);
     }
 
     await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
-      .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], applicationProgressions));
+      .then((value: ApplicationProgression[]) => this.get(req, res, true, [], generalInfo, value))
+      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], generalInfo, applicationProgressions));
   }
 
   private addEmptyFormsForNewEntries(applicationProgressions: ApplicationProgression[], numberOfForms = 1):

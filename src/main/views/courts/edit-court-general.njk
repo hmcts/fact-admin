@@ -154,6 +154,13 @@
                     panel: {
                       html: photoHtml
                     }
+                  },
+                  {
+                    label: "Application Progression",
+                    id: "application-progression",
+                    panel: {
+                      html: applicationProgressionHtml
+                    }
                   }
                 ]%}
 
@@ -197,16 +204,6 @@
                   }
               %}
 
-              {% set applicationProgressionTab =
-                  {
-                    label: "Application Progression",
-                    id: "application-progression",
-                    panel: {
-                      html: applicationProgressionHtml
-                    }
-                  }
-              %}
-
         {% if isSuperAdmin %}
 
           {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
@@ -215,14 +212,6 @@
           {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
 
         {% endif %}
-
-        {% if isServiceCentre %}
-
-          {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
-
-        {% endif %}
-
-
 
           {{ factTabs({
             id: 'Main',
