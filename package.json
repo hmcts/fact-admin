@@ -131,6 +131,11 @@
     "sass-lint/merge": ">=2.1.1",
     "puppeteer/node-fetch": ">=2.6.7",
     "tsconfig-paths/minimist": ">=1.2.6",
-    "config/json5/minimist": ">=1.2.6"
+    "config/json5/minimist": ">=1.2.6",
+    "@hmcts/nodejs-logging/moment" : ">=2.29.2",
+    "@hmcts/nodejs-healthcheck/@hmcts/nodejs-logging/moment" : ">=2.29.2",
+    "@hmcts/nodejs-logging/winston/async" : ">=3.2.2",
+    "@hmcts/nodejs-healthcheck/@hmcts/nodejs-logging/winston/async" : ">=3.2.2",
+    "launchdarkly-node-server-sdk/async" : ">=3.2.2"
   }
 }
