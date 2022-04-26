@@ -209,7 +209,7 @@ export class AddressController {
   private validateNoMoreThanOneVisitAddress(addresses: DisplayAddress[], writeToUsTypeId: number): string[] {
 
     return (writeToUsTypeId && !!addresses[0].type_id && !!addresses[1].type_id) &&
-      (!(!!addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2)  ||
+      (!(addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2)  ||
       (!!addresses[2].type_id && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 1)
       ? [this.multipleVisitAddressError]
       : [];
