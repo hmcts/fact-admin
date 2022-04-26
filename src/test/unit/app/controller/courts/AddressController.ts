@@ -277,6 +277,7 @@ describe('AddressesController', () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
     addresses.primary['type_id'] = null;
     addresses.secondary['type_id'] = null;
+    addresses.third['type_id'] = null;
 
     req.body = {
       primary: addresses.primary,
@@ -295,6 +296,7 @@ describe('AddressesController', () => {
     const expectedError = [
       { text: controller.primaryAddressPrefix + controller.typeRequiredError },
       { text: controller.secondaryAddressPrefix + controller.typeRequiredError },
+      { text: controller.thirdAddressPrefix + controller.typeRequiredError },
 
     ];
     const expectedResults: CourtAddressPageData =
