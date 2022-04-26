@@ -31,6 +31,8 @@ export class AddressController {
   visitOrContactUsAddressType = 'Visit or contact us';
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address: ';
+  thirdAddressPrefix = 'Third Address: ';
+  descriptionTooLongError = 'Maximum length of description is 50 characters'
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -40,6 +42,7 @@ export class AddressController {
     const addresses: DisplayCourtAddresses = {
       primary: req.body.primary,
       secondary: req.body.secondary,
+      third: req.body.third
     };
 
     // Validate token
@@ -53,7 +56,7 @@ export class AddressController {
     const addressesValid = this.validateCourtAddresses(addresses, writeToUsTypeId);
     if (addressesValid.errors.length > 0) {
       await this.render(req, res, false, addresses, addressesValid.errors,
-        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid);
+        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid, !addressesValid.thirdPostcodeValid);
       return;
     }
 
@@ -80,7 +83,8 @@ export class AddressController {
     addresses: DisplayCourtAddresses = null,
     errorMsgs: string[] = [],
     primaryPostcodeInvalid = false,
-    secondaryPostcodeInvalid = false) {
+    secondaryPostcodeInvalid = false,
+    thirdPostcodeInvalid = false) {
 
     const slug: string = req.params.slug as string;
     let fatalError = false;
@@ -108,12 +112,14 @@ export class AddressController {
     const pageData: CourtAddressPageData = {
       addressTypesPrimary: this.getAddressTypesForSelect(addressTypes, true),
       addressTypesSecondary: this.getAddressTypesForSelect(addressTypes, false),
+      addressTypesThird: this.getAddressTypesForSelect(addressTypes, false),
       addresses: addresses,
       writeToUsTypeId: writeToUsTypes.length === 1 ? writeToUsTypes[0] : null,
       errors: errorMsgs.map(errorMsg => { return { text: errorMsg }; }),
       fatalError: fatalError,
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
+      thirdPostcodeInvalid: thirdPostcodeInvalid,
       updated: updated
     };
 
@@ -121,30 +127,34 @@ export class AddressController {
   }
 
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
-    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; errors: string[] } {
+    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean, errors: string[] } {
 
-    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true);
-    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false);
-    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress(addresses.primary, addresses.secondary, writeToUsTypeId);
-    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors);
+    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
+    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false, true);
+    const thirdValidationResult = this.validateCourtAddress(addresses.third, false, false);
+    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress(addresses.primary, addresses.secondary,addresses.third, writeToUsTypeId);
+    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors).concat(thirdValidationResult.errors);
 
     return {
       primaryPostcodeValid: primaryValidationResult.postcodeValid,
       secondaryPostcodeValid: secondaryValidationResult.postcodeValid,
+      thirdPostcodeValid: thirdValidationResult.postcodeValid,
       errors: allErrors
     };
   }
 
-  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean): AddressValidationResult {
+  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean): AddressValidationResult {
     const typeErrors = this.validateAddressTypeExists(address, isPrimaryAddress);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
-    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : this.secondaryAddressPrefix;
+    const descriptionErrors = this.validateDescriptionLength(address, isPrimaryAddress);
+    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : ( isSecondaryAddress ? this.secondaryAddressPrefix: this.thirdAddressPrefix);
 
     return {
       postcodeValid: postcodeErrors.length === 0,
       addressValid: addressErrors.length === 0,
-      errors: typeErrors.concat(addressErrors).concat(postcodeErrors).map(error => errorPrefix + error)
+      descriptionValid: descriptionErrors.length === 0,
+      errors: typeErrors.concat(addressErrors).concat(postcodeErrors).concat(descriptionErrors).map(error => errorPrefix + error)
     };
   }
 
@@ -170,6 +180,16 @@ export class AddressController {
     return errors;
   }
 
+  private validateDescriptionLength(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
+    const errors: string[] = [];
+    if (!isPrimaryAddress) {
+      if (!(address.description?.trim().length<50) || !(address.description_cy.trim().length<50)) {
+        errors.push(this.descriptionTooLongError);
+      }
+    }
+    return errors;
+  }
+
   private validatePostcode(courtAddress: DisplayAddress, isPrimaryAddress: boolean): string[] {
     const errors: string[] = [];
     const postcodeRequired = isPrimaryAddress || (!isPrimaryAddress && this.addressFieldsNotEmpty(courtAddress));
@@ -186,10 +206,10 @@ export class AddressController {
     return errors;
   }
 
-  private validateNoMoreThanOneVisitAddress(primary: DisplayAddress, secondary: DisplayAddress, writeToUsTypeId: number): string[] {
-    return writeToUsTypeId && !!primary.type_id && !!secondary.type_id && // validate only if types selected in both addresses
-    (this.addressFieldsNotEmpty(secondary) || secondary.postcode?.trim()) && // validate only if secondary has some fields entered
-    (primary.type_id !== writeToUsTypeId && secondary.type_id !== writeToUsTypeId) // at least 1 write address should exist
+  private validateNoMoreThanOneVisitAddress(primary: DisplayAddress, secondary: DisplayAddress, third: DisplayAddress, writeToUsTypeId: number): string[] {
+    return writeToUsTypeId && !!primary.type_id && !!secondary.type_id && !!third.type_id &&  // validate only if types selected in both addresses
+    (this.addressFieldsNotEmpty(secondary) || (secondary.postcode?.trim() || third.postcode?.trim())) && // validate only if secondary has some fields entered
+    (primary.type_id !== writeToUsTypeId && (secondary.type_id !== writeToUsTypeId || third.type_id !== writeToUsTypeId) )// at least 1 write address should exist
       ? [this.multipleVisitAddressError]
       : [];
   }
@@ -208,10 +228,11 @@ export class AddressController {
   }
 
   private checkErrorResponseForPostcodeErrors(error: AxiosError, addresses: DisplayCourtAddresses):
-    { primaryInvalid: boolean; secondaryInvalid: boolean; errors: string[] } {
+    { primaryInvalid: boolean; secondaryInvalid: boolean; thirdInvalid: boolean, errors: string[] } {
 
     let primaryPostcodeInvalid = false;
     let secondaryPostcodeInvalid = false;
+    let thirdPostcodeInvalid = false;
     const errors: string[] = [];
 
     // We expect an array of invalid postcodes in the body of the response
@@ -222,23 +243,29 @@ export class AddressController {
         if (!primaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.primary?.postcode?.toUpperCase()) {
           primaryPostcodeInvalid = true;
           errors.push(this.primaryAddressPrefix + this.postcodeNotFoundError);
-        } else if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary?.postcode?.toUpperCase()) {
+        }  if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary?.postcode?.toUpperCase()) {
           secondaryPostcodeInvalid = true;
           errors.push(this.secondaryAddressPrefix + this.postcodeNotFoundError);
+        } else if (!thirdPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.third?.postcode?.toUpperCase()) {
+          thirdPostcodeInvalid = true;
+          errors.push(this.thirdAddressPrefix + this.postcodeNotFoundError);
         }
       });
     }
 
-    return { primaryInvalid: primaryPostcodeInvalid, secondaryInvalid: secondaryPostcodeInvalid, errors: errors };
+    return { primaryInvalid: primaryPostcodeInvalid, secondaryInvalid: secondaryPostcodeInvalid, thirdInvalid: thirdPostcodeInvalid, errors: errors };
   }
 
   private convertToDisplayAddresses(addresses: CourtAddress[]): DisplayCourtAddresses {
-    const courtAddresses: DisplayCourtAddresses = { primary: null, secondary: null };
+    const courtAddresses: DisplayCourtAddresses = { primary: null, secondary: null, third : null };
     if (addresses.length > 0) {
       courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0]);
     }
     if (addresses.length > 1) {
       courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1]);
+    }
+    if (addresses.length > 2) {
+      courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2]);
     }
     return courtAddresses;
   }
@@ -252,12 +279,18 @@ export class AddressController {
       courtAddresses.secondary.town && courtAddresses.secondary.postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary));
     }
+    if (courtAddresses.third && courtAddresses.third.type_id && courtAddresses.third.address_lines &&
+      courtAddresses.third.town && courtAddresses.third.postcode) {
+      apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.third));
+    }
     return apiAddresses;
   }
 
   private convertCourtAddressToApiAddressType(courtAddress: DisplayAddress): CourtAddress {
     return {
       'type_id': courtAddress.type_id,
+      'description' : courtAddress.description,
+      'description_cy' : courtAddress.description_cy,
       'address_lines': courtAddress.address_lines?.trim().split(/\r?\n/),
       'address_lines_cy': courtAddress.address_lines_cy?.trim().split(/\r?\n/),
       town: courtAddress.town?.trim(),
@@ -269,6 +302,8 @@ export class AddressController {
   private convertApiAddressToCourtAddressType(address: CourtAddress): DisplayAddress {
     return {
       'type_id': address.type_id,
+      'description' : address.description,
+      'description_cy' : address.description_cy,
       'address_lines': address.address_lines?.join('\n'),
       'address_lines_cy': address.address_lines_cy?.join('\n'),
       town: address.town?.trim(),
@@ -276,4 +311,6 @@ export class AddressController {
       postcode: address.postcode?.trim().toUpperCase()
     };
   }
+
+
 }

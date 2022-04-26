@@ -7,7 +7,8 @@ export class AddressesController {
   private tabId = '#courtAddressesTab';
   private contentId = '#addressesContent';
   private formId = '#addressForm';
-  private clearSecondaryBtnId = '#removeSecondaryAddressBtn';
+  private removeSecondaryBtnId = '#removeSecondAddressBtn';
+  private removeThirdBtnId = '#removeThirdAddressBtn';
 
   constructor() {
     this.initialize();
@@ -18,7 +19,8 @@ export class AddressesController {
       if ($(this.tabId).length > 0) {
         this.getCourtAddresses();
         this.setUpSubmitEventHandler();
-        this.setUpClearSecondaryEventHandler();
+        this.setUpRemoveSecondaryEventHandler();
+        this.setUpRemoveThirdEventHandler();
       }
     });
   }
@@ -53,13 +55,29 @@ export class AddressesController {
     });
   }
 
-  private setUpClearSecondaryEventHandler(): void {
-    $(this.tabId).on('click', this.clearSecondaryBtnId, () => {
+  private setUpRemoveSecondaryEventHandler(): void {
+    $(this.tabId).on('click', this.removeSecondaryBtnId, () => {
+      $('#secondaryAddressType').val('');
+      $('#secondaryAddressDescription').val('');
+      $('#secondaryAddressDescriptionWelsh').val('');
       $('#secondaryAddressLines').val('');
       $('#secondaryAddressLinesWelsh').val('');
       $('#secondaryAddressTown').val('');
       $('#secondaryAddressTownWelsh').val('');
       $('#secondaryAddressPostcode').val('');
+    });
+  }
+
+  private setUpRemoveThirdEventHandler(): void {
+    $(this.tabId).on('click', this.removeThirdBtnId, () => {
+      $('#thirdAddressType').val('');
+      $('#thirdAddressDescription').val('');
+      $('#thirdAddressDescriptionWelsh').val('');
+      $('#thirdAddressLines').val('');
+      $('#thirdAddressLinesWelsh').val('');
+      $('#thirdAddressTown').val('');
+      $('#thirdAddressTownWelsh').val('');
+      $('#thirdAddressPostcode').val('');
     });
   }
 
