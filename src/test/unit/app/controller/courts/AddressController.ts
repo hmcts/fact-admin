@@ -80,14 +80,14 @@ describe('AddressesController', () => {
         postcode: secondary.postcode
       },
       third: {
-      'type_id': third.type_id,
-      'description' : third.description,
-      'description_cy' : third.description_cy,
-      'address_lines': third.address_lines.join('\n'),
-      'address_lines_cy': third.address_lines_cy.join('\n'),
-      town: third.town,
-      'town_cy': third.town_cy,
-      postcode: third.postcode
+        'type_id': third.type_id,
+        'description' : third.description,
+        'description_cy' : third.description_cy,
+        'address_lines': third.address_lines.join('\n'),
+        'address_lines_cy': third.address_lines_cy.join('\n'),
+        town: third.town,
+        'town_cy': third.town_cy,
+        postcode: third.postcode
       }
     };
   };
@@ -500,7 +500,7 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary and third descriptions is more than 50 characters', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    const tooLongDescription: string = 'description1234567890123456789123456789012345678901';
+    const tooLongDescription = 'description1234567890123456789123456789012345678901';
 
     req.body = {
       primary: addresses.primary,
@@ -521,7 +521,7 @@ describe('AddressesController', () => {
 
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{ text: controller.secondaryAddressPrefix +  controller.descriptionTooLongError},
-    {text : controller.thirdAddressPrefix + controller.descriptionTooLongError}];
+      {text : controller.thirdAddressPrefix + controller.descriptionTooLongError}];
     let expectedResults: CourtAddressPageData =
       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
 

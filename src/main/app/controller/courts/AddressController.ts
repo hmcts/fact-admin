@@ -127,7 +127,7 @@ export class AddressController {
   }
 
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
-    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean, errors: string[] } {
+    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; errors: string[] } {
 
     const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
     const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false, true);
@@ -228,7 +228,7 @@ export class AddressController {
   }
 
   private checkErrorResponseForPostcodeErrors(error: AxiosError, addresses: DisplayCourtAddresses):
-    { primaryInvalid: boolean; secondaryInvalid: boolean; thirdInvalid: boolean, errors: string[] } {
+    { primaryInvalid: boolean; secondaryInvalid: boolean; thirdInvalid: boolean; errors: string[] } {
 
     let primaryPostcodeInvalid = false;
     let secondaryPostcodeInvalid = false;
