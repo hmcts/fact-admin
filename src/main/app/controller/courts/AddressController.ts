@@ -69,7 +69,7 @@ export class AddressController {
           const errors = postcodeValidation.errors.length === 0
             ? [this.updateAddressError] // we've encountered a 400 for a reason other than postcodes
             : postcodeValidation.errors;
-          await this.render(req, res, false, addresses, errors, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid);
+          await this.render(req, res, false, addresses, errors, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid);
         } else {
           await this.render(req, res, false, addresses, [this.updateAddressError]);
         }
@@ -132,7 +132,7 @@ export class AddressController {
     const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
     const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false, true);
     const thirdValidationResult = this.validateCourtAddress(addresses.third, false, false);
-    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress(addresses.primary, addresses.secondary,addresses.third, writeToUsTypeId);
+    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary, addresses.third], writeToUsTypeId);
     const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors).concat(thirdValidationResult.errors);
 
     return {
@@ -206,10 +206,11 @@ export class AddressController {
     return errors;
   }
 
-  private validateNoMoreThanOneVisitAddress(primary: DisplayAddress, secondary: DisplayAddress, third: DisplayAddress, writeToUsTypeId: number): string[] {
-    return writeToUsTypeId && !!primary.type_id && !!secondary.type_id && !!third.type_id &&  // validate only if types selected in both addresses
-    (this.addressFieldsNotEmpty(secondary) || (secondary.postcode?.trim() || third.postcode?.trim())) && // validate only if secondary has some fields entered
-    (primary.type_id !== writeToUsTypeId && (secondary.type_id !== writeToUsTypeId || third.type_id !== writeToUsTypeId) )// at least 1 write address should exist
+  private validateNoMoreThanOneVisitAddress(addresses: DisplayAddress[], writeToUsTypeId: number): string[] {
+
+    return (writeToUsTypeId && !!addresses[0].type_id && !!addresses[1].type_id) &&
+      (!(!!addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2)  ||
+      (!!addresses[2].type_id && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 1)
       ? [this.multipleVisitAddressError]
       : [];
   }
