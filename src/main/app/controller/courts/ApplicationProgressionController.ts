@@ -18,6 +18,7 @@ export class ApplicationProgressionController {
   getApplicationUpdatesErrorMsg = 'A problem occurred when retrieving the application progressions.';
   invalidEmailFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
+  doubleInputErrorMsg = 'Enter either an email address or an external link per application progression';
 
   public async get(
     req: AuthedRequest,
@@ -87,8 +88,8 @@ export class ApplicationProgressionController {
     void {
     if (applicationProgressions) {
       for (let i = 0; i < numberOfForms; i++) {
-        applicationProgressions.push({ type: null, email: null, external_link: null, external_link_description: null,
-          isNew: true });
+        applicationProgressions.push({ type: null, type_cy: null, email: null, external_link: null,
+          external_link_description: null, external_link_description_cy: null, isNew: true });
       }
     }
   }
@@ -113,6 +114,10 @@ export class ApplicationProgressionController {
     if (applicationProgressions.some(ap => (ap.external_link && !ap.external_link_description ||
       !ap.external_link && ap.external_link_description))){
       errorMsg.push(this.linkFieldsErrorMsg);
+    }
+
+    if (applicationProgressions.some(ap => (ap.email && ap.external_link))){
+      errorMsg.push(this.doubleInputErrorMsg);
     }
 
     // If any email used is not of an email format, return with an error
