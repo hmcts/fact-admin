@@ -63,6 +63,16 @@
 
   {{ govukInput({
     label: {
+      text: "Type (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "typeCy-" + loop.index,
+    name: "progression[" + loop.index +"][typeCy]",
+    value: progression.typeCy
+  }) }}
+
+  {{ govukInput({
+    label: {
       text: "Email"
     },
     classes: "govuk-input--width-20",
@@ -89,6 +99,16 @@
     id: "external_link_description-" + loop.index,
     name: "progression[" + loop.index +"][external_link_description]",
     value: progression.external_link_description
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link Description (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "external_link_description_cy-" + loop.index,
+    name: "progression[" + loop.index +"][external_link_description_cy]",
+    value: progression.external_link_descriptionCy
   }) }}
 
   <div class="govuk-grid-row">
