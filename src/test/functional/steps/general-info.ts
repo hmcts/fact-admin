@@ -22,16 +22,17 @@ When('I click the general tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the urgent notices', async () => {
+Then('I can view the urgent notices and the PUAS flag', async () => {
   const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice');
   const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh');
+  const PAUSFlag = await I.checkElement('#generalInfoTab #access_scheme');
   expect(urgentNoticesExist).equal(true);
   expect(welshUrgentNoticesExist).equal(true);
+  expect(PAUSFlag).equal(true);
 });
 
 Then('I cannot view super admin content', async () => {
   expect(await I.isElementVisible('#generalInfoTab #open')).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #access_scheme')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info_cy')).equal(false);
 });
