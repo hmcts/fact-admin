@@ -78,7 +78,7 @@ Feature: Court-addresses
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     And I click the Save Addresses button
-    Then The error message display is "Primary Address: Address is required." "Secondary Address: Town is required." "Secondary Address 1: Postcode is required."
+    Then The error message display is "Primary Address: Address is required." "Secondary Address 1: Town is required." "Secondary Address 1: Postcode is required."
 
     Examples:
       | town     |  postcode | secondary address             |
