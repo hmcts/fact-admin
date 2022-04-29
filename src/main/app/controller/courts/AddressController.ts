@@ -30,8 +30,8 @@ export class AddressController {
   writeToUsAddressType = 'Write to us';
   visitOrContactUsAddressType = 'Visit or contact us';
   primaryAddressPrefix = 'Primary Address: ';
-  secondaryAddressPrefix = 'Secondary Address: ';
-  thirdAddressPrefix = 'Third Address: ';
+  secondaryAddressPrefix = 'Secondary Address 1: ';
+  thirdAddressPrefix = 'Secondary Address 2: ';
   descriptionTooLongError = 'Maximum length of description is 50 characters'
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
