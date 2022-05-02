@@ -50,7 +50,7 @@
     "@types/tinymce": "^4.6.2",
     "applicationinsights": "^2.1.8",
     "autobind-decorator": "^2.4.0",
-    "awilix": "^6.1.0",
+    "awilix": "^7.0.3",
     "axios": "^0.26.0",
     "body-parser": "^1.19.0",
     "config": "^3.3.6",
