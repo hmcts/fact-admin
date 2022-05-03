@@ -29,17 +29,38 @@
 
   {% set isNew = (progression.isNew === true) or (progression.isNew === "true") %}
 
-  {% set descriptionError = false %}
+  {% set typeError = false %}
   {% if progression.type === '' %}
-    {% set descriptionError = { text: 'Type is required' } %}
+    {% set typeError = { text: 'Type is required' } %}
   {% endif %}
 
-  {% set emailsError = false %}
-  {% if email.isDuplicated === true %}
-    {% set emailsError = { text: 'Duplicated address' } %}
-  {% elif email.isInvalidFormat === true %}
-    {% set emailsError = { text: 'Invalid email address format' } %}
+  {% set descriptionError = false %}
+  {% if progression.external_link !== '' and progression.external_link_description === '' %}
+    {% set descriptionError = { text: 'Description is required' } %}
   {% endif %}
+
+  {% set linkError = false %}
+  {% if progression.external_link_description !== '' and progression.external_link === '' %}
+    {% set linkError = { text: 'Link is required' } %}
+  {% elif progression.isInvalidFormat === true and progression.email === '' %}
+    {% set linkError = { text: 'Invalid url format' } %}
+  {% endif %}
+
+  {% set emailError = false %}
+  {% if progression.isDuplicated === true %}
+    {% set emailError = { text: 'Duplicated address' } %}
+  {% elif progression.isInvalidFormat === true and progression.external_link === '' %}
+    {% set emailError = { text: 'Invalid email address format' } %}
+  {% endif %}
+
+  {% set contentError = false %}
+  {% if progression.email === '' and progression.external_link === '' %}
+    {% set contentError = { text: 'Email or Link required' } %}
+  {% elif progression.email !== '' and progression.email !== null and progression.external_link !== '' and progression.external_link !== null %}
+    {% set contentError = { text: 'Email or Link required' } %}
+  {% endif %}
+
+
 
   {% call govukFieldset({
     classes: "can-reorder"
@@ -55,6 +76,7 @@
     label: {
       text: "Type"
     },
+    errorMessage: typeError,
     classes: "govuk-input--width-20",
     id: "type-" + loop.index,
     name: "progression[" + loop.index +"][type]",
@@ -75,6 +97,7 @@
     label: {
       text: "Email"
     },
+    errorMessage: emailError + contentError,
     classes: "govuk-input--width-20",
     id: "email-" + loop.index,
     name: "progression[" + loop.index +"][email]",
@@ -85,6 +108,7 @@
     label: {
       text: "External Link"
     },
+    errorMessage: linkError + contentError,
     classes: "govuk-input--width-20",
     id: "external_link-" + loop.index,
     name: "progression[" + loop.index +"][external_link]",
@@ -95,6 +119,7 @@
     label: {
       text: "External Link Description"
     },
+    errorMessage: descriptionError,
     classes: "govuk-input--width-20",
     id: "external_link_description-" + loop.index,
     name: "progression[" + loop.index +"][external_link_description]",
@@ -241,7 +266,7 @@
 
 {{ govukButton({
   text: "Save",
-  name: "addUpdate"
+  name: "saveUpdate"
 }) }}
 
 {{ govukButton({

@@ -124,6 +124,7 @@ export class ApplicationProgressionController {
     let emailHasInvalidFormat = false;
     for (const progression of applicationProgressions){
       if (progression.email && !validateStringEmailFormat(progression.email)){
+        progression.isInvalidFormat = true;
         emailHasInvalidFormat = true;
       }
     }
