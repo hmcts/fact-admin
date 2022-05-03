@@ -30,8 +30,7 @@ Then('I can view the urgent notices', async () => {
 });
 
 Then('I can view the PUAS flag', async () => {
-  const PAUSFlag = await I.checkElement('#generalInfoTab #access_scheme');
-  expect(PAUSFlag).equal(true);
+  expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
 });
 
 Then('I cannot view super admin content', async () => {
