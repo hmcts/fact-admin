@@ -53,6 +53,9 @@
   }) }}
 
   <input name='in_person' type='hidden' value='{{generalInfo.in_person}}'></input>
+
+  {% endif %}
+
   <input name='service_centre' type='hidden' value='{{generalInfo.service_centre}}'></input>
 
   {% set disableAccessScheme = generalInfo.service_centre == true %}
@@ -67,7 +70,7 @@
       }
     ]
   }) }}
-{% endif %}
+
 
 {% if generalInfo.service_centre %}
 

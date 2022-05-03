@@ -29,9 +29,12 @@ Then('I can view the urgent notices', async () => {
   expect(welshUrgentNoticesExist).equal(true);
 });
 
+Then('I can view the PUAS flag', async () => {
+  expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
+});
+
 Then('I cannot view super admin content', async () => {
   expect(await I.isElementVisible('#generalInfoTab #open')).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #access_scheme')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info_cy')).equal(false);
 });
