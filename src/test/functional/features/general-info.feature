@@ -14,7 +14,8 @@ Feature: General Info
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
     When I click the general tab
-    Then I can view the urgent notices and the PUAS flag
+    Then I can view the urgent notices
+    And I can view the PUAS flag
     And I cannot view super admin content
 
   Scenario: Super user can view and update all fields

@@ -22,12 +22,15 @@ When('I click the general tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the urgent notices and the PUAS flag', async () => {
+Then('I can view the urgent notices', async () => {
   const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice');
   const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh');
-  const PAUSFlag = await I.checkElement('#generalInfoTab #access_scheme');
   expect(urgentNoticesExist).equal(true);
   expect(welshUrgentNoticesExist).equal(true);
+});
+
+Then('I can view the PUAS flag', async () => {
+  const PAUSFlag = await I.checkElement('#generalInfoTab #access_scheme');
   expect(PAUSFlag).equal(true);
 });
 
