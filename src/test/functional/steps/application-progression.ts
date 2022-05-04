@@ -28,7 +28,7 @@ When('I test', async () => {
 });
 
 When('I remove all existing application types entries and save', async () => {
-  await FunctionalTestHelpers.clearFieldsetsAndSave('#application-progression', 'deleteUpdate', 'addUpdate');
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#application-progression', 'deleteUpdate', 'saveUpdate');
 });
 
 Then('a green update message Application progression updated {string}', async (message: string) => {
@@ -38,6 +38,11 @@ Then('a green update message Application progression updated {string}', async (m
 
 Then('I entered {string} in Type TextBox', async (applicationType: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[type]"]';
+  await populateField(typeSelector, applicationType);
+});
+
+Then('I entered {string} in welsh type TexTBox', async (applicationType: string) => {
+  const typeSelector = '#applicationProgressionTab input[name$="[typeCy]"]';
   await populateField(typeSelector, applicationType);
 });
 
@@ -57,9 +62,14 @@ Then('I entered {string} in External link description TextBox', async (externalL
   await populateField(typeSelector, externalLinkDec);
 });
 
+Then('I entered {string} in External link welsh description TextBox', async (externalLinkDec: string) => {
+  const typeSelector = '#applicationProgressionTab input[name$="[external_link_description_cy]"]';
+  await populateField(typeSelector, externalLinkDec);
+});
+
 
 Then('I click application progression save button', async () => {
-  await FunctionalTestHelpers.clickButton('#application-progression', 'addUpdate');
+  await FunctionalTestHelpers.clickButton('#application-progression', 'saveUpdate');
 });
 
 Then('I click on add new application progression',async () => {
@@ -97,7 +107,6 @@ Then('the last email is {string}', async (lastEmail: string) => {
   expect(expEmail).equal(lastEmail);
 
 });
-
 
 Then('An error is displayed for application progression with summary {string}', async (errMessage: string) => {
   const errorTitle = await I.checkElement('#error-summary-title');
