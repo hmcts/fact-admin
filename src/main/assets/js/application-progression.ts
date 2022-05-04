@@ -19,9 +19,11 @@ export class ApplicationProgressionController {
   private moveDownBtnClass = 'move-down';
 
   private typeInputName = 'type';
+  private typeCyInputName = 'type_cy';
   private emailInputName = 'email';
   private externalLinkInputName = 'external_link';
   private externalLinkDescriptionInputName = 'external_link_description';
+  private externalLinkDescriptionCyInputName = 'external_link_description_cy';
   private hiddenNewInputName = 'isNew';
 
 
@@ -105,9 +107,11 @@ export class ApplicationProgressionController {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
     this.renameInputElement(this.typeInputName, this.typeInputName);
+    this.renameInputElement(this.typeCyInputName, this.typeCyInputName);
     this.renameInputElement(this.emailInputName, this.emailInputName);
     this.renameInputElement(this.externalLinkInputName, this.externalLinkInputName);
     this.renameInputElement(this.externalLinkDescriptionInputName, this.externalLinkDescriptionInputName);
+    this.renameInputElement(this.externalLinkDescriptionCyInputName, this.externalLinkDescriptionCyInputName);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
