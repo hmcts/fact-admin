@@ -32,7 +32,7 @@ export class AddressController {
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address 1: ';
   thirdAddressPrefix = 'Secondary Address 2: ';
-  descriptionTooLongError = 'Maximum length of description is 50 characters'
+  descriptionTooLongError = 'Maximum length of description is 100 characters'
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -183,7 +183,7 @@ export class AddressController {
   private validateDescriptionLength(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
     const errors: string[] = [];
     if (!isPrimaryAddress) {
-      if (!(address.description?.trim().length<50) || !(address.description_cy.trim().length<50)) {
+      if (!(address.description?.trim().length<100) || !(address.description_cy.trim().length<100)) {
         errors.push(this.descriptionTooLongError);
       }
     }

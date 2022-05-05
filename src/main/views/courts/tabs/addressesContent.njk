@@ -111,10 +111,10 @@
   items: addressTypesSecondary  | selectFilter(addresses.secondary.type_id)
 }) }}
 
-{% if (addresses.secondary.description.length>50)  %}
+{% if (addresses.secondary.description.length>100)  %}
  {% set secondaryDescriptionError = descriptionInvalidError %}
 {% endif %}
-{% if  (addresses.secondary.description_cy.length>50) %}
+{% if  (addresses.secondary.description_cy.length>100) %}
  {% set secondaryDescriptionCyError = descriptionInvalidError %}
 {% endif %}
 
@@ -217,10 +217,10 @@
   items: addressTypesThird  | selectFilter(addresses.third.type_id)
 }) }}
 
-{% if (addresses.third.description.length>50)  %}
+{% if (addresses.third.description.length>100)  %}
  {% set thirdDescriptionError = descriptionInvalidError %}
 {% endif %}
-{% if  (addresses.third.description_cy.length>50) %}
+{% if  (addresses.third.description_cy.length>100) %}
  {% set thirdDescriptionCyError = descriptionInvalidError %}
 {% endif %}
 
