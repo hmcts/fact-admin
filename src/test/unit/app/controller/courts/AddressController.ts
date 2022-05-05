@@ -502,7 +502,7 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary and third descriptions is more than 50 characters', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    const tooLongDescription = 'description1234567890123456789123456789012345678901';
+    const tooLongDescription = 'description123456789012345678912345678901234567890112345678901234567891234567890123456789011234567890';
 
     req.body = {
       primary: addresses.primary,
