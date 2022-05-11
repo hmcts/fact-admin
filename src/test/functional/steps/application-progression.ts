@@ -42,7 +42,7 @@ Then('I entered {string} in Type TextBox', async (applicationType: string) => {
 });
 
 Then('I entered {string} in welsh type TexTBox', async (applicationType: string) => {
-  const typeSelector = '#applicationProgressionTab input[name$="[typeCy]"]';
+  const typeSelector = '#applicationProgressionTab input[name$="[type_cy]"]';
   await populateField(typeSelector, applicationType);
 });
 
