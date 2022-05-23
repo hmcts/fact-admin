@@ -1,6 +1,6 @@
 # FACT Admin
 
-FACT administration interface
+FACT administration interface.
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ yarn start:dev
 
 ### Code style
 
-We use [ESLint](https://github.com/typescript-eslint/typescript-eslint).
+We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [sass-lint](https://github.com/sasstools/sass-lint)
 
 Running the linting with auto fix:
@@ -132,4 +132,4 @@ e.g. the ones verifying the state of each service it depends on.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.

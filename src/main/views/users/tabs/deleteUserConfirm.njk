@@ -1,0 +1,22 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<h2 class="govuk-heading-m">Remove roles for user: {{ userEmail }}</h2>
+
+<input type="hidden" id="user-email" name="user-email" value={{ userEmail }}>
+<input type="hidden" id="user-role" name="user-role" value={{ userRole }}>
+
+<div class="govuk-button-group">
+  {{ govukButton({
+    text: "Confirm Remove Roles",
+    type: "button",
+    attributes: { id: "confirmDeleteUserRolesBtn" },
+    classes: "govuk-button--warning"
+  }) }}
+
+  {{ govukButton({
+    text: "Cancel",
+    type: "button",
+    attributes: { id: "cancelEditUserBtn" },
+    classes: "govuk-button--secondary"
+  }) }}
+</div>

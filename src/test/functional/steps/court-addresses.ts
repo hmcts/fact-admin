@@ -35,6 +35,18 @@ When('I select the Address Type {string}', async (addressType: string) => {
   await I.selectItem(selector,addressType);
 });
 
+
+Then('I enter secondary address description {string} in Description textbox', async (desc: string) => {
+  const selector = '#secondaryAddressDescription';
+  await populateField(selector, desc);
+});
+
+
+Then ('I enter secondary address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
+  const selector = '#secondaryAddressDescriptionWelsh';
+  await populateField(selector, welshDesc);
+});
+
 Then('I enter court {string} in the Address textbox', async (address: string) => {
   const selector = '#primaryAddressLines';
   await populateField(selector, address);
@@ -129,3 +141,52 @@ Then('The error message display is {string}', async (errMessage: string) => {
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
+
+Given('I will make sure to clear all entries of third address', async () => {
+  const elementExist = await I.checkElement('button[name="removeThirdAddress"]');
+  expect(elementExist).equal(true);
+  await I.click('button[name="removeThirdAddress"]');
+});
+
+Then('I enter third address description {string} in Description textbox', async (desc: string) => {
+  const selector = '#thirdAddressDescription';
+  await populateField(selector, desc);
+});
+
+Then('I enter third address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
+  const selector = '#thirdAddressDescriptionWelsh';
+  await populateField(selector, welshDesc);
+});
+
+Then('I enter third address address {string} in the Address textbox', async (address: string) => {
+  const selector = '#thirdAddressLines';
+  await populateField(selector, address);
+});
+
+Then('I enter third address welsh address {string} in the Address Welsh textbox', async (welshAdd: string) => {
+  const selector = '#thirdAddressLinesWelsh';
+  await populateField(selector, welshAdd);
+});
+
+Then('I enter third address {string} in the Town textbox', async (town: string) => {
+  const selector = '#thirdAddressTown';
+  await populateField(selector, town);
+});
+
+Then('I enter third address {string} in the town Welsh textbox', async (welshtown: string) => {
+  const selector = '#thirdAddressTownWelsh';
+  await populateField(selector, welshtown);
+});
+
+Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {
+  const selector = '#thirdAddressPostcode';
+  await populateField(selector, postcode);
+});
+
+When('I select the third address type {string}', async (addressType: string) => {
+  const selector = '#thirdAddressType';
+  //const elementExist = await I.checkElement(selector);
+  expect(await I.checkElement(selector)).equal(true);
+  await I.selectItem(selector,addressType);
+});
+

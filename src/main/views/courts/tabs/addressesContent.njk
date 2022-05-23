@@ -4,6 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 <h2 class="govuk-heading-l">Addresses</h2>
 
@@ -24,9 +25,10 @@
 {% set townRequiredError = { text: 'Town is required' } %}
 {% set postcodeRequiredError = { text: 'Postcode is required' } %}
 {% set postcodeInvalidError = { text: 'Postcode is invalid' } %}
+{% set descriptionInvalidError = { text: 'Maximum length is 50 characters'} %}
 
 <div class="govuk-body">
-  <p>A court can have up to 2 addresses. Only the second address can be removed.<p>
+  <p>A court can have up to 3 addresses. The primary address can not be removed.<p>
 </div>
 
 <h3 class="govuk-heading-m">Primary Address</h3>
@@ -97,13 +99,42 @@
 
 <br/>
 
-<h3 class="govuk-heading-m">Secondary Address</h3>
+<hr/>
 
+<br/>
+<h3 class="govuk-heading-m">Secondary Address 1</h3>
+{{secondary.type_id}}
 {{ govukSelect({
   id: "secondaryAddressType",
   name: "secondary[type_id]",
   label: { text: "Address Type" },
   items: addressTypesSecondary  | selectFilter(addresses.secondary.type_id)
+}) }}
+
+{% if (addresses.secondary.description.length>100)  %}
+ {% set secondaryDescriptionError = descriptionInvalidError %}
+{% endif %}
+{% if  (addresses.secondary.description_cy.length>100) %}
+ {% set secondaryDescriptionCyError = descriptionInvalidError %}
+{% endif %}
+
+
+{{ govukInput({
+  id: "secondaryAddressDescription",
+  name: "secondary[description]",
+  label: { text: "Description" },
+  classes: "govuk-input--width-30",
+  value: addresses.secondary.description,
+  errorMessage: secondaryDescriptionError
+}) }}
+
+{{ govukInput({
+  id: "secondaryAddressDescriptionWelsh",
+  name: "secondary[description_cy]",
+  label: { text: "Description (Welsh)" },
+  classes: "govuk-input--width-30",
+  value: addresses.secondary.description_cy,
+  errorMessage: secondaryDescriptionCyError
 }) }}
 
 {% if (addresses.secondary.address_lines) or (addresses.secondary.address_lines_cy) or (addresses.secondary.town) or (addresses.secondary.town_cy) or (addresses.secondary.postcode) %}
@@ -167,17 +198,126 @@
 }) }}
 
 {{ govukButton({
+   text: "Remove",
+   name: "removeSecondaryAddress",
+   type: "button",
+   classes: "govuk-button--warning",
+   attributes: { id: "removeSecondAddressBtn" },
+   disabled: true if fatalError
+ }) }}
+ <br/>
+ <hr/>
+ <br/>
+<h3 class="govuk-heading-m">Secondary Address 2</h3>
+
+{{ govukSelect({
+  id: "thirdAddressType",
+  name: "third[type_id]",
+  label: { text: "Address Type" },
+  items: addressTypesThird  | selectFilter(addresses.third.type_id)
+}) }}
+
+{% if (addresses.third.description.length>100)  %}
+ {% set thirdDescriptionError = descriptionInvalidError %}
+{% endif %}
+{% if  (addresses.third.description_cy.length>100) %}
+ {% set thirdDescriptionCyError = descriptionInvalidError %}
+{% endif %}
+
+{{ govukInput({
+  id: "thirdAddressDescription",
+  name: "third[description]",
+  label: { text: "Description" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.description,
+  errorMessage: thirdDescriptionError
+}) }}
+
+{{ govukInput({
+  id: "thirdAddressDescriptionWelsh",
+  name: "third[description_cy]",
+  label: { text: "Description (Welsh)" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.description_cy,
+  errorMessage: thirdDescriptionCyError
+}) }}
+
+{% if (addresses.third.address_lines) or (addresses.third.address_lines_cy) or (addresses.third.town) or (addresses.third.town_cy) or (addresses.third.postcode) %}
+  {% if addresses.third.address_lines == '' %}
+    {% set thirdAddressError = addressRequiredError %}
+  {% endif %}
+  {% if addresses.third.town == '' %}
+    {% set thirdTownError = townRequiredError %}
+  {% endif %}
+{% endif %}
+
+{{ govukTextarea({
+  id: "thirdAddressLines",
+  name: "third[address_lines]",
+  label: { text: "Address" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.address_lines,
+  errorMessage: thirdAddressError
+}) }}
+
+{{ govukTextarea({
+  id: "thirdAddressLinesWelsh",
+  name: "third[address_lines_cy]",
+  label: { text: "Address (Welsh)" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.address_lines_cy
+}) }}
+
+{{ govukInput({
+  id: "thirdAddressTown",
+  name: "third[town]",
+  label: { text: "Town" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.town,
+  errorMessage: thirdTownError
+}) }}
+
+{{ govukInput({
+  id: "thirdAddressTownWelsh",
+  name: "third[town_cy]",
+  label: { text: "Town (Welsh)" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.town_cy
+}) }}
+
+{% if addresses.third.postcode == '' %}
+  {% if addresses.third.address_lines or addresses.third.address_lines_cy or addresses.third.town or addresses.third.town_cy %}
+    {% set thirdPostcodeError = postcodeRequiredError %}
+  {% endif %}
+{% elif thirdPostcodeInvalid %}
+  {% set thirdPostcodeError = postcodeInvalidError %}
+{% endif %}
+
+{{ govukInput({
+  id: "thirdAddressPostcode",
+  name: "third[postcode]",
+  label: { text: "Postcode" },
+  classes: "govuk-input--width-30",
+  value: addresses.third.postcode,
+  errorMessage: thirdPostcodeError
+}) }}
+
+
+{{ govukButton({
+       text: "Remove",
+         name: "removeThirdAddress",
+         type: "button",
+         classes: "govuk-button--warning",
+         attributes: { id: "removeThirdAddressBtn" },
+         disabled: true if fatalError
+ }) }}
+<br/>
+
+<hr/>
+{{ govukButton({
   text: "Save Addresses",
   name: "saveAddresses",
   attributes: { id: "saveCourtAddressesBtn" },
   disabled: true if fatalError
 }) }}
 
-{{ govukButton({
-  text: "Remove Secondary Address",
-  name: "removeSecondaryAddress",
-  type: "button",
-  classes: "govuk-button--secondary",
-  attributes: { id: "removeSecondaryAddressBtn" },
-  disabled: true if fatalError
-}) }}

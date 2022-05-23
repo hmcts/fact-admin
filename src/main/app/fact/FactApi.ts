@@ -19,6 +19,7 @@ import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
 import {ApplicationProgression} from '../../types/ApplicationProgression';
+import {ServiceArea} from '../../types/ServiceArea';
 
 export class FactApi {
 
@@ -294,6 +295,16 @@ export class FactApi {
   public getAllAreasOfLaw(): Promise<AreaOfLaw[]> {
     return this.axios
       .get(`${this.adminUrl}/areasOfLaw`) // bankrupty, housing, money claims
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getAllServiceAreas(): Promise<ServiceArea[]> {
+    return this.axios
+      .get(`${this.adminUrl}/serviceAreas`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

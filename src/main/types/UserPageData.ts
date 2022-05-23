@@ -16,3 +16,15 @@ export interface AddUserPageData {
   updated: Boolean,
   user: User
 }
+
+export interface SearchUserPageData {
+  userEmail: string,
+  errors: Error[],
+  updated: Boolean,
+  userRolesRemoved: Boolean
+}
+
+export interface EditUserPageData {
+  errors: Error[],
+  user: User
+}

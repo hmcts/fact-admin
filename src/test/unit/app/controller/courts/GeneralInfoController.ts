@@ -67,8 +67,18 @@ describe('GeneralInfoController', () => {
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20',
     'sc_intro_paragraph_cy': 'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
@@ -85,7 +95,9 @@ describe('GeneralInfoController', () => {
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
-      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20.',
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ',
     'alert_cy': 'an alert cy',
     'in_person': true,
     'service_centre': false,
@@ -261,7 +273,7 @@ describe('GeneralInfoController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
-  test('Should not update general info if intro paragraph more than 300 chars', async () => {
+  test('Should not update general info if intro paragraph more than 400 chars', async () => {
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };
