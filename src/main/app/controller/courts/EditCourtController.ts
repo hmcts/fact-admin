@@ -13,9 +13,6 @@ export class EditCourtController {
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
       csrfToken: CSRF.create()
     };
-    console.log('pageData');
-
-    console.log(pageData);
 
     res.render('courts/edit-court-general', pageData);
   }
