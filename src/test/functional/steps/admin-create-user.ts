@@ -109,6 +109,17 @@ Then('I select the user role as fact-super-admin', async () => {
   await I.click(selector);
 });
 
+Then('I change the test user role', async () => {
+  const selectorSuper = '#userRole-2';
+  const selectorAdmin = '#userRole';
+  expect(await I.checkElement(selectorSuper)).equal(true);
+  expect(await I.checkElement(selectorAdmin)).equal(true);
+  if (await I.isElementChecked(selectorSuper))
+    await I.click(selectorAdmin);
+  else
+    await I.click(selectorSuper);
+});
+
 Then('I can see user details updated message {string}', async (message: string) => {
   const selector = '#searchUserContent > div.govuk-panel.govuk-panel--confirmation > h1';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);

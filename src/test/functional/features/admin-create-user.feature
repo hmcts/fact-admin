@@ -41,12 +41,7 @@ Feature: create admin user
     When I click on edit user
     When I enter User Email "test@fact.com"
     Then I click search user button
-    Then I select the user role as fact-super-admin
-    Then I click edit user button
-    Then I can see user details updated message "User details successfully updated"
-    When I enter User Email "test@fact.com"
-    Then I click search user button
-    Then I select the user role as fact-admin to update user
+    Then I change the test user role
     Then I click edit user button
     Then I can see user details updated message "User details successfully updated"
 
@@ -69,7 +64,7 @@ Feature: create admin user
     When I click on edit user
     When I enter User Email "test@fact.com"
     Then I click search user button
-    Then I select the user role as fact-super-admin
+    Then I change the test user role
     Then I click edit user button
     Then I can see user details updated message "User details successfully updated"
     When I enter User Email "test@fact.com"
