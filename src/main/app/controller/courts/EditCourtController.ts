@@ -9,7 +9,6 @@ export class EditCourtController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
-      isServiceCentre: (await req.scope.cradle.api.getGeneralInfo(req.params.slug)).service_centre,
       slug: req.params.slug,
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
       csrfToken: CSRF.create()
