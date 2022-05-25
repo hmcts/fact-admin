@@ -27,6 +27,7 @@ describe('AddressesController', () => {
         'address_lines_cy': ['54 Green Street_cy'],
         town: 'Redville',
         'town_cy': 'Redville_cy',
+        'county_id': 1,
         postcode: 'RR1 2AB'
       },
       {
@@ -37,6 +38,7 @@ describe('AddressesController', () => {
         'address_lines_cy': ['11 Yellow Road_cy'],
         town: 'Brownville',
         'town_cy': 'Brownville',
+        'county_id': 2,
         postcode: 'BB11 1BC'
       },
       {
@@ -47,6 +49,7 @@ describe('AddressesController', () => {
         'address_lines_cy': ['12 Yellow Road_cy'],
         town: 'Birmingham',
         'town_cy': 'Birmingham',
+        'county_id': 3,
         postcode: 'B1 1AA'
       }
     ];
@@ -67,6 +70,7 @@ describe('AddressesController', () => {
         'address_lines_cy': primary.address_lines_cy.join('\n'),
         town: primary.town,
         'town_cy': primary.town_cy,
+        'county_id': 1,
         postcode: primary.postcode
       },
       secondary: {
@@ -77,6 +81,7 @@ describe('AddressesController', () => {
         'address_lines_cy': secondary.address_lines_cy.join('\n'),
         town: secondary.town,
         'town_cy': secondary.town_cy,
+        'county_id': 2,
         postcode: secondary.postcode
       },
       third: {
@@ -87,6 +92,7 @@ describe('AddressesController', () => {
         'address_lines_cy': third.address_lines_cy.join('\n'),
         town: third.town,
         'town_cy': third.town_cy,
+        'county_id': 3,
         postcode: third.postcode
       }
     };
@@ -98,6 +104,11 @@ describe('AddressesController', () => {
     { id: 300, name: 'Visit or contact us' , 'name_cy': 'Visit or contact us'}
   ];
 
+  const counties: SelectItem[] = [
+    { value: 1, text: 'West Midlands', selected: false },
+    { value: 2, text: 'Cardiff ', selected: false },
+    { value: 3, text: 'Aberdeenshire' , selected: false}
+  ];
   const expectedSelectItems: SelectItem[] = [
     {
       value: addressTypes[0].id,
@@ -130,6 +141,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
       addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties : counties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedErrors,
@@ -164,7 +176,7 @@ describe('AddressesController', () => {
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third,[], false, false, false,false);
+      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third,[], null, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // When there is no secondary address or third address
@@ -210,6 +222,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
       addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties: counties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedError,
@@ -238,6 +251,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: [],
       addressTypesSecondary: [],
       addressTypesThird: [],
+      counties : counties,
       writeToUsTypeId: null,
       updated: false,
       errors: expectedError,
@@ -254,8 +268,8 @@ describe('AddressesController', () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', postcode: '' },
-      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', postcode: '' }
+      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '' },
+      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '' }
     };
 
     req.body = {

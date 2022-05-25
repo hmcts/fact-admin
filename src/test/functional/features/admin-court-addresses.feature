@@ -20,6 +20,7 @@ Feature: Court-addresses
     Then I enter "<welsh address>" in the Address Welsh textbox
     Then I enter "<town>" in the Town textbox
     Then I enter "<welsh town>" in the town Welsh textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5881"
@@ -40,6 +41,7 @@ Feature: Court-addresses
     Then I enter "<welsh address>" in the Address Welsh textbox
     Then I enter "<town>" in the Town textbox
     Then I enter "<welsh town>" in the town Welsh textbox
+    Then I select the secondary County "50"
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5880"
@@ -65,6 +67,7 @@ Feature: Court-addresses
     Then I enter third address welsh address "test welsh address" in the Address Welsh textbox
     Then I enter third address "town" in the Town textbox
     Then I enter third address "welsh town" in the town Welsh textbox
+    Then I select the third County "50"
     Then I enter third address "CF44 0JE" in the postcode textbox
     And I click the Save Addresses button
     Then A green message is displayed for the updated address "Addresses updated"
@@ -74,9 +77,11 @@ Feature: Court-addresses
     When I will make sure to clear all entries for secondary address
     When I select the Address Type "5880"
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
+    Then I select the secondary County "50"
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Address is required." "Secondary Address 1: Town is required." "Secondary Address 1: Postcode is required."
 
@@ -89,6 +94,7 @@ Feature: Court-addresses
     When I select the Address Type "5880"
     Then I enter court "<address>" in the Address textbox
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Postcode is invalid."
@@ -102,6 +108,7 @@ Feature: Court-addresses
     When I select the Address Type "5880"
     Then I enter court "<address>" in the Address textbox
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Postcode entered could not be found."

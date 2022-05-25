@@ -19,6 +19,7 @@ import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
 import {ServiceArea} from '../../types/ServiceArea';
+import {County} from '../../types/County';
 
 export class FactApi {
 
@@ -652,6 +653,16 @@ export class FactApi {
   public reorderFacilityTypes(ids: string[]): Promise<FacilityType[]> {
     return this.axios
       .put(`${this.adminUrl}/facilities/reorder`, ids)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getCounties(): Promise<County[]> {
+    return this.axios
+      .get(`${this.adminUrl}/counties`)
       .then(results => results.data)
       .catch(err => {
         this.logError(err);
