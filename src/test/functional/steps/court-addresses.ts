@@ -25,7 +25,6 @@ Given('I will make sure to clear all entries of the primary address', async () =
   await checkAndClearAddressField('#primaryAddressWelsh');
   await checkAndClearAddressField('#primaryAddressTown');
   await checkAndClearAddressField('#primaryAddressTownWelsh');
-  await checkAndClearAddressField('#primaryCounty');
   await checkAndClearAddressField('#primaryAddressPostcode');
 });
 
