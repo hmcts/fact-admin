@@ -111,7 +111,7 @@ describe('AddressesController', () => {
     {id: 1, name:'West Midlands', country: 'England'},
     {id: 2, name:'Cardiff', country: 'Wales'},
     {id: 3, name:'Aberdeenshire', country: 'Scotland'}
-  ]
+  ];
 
 
   const expectedCounties: SelectItem[] = [
