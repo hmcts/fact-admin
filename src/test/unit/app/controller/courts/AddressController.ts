@@ -5,13 +5,16 @@ import {CSRF} from '../../../../../main/modules/csrf';
 import {AddressType, CourtAddress, DisplayAddress, DisplayCourtAddresses} from '../../../../../main/types/CourtAddress';
 import {AddressController} from '../../../../../main/app/controller/courts/AddressController';
 import {CourtAddressPageData} from '../../../../../main/types/CourtAddressPageData';
+import {County} from '../../../../../main/types/County';
+
 
 describe('AddressesController', () => {
 
   let mockApi: {
     getCourtAddresses: () => Promise<CourtAddress[]>,
     updateCourtAddresses: () => Promise<CourtAddress[]>,
-    getAddressTypes: () => Promise<AddressType[]>
+    getAddressTypes: () => Promise<AddressType[]>,
+    getCounties: () => Promise<County[]>
   };
 
   const res = mockResponse();
@@ -104,9 +107,16 @@ describe('AddressesController', () => {
     { id: 300, name: 'Visit or contact us' , 'name_cy': 'Visit or contact us'}
   ];
 
-  const counties: SelectItem[] = [
+  const counties: County[] = [
+    {id: 1, name:'West Midlands', country: 'England'},
+    {id: 2, name:'Cardiff', country: 'Wales'},
+    {id: 3, name:'Aberdeenshire', country: 'Scotland'}
+  ]
+
+
+  const expectedCounties: SelectItem[] = [
     { value: 1, text: 'West Midlands', selected: false },
-    { value: 2, text: 'Cardiff ', selected: false },
+    { value: 2, text: 'Cardiff', selected: false },
     { value: 3, text: 'Aberdeenshire' , selected: false}
   ];
   const expectedSelectItems: SelectItem[] = [
@@ -141,7 +151,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
       addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
-      counties : counties,
+      counties : expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedErrors,
@@ -158,7 +168,8 @@ describe('AddressesController', () => {
     mockApi = {
       getCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
       updateCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
-      getAddressTypes: async (): Promise<AddressType[]> => addressTypes
+      getAddressTypes: async (): Promise<AddressType[]> => addressTypes,
+      getCounties: async (): Promise<County[]> => counties
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -176,7 +187,7 @@ describe('AddressesController', () => {
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third,[], null, false, false, false);
+      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third,[], false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // When there is no secondary address or third address
@@ -222,7 +233,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
       addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
-      counties: counties,
+      counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedError,
@@ -251,7 +262,7 @@ describe('AddressesController', () => {
       addressTypesPrimary: [],
       addressTypesSecondary: [],
       addressTypesThird: [],
-      counties : counties,
+      counties : expectedCounties,
       writeToUsTypeId: null,
       updated: false,
       errors: expectedError,
