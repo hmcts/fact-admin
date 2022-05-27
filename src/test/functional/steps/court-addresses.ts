@@ -36,7 +36,7 @@ When('I select the Address Type {string}', async (addressType: string) => {
 });
 
 When('I select the primary County {string}', async (county: string) => {
-  const selector = '#primaryCounty';
+  const selector = '#primaryAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector,county);
@@ -118,7 +118,7 @@ Then('I enter the secondary address town {string}', async (town: string) => {
 });
 
 When('I select the secondary County {string}', async (county: string) => {
-  const selector = '#secondaryCounty';
+  const selector = '#secondaryAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector,county);
@@ -191,7 +191,7 @@ Then('I enter third address {string} in the town Welsh textbox', async (welshtow
 });
 
 When('I select the third County {string}', async (county: string) => {
-  const selector = '#thirdCounty';
+  const selector = '#thirdAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector,county);
