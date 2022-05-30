@@ -26,6 +26,7 @@ Feature: Court-addresses
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I enter the secondary address town "<secondary town>"
+    Then I select the secondary County "50"
     Then I enter the secondary address postcode "<secondary postcode>"
     And I click the Save Addresses button
     Then A green message is displayed for the updated address "Addresses updated"
@@ -41,7 +42,7 @@ Feature: Court-addresses
     Then I enter "<welsh address>" in the Address Welsh textbox
     Then I enter "<town>" in the Town textbox
     Then I enter "<welsh town>" in the town Welsh textbox
-    Then I select the secondary County "50"
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5880"
@@ -49,6 +50,7 @@ Feature: Court-addresses
     Then I enter secondary address welsh description "test welsh" in Welsh Description textbox
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I enter the secondary address town "<secondary town>"
+    Then I select the secondary County "50"
     Then I enter the secondary address postcode "<secondary postcode>"
     And I click the Save Addresses button
     Then The error message display is "Only one visit address is permitted."
