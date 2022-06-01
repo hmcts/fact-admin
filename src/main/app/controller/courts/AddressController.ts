@@ -13,15 +13,18 @@ import {
 import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
 import {postcodeIsValidFormat} from '../../../utils/validation';
+import {County} from '../../../types/County';
 
 @autobind
 export class AddressController {
 
   getAddressTypesError = 'A problem occurred when retrieving the court address types.';
   getAddressesError = 'A problem occurred when retrieving the court addresses.';
+  getCountyError = 'A problem occurred when retrieving the counties';
   updateAddressError = 'A problem occurred when saving the court addresses.';
   multipleVisitAddressError = 'Only one visit address is permitted.';
   typeRequiredError = 'Address Type is required.';
+  countyRequiredError = 'County is required. ';
   addressRequiredError = 'Address is required.';
   townRequiredError = 'Town is required.';
   invalidPostcodeError = 'Postcode is invalid.';
@@ -105,6 +108,14 @@ export class AddressController {
         errorMsgs.push(this.getAddressTypesError);
         fatalError = true;
       });
+
+    let counties: County[] = [];
+    await req.scope.cradle.api.getCounties()
+      .then((countyList: County[]) => counties = countyList)
+      .catch(() => {
+        errorMsgs.push(this.getCountyError);
+        fatalError = true;
+      });
     // We expect a 'write to us' address type and use this to ensure that if 2 addresses are entered,
     // at least one is of this type (2 'visit' addresses are not permitted).
     const writeToUsTypes = addressTypes.filter(at => at.name.toLowerCase() === this.writeToUsAddressType.toLowerCase()).map(at => at.id);
@@ -113,6 +124,7 @@ export class AddressController {
       addressTypesPrimary: this.getAddressTypesForSelect(addressTypes, true),
       addressTypesSecondary: this.getAddressTypesForSelect(addressTypes, false),
       addressTypesThird: this.getAddressTypesForSelect(addressTypes, false),
+      counties : this.getCountiesForSelect(counties),
       addresses: addresses,
       writeToUsTypeId: writeToUsTypes.length === 1 ? writeToUsTypes[0] : null,
       errors: errorMsgs.map(errorMsg => { return { text: errorMsg }; }),
@@ -145,6 +157,7 @@ export class AddressController {
 
   private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean): AddressValidationResult {
     const typeErrors = this.validateAddressTypeExists(address, isPrimaryAddress);
+    const countyErrors = this.validateCountyExists(address);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
     const descriptionErrors = this.validateDescriptionLength(address, isPrimaryAddress);
@@ -154,13 +167,20 @@ export class AddressController {
       postcodeValid: postcodeErrors.length === 0,
       addressValid: addressErrors.length === 0,
       descriptionValid: descriptionErrors.length === 0,
-      errors: typeErrors.concat(addressErrors).concat(postcodeErrors).concat(descriptionErrors).map(error => errorPrefix + error)
+      errors: typeErrors.concat(countyErrors).concat(addressErrors).concat(postcodeErrors).concat(descriptionErrors).map(error => errorPrefix + error)
     };
   }
 
   private validateAddressTypeExists(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
     if (isPrimaryAddress || (!!address.postcode || this.addressFieldsNotEmpty(address))) {
       return !address.type_id ? [this.typeRequiredError] : [];
+    }
+    return [];
+  }
+
+  private validateCountyExists(address: DisplayAddress): string[] {
+    if (!!address.postcode || this.addressFieldsNotEmpty(address)) {
+      return !address.county_id ? [this.countyRequiredError] : [];
     }
     return [];
   }
@@ -226,6 +246,11 @@ export class AddressController {
     return isPrimaryAddress
       ? allAddressTypes
       : allAddressTypes.filter(at => at.text.toLowerCase() !== this.visitOrContactUsAddressType.toLowerCase());
+  }
+
+  private getCountiesForSelect(counties: County[]): SelectItem[] {
+    return counties.map((ct: County) => (
+      {value: ct.id, text: ct.name, selected: false}));
   }
 
   private checkErrorResponseForPostcodeErrors(error: AxiosError, addresses: DisplayCourtAddresses):
@@ -296,6 +321,7 @@ export class AddressController {
       'address_lines_cy': courtAddress.address_lines_cy?.trim().split(/\r?\n/),
       town: courtAddress.town?.trim(),
       'town_cy': courtAddress.town_cy?.trim(),
+      'county_id': courtAddress.county_id,
       postcode: courtAddress.postcode?.trim().toUpperCase()
     };
   }
@@ -309,6 +335,7 @@ export class AddressController {
       'address_lines_cy': address.address_lines_cy?.join('\n'),
       town: address.town?.trim(),
       'town_cy': address.town_cy?.trim(),
+      'county_id': address.county_id,
       postcode: address.postcode?.trim().toUpperCase()
     };
   }

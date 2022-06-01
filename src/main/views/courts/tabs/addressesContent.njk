@@ -82,6 +82,15 @@
   value: addresses.primary.town_cy
 }) }}
 
+{{ govukSelect({
+  id: "primaryAddressCounty",
+  name: "primary[county_id]",
+  label: {
+    text: "County"
+  },
+  items: counties | selectFilter(addresses.primary.county_id)
+}) }}
+
 {% if addresses.primary.postcode == '' %}
   {% set primaryPostcodeError = postcodeRequiredError %}
 {% elif primaryPostcodeInvalid %}
@@ -178,6 +187,15 @@
   label: { text: "Town (Welsh)" },
   classes: "govuk-input--width-30",
   value: addresses.secondary.town_cy
+}) }}
+
+{{ govukSelect({
+  id: "secondaryAddressCounty",
+  name: "secondary[county_id]",
+  label: {
+    text: "County"
+  },
+  items: counties | selectFilter(addresses.secondary.county_id)
 }) }}
 
 {% if addresses.secondary.postcode == '' %}
@@ -283,6 +301,15 @@
   label: { text: "Town (Welsh)" },
   classes: "govuk-input--width-30",
   value: addresses.third.town_cy
+}) }}
+
+{{ govukSelect({
+  id: "thirdAddressCounty",
+  name: "third[county_id]",
+  label: {
+    text: "County"
+  },
+  items: counties | selectFilter(addresses.third.county_id)
 }) }}
 
 {% if addresses.third.postcode == '' %}

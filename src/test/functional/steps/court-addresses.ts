@@ -35,6 +35,12 @@ When('I select the Address Type {string}', async (addressType: string) => {
   await I.selectItem(selector,addressType);
 });
 
+Then('I select the primary County {string}', async (county: string) => {
+  const selector = '#primaryAddressCounty';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.selectItem(selector,county);
+});
 
 Then('I enter secondary address description {string} in Description textbox', async (desc: string) => {
   const selector = '#secondaryAddressDescription';
@@ -111,6 +117,12 @@ Then('I enter the secondary address town {string}', async (town: string) => {
   await populateField(selector, town);
 });
 
+Then('I select the secondary County {string}', async (county: string) => {
+  const selector = '#secondaryAddressCounty';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.selectItem(selector,county);
+});
 Then('I enter the secondary address postcode {string}', async (postcode: string) => {
   const selector = '#secondaryAddressPostcode';
   await populateField(selector, postcode);
@@ -176,6 +188,13 @@ Then('I enter third address {string} in the Town textbox', async (town: string) 
 Then('I enter third address {string} in the town Welsh textbox', async (welshtown: string) => {
   const selector = '#thirdAddressTownWelsh';
   await populateField(selector, welshtown);
+});
+
+Then('I select the third County {string}', async (county: string) => {
+  const selector = '#thirdAddressCounty';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.selectItem(selector,county);
 });
 
 Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {

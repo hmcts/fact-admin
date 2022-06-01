@@ -1118,8 +1118,8 @@ describe('FactApi', () => {
   test('Should return results from getCourtAddresses request', async () => {
     const results: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD' },
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ' }
       ]
     };
     const mockAxios = { get: async () => results } as any;
@@ -1143,8 +1143,8 @@ describe('FactApi', () => {
   test('Should update court addresses and return results from updateCourtAddresses request', async () => {
     const addresses: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD' },
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ' }
       ]
     };
     const mockAxios = { put: async () => addresses } as any;
@@ -1777,5 +1777,30 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
   });
 
+  test('Should return results from getCounties request', async () => {
+    const results = {
+      data: [
+        { id: 100, name:'West Midlands', country: 'England'},
+        { id: 200, name:'Cardiff', country: 'Wales'},
+        { id: 200, name:'Aberdeenshire', country: 'Scotland'},
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCounties()).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getCounties request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCounties()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
 
 });
