@@ -10,6 +10,7 @@ import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 import {Action, Audit} from '../../../../main/types/Audit';
 import {OpeningType} from '../../../../main/types/OpeningType';
 import {NewCourt} from '../../../../main/types/NewCourt';
+import {ApplicationProgression} from "../../../../main/types/ApplicationProgression";
 
 
 describe('FactApi', () => {
@@ -1800,6 +1801,59 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.getCounties()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getApplicationUpdates request', async () => {
+    const results: { data: ApplicationProgression[] } = {
+      data: [
+        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getApplicationUpdates('newcastle-crown-court')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getApplicationUpdates request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getApplicationUpdates('newcastle-crown-court')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should update application updates and application updates from updateApplicationUpdates request', async () => {
+    const results = {
+      data: [
+        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+      ]
+    };
+    const mockAxios = { put: async () => results } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateApplicationUpdates('slug',results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed updateApplicationUpdates request', async () => {
+    const results = {
+      data: [
+        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+      ]
+    };
+
+    const mockAxios = { put: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateApplicationUpdates('slug',results.data)).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
 
