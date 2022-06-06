@@ -10,7 +10,7 @@ import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 import {Action, Audit} from '../../../../main/types/Audit';
 import {OpeningType} from '../../../../main/types/OpeningType';
 import {NewCourt} from '../../../../main/types/NewCourt';
-import {ApplicationProgression} from "../../../../main/types/ApplicationProgression";
+import {ApplicationProgression} from '../../../../main/types/ApplicationProgression';
 
 
 describe('FactApi', () => {
