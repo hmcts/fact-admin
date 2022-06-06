@@ -671,23 +671,6 @@ export class FactApi {
       });
   }
 
-  private errorHandler<T>(defaultValue: T) {
-    return (err: AxiosError) => {
-      this.logError(err);
-
-      return defaultValue;
-    };
-  }
-
-  private logError(err: AxiosError) {
-    this.logger.error(err.message);
-
-    if (err.response) {
-      this.logger.info(err.response.data);
-      this.logger.info(err.response.headers);
-    }
-  }
-
   public getApplicationUpdates(slug: string): Promise<ApplicationProgression[]> {
     return this.axios
       .get(`${this.adminBaseUrl}/${slug}/application-progression`)
@@ -707,6 +690,24 @@ export class FactApi {
         return Promise.reject(err);
       });
   }
+
+  private errorHandler<T>(defaultValue: T) {
+    return (err: AxiosError) => {
+      this.logError(err);
+
+      return defaultValue;
+    };
+  }
+
+  private logError(err: AxiosError) {
+    this.logger.error(err.message);
+
+    if (err.response) {
+      this.logger.info(err.response.data);
+      this.logger.info(err.response.headers);
+    }
+  }
+
 }
 
 interface UpdateCourtsInfoRequest {

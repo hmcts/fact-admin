@@ -1807,8 +1807,8 @@ describe('FactApi', () => {
   test('Should return results from getApplicationUpdates request', async () => {
     const results: { data: ApplicationProgression[] } = {
       data: [
-        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
-        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
       ]
     };
     const mockAxios = { get: async () => results } as any;
@@ -1832,8 +1832,8 @@ describe('FactApi', () => {
   test('Should update application updates and application updates from updateApplicationUpdates request', async () => {
     const results = {
       data: [
-        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
-        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
       ]
     };
     const mockAxios = { put: async () => results } as any;
@@ -1844,8 +1844,8 @@ describe('FactApi', () => {
   test('Should log error and reject promise for failed updateApplicationUpdates request', async () => {
     const results = {
       data: [
-        { 'type': 'type', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
-        { 'type': 'type_2', 'type_cy':'type_cy', 'email': 'email','external_link': 'external_link', 'external_link_description': 'external_link_description', 'external_link_description_cy': 'external_link_description_cy' },
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
       ]
     };
 
