@@ -25,7 +25,7 @@ export class ApplicationProgressionController {
     res: Response,
     updated = false,
     errorMsg: string[] = [],
-    generalInfo: boolean = null,
+    //generalInfo: boolean = null,
     applicationProgressions: ApplicationProgression[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
@@ -38,10 +38,19 @@ export class ApplicationProgressionController {
         .catch(() => errorMsg.push(this.getApplicationUpdatesErrorMsg));
     }
 
+    /*
     if (!generalInfo) {
       await req.scope.cradle.api.getGeneralInfo(slug)
         .then((value: CourtGeneralInfo) => generalInfo = value.service_centre);
     }
+
+     */
+
+    let generalInfo: boolean = null;
+    await req.scope.cradle.api.getGeneralInfo(slug)
+      .then((value: CourtGeneralInfo) => generalInfo = value.service_centre)
+      .catch((value: CourtGeneralInfo) => generalInfo = false);
+
 
     if (!applicationProgressions?.some(e => e.isNew === true)) {
       this.addEmptyFormsForNewEntries(applicationProgressions);
@@ -54,7 +63,7 @@ export class ApplicationProgressionController {
 
     const pageData: ApplicationProgressionData = {
       'application_progression': applicationProgressions,
-      isEnabled: generalInfo ?? false,
+      isEnabled: generalInfo, //?? false,
       errors: errors,
       updated: updated
     };
@@ -63,12 +72,12 @@ export class ApplicationProgressionController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    const generalInfo = req.body.general_info as boolean;
+    //const generalInfo = req.body.general_info as boolean;
     let applicationProgressions = req.body.progression as ApplicationProgression[] ?? [];
     applicationProgressions.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, [this.updateErrorMsg], generalInfo, applicationProgressions);
+      return this.get(req, res, false, [this.updateErrorMsg], applicationProgressions);
     }
 
     // Remove fully empty entries
@@ -76,12 +85,12 @@ export class ApplicationProgressionController {
 
     const errorMsg = this.getErrorMessages(applicationProgressions);
     if (errorMsg.length > 0) {
-      return this.get(req, res, false, errorMsg, generalInfo, applicationProgressions);
+      return this.get(req, res, false, errorMsg, applicationProgressions);
     }
 
     await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
-      .then((value: ApplicationProgression[]) => this.get(req, res, true, [], generalInfo, value))
-      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], generalInfo, applicationProgressions));
+      .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
+      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], applicationProgressions));
   }
 
   private addEmptyFormsForNewEntries(applicationProgressions: ApplicationProgression[], numberOfForms = 1):
