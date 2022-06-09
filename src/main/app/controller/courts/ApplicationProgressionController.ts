@@ -25,7 +25,6 @@ export class ApplicationProgressionController {
     res: Response,
     updated = false,
     errorMsg: string[] = [],
-    //generalInfo: boolean = null,
     applicationProgressions: ApplicationProgression[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
@@ -37,14 +36,6 @@ export class ApplicationProgressionController {
           e.isNew = false; return e; }))
         .catch(() => errorMsg.push(this.getApplicationUpdatesErrorMsg));
     }
-
-    /*
-    if (!generalInfo) {
-      await req.scope.cradle.api.getGeneralInfo(slug)
-        .then((value: CourtGeneralInfo) => generalInfo = value.service_centre);
-    }
-
-     */
 
     let generalInfo: boolean = null;
     await req.scope.cradle.api.getGeneralInfo(slug)
@@ -63,7 +54,7 @@ export class ApplicationProgressionController {
 
     const pageData: ApplicationProgressionData = {
       'application_progression': applicationProgressions,
-      isEnabled: generalInfo, //?? false,
+      isEnabled: generalInfo,
       errors: errors,
       updated: updated
     };
@@ -72,7 +63,6 @@ export class ApplicationProgressionController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    //const generalInfo = req.body.general_info as boolean;
     let applicationProgressions = req.body.progression as ApplicationProgression[] ?? [];
     applicationProgressions.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
