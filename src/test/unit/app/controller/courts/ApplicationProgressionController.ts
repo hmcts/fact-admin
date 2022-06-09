@@ -136,7 +136,7 @@ describe('ApplicationProgressionController', () => {
       .concat({ type: 'type 4', type_cy: 'type_cy 4', email: '', external_link: '', external_link_description: '', external_link_description_cy: '', isNew: true })
       .concat({ type: 'type 5', type_cy: 'type_cy 5', email: '', external_link: 'external_link 5', external_link_description: '', external_link_description_cy: '', isNew: true })
       .concat({ type: 'type 5a', type_cy: 'type_cy 5a', email: '', external_link: '', external_link_description: 'external_link_description 5a', external_link_description_cy: '', isNew: true })
-      .concat({ type: 'type 6', type_cy: 'type_cy 6', email: 'email 6', external_link: 'external_link 6', external_link_description: 'external_link_description 6', external_link_description_cy: '', isNew: true })
+      .concat({ type: 'type 6', type_cy: 'type_cy 6', email: 'email 6', external_link: 'external_link 6', external_link_description: 'external_link_description 6', external_link_description_cy: '', isNew: true });
     req.params = {
       slug: 'royal-courts-of-justice'
     };
