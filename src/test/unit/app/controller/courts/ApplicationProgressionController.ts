@@ -114,7 +114,7 @@ describe('ApplicationProgressionController', () => {
     const res = mockResponse();
     const req = mockRequest();
     req.body = {
-      application_progression: updatesWithNewEntry,
+      progression: updatesWithNewEntry,
       '_csrf': CSRF.create()
     };
     req.params = {
@@ -141,7 +141,7 @@ describe('ApplicationProgressionController', () => {
       slug: 'royal-courts-of-justice'
     };
     req.body = {
-      application_progression: postedUpdates,
+      progression: postedUpdates,
       '_csrf': CSRF.create()
     };
     req.scope.cradle.api = mockApi;
@@ -173,7 +173,7 @@ describe('ApplicationProgressionController', () => {
     );
     req.params = { slug: 'royal-courts-of-justice' };
     req.body = {
-      application_progression: postedUpdates,
+      progression: postedUpdates,
       '_csrf': CSRF.create()
     };
     req.scope.cradle.api = mockApi;
