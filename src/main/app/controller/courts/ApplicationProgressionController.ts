@@ -63,7 +63,7 @@ export class ApplicationProgressionController {
   }
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    let applicationProgressions = req.body.application_progression as ApplicationProgression[] ?? [];
+    let applicationProgressions = req.body.progression as ApplicationProgression[] ?? [];
     applicationProgressions.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
