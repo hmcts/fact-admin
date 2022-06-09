@@ -17,14 +17,14 @@ describe('ApplicationProgressionController', () => {
 
   const applicationUpdates: () => ApplicationProgression[] = () => [
     {
-      type: 'type', type_cy:'type_cy', email: 'email', external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy', isNew: false
+      type: 'type', type_cy:'type_cy', email: 'email@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: false
     },
     {
-      type: 'type 2', type_cy:'type_cy 2', email: 'email 2', external_link: 'external_link 2', external_link_description: 'external_link_description 2', external_link_description_cy: 'external_link_description_cy 2', isNew: false
+      type: 'type 2', type_cy:'type_cy 2', email: 'email2@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: false
     }
   ];
   const updatesWithEmptyEntry: ApplicationProgression[] = applicationUpdates().concat({type: null, type_cy: null, email: null, external_link: null, external_link_description: null, external_link_description_cy: null, isNew: true});
-  const updatesWithNewEntry: ApplicationProgression[] = applicationUpdates().concat({type: 'type 3', type_cy: 'type_cy 3', email: 'email 3', external_link: 'external_link 3', external_link_description: 'external_link_desc 3', external_link_description_cy: 'external_link_desc_cy 3', isNew: true});
+  const updatesWithNewEntry: ApplicationProgression[] = applicationUpdates().concat({type: 'type 3', type_cy: 'type_cy 3', email: 'email3@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: true});
   const applicationUpdatesPage = 'courts/tabs/applicationProgressionContent';
 
 
@@ -154,11 +154,12 @@ describe('ApplicationProgressionController', () => {
       isEnabled: true,
       updated: false,
       errors: [
-        {text: controller.updateErrorMsg},
         {text: controller.emptyTypeErrorMsg},
         {text: controller.emptyFieldsErrorMsg},
         {text: controller.linkFieldsErrorMsg},
-        {text: controller.doubleInputErrorMsg}
+        {text: controller.doubleInputErrorMsg},
+        {text: controller.invalidEmailFormatErrorMsg},
+        {text: controller.invalidUrlFormatErrorMsg}
       ]
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
@@ -168,7 +169,7 @@ describe('ApplicationProgressionController', () => {
   test('Should handle error with duplicated email addresses when updating application updates (ignoring casing)', async () => {
     const req = mockRequest();
     const postedUpdates: ApplicationProgression[] = applicationUpdates().concat(
-      { type: 'type 3', type_cy: 'type_cy 3', email: 'email 3', external_link: 'external_link 3', external_link_description: 'external_link_desc 3', external_link_description_cy: 'external_link_desc_cy 3', isNew: true }
+      { type: 'type 3', type_cy: 'type_cy 3', email: 'email2@test.com', external_link: null, external_link_description: null, external_link_description_cy: 'external_link_desc_cy 3', isNew: true }
     );
     req.params = { slug: 'royal-courts-of-justice' };
     req.body = {
@@ -183,7 +184,7 @@ describe('ApplicationProgressionController', () => {
     const expectedResults: ApplicationProgressionData = {
       application_progression: postedUpdates,
       isEnabled: true,
-      errors: [{text: controller.emailDuplicatedErrorMsg}, {text: controller.updateErrorMsg}],
+      errors: [{text: controller.emailDuplicatedErrorMsg}],
       updated: false
     };
 
