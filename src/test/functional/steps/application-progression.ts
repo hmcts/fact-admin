@@ -76,13 +76,6 @@ Then('I click on add new application progression',async () => {
   await FunctionalTestHelpers.clickButton('#application-progression', 'addNewUpdate');
 });
 
-
-Then('A green message is displayed for {string}', async (message: string) => {
-  const selector = '#photoContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
-});
-
-
 Then('a green update message showing Application progression updated', async (message: string) =>  {
   const selector = '#applicationProgressionContent > div > h1';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
