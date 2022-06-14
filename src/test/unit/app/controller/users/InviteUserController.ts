@@ -41,6 +41,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: Array.of(),
       updated: false,
+      userEmail: '',
       user : null
     };
 
@@ -60,6 +61,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.emptyErrorMsg }],
       updated: false,
+      userEmail: '',
       user : ({ email: '', surname: '', forename: '', roles: []})
     };
 
@@ -77,6 +79,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.getEmailAddressFormatErrorMsg }],
       updated: false,
+      userEmail: '',
       user : ({ email: 'test@', surname: 'surname', forename: 'forename', roles: ['fact-admin'], isInvalidFormat: true})
     };
 
@@ -175,6 +178,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.updateErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
@@ -198,6 +202,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.duplicatedErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
@@ -221,6 +226,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
@@ -243,6 +249,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);

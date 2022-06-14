@@ -14,6 +14,7 @@ export interface PasswordPageData {
 export interface AddUserPageData {
   errors: Error[],
   updated: Boolean,
+  userEmail: string,
   user: User
 }
 

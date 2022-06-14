@@ -57,9 +57,9 @@
       text: "Email"
     },
     classes: "govuk-input--width-20",
-    id: "email",
+    id: "invite-email",
     name: "user[email]",
-    value: user.email,
+    value: userEmail,
     errorMessage: emailsError
   }) }}
 
@@ -68,7 +68,7 @@
       text: "First Name"
     },
     classes: "govuk-input--width-20",
-    id: "forename",
+    id: "invite-forename",
     name: "user[forename]",
     value: user.forename,
     errorMessage: forenameError
@@ -79,7 +79,7 @@
       text: "Last Name"
     },
     classes: "govuk-input--width-20",
-    id: "surname",
+    id: "invite-surname",
     name: "user[surname]",
     value: user.surname,
     errorMessage: surnameError
@@ -88,8 +88,8 @@
 
 {{ govukRadios({
   classes: "govuk-radios--small",
-  id: "roles",
-  name: "user[roles][]",
+  id: "invite-roles",
+  name: "inviteUserRoles",
   errorMessage: rolesError,
   fieldset: {
     legend: {
@@ -120,7 +120,8 @@
 <div class="govuk-button-group">
 {{ govukButton({
   text: "Create User",
-  name: "inviteUser"
+  name: "inviteUser",
+  attributes: { id: "createUserChangesBtn" }
 }) }}
 
 {{ govukButton({

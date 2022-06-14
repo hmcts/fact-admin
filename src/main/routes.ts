@@ -17,6 +17,8 @@ export default function(app: Application): void {
 
   //Users
   app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
+  app.get('/users/invite/search',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderSearchUser);
+  app.get('/users/invite/search/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.getUser);
   app.get('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderUserInvite);
   app.post('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.postUserInvite);
   app.get('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderPassword);
