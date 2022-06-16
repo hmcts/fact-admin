@@ -9,7 +9,7 @@ export class InviteUserController {
   private tabId = '#inviteUserTab';
   private inviteUserSearchId = '#inviteUserSearchTab';
   private inviteUserSearchContentId = '#inviteUserSearchContent';
-  private inviteUserContentId = '#inviteUserContent';
+  //private inviteUserContentId = '#inviteUserContent';
   private confirmBtnId = '#confirmInvite';
   private cancelInviteButtonId = '#cancelInviteUserChangesBtn';
   private cancelEditButtonId = '#cancelEditUserBtn';
@@ -25,7 +25,6 @@ export class InviteUserController {
       if ($(this.inviteUserSearchId).length > 0) {
         this.get();
         this.setUpSearchEventHandler();
-        this.getInviteUser();
         this.setUpInviteEventHandler();
         this.setUpConfirmEventHandler();
         this.setUpCancelEventHandler();
@@ -72,17 +71,17 @@ export class InviteUserController {
     });
   }
 
-  private getInviteUser(): void{
-    $.ajax({
-      url: '/users/invite/user',
-      method: 'get',
-      success: async (res) => {
-        await this.updateContent(res, this.inviteUserContentId);
-      },
-      error: (jqxhr, errorTextStatus, err) =>
-        AjaxErrorHandler.handleError(jqxhr, 'GET invite user failed.')
-    });
-  }
+  // private getInviteUser(): void{
+  //   $.ajax({
+  //     url: '/users/invite/user',
+  //     method: 'get',
+  //     success: async (res) => {
+  //       await this.updateContent(res, this.inviteUserSearchContentId);
+  //     },
+  //     error: (jqxhr, errorTextStatus, err) =>
+  //       AjaxErrorHandler.handleError(jqxhr, 'GET invite user failed.')
+  //   });
+  // }
 
   private setUpInviteEventHandler(): void {
     $(this.formId).on('click', `${this.inviteUserButtonId}`, e => {
@@ -101,15 +100,11 @@ export class InviteUserController {
             email: email,
             forename: forename,
             surname: surname,
-            roles: [
-              {
-                'name': role
-              }
-            ]
+            roles: [role]
           }
         }
       }).done( async res => {
-        await this.updateContent(res, this.inviteUserContentId);
+        await this.updateContent(res, this.inviteUserSearchContentId);
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'POST invite user failed.'));
@@ -158,7 +153,7 @@ export class InviteUserController {
       method: 'post',
       data: { user: user, _csrf: csrf, error: error}
     }).done( async res => {
-      await this.updateContent(res, this.inviteUserContentId);
+      await this.updateContent(res, this.inviteUserSearchContentId);
       window.scrollTo(0, 0);
     }).fail(response =>
       AjaxErrorHandler.handleError(response, 'POST confirm user failed.'));
