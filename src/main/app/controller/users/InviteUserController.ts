@@ -6,7 +6,6 @@ import {CSRF} from '../../../modules/csrf';
 import autobind from 'autobind-decorator';
 import {AxiosError} from 'axios';
 import {validateEmail} from '../../../utils/validation';
-import {EditUserController} from './EditUserController';
 
 @autobind
 export class InviteUserController {
@@ -18,7 +17,6 @@ export class InviteUserController {
   duplicatedErrorMsg = 'User with this email already exists. ';
   forbiddenErrorMsg = 'The account does not have the right level of access to create super admin user accounts. '
   searchErrorMsg = 'A problem occurred when searching for the user. '
-  editUserController = new EditUserController();
 
   public async renderSearchUser(req: AuthedRequest,
     res: Response,
@@ -51,7 +49,9 @@ export class InviteUserController {
         if (returnedUser === undefined) {
           return this.renderUserInvite(req, res, false,[], userEmail);
         }
-        this.editUserController.renderEditUser(req,res, false, returnedUser, []);
+        console.log(`/users/search/${userEmail}`);
+        // res.redirect(`/users/search/${userEmail}`);
+        window.location.href = `/users/search/${userEmail}`;
       })
       .catch(async (reason: AxiosError) => {
         return await this.renderSearchUser(req, res, false, false, userEmail,  [{ text: this.searchErrorMsg }]);
@@ -123,7 +123,6 @@ export class InviteUserController {
 
   private getEmptyFieldErrorMessages(account: User): {text: string }[] {
 
-    console.log(account);
     const errorMsg: {text: string }[] = [];
     if (account.email === ''|| account.forename === '' || account.surname === '' || account.roles[0] === '' ) {
       errorMsg.push({ text: this.emptyErrorMsg});
@@ -162,5 +161,4 @@ export class InviteUserController {
         return this.updateErrorMsg;
     }
   }
-
 }

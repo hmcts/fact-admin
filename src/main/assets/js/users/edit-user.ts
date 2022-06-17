@@ -55,13 +55,10 @@ export class EditUserController {
   private setUpSearchEventHandler(): void {
     $(this.searchFormId).on('submit', e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#search-user-email').val();
       $.ajax({
-        url: '/users/search/user',
-        method: 'get',
-        data: {
-          'userEmail': userEmail
-        }
+        url: `/users/search/${userEmail}`,
+        method: 'get'
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
       }).fail(response =>
