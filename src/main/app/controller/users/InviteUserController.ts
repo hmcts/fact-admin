@@ -41,6 +41,11 @@ export class InviteUserController {
     res: Response): Promise<void> {
     const userEmail: string = req.query.userEmail as string;
 
+    const errorMsg = this.getEmailErrorMessages(userEmail);
+    if (errorMsg.length > 0) {
+      return this.renderSearchUser(req, res, false, false, userEmail, errorMsg);
+    }
+
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       .then((returnedUser: User) => {
         if (returnedUser === undefined) {
@@ -72,12 +77,10 @@ export class InviteUserController {
     res: Response,
     errors: { text: string }[] = [],
     user: User = null): Promise<void> {
-    console.log('in render password');
     const pageData: PasswordPageData = {
       errors: errors,
       user : JSON.stringify(user)
     };
-    console.log(pageData);
     res.render('users/tabs/password', pageData);
   }
 
@@ -89,13 +92,12 @@ export class InviteUserController {
 
   public async postUserInvite(req: AuthedRequest, res: Response): Promise<void> {
     const user = req.body.user as User;
-    console.log('in post user');
-    console.log(user);
+
     if(!CSRF.verify(req.body._csrf)) {
       return this.renderUserInvite(req, res, false,[{ text: this.updateErrorMsg }] , user.email, user);
     }
 
-    const errorMsg = this.getErrorMessages(user);
+    const errorMsg = this.getEmptyFieldErrorMessages(user);
     if (errorMsg.length > 0) {
       return this.renderUserInvite(req, res, false, errorMsg, user.email, user);
     }
@@ -119,15 +121,26 @@ export class InviteUserController {
       });
   }
 
-  private getErrorMessages(account: User): {text: string }[] {
+  private getEmptyFieldErrorMessages(account: User): {text: string }[] {
+
+    console.log(account);
     const errorMsg: {text: string }[] = [];
-    if (account.email === ''|| account.forename === '' || account.surname === '' || !account.roles ) {
+    if (account.email === ''|| account.forename === '' || account.surname === '' || account.roles[0] === '' ) {
+      errorMsg.push({ text: this.emptyErrorMsg});
+    }
+
+    return errorMsg;
+  }
+
+  private getEmailErrorMessages(email: string): {text: string }[] {
+    const errorMsg: {text: string }[] = [];
+    if (email === '') {
       errorMsg.push({ text: this.emptyErrorMsg});
     }
 
     // If any address used is not of an email format, return with an error
-    if (!(account.email === '')) {
-      if (!validateEmail(account)) {
+    if (!(email === '')) {
+      if (!validateEmail(email)) {
         errorMsg.push({text: this.getEmailAddressFormatErrorMsg});
       }
     }

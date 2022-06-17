@@ -5,16 +5,15 @@ const { initAll } = require('govuk-frontend');
 
 export class InviteUserController {
 
-  private formId = '#searchUserCreateForm';
-  private tabId = '#inviteUserTab';
-  private inviteUserSearchId = '#inviteUserSearchTab';
+  private formId = '#inviteUserSearchForm';
+  private tabId = '#inviteUserSearchTab';
   private inviteUserSearchContentId = '#inviteUserSearchContent';
-  //private inviteUserContentId = '#inviteUserContent';
   private confirmBtnId = '#confirmInvite';
   private cancelInviteButtonId = '#cancelInviteUserChangesBtn';
-  private cancelEditButtonId = '#cancelEditUserBtn';
-  private clearInviteUserBtnClass = 'clear-changes';
   private inviteUserButtonId = '#createUserChangesBtn';
+  private cancelConfirmBtnId = '#cancelConfirmChangesBtn';
+  private createAnotherUserBtnId = '#inviteAnotherUser';
+
 
   constructor() {
     this.initialize();
@@ -22,14 +21,14 @@ export class InviteUserController {
 
   private initialize(): void {
     $(() => {
-      if ($(this.inviteUserSearchId).length > 0) {
+      if ($(this.tabId).length > 0) {
         this.get();
         this.setUpSearchEventHandler();
         this.setUpInviteEventHandler();
         this.setUpConfirmEventHandler();
         this.setUpCancelEventHandler();
-        this.setUpCancelEditEventHandler();
-        this.setUpClearEventHandler();
+        this.setUpCancelConfirmEventHandler();
+        this.setUpInviteAnotherUserEventHandler();
       }
     });
   }
@@ -70,18 +69,6 @@ export class InviteUserController {
         AjaxErrorHandler.handleError(response, 'GET user failed.'));
     });
   }
-
-  // private getInviteUser(): void{
-  //   $.ajax({
-  //     url: '/users/invite/user',
-  //     method: 'get',
-  //     success: async (res) => {
-  //       await this.updateContent(res, this.inviteUserSearchContentId);
-  //     },
-  //     error: (jqxhr, errorTextStatus, err) =>
-  //       AjaxErrorHandler.handleError(jqxhr, 'GET invite user failed.')
-  //   });
-  // }
 
   private setUpInviteEventHandler(): void {
     $(this.formId).on('click', `${this.inviteUserButtonId}`, e => {
@@ -126,13 +113,6 @@ export class InviteUserController {
     });
   }
 
-  private setUpClearEventHandler(): void {
-    $(this.tabId).on('click', `button.${this.clearInviteUserBtnClass}`, e => {
-      e.preventDefault();
-      location.reload();
-    });
-  }
-
   private setUpCancelEventHandler(): void {
     $(this.formId).on('click', `${this.cancelInviteButtonId}`, e => {
       e.preventDefault();
@@ -140,8 +120,15 @@ export class InviteUserController {
     });
   }
 
-  private setUpCancelEditEventHandler(): void {
-    $(this.formId).on('click', `${this.cancelEditButtonId}`, e => {
+  private setUpCancelConfirmEventHandler(): void {
+    $(this.formId).on('click', `${this.cancelConfirmBtnId}`, e => {
+      e.preventDefault();
+      this.get();
+    });
+  }
+
+  private setUpInviteAnotherUserEventHandler(): void {
+    $(this.formId).on('click', `${this.createAnotherUserBtnId}`, e => {
       e.preventDefault();
       this.get();
     });
