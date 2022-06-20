@@ -4,7 +4,7 @@ import {Response} from 'express';
 import {ApplicationProgression, ApplicationProgressionData} from '../../../types/ApplicationProgression';
 import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
-import {validateDuplication, validateStringEmailFormat, validateUrlFormat} from '../../../utils/validation';
+import {validateDuplication, validateEmail, validateUrlFormat} from '../../../utils/validation';
 import {CourtGeneralInfo} from '../../../types/CourtGeneralInfo';
 
 @autobind
@@ -122,7 +122,7 @@ export class ApplicationProgressionController {
     // If any email used is not of an email format, return with an error
     let emailHasInvalidFormat = false;
     for (const progression of applicationProgressions){
-      if (progression.email && !validateStringEmailFormat(progression.email)){
+      if (progression.email && !validateEmail(progression.email)){
         progression.isInvalidFormat = true;
         emailHasInvalidFormat = true;
       }
