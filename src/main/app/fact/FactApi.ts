@@ -21,7 +21,6 @@ import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
 import {ApplicationProgression} from '../../types/ApplicationProgression';
 import {ServiceArea} from '../../types/ServiceArea';
 import {County} from '../../types/County';
-import {ApplicationProgression} from '../../types/ApplicationProgression';
 
 export class FactApi {
 

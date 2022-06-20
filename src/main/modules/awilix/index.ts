@@ -30,7 +30,6 @@ import {InviteUserController} from '../../app/controller/users/InviteUserControl
 import {NewCourtController} from '../../app/controller/courts/NewCourtController';
 import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
 import {EditUserController} from '../../app/controller/users/EditUserController';
-import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
