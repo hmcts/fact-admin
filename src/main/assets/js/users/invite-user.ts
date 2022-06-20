@@ -8,11 +8,14 @@ export class InviteUserController {
   private formId = '#inviteUserSearchForm';
   private tabId = '#inviteUserSearchTab';
   private inviteUserSearchContentId = '#inviteUserSearchContent';
+  private editUserContentId = '#searchUserContent';
   private confirmBtnId = '#confirmInvite';
   private cancelInviteButtonId = '#cancelInviteUserChangesBtn';
   private inviteUserButtonId = '#createUserChangesBtn';
   private cancelConfirmBtnId = '#cancelConfirmChangesBtn';
   private createAnotherUserBtnId = '#inviteAnotherUser';
+  private searchUserCreateBtnId = '#searchUserCreateBtn'
+  private searchUserEditBtnId = '#searchUserEditBtn';
 
 
   constructor() {
@@ -24,6 +27,7 @@ export class InviteUserController {
       if ($(this.tabId).length > 0) {
         this.get();
         this.setUpSearchEventHandler();
+        this.setUpEditEventHandler();
         this.setUpInviteEventHandler();
         this.setUpConfirmEventHandler();
         this.setUpCancelEventHandler();
@@ -54,7 +58,7 @@ export class InviteUserController {
   }
 
   private setUpSearchEventHandler(): void {
-    $(this.formId).on('submit', e => {
+    $(this.formId).on('click', `${this.searchUserCreateBtnId}`,e => {
       e.preventDefault();
       const userEmail = $('#user-email').val();
       $.ajax({
@@ -65,6 +69,21 @@ export class InviteUserController {
         }
       }).done(res => {
         this.updateContent(res, this.inviteUserSearchContentId);
+      }).fail(response =>
+        AjaxErrorHandler.handleError(response, 'GET user failed.'));
+    });
+  }
+
+  private setUpEditEventHandler(): void {
+    $(this.formId).on('click', `${this.searchUserEditBtnId}`,e => {
+      e.preventDefault();
+      const userEmail = $('#user-email').val();
+      $.ajax({
+        url: `/users/search/${userEmail}`,
+        method: 'get'
+      }).done(res => {
+        window.location.hash = '#edit-user';
+        this.updateContent(res, this.editUserContentId);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'GET user failed.'));
     });

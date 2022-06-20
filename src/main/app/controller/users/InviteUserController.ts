@@ -1,6 +1,10 @@
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
-import {AddUserPageData, PasswordPageData, SearchUserPageData} from '../../../types/UserPageData';
+import {
+  AddUserPageData,
+  PasswordPageData,
+  SearchUserInvitePageData
+} from '../../../types/UserPageData';
 import {User} from '../../../types/User';
 import {CSRF} from '../../../modules/csrf';
 import autobind from 'autobind-decorator';
@@ -22,14 +26,16 @@ export class InviteUserController {
     res: Response,
     updated = false,
     userRolesRemoved = false,
+    userExists = false,
     userEmail= '',
     errors: { text: string }[] = []): Promise<void> {
 
-    const pageData: SearchUserPageData = {
+    const pageData: SearchUserInvitePageData = {
       userEmail: userEmail,
       errors: errors,
       updated: updated,
-      userRolesRemoved: userRolesRemoved
+      userRolesRemoved: userRolesRemoved,
+      userExists: userExists
     };
 
     res.render('users/tabs/inviteUserSearchContent', pageData);
@@ -41,7 +47,7 @@ export class InviteUserController {
 
     const errorMsg = this.getEmailErrorMessages(userEmail);
     if (errorMsg.length > 0) {
-      return this.renderSearchUser(req, res, false, false, userEmail, errorMsg);
+      return this.renderSearchUser(req, res, false, false, false, userEmail, errorMsg);
     }
 
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
@@ -49,12 +55,12 @@ export class InviteUserController {
         if (returnedUser === undefined) {
           return this.renderUserInvite(req, res, false,[], userEmail);
         }
-        console.log(`/users/search/${userEmail}`);
-        // res.redirect(`/users/search/${userEmail}`);
-        window.location.href = `/users/search/${userEmail}`;
+        //console.log(`/users/search/${userEmail}`);
+        //res.redirect(`/users/search/${userEmail}`);
+        return this.renderSearchUser(req, res, false, false, true, userEmail, errorMsg);
       })
       .catch(async (reason: AxiosError) => {
-        return await this.renderSearchUser(req, res, false, false, userEmail,  [{ text: this.searchErrorMsg }]);
+        return await this.renderSearchUser(req, res, false, false, false, userEmail,  [{ text: this.searchErrorMsg }]);
       });
   }
 

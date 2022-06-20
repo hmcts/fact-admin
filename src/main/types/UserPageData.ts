@@ -25,6 +25,10 @@ export interface SearchUserPageData {
   userRolesRemoved: Boolean
 }
 
+export interface SearchUserInvitePageData extends SearchUserPageData {
+  userExists: Boolean
+}
+
 export interface EditUserPageData {
   errors: Error[],
   user: User
