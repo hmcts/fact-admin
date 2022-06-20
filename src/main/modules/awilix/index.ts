@@ -28,6 +28,7 @@ import {AdditionalLinksController} from '../../app/controller/courts/AdditionalL
 import {UserController} from '../../app/controller/users/UserController';
 import {InviteUserController} from '../../app/controller/users/InviteUserController';
 import {NewCourtController} from '../../app/controller/courts/NewCourtController';
+import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
 import {EditUserController} from '../../app/controller/users/EditUserController';
 import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
 
