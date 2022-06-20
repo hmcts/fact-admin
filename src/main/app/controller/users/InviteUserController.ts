@@ -53,10 +53,8 @@ export class InviteUserController {
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       .then((returnedUser: User) => {
         if (returnedUser === undefined) {
-          return this.renderUserInvite(req, res, false,[], userEmail);
+          return this.renderUserInvite(req, res, false,[], null, userEmail);
         }
-        //console.log(`/users/search/${userEmail}`);
-        //res.redirect(`/users/search/${userEmail}`);
         return this.renderSearchUser(req, res, false, false, true, userEmail, errorMsg);
       })
       .catch(async (reason: AxiosError) => {
@@ -68,8 +66,8 @@ export class InviteUserController {
     res: Response,
     updated = false,
     errors: { text: string }[] = [],
-    userEmail = '',
-    user: User = null): Promise<void> {
+    user: User = null,
+    userEmail = ''): Promise<void> {
     const pageData: AddUserPageData = {
       errors: errors,
       updated: updated,
@@ -100,18 +98,19 @@ export class InviteUserController {
     const user = req.body.user as User;
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.renderUserInvite(req, res, false,[{ text: this.updateErrorMsg }] , user.email, user);
+      return this.renderUserInvite(req, res, false,[{ text: this.updateErrorMsg }], user, user.email);
     }
 
     const errorMsg = this.getEmptyFieldErrorMessages(user);
     if (errorMsg.length > 0) {
-      return this.renderUserInvite(req, res, false, errorMsg, user.email, user);
+      return this.renderUserInvite(req, res, false, errorMsg, user, user.email);
     }
 
     return await this.renderPassword(req, res, [], user);
   }
 
   public async postPassword (req: AuthedRequest, res: Response): Promise<void> {
+    const user = JSON.parse(req.body.user) as User;
     if(!CSRF.verify(req.body._csrf)) {
       return this.renderPassword(req, res, [{ text: this.updateErrorMsg }],JSON.parse(req.body.user) );
     }
@@ -123,7 +122,7 @@ export class InviteUserController {
     await req.scope.cradle.idamApi.registerUser(JSON.parse(req.body.user), req.session.user.access_token)
       .then(() => res.render('users/tabs/inviteSuccessful'))
       .catch(async (reason: AxiosError) => {
-        return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], JSON.parse(req.body.user));
+        return await this.renderUserInvite(req, res, false, [{ text: this.returnResponseMessage(reason.response?.status)}], user, user.email);
       });
   }
 
