@@ -8,10 +8,9 @@
 
 <h2 class="govuk-heading-l">Create a User</h2>
 
+{% set userExistsError = false %}
 {% if userExists %}
-{{ govukInsetText({
-  text: "A user with this email already exists. Please press Continue to view and make changes to this account."
-}) }}
+ {% set userExistsError = { text: "A user with this email already exists. Please press Continue to view and make changes to this account." } %}
 {% endif %}
 
 {% if errors|length %}
@@ -39,7 +38,8 @@
   },
   id: "user-email",
   name: "user-email",
-  value: userEmail
+  value: userEmail,
+  errorMessage: userExistsError
 }) }}
 
 {% if userExists %}
