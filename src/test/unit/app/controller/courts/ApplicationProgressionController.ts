@@ -39,7 +39,8 @@ describe('ApplicationProgressionController', () => {
     'in_person': true,
     'service_centre': true,
     'sc_intro_paragraph': '',
-    'sc_intro_paragraph_cy': ''
+    'sc_intro_paragraph_cy': '',
+    'common_platform': false
   };
 
 

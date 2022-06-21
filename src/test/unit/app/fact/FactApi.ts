@@ -136,7 +136,8 @@ describe('FactApi', () => {
         'in_person': true,
         'service_centre': false,
         'sc_intro_paragraph': '',
-        'sc_intro_paragraph_cy': ''
+        'sc_intro_paragraph_cy': '',
+        'common_platform': false
       }
       };
     const mockAxios = { get: async () => results } as any;
@@ -173,7 +174,8 @@ describe('FactApi', () => {
       'alert_cy': '',
       'service_centre': false,
       'sc_intro_paragraph': '',
-      'sc_intro_paragraph_cy': ''
+      'sc_intro_paragraph_cy': '',
+      'common_platform': false
     };
 
     const spy = jest.spyOn(mockLogger, 'info');
