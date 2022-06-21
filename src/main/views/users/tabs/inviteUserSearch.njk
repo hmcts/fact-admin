@@ -1,8 +1,0 @@
-{% from "macros/csrf.njk" import csrfProtection %}
-
-<div id='inviteUserSearchTab'>
-  <form id="inviteUserSearchForm" method="POST" action="/users/search/user">
-   {{ csrfProtection(csrf) }}
-    <div id='inviteUserSearchContent'></div>
-  </form>
-</div>
