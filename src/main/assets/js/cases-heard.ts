@@ -2,10 +2,13 @@ import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {CasesHeard} from '../../types/CasesHeard';
 
+const { initAll } = require('govuk-frontend');
+
 export class CasesHeardController {
   private formId = '#casesHeardForm';
   private tabId = '#casesHeardTab';
   private casesHeardContentId = '#casesHeardContent';
+  private localAuthoritiesContentId = '#localAuthoritiesContent';
 
   constructor() {
     this.initialize();
@@ -20,13 +23,19 @@ export class CasesHeardController {
     });
   }
 
+  private async updateContent(content: any , contentId: string): Promise<void> {
+    $(contentId).html(content);
+    initAll({ scope: document.getElementById('casesHeardTab') });
+    initAll({scope: document.getElementById('localAuthoritiesTab')});
+  }
+
   private getCasesHeard(): void {
     const slug = $('#slug').val();
     $.ajax({
       url: `/courts/${slug}/cases-heard`,
       method: 'get',
-      success: (res) => {
-        $(this.casesHeardContentId).html(res);
+      success: async (res) => {
+        await this.updateContent(res, this.casesHeardContentId);
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET cases heard failed.');
@@ -48,8 +57,9 @@ export class CasesHeardController {
           allAreasOfLaw: allAreasOfLaw,
           csrfToken: $(this.tabId + ' input[name="_csrf"]').val()
         }
-      }).done(res => {
-        $(this.casesHeardContentId).html(res);
+      }).done(async (res) => {
+        await this.updateContent(res, this.casesHeardContentId);
+        this.getAreasOfLaw();
         window.scrollTo(0, 0);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT cases heard failed.'));
@@ -67,6 +77,20 @@ export class CasesHeardController {
   private static getAllAreasOfLaw(elementList: JQuery): CasesHeard[] {
     return $.map(elementList, function(value: HTMLElement){
       return { name: value.getAttribute('value'), id: value.dataset.id, singlePointEntry: false} as CasesHeard;
+    });
+  }
+
+  //below method makes sure local authorities' error message is removed and added when family court areas of law are updated.
+  private getAreasOfLaw(): void{
+    const slug = $('#slug').val();
+    $.ajax({
+      url: `/courts/${slug}/local-authorities-areas-of-law`,
+      method: 'get',
+      success: async (res) => {
+        await this.updateContent(res, this.localAuthoritiesContentId);
+      },
+      error: (jqxhr, errorTextStatus, err) =>
+        AjaxErrorHandler.handleError(jqxhr, 'GET local authorities areas of law failed.')
     });
   }
 }
