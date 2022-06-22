@@ -96,7 +96,7 @@ export class EditUserController {
   private setUpDeleteEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteUserButtonId}`, e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#edit-user-email').val();
       const role = this.getUserRole();
       $.ajax({
         url: '/users/confirm-delete/user/',
@@ -116,8 +116,8 @@ export class EditUserController {
   private setUpDeleteConfirmEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteConfirmBtnId}`, e => {
       e.preventDefault();
-      const userRole = $('#user-role').val();
-      const userEmail = $('#user-email').val();
+      const userRole = $('#delete-user-role').val();
+      const userEmail = $('#delete-user-email').val();
       $.ajax({
         url: '/users/delete/user/',
         data: {
@@ -147,7 +147,4 @@ export class EditUserController {
       return $('#userRole').val() as string;
     } else return '';
   }
-
 }
-
-
