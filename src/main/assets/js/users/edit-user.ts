@@ -69,7 +69,7 @@ export class EditUserController {
   private setUpUpdateEventHandler(): void {
     $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#edit-user-email').val();
       const forename = $('#edit-forename').val();
       const surname = $('#edit-surname').val();
       const role = this.getUserRole();
