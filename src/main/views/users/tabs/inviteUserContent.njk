@@ -6,7 +6,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-<h2 class="govuk-heading-l">Create A User</h2>
+<h2 class="govuk-heading-l">Creating User - {{userEmail}}</h2>
 
 {% if errors|length %}
   {{ govukErrorSummary({
@@ -14,14 +14,6 @@
     errorList: errors
   }) }}
 {% endif %}
-
-
-{% set emailsError = false %}
-  {% if user.email === '' %}
-    {% set emailsError = { text: 'Email address is required' } %}
-  {% elif user.isInvalidFormat === true %}
-    {% set emailsError = { text: 'Invalid email address format' } %}
-  {% endif %}
 
 {% set forenameError = false %}
   {% if user.forename === '' %}
@@ -34,7 +26,7 @@
   {% endif %}
 
  {% set rolesError = false %}
-   {% if not user.roles|length and errors|length  %}
+   {% if user.roles[0] === '' and errors|length  %}
    {% set rolesError = { text: 'Assigned role is required' } %}
  {% endif %}
 
@@ -48,27 +40,17 @@
    {% set superAdminRoleChecked = true %}
   {% endif %}
 
-
 {% call govukFieldset({
   }) %}
 
-  {{ govukInput({
-    label: {
-      text: "Email"
-    },
-    classes: "govuk-input--width-20",
-    id: "email",
-    name: "user[email]",
-    value: user.email,
-    errorMessage: emailsError
-  }) }}
+  <input type="hidden" id="invite-email" name="user[email]" value={{ userEmail }}>
 
   {{ govukInput({
     label: {
       text: "First Name"
     },
     classes: "govuk-input--width-20",
-    id: "forename",
+    id: "invite-forename",
     name: "user[forename]",
     value: user.forename,
     errorMessage: forenameError
@@ -79,7 +61,7 @@
       text: "Last Name"
     },
     classes: "govuk-input--width-20",
-    id: "surname",
+    id: "invite-surname",
     name: "user[surname]",
     value: user.surname,
     errorMessage: surnameError
@@ -88,8 +70,8 @@
 
 {{ govukRadios({
   classes: "govuk-radios--small",
-  id: "roles",
-  name: "user[roles][]",
+  id: "invite-roles",
+  name: "inviteUserRoles",
   errorMessage: rolesError,
   fieldset: {
     legend: {
@@ -120,7 +102,8 @@
 <div class="govuk-button-group">
 {{ govukButton({
   text: "Create User",
-  name: "inviteUser"
+  name: "inviteUser",
+  attributes: { id: "createUserChangesBtn" }
 }) }}
 
 {{ govukButton({

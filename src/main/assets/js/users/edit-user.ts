@@ -55,13 +55,10 @@ export class EditUserController {
   private setUpSearchEventHandler(): void {
     $(this.searchFormId).on('submit', e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#search-user-email').val();
       $.ajax({
-        url: '/users/search/user',
-        method: 'get',
-        data: {
-          'userEmail': userEmail
-        }
+        url: `/users/search/${userEmail}`,
+        method: 'get'
       }).done(res => {
         this.updateContent(res, this.searchUserContentId);
       }).fail(response =>
@@ -72,7 +69,7 @@ export class EditUserController {
   private setUpUpdateEventHandler(): void {
     $(this.searchFormId).on('click', `${this.submitEditButtonId}`, e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#edit-user-email').val();
       const forename = $('#edit-forename').val();
       const surname = $('#edit-surname').val();
       const role = this.getUserRole();
@@ -99,7 +96,7 @@ export class EditUserController {
   private setUpDeleteEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteUserButtonId}`, e => {
       e.preventDefault();
-      const userEmail = $('#user-email').val();
+      const userEmail = $('#edit-user-email').val();
       const role = this.getUserRole();
       $.ajax({
         url: '/users/confirm-delete/user/',
@@ -119,8 +116,8 @@ export class EditUserController {
   private setUpDeleteConfirmEventHandler(): void {
     $(this.searchFormId).on('click', `${this.deleteConfirmBtnId}`, e => {
       e.preventDefault();
-      const userRole = $('#user-role').val();
-      const userEmail = $('#user-email').val();
+      const userRole = $('#delete-user-role').val();
+      const userEmail = $('#delete-user-email').val();
       $.ajax({
         url: '/users/delete/user/',
         data: {
@@ -150,7 +147,4 @@ export class EditUserController {
       return $('#userRole').val() as string;
     } else return '';
   }
-
 }
-
-
