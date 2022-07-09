@@ -1,15 +1,19 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { InviteUserController } from '../../../../../main/app/controller/users/InviteUserController';
-import {AddUserPageData, PasswordPageData} from '../../../../../main/types/UserPageData';
+import {
+  AddUserPageData,
+  PasswordPageData,
+  SearchUserInvitePageData,
+} from '../../../../../main/types/UserPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
 import {User} from '../../../../../main/types/User';
 
 describe('InviteUserController', () => {
 
   let mockApi: {
-    registerUser: (account: User, accessToken: string) => Promise<User>
-
+    registerUser: (account: User, accessToken: string) => Promise<User>,
+    getUserByEmail: (userEmail: string, accessToken: string)  => Promise<User>
   };
   const controller = new InviteUserController();
 
@@ -20,18 +24,34 @@ describe('InviteUserController', () => {
   CSRF.verify = jest.fn().mockReturnValue(true);
 
   beforeEach(() => {
-    user = { email: 'name@test.com', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']};
+    user = { email: 'name@test.com', surname: 'surname', forename: 'forename', roles: ['fact-admin']};
 
     mockApi = {
-      registerUser: (user: User, accessToken: string) => Promise.resolve(user)
-
+      registerUser: (user: User, accessToken: string) => Promise.resolve(user),
+      getUserByEmail: (userEmail: string, accessToken: string) => Promise.resolve(user)
     };
 
     req.scope.cradle.idamApi = mockApi;
 
     req.scope.cradle.idamApi.registerUser = jest.fn().mockResolvedValue(res);
+    req.scope.cradle.idamApi.getUserByEmail = jest.fn().mockResolvedValue(user);
     req.session.user.accessToken = 'accessToken';
 
+  });
+
+  test('Should render the search user page', async () => {
+
+    await controller.renderSearchUser(req, res);
+
+    const pageData: SearchUserInvitePageData = {
+      userEmail: '',
+      errors: Array.of(),
+      updated: false,
+      userRolesRemoved: false,
+      userExists: false
+    };
+
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserSearchContent', pageData);
   });
 
   test('Should render the invite user page', async () => {
@@ -41,6 +61,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: Array.of(),
       updated: false,
+      userEmail: '',
       user : null
     };
 
@@ -53,14 +74,15 @@ describe('InviteUserController', () => {
 
     req.body = {
       '_csrf': CSRF.create(),
-      'user': { email: '', lastName: '', firstName: '', roles: []}
+      'user': { email: '', surname: '', forename: '', roles: []}
     };
     await controller.postUserInvite(req, res);
 
     const pageData: AddUserPageData = {
       errors: [{ text: controller.emptyErrorMsg }],
       updated: false,
-      user : ({ email: '', lastName: '', firstName: '', roles: []})
+      userEmail: '',
+      user : ({ email: '', surname: '', forename: '', roles: []})
     };
 
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
@@ -68,19 +90,20 @@ describe('InviteUserController', () => {
 
   test('Should display invalid email format message with invalid email', async () => {
 
-    req.body = {
-      '_csrf': CSRF.create(),
-      'user': { email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin']}
-    };
-    await controller.postUserInvite(req, res);
+    req.body = {'_csrf': CSRF.create()};
+    req.query = {'email': 'test@'};
 
-    const pageData: AddUserPageData = {
+    await controller.getUser(req, res);
+
+    const pageData: SearchUserInvitePageData = {
+      userEmail: '',
       errors: [{ text: controller.getEmailAddressFormatErrorMsg }],
       updated: false,
-      user : ({ email: 'test@', lastName: 'lastName', firstName: 'firstName', roles: ['fact-admin'], isInvalidFormat: true})
+      userRolesRemoved: false,
+      userExists: false
     };
 
-    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent',pageData);
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserSearchContent', pageData);
   });
 
   test('Should POST account details and render password view', async () => {
@@ -175,35 +198,29 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.updateErrorMsg }],
       updated: false,
-      user : user
+      user : user,
+      userEmail: user.email
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
   });
 
 
-  test('should display duplicated message when account already exists ', async () => {
-    const errorResponse = mockResponse();
-    errorResponse.response.status = 409;
-    req.scope.cradle.idamApi.registerUser = jest.fn().mockRejectedValue(errorResponse);
+  test('should ask user to click continue to edit user when account already exists ', async () => {
+    req.query = { userEmail: 'name@test.com' };
 
-    req.body = {
-      '_csrf': CSRF.create(),
-      'user': JSON.stringify(user),
-      'error': false,
-    };
-
-    await controller.postPassword(req, res);
-
-    const pageData: AddUserPageData = {
-      errors: [{ text: controller.duplicatedErrorMsg }],
+    const pageData: SearchUserInvitePageData = {
+      userEmail: 'name@test.com',
+      errors: Array.of(),
       updated: false,
-      user : user
+      userRolesRemoved: false,
+      userExists: true
     };
-    expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
 
+    await controller.getUser(req, res);
+
+    expect(res.render).toBeCalledWith('users/tabs/inviteUserSearchContent', pageData);
   });
-
 
   test('should display message when admin tries invite a super admin ', async () => {
     const errorResponse = mockResponse();
@@ -221,6 +238,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);
@@ -243,6 +261,7 @@ describe('InviteUserController', () => {
     const pageData: AddUserPageData = {
       errors: [{ text: controller.forbiddenErrorMsg }],
       updated: false,
+      userEmail: user.email,
       user : user
     };
     expect(res.render).toBeCalledWith('users/tabs/inviteUserContent', pageData);

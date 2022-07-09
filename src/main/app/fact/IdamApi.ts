@@ -2,10 +2,13 @@ import config from 'config';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 import {User} from '../../types/User';
+import autobind from 'autobind-decorator';
 
+@autobind
 export class IdamApi {
 
-  private readonly addUser: string = config.get('services.idam.addNewUserURL');
+  private readonly addUserURL: string = config.get('services.idam.addNewUserURL');
+  private readonly updateUserDetailsUserURL: string = config.get('services.idam.updateUserDetailsURL');
 
   constructor(
     private readonly axios: AxiosInstance,
@@ -14,10 +17,73 @@ export class IdamApi {
 
   public registerUser(user: User, accessToken: string): Promise<User>{
     return this.axios
-      .post(`${this.addUser}`, user, {
+      .post(`${this.addUserURL}`, user, {
         headers: {
           Authorization: 'Bearer ' + accessToken
         }})
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public getUserByEmail(userEmail: string, accessToken: string): Promise<User>{
+    return this.axios
+      .get(`${this.updateUserDetailsUserURL}`,{
+        baseURL: '',
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        },
+        params: {query: `email:${userEmail}`}
+      })
+      .then(results => results.data[0])
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateUserDetails(userId: string, forename: string, surname: string, accessToken: string): Promise<User>{
+    return this.axios
+      .patch(`${this.updateUserDetailsUserURL}` + userId,  {
+        forename: forename,
+        surname: surname
+      }, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      })
+      .then(results => {
+        return results.data;
+      })
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public grantUserRole(userId: string, role: object, accessToken: string): Promise<User>{
+    return this.axios
+      .post(`${this.updateUserDetailsUserURL}` + userId + '/roles/',  role,{
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      })
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public removeUserRole(userId: string, roleName: string, accessToken: string): Promise<User>{
+    return this.axios
+      .delete(`${this.updateUserDetailsUserURL}` + userId + '/roles/' + roleName,{
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      })
       .then(results => results.data)
       .catch(err => {
         this.logError(err);

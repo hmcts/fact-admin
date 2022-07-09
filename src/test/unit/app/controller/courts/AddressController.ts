@@ -5,13 +5,16 @@ import {CSRF} from '../../../../../main/modules/csrf';
 import {AddressType, CourtAddress, DisplayAddress, DisplayCourtAddresses} from '../../../../../main/types/CourtAddress';
 import {AddressController} from '../../../../../main/app/controller/courts/AddressController';
 import {CourtAddressPageData} from '../../../../../main/types/CourtAddressPageData';
+import {County} from '../../../../../main/types/County';
+
 
 describe('AddressesController', () => {
 
   let mockApi: {
     getCourtAddresses: () => Promise<CourtAddress[]>,
     updateCourtAddresses: () => Promise<CourtAddress[]>,
-    getAddressTypes: () => Promise<AddressType[]>
+    getAddressTypes: () => Promise<AddressType[]>,
+    getCounties: () => Promise<County[]>
   };
 
   const res = mockResponse();
@@ -21,19 +24,36 @@ describe('AddressesController', () => {
     return [
       {
         'type_id': 100,
+        description : 'description' ,
+        'description_cy' : 'description_cy,',
         'address_lines': ['54 Green Street'],
         'address_lines_cy': ['54 Green Street_cy'],
         town: 'Redville',
         'town_cy': 'Redville_cy',
+        'county_id': 1,
         postcode: 'RR1 2AB'
       },
       {
         'type_id': 200,
+        description : 'description' ,
+        'description_cy' : 'description_cy',
         'address_lines': ['11 Yellow Road'],
         'address_lines_cy': ['11 Yellow Road_cy'],
         town: 'Brownville',
         'town_cy': 'Brownville',
+        'county_id': 2,
         postcode: 'BB11 1BC'
+      },
+      {
+        'type_id': 200,
+        description : 'description' ,
+        'description_cy' : 'description_cy',
+        'address_lines': ['12 Yellow Road'],
+        'address_lines_cy': ['12 Yellow Road_cy'],
+        town: 'Birmingham',
+        'town_cy': 'Birmingham',
+        'county_id': 3,
+        postcode: 'B1 1AA'
       }
     ];
   };
@@ -42,22 +62,41 @@ describe('AddressesController', () => {
     const courtAddresses = getValidCourtAddresses();
     const primary = courtAddresses[0];
     const secondary = courtAddresses[1];
+    const third = courtAddresses[2];
+
     return {
       primary: {
         'type_id': primary.type_id,
+        'description' : primary.description,
+        'description_cy' : primary.description_cy,
         'address_lines': primary.address_lines.join('\n'),
         'address_lines_cy': primary.address_lines_cy.join('\n'),
         town: primary.town,
         'town_cy': primary.town_cy,
+        'county_id': 1,
         postcode: primary.postcode
       },
       secondary: {
         'type_id': secondary.type_id,
+        'description' : secondary.description,
+        'description_cy' : secondary.description_cy,
         'address_lines': secondary.address_lines.join('\n'),
         'address_lines_cy': secondary.address_lines_cy.join('\n'),
         town: secondary.town,
         'town_cy': secondary.town_cy,
+        'county_id': 2,
         postcode: secondary.postcode
+      },
+      third: {
+        'type_id': third.type_id,
+        'description' : third.description,
+        'description_cy' : third.description_cy,
+        'address_lines': third.address_lines.join('\n'),
+        'address_lines_cy': third.address_lines_cy.join('\n'),
+        town: third.town,
+        'town_cy': third.town_cy,
+        'county_id': 3,
+        postcode: third.postcode
       }
     };
   };
@@ -68,6 +107,18 @@ describe('AddressesController', () => {
     { id: 300, name: 'Visit or contact us' , 'name_cy': 'Visit or contact us'}
   ];
 
+  const counties: County[] = [
+    {id: 1, name:'West Midlands', country: 'England'},
+    {id: 2, name:'Cardiff', country: 'Wales'},
+    {id: 3, name:'Aberdeenshire', country: 'Scotland'}
+  ];
+
+
+  const expectedCounties: SelectItem[] = [
+    { value: 1, text: 'West Midlands', selected: false },
+    { value: 2, text: 'Cardiff', selected: false },
+    { value: 3, text: 'Aberdeenshire' , selected: false}
+  ];
   const expectedSelectItems: SelectItem[] = [
     {
       value: addressTypes[0].id,
@@ -89,19 +140,24 @@ describe('AddressesController', () => {
   const getExpectedResults = (
     primaryAddress: DisplayAddress,
     secondaryAddress: DisplayAddress,
+    thirdAddress: DisplayAddress,
     expectedErrors: { text: string }[],
     primaryPostcodeInvalid: boolean,
     secondaryPostcodeInvalid: boolean,
+    thirdPostcodeInvalid: boolean,
     isFatalError: boolean) => {
     return {
-      addresses: {primary: primaryAddress, secondary: secondaryAddress},
+      addresses: {primary: primaryAddress, secondary: secondaryAddress , third :thirdAddress},
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
+      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties : expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedErrors,
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
+      thirdPostcodeInvalid: thirdPostcodeInvalid,
       fatalError: isFatalError
     };
   };
@@ -112,7 +168,8 @@ describe('AddressesController', () => {
     mockApi = {
       getCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
       updateCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
-      getAddressTypes: async (): Promise<AddressType[]> => addressTypes
+      getAddressTypes: async (): Promise<AddressType[]> => addressTypes,
+      getCounties: async (): Promise<County[]> => counties
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -126,17 +183,17 @@ describe('AddressesController', () => {
   });
 
   test('Should get addresses view and render the page', async () => {
-    // When 2 addresses already exist
+    // When 3 addresses already exist
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, [], false, false, false);
+      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third,[], false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
-    // When there is no secondary address
+    // When there is no secondary address or third address
     mockApi.getCourtAddresses = async () => { return [getValidCourtAddresses()[0]]; };
     await controller.get(req, res);
-    expectedResults = getExpectedResults(expectedAddresses.primary, null, [], false, false, false);
+    expectedResults = getExpectedResults(expectedAddresses.primary, null,null,[], false, false,false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -147,6 +204,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -174,11 +232,14 @@ describe('AddressesController', () => {
       addresses: null,
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
+      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
       errors: expectedError,
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
+      thirdPostcodeInvalid: false,
       fatalError: true
     };
 
@@ -200,27 +261,32 @@ describe('AddressesController', () => {
       addresses: getValidDisplayAddresses(),
       addressTypesPrimary: [],
       addressTypesSecondary: [],
+      addressTypesThird: [],
+      counties : expectedCounties,
       writeToUsTypeId: null,
       updated: false,
       errors: expectedError,
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
+      thirdPostcodeInvalid: false,
       fatalError: true
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
-  test('Should post court addresses if secondary address is empty', async () => {
+  test('Should post court addresses if secondary and third address is empty', async () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': { 'type_id': 100, 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', postcode: '' }
+      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '' },
+      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '' }
     };
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -236,10 +302,12 @@ describe('AddressesController', () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
     addresses.primary['type_id'] = null;
     addresses.secondary['type_id'] = null;
+    addresses.third['type_id'] = null;
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -252,10 +320,12 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [
       { text: controller.primaryAddressPrefix + controller.typeRequiredError },
-      { text: controller.secondaryAddressPrefix + controller.typeRequiredError }
+      { text: controller.secondaryAddressPrefix + controller.typeRequiredError },
+      { text: controller.thirdAddressPrefix + controller.typeRequiredError },
+
     ];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -267,6 +337,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -279,7 +350,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{ text: controller.primaryAddressPrefix + controller.postcodeMissingError }];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -291,6 +362,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -303,7 +375,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{ text: controller.secondaryAddressPrefix + controller.postcodeMissingError }];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -316,6 +388,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -330,7 +403,7 @@ describe('AddressesController', () => {
       { text: controller.primaryAddressPrefix + controller.addressRequiredError},
       { text: controller.primaryAddressPrefix + controller.townRequiredError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false,false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -343,6 +416,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -358,7 +432,7 @@ describe('AddressesController', () => {
       { text: controller.secondaryAddressPrefix + controller.townRequiredError}
     ];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -370,6 +444,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -381,7 +456,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{ text: controller.primaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third,expectedError, true, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -394,6 +469,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -406,7 +482,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{ text: controller.secondaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true,false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -417,6 +493,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id, // Write to us
       '_csrf': CSRF.create()
     };
@@ -430,7 +507,7 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{ text: controller.multipleVisitAddressError}];
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -443,10 +520,53 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     expectedError = [{ text: controller.multipleVisitAddressError}];
     expectedResults =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false,false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
+
+  test('Should not post court addresses if secondary and third descriptions is more than 50 characters', async () => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    const tooLongDescription = 'description123456789012345678912345678901234567890112345678901234567891234567890123456789011234567890';
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      third: addresses.third,
+      writeToUsTypeId: addressTypes[1].id, // Write to us
+      '_csrf': CSRF.create()
+    };
+
+
+    addresses.secondary['description'] = tooLongDescription;
+    addresses.secondary['description_cy'] = tooLongDescription;
+    addresses.third['description'] = tooLongDescription;
+    addresses.third['description_cy'] = tooLongDescription;
+
+
+    await controller.put(req, res);
+
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+    let expectedError = [{ text: controller.secondaryAddressPrefix +  controller.descriptionTooLongError},
+      {text : controller.thirdAddressPrefix + controller.descriptionTooLongError}];
+    let expectedResults: CourtAddressPageData =
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+
+
+
+    await controller.put(req, res);
+
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+    expectedError = [{ text: controller.secondaryAddressPrefix + controller.descriptionTooLongError},
+      {text : controller.thirdAddressPrefix + controller.descriptionTooLongError}];
+    expectedResults =
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false,false, false);
+
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
 
   test('Put should handle Bad Request response from API', async () => {
     const slug = 'central-london-county-court';
@@ -455,6 +575,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -468,14 +589,14 @@ describe('AddressesController', () => {
     errorResponse.response.data = [addresses.primary.postcode];
     await controller.put(req, res);
     let expectedError = [{ text: controller.primaryAddressPrefix + controller.postcodeNotFoundError }];
-    let expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false);
+    let expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
     errorResponse.response.data = [addresses.secondary.postcode];
     await controller.put(req, res);
     expectedError = [{ text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }];
-    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, true, false);
+    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true,false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Both postcodes invalid and same
@@ -487,14 +608,14 @@ describe('AddressesController', () => {
       { text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError }
     ];
     expectedResults =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, true, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, true, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Bad Request for reasons other than postcodes
     errorResponse.response.data = null;
     await controller.put(req, res);
     expectedError = [{ text: controller.updateAddressError }];
-    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false,false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -504,6 +625,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -517,7 +639,7 @@ describe('AddressesController', () => {
 
     const expectedError = [ { text: controller.updateAddressError } ];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false,false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -527,6 +649,7 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
+      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -540,7 +663,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{ text: controller.updateAddressError }];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false);
+      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false,false, false);
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });

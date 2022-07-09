@@ -1,0 +1,68 @@
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+
+<h2 class="govuk-heading-l">Create a User</h2>
+
+{% set userExistsError = false %}
+{% if userExists %}
+ {% set userExistsError = { text: "A user with this email already exists. Please press Continue to view and make changes to this account." } %}
+{% endif %}
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "User details successfully updated"
+  }) }}
+{% endif %}
+
+{% if userRolesRemoved === true %}
+  {{ govukPanel({
+    titleText: "User roles successfully removed"
+  }) }}
+{% endif %}
+
+{{ govukInput({
+  label: {
+    text: "Please enter the user’s email address"
+  },
+  id: "user-email",
+  name: "user-email",
+  value: userEmail,
+  errorMessage: userExistsError
+}) }}
+
+{% if userExists %}
+
+<div class="govuk-button-group">
+{{ govukButton({
+  text: "Continue",
+  name: "searchUserEdit",
+  attributes: { id: "searchUserEditBtn" }
+}) }}
+
+{{ govukButton({
+  text: "Cancel",
+  name: "cancelInviteUser",
+   attributes: { id: "cancelInviteUserChangesBtn" },
+   classes: "govuk-button--secondary clear-changes"
+}) }}
+
+</div>
+{% else %}
+{{ govukButton({
+  text: "Create",
+  name: "searchUserCreate",
+  attributes: { id: "searchUserCreateBtn" }
+}) }}
+{% endif %}

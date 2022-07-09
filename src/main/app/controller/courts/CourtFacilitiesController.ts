@@ -117,10 +117,6 @@ export class CourtFacilitiesController {
   }
 
   private facilityDuplicated(courFacilities: Facility[], index1: number, index2: number): boolean {
-    return courFacilities[index1].id
-      && courFacilities[index2].id
-      // Make sure we don't have duplicated mutually exclusive (e.g. 'parking' vs. 'No parking') facility types
-      && (courFacilities[index1].id.toString().indexOf(courFacilities[index2].id.toString()) != -1
-        || courFacilities[index2].id.toString().indexOf(courFacilities[index1].id.toString()) != -1);
+    return courFacilities[index1].id === courFacilities[index2].id;
   }
 }
