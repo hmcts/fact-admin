@@ -85,6 +85,9 @@
             {% set spoeHtml %}
               {% include "./tabs/spoe.njk" %}
             {% endset -%}
+            {% set applicationProgressionHtml %}
+              {% include "./tabs/applicationProgression.njk" %}
+            {% endset -%}
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
@@ -150,6 +153,13 @@
                     id: "photo",
                     panel: {
                       html: photoHtml
+                    }
+                  },
+                  {
+                    label: "Application Progression",
+                    id: "application-progression",
+                    panel: {
+                      html: applicationProgressionHtml
                     }
                   }
                 ]%}
