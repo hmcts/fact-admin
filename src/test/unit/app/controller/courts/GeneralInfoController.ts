@@ -22,7 +22,8 @@ describe('GeneralInfoController', () => {
     'in_person': true,
     'service_centre': false,
     'sc_intro_paragraph': '',
-    'sc_intro_paragraph_cy': ''
+    'sc_intro_paragraph_cy': '',
+    'common_platform': false
   };
 
   const courtGeneralInfoBlankNameField: CourtGeneralInfo = {
@@ -36,7 +37,8 @@ describe('GeneralInfoController', () => {
     'in_person': true,
     'service_centre': false,
     'sc_intro_paragraph': '',
-    'sc_intro_paragraph_cy': ''
+    'sc_intro_paragraph_cy': '',
+    'common_platform': false
   };
 
   const courtGeneralInfoInvalidCharacters: CourtGeneralInfo = {
@@ -50,7 +52,8 @@ describe('GeneralInfoController', () => {
     'in_person': true,
     'service_centre': false,
     'sc_intro_paragraph': '',
-    'sc_intro_paragraph_cy': ''
+    'sc_intro_paragraph_cy': '',
+    'common_platform': false
   };
 
   const courtGeneralInfoTooManyCharsForIntroParagraph: CourtGeneralInfo = {
@@ -82,7 +85,8 @@ describe('GeneralInfoController', () => {
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
       'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ' +
-      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'
+      'intro paragraph 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20',
+    'common_platform': false
   };
 
   const courtGeneralInfoOverCharacterLimit: CourtGeneralInfo = {
@@ -102,7 +106,8 @@ describe('GeneralInfoController', () => {
     'in_person': true,
     'service_centre': false,
     'sc_intro_paragraph': '',
-    'sc_intro_paragraph_cy': ''
+    'sc_intro_paragraph_cy': '',
+    'common_platform': false
   };
 
   const slug = 'southport-county-court';
