@@ -83,25 +83,7 @@ describe('EditUserController', () => {
   });
 
   test('Should get user details and render edit page', async () => {
-    req.query = {
-      userEmail: email
-    };
-
-    await controller.getUser(req, res);
-
-    const pageData: EditUserPageData = {
-      errors: [],
-      user : user
-    };
-
-    expect(res.render).toBeCalledWith('users/tabs/editUserContent', pageData);
-    expect(mockApi.getUserByEmail).toBeCalled();
-  });
-
-  test('Should get user details and render edit page', async () => {
-    req.query = {
-      userEmail: email
-    };
+    req.params = { userEmail: email };
     req.scope.cradle.idamApi.getUserByEmail = jest.fn().mockResolvedValue(user);
 
     await controller.getUser(req, res);

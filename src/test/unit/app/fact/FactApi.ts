@@ -10,6 +10,7 @@ import {AdditionalLink} from '../../../../main/types/AdditionalLink';
 import {Action, Audit} from '../../../../main/types/Audit';
 import {OpeningType} from '../../../../main/types/OpeningType';
 import {NewCourt} from '../../../../main/types/NewCourt';
+import {ApplicationProgression} from '../../../../main/types/ApplicationProgression';
 
 
 describe('FactApi', () => {
@@ -135,7 +136,8 @@ describe('FactApi', () => {
         'in_person': true,
         'service_centre': false,
         'sc_intro_paragraph': '',
-        'sc_intro_paragraph_cy': ''
+        'sc_intro_paragraph_cy': '',
+        'common_platform': false
       }
       };
     const mockAxios = { get: async () => results } as any;
@@ -172,7 +174,8 @@ describe('FactApi', () => {
       'alert_cy': '',
       'service_centre': false,
       'sc_intro_paragraph': '',
-      'sc_intro_paragraph_cy': ''
+      'sc_intro_paragraph_cy': '',
+      'common_platform': false
     };
 
     const spy = jest.spyOn(mockLogger, 'info');
@@ -1118,8 +1121,8 @@ describe('FactApi', () => {
   test('Should return results from getCourtAddresses request', async () => {
     const results: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD' },
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ' }
       ]
     };
     const mockAxios = { get: async () => results } as any;
@@ -1143,8 +1146,8 @@ describe('FactApi', () => {
   test('Should update court addresses and return results from updateCourtAddresses request', async () => {
     const addresses: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2CD' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', postcode: 'AB1 2XZ' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD' },
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ' }
       ]
     };
     const mockAxios = { put: async () => addresses } as any;
@@ -1777,5 +1780,83 @@ describe('FactApi', () => {
     await expect(spy).toBeCalled();
   });
 
+  test('Should return results from getCounties request', async () => {
+    const results = {
+      data: [
+        { id: 100, name:'West Midlands', country: 'England'},
+        { id: 200, name:'Cardiff', country: 'Wales'},
+        { id: 200, name:'Aberdeenshire', country: 'Scotland'},
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCounties()).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getCounties request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCounties()).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should return results from getApplicationUpdates request', async () => {
+    const results: { data: ApplicationProgression[] } = {
+      data: [
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+      ]
+    };
+    const mockAxios = { get: async () => results } as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getApplicationUpdates('newcastle-crown-court')).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed getApplicationUpdates request', async () => {
+    const mockAxios = { get: async () => {
+      throw mockError;
+    }} as any;
+
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getApplicationUpdates('newcastle-crown-court')).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
+
+  test('Should update application updates and application updates from updateApplicationUpdates request', async () => {
+    const results = {
+      data: [
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+      ]
+    };
+    const mockAxios = { put: async () => results } as any;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateApplicationUpdates('slug',results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should log error and reject promise for failed updateApplicationUpdates request', async () => {
+    const results = {
+      data: [
+        { type: 'type', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+        { type: 'type_2', type_cy:'type_cy', email: 'email',external_link: 'external_link', external_link_description: 'external_link_description', external_link_description_cy: 'external_link_description_cy' },
+      ]
+    };
+
+    const mockAxios = { put: async () => { throw mockError; }} as any;
+    const spy = jest.spyOn(mockLogger, 'info');
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.updateApplicationUpdates('slug',results.data)).rejects.toBe(mockError);
+    await expect(spy).toBeCalled();
+  });
 
 });

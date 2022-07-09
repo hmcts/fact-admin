@@ -49,6 +49,11 @@ Then('I can view the access scheme checkbox', async () => {
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
+Then('I can view common platform flag checkbox', async () => {
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  expect(commonPlatformCheckboxExists).equal(true);
+});
+
 Then('I can view the additional information notices', async () => {
   const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
   const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
@@ -83,4 +88,10 @@ Then('The error message displays for general info {string}', async (errMessage: 
 
 Given('I click on continue button', async () => {
   await I.click('#redirectBtnId');
+});
+
+Then('I edit common platform checkbox', async () => {
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  expect(commonPlatformCheckboxExists).equal(true);
+  await I.click('#common_platform');
 });
