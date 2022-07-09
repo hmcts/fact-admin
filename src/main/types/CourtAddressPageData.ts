@@ -5,6 +5,7 @@ export class CourtAddressPageData {
   addressTypesPrimary: SelectItem[];
   addressTypesSecondary: SelectItem[];
   addressTypesThird: SelectItem[];
+  counties: SelectItem[];
   addresses: DisplayCourtAddresses;
   writeToUsTypeId: number;
   errors: { text: string }[];

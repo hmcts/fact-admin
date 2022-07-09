@@ -10,6 +10,7 @@ export interface CourtGeneralInfo {
   service_centre: boolean;
   sc_intro_paragraph: string;
   sc_intro_paragraph_cy: string;
+  common_platform: boolean;
 }
 
 export interface CourtGeneralInfoData {

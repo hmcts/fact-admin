@@ -64,6 +64,7 @@ export class AddressesController {
       $('#secondaryAddressLinesWelsh').val('');
       $('#secondaryAddressTown').val('');
       $('#secondaryAddressTownWelsh').val('');
+      $('#secondaryAddressCounty').val('');
       $('#secondaryAddressPostcode').val('');
     });
   }
@@ -77,6 +78,7 @@ export class AddressesController {
       $('#thirdAddressLinesWelsh').val('');
       $('#thirdAddressTown').val('');
       $('#thirdAddressTownWelsh').val('');
+      $('#thirdAddressCounty').val('');
       $('#thirdAddressPostcode').val('');
     });
   }
