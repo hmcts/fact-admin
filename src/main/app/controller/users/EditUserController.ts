@@ -44,8 +44,7 @@ export class EditUserController {
 
   public async getUser(req: AuthedRequest,
     res: Response): Promise<void> {
-    const userEmail: string = req.query.userEmail as string;
-
+    const userEmail: string = req.params.userEmail as string;
     await req.scope.cradle.idamApi.getUserByEmail(userEmail, req.session.user.access_token)
       .then((returnedUser: User) => {
         if (returnedUser === undefined) {
