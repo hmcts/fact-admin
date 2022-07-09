@@ -10,17 +10,27 @@
    {% set inviteUserHtml %}
       {% include "./tabs/inviteUser.njk" %}
    {% endset -%}
+   {% set editUserHtml %}
+       {% include "./tabs/searchUser.njk" %}
+    {% endset -%}
 
 {{ factTabs({
             id: 'Main',
             items: [
-            {
-              label: "Create User",
-              id: "invite-user",
-            panel: {
-                html: inviteUserHtml
-                }
-            }
+              {
+                label: "Create User",
+                id: "invite-user",
+              panel: {
+                  html: inviteUserHtml
+                  }
+              },
+              {
+                label: "Edit User",
+                id: "edit-user",
+              panel: {
+                  html: editUserHtml
+                  }
+              }
             ]
           }) }}
 

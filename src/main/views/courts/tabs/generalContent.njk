@@ -53,6 +53,9 @@
   }) }}
 
   <input name='in_person' type='hidden' value='{{generalInfo.in_person}}'></input>
+
+  {% endif %}
+
   <input name='service_centre' type='hidden' value='{{generalInfo.service_centre}}'></input>
 
   {% set disableAccessScheme = generalInfo.service_centre == true %}
@@ -67,8 +70,17 @@
       }
     ]
   }) }}
-{% endif %}
 
+{{ govukCheckboxes({
+    name: "common_platform",
+    items: [
+      {
+        value: true,
+        text: "Common Platform",
+        checked: generalInfo.common_platform
+      }
+    ]
+  }) }}
 {% if generalInfo.service_centre %}
 
   <div class="govuk-form-group">
@@ -79,10 +91,10 @@
     </h2>
     <span class="govuk-caption-m govuk-!-margin-bottom-3">
       Use this field to overwrite the default text for the first paragraph found on service centres through
-      the public facing service. This is limited to 250 characters including spaces.
+      the public facing service. This is limited to 400 characters including spaces.
     </span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
-              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph }}</textarea>
+              rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph }}</textarea>
   </div>
 
   <div class="govuk-form-group">
@@ -92,7 +104,7 @@
         </label>
     </h2>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
-              rows="2" maxlength="250">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
+              rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
   </div>
 
 {% endif %}
