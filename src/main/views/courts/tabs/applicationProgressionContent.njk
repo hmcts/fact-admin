@@ -1,0 +1,277 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+<h2 class="govuk-heading-l">Application Progression</h2>
+
+{% if errors|length %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
+
+{% if updated === true %}
+  {{ govukPanel({
+    titleText: "Application Progressions updated"
+  }) }}
+{% endif %}
+
+{% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %}
+
+<input type="hidden" name="applicationProgressionsEnabled" id='applicationProgressionsEnabled' value="{{ isEnabled }}">
+
+{% for progression in application_progression %}
+
+  {% set isNew = (progression.isNew === true) or (progression.isNew === "true") %}
+
+  {% set typeError = false %}
+  {% if progression.type === '' %}
+    {% set typeError = { text: 'Type is required' } %}
+  {% endif %}
+
+  {% set descriptionError = false %}
+  {% if progression.external_link !== '' and progression.external_link_description === '' %}
+    {% set descriptionError = { text: 'Description is required' } %}
+  {% endif %}
+
+  {% set linkError = false %}
+  {% if progression.external_link_description !== '' and progression.external_link === '' %}
+    {% set linkError = { text: 'Link is required' } %}
+  {% elif progression.isInvalidFormat === true and progression.email === '' %}
+    {% set linkError = { text: 'Invalid url format' } %}
+  {% endif %}
+
+  {% set emailError = false %}
+  {% if progression.isDuplicated === true %}
+    {% set emailError = { text: 'Duplicated address' } %}
+  {% elif progression.isInvalidFormat === true and progression.external_link === '' %}
+    {% set emailError = { text: 'Invalid email address format' } %}
+  {% endif %}
+
+  {% set contentError = false %}
+  {% if progression.email === '' and progression.external_link === '' %}
+    {% set contentError = { text: 'Email or Link required' } %}
+  {% elif progression.email !== '' and progression.email !== null and progression.external_link !== '' and progression.external_link !== null %}
+    {% set contentError = { text: 'Email or Link required' } %}
+  {% endif %}
+
+
+
+  {% call govukFieldset({
+    classes: "can-reorder"
+  }) %}
+
+  {% if isNew === true %}
+    <h3 class="govuk-heading-s">Add New Application Progression</h3>
+  {% endif %}
+
+  <input type="hidden" name={{"progression[" + loop.index +"][isNew]"}} value={{progression.isNew}}></input>
+
+  {{ govukInput({
+    label: {
+      text: "Type"
+    },
+    errorMessage: typeError,
+    classes: "govuk-input--width-20",
+    id: "type-" + loop.index,
+    name: "progression[" + loop.index +"][type]",
+    value: progression.type
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Type (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "type_cy-" + loop.index,
+    name: "progression[" + loop.index +"][type_cy]",
+    value: progression.type_cy
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Email"
+    },
+    errorMessage: emailError + contentError,
+    classes: "govuk-input--width-20",
+    id: "email-" + loop.index,
+    name: "progression[" + loop.index +"][email]",
+    value: progression.email
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link"
+    },
+    errorMessage: linkError + contentError,
+    classes: "govuk-input--width-20",
+    id: "external_link-" + loop.index,
+    name: "progression[" + loop.index +"][external_link]",
+    value: progression.external_link
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link Description"
+    },
+    errorMessage: descriptionError,
+    classes: "govuk-input--width-20",
+    id: "external_link_description-" + loop.index,
+    name: "progression[" + loop.index +"][external_link_description]",
+    value: progression.external_link_description
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "External Link Description (Welsh)"
+    },
+    classes: "govuk-input--width-20",
+    id: "external_link_description_cy-" + loop.index,
+    name: "progression[" + loop.index +"][external_link_description_cy]",
+    value: progression.external_link_description_cy
+  }) }}
+
+  <div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-three-quarters">
+      {% if isNew === false %}
+        {{ govukButton({
+          text: "Remove",
+          name: "deleteUpdate",
+          type: "button",
+          classes: "govuk-button--warning deleteUpdate"
+        }) }}
+      {% else %}
+        {{ govukButton({
+          text: "Clear",
+          name: "clearUpdate",
+          type: "button",
+          classes: "govuk-button--secondary clearUpdate"
+        }) }}
+      {% endif %}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+    </div>
+  </div>
+
+  <hr/>
+
+  {% endcall %}
+
+{% endfor %}
+
+
+
+{% call govukFieldset({
+    classes: "can-reorder",
+    attributes: { id: "newUpdateTemplate", disabled: "disabled", hidden: true }
+}) %}
+
+  <input type="hidden" name={{"progression[" + progression.length +"][isNew]"}} value="true"></input>
+
+  <h3 class="govuk-heading-s">Add New Application Progression</h3>
+
+  {{ govukInput({
+      label: {
+        text: "Type"
+      },
+      classes: "govuk-input--width-20",
+      id: "type-" + loop.index,
+      name: "progression[" + loop.index +"][type]",
+      value: progression.type
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Email"
+      },
+      classes: "govuk-input--width-20",
+      id: "email-" + loop.index,
+      name: "progression[" + loop.index +"][email]",
+      value: progression.email
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "External Link"
+      },
+      classes: "govuk-input--width-20",
+      id: "external_link-" + loop.index,
+      name: "progression[" + loop.index +"][external_link]",
+      value: progression.external_link
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "External Link Description"
+      },
+      classes: "govuk-input--width-20",
+      id: "external_link_description-" + loop.index,
+      name: "progression[" + loop.index +"][external_link_description]",
+      value: progression.external_link_description
+    }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukButton({
+          text: "Clear",
+          name: "clearUpdate",
+          type: "button",
+          classes: "govuk-button--secondary clearUpdate"
+        }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
+      {{ govukButton({
+        html: upArrowHtml,
+        name: "moveUp",
+        type: "button",
+        classes: "govuk-button--secondary move-up",
+        attributes: { "aria-label": "move up" }
+      }) }}
+
+      {{ govukButton({
+        html: downArrowHtml,
+        name: "moveDown",
+        type: "button",
+        classes: "govuk-button--secondary move-down",
+        attributes: { "aria-label": "move down" }
+      }) }}
+      </div>
+  </div>
+
+  <hr/>
+
+{% endcall %}
+
+{{ govukButton({
+  text: "Save",
+  name: "saveUpdate"
+}) }}
+
+{{ govukButton({
+  text: "Add new application progression",
+  name: "addNewUpdate",
+  type: "button",
+  classes: "govuk-button--secondary addUpdate"
+}) }}

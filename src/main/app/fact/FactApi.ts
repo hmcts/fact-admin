@@ -18,6 +18,7 @@ import {AdditionalLink} from '../../types/AdditionalLink';
 import {Court} from '../../types/Court';
 import {NewCourt} from '../../types/NewCourt';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
+import {ApplicationProgression} from '../../types/ApplicationProgression';
 import {ServiceArea} from '../../types/ServiceArea';
 import {County} from '../../types/County';
 
@@ -670,6 +671,26 @@ export class FactApi {
       });
   }
 
+  public getApplicationUpdates(slug: string): Promise<ApplicationProgression[]> {
+    return this.axios
+      .get(`${this.adminBaseUrl}/${slug}/application-progression`)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
+  public updateApplicationUpdates(slug: string, body: ApplicationProgression[]): Promise<ApplicationProgression[]> {
+    return this.axios
+      .put(`${this.adminBaseUrl}/${slug}/application-progression`, body)
+      .then(results => results.data)
+      .catch(err => {
+        this.logError(err);
+        return Promise.reject(err);
+      });
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logError(err);
@@ -686,6 +707,7 @@ export class FactApi {
       this.logger.info(err.response.headers);
     }
   }
+
 }
 
 interface UpdateCourtsInfoRequest {
@@ -693,3 +715,4 @@ interface UpdateCourtsInfoRequest {
   'info_cy': string,
   'courts': string[]
 }
+

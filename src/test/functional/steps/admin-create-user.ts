@@ -15,30 +15,30 @@ When('I click on my account link', async () => {
 });
 
 Then('I am redirected to the page {string}', async (inviteUser: string) => {
-  const selector = '#inviteUserContent > h2';
+  const selector = '#inviteUserSearchContent > h2';
   const pageTitleElement = await I.getElement(selector);
   expect(await I.getElementText(pageTitleElement)).equal(inviteUser);
 });
 
 When('I enter Email {string}', async (email: string) => {
-  const selector = '#email';
+  const selector = '#user-email';
   await populateField(selector, email);
 });
 
 When('I enter Last Name {string} to create new user', async (lastName: string) => {
-  const selector = '#surname';
+  const selector = '#invite-surname';
   await I.clearField(selector);
   await populateField(selector, lastName);
 });
 
 When('I enter First Name {string} to create new user', async (firstName: string) => {
-  const selector = '#forename';
+  const selector = '#invite-forename';
   await I.clearField(selector);
   await populateField(selector, firstName);
 });
 
 Then('I select the user role as fact-admin for new user', async () => {
-  const selector = '#user\\[roles\\]\\[\\]';
+  const selector = '#inviteUserRoles';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -49,6 +49,11 @@ Then('I select the user role as fact-admin to update user', async () => {
   await I.click(selector);
 });
 
+Then('I click create search user button', async () => {
+  const selector = 'button[name="searchUserCreate"]';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
 
 Then('I click create user button', async () => {
   const selector = 'button[name="inviteUser"]';
@@ -68,16 +73,30 @@ Then('I click confirm button', async () => {
 });
 
 Then('I can see green success message {string}', async (message: string) => {
-  const selector = '#inviteUserContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#inviteUserSearchContent > div.govuk-panel.govuk-panel--confirmation > h1';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
 Then('The error message display for creating user {string}', async (errMessage: string) => {
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
-  const selector = '#inviteUserContent > div > div > ul > li';
+  const selector = '#inviteUserSearchContent > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
+Then('The text message display for creating user {string}', async (errMessage: string) => {
+  const errorTitle = await I.checkElement('#inviteUserSearchContent > div.govuk-form-group.govuk-form-group--error > label');
+  expect(errorTitle).equal(true);
+  const selector = '#user-email-error';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal('Error:\n' + errMessage);
+});
+
+When('I click continue button', async () => {
+  const selector = '#searchUserEditBtn';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
 });
 
 When('I click on edit user', async () => {
@@ -87,7 +106,7 @@ When('I click on edit user', async () => {
 });
 
 When('I enter User Email {string}', async (email: string) => {
-  const selector = '#user-email';
+  const selector = '#search-user-email';
   await populateField(selector, email);
 });
 
@@ -156,4 +175,3 @@ Then('I make sure both of the roles are unchecked for test user', async () => {
   expect(await I.checkElement(selectorSuper)).equal(true);
   expect(await I.isElementChecked(selectorAdmin)).equal(false) && expect(await I.isElementChecked(selectorSuper)).equal(false);
 });
-
