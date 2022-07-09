@@ -5,13 +5,16 @@ import {CSRF} from '../../../modules/csrf';
 import {NewCourt} from '../../../types/NewCourt';
 import {Court} from '../../../types/Court';
 import {AxiosError} from 'axios';
+import {ServiceArea} from '../../../types/ServiceArea';
 
 @autobind
 export class NewCourtController {
 
+  getServiceAreasErrorMsg = 'A problem occurred when retrieving the service areas. ';
   addNewCourtErrorMsg = 'A problem occurred when adding the new court';
   duplicateCourtErrorMsg = 'A court already exists for court provided: '
-  emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again';
+  emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again. '
+    + 'If you are adding a service centre, make sure to ensure at least one service area is selected. ';
   courtNameValidationErrorMsg = 'Invalid court name: please amend and try again.';
 
   public async get(req: AuthedRequest,
@@ -25,7 +28,15 @@ export class NewCourtController {
     lonEntered = 0,
     latEntered = 0,
     serviceAreaChecked = false,
+    serviceAreas: ServiceArea[] = [],
     errorMsg: string[] = []): Promise<void> {
+
+    const allServiceAreas = await req.scope.cradle.api.getAllServiceAreas()
+      .catch(() => {
+        errorMsg.push(this.getServiceAreasErrorMsg);
+      });
+
+    console.log(allServiceAreas);
 
     res.render('courts/addNewCourt', {
       created: created,
@@ -37,6 +48,8 @@ export class NewCourtController {
       lonEntered: lonEntered,
       latEntered: latEntered,
       serviceAreaChecked: serviceAreaChecked,
+      serviceAreas: serviceAreas,
+      allServiceAreas: allServiceAreas,
       errorMsg: errorMsg,
       csrfToken: CSRF.create()
     });
@@ -47,41 +60,49 @@ export class NewCourtController {
     const serviceCentreChecked = req.body.serviceCentre == 'true';
     const lon = req.body.lon;
     const lat = req.body.lat;
+    const serviceAreas = serviceCentreChecked ? (Array.isArray(req.body.serviceAreaItems)
+      ? req.body.serviceAreaItems as ServiceArea[] ?? []
+      : (!req.body.serviceAreaItems ? [] : Array(req.body.serviceAreaItems))) : [];
 
     if (newCourtName === '' || lon === '' || lat === '') {
       return this.get(req, res, false, true, true, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, [this.emptyOrInvalidValueMsg]);
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas,[this.emptyOrInvalidValueMsg]);
+    }
+
+    if (serviceCentreChecked && !serviceAreas.length) {
+      return this.get(req, res, false, true, true, false,
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.emptyOrInvalidValueMsg]);
     }
 
     if (isNaN(lon) || isNaN(lat)) {
       return this.get(req, res, false, true, true, true,
-        '', newCourtName, lon, lat, serviceCentreChecked, [this.emptyOrInvalidValueMsg]);
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.emptyOrInvalidValueMsg]);
     }
 
     if (NewCourtController.isInvalidCourtName(newCourtName)) {
       return this.get(req, res, false, false, false, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, [this.courtNameValidationErrorMsg]);
+        '', newCourtName, lon, lat, serviceCentreChecked,serviceAreas, [this.courtNameValidationErrorMsg]);
     }
 
     if(!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, true, false, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, [this.addNewCourtErrorMsg]);
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.addNewCourtErrorMsg]);
     }
 
     // If all validation passes, add the court
     await req.scope.cradle.api.addCourt({
-      new_court_name: newCourtName,
-      service_centre: serviceCentreChecked,
+      'new_court_name': newCourtName,
+      'service_centre': serviceCentreChecked,
       lon: lon,
-      lat: lat
+      lat: lat,
+      'service_areas': serviceAreas
     } as NewCourt)
       .then((court: Court) => this.get(req, res, true, true, false, false,
-        '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, []))
+        '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, serviceAreas))
       .catch(async (reason: AxiosError) => {
         // Check if we have a duplicated court response (409), cater error response accordingly
         await this.get(req, res, false, true, false, false,
-          '', newCourtName, lon, lat, serviceCentreChecked,
-          reason.response?.status === 409
+          '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, reason.response?.status === 409
             ? [this.duplicateCourtErrorMsg + newCourtName]
             : [this.addNewCourtErrorMsg]);
       });

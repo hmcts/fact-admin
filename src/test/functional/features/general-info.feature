@@ -5,7 +5,7 @@ Feature: General Info
     Given I am on FACT homepage
     And I am on the admin portal sign in page
 
-  Scenario: Admin user can view and update urgent notices only
+  Scenario: Admin user can view and update urgent notices and PUAS flag only
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     When I select Include closed courts
@@ -15,6 +15,8 @@ Feature: General Info
     When I hover over general nav element
     When I click the general tab
     Then I can view the urgent notices
+    And I can view the PUAS flag
+    And I can view common platform flag checkbox
     And I cannot view super admin content
 
   Scenario: Super user can view and update all fields
@@ -28,6 +30,7 @@ Feature: General Info
     When I click the general tab
     Then I can view the open checkbox
     And I can view the access scheme checkbox
+    And I can view common platform flag checkbox
     And I can view the urgent notices
     And I can view the additional information notices
 
@@ -89,4 +92,16 @@ Feature: General Info
     When I add an "intro paragraph welsh test" in the rich editor field provided "#sc_intro_paragraph_cy"
     And I click the general info save button
     Then a success message is displayed on the general info tab "General Information updated"
-    
+
+  Scenario: Editing common platform checkbox
+    When I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    When I select Include closed courts
+    Then I can view the courts or tribunals in a list format
+    When I click edit next to court with "amersham-law-courts"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    Then I edit common platform checkbox
+    And I click the general info save button
+    Then a success message is displayed on the general info tab "General Information updated"

@@ -8,6 +8,7 @@ services:
     tokenURL: IDAM_API_URL
     sessionURL: IDAM_SESSION_URL
     addNewUserURL: IDAM_ADD_USER_URL
+    updateUserDetailsURL: IDAM_UPDATE_USER_URL
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT

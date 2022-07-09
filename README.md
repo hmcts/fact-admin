@@ -1,6 +1,6 @@
 # FACT Admin
 
-FACT administration interface
+FACT administration interface.
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ yarn start:dev
 
 ### Code style
 
-We use [ESLint](https://github.com/typescript-eslint/typescript-eslint).
+We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [sass-lint](https://github.com/sasstools/sass-lint)
 
 Running the linting with auto fix:
@@ -102,7 +102,7 @@ included in this template app. Your njk file would look like this:
 
 #### Helmet
 
-This application uses [Helmet](https://helmetjs.github.io/), which adds various security-related HTTP headers
+This application uses [Helmet](https://helmetjs.github.io/), which adds various security-related HTTP headers,
 to the responses. Apart from default Helmet functions, following headers are set:
 
 * [Referrer-Policy](https://helmetjs.github.io/docs/referrer-policy/)
@@ -132,4 +132,4 @@ e.g. the ones verifying the state of each service it depends on.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
