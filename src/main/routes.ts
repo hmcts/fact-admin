@@ -7,7 +7,6 @@ export default function(app: Application): void {
 
   const upload = multer();
 
-
   app.get('/', (req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
@@ -18,11 +17,18 @@ export default function(app: Application): void {
 
   //Users
   app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
+  app.get('/users/invite/search',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderSearchUser);
+  app.get('/users/invite/search/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.getUser);
   app.get('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderUserInvite);
   app.post('/users/invite/user',isSuperAdmin, app.locals.container.cradle.inviteUserController.postUserInvite);
   app.get('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderPassword);
   app.post('/users/password',isSuperAdmin, app.locals.container.cradle.inviteUserController.postPassword);
   app.get('user/invite/successful',isSuperAdmin, app.locals.container.cradle.inviteUserController.renderInviteSuccessful);
+  app.get('/users/search', app.locals.container.cradle.editUserController.renderSearchUser);
+  app.get('/users/search/:userEmail', app.locals.container.cradle.editUserController.getUser);
+  app.patch('/users/update/user',isSuperAdmin, app.locals.container.cradle.editUserController.patchUser);
+  app.get('/users/confirm-delete/user/', app.locals.container.cradle.editUserController.getDeleteConfirmation);
+  app.delete('/users/delete/user/',isSuperAdmin, app.locals.container.cradle.editUserController.removeUserRole);
 
   // Edit court
   app.get('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
@@ -56,6 +62,8 @@ export default function(app: Application): void {
   app.delete('/courts/:slug/photo', app.locals.container.cradle.photoController.delete);
   app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
   app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
+  app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
+  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
 
   // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
