@@ -16,7 +16,7 @@ export class GeneralInfoController {
   blankNameErrorMsg = 'Name is required';
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
   updateAlertErrorMsg = 'Urgent notices are limited to 250 characters including spaces.';
-  updateIntroParagraphErrorMsg = 'Intro paragraphs for service centres are limited to 250 characters including spaces.';
+  updateIntroParagraphErrorMsg = 'Intro paragraphs for service centres are limited to 400 characters including spaces.';
 
   public async get(
     req: AuthedRequest,
@@ -68,12 +68,13 @@ export class GeneralInfoController {
     }
 
     if (((/true/i).test(String(generalInfo.service_centre))) // JavaScript sends boolean as a string...
-      && (generalInfo.sc_intro_paragraph.length > 300 || generalInfo.sc_intro_paragraph_cy.length > 300)) {
+      && (generalInfo.sc_intro_paragraph.length > 650 || generalInfo.sc_intro_paragraph_cy.length > 650)) {
       return this.get(req, res, false, this.updateIntroParagraphErrorMsg, '', generalInfo);
     }
 
     generalInfo.open = generalInfo.open ?? false;
     generalInfo['access_scheme'] = generalInfo['access_scheme'] ?? false;
+    generalInfo['common_platform'] = generalInfo['common_platform'] ?? false;
 
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then((value: CourtGeneralInfo) => {

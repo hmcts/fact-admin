@@ -6,7 +6,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-<h2 class="govuk-heading-l">Create A User</h2>
+<h2 class="govuk-heading-l">Creating User - {{userEmail}}</h2>
 
 {% if errors|length %}
   {{ govukErrorSummary({
@@ -15,26 +15,18 @@
   }) }}
 {% endif %}
 
-
-{% set emailsError = false %}
-  {% if user.email === '' %}
-    {% set emailsError = { text: 'Email address is required' } %}
-  {% elif user.isInvalidFormat === true %}
-    {% set emailsError = { text: 'Invalid email address format' } %}
+{% set forenameError = false %}
+  {% if user.forename === '' %}
+   {% set forenameError = { text: 'First Name is required' } %}
   {% endif %}
 
-{% set firstNameError = false %}
-  {% if user.firstName === '' %}
-   {% set firstNameError = { text: 'First Name is required' } %}
-  {% endif %}
-
- {% set lastNameError = false %}
-   {% if user.lastName === '' %}
-    {% set lastNameError = { text: 'Last Name is required' } %}
+ {% set surnameError = false %}
+   {% if user.surname === '' %}
+    {% set surnameError = { text: 'Last Name is required' } %}
   {% endif %}
 
  {% set rolesError = false %}
-   {% if not user.roles|length and errors|length  %}
+   {% if user.roles[0] === '' and errors|length  %}
    {% set rolesError = { text: 'Assigned role is required' } %}
  {% endif %}
 
@@ -48,30 +40,20 @@
    {% set superAdminRoleChecked = true %}
   {% endif %}
 
-
 {% call govukFieldset({
   }) %}
 
-  {{ govukInput({
-    label: {
-      text: "Email"
-    },
-    classes: "govuk-input--width-20",
-    id: "email",
-    name: "user[email]",
-    value: user.email,
-    errorMessage: emailsError
-  }) }}
+  <input type="hidden" id="invite-email" name="user[email]" value={{ userEmail }}>
 
   {{ govukInput({
     label: {
       text: "First Name"
     },
     classes: "govuk-input--width-20",
-    id: "firstName",
-    name: "user[firstName]",
-    value: user.firstName,
-    errorMessage: firstNameError
+    id: "invite-forename",
+    name: "user[forename]",
+    value: user.forename,
+    errorMessage: forenameError
   }) }}
 
 {{ govukInput({
@@ -79,17 +61,17 @@
       text: "Last Name"
     },
     classes: "govuk-input--width-20",
-    id: "lastName",
-    name: "user[lastName]",
-    value: user.lastName,
-    errorMessage: lastNameError
+    id: "invite-surname",
+    name: "user[surname]",
+    value: user.surname,
+    errorMessage: surnameError
   }) }}
 
 
 {{ govukRadios({
   classes: "govuk-radios--small",
-  id: "roles",
-  name: "user[roles][]",
+  id: "invite-roles",
+  name: "inviteUserRoles",
   errorMessage: rolesError,
   fieldset: {
     legend: {
@@ -120,7 +102,8 @@
 <div class="govuk-button-group">
 {{ govukButton({
   text: "Create User",
-  name: "inviteUser"
+  name: "inviteUser",
+  attributes: { id: "createUserChangesBtn" }
 }) }}
 
 {{ govukButton({

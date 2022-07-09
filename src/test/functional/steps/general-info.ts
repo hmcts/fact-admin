@@ -29,9 +29,12 @@ Then('I can view the urgent notices', async () => {
   expect(welshUrgentNoticesExist).equal(true);
 });
 
+Then('I can view the PUAS flag', async () => {
+  expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
+});
+
 Then('I cannot view super admin content', async () => {
   expect(await I.isElementVisible('#generalInfoTab #open')).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #access_scheme')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info')).equal(false);
   expect(await I.isElementVisible('#generalInfoTab #info_cy')).equal(false);
 });
@@ -44,6 +47,11 @@ Then('I can view the open checkbox', async () => {
 Then('I can view the access scheme checkbox', async () => {
   const accessSchemeCheckboxExists = await I.checkElement('#generalInfoTab #access_scheme');
   expect(accessSchemeCheckboxExists).equal(true);
+});
+
+Then('I can view common platform flag checkbox', async () => {
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  expect(commonPlatformCheckboxExists).equal(true);
 });
 
 Then('I can view the additional information notices', async () => {
@@ -80,4 +88,10 @@ Then('The error message displays for general info {string}', async (errMessage: 
 
 Given('I click on continue button', async () => {
   await I.click('#redirectBtnId');
+});
+
+Then('I edit common platform checkbox', async () => {
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  expect(commonPlatformCheckboxExists).equal(true);
+  await I.click('#common_platform');
 });
