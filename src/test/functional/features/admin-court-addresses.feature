@@ -8,7 +8,7 @@ Feature: Court-addresses
     And click the Sign In button
     When I select Include closed courts
     Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "aberdare-county-court"
+    When I click edit next to court with "amersham-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
     And I hover over types nav element
     Then I click the Addresses tab
@@ -20,11 +20,13 @@ Feature: Court-addresses
     Then I enter "<welsh address>" in the Address Welsh textbox
     Then I enter "<town>" in the Town textbox
     Then I enter "<welsh town>" in the town Welsh textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I enter the secondary address town "<secondary town>"
+    Then I select the secondary County "50"
     Then I enter the secondary address postcode "<secondary postcode>"
     And I click the Save Addresses button
     Then A green message is displayed for the updated address "Addresses updated"
@@ -40,11 +42,15 @@ Feature: Court-addresses
     Then I enter "<welsh address>" in the Address Welsh textbox
     Then I enter "<town>" in the Town textbox
     Then I enter "<welsh town>" in the town Welsh textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5880"
+    Then I enter secondary address description "test" in Description textbox
+    Then I enter secondary address welsh description "test welsh" in Welsh Description textbox
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I enter the secondary address town "<secondary town>"
+    Then I select the secondary County "50"
     Then I enter the secondary address postcode "<secondary postcode>"
     And I click the Save Addresses button
     Then The error message display is "Only one visit address is permitted."
@@ -54,16 +60,32 @@ Feature: Court-addresses
       | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, Cwmbach Road | Aberdare      | CF44 0JE           |
 
 
+  Scenario: Adding third address of type: write to us
+    Given I will make sure to clear all entries of third address
+    When I select the third address type "5881"
+    Then I enter third address description "test" in Description textbox
+    Then I enter third address welsh description "test welsh" in Welsh Description textbox
+    Then I enter third address address "test address" in the Address textbox
+    Then I enter third address welsh address "test welsh address" in the Address Welsh textbox
+    Then I enter third address "town" in the Town textbox
+    Then I enter third address "welsh town" in the town Welsh textbox
+    Then I select the third County "50"
+    Then I enter third address "CF44 0JE" in the postcode textbox
+    And I click the Save Addresses button
+    Then A green message is displayed for the updated address "Addresses updated"
+
   Scenario Outline: Adding incomplete addresses (leaving primary address, secondary town and secondary postcode blank)
     Given I will make sure to clear all entries of the primary address
     When I will make sure to clear all entries for secondary address
     When I select the Address Type "5880"
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
+    Then I select the secondary County "50"
     And I click the Save Addresses button
-    Then The error message display is "Primary Address: Address is required." "Secondary Address: Town is required." "Secondary Address: Postcode is required."
+    Then The error message display is "Primary Address: Address is required." "Secondary Address 1: Town is required." "Secondary Address 1: Postcode is required."
 
     Examples:
       | town     |  postcode | secondary address             |
@@ -74,6 +96,7 @@ Feature: Court-addresses
     When I select the Address Type "5880"
     Then I enter court "<address>" in the Address textbox
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Postcode is invalid."
@@ -87,6 +110,7 @@ Feature: Court-addresses
     When I select the Address Type "5880"
     Then I enter court "<address>" in the Address textbox
     Then I enter "<town>" in the Town textbox
+    Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Postcode entered could not be found."

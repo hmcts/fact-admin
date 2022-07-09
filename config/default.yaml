@@ -11,6 +11,7 @@ services:
     tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
     sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
     addNewUserURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/registration'
+    updateUserDetailsURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/'
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
     callbackURL: 'http://localhost:3300/oauth2/callback'

@@ -1,6 +1,6 @@
-import { fail } from 'assert';
+import {fail} from 'assert';
 import Axios from 'axios';
-import { config } from '../config';
+import {config} from '../config';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -79,11 +79,14 @@ function testAccessibility(url: string): void {
 }
 
 describe('Accessibility', () => {
-  // testing accessibility of the home page
   testAccessibility('/');
   testAccessibility('/courts');
   testAccessibility('/logout');
   testAccessibility('/courts/aberdare-county-court/edit/general');
-
-  // TODO: include each path of your application in accessibility checks
+  testAccessibility('/bulk-update');
+  testAccessibility('/courts/add-court');
+  testAccessibility('/users');
+  testAccessibility('/courts/plymouth-combined-court/edit');
+  testAccessibility('/lists');
+  testAccessibility('/audits');
 });
