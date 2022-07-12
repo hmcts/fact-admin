@@ -70,14 +70,14 @@
       }
     ]
   }) }}
-
 {{ govukCheckboxes({
     name: "common_platform",
     items: [
       {
         value: true,
         text: "Common Platform",
-        checked: generalInfo.common_platform
+        checked: generalInfo.common_platform,
+        disabled: generalInfo.service_centre
       }
     ]
   }) }}
