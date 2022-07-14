@@ -10,5 +10,5 @@ Then ('I can see the court postcodes appear in alpha numeric order', async ()=> 
   expect(courtPostcodes.length > 0).equal(true);
   const courtPostcodesToSort: string[] = await I.getHtmlFromElements(selector);
   const isTheSame =   courtPostcodesToSort.sort().join() === courtPostcodes.join();
-  expect(isTheSame).equal(true)
+  expect(isTheSame).equal(true);
 });
