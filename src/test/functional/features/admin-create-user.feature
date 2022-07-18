@@ -1,3 +1,4 @@
+@ignore
 Feature: create admin user
 
   Background:

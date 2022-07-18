@@ -98,7 +98,7 @@
     </div>
 
     <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
-      {%- for items in postcodesCheckboxItems | slice(2) %}
+      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(2) %}
         <div class="govuk-grid-column-one-half">
             {{ govukCheckboxes({
               idPrefix: "postcodes-checkbox",
