@@ -125,7 +125,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
-    "cucumber/cli-table3/string-width/strip-ansi/ansi-regex": ">=3.0.1",
     "sass-lint/merge": ">=2.1.1",
     "sass-lint/eslint/shelljs": ">=0.8.5",
     "sass-lint/gonzales-pe-sl/minimist": ">=1.2.6",
@@ -134,7 +133,6 @@
     "request/http-signature/jsprim/json-schema": ">=0.4.0",
     "@hmcts/nodejs-healthcheck/@hmcts/nodejs-logging/moment": ">=2.29.4",
     "@hmcts/nodejs-logging/moment": ">=2.29.4",
-    "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1",
-    "jest/@jest/core/strip-ansi/ansi-regex": ">=5.0.1"
+    "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1"
   }
 }
