@@ -16,11 +16,11 @@ export class InviteUserController {
 
   updateErrorMsg = 'A problem occurred when saving the account details. ';
   invalidPasswordMsg = 'Incorrect password entered . ';
-  getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com'
-  emptyErrorMsg = 'All fields are required. '
+  getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
+  emptyErrorMsg = 'All fields are required. ';
   duplicatedErrorMsg = 'User with this email already exists. ';
-  forbiddenErrorMsg = 'The account does not have the right level of access to create super admin user accounts. '
-  searchErrorMsg = 'A problem occurred when searching for the user. '
+  forbiddenErrorMsg = 'The account does not have the right level of access to create super admin user accounts. ';
+  searchErrorMsg = 'A problem occurred when searching for the user. ';
 
   public async renderSearchUser(req: AuthedRequest,
     res: Response,

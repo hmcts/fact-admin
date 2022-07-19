@@ -7,7 +7,7 @@ const { initAll } = require('govuk-frontend');
 export class ApplicationProgressionController {
 
   private applicationProgressionTabId = '#applicationProgressionTab';
-  private applicationProgressionNavTab = '#tab_application-progression'
+  private applicationProgressionNavTab = '#tab_application-progression';
   private applicationProgressionContentId = '#applicationProgressionContent';
   private applicationProgressionFormId = '#applicationProgressionForm';
   private hiddenNewUpdateTemplateId = '#newUpdateTemplate';

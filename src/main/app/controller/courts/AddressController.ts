@@ -35,7 +35,7 @@ export class AddressController {
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address 1: ';
   thirdAddressPrefix = 'Secondary Address 2: ';
-  descriptionTooLongError = 'Maximum length of description is 100 characters'
+  descriptionTooLongError = 'Maximum length of description is 100 characters';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);

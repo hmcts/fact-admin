@@ -14,10 +14,8 @@ describe ( 'AuditController', () => {
 
   const getAudits: () => Audit[] = () => [
     { id: 1, action: { name: 'test', id : 1  } as Action,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       creation_time: '2/1/2001, 12:00:00 AM', action_data_after: 'data after', action_data_before: 'data before', location: 'location', user_email: 'user email'},
     { id: 2, action: { name: 'test 2', id : 2  } as Action,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       creation_time: '3/1/2001, 12:00:00 AM', action_data_after: 'data after 2', action_data_before: 'data before 2', location: 'location 2', user_email: 'user email 2'}
   ];
 

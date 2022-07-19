@@ -12,7 +12,7 @@ export class NewCourtController {
 
   getServiceAreasErrorMsg = 'A problem occurred when retrieving the service areas. ';
   addNewCourtErrorMsg = 'A problem occurred when adding the new court';
-  duplicateCourtErrorMsg = 'A court already exists for court provided: '
+  duplicateCourtErrorMsg = 'A court already exists for court provided: ';
   emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again. '
     + 'If you are adding a service centre, make sure to ensure at least one service area is selected. ';
   courtNameValidationErrorMsg = 'Invalid court name: please amend and try again.';

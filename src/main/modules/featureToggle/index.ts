@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import {FeatureFlagClient} from '../../types/FeatureFlagClient';
 
 export default class FeatureToggleService {
-  private static featureFlagClient: FeatureFlagClient
+  private static featureFlagClient: FeatureFlagClient;
 
   constructor(featureFlagClient: FeatureFlagClient) {
     FeatureToggleService.featureFlagClient = featureFlagClient;
@@ -14,11 +14,11 @@ export default class FeatureToggleService {
 
   static getAllFlagValues = (defaultValue = false) => {
     return FeatureToggleService.featureFlagClient.getAllFlagValues(defaultValue);
-  }
+  };
 
   static onFlagChange = (callback: Function, flag?: string, defaultValue = false) => {
     FeatureToggleService.featureFlagClient.onFlagChange(callback, defaultValue, flag);
-  }
+  };
 
   static toggleController = (flag: string, controller: Function, defaultValue = false) => {
     return (req: Request, res: Response, next: NextFunction): void => {
@@ -34,5 +34,5 @@ export default class FeatureToggleService {
           next();
         });
     };
-  }
+  };
 }

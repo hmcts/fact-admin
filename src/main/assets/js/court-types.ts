@@ -12,7 +12,7 @@ export class CourtTypesController {
   private courtTypesContentId = '#courtTypesContent';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
-  private postcodesNavTab = '#tab_postcodes'
+  private postcodesNavTab = '#tab_postcodes';
 
   private deleteBtnClass = 'deleteDxCode';
   private hiddenDxCodesTemplateId = '#newDxCodeTemplate';
