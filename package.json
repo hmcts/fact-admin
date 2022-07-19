@@ -133,6 +133,7 @@
     "request/http-signature/jsprim/json-schema": ">=0.4.0",
     "@hmcts/nodejs-healthcheck/@hmcts/nodejs-logging/moment": ">=2.29.4",
     "@hmcts/nodejs-logging/moment": ">=2.29.4",
-    "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1"
+    "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1",
+    "awilix/fast-glob/glob-parent": ">=6.0.1"
   }
 }
