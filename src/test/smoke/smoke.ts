@@ -6,7 +6,6 @@ describe('Smoke Test', () => {
   describe('fact admin health check', () => {
     test('should return status 200', async () => {
       const response = await superagent.get(config.TEST_URL + '/health');
-      console.log(response);
       expect(response.statusCode).toBe(200);
       expect(JSON.parse(response.text)['status']).toBe('UP');
     });
