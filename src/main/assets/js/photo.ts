@@ -5,8 +5,8 @@ export class PhotoController {
   private formId = '#photoForm';
   private tabId = '#photoTab';
   private photoContentId = '#photoContent';
-  private deleteBtnClass = '.deletePhoto'
-  private deleteConfirmBtnId = '#confirmDelete'
+  private deleteBtnClass = '.deletePhoto';
+  private deleteConfirmBtnId = '#confirmDelete';
   private cancelBtnId = '#cancelDeletePhotoBtn';
 
   constructor() {

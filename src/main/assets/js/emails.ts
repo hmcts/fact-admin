@@ -14,11 +14,11 @@ export class EmailsController {
   private moveUpBtnClass = 'move-up';
   private moveDownBtnClass = 'move-down';
 
-  private typeSelectName = 'adminEmailTypeId'
+  private typeSelectName = 'adminEmailTypeId';
   private addressInputName = 'address';
   private explanationInputName = 'explanation';
   private explanationCyInputName = 'explanationCy';
-  private explanationCyInputId = 'explanation-cy'
+  private explanationCyInputId = 'explanation-cy';
   private hiddenNewInputName = 'isNew';
 
   constructor() {

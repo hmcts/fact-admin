@@ -1534,7 +1534,6 @@ describe('FactApi', () => {
     const results: { data: Audit[] } = {
       data: [
         { id: 1, action: { name: 'test', id : 1  } as Action,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           creation_time: 'a time', action_data_after: 'data after', action_data_before: 'data before', location: 'location', user_email: 'user email'}
       ]
     };

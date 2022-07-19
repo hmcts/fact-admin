@@ -9,10 +9,10 @@ export class EditUserController {
   private searchFormId = '#searchUserForm';
   private searchTabId = '#searchUserTab';
   private searchUserContentId = '#searchUserContent';
-  private cancelEditButtonId = '#cancelEditUserBtn'
-  private submitEditButtonId = '#submitEditUserBtn'
-  private deleteUserButtonId = '#deleteUserRolesBtn'
-  private deleteConfirmBtnId = '#confirmDeleteUserRolesBtn'
+  private cancelEditButtonId = '#cancelEditUserBtn';
+  private submitEditButtonId = '#submitEditUserBtn';
+  private deleteUserButtonId = '#deleteUserRolesBtn';
+  private deleteConfirmBtnId = '#confirmDeleteUserRolesBtn';
 
   constructor() {
     this.initialize();

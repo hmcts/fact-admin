@@ -3,7 +3,7 @@ import launchDarkly, { LDClient, LDOptions, LDUser } from 'launchdarkly-node-ser
 import {FeatureFlagClient} from '../types/FeatureFlagClient';
 
 class LaunchDarkly implements FeatureFlagClient {
-  private static instance: LaunchDarkly
+  private static instance: LaunchDarkly;
   private readonly client: LDClient;
   private readonly ldUser: LDUser;
 

@@ -7,7 +7,7 @@ const { initAll } = require('govuk-frontend');
 export class PostcodesController {
 
   private tabId = '#postcodesTab';
-  private postcodesNavTab = '#tab_postcodes'
+  private postcodesNavTab = '#tab_postcodes';
   private postcodesContentId = '#postcodesContent';
   private movePostcodesSelectId = '#movePostcodesSelect';
   private addPostcodesBtnClass = 'addPostcodes';

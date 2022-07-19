@@ -13,7 +13,7 @@ export class EmailsController {
 
   emptyTypeOrAddressErrorMsg = 'Description and address are required for all emails.';
   updateErrorMsg = 'A problem occurred when saving the emails.';
-  emailDuplicatedErrorMsg = 'All email addresses must be unique.'
+  emailDuplicatedErrorMsg = 'All email addresses must be unique.';
   getEmailsErrorMsg = 'A problem occurred when retrieving the emails.';
   getEmailTypesErrorMsg = 'A problem occurred when retrieving the email descriptions.';
   getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
