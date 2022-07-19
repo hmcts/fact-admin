@@ -14,7 +14,7 @@ export class InviteUserController {
   private inviteUserButtonId = '#createUserChangesBtn';
   private cancelConfirmBtnId = '#cancelConfirmChangesBtn';
   private createAnotherUserBtnId = '#inviteAnotherUser';
-  private searchUserCreateBtnId = '#searchUserCreateBtn'
+  private searchUserCreateBtnId = '#searchUserCreateBtn';
   private searchUserEditBtnId = '#searchUserEditBtn';
 
 

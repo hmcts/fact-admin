@@ -4,7 +4,6 @@ import Axios from 'axios';
 import config from 'config';
 import {FactApi} from '../../app/fact/FactApi';
 import {AuthedRequest} from '../../types/AuthedRequest';
-// eslint-disable-next-line @typescript-eslint/camelcase
 import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';

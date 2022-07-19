@@ -17,7 +17,6 @@ describe('NewCourtController', () => {
   const controller = new NewCourtController();
   const getCourtData = {slug: 'mosh-court', name: '', nameCy: '', info: '',
     infoCy: '', open: true, inPerson: true, accessScheme: false,
-    // eslint-disable-next-line @typescript-eslint/camelcase
     urgent_message: '', urgent_message_cy: ''
   };
 

@@ -8,9 +8,9 @@ import {AxiosError} from 'axios';
 @autobind
 export class EditUserController {
 
-  searchErrorMsg = 'A problem occurred when searching for the user. '
-  editErrorMsg = 'A problem occurred when editing the user. '
-  userNotFoundErrorMsg = 'No account was found with the email address:'
+  searchErrorMsg = 'A problem occurred when searching for the user. ';
+  editErrorMsg = 'A problem occurred when editing the user. ';
+  userNotFoundErrorMsg = 'No account was found with the email address:';
 
   public async renderSearchUser(req: AuthedRequest,
     res: Response,

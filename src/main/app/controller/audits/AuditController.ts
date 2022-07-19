@@ -9,8 +9,8 @@ export class AuditController {
 
   getAuditsErrorMsg = 'A problem occurred when retrieving the audit data.';
   getCourtsErrorMsg = 'A problem occurred when retrieving the courts data.';
-  bothDateToAndFromErrorMsg = 'Both date from and to options need to be entered; not one or the other.'
-  afterDateBeforeToDateError = 'The before date cannot be higher than the to date.'
+  bothDateToAndFromErrorMsg = 'Both date from and to options need to be entered; not one or the other.';
+  afterDateBeforeToDateError = 'The before date cannot be higher than the to date.';
 
   // Need to have the render separately
   // This method renders the header/footer and the div, and the subsequent one will constitute the content
@@ -58,7 +58,6 @@ export class AuditController {
     }
 
     if (audits.length)
-      // eslint-disable-next-line @typescript-eslint/camelcase
       audits.forEach(a => a.creation_time = new Date(a.creation_time).toLocaleString());
 
     const pageData: AuditPageData = {

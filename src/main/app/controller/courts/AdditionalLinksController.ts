@@ -10,8 +10,8 @@ import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink'
 export class AdditionalLinksController {
 
   emptyUrlOrDisplayNameErrorMsg = 'URL and display name are required for all additional links.';
-  urlDuplicatedErrorMsg = 'All URLs must be unique.'
-  displayNameDuplicatedErrorMsg = 'All display names must be unique.'
+  urlDuplicatedErrorMsg = 'All URLs must be unique.';
+  displayNameDuplicatedErrorMsg = 'All display names must be unique.';
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
@@ -73,7 +73,6 @@ export class AdditionalLinksController {
   private addEmptyFormsForNewEntries(links: AdditionalLink[], numberOfForms = 1): void {
     if (links) {
       for (let i = 0; i < numberOfForms; i++) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         links.push({ url: null, display_name: null, display_name_cy: null, isNew: true });
       }
     }
