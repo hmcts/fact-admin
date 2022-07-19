@@ -15,6 +15,7 @@ services:
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
     callbackURL: 'http://localhost:3300/oauth2/callback'
+    userDashboard : 'https://idam-user-dashboard.aat.platform.hmcts.net'
   image-store:
     url: 'https://factaat.blob.core.windows.net/images/'
     account-name:

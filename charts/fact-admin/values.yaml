@@ -26,5 +26,6 @@ nodejs:
     REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
     IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
+    IDAM_USER_DASHBOARD: "https://idam-user-dashboard.{{ .Values.global.environment }}.platform.hmcts.net"
 idam-pr:
   enabled: false

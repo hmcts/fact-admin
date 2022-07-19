@@ -12,6 +12,7 @@ services:
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+    userDashboard : IDAM_USER_DASHBOARD
   image-store:
     url: IMAGE_BASE_URL
     account-name: STORAGE_ACCOUNT_NAME
