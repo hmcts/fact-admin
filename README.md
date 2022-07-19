@@ -114,7 +114,8 @@ There is a configuration section related with those headers, where you can speci
 
 Here's an example setup:
 
-```json
+```
+json
     "security": {
       "referrerPolicy": "origin",
     }
