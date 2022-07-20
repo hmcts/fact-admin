@@ -3,7 +3,6 @@ import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-
 When('I click the facilities tab', async () => {
   const selector = '#tab_court-facilities';
   const elementExist = await I.checkElement(selector);
@@ -38,27 +37,65 @@ Then('a green message is displayed for updated facilities {string}', async (msgU
   expect(updateText).equal(msgUpdated);
 });
 
-When('I enter new facility by selecting at the index {int} and enter description in english {string} and welsh {string}', async (facilityInex: number, englishDescription: string, welshDescription: string) => {
+When('I enter first facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
   const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
   const entryFormIdx = numFieldsets - 1;
-  facilityInex += 1;
-  // The facilityIndex select element contains an empty entry in the 'add new' form only. We add 1 here
-  // to keep the indexing the same as the select elements in the existing facility, where the
-  // select element doesn't contain an empty entry.
+  let facilityIdx = 0;
 
   const selectorIndex = entryFormIdx + 1;
-
-  //const facilitySelector = '#courtFacilitiesTab select[name$="courtFacilities[1][name]"]';
   const facilitySelector = '#courtFacilitiesTab .govuk-select';
 
   const englishDescriptionSelector = '#description-' + selectorIndex;
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
 
-  await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityInex, 'select');
+  const facilityOptionSelector = '#name-1 > option';
+  const elementExist = await I.checkElement(facilityOptionSelector);
+  expect(elementExist).equal(true);
+
+  const courtFacilities: string[] = await I.getHtmlFromElements(facilityOptionSelector);
+
+  while (courtFacilities[facilityIdx] != facility)
+    facilityIdx++;
+
+  // for (let i = 0; i < courtFacilities.length; i++) {
+  //   if ( courtFacilities[i] == facility )
+  //     facilityIdx = i;
+  // }
+  await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
   await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
   await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
 });
 
+
+When('I enter second facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
+  const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
+  const entryFormIdx = numFieldsets - 1;
+  let facilityIdx = 0;
+
+  const selectorIndex = entryFormIdx + 1;
+  const facilitySelector = '#courtFacilitiesTab .govuk-select';
+
+  const englishDescriptionSelector = '#description-' + selectorIndex;
+  const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
+
+  const facilityOptionSelector = '#name-1 > option';
+  const elementExist = await I.checkElement(facilityOptionSelector);
+  expect(elementExist).equal(true);
+
+  const courtFacilities: string[] = await I.getHtmlFromElements(facilityOptionSelector);
+
+  while (courtFacilities[facilityIdx] != facility)
+    facilityIdx++;
+   facilityIdx += 1;
+
+  // for (let i = 0; i < courtFacilities.length; i++) {
+  //   if ( courtFacilities[i] == facility )
+  //     facilityIdx = i;
+  // }
+  await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
+  await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
+  await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
+});
 
 When('I enter description in english {string}', async (englishDescription: string) => {
 
@@ -85,7 +122,7 @@ When('I click clear in the facilities tab', async () => {
   await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
 });
 
-Then('the facility entry in second last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
+Then('the facility entry in second last position has value {string} description in english {string} and welsh {string}', async (value: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
   const secondLastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
@@ -100,11 +137,11 @@ Then('the facility entry in second last position has index {int} description in 
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 
-  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} .govuk-select`, secondLastIndex);
-  expect(facilityIdx).equal(index);
+  const facilityValue = await I.getElementValueAtIndex(`${fieldsetSelector} .govuk-select`, secondLastIndex);
+  expect(facilityValue).equal(value);
 });
 
-Then('the facility entry in last position has index {int} description in english {string} and welsh {string}', async (index: number, englishDescription: string, welshDescription: string) => {
+Then('the facility entry in last position has index {string} description in english {string} and welsh {string}', async (value: string, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.countElement(fieldsetSelector);
   const lastIndex = numFacilities - 2; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
@@ -120,8 +157,9 @@ Then('the facility entry in last position has index {int} description in english
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 
-  const facilityIdx = await I.getSelectedIndexAtIndex(`${fieldsetSelector} .govuk-select`, lastIndex);
-  expect(facilityIdx).equal(index);
+  const facilityValue = await I.getElementValueAtIndex(`${fieldsetSelector} .govuk-select`, lastIndex);
+  expect(facilityValue).equal(value);
+
 });
 
 When('I click the remove button under newly added facility entries', async () => {
@@ -196,5 +234,3 @@ When('An error is displayed for facilities with summary {string} and name field 
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
-
-

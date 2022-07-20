@@ -17,13 +17,13 @@ Feature: Facilities
   Scenario: As a user I should be able to add and remove facilities successfully
     When I remove all existing facility entries and save
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    When I enter new facility by selecting at the index 1 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter first facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click on add new facility
-    And I enter new facility by selecting at the index 5 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter second facility "Video facilities" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    And the facility entry in second last position has index 1 description in english "englishDescription" and welsh "welshDescription"
-    And the facility entry in last position has index 5 description in english "englishDescription" and welsh "welshDescription"
+    And the facility entry in second last position has value "46" description in english "englishDescription" and welsh "welshDescription"
+    And the facility entry in last position has index "52" description in english "englishDescription" and welsh "welshDescription"
     And I click the remove button under newly added facility entries
     And I click the remove button under newly added facility entries
     And I click save in the facilities tab
@@ -33,10 +33,10 @@ Feature: Facilities
   Scenario: As a user I should not be allowed to add duplicate facilities case: when 1 entry exist in the database and 1 new entry
     When I remove all existing facility entries and save
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    When I enter new facility by selecting at the index 6 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter first facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    When I enter new facility by selecting at the index 6 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter second facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     And An error is displayed for facilities with summary "All facilities must be unique." and field message "Duplicated facility"
     And I click the remove button under newly added facility entries
@@ -47,16 +47,16 @@ Feature: Facilities
   Scenario: As a user I should not be allowed to add duplicate facilities case: when both entries are new
     When I remove all existing facility entries and save
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    When I enter new facility by selecting at the index 6 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter first facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click on add new facility
-    When I enter new facility by selecting at the index 6 and enter description in english "englishDescription" and welsh "welshDescription"
+    When I enter second facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     And An error is displayed for facilities with summary "All facilities must be unique." and field message "Duplicated facility"
 
   Scenario: Prevent blank entries being added
     When I remove all existing facility entries and save
     Then a green message is displayed for updated facilities "Court Facilities updated"
-    When I enter new facility by selecting at the index 6 and enter description in english "" and welsh ""
+    When I enter first facility "Parking" and enter description in english "" and welsh ""
     And I click save in the facilities tab
     Then An error is displayed for facilities with summary "Name and description are required for all court facilities." and description field message "Description is required"
     When I click clear in the facilities tab
