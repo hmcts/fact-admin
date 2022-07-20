@@ -37,7 +37,7 @@ Then('a green message is displayed for updated facilities {string}', async (msgU
   expect(updateText).equal(msgUpdated);
 });
 
-When('I enter first facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
+When('I enter facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
   const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
   const entryFormIdx = numFieldsets - 1;
   let facilityIdx = 0;
@@ -57,36 +57,13 @@ When('I enter first facility {string} and enter description in english {string} 
   while (courtFacilities[facilityIdx] != facility)
     facilityIdx++;
 
-  await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
-  await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
-  await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
-});
-
-
-When('I enter second facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
-  const numFieldsets = await I.countElement('#courtFacilitiesTab fieldset');
-  const entryFormIdx = numFieldsets - 1;
-  let facilityIdx = 0;
-
-  const selectorIndex = entryFormIdx + 1;
-  const facilitySelector = '#courtFacilitiesTab .govuk-select';
-
-  const englishDescriptionSelector = '#description-' + selectorIndex;
-  const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
-
-  const facilityOptionSelector = '#name-1 > option';
-  const elementExist = await I.checkElement(facilityOptionSelector);
-  expect(elementExist).equal(true);
-
-  const courtFacilities: string[] = await I.getHtmlFromElements(facilityOptionSelector);
-
-  while (courtFacilities[facilityIdx] != facility)
-    facilityIdx++;
-  facilityIdx += 1;
+  if(entryFormIdx > 0 )
+    facilityIdx += 1;
 
   await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
   await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
   await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
+
 });
 
 When('I enter description in english {string}', async (englishDescription: string) => {
