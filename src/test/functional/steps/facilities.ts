@@ -57,10 +57,6 @@ When('I enter first facility {string} and enter description in english {string} 
   while (courtFacilities[facilityIdx] != facility)
     facilityIdx++;
 
-  // for (let i = 0; i < courtFacilities.length; i++) {
-  //   if ( courtFacilities[i] == facility )
-  //     facilityIdx = i;
-  // }
   await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
   await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
   await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
@@ -86,12 +82,8 @@ When('I enter second facility {string} and enter description in english {string}
 
   while (courtFacilities[facilityIdx] != facility)
     facilityIdx++;
-   facilityIdx += 1;
+  facilityIdx += 1;
 
-  // for (let i = 0; i < courtFacilities.length; i++) {
-  //   if ( courtFacilities[i] == facility )
-  //     facilityIdx = i;
-  // }
   await I.setElementValueAtIndex(facilitySelector, entryFormIdx, facilityIdx, 'select');
   await I.fillFieldInIframe(englishDescriptionSelector, englishDescription);
   await I.fillFieldInIframe(welshDescriptionSelector, welshDescription);
