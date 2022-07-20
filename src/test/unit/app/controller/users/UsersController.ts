@@ -1,7 +1,7 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { UserController } from '../../../../../main/app/controller/users/UserController';
-import config from "config";
+import config from 'config';
 
 
 describe('UsersController', () => {
