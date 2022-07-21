@@ -1,5 +1,5 @@
 import * as express from 'express';
-import helmet from "helmet"
+import helmet from 'helmet';
 
 export interface HelmetConfig {
   referrerPolicy: string
