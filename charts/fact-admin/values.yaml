@@ -20,8 +20,6 @@ nodejs:
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token"
     IDAM_SESSION_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session"
-    IDAM_ADD_USER_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/api/v1/users/registration"
-    IDAM_UPDATE_USER_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/api/v1/users/"
     OAUTH_CLIENT_REDIRECT: "https://fact-admin.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
     REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
