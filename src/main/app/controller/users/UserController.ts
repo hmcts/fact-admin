@@ -5,8 +5,7 @@ import config from 'config';
 export class UserController {
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
-    const userDashboard: string = config.get('services.idam.userDashboard');
-    res.redirect(userDashboard);
+    res.redirect(config.get('services.idam.idamUserDashboardURL'));
   }
 
 
