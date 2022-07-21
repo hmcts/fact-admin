@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import {Application} from 'express';
 import session from 'express-session';
 import ConnectRedis from 'connect-redis';
 import * as redis from 'redis';
@@ -39,10 +39,12 @@ export class SessionStorage {
       ? new FileStore({ path: '/tmp' })
       : new RedisStore({
         client: redis.createClient({
-          host: config.get('session.redis.host') as string,
+          socket: {
+            host: config.get('session.redis.host') as string,
+            port: 6380,
+            tls: true
+          },
           password: config.get('session.redis.key') as string,
-          port: 6380,
-          tls: true
         })
       });
   }
