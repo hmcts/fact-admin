@@ -11,7 +11,6 @@ describe('UsersController', () => {
     const req = mockRequest();
     const res = mockResponse();
     await controller.get(req, res);
-    const userDashboard: string = config.get('services.idam.userDashboard');
-    expect(res.redirect).toBeCalledWith(userDashboard);
+    expect(res.redirect).toBeCalledWith(config.get('services.idam.idamUserDashboardURL'));
   });
 });
