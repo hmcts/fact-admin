@@ -1,5 +1,5 @@
 import * as express from 'express';
-import helmet = require('helmet');
+import helmet from "helmet"
 
 export interface HelmetConfig {
   referrerPolicy: string
@@ -17,9 +17,12 @@ export class Helmet {
 
   public enableFor(app: express.Express): void {
     // include default helmet functions
-    app.use(helmet());
+    app.use(helmet({
+      crossOriginEmbedderPolicy: false,
+    }));
     app.use(helmet.hidePoweredBy());
     app.use(helmet.xssFilter());
+
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
   }
