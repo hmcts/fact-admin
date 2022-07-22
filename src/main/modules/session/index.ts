@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import {Application} from 'express';
 import session from 'express-session';
 import ConnectRedis from 'connect-redis';
 import * as redis from 'redis';
