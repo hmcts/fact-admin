@@ -39,12 +39,10 @@ export class SessionStorage {
       ? new FileStore({ path: '/tmp' })
       : new RedisStore({
         client: redis.createClient({
-          socket: {
-            host: config.get('session.redis.host') as string,
-            port: 6380,
-            tls: true
-          },
+          host: config.get('session.redis.host') as string,
           password: config.get('session.redis.key') as string,
+          port: 6380,
+          tls: true
         })
       });
   }
