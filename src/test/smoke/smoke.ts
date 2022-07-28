@@ -18,4 +18,12 @@ describe('Smoke Test', () => {
       expect(JSON.parse(response.text)['status']).toBe('UP');
     });
   });
+
+  describe('idam user dashboard health check', () => {
+    test('should return status 200', async () => {
+      const response = await superagent.get(config.IDAM_USER_DASHBOARD_HEALTH_URL);
+      expect(response.statusCode).toBe(200);
+      expect(JSON.parse(response.text)['status']).toBe('UP');
+    });
+  });
 });
