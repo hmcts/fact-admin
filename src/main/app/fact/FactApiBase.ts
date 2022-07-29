@@ -18,14 +18,11 @@ export class FactApiBase {
       });
   }
 
-  public put<T,K>(url: string, obj: K, bool?: boolean): Promise<T> {
+  public put<T,K>(url: string, obj: K, text?: boolean): Promise<T> {
     return this.axios
-      .put(url,obj, bool? {
+      .put(url,obj,  {
         headers: {
-          'Content-Type': 'text/plain'
-        }} : {
-        headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': text? 'text/plain' : 'application/json'
         }})
       .then(results => results.data)
       .catch(err => {
