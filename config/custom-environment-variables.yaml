@@ -7,11 +7,10 @@ services:
     authorizationURL: IDAM_WEB_URL
     tokenURL: IDAM_API_URL
     sessionURL: IDAM_SESSION_URL
-    addNewUserURL: IDAM_ADD_USER_URL
-    updateUserDetailsURL: IDAM_UPDATE_USER_URL
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+    idamUserDashboardURL : IDAM_USER_DASHBOARD_URL
   image-store:
     url: IMAGE_BASE_URL
     account-name: STORAGE_ACCOUNT_NAME
