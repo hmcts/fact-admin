@@ -53,7 +53,7 @@ export class FactApiBase {
         return Promise.reject(err);
       });
   }
-  private logError(err: AxiosError): void {
+  public logError(err: AxiosError): void {
     this.logger.error(err.message);
 
     if (err.response) {

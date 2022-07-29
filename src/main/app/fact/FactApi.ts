@@ -20,7 +20,7 @@ import {ApplicationProgression} from '../../types/ApplicationProgression';
 import {ServiceArea} from '../../types/ServiceArea';
 import {County} from '../../types/County';
 import {FactApiBase} from './FactApiBase';
-import {AxiosInstance} from 'axios';
+import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 
 
@@ -39,7 +39,8 @@ export class FactApi extends FactApiBase {
   }
 
   public getCourts(): Promise<unknown[]> {
-    return this.get<unknown[]>(`${this.baseURL}/all`);
+    return this.get<unknown[]>(`${this.baseURL}/all`)
+      .catch(this.errorHandler([]));
   }
 
   public addCourt(newCourt: NewCourt): Promise<Court> {
@@ -302,6 +303,24 @@ export class FactApi extends FactApiBase {
   public updateApplicationUpdates(slug: string, body: ApplicationProgression[]): Promise<ApplicationProgression[]> {
     return this.put<ApplicationProgression[],typeof body>(`${this.adminBaseUrl}/${slug}/application-progression`, body);
   }
+
+  public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
+    return this.put<void,typeof body>(`${this.baseURL}/info`, body);
+  }
+
+  private errorHandler<T>(defaultValue: T) {
+    return (err: AxiosError) => {
+      this.logError(err);
+
+      return defaultValue;
+    };
+  }
+}
+
+interface UpdateCourtsInfoRequest {
+  'info': string;
+  'info_cy': string;
+  'courts': string[];
 }
 
 
