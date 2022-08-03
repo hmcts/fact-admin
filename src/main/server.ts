@@ -48,7 +48,7 @@ new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);
 new AppInsights().enableFor(server);
-new OidcMiddleware().enableFor(server);
+new OidcMiddleware(logger).enableFor(server);
 addRoutes(server);
 
 export const app = server.listen(config.get('port'), () => {

@@ -8,11 +8,16 @@ import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
+import {Logger} from "../../types/Logger";
 
 /**
  * Adds the oidc middleware to add oauth authentication
  */
 export class OidcMiddleware {
+
+  constructor(public logger: Logger) {
+    this.logger = logger;
+  }
 
   public enableFor(server: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
@@ -23,28 +28,49 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
 
     server.get('/login', (req, res) => {
+      console.log('goes into login');
+      if (req.session.user) {
+        return res.redirect('/')
+      }
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
     });
 
-    server.get('/oauth2/callback', async (req: Request, res: Response) => {
-      const response = await Axios.post(
+    server.get('/oauth2/callback', async (req: Request, res: Response, next: NextFunction) => {
+      console.log('goes into callback');
+
+      await Axios.post(
         tokenUrl,
-        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
+
+        new URLSearchParams({
+          'client_id': clientId,
+          'client_secret': clientSecret,
+          'grant_type': 'authorization_code',
+          'redirect_uri': redirectUri,
+          'code': encodeURIComponent(req.query.code as string),
+        }),
         {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }
-      );
-
-      req.session.user = response.data;
-      req.session.user.jwt = jwt_decode(response.data.id_token);
-      req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
-      res.render('redirect');
+      )
+        .then(response => {
+          req.session.user = response.data;
+          req.session.user.jwt = jwt_decode(response.data.id_token);
+          req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+        })
+        .catch(error => {
+          const message = 'Failed to sign in with the authorization code. '
+            + (error.response?.data?.error_description ? error.response.data.error_description : '');
+          this.logger.error(message);
+          this.logger.error(error);
+          return res.redirect('/');
+        })
+      return next();
     });
 
-    server.get('/logout', async function(req, res){
+    server.get('/logout', async function (req, res) {
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
       if (req.session.user) {
         await Axios.delete(
@@ -63,6 +89,8 @@ export class OidcMiddleware {
     });
 
     server.post('/getAccessToken', async (req: Request, res: Response) => {
+
+      console.log('goes into get access token');
 
       const response = await Axios.post(
         tokenUrl,
@@ -89,8 +117,11 @@ export class OidcMiddleware {
 
     });
 
-    server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
+    server.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
+
       if (req.session.user) {
+
+        console.log('goes into req user exists');
 
         const sharedKeyCredential = new StorageSharedKeyCredential(
           config.get('services.image-store.account-name'),
@@ -113,25 +144,27 @@ export class OidcMiddleware {
           })),
           api: asClass(FactApi),
           azure: asValue(new AzureBlobStorage(containerClient)),
-          idamApi : asClass(IdamApi)
+          idamApi: asClass(IdamApi)
         });
 
         res.locals.isLoggedIn = true;
         res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
 
+        if (req.url.includes('/oauth2/callback')) {
+          // Redirect to the main page without including an intermediary redirect page
+          const courts = await req.scope.cradle.api.getCourts();
+          return res.render('courts/courts', {courts})
+        }
         return next();
-      }
-
-      if (req.xhr) {
-        res.status(302).send({ url: '/login' });
-      } else {
-        res.redirect('/login');
-      }
+      } else if (req.xhr) {
+        res.status(302).send({url: '/login'});
+      } else return res.redirect('/login');
     });
   }
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
+  console.log('in is super admin');
   if (res.locals.isSuperAdmin) {
     next();
   } else {
