@@ -56,10 +56,10 @@ export class OidcMiddleware {
         .catch(error => {
           res.status(400);
           this.logger.error('Failed to sign in with the authorization code. '
-            + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+            + (error.response?.data?.error_description ? error.response.data.error_description : error));
           return error;
         });
-      return req.session.save(() => next());
+      return next();
     });
 
     server.get('/logout', async function (req, res) {
@@ -76,7 +76,7 @@ export class OidcMiddleware {
           .catch((error) => {
             res.status(400);
             this.logger.error('Failed to logout. '
-              + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+              + (error.response?.data?.error_description ? error.response.data.error_description : error));
             return error;
           });
         req.session.destroy(() => res.render('logout'));
@@ -99,7 +99,7 @@ export class OidcMiddleware {
       ).catch((error) => {
         res.status(400);
         this.logger.error('Failed to get access code. '
-          + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+          + (error.response?.data?.error_description ? error.response.data.error_description : error));
         return error;
       });
 
