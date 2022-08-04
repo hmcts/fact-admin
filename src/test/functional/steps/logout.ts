@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { Given, Then } from 'cucumber';
+import {expect} from 'chai';
+import {Given, Then} from 'cucumber';
 
 import * as I from '../utlis/puppeteer.util';
 
@@ -17,6 +17,6 @@ Given('I click the Logout link', async () => {
 });
 
 Then('the system will log me out', async () => {
-  const element = await I.checkElement('#login');
-  expect(element).equal(true);
+  const element = await I.getPageTitle();
+  expect(element).equal('Sign in - HMCTS Access - GOV.UK');
 });

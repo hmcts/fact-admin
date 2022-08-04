@@ -28,10 +28,6 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
 
     server.get('/login', (req, res) => {
-      if (req.session.user) {
-        this.logger.debug('User is already logged in, redirecting to courts page');
-        return res.redirect('/');
-      }
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
     });
 
@@ -60,7 +56,7 @@ export class OidcMiddleware {
         .catch(error => {
           res.status(400);
           this.logger.error('Failed to sign in with the authorization code. '
-            + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+            + (error.response?.data?.error_description ? error.response.data.error_description : error));
           return error;
         });
       return next();
@@ -77,16 +73,16 @@ export class OidcMiddleware {
             }
           }
         )
-          .then(() => req.session.destroy(() => res.render('logout')))
           .catch((error) => {
             res.status(400);
             this.logger.error('Failed to logout. '
-              + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+              + (error.response?.data?.error_description ? error.response.data.error_description : error));
             return error;
           });
+        req.session.destroy(() => res.redirect('/login'));
       } else {
         this.logger.debug('Logged out without user details being present');
-        res.render('logout');
+        return res.redirect('/login');
       }
     });
 
@@ -103,7 +99,7 @@ export class OidcMiddleware {
       ).catch((error) => {
         res.status(400);
         this.logger.error('Failed to get access code. '
-          + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+          + (error.response?.data?.error_description ? error.response.data.error_description : error));
         return error;
       });
 
