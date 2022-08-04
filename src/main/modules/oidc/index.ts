@@ -8,11 +8,16 @@ import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
+import {Logger} from '../../types/Logger';
 
 /**
  * Adds the oidc middleware to add oauth authentication
  */
 export class OidcMiddleware {
+
+  constructor(public logger: Logger) {
+    this.logger = logger;
+  }
 
   public enableFor(server: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
@@ -23,28 +28,45 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
 
     server.get('/login', (req, res) => {
+      if (req.session.user) {
+        this.logger.debug('User is already logged in, redirecting to courts page');
+        return res.redirect('/');
+      }
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
     });
 
-    server.get('/oauth2/callback', async (req: Request, res: Response) => {
-      const response = await Axios.post(
+    server.get('/oauth2/callback', async (req: Request, res: Response, next: NextFunction) => {
+      await Axios.post(
         tokenUrl,
-        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
+        new URLSearchParams({
+          'client_id': clientId,
+          'client_secret': clientSecret,
+          'grant_type': 'authorization_code',
+          'redirect_uri': redirectUri,
+          'code': encodeURIComponent(req.query.code as string),
+        }),
         {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }
-      );
-
-      req.session.user = response.data;
-      req.session.user.jwt = jwt_decode(response.data.id_token);
-      req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
-      res.render('redirect');
+      )
+        .then(response => {
+          req.session.user = response.data;
+          req.session.user.jwt = jwt_decode(response.data.id_token);
+          req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+        })
+        .catch(error => {
+          res.status(400);
+          this.logger.error('Failed to sign in with the authorization code. '
+            + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+          return error;
+        });
+      return next();
     });
 
-    server.get('/logout', async function(req, res){
+    server.get('/logout', async (req: Request, res: Response) => {
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
       if (req.session.user) {
         await Axios.delete(
@@ -54,16 +76,21 @@ export class OidcMiddleware {
               Authorization: 'Basic ' + encode(clientId + ':' + clientSecret)
             }
           }
-        ).catch((error) => {
-          res.status(400);
-          return error;
-        });
-        req.session.destroy(() => res.render('logout'));
-      } else res.render('logout');
+        )
+          .then(() => req.session.destroy(() => res.render('logout')))
+          .catch((error) => {
+            res.status(400);
+            this.logger.error('Failed to logout. '
+              + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+            return error;
+          });
+      } else {
+        this.logger.debug('Logged out without user details being present');
+        res.render('logout');
+      }
     });
 
     server.post('/getAccessToken', async (req: Request, res: Response) => {
-
       const response = await Axios.post(
         tokenUrl,
         `client_id=${clientId}&client_secret=${clientSecret}&grant_type=password&password=${encodeURIComponent(req.body.password)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid roles profile search-user manage-user create-user&username=${encodeURIComponent(req.session.user.jwt.sub)}`,
@@ -75,6 +102,8 @@ export class OidcMiddleware {
         }
       ).catch((error) => {
         res.status(400);
+        this.logger.error('Failed to get access code. '
+          + (error.response?.data?.error_description ? error.response.data.error_description : ''));
         return error;
       });
 
@@ -82,16 +111,12 @@ export class OidcMiddleware {
         req.session.user = response.data;
         req.session.user.jwt = jwt_decode(response.data.id_token);
         req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
-
       }
-
       res.send();
-
     });
 
-    server.use((req: AuthedRequest, res: Response, next: NextFunction) => {
+    server.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
       if (req.session.user) {
-
         const sharedKeyCredential = new StorageSharedKeyCredential(
           config.get('services.image-store.account-name'),
           config.get('services.image-store.account-key'));
@@ -113,20 +138,21 @@ export class OidcMiddleware {
           })),
           api: asClass(FactApi),
           azure: asValue(new AzureBlobStorage(containerClient)),
-          idamApi : asClass(IdamApi)
+          idamApi: asClass(IdamApi)
         });
 
         res.locals.isLoggedIn = true;
         res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
 
+        if (req.url.includes('/oauth2/callback')) {
+          // Redirect to the main page without including an intermediary redirect page
+          const courts = await req.scope.cradle.api.getCourts();
+          return res.render('courts/courts', {courts});
+        }
         return next();
-      }
-
-      if (req.xhr) {
-        res.status(302).send({ url: '/login' });
-      } else {
-        res.redirect('/login');
-      }
+      } else if (req.xhr) {
+        res.status(302).send({url: '/login'});
+      } else return res.redirect('/login');
     });
   }
 }
