@@ -29,6 +29,7 @@ export class OidcMiddleware {
 
     server.get('/login', (req, res) => {
       if (req.session.user) {
+        this.logger.debug('User is already logged in, redirecting to courts page');
         return res.redirect('/');
       }
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
