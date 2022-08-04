@@ -8,7 +8,7 @@ import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
-import {Logger} from "../../types/Logger";
+import {Logger} from '../../types/Logger';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -29,7 +29,7 @@ export class OidcMiddleware {
 
     server.get('/login', (req, res) => {
       if (req.session.user) {
-        return res.redirect('/')
+        return res.redirect('/');
       }
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + '&scope=openid%20roles%20profile%20search-user%20manage-user');
     });
@@ -61,7 +61,7 @@ export class OidcMiddleware {
           this.logger.error('Failed to sign in with the authorization code. '
             + (error.response?.data?.error_description ? error.response.data.error_description : ''));
           return error;
-        })
+        });
       return next();
     });
 
@@ -82,7 +82,7 @@ export class OidcMiddleware {
             this.logger.error('Failed to logout. '
               + (error.response?.data?.error_description ? error.response.data.error_description : ''));
             return error;
-        });
+          });
       } else {
         this.logger.debug('Logged out without user details being present');
         res.render('logout');
@@ -146,7 +146,7 @@ export class OidcMiddleware {
         if (req.url.includes('/oauth2/callback')) {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
-          return res.render('courts/courts', {courts})
+          return res.render('courts/courts', {courts});
         }
         return next();
       } else if (req.xhr) {
