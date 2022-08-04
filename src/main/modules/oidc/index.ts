@@ -56,6 +56,7 @@ export class OidcMiddleware {
           req.session.user = response.data;
           req.session.user.jwt = jwt_decode(response.data.id_token);
           req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
+          return req.session.save(() => next());
         })
         .catch(error => {
           res.status(400);
@@ -63,7 +64,6 @@ export class OidcMiddleware {
             + (error.response?.data?.error_description ? error.response.data.error_description : ''));
           return error;
         });
-      return next();
     });
 
     server.get('/logout', async (req: Request, res: Response) => {
