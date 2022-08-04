@@ -62,7 +62,7 @@ export class OidcMiddleware {
       return next();
     });
 
-    server.get('/logout', async function (req, res) {
+    server.get('/logout', async (req: Request, res: Response) => {
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
       if (req.session.user) {
         await Axios.delete(
@@ -79,10 +79,10 @@ export class OidcMiddleware {
               + (error.response?.data?.error_description ? error.response.data.error_description : error));
             return error;
           });
-        req.session.destroy(() => res.render('logout'));
+        req.session.destroy(() => res.redirect('/login'));
       } else {
         this.logger.debug('Logged out without user details being present');
-        res.render('logout');
+        return res.redirect('/login');
       }
     });
 

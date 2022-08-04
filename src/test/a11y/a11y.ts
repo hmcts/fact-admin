@@ -81,7 +81,6 @@ function testAccessibility(url: string): void {
 describe('Accessibility', () => {
   testAccessibility('/');
   testAccessibility('/courts');
-  testAccessibility('/logout');
   testAccessibility('/courts/aberdare-county-court/edit/general');
   testAccessibility('/bulk-update');
   testAccessibility('/courts/add-court');
