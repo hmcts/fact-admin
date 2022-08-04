@@ -28,7 +28,6 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
 
     server.get('/login', (req, res) => {
-      console.log('goes into login');
       if (req.session.user) {
         return res.redirect('/')
       }
@@ -36,11 +35,8 @@ export class OidcMiddleware {
     });
 
     server.get('/oauth2/callback', async (req: Request, res: Response, next: NextFunction) => {
-      console.log('goes into callback');
-
       await Axios.post(
         tokenUrl,
-
         new URLSearchParams({
           'client_id': clientId,
           'client_secret': clientSecret,
@@ -61,16 +57,15 @@ export class OidcMiddleware {
           req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
         })
         .catch(error => {
-          const message = 'Failed to sign in with the authorization code. '
-            + (error.response?.data?.error_description ? error.response.data.error_description : '');
-          this.logger.error(message);
-          this.logger.error(error);
-          return res.redirect('/');
+          res.status(400);
+          this.logger.error('Failed to sign in with the authorization code. '
+            + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+          return error;
         })
       return next();
     });
 
-    server.get('/logout', async function (req, res) {
+    server.get('/logout', async (req: Request, res: Response) => {
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
       if (req.session.user) {
         await Axios.delete(
@@ -80,18 +75,21 @@ export class OidcMiddleware {
               Authorization: 'Basic ' + encode(clientId + ':' + clientSecret)
             }
           }
-        ).catch((error) => {
-          res.status(400);
-          return error;
+        )
+          .then(() => req.session.destroy(() => res.render('logout')))
+          .catch((error) => {
+            res.status(400);
+            this.logger.error('Failed to logout. '
+              + (error.response?.data?.error_description ? error.response.data.error_description : ''));
+            return error;
         });
-        req.session.destroy(() => res.render('logout'));
-      } else res.render('logout');
+      } else {
+        this.logger.debug('Logged out without user details being present');
+        res.render('logout');
+      }
     });
 
     server.post('/getAccessToken', async (req: Request, res: Response) => {
-
-      console.log('goes into get access token');
-
       const response = await Axios.post(
         tokenUrl,
         `client_id=${clientId}&client_secret=${clientSecret}&grant_type=password&password=${encodeURIComponent(req.body.password)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid roles profile search-user manage-user create-user&username=${encodeURIComponent(req.session.user.jwt.sub)}`,
@@ -103,6 +101,8 @@ export class OidcMiddleware {
         }
       ).catch((error) => {
         res.status(400);
+        this.logger.error('Failed to get access code. '
+          + (error.response?.data?.error_description ? error.response.data.error_description : ''));
         return error;
       });
 
@@ -110,19 +110,12 @@ export class OidcMiddleware {
         req.session.user = response.data;
         req.session.user.jwt = jwt_decode(response.data.id_token);
         req.session.user.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
-
       }
-
       res.send();
-
     });
 
     server.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
-
       if (req.session.user) {
-
-        console.log('goes into req user exists');
-
         const sharedKeyCredential = new StorageSharedKeyCredential(
           config.get('services.image-store.account-name'),
           config.get('services.image-store.account-key'));
@@ -164,7 +157,6 @@ export class OidcMiddleware {
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
-  console.log('in is super admin');
   if (res.locals.isSuperAdmin) {
     next();
   } else {
