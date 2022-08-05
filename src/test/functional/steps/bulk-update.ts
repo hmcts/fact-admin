@@ -16,3 +16,10 @@ Then('I am on the {string} page', async (title: string) => {
 When('I select court {string}', async (court: string) => {
   await I.click(`input[value="${court}"]`);
 });
+
+When('I check include closed checkbox', async () => {
+  const selector = '#toggle-closed-courts-display';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+});
