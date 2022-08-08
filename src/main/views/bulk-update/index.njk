@@ -1,6 +1,9 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 
 {% extends "template.njk" %}
@@ -46,35 +49,102 @@
 
     {{ govukButton({
       text: "Update selected courts, overwriting existing text",
-      classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8"
+      classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8",
+      attributes: { "id": "update" }
     }) }}
-    <button id="update"  class="govuk-button govuk-!-margin-top-2 govuk-!-margin-bottom-8" data-module="govuk-button">
-      Update selected courts, overwriting existing text
-    </button>
-    <table class="govuk-table" id="courts">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header"><input type="checkbox" id="selectAll" /></th>
-          <th scope="col" class="govuk-table__header">Name</th>
-          <th scope="col" class="govuk-table__header">Last Updated</th>
-          <th scope="col" class="govuk-table__header"></th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-      {% for court in courts | sort(attribute="name") %}
-        <tr class="govuk-table__row">
-          <td scope="row" class="govuk-table__cell">
-            <input name="courts" value="{{ court.slug }}" type="checkbox" />
-          </td>
-          <td scope="row" class="govuk-table__cell">{{ court.name }}</td>
-          <td scope="row" class="govuk-table__cell">{{ court['updated_at'] }}</td>
-          <td scope="row" class="govuk-table__cell">
-            <a id="view-{{ court.slug }}" class="govuk-link" href="/courts/{{ court.slug }}">view</a>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </form>
+
+    <div id = 'tableContainer'>
+        <div id='courtOptionsRow' class='govuk-grid-row'>
+          <div class='govuk-grid-column-one-half'>
+            {{ govukInput({
+              attributes: {
+                placeholder: ' Search courts and tribunals'
+              },
+              prefix: {
+                text: '🔎'
+              },
+              id: 'searchCourts',
+              name: 'searchCourts'
+            }) }}
+          </div>
+
+          <div id='toggleClosedCourtsDisplay' class='govuk-grid-column-one-quarter'>
+           {{ govukCheckboxes({
+             idPrefix: 'toggle-closed-courts-display',
+             name: 'toggleClosedCourtsDisplay',
+             classes: 'govuk-checkboxes--small',
+             items: [
+               {
+                 value: 'includeClosed',
+                 text: 'Include closed'
+               }]
+           }) }}
+          </div>
+        </div>
+
+        <div id='numberOfCourts' class='govuk-hint'></div>
+
+        {% set courtItems = [] %}
+        {% for court in courts|sort(false, true, 'name') %}
+          {% set courtItems = (courtItems.push([
+            {
+            html: '<input name="courts" value='+ court.slug +' type="checkbox" />'
+            },
+            {
+              attributes: {
+                'data-type': 'name',
+                'data-name': court.slug
+              },
+              text: court.name,
+              classes: 'courtTableColumnName'
+            },
+            {
+              attributes: {
+                'data-type': 'displayed',
+                'data-displayed': court.displayed
+              },
+              text: '' if court.displayed else 'closed',
+              classes: 'courtTableColumnDisplayed'
+            },
+            {
+             attributes: {
+                'data-type': 'updated_at'
+              },
+             text: court.updated_at,
+             classes: 'courtTableColumnLastUpdated'
+            },
+            {
+              html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
+            }
+            ]), courtItems) %}
+        {% endfor %}
+
+        {{ govukTable({
+          id: 'courtsResults',
+          name: 'courtResults',
+          attributes: {
+            id: 'courtResults'
+          },
+          head: [
+          {html: '<input type="checkbox" id="selectAll" />'},
+            {
+              text: 'Name',
+              attributes: {
+                id: 'tableCourtsName'
+              },
+              classes: 'govuk-!-width-one-half courts-table-header courts-table-header-inactive'
+            }, {},
+            {
+              text: "Last updated",
+              attributes: {
+                id: 'tableCourtsUpdated'
+              },
+              classes: 'courts-table-header courts-table-header-inactive'
+            },
+            {}
+          ],
+          rows: courtItems
+        }) }}
+      </div>
 {% endblock %}
 

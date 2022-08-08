@@ -1,8 +1,27 @@
 import $ from 'jquery';
 
-$('#selectAll').on('click', e => {
-  const target = e.currentTarget as HTMLInputElement;
+export class BulkUpdateController {
 
-  $('form input[type=checkbox]').prop('checked', target.checked);
-});
+  private contentId = '#main-content';
+  private selectAllId = '#selectAll';
+
+
+  constructor() {
+    this.initialize();
+  }
+
+  private initialize(): void {
+    $(() => {
+
+      this.setUpSelectAllCourts();
+    });
+  }
+
+  private setUpSelectAllCourts(): void {
+    $(this.contentId).on('click', `${this.selectAllId}`, e => {
+      const target = e.currentTarget as HTMLInputElement;
+      $('form input[type=checkbox][name="courts"]:visible').prop('checked', target.checked);
+    });
+  }
+}
 

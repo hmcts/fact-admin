@@ -1,5 +1,4 @@
 import '../scss/main.scss';
-import './bulk-update';
 import './tinymce.config';
 import './opening-hours';
 import './facilities';
@@ -33,6 +32,7 @@ import {NewCourtController} from './add-new-court';
 import {EditUserController} from './users/edit-user';
 import {SpoeController} from './spoe';
 import {ApplicationProgressionController} from './application-progression';
+import {BulkUpdateController} from './bulk-update';
 
 const {initAll} = require('govuk-frontend');
 const {initTabs} = require('./fact-tabs/fact-tabs-index');
@@ -64,3 +64,4 @@ new OpeningTypesController();
 new NewCourtController();
 new SpoeController();
 new ApplicationProgressionController();
+new BulkUpdateController();
