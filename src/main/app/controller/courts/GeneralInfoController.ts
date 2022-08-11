@@ -32,7 +32,7 @@ export class GeneralInfoController {
     if (!generalInfo) {
       await req.scope.cradle.api.getGeneralInfo(slug)
         .then((value: CourtGeneralInfo) => generalInfo = value)
-        .catch(() => {error += this.getGeneralInfoErrorMsg; fatalError = true});
+        .catch(() => {error += this.getGeneralInfoErrorMsg; fatalError = true;});
     }
 
     const pageData: CourtGeneralInfoData = {

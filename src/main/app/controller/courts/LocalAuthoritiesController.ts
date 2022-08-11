@@ -49,7 +49,7 @@ export class LocalAuthoritiesController {
     let courtTypes: CourtType[] = [];
     await req.scope.cradle.api.getCourtTypesAndCodes(slug)
       .then((value: CourtTypesAndCodes) => courtTypes = value.types)
-      .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true});
+      .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true;});
 
     const pageData: LocalAuthoritiesAreaOfLaw = {
       errorMsg: error,
