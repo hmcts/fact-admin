@@ -9,9 +9,9 @@ import {CSRF} from '../../../../../main/modules/csrf';
 describe('ContactsController', () => {
 
   let mockApi: {
-    getContacts: () => Promise<Contact[]>,
-    updateContacts: () => Promise<Contact[]>,
-    getContactTypes: () => Promise<ContactType[]> };
+    getContacts: () => Promise<Contact[]>;
+    updateContacts: () => Promise<Contact[]>;
+    getContactTypes: () => Promise<ContactType[]>; };
 
   const getContacts: () => Contact[] = () => [
     { 'type_id': 1, number: '0123 456 7890', fax: false, explanation: 'Exp 1', 'explanation_cy': 'Exp_cy 1', isNew: false },
@@ -61,7 +61,8 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: ''
+      errorMsg: '',
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -164,7 +165,8 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg
+      errorMsg: controller.updateErrorMsg,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -184,7 +186,8 @@ describe('ContactsController', () => {
       contacts: null,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.getContactsErrorMsg
+      errorMsg: controller.getContactsErrorMsg,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -204,7 +207,8 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: [],
       updated: false,
-      errorMsg: controller.getContactTypesErrorMsg
+      errorMsg: controller.getContactTypesErrorMsg,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -234,7 +238,8 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg
+      errorMsg: controller.updateErrorMsg,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });

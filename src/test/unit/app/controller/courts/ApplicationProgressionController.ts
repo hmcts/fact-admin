@@ -8,9 +8,9 @@ import {CourtGeneralInfo} from '../../../../../main/types/CourtGeneralInfo';
 describe('ApplicationProgressionController', () => {
 
   let mockApi: {
-    getApplicationUpdates: () => Promise<ApplicationProgression[]>,
-    updateApplicationUpdates: () => Promise<ApplicationProgression[]>,
-    getGeneralInfo: () => Promise<CourtGeneralInfo>
+    getApplicationUpdates: () => Promise<ApplicationProgression[]>;
+    updateApplicationUpdates: () => Promise<ApplicationProgression[]>;
+    getGeneralInfo: () => Promise<CourtGeneralInfo>;
   };
 
   const controller = new ApplicationProgressionController();
@@ -67,7 +67,8 @@ describe('ApplicationProgressionController', () => {
       application_progression: updatesWithEmptyEntry,
       isEnabled: courtGeneralInfo.service_centre,
       errors: [],
-      updated: false
+      updated: false,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -87,7 +88,8 @@ describe('ApplicationProgressionController', () => {
       application_progression: null,
       isEnabled: courtGeneralInfo.service_centre,
       updated: false,
-      errors: [{text: controller.getApplicationUpdatesErrorMsg}]
+      errors: [{text: controller.getApplicationUpdatesErrorMsg}],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -161,7 +163,8 @@ describe('ApplicationProgressionController', () => {
         {text: controller.doubleInputErrorMsg},
         {text: controller.invalidEmailFormatErrorMsg},
         {text: controller.invalidUrlFormatErrorMsg}
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -186,7 +189,8 @@ describe('ApplicationProgressionController', () => {
       application_progression: postedUpdates,
       isEnabled: true,
       errors: [{text: controller.emailDuplicatedErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);

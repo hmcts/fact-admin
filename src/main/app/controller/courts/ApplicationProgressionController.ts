@@ -28,13 +28,14 @@ export class ApplicationProgressionController {
     applicationProgressions: ApplicationProgression[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!applicationProgressions) {
       // Get application updates from API and set the isNew property to false on all application update entries.
       await req.scope.cradle.api.getApplicationUpdates(slug)
         .then((value: ApplicationProgression[]) => applicationProgressions = value.map(e => {
           e.isNew = false; return e; }))
-        .catch(() => errorMsg.push(this.getApplicationUpdatesErrorMsg));
+        .catch(() => {errorMsg.push(this.getApplicationUpdatesErrorMsg); fatalError = true;});
     }
 
     let generalInfo: boolean = null;
@@ -56,7 +57,8 @@ export class ApplicationProgressionController {
       'application_progression': applicationProgressions,
       isEnabled: generalInfo,
       errors: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/applicationProgressionContent', pageData);

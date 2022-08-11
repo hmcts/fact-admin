@@ -27,18 +27,20 @@ export class GeneralInfoController {
     generalInfo: CourtGeneralInfo = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!generalInfo) {
       await req.scope.cradle.api.getGeneralInfo(slug)
         .then((value: CourtGeneralInfo) => generalInfo = value)
-        .catch(() => error += this.getGeneralInfoErrorMsg);
+        .catch(() => {error += this.getGeneralInfoErrorMsg; fatalError = true});
     }
 
     const pageData: CourtGeneralInfoData = {
       generalInfo: generalInfo,
       errorMsg: error,
       updated: updated,
-      nameFieldError: nameFieldErrorMsg
+      nameFieldError: nameFieldErrorMsg,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/generalContent', pageData);

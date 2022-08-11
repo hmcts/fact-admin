@@ -71,7 +71,8 @@
     text: "Add",
     name: "addPostcodes",
     type: "button",
-    classes: "addPostcodes"
+    classes: "addPostcodes",
+    disabled: fatalError
   }) }}
 
   {% if postcodes|length %}
@@ -126,7 +127,8 @@
           text: "Move all selected to:",
           name: "movePostcodesButton",
           type: "button",
-          classes: "movePostcodesButton"
+          classes: "movePostcodesButton",
+          disabled: fatalError
         }) }}
       </div>
 
@@ -143,7 +145,8 @@
       text: "Delete all selected",
       name: "deletePostcodes",
       type: "button",
-      classes: "deletePostcodes govuk-button--warning"
+      classes: "deletePostcodes govuk-button--warning",
+      disabled: fatalError
     }) }}
 
   {% endif %}

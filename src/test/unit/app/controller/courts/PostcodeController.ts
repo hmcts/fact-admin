@@ -9,13 +9,13 @@ import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 describe('PostcodeController', () => {
 
   let mockApi: {
-    getPostcodes: () => Promise<string[]>,
-    addPostcodes: () => Promise<string[]>,
-    getCourts: () => Promise<object[]>,
-    deletePostcodes: () => Promise<object>,
-    movePostcodes: () => Promise<object[]>,
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>};
+    getPostcodes: () => Promise<string[]>;
+    addPostcodes: () => Promise<string[]>;
+    getCourts: () => Promise<object[]>;
+    deletePostcodes: () => Promise<object>;
+    movePostcodes: () => Promise<object[]>;
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;};
 
   const testSlug = 'plymouth-combined-court';
   const getPostcodeData = ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'];
@@ -127,7 +127,8 @@ describe('PostcodeController', () => {
       errors: [],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
     expect(mockApi.getCourtTypesAndCodes).toBeCalledWith(testSlug);
@@ -153,7 +154,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.getCourtsErrorMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
     expect(mockApi.getCourtTypesAndCodes).toBeCalledWith(testSlug);
@@ -186,7 +188,8 @@ describe('PostcodeController', () => {
       errors: [],
       isEnabled: false, // check this is false
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutputInvalid
+      courtTypes: courtTypesMethodOutputInvalid,
+      fatalError: false,
     });
   });
 
@@ -215,7 +218,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.duplicatePostcodeMsg + 'PL3'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -247,7 +251,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.postcodesNotValidMsg + 'P,M,KUPOMOSH123'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -278,7 +283,8 @@ describe('PostcodeController', () => {
       errors: [],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).toBeCalledWith(testSlug, newPostcodes.split(','));
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -312,7 +318,8 @@ describe('PostcodeController', () => {
       errors: [{'text': 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: pl1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).toBeCalledWith(testSlug, newPostcodes.split(','));
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -345,7 +352,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.addErrorMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -377,7 +385,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.noPostcodeErrorMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.addPostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -410,7 +419,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.addErrorMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.deletePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -442,7 +452,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.noSelectedPostcodeMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.deletePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -473,7 +484,8 @@ describe('PostcodeController', () => {
       errors: [],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, getDeletedPostcodes);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -507,7 +519,8 @@ describe('PostcodeController', () => {
       errors: [{'text': 'A problem has occurred when attempting to delete the following postcodes: PL1,PL2,PL3'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, ['PL1','PL2','PL3']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -544,7 +557,8 @@ describe('PostcodeController', () => {
       errors: [{'text': controller.moveErrorMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.movePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -577,7 +591,8 @@ describe('PostcodeController', () => {
       errors: [],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -609,7 +624,8 @@ describe('PostcodeController', () => {
       errors: [{text: controller.noSelectedPostcodeOrCourtMsg}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.movePostcodes).not.toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -644,7 +660,8 @@ describe('PostcodeController', () => {
       errors: [{'text': 'A problem has occurred when attempting to move the following postcodes: PL11 1YY,PL1 1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
@@ -681,7 +698,8 @@ describe('PostcodeController', () => {
           'court (your changes have not been saved): PL11 1YY,PL1 1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
-      courtTypes: courtTypesMethodOutput
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
     });
     expect(mockApi.movePostcodes).toBeCalledWith(testSlug, 'Mosh Land Court', ['PL11 1YY','PL1 1']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();

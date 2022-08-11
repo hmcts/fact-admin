@@ -13,5 +13,6 @@ export interface EmailData {
   emails: Email[],
   emailTypes: SelectItem[],
   errors: Error[],
-  updated: boolean
+  updated: boolean,
+  fatalError: boolean,
 }

@@ -14,5 +14,6 @@ export interface ApplicationProgressionData {
   application_progression: ApplicationProgression[],
   isEnabled : boolean,
   errors: Error[],
-  updated: boolean
+  updated: boolean,
+  fatalError: boolean,
 }

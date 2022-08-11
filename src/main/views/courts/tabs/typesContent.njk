@@ -270,7 +270,8 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveCourtTypes"
+  name: "saveCourtTypes",
+  disabled: fatalError
 }) }}
 
 
@@ -280,7 +281,8 @@
   text: "Add new Dx code",
   name: "addDxCode",
   type: "button",
-  classes: "govuk-button--secondary addDxCode"
+  classes: "govuk-button--secondary addDxCode",
+  disabled: fatalError
 }) }}
 
 

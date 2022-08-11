@@ -260,12 +260,14 @@
 
 {{ govukButton({
   text: "Save",
-  name: "savePhoneNumbers"
+  name: "savePhoneNumbers",
+  disabled: fatalError
 }) }}
 
 {{ govukButton({
   text: "Add new phone number",
   name: "addPhoneNumber",
   type: "button",
-  classes: "govuk-button--secondary addPhoneNumber"
+  classes: "govuk-button--secondary addPhoneNumber",
+  disabled: fatalError
 }) }}
