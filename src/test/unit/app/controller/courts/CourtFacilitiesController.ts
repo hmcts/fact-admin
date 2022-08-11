@@ -323,7 +323,7 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
       requiresValidation: true,
-      fatalError: true
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -363,7 +363,7 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
       requiresValidation: true,
-      fatalError: true
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
@@ -390,7 +390,7 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedCourtFacilities,
       requiresValidation: false,
-      fatalError: true
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
