@@ -92,14 +92,23 @@ export class AddressController {
     const slug: string = req.params.slug as string;
     let fatalError = false;
 
+    // Get the addresses and also keep the list for later so we can determine which
+    // court types are selected further down
     if (!addresses) {
       await req.scope.cradle.api.getCourtAddresses(slug)
-        .then((addressList: CourtAddress[]) => addresses = this.convertToDisplayAddresses(addressList))
+        .then((addressList: CourtAddress[]) => {
+          addresses = this.convertToDisplayAddresses(addressList)
+        })
         .catch(() => {
           errorMsgs.push(this.getAddressesError);
           fatalError = true;
         });
     }
+
+    console.log(addresses);
+
+    // Add court types and areas of law, so they can be added to the court types dropdown
+
 
     let addressTypes: AddressType[] = [];
     await req.scope.cradle.api.getAddressTypes()
