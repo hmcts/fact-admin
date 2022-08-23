@@ -23,20 +23,20 @@ export class OpeningTimesController {
     updated = false,
     errorMsg: string[] = [],
     openingTimes: OpeningTime[] = null): Promise<void> {
-
+    let fatalError = false;
     const slug: string = req.params.slug as string;
 
     if (!openingTimes) {
       // Get opening times from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getOpeningTimes(slug)
         .then((value: OpeningTime[]) => openingTimes = value.map(ot => { ot.isNew = false; return ot; }))
-        .catch(() => errorMsg.push(this.getOpeningTimesErrorMsg));
+        .catch(() => {errorMsg.push(this.getOpeningTimesErrorMsg); fatalError = true;});
     }
 
     let types: OpeningType[] = [];
     await req.scope.cradle.api.getOpeningTimeTypes()
       .then((value: OpeningType[]) => types = value)
-      .catch(() => errorMsg.push(this.getOpeningTypesErrorMsg));
+      .catch(() => {errorMsg.push(this.getOpeningTypesErrorMsg); fatalError = true;});
 
     if (!openingTimes?.some(ot => ot.isNew === true)) {
       this.addEmptyFormsForNewEntries(openingTimes);
@@ -51,7 +51,8 @@ export class OpeningTimesController {
       'opening_times': openingTimes,
       openingTimeTypes: OpeningTimesController.getOpeningTimeTypesForSelect(types),
       errors: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/openingHoursContent', pageData);

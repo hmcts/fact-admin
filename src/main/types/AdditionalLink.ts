@@ -10,5 +10,6 @@ export interface AdditionalLink extends Element {
 export interface AdditionalLinkData {
   links: AdditionalLink[],
   errors: Error[],
-  updated: boolean
+  updated: boolean,
+  fatalError: boolean,
 }

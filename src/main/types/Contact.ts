@@ -13,5 +13,6 @@ export interface ContactPageData {
   contacts: Contact[],
   contactTypes: SelectItem[],
   errorMsg: string,
-  updated: boolean
+  updated: boolean,
+  fatalError: boolean,
 }

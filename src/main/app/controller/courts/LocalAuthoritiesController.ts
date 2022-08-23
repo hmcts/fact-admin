@@ -30,30 +30,33 @@ export class LocalAuthoritiesController {
     error = '',
     areasOfLaw: AreaOfLaw[] = null): Promise<void> {
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!areasOfLaw ) {
       await req.scope.cradle.api.getCourtAreasOfLaw(slug)
         .then((value: AreaOfLaw[]) => areasOfLaw = value)
-        .catch(() => error += this.getCourtAreasOfLawErrorMsg);
+        .catch(() => {error += this.getCourtAreasOfLawErrorMsg; fatalError = true;});
     }
 
     if (areasOfLaw ){
       areasOfLaw = this.checkFamilyAreasOfLaw(areasOfLaw);
       if(!areasOfLaw.length){
         error += this.familyAreaOfLawErrorMsg;
+        fatalError = true ;
       }
     }
 
     let courtTypes: CourtType[] = [];
     await req.scope.cradle.api.getCourtTypesAndCodes(slug)
       .then((value: CourtTypesAndCodes) => courtTypes = value.types)
-      .catch(() => error += this.getCourtTypesErrorMsg);
+      .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true;});
 
     const pageData: LocalAuthoritiesAreaOfLaw = {
       errorMsg: error,
       updated: updated,
       isEnabled: !courtTypes.length ? false :courtTypes.some(c => c.name === 'Family Court'),
       courtAreasOfLaw: this.getAreasOfLawForSelect(areasOfLaw, ''),
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/localAuthoritiesContent', pageData);

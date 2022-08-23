@@ -18,4 +18,5 @@ export interface CourtGeneralInfoData {
   errorMsg: string;
   updated: boolean;
   nameFieldError: string;
+  fatalError: boolean;
 }

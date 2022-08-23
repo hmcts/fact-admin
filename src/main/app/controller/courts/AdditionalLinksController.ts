@@ -24,12 +24,13 @@ export class AdditionalLinksController {
     links: AdditionalLink[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!links) {
       // Retrieve additional links from API and set the isNew property to false on all existing link entries.
       await req.scope.cradle.api.getCourtAdditionalLinks(slug)
         .then((value: AdditionalLink[]) => links = value.map(e => { e.isNew = false; return e; }))
-        .catch(() => errorMessages.push(this.getAdditionalLinksErrorMsg));
+        .catch(() => {errorMessages.push(this.getAdditionalLinksErrorMsg); fatalError = true;});
     }
 
     if (!links?.some(e => e.isNew === true)) {
@@ -44,7 +45,8 @@ export class AdditionalLinksController {
     const pageData: AdditionalLinkData = {
       links: links,
       errors: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError,
     };
     res.render('courts/tabs/additionalLinksContent', pageData);
   }

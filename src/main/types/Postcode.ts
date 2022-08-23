@@ -10,5 +10,6 @@ export interface PostcodeData {
   searchValue: string,
   isEnabled : boolean,
   courtTypes: string[],
-  areasOfLaw: string[]
+  areasOfLaw: string[],
+  fatalError: boolean,
 }

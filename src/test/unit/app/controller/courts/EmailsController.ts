@@ -9,9 +9,9 @@ import {CSRF} from '../../../../../main/modules/csrf';
 describe('EmailsController', () => {
 
   let mockApi: {
-    getEmails: () => Promise<Email[]>,
-    updateEmails: () => Promise<Email[]>,
-    getEmailTypes: () => Promise<EmailType[]> };
+    getEmails: () => Promise<Email[]>;
+    updateEmails: () => Promise<Email[]>;
+    getEmailTypes: () => Promise<EmailType[]>; };
 
   const testEmail1 = 'abc@test.com';
   const testEmail2 = 'abc@test2.com';
@@ -91,7 +91,8 @@ describe('EmailsController', () => {
       emails: emailsWithEmptyEntry,
       emailTypes: expectedSelectItems,
       updated: false,
-      errors: []
+      errors: [],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -180,7 +181,8 @@ describe('EmailsController', () => {
       emails: emailsInvalidSyntax,
       emailTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.updateErrorMsg}]
+      errors: [{text: controller.updateErrorMsg}],
+      fatalError: false
     };
     expect(mockApi.updateEmails).not.toBeCalled();
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
@@ -218,7 +220,8 @@ describe('EmailsController', () => {
         emails: postedEmails,
         emailTypes: expectedSelectItems,
         updated: false,
-        errors: [{text: controller.getEmailAddressFormatErrorMsg}]
+        errors: [{text: controller.getEmailAddressFormatErrorMsg}],
+        fatalError: false
       };
       expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
     });
@@ -239,7 +242,8 @@ describe('EmailsController', () => {
       emails: null,
       emailTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.getEmailsErrorMsg}]
+      errors: [{text: controller.getEmailsErrorMsg}],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -259,7 +263,8 @@ describe('EmailsController', () => {
       emails: emailsWithEmptyEntry,
       emailTypes: [],
       updated: false,
-      errors: [{text: controller.getEmailTypesErrorMsg}]
+      errors: [{text: controller.getEmailTypesErrorMsg}],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -282,7 +287,8 @@ describe('EmailsController', () => {
       'emails': postedEmails,
       emailTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.emailDuplicatedErrorMsg}]
+      errors: [{text: controller.emailDuplicatedErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
@@ -313,7 +319,8 @@ describe('EmailsController', () => {
         {text: controller.emptyTypeOrAddressErrorMsg},
         {text: controller.getEmailAddressFormatErrorMsg},
         {text: controller.emailDuplicatedErrorMsg}
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });

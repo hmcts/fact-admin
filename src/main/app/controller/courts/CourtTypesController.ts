@@ -32,10 +32,11 @@ export class CourtTypesController {
     error = '',
     courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
     const slug: string = req.params.slug as string;
+    let fatalError = false;
     if (courtTypesAndCodes == null) {
       await req.scope.cradle.api.getCourtTypesAndCodes(slug)
         .then((value: CourtTypesAndCodes) => courtTypesAndCodes = value)
-        .catch(() => error += this.getCourtTypesAndCodesErrorMsg);
+        .catch(() => {error += this.getCourtTypesAndCodesErrorMsg; fatalError = true;});
     }
     let courtTypes: CourtType[] = [];
 
@@ -46,7 +47,7 @@ export class CourtTypesController {
 
       await req.scope.cradle.api.getCourtTypes(slug)
         .then((value: CourtType[]) => courtTypes = value)
-        .catch(() => error += this.getCourtTypesErrorMsg);
+        .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true;});
     }
 
 
@@ -56,7 +57,8 @@ export class CourtTypesController {
       updated: updated,
       courtTypes: courtTypesAndCodes && courtTypesAndCodes.types ? this.mapCourtTypeToCourtTypeItem(courtTypes, courtTypesAndCodes.types) : this.mapCourtTypeToCourtTypeItem(courtTypes, []),
       gbs: courtTypesAndCodes ? courtTypesAndCodes.gbsCode : null,
-      dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : []
+      dxCodes: courtTypesAndCodes ? courtTypesAndCodes.dxCodes : [],
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/typesContent', pageData);

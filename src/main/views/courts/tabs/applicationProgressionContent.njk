@@ -266,12 +266,14 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveUpdate"
+  name: "saveUpdate",
+  disabled: fatalError
 }) }}
 
 {{ govukButton({
   text: "Add new application progression",
   name: "addNewUpdate",
   type: "button",
-  classes: "govuk-button--secondary addUpdate"
+  classes: "govuk-button--secondary addUpdate",
+  disabled: fatalError
 }) }}
