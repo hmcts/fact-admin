@@ -14,6 +14,9 @@ import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
 import {postcodeIsValidFormat} from '../../../utils/validation';
 import {County} from '../../../types/County';
+import {AreaOfLaw} from "../../../types/AreaOfLaw";
+import {RadioItem} from "../../../types/RadioItem";
+import {CourtType} from "../../../types/CourtType";
 
 @autobind
 export class AddressController {
@@ -49,7 +52,7 @@ export class AddressController {
     };
 
     // Validate token
-    if(!CSRF.verify(req.body._csrf)) {
+    if (!CSRF.verify(req.body._csrf)) {
       await this.render(req, res, false, addresses, [this.updateAddressError]);
       return;
     }
@@ -65,7 +68,18 @@ export class AddressController {
 
     // Post addresses to API if valid
     await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
-      .then(async (addressList: CourtAddress[]) => await this.render(req, res, true, this.convertToDisplayAddresses(addressList)) )
+      .then(async (addressList: CourtAddress[]) => {
+
+        // TODO:
+        await this.render(req, res, true, this.convertToDisplayAddresses(addressList, await req.scope.cradle.api.getAllAreasOfLaw()
+            .then((results: AreaOfLaw[]) => {
+              return results
+            })
+            .catch(() => {
+              // TODO: add error
+            }),
+          []))
+      })
       .catch(async (reason: AxiosError) => {
         if (reason.response.status === 400) {
           const postcodeValidation = this.checkErrorResponseForPostcodeErrors(reason, addresses);
@@ -92,23 +106,62 @@ export class AddressController {
     const slug: string = req.params.slug as string;
     let fatalError = false;
 
-    // Get the addresses and also keep the list for later so we can determine which
-    // court types are selected further down
     if (!addresses) {
-      await req.scope.cradle.api.getCourtAddresses(slug)
-        .then((addressList: CourtAddress[]) => {
-          addresses = this.convertToDisplayAddresses(addressList)
+      // Get the addresses and also keep the list for later so we can determine which
+      // court types are selected further down
+      const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
+        .then((results: AreaOfLaw[]) => {
+          return results
         })
+        .catch(() => {
+          // TODO: change mssage to use one above
+          errorMsgs.push('Cannot get areas of law');
+          fatalError = true;
+        });
+
+      const courtTypes = await req.scope.cradle.api.getCourtTypes()
+        .then((results: CourtType[]) => {
+          return results
+        })
+        .catch(() => {
+          // TODO: change mssage
+          errorMsgs.push('Cannot get areas of law');
+          fatalError = true;
+        });
+
+      await req.scope.cradle.api.getCourtAddresses(slug)
+        .then((addressList: CourtAddress[]) =>
+          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes))
         .catch(() => {
           errorMsgs.push(this.getAddressesError);
           fatalError = true;
         });
     }
 
-    console.log(addresses);
-
     // Add court types and areas of law, so they can be added to the court types dropdown
 
+    // Court types = array of courts
+    // Areas of law = array of areas of law
+    // Both to be added to seperate lists or together? Prob separate...based on the question
+
+    // To show values in those lists...
+    // create an array of SelectItems for both, that include an attributes list as well?
+    // when it gets passed back into the put, create a list of areas of law/court types based on the info
+
+    console.log('before')
+    // TODO: get complete list for all three for each, with values selected if there as true
+    console.log(addresses.primary);
+    console.log(addresses.secondary);
+    console.log(addresses.third);
+
+    console.log('primary')
+    console.log(addresses.primary.fields_of_law);
+
+    console.log('secondary')
+    console.log(addresses.secondary.fields_of_law);
+
+    console.log('third')
+    console.log(addresses.third.fields_of_law);
 
     let addressTypes: AddressType[] = [];
     await req.scope.cradle.api.getAddressTypes()
@@ -133,10 +186,12 @@ export class AddressController {
       addressTypesPrimary: this.getAddressTypesForSelect(addressTypes, true),
       addressTypesSecondary: this.getAddressTypesForSelect(addressTypes, false),
       addressTypesThird: this.getAddressTypesForSelect(addressTypes, false),
-      counties : this.getCountiesForSelect(counties),
+      counties: this.getCountiesForSelect(counties),
       addresses: addresses,
       writeToUsTypeId: writeToUsTypes.length === 1 ? writeToUsTypes[0] : null,
-      errors: errorMsgs.map(errorMsg => { return { text: errorMsg }; }),
+      errors: errorMsgs.map(errorMsg => {
+        return {text: errorMsg};
+      }),
       fatalError: fatalError,
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
@@ -145,6 +200,42 @@ export class AddressController {
     };
 
     res.render('courts/tabs/addressesContent', pageData);
+  }
+
+  private mapAreaOfLawToRadioItem(allAreasOfLaw: AreaOfLaw[], courtAreasOfLaw: RadioItem[]): RadioItem[] {
+
+    if (courtAreasOfLaw) {
+
+      const areaOfLawItems = allAreasOfLaw.map((aol: AreaOfLaw) => (
+        {
+          id: aol.id,
+          value: JSON.stringify(aol),
+          text: aol.name,
+          checked: courtAreasOfLaw.some(e => e.id === aol.id)
+        }));
+
+      return areaOfLawItems.sort((a, b) => (a.text < b.text ? -1 : 1));
+    } else {
+      return [];
+    }
+  }
+
+  private mapCourtTypeToRadioItem(allCourtTypes: CourtType[], courtType: RadioItem[]): RadioItem[] {
+
+    if (allCourtTypes) {
+
+      const courtTypeItems = allCourtTypes.map((aol: CourtType) => (
+        {
+          id: aol.id,
+          value: JSON.stringify(aol),
+          text: aol.name,
+          checked: courtType.some(e => e.id === aol.id)
+        }));
+
+      return courtTypeItems.sort((a, b) => (a.text < b.text ? -1 : 1));
+    } else {
+      return [];
+    }
   }
 
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
@@ -170,7 +261,7 @@ export class AddressController {
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
     const descriptionErrors = this.validateDescriptionLength(address, isPrimaryAddress);
-    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : ( isSecondaryAddress ? this.secondaryAddressPrefix: this.thirdAddressPrefix);
+    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : (isSecondaryAddress ? this.secondaryAddressPrefix : this.thirdAddressPrefix);
 
     return {
       postcodeValid: postcodeErrors.length === 0,
@@ -202,7 +293,7 @@ export class AddressController {
       if (!address.address_lines?.trim()) {
         errors.push(this.addressRequiredError);
       }
-      if(!address.town?.trim()) {
+      if (!address.town?.trim()) {
         errors.push(this.townRequiredError);
       }
     }
@@ -212,7 +303,7 @@ export class AddressController {
   private validateDescriptionLength(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
     const errors: string[] = [];
     if (!isPrimaryAddress) {
-      if (!(address.description?.trim().length<100) || !(address.description_cy.trim().length<100)) {
+      if (!(address.description?.trim().length < 100) || !(address.description_cy.trim().length < 100)) {
         errors.push(this.descriptionTooLongError);
       }
     }
@@ -238,8 +329,8 @@ export class AddressController {
   private validateNoMoreThanOneVisitAddress(addresses: DisplayAddress[], writeToUsTypeId: number): string[] {
 
     return (writeToUsTypeId && !!addresses[0].type_id && !!addresses[1].type_id) &&
-      (!(addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2)  ||
-      (!!addresses[2].type_id && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 1)
+    (!(addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2) ||
+    (!!addresses[2].type_id && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 1)
       ? [this.multipleVisitAddressError]
       : [];
   }
@@ -250,7 +341,7 @@ export class AddressController {
   }
 
   private getAddressTypesForSelect(addressTypes: AddressType[], isPrimaryAddress: boolean): SelectItem[] {
-    const allAddressTypes = addressTypes.map((at: AddressType) => ({ value: at.id, text: at.name, selected: false }));
+    const allAddressTypes = addressTypes.map((at: AddressType) => ({value: at.id, text: at.name, selected: false}));
 
     return isPrimaryAddress
       ? allAddressTypes
@@ -278,7 +369,8 @@ export class AddressController {
         if (!primaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.primary?.postcode?.toUpperCase()) {
           primaryPostcodeInvalid = true;
           errors.push(this.primaryAddressPrefix + this.postcodeNotFoundError);
-        }  if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary?.postcode?.toUpperCase()) {
+        }
+        if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary?.postcode?.toUpperCase()) {
           secondaryPostcodeInvalid = true;
           errors.push(this.secondaryAddressPrefix + this.postcodeNotFoundError);
         } else if (!thirdPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.third?.postcode?.toUpperCase()) {
@@ -288,19 +380,25 @@ export class AddressController {
       });
     }
 
-    return { primaryInvalid: primaryPostcodeInvalid, secondaryInvalid: secondaryPostcodeInvalid, thirdInvalid: thirdPostcodeInvalid, errors: errors };
+    return {
+      primaryInvalid: primaryPostcodeInvalid,
+      secondaryInvalid: secondaryPostcodeInvalid,
+      thirdInvalid: thirdPostcodeInvalid,
+      errors: errors
+    };
   }
 
-  private convertToDisplayAddresses(addresses: CourtAddress[]): DisplayCourtAddresses {
-    const courtAddresses: DisplayCourtAddresses = { primary: null, secondary: null, third : null };
+  private convertToDisplayAddresses(addresses: CourtAddress[], areasOfLaw: AreaOfLaw[],
+                                    courtTypes: CourtType[]): DisplayCourtAddresses {
+    const courtAddresses: DisplayCourtAddresses = {primary: null, secondary: null, third: null};
     if (addresses.length > 0) {
-      courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0]);
+      courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
     }
     if (addresses.length > 1) {
-      courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1]);
+      courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
     }
     if (addresses.length > 2) {
-      courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2]);
+      courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes);
     }
     return courtAddresses;
   }
@@ -324,30 +422,36 @@ export class AddressController {
   private convertCourtAddressToApiAddressType(courtAddress: DisplayAddress): CourtAddress {
     return {
       'type_id': courtAddress.type_id,
-      'description' : courtAddress.description,
-      'description_cy' : courtAddress.description_cy,
+      'description': courtAddress.description,
+      'description_cy': courtAddress.description_cy,
       'address_lines': courtAddress.address_lines?.trim().split(/\r?\n/),
       'address_lines_cy': courtAddress.address_lines_cy?.trim().split(/\r?\n/),
       town: courtAddress.town?.trim(),
       'town_cy': courtAddress.town_cy?.trim(),
       'county_id': courtAddress.county_id,
-      postcode: courtAddress.postcode?.trim().toUpperCase()
+      postcode: courtAddress.postcode?.trim().toUpperCase(),
+
+      // TODO: this will be the one going to the API, only get the ones with checked = true
+      fields_of_law: courtAddress.fields_of_law
     };
   }
 
-  private convertApiAddressToCourtAddressType(address: CourtAddress): DisplayAddress {
+  private convertApiAddressToCourtAddressType(address: CourtAddress, areasOfLaw: AreaOfLaw[],
+                                              courtTypes: CourtType[]): DisplayAddress {
     return {
       'type_id': address.type_id,
-      'description' : address.description,
-      'description_cy' : address.description_cy,
+      'description': address.description,
+      'description_cy': address.description_cy,
       'address_lines': address.address_lines?.join('\n'),
       'address_lines_cy': address.address_lines_cy?.join('\n'),
       town: address.town?.trim(),
       'town_cy': address.town_cy?.trim(),
       'county_id': address.county_id,
-      postcode: address.postcode?.trim().toUpperCase()
+      postcode: address.postcode?.trim().toUpperCase(),
+      fields_of_law: {
+        areas_of_law: address.fields_of_law?.areas_of_law ? this.mapAreaOfLawToRadioItem(areasOfLaw, address.fields_of_law.areas_of_law) : [],
+        courts: address.fields_of_law?.courts ? this.mapCourtTypeToRadioItem(courtTypes, address.fields_of_law.courts) : [],
+      }
     };
   }
-
-
 }

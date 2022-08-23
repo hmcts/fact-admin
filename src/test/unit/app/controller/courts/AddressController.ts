@@ -74,7 +74,8 @@ describe('AddressesController', () => {
         town: primary.town,
         'town_cy': primary.town_cy,
         'county_id': 1,
-        postcode: primary.postcode
+        postcode: primary.postcode,
+        fields_of_law: null
       },
       secondary: {
         'type_id': secondary.type_id,
@@ -85,7 +86,13 @@ describe('AddressesController', () => {
         town: secondary.town,
         'town_cy': secondary.town_cy,
         'county_id': 2,
-        postcode: secondary.postcode
+        postcode: secondary.postcode,
+        fields_of_law: {
+          areas_of_law: [
+            // TODO: add some in here
+          ],
+          courts: null
+        }
       },
       third: {
         'type_id': third.type_id,
@@ -96,7 +103,13 @@ describe('AddressesController', () => {
         town: third.town,
         'town_cy': third.town_cy,
         'county_id': 3,
-        postcode: third.postcode
+        postcode: third.postcode,
+        fields_of_law: {
+          areas_of_law: null,
+          courts: [
+            // TODO: add some in here
+          ]
+        }
       }
     };
   };
@@ -279,8 +292,8 @@ describe('AddressesController', () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '' },
-      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '' }
+      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '', fields_of_law: null },
+      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '', fields_of_law: null }
     };
 
     req.body = {

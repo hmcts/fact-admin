@@ -5,6 +5,7 @@ const { initAll } = require('govuk-frontend');
 
 export class AddressesController {
   private tabId = '#courtAddressesTab';
+  private primaryAddressId = '#primaryAddressAOLList';
   private contentId = '#addressesContent';
   private formId = '#addressForm';
   private removeSecondaryBtnId = '#removeSecondAddressBtn';
@@ -21,6 +22,7 @@ export class AddressesController {
         this.setUpSubmitEventHandler();
         this.setUpRemoveSecondaryEventHandler();
         this.setUpRemoveThirdEventHandler();
+        this.setUpPrimaryAddressChangeToggle();
       }
     });
   }
@@ -52,6 +54,13 @@ export class AddressesController {
         await this.updateContent(res, this.contentId);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT court addresses failed.'));
+    });
+  }
+
+  private setUpPrimaryAddressChangeToggle(): void {
+    $(this.primaryAddressId).on('change', e => {
+      e.preventDefault();
+      $(this.primaryAddressId).toggle();
     });
   }
 

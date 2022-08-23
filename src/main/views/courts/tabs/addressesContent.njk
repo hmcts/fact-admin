@@ -1,3 +1,4 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -5,6 +6,8 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 <h2 class="govuk-heading-l">Addresses</h2>
 
@@ -64,6 +67,69 @@
   classes: "govuk-input--width-30",
   value: addresses.primary.address_lines_cy
 }) }}
+
+  {% set radioChecked = false %}
+  {% for areaOfLaw in addresses.primary.fields_of_law.areas_of_law %}
+    {% if areaOfLaw.checked %}
+      {% set radioChecked = true %}
+    {% endif %}
+  {% endfor %}
+  {% for court in addresses.primary.fields_of_law.courts %}
+    {% if court.checked %}
+      {% set radioChecked = true %}
+    {% endif %}
+  {% endfor %}
+
+  {{ govukRadios({
+    classes: "govuk-radios--inline",
+    idPrefix: "primaryFieldsOfLawRadio",
+    name: "primaryFieldsOfLawRadio",
+    value: "No",
+    fieldset: {
+      legend: {
+        text: "Does this address only apply for specific areas of law and/or court types?",
+        classes: "govuk-input--width-50"
+      }
+    },
+    items: [
+      {
+        value: "yes",
+        text: "Yes",
+        checked: radioChecked
+      },
+      {
+        value: "no",
+        text: "No",
+        checked: not radioChecked
+      }
+    ]
+  }) }}
+
+  <div id="primaryAddressAOLList">
+
+    {{ govukDetails({
+      summaryText: "Help with areas of law",
+      html: "Select one or more areas of law that apply for a given address. An example of this may be where you
+      have a write to address that only applies for Civil cases"})
+    }}
+
+    <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+      {%- for items in addresses.primary.fields_of_law.areas_of_law | slice(2) %}
+
+      <div class="govuk-grid-column-one-half">
+          {{ govukCheckboxes({
+            idPrefix: "areas-of-law",
+            name: "primaryAddressAOLItems",
+            classes: "govuk-checkboxes--small",
+            items: items
+          }) }}
+      </div>
+
+      {%- endfor %}
+
+    </div>
+  </div>
 
 {{ govukInput({
   id: "primaryAddressTown",

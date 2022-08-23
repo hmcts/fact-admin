@@ -1,3 +1,4 @@
+import {RadioItem} from "./RadioItem";
 
 export interface DisplayCourtAddresses {
   primary: DisplayAddress;
@@ -15,6 +16,7 @@ export interface DisplayAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  fields_of_law: FieldsOfLaw
 }
 
 
@@ -28,6 +30,12 @@ export interface CourtAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  fields_of_law?: FieldsOfLaw;
+}
+
+export interface FieldsOfLaw {
+  areas_of_law?: RadioItem[],
+  courts?: RadioItem[]
 }
 
 export interface AddressType {
