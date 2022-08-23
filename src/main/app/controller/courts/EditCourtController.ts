@@ -7,11 +7,18 @@ import {CSRF} from '../../../modules/csrf';
 @autobind
 export class EditCourtController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
+
+    // With initial setup
+    const featureFlags = await req.scope.cradle.featureFlags.getAllFlagValues();
+    console.log('in edit court controller:');
+    console.log(featureFlags);
+
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
       slug: req.params.slug,
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
-      csrfToken: CSRF.create()
+      csrfToken: CSRF.create(),
+      featureFlags: featureFlags
     };
 
     res.render('courts/edit-court-general', pageData);
