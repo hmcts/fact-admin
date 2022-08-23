@@ -1,9 +1,17 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
-
+import {FeatureFlags} from './app/feature-flags/FeatureFlags';
+import {
+  FACT_ADMIN_TEST
+} from './app/feature-flags/flags';
 const multer = require('multer');
 
 export default function(app: Application): void {
+  // Can only use toggle/get single here, as get all is an async function
+  // TODO: add toggle to below
+  // debugging = console.log(featureFlags.method to see result)
+  const featureFlags: FeatureFlags = app.locals.container.cradle.featureFlags;
+  //console.log(featureFlags.getFlagValue('admin-courts-controller-toggle'));
 
   const upload = multer();
 
@@ -33,10 +41,10 @@ export default function(app: Application): void {
   app.put('/courts/:slug/contacts', app.locals.container.cradle.contactsController.put);
   app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
   app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
-  app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
-  app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
-  app.delete('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.delete);
-  app.put('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.put);
+  app.get('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TEST), app.locals.container.cradle.postcodesController.get);
+  app.post('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TEST), app.locals.container.cradle.postcodesController.post);
+  app.delete('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TEST), app.locals.container.cradle.postcodesController.delete);
+  app.put('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TEST), app.locals.container.cradle.postcodesController.put);
   app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
   app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);

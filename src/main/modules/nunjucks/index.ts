@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
-import FeatureToggleService from '../featureToggle';
+// import FeatureToggleService from '../featureToggle';
 import {CSRF} from '../csrf';
 import config from 'config';
 
@@ -31,9 +31,9 @@ export class Nunjucks {
       },
     );
 
-    FeatureToggleService.onFlagChange((flags: { [flag: string]: boolean }) => {
-      env.addGlobal('featureToggles', flags);
-    });
+    // FeatureToggleService.onFlagChange((flags: { [flag: string]: boolean }) => {
+    //   env.addGlobal('featureToggles', flags);
+    // });
 
 
     env.addFilter('selectFilter', this.selectFilter);
