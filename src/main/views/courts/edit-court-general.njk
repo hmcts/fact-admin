@@ -64,9 +64,11 @@
             {% set courtFacilitiesHtml %}
               {% include "./tabs/facilities.njk" %}
             {% endset -%}
-            {% set postcodesHtml %}
-                {% include "./tabs/postcodes.njk" %}
-            {% endset -%}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TEST] %}
+              {% set postcodesHtml %}
+                  {% include "./tabs/postcodes.njk" %}
+              {% endset -%}
+            {% endif %}
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
@@ -164,15 +166,17 @@
                   }
                 ]%}
 
-              {% set postcodesTab =
-                  {
-                   label: "Postcodes",
-                   id: "postcodes",
-                   panel: {
-                      html: postcodesHtml
-                   }
-                  }
-              %}
+              {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TEST] %}
+                {% set postcodesTab =
+                    {
+                    label: "Postcodes",
+                    id: "postcodes",
+                    panel: {
+                        html: postcodesHtml
+                    }
+                    }
+                %}
+              {% endif %}
 
               {% set localAuthoritiesTab =
                   {
