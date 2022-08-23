@@ -39,6 +39,6 @@ describe('CourtsController', () => {
 
     const res = mockResponse();
     await controller.get(req, res);
-    expect(res.render).toBeCalledWith('courts/courts', { courts: [], errors : [{'text': 'A problem occurred when retrieving all court information.'}] });
+    expect(res.render).toBeCalledWith('courts/courts', { courts: [], errors : [{text:controller.getCourtsErrorMsg}] });
   });
 });
