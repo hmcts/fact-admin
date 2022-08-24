@@ -1,8 +1,8 @@
 import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
-import { Application } from 'express';
-import { get, set } from 'lodash';
-import { execSync } from 'child_process';
+import {Application} from 'express';
+import {get, set} from 'lodash';
+import {execSync} from 'child_process';
 
 export class PropertiesVolume {
 
@@ -20,7 +20,7 @@ export class PropertiesVolume {
     } else {
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
       this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
-      this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
+      this.setLocalSecret('launchDarkly-sdk-key', 'launchDarkly.sdkKey');
       this.setLocalSecret('storage-account-name', 'services.image-store.account-name');
       this.setLocalSecret('storage-account-primary-key', 'services.image-store.account-key');
     }
