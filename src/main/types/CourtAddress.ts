@@ -7,16 +7,16 @@ export interface DisplayCourtAddresses {
 }
 
 export interface DisplayAddress {
-  type_id: number;
-  description: string;
-  description_cy: string;
-  address_lines: string;
-  address_lines_cy: string;
-  town: string;
-  town_cy: string;
-  county_id: number;
-  postcode: string;
-  fields_of_law: FieldsOfLaw
+  type_id?: number;
+  description?: string;
+  description_cy?: string;
+  address_lines?: string;
+  address_lines_cy?: string;
+  town?: string;
+  town_cy?: string;
+  county_id?: number;
+  postcode?: string;
+  fields_of_law?: FieldsOfLaw;
 }
 
 

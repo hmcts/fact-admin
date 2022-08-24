@@ -8,7 +8,8 @@ import {
   AddressValidationResult,
   CourtAddress,
   DisplayAddress,
-  DisplayCourtAddresses
+  DisplayCourtAddresses,
+  FieldsOfLaw
 } from '../../../types/CourtAddress';
 import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
@@ -130,38 +131,18 @@ export class AddressController {
         });
 
       await req.scope.cradle.api.getCourtAddresses(slug)
-        .then((addressList: CourtAddress[]) =>
-          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes))
-        .catch(() => {
+        .then((addressList: CourtAddress[]) => {
+          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)})
+        .catch((e: any) => {
+          console.log(e);
           errorMsgs.push(this.getAddressesError);
           fatalError = true;
         });
     }
 
-    // Add court types and areas of law, so they can be added to the court types dropdown
-
-    // Court types = array of courts
-    // Areas of law = array of areas of law
-    // Both to be added to seperate lists or together? Prob separate...based on the question
-
-    // To show values in those lists...
-    // create an array of SelectItems for both, that include an attributes list as well?
-    // when it gets passed back into the put, create a list of areas of law/court types based on the info
-
-    console.log('before')
-    // TODO: get complete list for all three for each, with values selected if there as true
     console.log(addresses.primary);
     console.log(addresses.secondary);
     console.log(addresses.third);
-
-    console.log('primary')
-    console.log(addresses.primary.fields_of_law);
-
-    console.log('secondary')
-    console.log(addresses.secondary.fields_of_law);
-
-    console.log('third')
-    console.log(addresses.third.fields_of_law);
 
     let addressTypes: AddressType[] = [];
     await req.scope.cradle.api.getAddressTypes()
@@ -178,6 +159,7 @@ export class AddressController {
         errorMsgs.push(this.getCountyError);
         fatalError = true;
       });
+
     // We expect a 'write to us' address type and use this to ensure that if 2 addresses are entered,
     // at least one is of this type (2 'visit' addresses are not permitted).
     const writeToUsTypes = addressTypes.filter(at => at.name.toLowerCase() === this.writeToUsAddressType.toLowerCase()).map(at => at.id);
@@ -390,17 +372,46 @@ export class AddressController {
 
   private convertToDisplayAddresses(addresses: CourtAddress[], areasOfLaw: AreaOfLaw[],
                                     courtTypes: CourtType[]): DisplayCourtAddresses {
-    const courtAddresses: DisplayCourtAddresses = {primary: null, secondary: null, third: null};
-    if (addresses.length > 0) {
-      courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
+    const courtAddresses: DisplayCourtAddresses = {primary: {}, secondary: {}, third: {}};
+
+    switch (addresses.length) {
+      case 0: {
+        courtAddresses.primary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        break;
+      }
+      case 1: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
+        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        break;
+      }
+      case 2: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
+        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        break;
+      }
+      case 3: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
+        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
+        courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes);
+        break;
+      }
+      default: {
+        throw new RangeError('Only expecting three addresses at max for now');
+      }
     }
-    if (addresses.length > 1) {
-      courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
-    }
-    if (addresses.length > 2) {
-      courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes);
-    }
+
     return courtAddresses;
+  }
+
+  private createEmptyFieldsOfLawCheckboxItems(areasOfLaw: AreaOfLaw[], courtTypes: CourtType[]): FieldsOfLaw {
+    return {
+      areas_of_law: this.mapAreaOfLawToRadioItem(areasOfLaw, []),
+      courts: this.mapCourtTypeToRadioItem(courtTypes, []),
+    }
   }
 
   private convertToApiType(courtAddresses: DisplayCourtAddresses): CourtAddress[] {

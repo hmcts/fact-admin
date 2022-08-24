@@ -5,7 +5,12 @@ const { initAll } = require('govuk-frontend');
 
 export class AddressesController {
   private tabId = '#courtAddressesTab';
-  private primaryAddressId = '#primaryAddressAOLList';
+  private primaryAddressFieldsOfLawRadio = 'input[name=\'primaryFieldsOfLawRadio\']';
+  private primaryAddressFieldsOfLawContainer = '#primaryAddressFieldsOfLawContainer';
+  private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
+  private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
+  private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
+  private thirdAddressFieldsOfLawContainer = '#thirdAddressFieldsOfLawContainer';
   private contentId = '#addressesContent';
   private formId = '#addressForm';
   private removeSecondaryBtnId = '#removeSecondAddressBtn';
@@ -22,7 +27,6 @@ export class AddressesController {
         this.setUpSubmitEventHandler();
         this.setUpRemoveSecondaryEventHandler();
         this.setUpRemoveThirdEventHandler();
-        this.setUpPrimaryAddressChangeToggle();
       }
     });
   }
@@ -35,6 +39,9 @@ export class AddressesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.contentId);
+        this.setUpAddressFOLChangeToggle(this.primaryAddressFieldsOfLawRadio, this.primaryAddressFieldsOfLawContainer);
+        this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio, this.secondaryAddressFieldsOfLawContainer);
+        this.setUpAddressFOLChangeToggle(this.thirdAddressFieldsOfLawRadio, this.thirdAddressFieldsOfLawContainer);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET court addresses failed.')
@@ -57,10 +64,16 @@ export class AddressesController {
     });
   }
 
-  private setUpPrimaryAddressChangeToggle(): void {
-    $(this.primaryAddressId).on('change', e => {
+  private setUpAddressFOLChangeToggle(radioElement: string, radioContainer: string): void {
+    // On page load, hide checkboxes if radio option is set to no
+    if ($(radioElement).filter(":checked").attr('value') === 'no') {
+      $(radioContainer).hide();
+    }
+    // On radio change, show/hide
+    $(radioElement).on('change', e => {
       e.preventDefault();
-      $(this.primaryAddressId).toggle();
+      e.target.getAttribute('value') === 'yes'
+        ? $(radioContainer).show() : $(radioContainer).hide();
     });
   }
 
