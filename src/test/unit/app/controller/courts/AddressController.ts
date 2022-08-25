@@ -6,11 +6,15 @@ import {AddressType, CourtAddress, DisplayAddress, DisplayCourtAddresses} from '
 import {AddressController} from '../../../../../main/app/controller/courts/AddressController';
 import {CourtAddressPageData} from '../../../../../main/types/CourtAddressPageData';
 import {County} from '../../../../../main/types/County';
+import {AreaOfLaw} from "../../../../../main/types/AreaOfLaw";
+import {CourtType} from "../../../../../main/types/CourtType";
 
 
 describe('AddressesController', () => {
 
   let mockApi: {
+    getAllAreasOfLaw: () => Promise<AreaOfLaw[]>,
+    getCourtTypes: () => Promise<CourtType[]>,
     getCourtAddresses: () => Promise<CourtAddress[]>,
     updateCourtAddresses: () => Promise<CourtAddress[]>,
     getAddressTypes: () => Promise<AddressType[]>,
@@ -19,6 +23,28 @@ describe('AddressesController', () => {
 
   const res = mockResponse();
   const req = mockRequest();
+
+  const getAreaOfLaw: (id: number, name: string) => AreaOfLaw =
+    (id: number, name: string) => { return { id: id, name: name, 'display_name': null, 'display_name_cy': null, 'display_external_link': null,
+      'external_link': null, 'external_link_desc': null, 'external_link_desc_cy': null, 'alt_name': null, 'alt_name_cy': null }; };
+
+  const getAllAreasOfLawData: AreaOfLaw[] = [
+    getAreaOfLaw(1, 'Adoption'),
+    getAreaOfLaw(2, 'Bankruptcy'),
+    getAreaOfLaw(3, 'Children'),
+    getAreaOfLaw(4, 'Civil Partnership'),
+    getAreaOfLaw(5, 'Court of Appeal'),
+    getAreaOfLaw(6, 'Crime')
+  ];
+
+  const courtTypes: CourtType[] = [
+    { id: 1, name:"Magistrates' Court", code: 123},
+    { id: 2, name:'County Court', code: 456},
+    { id: 3, name:'Crown Court', code: 789},
+    { id: 4, name:'Family Court', code: null}
+  ];
+
+  const getAllAreasOfLaw: () => AreaOfLaw[] = () => getAllAreasOfLawData;
 
   const getValidCourtAddresses: () => CourtAddress[] = () => {
     return [
@@ -179,6 +205,8 @@ describe('AddressesController', () => {
 
   beforeEach(() => {
     mockApi = {
+      getAllAreasOfLaw: async (): Promise<AreaOfLaw[]> => getAllAreasOfLaw(),
+      getCourtTypes: async (): Promise<CourtType[]> => courtTypes,
       getCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
       updateCourtAddresses: async (): Promise<CourtAddress[]> => getValidCourtAddresses(),
       getAddressTypes: async (): Promise<AddressType[]> => addressTypes,
