@@ -52,6 +52,8 @@ export class AddressesController {
     $(this.formId).on('submit', e => {
       e.preventDefault();
 
+      console.log(e.target);
+
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,

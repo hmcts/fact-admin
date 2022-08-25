@@ -22,6 +22,8 @@ import {CourtType} from "../../../types/CourtType";
 @autobind
 export class AddressController {
 
+  getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
+  getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law.';
   getAddressTypesError = 'A problem occurred when retrieving the court address types.';
   getAddressesError = 'A problem occurred when retrieving the court addresses.';
   getCountyError = 'A problem occurred when retrieving the counties';
@@ -52,44 +54,104 @@ export class AddressController {
       third: req.body.third
     };
 
+    const errors = [];
+    const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
+      .then((results: AreaOfLaw[]) => {
+        return results
+      })
+      .catch(() => {
+        errors.push(this.getAreasOfLawErrorMsg);
+      });
+    const courtTypes = await req.scope.cradle.api.getCourtTypes()
+      .then((results: AreaOfLaw[]) => {
+        return results
+      })
+      .catch(() => {
+        errors.push(this.getCourtTypesErrorMsg);
+      });
+
+    console.log('Body data');
+    console.log(req.body);
+
+    // Make sure the primary addresses are empty
+    addresses.primary.fields_of_law = {
+      areas_of_law: [],
+      courts: []
+    }
+    addresses.secondary.fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio,
+      req.body.secondaryAddressAOLItems, req.body.secondaryAddressCourtItems);
+    addresses.third.fields_of_law = this.getAPIFieldsOfLaw(req.body.thirdFieldsOfLawRadio,
+      req.body.thirdAddressAOLItems, req.body.thirdAddressCourtItems);
+
+    // TODO: checklist for tests
+    // multiple
+    // one set one not
+    // only one set for one
+    // none set
+
+    console.log('Before ');
+    console.log(addresses);
+
+    console.log('csrf bit');
+
     // Validate token
     if (!CSRF.verify(req.body._csrf)) {
-      await this.render(req, res, false, addresses, [this.updateAddressError]);
+      await this.render(req, res, false,
+        this.convertToDisplayAddresses([
+          addresses.primary as unknown as CourtAddress,
+          addresses.secondary as unknown as CourtAddress,
+          addresses.third as unknown as CourtAddress,
+        ], areasOfLaw, courtTypes), [this.updateAddressError]);
       return;
     }
+
+    console.log('validate addresses');
 
     // Validate addresses
     const writeToUsTypeId = req.body.writeToUsTypeId;
     const addressesValid = this.validateCourtAddresses(addresses, writeToUsTypeId);
     if (addressesValid.errors.length > 0) {
-      await this.render(req, res, false, addresses, addressesValid.errors,
+      await this.render(req, res, false,
+        this.convertToDisplayAddresses([
+          addresses.primary as unknown as CourtAddress,
+          addresses.secondary as unknown as CourtAddress,
+          addresses.third as unknown as CourtAddress,
+        ], areasOfLaw, courtTypes), addressesValid.errors,
         !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid, !addressesValid.thirdPostcodeValid);
       return;
     }
 
+    console.log('posting');
+
     // Post addresses to API if valid
     await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
       .then(async (addressList: CourtAddress[]) => {
-
-        // TODO:
-        await this.render(req, res, true, this.convertToDisplayAddresses(addressList, await req.scope.cradle.api.getAllAreasOfLaw()
-            .then((results: AreaOfLaw[]) => {
-              return results
-            })
-            .catch(() => {
-              // TODO: add error
-            }),
-          []))
+        await this.render(req, res, true, this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes))
       })
       .catch(async (reason: AxiosError) => {
+
+        console.log('goes into error here');
+        console.log(reason);
+
         if (reason.response.status === 400) {
           const postcodeValidation = this.checkErrorResponseForPostcodeErrors(reason, addresses);
           const errors = postcodeValidation.errors.length === 0
             ? [this.updateAddressError] // we've encountered a 400 for a reason other than postcodes
             : postcodeValidation.errors;
-          await this.render(req, res, false, addresses, errors, postcodeValidation.primaryInvalid, postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid);
+          await this.render(req, res, false,
+            this.convertToDisplayAddresses([
+              addresses.primary as unknown as CourtAddress,
+              addresses.secondary as unknown as CourtAddress,
+              addresses.third as unknown as CourtAddress,
+            ], areasOfLaw, courtTypes), errors, postcodeValidation.primaryInvalid,
+            postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid);
         } else {
-          await this.render(req, res, false, addresses, [this.updateAddressError]);
+          await this.render(req, res, false,
+            this.convertToDisplayAddresses([
+              addresses.primary as unknown as CourtAddress,
+              addresses.secondary as unknown as CourtAddress,
+              addresses.third as unknown as CourtAddress,
+            ], areasOfLaw, courtTypes), [this.updateAddressError]);
         }
       });
   }
@@ -115,8 +177,7 @@ export class AddressController {
           return results
         })
         .catch(() => {
-          // TODO: change mssage to use one above
-          errorMsgs.push('Cannot get areas of law');
+          errorMsgs.push(this.getAreasOfLawErrorMsg);
           fatalError = true;
         });
 
@@ -125,14 +186,14 @@ export class AddressController {
           return results
         })
         .catch(() => {
-          // TODO: change mssage
-          errorMsgs.push('Cannot get areas of law');
+          errorMsgs.push(this.getCourtTypesErrorMsg);
           fatalError = true;
         });
 
       await req.scope.cradle.api.getCourtAddresses(slug)
         .then((addressList: CourtAddress[]) => {
-          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)})
+          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)
+        })
         .catch((e: any) => {
           console.log(e);
           errorMsgs.push(this.getAddressesError);
@@ -430,6 +491,23 @@ export class AddressController {
     return apiAddresses;
   }
 
+  private getAPIFieldsOfLaw(radioOption: string, aolItems: any, courtItems: any): any {
+    return radioOption == 'yes' ? {
+      areas_of_law:
+        aolItems ? Array.isArray(aolItems)
+          ? aolItems.map((aol: string) => JSON.parse(aol))
+          : [JSON.parse(aolItems)] : [],
+      courts:
+        courtItems ? Array.isArray(courtItems)
+          ? courtItems.map((aol: string) => JSON.parse(aol))
+          : [JSON.parse(courtItems)] : []
+    } : {
+      // If the radio button is set to anything else but yes, set the fields of law to be empty
+      areas_of_law: [],
+      courts: []
+    };
+  }
+
   private convertCourtAddressToApiAddressType(courtAddress: DisplayAddress): CourtAddress {
     return {
       'type_id': courtAddress.type_id,
@@ -441,8 +519,6 @@ export class AddressController {
       'town_cy': courtAddress.town_cy?.trim(),
       'county_id': courtAddress.county_id,
       postcode: courtAddress.postcode?.trim().toUpperCase(),
-
-      // TODO: this will be the one going to the API, only get the ones with checked = true
       fields_of_law: courtAddress.fields_of_law
     };
   }
@@ -453,8 +529,16 @@ export class AddressController {
       'type_id': address.type_id,
       'description': address.description,
       'description_cy': address.description_cy,
-      'address_lines': address.address_lines?.join('\n'),
-      'address_lines_cy': address.address_lines_cy?.join('\n'),
+      'address_lines':
+        address.address_lines ?
+          typeof address.address_lines === 'string' ? (address.address_lines as string).split('\n').join('\n')
+            : address.address_lines?.join('\n')
+          : '',
+      'address_lines_cy':
+        address.address_lines_cy ?
+          typeof address.address_lines_cy === 'string' ? (address.address_lines_cy as string).split('\n').join('\n')
+            : address.address_lines_cy?.join('\n')
+          : '',
       town: address.town?.trim(),
       'town_cy': address.town_cy?.trim(),
       'county_id': address.county_id,
