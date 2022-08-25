@@ -5,8 +5,6 @@ const { initAll } = require('govuk-frontend');
 
 export class AddressesController {
   private tabId = '#courtAddressesTab';
-  private primaryAddressFieldsOfLawRadio = 'input[name=\'primaryFieldsOfLawRadio\']';
-  private primaryAddressFieldsOfLawContainer = '#primaryAddressFieldsOfLawContainer';
   private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
   private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
   private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
@@ -39,7 +37,6 @@ export class AddressesController {
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.contentId);
-        this.setUpAddressFOLChangeToggle(this.primaryAddressFieldsOfLawRadio, this.primaryAddressFieldsOfLawContainer);
         this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio, this.secondaryAddressFieldsOfLawContainer);
         this.setUpAddressFOLChangeToggle(this.thirdAddressFieldsOfLawRadio, this.thirdAddressFieldsOfLawContainer);
       },
@@ -61,6 +58,9 @@ export class AddressesController {
         data: $(e.target).serialize()
       }).done( async res => {
         await this.updateContent(res, this.contentId);
+        // When the page is updated, the original button events will need to be added again
+        this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio, this.secondaryAddressFieldsOfLawContainer);
+        this.setUpAddressFOLChangeToggle(this.thirdAddressFieldsOfLawRadio, this.thirdAddressFieldsOfLawContainer);
       }).fail(response =>
         AjaxErrorHandler.handleError(response, 'PUT court addresses failed.'));
     });

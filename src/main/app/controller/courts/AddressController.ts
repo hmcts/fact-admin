@@ -70,9 +70,6 @@ export class AddressController {
         errors.push(this.getCourtTypesErrorMsg);
       });
 
-    console.log('Body data');
-    console.log(req.body);
-
     // Make sure the primary addresses are empty
     addresses.primary.fields_of_law = {
       areas_of_law: [],
@@ -82,17 +79,6 @@ export class AddressController {
       req.body.secondaryAddressAOLItems, req.body.secondaryAddressCourtItems);
     addresses.third.fields_of_law = this.getAPIFieldsOfLaw(req.body.thirdFieldsOfLawRadio,
       req.body.thirdAddressAOLItems, req.body.thirdAddressCourtItems);
-
-    // TODO: checklist for tests
-    // multiple
-    // one set one not
-    // only one set for one
-    // none set
-
-    console.log('Before ');
-    console.log(addresses);
-
-    console.log('csrf bit');
 
     // Validate token
     if (!CSRF.verify(req.body._csrf)) {
@@ -104,8 +90,6 @@ export class AddressController {
         ], areasOfLaw, courtTypes), [this.updateAddressError]);
       return;
     }
-
-    console.log('validate addresses');
 
     // Validate addresses
     const writeToUsTypeId = req.body.writeToUsTypeId;
@@ -121,18 +105,12 @@ export class AddressController {
       return;
     }
 
-    console.log('posting');
-
     // Post addresses to API if valid
     await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
       .then(async (addressList: CourtAddress[]) => {
         await this.render(req, res, true, this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes))
       })
       .catch(async (reason: AxiosError) => {
-
-        console.log('goes into error here');
-        console.log(reason);
-
         if (reason.response.status === 400) {
           const postcodeValidation = this.checkErrorResponseForPostcodeErrors(reason, addresses);
           const errors = postcodeValidation.errors.length === 0
@@ -195,15 +173,10 @@ export class AddressController {
           addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)
         })
         .catch((e: any) => {
-          console.log(e);
           errorMsgs.push(this.getAddressesError);
           fatalError = true;
         });
     }
-
-    console.log(addresses.primary);
-    console.log(addresses.secondary);
-    console.log(addresses.third);
 
     let addressTypes: AddressType[] = [];
     await req.scope.cradle.api.getAddressTypes()
