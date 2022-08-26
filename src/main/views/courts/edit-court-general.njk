@@ -92,8 +92,8 @@
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
             {% set tabItems = [] %}
-             
-            {% if featureFlags.values[featureFlags.flags.TAB_GENERAL] %}
+
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_GENERAL] %}
               {% set generalTab =
                 {
                   label: "General",
@@ -105,7 +105,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_OPENING_HOURS] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_OPENING_HOURS] %}
               {% set openingHoursTab =
                 {
                   label: "Opening Hours",
@@ -117,7 +117,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_PHONE_NUMBERS] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_PHONE_NUMBERS] %}
               {% set phoneNumbersTab =
                 {
                   label: "Phone Numbers",
@@ -129,7 +129,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_EMAILS] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_EMAILS] %}
               {% set emailsTab =
                 {
                   label: "Emails",
@@ -141,7 +141,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_TYPES] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_TYPES] %}
               {% set courtTypesTab =
                 {
                   label: "Types",
@@ -153,7 +153,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_FACILITIES] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_FACILITIES] %}
               {% set courtFacilitiesTab =
                 {
                   label: "Facilities",
@@ -165,7 +165,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_POSTCODES] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_POSTCODES] %}
               {% set postcodesTab =
                 {
                   label: "Postcodes",
@@ -177,7 +177,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_LOCAL_AUTHORITIES] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_LOCAL_AUTHORITIES] %}
               {% set localAuthoritiesTab =
                 {
                   label: "Local Authorities",
@@ -189,7 +189,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_CASES_HEARD] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_CASES_HEARD] %}
               {% set casesHeardTab =
                 {
                   label: "Cases Heard",
@@ -201,7 +201,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_ADDRESSES] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDRESSES] %}
               {% set addressesTab =
                 {
                   label: "Addresses",
@@ -213,7 +213,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_PHOTO] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_PHOTO] %}
               {% set photoTab =
                 {
                   label: "Photo",
@@ -225,7 +225,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_ADDITIONAL_LINKS] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDITIONAL_LINKS] %}
               {% set spoeTab =
                 {
                   label: "SPoE",
@@ -237,7 +237,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_SPOE] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_SPOE] %}
               {% set spoeTab =
                 {
                   label: "SPoE",
@@ -249,7 +249,7 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.TAB_APPLICATION_PROGRESSION] %}
+            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_APPLICATION_PROGRESSION] %}
               {% set applicationProgressionTab =
                 {
                   label: "Application Progression",
