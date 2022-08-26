@@ -31,12 +31,13 @@ export class NewCourtController {
     serviceAreas: ServiceArea[] = [],
     errorMsg: string[] = []): Promise<void> {
 
+    let fatalError = false;
     const allServiceAreas = await req.scope.cradle.api.getAllServiceAreas()
       .catch(() => {
         errorMsg.push(this.getServiceAreasErrorMsg);
+        fatalError = true;
       });
 
-    console.log(allServiceAreas);
 
     res.render('courts/addNewCourt', {
       created: created,
@@ -51,7 +52,8 @@ export class NewCourtController {
       serviceAreas: serviceAreas,
       allServiceAreas: allServiceAreas,
       errorMsg: errorMsg,
-      csrfToken: CSRF.create()
+      csrfToken: CSRF.create(),
+      fatalError: fatalError,
     });
   }
 

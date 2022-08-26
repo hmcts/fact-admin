@@ -12,6 +12,7 @@ export interface CourtTypePageData {
   courtTypes: CourtTypeItem[],
   gbs? : string,
   dxCodes?: DxCode[];
+  fatalError: boolean;
 }
 
 export interface CourtTypeItem {

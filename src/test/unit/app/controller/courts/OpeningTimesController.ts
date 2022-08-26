@@ -9,9 +9,9 @@ import {CSRF} from '../../../../../main/modules/csrf';
 describe('OpeningTimesController', () => {
 
   let mockApi: {
-    getOpeningTimes: () => Promise<OpeningTime[]>,
-    updateOpeningTimes: () => Promise<OpeningTime[]>,
-    getOpeningTimeTypes: () => Promise<OpeningType[]> };
+    getOpeningTimes: () => Promise<OpeningTime[]>;
+    updateOpeningTimes: () => Promise<OpeningTime[]>;
+    getOpeningTimeTypes: () => Promise<OpeningType[]>;};
 
   const getOpeningTimes: () => OpeningTime[] = () => [
     { 'type_id': 1, hours: '9am to 5pm', isNew: false },
@@ -67,7 +67,8 @@ describe('OpeningTimesController', () => {
       'opening_times': expectedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errors: []
+      errors: [],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -152,7 +153,8 @@ describe('OpeningTimesController', () => {
       'opening_times': postedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.updateErrorMsg}]
+      errors: [{text: controller.updateErrorMsg}],
+      fatalError: false
     };
 
     await controller.put(req, res);
@@ -177,7 +179,8 @@ describe('OpeningTimesController', () => {
       'opening_times': null,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.getOpeningTimesErrorMsg}]
+      errors: [{text: controller.getOpeningTimesErrorMsg}],
+      fatalError: true,
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -200,7 +203,8 @@ describe('OpeningTimesController', () => {
       'opening_times': expectedOpeningTimes,
       openingTimeTypes: [],
       updated: false,
-      errors: [{text: controller.getOpeningTypesErrorMsg}]
+      errors: [{text: controller.getOpeningTypesErrorMsg}],
+      fatalError: true,
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -223,7 +227,8 @@ describe('OpeningTimesController', () => {
       'opening_times': postedOpeningTimes,
       openingTimeTypes: expectedSelectItems,
       updated: false,
-      errors: [{text: controller.openingTimeDuplicatedErrorMsg}]
+      errors: [{text: controller.openingTimeDuplicatedErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
@@ -251,7 +256,8 @@ describe('OpeningTimesController', () => {
       errors: [
         {text: controller.emptyTypeOrHoursErrorMsg},
         {text: controller.openingTimeDuplicatedErrorMsg}
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });

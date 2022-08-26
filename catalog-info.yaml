@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "fact-admin"
+  annotations:
+    # This must match folder-name/job-name in Jenkins.
+    jenkins.io/job-full-name: cft:HMCTS_d_to_i/fact-admin
+    github.com/project-slug: hmcts/fact-admin
+  tags:
+    - nodejs
+  links:
+    - url: https://hmcts-reform.slack.com/app_redirect?channel=fact-tech
+      title: "#fact-tech on Slack"
+      icon: chat
+spec:
+  type: service
+  lifecycle: production
+  owner: dts_fact

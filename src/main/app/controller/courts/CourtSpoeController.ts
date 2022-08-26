@@ -42,11 +42,13 @@ export class CourtSpoeController {
     courtSpoeAreasOfLaw: SpoeAreaOfLaw[] = null) {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
     if (!allSpoeAreasOfLaw) {
       await req.scope.cradle.api.getAllSpoeAreasOfLaw()
         .then((value: SpoeAreaOfLaw[]) => allSpoeAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getSpoeAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -55,6 +57,7 @@ export class CourtSpoeController {
         .then((value: SpoeAreaOfLaw[]) => courtSpoeAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getCourtSpoeAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -68,7 +71,8 @@ export class CourtSpoeController {
       courtSpoeAreasOfLaw: courtSpoeAreasOfLaw,
       slug: slug,
       errorMsg: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/spoeContent', pageData);

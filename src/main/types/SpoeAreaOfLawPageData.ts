@@ -6,5 +6,6 @@ export interface SpoeAreaOfLawPageData {
   courtSpoeAreasOfLaw: SpoeAreaOfLaw[],
   slug: string,
   errorMsg: Error[],
-  updated: Boolean
+  updated: Boolean,
+  fatalError: Boolean
 }

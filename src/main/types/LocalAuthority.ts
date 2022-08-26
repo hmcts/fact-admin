@@ -11,6 +11,7 @@ export interface LocalAuthoritiesAreaOfLaw {
   updated: boolean,
   isEnabled : boolean,
   courtAreasOfLaw: SelectItem[],
+  fatalError: boolean,
 }
 export interface LocalAuthoritiesPageData {
   errorMsg: string,

@@ -7,8 +7,8 @@ import {AdditionalLinksController} from '../../../../../main/app/controller/cour
 describe('AdditionalLinksController', () => {
 
   let mockApi: {
-    getCourtAdditionalLinks: () => Promise<AdditionalLink[]>,
-    updateCourtAdditionalLinks: () => Promise<AdditionalLink[]>
+    getCourtAdditionalLinks: () => Promise<AdditionalLink[]>;
+    updateCourtAdditionalLinks: () => Promise<AdditionalLink[]>;
   };
 
   const getLinks: () => AdditionalLink[] = () => [
@@ -45,7 +45,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyEntry,
       updated: false,
-      errors: []
+      errors: [],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -86,7 +87,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyUrl,
       updated: false,
-      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}]
+      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -111,7 +113,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyDisplayName,
       updated: false,
-      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}]
+      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -136,7 +139,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithUrlInvalidFormat,
       updated: false,
-      errors: [{text: controller.invalidUrlFormatErrorMsg}]
+      errors: [{text: controller.invalidUrlFormatErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -162,7 +166,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithDuplicatedUrl,
       updated: false,
-      errors: [{text: controller.urlDuplicatedErrorMsg}]
+      errors: [{text: controller.urlDuplicatedErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -188,7 +193,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithDuplicatedUrl,
       updated: false,
-      errors: [{text: controller.displayNameDuplicatedErrorMsg}]
+      errors: [{text: controller.displayNameDuplicatedErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -220,7 +226,8 @@ describe('AdditionalLinksController', () => {
         {text: controller.emptyUrlOrDisplayNameErrorMsg},
         {text: controller.invalidUrlFormatErrorMsg},
         {text: controller.urlDuplicatedErrorMsg}
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -241,7 +248,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyEntry,
       updated: false,
-      errors: [{text: controller.updateAdditionalLinksErrorMsg}]
+      errors: [{text: controller.updateAdditionalLinksErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -258,7 +266,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: null,
       updated: false,
-      errors: [{text: controller.getAdditionalLinksErrorMsg}]
+      errors: [{text: controller.getAdditionalLinksErrorMsg}],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
@@ -279,7 +288,8 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyEntry,
       updated: false,
-      errors: [{text: controller.updateAdditionalLinksErrorMsg}]
+      errors: [{text: controller.updateAdditionalLinksErrorMsg}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
