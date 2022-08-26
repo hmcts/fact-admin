@@ -1,1 +1,14 @@
-export const FACT_ADMIN_TEST = 'test-feature-flag';
+export const TAB_GENERAL = 'fact-admin-tab-general';
+export const TAB_OPENING_HOURS = 'fact-admin-tab-opening-hours';
+export const TAB_PHONE_NUMBERS = 'fact-admin-phone-numbers';
+export const TAB_EMAILS = 'fact-admin-emails';
+export const TAB_TYPES = 'fact-admin-types';
+export const TAB_FACILITIES = 'fact-admin-facilities';
+export const TAB_POSTCODES = 'fact-admin-postcodes';
+export const TAB_LOCAL_AUTHORITIES = 'fact-admin-local-authorities';
+export const TAB_CASES_HEARD = 'fact-admin-cases-heard';
+export const TAB_ADDRESSES = 'fact-admin-addresses';
+export const TAB_PHOTO = 'fact-admin-photo';
+export const TAB_ADDITIONAL_LINKS = 'fact-admin-additional-links';
+export const TAB_SPOE = 'fact-admin-spoe';
+export const TAB_APPLICATION_PROGRESSION = 'fact-admin-application-progression';

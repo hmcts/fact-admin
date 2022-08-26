@@ -3,6 +3,7 @@ import autobind from 'autobind-decorator';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {CourtPageData} from '../../../types/CourtPageData';
 import {CSRF} from '../../../modules/csrf';
+import * as flags from '../../feature-flags/flags';
 
 @autobind
 export class EditCourtController {
@@ -18,7 +19,7 @@ export class EditCourtController {
       slug: req.params.slug,
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
       csrfToken: CSRF.create(),
-      featureFlags: featureFlags
+      featureFlags: { values: featureFlags, flags }
     };
 
     res.render('courts/edit-court-general', pageData);

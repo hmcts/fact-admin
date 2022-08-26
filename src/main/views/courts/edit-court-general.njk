@@ -64,11 +64,9 @@
             {% set courtFacilitiesHtml %}
               {% include "./tabs/facilities.njk" %}
             {% endset -%}
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TEST] %}
-              {% set postcodesHtml %}
-                  {% include "./tabs/postcodes.njk" %}
-              {% endset -%}
-            {% endif %}
+            {% set postcodesHtml %}
+              {% include "./tabs/postcodes.njk" %}
+            {% endset -%}
             {% set localAuthoritiesHtml %}
                 {% include "./tabs/localAuthorities.njk" %}
             {% endset -%}
@@ -93,129 +91,192 @@
 
              <input id='slug' type='hidden' value='{{slug}}'></input>
 
-             {% set tabItems = [
-                  {
-                    label: "General",
-                    id: "general",
-                    panel: {
-                      html: generalHtml
-                    }
-                  },
-                  {
-                    label: "Opening Hours",
-                    id: "opening-hours",
-                    panel: {
-                      html: openingHoursHtml
-                    }
-                  },
-                  {
-                    label: "Phone Numbers",
-                    id: "phone-numbers",
-                    panel: {
-                      html: phoneNumbersHtml
-                    }
-                  },
-                  {
-                    label: "Emails",
-                    id: "emails",
-                    panel: {
-                      html: emailsHtml
-                    }
-                  },
-                  {
-                    label: "Types",
-                    id: "court-types",
-                    panel: {
-                      html: courtTypesHtml
-                    }
-                  },
-                  {
-                    label: "Cases Heard",
-                    id: "cases-heard",
-                    panel: {
-                      html: casesHeardHtml
-                    }
-                  },
-                  {
-                    label: "Addresses",
-                    id: "addresses",
-                    panel: {
-                      html: addressesHtml
-                    }
-                  },
-                  {
-                    label: "Facilities",
-                    id: "court-facilities",
-                    panel: {
-                      html: courtFacilitiesHtml
-                    }
-                  },
-                  {
-                    label: "Photo",
-                    id: "photo",
-                    panel: {
-                      html: photoHtml
-                    }
-                  },
-                  {
-                    label: "Application Progression",
-                    id: "application-progression",
-                    panel: {
-                      html: applicationProgressionHtml
-                    }
-                  }
-                ]%}
-
-              {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TEST] %}
-                {% set postcodesTab =
-                    {
-                    label: "Postcodes",
-                    id: "postcodes",
-                    panel: {
-                        html: postcodesHtml
-                    }
-                    }
-                %}
-              {% endif %}
-
-              {% set localAuthoritiesTab =
-                  {
-                    label: "Local Authorities",
-                    id: "local-authorities",
-                    panel: {
-                      html: localAuthoritiesHtml
-                    }
-                  }
-              %}
-
-              {% set additionalLinksTab =
+            {% set tabItems = [] %}
+             
+            {% if featureFlags.values[featureFlags.flags.TAB_GENERAL] %}
+              {% set generalTab =
                 {
-                  label: "Additional Links",
-                  id: "additional-links",
+                  label: "General",
+                  id: "general",
                   panel: {
-                    html: additionalLinksHtml
+                    html: generalHtml
                   }
                 }
               %}
+            {% endif %}
 
-              {% set spoeTab =
-                  {
-                    label: "SPoE",
-                    id: "spoe",
-                    panel: {
-                      html: spoeHtml
-                    }
+            {% if featureFlags.values[featureFlags.flags.TAB_OPENING_HOURS] %}
+              {% set openingHoursTab =
+                {
+                  label: "Opening Hours",
+                  id: "opening-hours",
+                  panel: {
+                    html: openingHoursHtml
                   }
+                }
               %}
+            {% endif %}
 
-        {% if isSuperAdmin %}
+            {% if featureFlags.values[featureFlags.flags.TAB_PHONE_NUMBERS] %}
+              {% set phoneNumbersTab =
+                {
+                  label: "Phone Numbers",
+                  id: "phone-numbers",
+                  panel: {
+                    html: phoneNumbersHtml
+                  }
+                }
+              %}
+            {% endif %}
 
-          {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
-          {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
+            {% if featureFlags.values[featureFlags.flags.TAB_EMAILS] %}
+              {% set emailsTab =
+                {
+                  label: "Emails",
+                  id: "emails",
+                  panel: {
+                    html: emailsHtml
+                  }
+                }
+              %}
+            {% endif %}
 
-        {% endif %}
+            {% if featureFlags.values[featureFlags.flags.TAB_TYPES] %}
+              {% set courtTypesTab =
+                {
+                  label: "Types",
+                  id: "court-types",
+                  panel: {
+                    html: courtTypesHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_FACILITIES] %}
+              {% set courtFacilitiesTab =
+                {
+                  label: "Facilities",
+                  id: "court-facilities",
+                  panel: {
+                    html: courtFacilitiesHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_POSTCODES] %}
+              {% set postcodesTab =
+                {
+                  label: "Postcodes",
+                  id: "postcodes",
+                  panel: {
+                    html: postcodesHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_LOCAL_AUTHORITIES] %}
+              {% set localAuthoritiesTab =
+                {
+                  label: "Local Authorities",
+                  id: "local-authorities",
+                  panel: {
+                    html: localAuthoritiesHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_CASES_HEARD] %}
+              {% set casesHeardTab =
+                {
+                  label: "Cases Heard",
+                  id: "cases-heard",
+                  panel: {
+                    html: casesHeardHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_ADDRESSES] %}
+              {% set addressesTab =
+                {
+                  label: "Addresses",
+                  id: "addresses",
+                  panel: {
+                    html: addressesHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_PHOTO] %}
+              {% set photoTab =
+                {
+                  label: "Photo",
+                  id: "photo",
+                  panel: {
+                    html: photoHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_ADDITIONAL_LINKS] %}
+              {% set spoeTab =
+                {
+                  label: "SPoE",
+                  id: "spoe",
+                  panel: {
+                    html: spoeHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_SPOE] %}
+              {% set spoeTab =
+                {
+                  label: "SPoE",
+                  id: "spoe",
+                  panel: {
+                    html: spoeHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+            {% if featureFlags.values[featureFlags.flags.TAB_APPLICATION_PROGRESSION] %}
+              {% set applicationProgressionTab =
+                {
+                  label: "Application Progression",
+                  id: "application-progression",
+                  panel: {
+                    html: applicationProgressionHtml
+                  }
+                }
+              %}
+            {% endif %}
+
+          {% set tabItems = (tabItems.push(generalTab),tabItems) %}
+          {% set tabItems = (tabItems.push(openingHoursTab),tabItems) %}
+          {% set tabItems = (tabItems.push(phoneNumbersTab),tabItems) %}
+          {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
+          {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(postcodesTab),tabItems) if isSuperAdmin %}
+          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) if isSuperAdmin %}
+          {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
+          {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
+          {% set tabItems = (tabItems.push(photoTab),tabItems) %}
+          {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) if isSuperAdmin %}
+          {% set tabItems = (tabItems.push(spoeTab),tabItems) if isSuperAdmin %}
+          {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
+
+        {{ govukButton() if content.canManage }}
 
           {{ factTabs({
             id: 'Main',
