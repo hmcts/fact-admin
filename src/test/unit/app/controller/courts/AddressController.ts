@@ -455,6 +455,66 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
+  test('Should handle errors when getting court types from API', async () => {
+    const request = mockRequest();
+    request.params = {
+      slug: 'southport-county-court'
+    };
+    request.scope.cradle.api = mockApi;
+    request.scope.cradle.api.getCourtTypes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+
+    await controller.get(request, res);
+
+    const expectedError = [{text: controller.getCourtTypesErrorMsg}];
+    const expectedResults: CourtAddressPageData = {
+      // without any court types/areas of law, there can't be any addresses
+      addresses: null,
+      addressTypesPrimary: expectedSelectItems,
+      addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
+      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties: expectedCounties,
+      writeToUsTypeId: addressTypes[1].id,
+      updated: false,
+      errors: expectedError,
+      primaryPostcodeInvalid: false,
+      secondaryPostcodeInvalid: false,
+      thirdPostcodeInvalid: false,
+      fatalError: true
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
+  test('Should handle errors when getting areas of law from API', async () => {
+    const request = mockRequest();
+    request.params = {
+      slug: 'southport-county-court'
+    };
+    request.scope.cradle.api = mockApi;
+    request.scope.cradle.api.getAllAreasOfLaw = jest.fn().mockRejectedValue(new Error('Mock API Error'));
+
+    await controller.get(request, res);
+
+    const expectedError = [{text: controller.getAreasOfLawErrorMsg}];
+    const expectedResults: CourtAddressPageData = {
+      // without any court types/areas of law, there can't be any addresses
+      addresses: null,
+      addressTypesPrimary: expectedSelectItems,
+      addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
+      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
+      counties: expectedCounties,
+      writeToUsTypeId: addressTypes[1].id,
+      updated: false,
+      errors: expectedError,
+      primaryPostcodeInvalid: false,
+      secondaryPostcodeInvalid: false,
+      thirdPostcodeInvalid: false,
+      fatalError: true
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
   test('Should handle errors when getting address types from API', async () => {
     const request = mockRequest();
     request.params = {

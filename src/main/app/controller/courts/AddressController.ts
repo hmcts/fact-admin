@@ -170,7 +170,9 @@ export class AddressController {
 
       await req.scope.cradle.api.getCourtAddresses(slug)
         .then((addressList: CourtAddress[]) => {
-          addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)
+          if (areasOfLaw && courtTypes) {
+            addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)
+          }
         })
         .catch((e: any) => {
           errorMsgs.push(this.getAddressesError);
