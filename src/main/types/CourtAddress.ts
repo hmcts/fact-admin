@@ -1,5 +1,3 @@
-import {RadioItem} from "./RadioItem";
-
 export interface DisplayCourtAddresses {
   primary: DisplayAddress;
   secondary: DisplayAddress;
@@ -34,8 +32,8 @@ export interface CourtAddress {
 }
 
 export interface FieldsOfLaw {
-  areas_of_law?: RadioItem[],
-  courts?: RadioItem[]
+  areas_of_law?: any,
+  courts?: any
 }
 
 export interface AddressType {
