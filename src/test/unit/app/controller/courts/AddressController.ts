@@ -318,6 +318,23 @@ describe('AddressesController', () => {
     };
   };
 
+  const setAddressExpectedFieldsOfLaw = (courtAddressInfo: CourtAddressPageData) => {
+    const courtAddressInfoDuplicate = courtAddressInfo;
+    courtAddressInfoDuplicate.addresses.primary.fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw(),
+      courts: getAllRadioCourtTypes()
+    }
+    courtAddressInfoDuplicate.addresses.secondary.fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw(),
+      courts: getAllRadioCourtTypes()
+    }
+    courtAddressInfoDuplicate.addresses.third.fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw(),
+      courts: getAllRadioCourtTypes()
+    }
+    return courtAddressInfoDuplicate;
+  }
+
   const controller = new AddressController();
 
   beforeEach(() => {
@@ -586,7 +603,12 @@ describe('AddressesController', () => {
     await controller.put(req, res);
 
     // Should call API to save data
-    expect(mockApi.updateCourtAddresses).toBeCalledWith(slug, [getValidCourtAddresses()[0]]);
+    const expectedResults = [getValidCourtAddresses()[0]]
+    expectedResults[0].fields_of_law = {
+      areas_of_law: [],
+      courts: []
+    }
+    expect(mockApi.updateCourtAddresses).toBeCalledWith(slug, expectedResults);
   });
 
   test('Should not post court addresses if address type not selected', async () => {
@@ -599,6 +621,12 @@ describe('AddressesController', () => {
       primary: addresses.primary,
       secondary: addresses.secondary,
       third: addresses.third,
+      secondaryFieldsOfLawRadio: 'yes',
+      secondaryAddressAOLItems: [],
+      secondaryAddressCourtItems: [],
+      thirdFieldsOfLawRadio: 'yes',
+      thirdAddressAOLItems: [],
+      thirdAddressCourtItems: [],
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -616,8 +644,8 @@ describe('AddressesController', () => {
 
     ];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
-
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -641,7 +669,8 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, false, false, false);
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        true, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -666,7 +695,8 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true, false, false);
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, true, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -694,8 +724,8 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.addressRequiredError},
       {text: controller.primaryAddressPrefix + controller.townRequiredError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
-
+      setAddressExpectedFieldsOfLaw(  getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -723,8 +753,8 @@ describe('AddressesController', () => {
       {text: controller.secondaryAddressPrefix + controller.townRequiredError}
     ];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
-
+      setAddressExpectedFieldsOfLaw(      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -747,8 +777,8 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, false, false, false);
-
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -773,8 +803,8 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true, false, false);
-
+      setAddressExpectedFieldsOfLaw(  getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -798,7 +828,8 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{text: controller.multipleVisitAddressError}];
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+        expectedError, false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -811,7 +842,9 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     expectedError = [{text: controller.multipleVisitAddressError}];
     expectedResults =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary,
+        req.body.third, expectedError, false, false, false,
+        false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -841,7 +874,8 @@ describe('AddressesController', () => {
     let expectedError = [{text: controller.secondaryAddressPrefix + controller.descriptionTooLongError},
       {text: controller.thirdAddressPrefix + controller.descriptionTooLongError}];
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -852,8 +886,8 @@ describe('AddressesController', () => {
     expectedError = [{text: controller.secondaryAddressPrefix + controller.descriptionTooLongError},
       {text: controller.thirdAddressPrefix + controller.descriptionTooLongError}];
     expectedResults =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
-
+      setAddressExpectedFieldsOfLaw( getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -879,14 +913,16 @@ describe('AddressesController', () => {
     errorResponse.response.data = [addresses.primary.postcode];
     await controller.put(req, res);
     let expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeNotFoundError}];
-    let expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, false, false, false);
+    let expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary,
+      req.body.third, expectedError, true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
     errorResponse.response.data = [addresses.secondary.postcode];
     await controller.put(req, res);
     expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}];
-    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, true, false, false);
+    expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      expectedError, false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Both postcodes invalid and same
@@ -897,15 +933,18 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.postcodeNotFoundError},
       {text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}
     ];
+
     expectedResults =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, true, true, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        true, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Bad Request for reasons other than postcodes
     errorResponse.response.data = null;
     await controller.put(req, res);
     expectedError = [{text: controller.updateAddressError}];
-    expectedResults = getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+    expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -929,7 +968,8 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+        expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -953,7 +993,8 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError, false, false, false, false);
+      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
