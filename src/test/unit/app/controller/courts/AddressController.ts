@@ -724,8 +724,8 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.addressRequiredError},
       {text: controller.primaryAddressPrefix + controller.townRequiredError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(  getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
-      false, false, false, false));
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -753,7 +753,7 @@ describe('AddressesController', () => {
       {text: controller.secondaryAddressPrefix + controller.townRequiredError}
     ];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(      getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -777,7 +777,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -803,7 +803,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(  getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -828,7 +828,7 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{text: controller.multipleVisitAddressError}];
     let expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
         expectedError, false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
@@ -842,55 +842,101 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     expectedError = [{text: controller.multipleVisitAddressError}];
     expectedResults =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
         req.body.third, expectedError, false, false, false,
         false));
-
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
-  test('Should not post court addresses if secondary and third descriptions is more than 50 characters', async () => {
-    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    const tooLongDescription = 'description123456789012345678912345678901234567890112345678901234567891234567890123456789011234567890';
-
+  test('Should not post court addresses if secondary addresses have conflicting areas of law or court types', async () => {
+    const addresses = getValidDisplayAddresses()
+    addresses.secondary.fields_of_law = {
+      areas_of_law: [
+        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, "Adoption")), "Adoption", true),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, "Bankruptcy")), "Bankruptcy", false),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, "Children")), "Children", true),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, "Civil Partnership")), "Civil Partnership", false),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, "Court of Appeal")), "Court of Appeal", false),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, "Crime")), "Crime", false)
+      ],
+      courts: [
+        getRadioItem(1, JSON.stringify(getCourtType(1, "County Court", 456)), "County Court", true),
+        getRadioItem(2, JSON.stringify(getCourtType(2, "Crown Court", 789)), "Crown Court", false),
+        getRadioItem(3, JSON.stringify(getCourtType(3, "Family Court", null)), "Family Court", false),
+      ]
+    }
+    addresses.third.fields_of_law = {
+      areas_of_law: [
+        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, "Adoption")), "Adoption", true),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, "Bankruptcy")), "Bankruptcy", true),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, "Children")), "Children", false),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, "Civil Partnership")), "Civil Partnership", true),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, "Court of Appeal")), "Court of Appeal", false),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, "Crime")), "Crime", false)
+      ],
+      courts: [
+        getRadioItem(1, JSON.stringify(getCourtType(1, "County Court", 456)), "County Court", true),
+        getRadioItem(2, JSON.stringify(getCourtType(2, "Crown Court", 789)), "Crown Court", true),
+        getRadioItem(3, JSON.stringify(getCourtType(3, "Family Court", null)), "Family Court", false),
+      ]
+    }
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
       third: addresses.third,
+      secondaryFieldsOfLawRadio: 'yes',
+      secondaryAddressAOLItems: [
+        JSON.stringify(getAreaOfLaw(1, "Adoption")),
+        JSON.stringify(getAreaOfLaw(3, "Children"))
+      ],
+      secondaryAddressCourtItems: [
+        JSON.stringify(getCourtType(1, "County Court", 456))
+      ],
+      thirdFieldsOfLawRadio: 'yes',
+      thirdAddressAOLItems: [
+        JSON.stringify(getAreaOfLaw(1, "Adoption")),
+        JSON.stringify(getAreaOfLaw(2, "Bankruptcy")),
+        JSON.stringify(getAreaOfLaw(4, "Civil Partnership"))
+      ],
+      thirdAddressCourtItems: [
+        JSON.stringify(getCourtType(1, "County Court", 456)),
+        JSON.stringify(getCourtType(2, "Crown Court", 789))
+      ],
       writeToUsTypeId: addressTypes[1].id, // Write to us
       '_csrf': CSRF.create()
     };
 
-
-    addresses.secondary['description'] = tooLongDescription;
-    addresses.secondary['description_cy'] = tooLongDescription;
-    addresses.third['description'] = tooLongDescription;
-    addresses.third['description_cy'] = tooLongDescription;
-
-
     await controller.put(req, res);
 
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
-    let expectedError = [{text: controller.secondaryAddressPrefix + controller.descriptionTooLongError},
-      {text: controller.thirdAddressPrefix + controller.descriptionTooLongError}];
+    let expectedError = [{text: controller.fieldsOfLawDuplicateError + '\"Adoption, County Court\"'}];
     let expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         false, false, false, false));
-
-    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
-
-
-    await controller.put(req, res);
-
-    expect(mockApi.updateCourtAddresses).not.toBeCalled();
-    expectedError = [{text: controller.secondaryAddressPrefix + controller.descriptionTooLongError},
-      {text: controller.thirdAddressPrefix + controller.descriptionTooLongError}];
-    expectedResults =
-      setAddressExpectedFieldsOfLaw( getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
-        false, false, false, false));
+    expectedResults.addresses.secondary.fields_of_law = {
+      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, "Adoption")), "Adoption", true),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, "Bankruptcy")), "Bankruptcy", false),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, "Children")), "Children", true),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, "Civil Partnership")), "Civil Partnership", false),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, "Court of Appeal")), "Court of Appeal", false),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, "Crime")), "Crime", false)],
+      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, "County Court", 456)), "County Court", true),
+        getRadioItem(2, JSON.stringify(getCourtType(2, "Crown Court", 789)), "Crown Court", false),
+        getRadioItem(3, JSON.stringify(getCourtType(3, "Family Court", null)), "Family Court", false)]
+    }
+    expectedResults.addresses.third.fields_of_law = {
+      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, "Adoption")), "Adoption", true),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, "Bankruptcy")), "Bankruptcy", true),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, "Children")), "Children", false),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, "Civil Partnership")), "Civil Partnership", true),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, "Court of Appeal")), "Court of Appeal", false),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, "Crime")), "Crime", false)],
+      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, "County Court", 456)), "County Court", true),
+        getRadioItem(2, JSON.stringify(getCourtType(2, "Crown Court", 789)), "Crown Court", true),
+        getRadioItem(3, JSON.stringify(getCourtType(3, "Family Court", null)), "Family Court", false)]
+    }
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
-
 
   test('Put should handle Bad Request response from API', async () => {
     const slug = 'central-london-county-court';
@@ -913,7 +959,7 @@ describe('AddressesController', () => {
     errorResponse.response.data = [addresses.primary.postcode];
     await controller.put(req, res);
     let expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeNotFoundError}];
-    let expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary,
+    let expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
       req.body.third, expectedError, true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -921,7 +967,7 @@ describe('AddressesController', () => {
     errorResponse.response.data = [addresses.secondary.postcode];
     await controller.put(req, res);
     expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
       expectedError, false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -935,7 +981,7 @@ describe('AddressesController', () => {
     ];
 
     expectedResults =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         true, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -943,7 +989,7 @@ describe('AddressesController', () => {
     errorResponse.response.data = null;
     await controller.put(req, res);
     expectedError = [{text: controller.updateAddressError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
       expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -968,7 +1014,7 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
         expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -993,7 +1039,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(       getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);

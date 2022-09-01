@@ -41,7 +41,8 @@ export class AddressController {
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address 1: ';
   thirdAddressPrefix = 'Secondary Address 2: ';
-  descriptionTooLongError = 'Maximum length of description is 100 characters';
+  fieldsOfLawDuplicateError = 'Secondary addresses cannot have duplicate areas of law or court types selected. '
+    + 'Conflicting options selected are: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -263,7 +264,9 @@ export class AddressController {
     const secondaryValidationResult = this.validateCourtAddress(addresses.secondary, false, true);
     const thirdValidationResult = this.validateCourtAddress(addresses.third, false, false);
     const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary, addresses.third], writeToUsTypeId);
-    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors).concat(addressTypeErrors).concat(thirdValidationResult.errors);
+    const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary.fields_of_law, addresses.third.fields_of_law]);
+    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors)
+      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fieldsOfLawErrors);
 
     return {
       primaryPostcodeValid: primaryValidationResult.postcodeValid,
@@ -278,14 +281,12 @@ export class AddressController {
     const countyErrors = this.validateCountyExists(address);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
-    const descriptionErrors = this.validateDescriptionLength(address, isPrimaryAddress);
     const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : (isSecondaryAddress ? this.secondaryAddressPrefix : this.thirdAddressPrefix);
 
     return {
       postcodeValid: postcodeErrors.length === 0,
       addressValid: addressErrors.length === 0,
-      descriptionValid: descriptionErrors.length === 0,
-      errors: typeErrors.concat(countyErrors).concat(addressErrors).concat(postcodeErrors).concat(descriptionErrors).map(error => errorPrefix + error)
+      errors: typeErrors.concat(countyErrors).concat(addressErrors).concat(postcodeErrors).map(error => errorPrefix + error)
     };
   }
 
@@ -318,12 +319,25 @@ export class AddressController {
     return errors;
   }
 
-  private validateDescriptionLength(address: DisplayAddress, isPrimaryAddress: boolean): string[] {
+  private validateFieldsOfLaw(addressFolItems: FieldsOfLaw[]): string[] {
+    // Check for the address sent, that the fields of law for all addresses to not overlap with one another
+    // in other words, that there are no duplicates
     const errors: string[] = [];
-    if (!isPrimaryAddress) {
-      if (!(address.description?.trim().length < 100) || !(address.description_cy.trim().length < 100)) {
-        errors.push(this.descriptionTooLongError);
-      }
+    const duplicateAreasOfLaw = addressFolItems[0].areas_of_law
+      .map((aol: AreaOfLaw) => aol.name)
+      .filter((name: string) => addressFolItems[1].areas_of_law
+        .map((aol: AreaOfLaw) => aol.name)
+        .includes(name));
+    const duplicateCourts = addressFolItems[0].courts
+      .map((court: CourtType) => court.name)
+      .filter((name: string) => addressFolItems[1].courts
+        .map((court: CourtType) => court.name)
+        .includes(name));
+    if (duplicateAreasOfLaw.length > 0 || duplicateCourts.length > 0) {
+      errors.push(this.fieldsOfLawDuplicateError + '"'
+        + duplicateAreasOfLaw
+        + (duplicateAreasOfLaw.length > 0 ? ', ': '')
+        + duplicateCourts + '"');
     }
     return errors;
   }

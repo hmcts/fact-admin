@@ -7,8 +7,12 @@ export class AddressesController {
   private tabId = '#courtAddressesTab';
   private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
   private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
+  private secondaryAddressAOLItems = 'input[name="secondaryAddressAOLItems"]';
+  private secondaryAddressCourtItems = 'input[name="secondaryAddressCourtItems"]';
   private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
   private thirdAddressFieldsOfLawContainer = '#thirdAddressFieldsOfLawContainer';
+  private thirdAddressAOLItems = 'input[name="thirdAddressAOLItems"]';
+  private thirdAddressCourtItems = 'input[name="thirdAddressCourtItems"]';
   private contentId = '#addressesContent';
   private formId = '#addressForm';
   private removeSecondaryBtnId = '#removeSecondAddressBtn';
@@ -48,9 +52,6 @@ export class AddressesController {
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
       e.preventDefault();
-
-      console.log(e.target);
-
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,
@@ -79,6 +80,11 @@ export class AddressesController {
     });
   }
 
+  // private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
+  // private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
+  // private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
+  // private thirdAddressFieldsOfLawContainer = '#thirdAddressFieldsOfLawContainer';
+
   private setUpRemoveSecondaryEventHandler(): void {
     $(this.tabId).on('click', this.removeSecondaryBtnId, () => {
       $('#secondaryAddressType').val('');
@@ -90,6 +96,10 @@ export class AddressesController {
       $('#secondaryAddressTownWelsh').val('');
       $('#secondaryAddressCounty').val('');
       $('#secondaryAddressPostcode').val('');
+      $(this.secondaryAddressFieldsOfLawRadio + '#secondaryFieldsOfLawRadio-2').prop('checked', true);
+      $(this.secondaryAddressAOLItems).prop('checked', false);
+      $(this.secondaryAddressCourtItems).prop('checked', false);
+      $(this.secondaryAddressFieldsOfLawContainer).hide();
     });
   }
 
@@ -104,6 +114,10 @@ export class AddressesController {
       $('#thirdAddressTownWelsh').val('');
       $('#thirdAddressCounty').val('');
       $('#thirdAddressPostcode').val('');
+      $(this.thirdAddressFieldsOfLawRadio + '#thirdFieldsOfLawRadio-2').prop('checked', true);
+      $(this.thirdAddressAOLItems).prop('checked', false);
+      $(this.thirdAddressCourtItems).prop('checked', false);
+      $(this.thirdAddressFieldsOfLawContainer).hide();
     });
   }
 

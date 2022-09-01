@@ -45,6 +45,5 @@ export interface AddressType {
 export interface AddressValidationResult {
   addressValid: boolean;
   postcodeValid: boolean;
-  descriptionValid: boolean;
   errors: string[];
 }
