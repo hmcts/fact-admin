@@ -123,6 +123,7 @@ Then('I select the secondary County {string}', async (county: string) => {
   expect(elementExist).equal(true);
   await I.selectItem(selector,county);
 });
+
 Then('I enter the secondary address postcode {string}', async (postcode: string) => {
   const selector = '#secondaryAddressPostcode';
   await populateField(selector, postcode);
@@ -209,3 +210,74 @@ When('I select the third address type {string}', async (addressType: string) => 
   await I.selectItem(selector,addressType);
 });
 
+Given('I will make sure to remove entries for first secondary address', async () => {
+  const selector = '#removeSecondAddressBtn';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I enter secondary address description {string}', async (description: string) => {
+  const selector = '#secondaryAddressDescription';
+  await populateField(selector, description);
+});
+
+Then('I enter secondary address description welsh {string}', async (descriptionCy: string) => {
+  const selector = '#secondaryAddressDescriptionWelsh';
+  await populateField(selector, descriptionCy);
+});
+
+Then('I enter the secondary address town welsh {string}', async (townCy: string) => {
+  const selector = '#secondaryAddressTownWelsh';
+  await populateField(selector, townCy);
+});
+
+Then('I select yes for area of law and court type', async () => {
+  const selector = '#secondaryFieldsOfLawRadio';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I select children and civil from area of law and county court for court type', async () => {
+  const selectorAolChildren = '#\\33 4249';
+  const selectorAolCivil = '#\\33 4271';
+  const selectorCounyCourt = '#\\31 1419';
+  expect(await I.checkElement(selectorAolChildren)).equal(true);
+  await I.click(selectorAolChildren);
+  expect(await I.checkElement(selectorAolCivil)).equal(true);
+  await I.click(selectorAolCivil);
+  expect(await I.checkElement(selectorCounyCourt)).equal(true);
+  await I.click(selectorCounyCourt);
+  //await I.click('#view-in-new-window');
+});
+
+Then('I click the link view court in new tab to validate the label generated', async () => {
+  const selector = '#view-in-new-window';
+  console.log(await I.checkElement(selector));
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+
+  await I.goTo('http://localhost:3100/courts/amersham-law-courts');
+
+  const label = 'Children, Civil or County Court cases';
+  const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
+  console.log(await I.checkElement(selectorLabel));
+
+  const labelElement = await I.getElement(selectorLabel);
+  expect(await I.getElementText(labelElement)).equal(label);
+
+});
+
+Then('I select yes for second secondary court area of law and court type', async () => {
+  const selector = '#thirdFieldsOfLawRadio';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+});
+
+Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
+  const selectorAolChildren = "input[name='thirdAddressAOLItems'][id='34249']";
+  const selectorCountyCourt = "input[name='thirdAddressCourtItems'][id='11419']";
+  expect(await I.checkElement(selectorAolChildren)).equal(true);
+  await I.click(selectorAolChildren);
+  expect(await I.checkElement(selectorCountyCourt)).equal(true);
+  await I.click(selectorCountyCourt);
+});
