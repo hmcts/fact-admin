@@ -28,7 +28,6 @@
 {% set townRequiredError = { text: 'Town is required' } %}
 {% set postcodeRequiredError = { text: 'Postcode is required' } %}
 {% set postcodeInvalidError = { text: 'Postcode is invalid' } %}
-{% set descriptionInvalidError = { text: 'Maximum length is 50 characters'} %}
 
 <div class="govuk-body">
   <p>A court can have up to 3 addresses. The primary address can not be removed.<p>
@@ -121,32 +120,6 @@
   name: "secondary[type_id]",
   label: { text: "Address Type" },
   items: addressTypesSecondary  | selectFilter(addresses.secondary.type_id)
-}) }}
-
-{% if (addresses.secondary.description.length>100)  %}
- {% set secondaryDescriptionError = descriptionInvalidError %}
-{% endif %}
-{% if  (addresses.secondary.description_cy.length>100) %}
- {% set secondaryDescriptionCyError = descriptionInvalidError %}
-{% endif %}
-
-
-{{ govukInput({
-  id: "secondaryAddressDescription",
-  name: "secondary[description]",
-  label: { text: "Description" },
-  classes: "govuk-input--width-30",
-  value: addresses.secondary.description,
-  errorMessage: secondaryDescriptionError
-}) }}
-
-{{ govukInput({
-  id: "secondaryAddressDescriptionWelsh",
-  name: "secondary[description_cy]",
-  label: { text: "Description (Welsh)" },
-  classes: "govuk-input--width-30",
-  value: addresses.secondary.description_cy,
-  errorMessage: secondaryDescriptionCyError
 }) }}
 
 {% if (addresses.secondary.address_lines) or (addresses.secondary.address_lines_cy) or (addresses.secondary.town) or (addresses.secondary.town_cy) or (addresses.secondary.postcode) %}
@@ -323,31 +296,6 @@
   name: "third[type_id]",
   label: { text: "Address Type" },
   items: addressTypesThird  | selectFilter(addresses.third.type_id)
-}) }}
-
-{% if (addresses.third.description.length>100)  %}
- {% set thirdDescriptionError = descriptionInvalidError %}
-{% endif %}
-{% if  (addresses.third.description_cy.length>100) %}
- {% set thirdDescriptionCyError = descriptionInvalidError %}
-{% endif %}
-
-{{ govukInput({
-  id: "thirdAddressDescription",
-  name: "third[description]",
-  label: { text: "Description" },
-  classes: "govuk-input--width-30",
-  value: addresses.third.description,
-  errorMessage: thirdDescriptionError
-}) }}
-
-{{ govukInput({
-  id: "thirdAddressDescriptionWelsh",
-  name: "third[description_cy]",
-  label: { text: "Description (Welsh)" },
-  classes: "govuk-input--width-30",
-  value: addresses.third.description_cy,
-  errorMessage: thirdDescriptionCyError
 }) }}
 
 {% if (addresses.third.address_lines) or (addresses.third.address_lines_cy) or (addresses.third.town) or (addresses.third.town_cy) or (addresses.third.postcode) %}
