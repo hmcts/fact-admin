@@ -15,9 +15,9 @@ import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
 import {postcodeIsValidFormat} from '../../../utils/validation';
 import {County} from '../../../types/County';
-import {AreaOfLaw} from "../../../types/AreaOfLaw";
-import {RadioItem} from "../../../types/RadioItem";
-import {CourtType} from "../../../types/CourtType";
+import {AreaOfLaw} from '../../../types/AreaOfLaw';
+import {RadioItem} from '../../../types/RadioItem';
+import {CourtType} from '../../../types/CourtType';
 
 @autobind
 export class AddressController {
@@ -58,14 +58,14 @@ export class AddressController {
     const errors = [];
     const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
       .then((results: AreaOfLaw[]) => {
-        return results
+        return results;
       })
       .catch(() => {
         errors.push(this.getAreasOfLawErrorMsg);
       });
     const courtTypes = await req.scope.cradle.api.getCourtTypes()
       .then((results: AreaOfLaw[]) => {
-        return results
+        return results;
       })
       .catch(() => {
         errors.push(this.getCourtTypesErrorMsg);
@@ -75,7 +75,7 @@ export class AddressController {
     addresses.primary.fields_of_law = {
       areas_of_law: [],
       courts: []
-    }
+    };
     addresses.secondary.fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio,
       req.body.secondaryAddressAOLItems, req.body.secondaryAddressCourtItems);
     addresses.third.fields_of_law = this.getAPIFieldsOfLaw(req.body.thirdFieldsOfLawRadio,
@@ -109,7 +109,7 @@ export class AddressController {
     // Post addresses to API if valid
     await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
       .then(async (addressList: CourtAddress[]) => {
-        await this.render(req, res, true, this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes))
+        await this.render(req, res, true, this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes));
       })
       .catch(async (reason: AxiosError) => {
         if (reason.response.status === 400) {
@@ -153,7 +153,7 @@ export class AddressController {
       // court types are selected further down
       const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
         .then((results: AreaOfLaw[]) => {
-          return results
+          return results;
         })
         .catch(() => {
           errorMsgs.push(this.getAreasOfLawErrorMsg);
@@ -162,7 +162,7 @@ export class AddressController {
 
       const courtTypes = await req.scope.cradle.api.getCourtTypes()
         .then((results: CourtType[]) => {
-          return results
+          return results;
         })
         .catch(() => {
           errorMsgs.push(this.getCourtTypesErrorMsg);
@@ -172,7 +172,7 @@ export class AddressController {
       await req.scope.cradle.api.getCourtAddresses(slug)
         .then((addressList: CourtAddress[]) => {
           if (areasOfLaw && courtTypes) {
-            addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes)
+            addresses = this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes);
           }
         })
         .catch((e: any) => {
@@ -421,7 +421,7 @@ export class AddressController {
   }
 
   private convertToDisplayAddresses(addresses: CourtAddress[], areasOfLaw: AreaOfLaw[],
-                                    courtTypes: CourtType[]): DisplayCourtAddresses {
+    courtTypes: CourtType[]): DisplayCourtAddresses {
     const courtAddresses: DisplayCourtAddresses = {primary: {}, secondary: {}, third: {}};
 
     switch (addresses.length) {
@@ -461,7 +461,7 @@ export class AddressController {
     return {
       areas_of_law: this.mapAreaOfLawToRadioItem(areasOfLaw, []),
       courts: this.mapCourtTypeToRadioItem(courtTypes, []),
-    }
+    };
   }
 
   private convertToApiType(courtAddresses: DisplayCourtAddresses): CourtAddress[] {
@@ -513,7 +513,7 @@ export class AddressController {
   }
 
   private convertApiAddressToCourtAddressType(address: CourtAddress, areasOfLaw: AreaOfLaw[],
-                                              courtTypes: CourtType[]): DisplayAddress {
+    courtTypes: CourtType[]): DisplayAddress {
     return {
       'type_id': address.type_id,
       'description': address.description,
