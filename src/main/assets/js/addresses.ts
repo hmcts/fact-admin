@@ -80,11 +80,6 @@ export class AddressesController {
     });
   }
 
-  // private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
-  // private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
-  // private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
-  // private thirdAddressFieldsOfLawContainer = '#thirdAddressFieldsOfLawContainer';
-
   private setUpRemoveSecondaryEventHandler(): void {
     $(this.tabId).on('click', this.removeSecondaryBtnId, () => {
       $('#secondaryAddressType').val('');
