@@ -29,8 +29,6 @@ export class FeatureFlags {
     return (req: Request, res: Response, next: NextFunction) => {
       this.getFlagValue(flagKey, defaultValue)
         .then(value => {
-          // TODO: add a forbidden page here for FACT (use base layout + add some helpful text like contact
-          // admins etc
           value ? next() : next(new HTTPError(http.HTTP_STATUS_FORBIDDEN));
         })
         .catch(() => {

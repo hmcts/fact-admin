@@ -1,5 +1,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "macros/errorSummary.njk" import errorSummary %}
 {% from "macros/tabs/macro.njk" import factTabs %}
 
 {% extends "template.njk" %}
@@ -43,7 +44,7 @@
             href="{{ factFrontendURL }}/courts/{{ slug }}">View court in new tab</a>
         </div>
       </div>
-
+      {{ errorSummary(error)}}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             {% set generalHtml %}
@@ -261,27 +262,27 @@
               %}
             {% endif %}
 
-          {% set tabItems = (tabItems.push(generalTab),tabItems) %}
-          {% set tabItems = (tabItems.push(openingHoursTab),tabItems) %}
-          {% set tabItems = (tabItems.push(phoneNumbersTab),tabItems) %}
-          {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
-          {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(postcodesTab),tabItems) if isSuperAdmin %}
-          {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) if isSuperAdmin %}
-          {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
-          {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
-          {% set tabItems = (tabItems.push(photoTab),tabItems) %}
-          {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) if isSuperAdmin %}
-          {% set tabItems = (tabItems.push(spoeTab),tabItems) if isSuperAdmin %}
-          {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
+            {% set tabItems = (tabItems.push(generalTab),tabItems) %}
+            {% set tabItems = (tabItems.push(openingHoursTab),tabItems) %}
+            {% set tabItems = (tabItems.push(phoneNumbersTab),tabItems) %}
+            {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
+            {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
+            {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
+            {% set tabItems = (tabItems.push(postcodesTab),tabItems) if isSuperAdmin %}
+            {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) if isSuperAdmin %}
+            {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
+            {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
+            {% set tabItems = (tabItems.push(photoTab),tabItems) %}
+            {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) if isSuperAdmin %}
+            {% set tabItems = (tabItems.push(spoeTab),tabItems) if isSuperAdmin %}
+            {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
 
-        {{ govukButton() if content.canManage }}
-
-          {{ factTabs({
-            id: 'Main',
-            items: tabItems
-          }) }}
+          {% if not error %}
+            {{ factTabs({
+              id: 'Main',
+              items: tabItems
+            }) }}
+          {% endif %}
         </div>
       </div>
     </div>

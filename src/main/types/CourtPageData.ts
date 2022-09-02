@@ -5,7 +5,14 @@ export interface CourtPageData {
   slug: string,
   name: string,
   csrfToken: string,
-  featureFlags?: PageFeatureFlags
+  featureFlags?: PageFeatureFlags,
+  error?: PageError
+}
+
+export interface PageError {
+  [key: string]: {
+    message: string;
+  };
 }
 
 export interface PageFeatureFlags {
