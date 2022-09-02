@@ -69,7 +69,7 @@ export class AddressesController {
 
   private setUpAddressFOLChangeToggle(radioElement: string, radioContainer: string): void {
     // On page load, hide checkboxes if radio option is set to no
-    if ($(radioElement).filter(":checked").attr('value') === 'no') {
+    if ($(radioElement).filter(':checked').attr('value') === 'no') {
       $(radioContainer).hide();
     }
     // On radio change, show/hide
@@ -79,11 +79,6 @@ export class AddressesController {
         ? $(radioContainer).show() : $(radioContainer).hide();
     });
   }
-
-  // private secondaryAddressFieldsOfLawRadio = 'input[name=\'secondaryFieldsOfLawRadio\']';
-  // private secondaryAddressFieldsOfLawContainer = '#secondaryAddressFieldsOfLawContainer';
-  // private thirdAddressFieldsOfLawRadio = 'input[name=\'thirdFieldsOfLawRadio\']';
-  // private thirdAddressFieldsOfLawContainer = '#thirdAddressFieldsOfLawContainer';
 
   private setUpRemoveSecondaryEventHandler(): void {
     $(this.tabId).on('click', this.removeSecondaryBtnId, () => {
