@@ -1,5 +1,6 @@
 import {Then, Given, When} from 'cucumber';
 import {expect} from 'chai';
+import {config} from '../../config';
 
 import * as I from '../utlis/puppeteer.util';
 
@@ -238,9 +239,9 @@ Then('I select yes for area of law and court type', async () => {
 });
 
 Then('I select children and civil from area of law and county court for court type', async () => {
-  const selectorAolChildren = '#\\33 4249';
-  const selectorAolCivil = '#\\33 4271';
-  const selectorCounyCourt = '#\\31 1419';
+  const selectorAolChildren = '#34249';
+  const selectorAolCivil = '#34271';
+  const selectorCounyCourt = '#31419';
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
@@ -255,7 +256,7 @@ Then('I click the link view court in new tab to validate the label generated', a
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 
-  await I.goTo('http://localhost:3100/courts/amersham-law-courts');
+  await I.goTo(config.FRONTEND_URL + '/courts/amersham-law-courts');
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
@@ -263,7 +264,6 @@ Then('I click the link view court in new tab to validate the label generated', a
 
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
-
 });
 
 Then('I select yes for second secondary court area of law and court type', async () => {
