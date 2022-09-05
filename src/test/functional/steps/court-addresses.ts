@@ -241,13 +241,13 @@ Then('I select yes for area of law and court type', async () => {
 Then('I select children and civil from area of law and county court for court type', async () => {
   const selectorAolChildren = "input[name='secondaryAddressAOLItems'][id='34249']";
   const selectorAolCivil = "input[name='secondaryAddressAOLItems'][id='34271']";
-  const selectorCounyCourt = "input[name='secondaryAddressCourtItems'][id='31419']";
+  //const selectorCounyCourt = "input[name='secondaryAddressCourtItems'][id='31419']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
   await I.click(selectorAolCivil);
-  expect(await I.checkElement(selectorCounyCourt)).equal(true);
-  await I.click(selectorCounyCourt);
+  //expect(await I.checkElement(selectorCounyCourt)).equal(true);
+  //await I.click(selectorCounyCourt);
 });
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
