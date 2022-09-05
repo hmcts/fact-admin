@@ -247,7 +247,6 @@ Then('I select children and civil from area of law and county court for court ty
   await I.click(selectorAolCivil);
   expect(await I.checkElement(selectorCounyCourt)).equal(true);
   await I.click(selectorCounyCourt);
-  //await I.click('#view-in-new-window');
 });
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
