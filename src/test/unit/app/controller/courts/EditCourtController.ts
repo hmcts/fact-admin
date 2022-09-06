@@ -7,7 +7,6 @@ import {when} from 'jest-when';
 import Tokens from 'csrf';
 import * as flags from '../../../../../main/app/feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../../../main/utils/error';
-// import {TAB_PREFIX} from '../../../utils/flagPrefix';
 
 describe('EditCourtController', () => {
   const controller = new EditCourtController();
