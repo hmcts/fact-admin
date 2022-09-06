@@ -20,11 +20,7 @@ import {
 const multer = require('multer');
 
 export default function(app: Application): void {
-  // Can only use toggle/get single here, as get all is an async function
-  // TODO: add toggle to below
-  // debugging = console.log(featureFlags.method to see result)
   const featureFlags: FeatureFlags = app.locals.container.cradle.featureFlags;
-  //console.log(featureFlags.getFlagValue('admin-courts-controller-toggle'));
 
   const upload = multer();
 
