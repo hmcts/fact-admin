@@ -10,8 +10,8 @@ import {ServiceAreaCourt} from '../../../../../main/types/ServiceAreaCourt';
 describe('NewCourtController', () => {
 
   let mockApi: {
-    addCourt: () => Promise<Court>,
-    getAllServiceAreas: () => Promise<ServiceArea[]>
+    addCourt: () => Promise<Court>;
+    getAllServiceAreas: () => Promise<ServiceArea[]>;
   };
 
   const controller = new NewCourtController();
@@ -86,7 +86,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': false,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': []
+      'serviceAreas': [],
+      'fatalError': false,
     });
   });
 
@@ -116,7 +117,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': false,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': []
+      'serviceAreas': [],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -152,7 +154,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': []
+      'serviceAreas': [],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -188,7 +191,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': ['one', 'two', 'three']
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -223,7 +227,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': ['one', 'two', 'three']
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -258,7 +263,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': ['one', 'two', 'three']
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -295,7 +301,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': ['one', 'two', 'three']
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
       'new_court_name': 'mosh court', 'service_centre': true,
@@ -329,7 +336,8 @@ describe('NewCourtController', () => {
       'redirectUrl': '/courts/mosh-court/edit#general',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
-      'serviceAreas': ['one', 'two', 'three']
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
       'new_court_name': 'mosh court', 'service_centre': true,

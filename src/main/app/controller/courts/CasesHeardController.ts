@@ -42,11 +42,13 @@ export class CasesHeardController {
     courtAreasOfLaw: AreaOfLaw[] = null) {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
     if (!allAreasOfLaw) {
       await req.scope.cradle.api.getAllAreasOfLaw()
         .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -55,6 +57,7 @@ export class CasesHeardController {
         .then((value: AreaOfLaw[]) => courtAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getCourtAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -68,7 +71,8 @@ export class CasesHeardController {
       courtAreasOfLaw: courtAreasOfLaw,
       slug: slug,
       errorMsg: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/casesHeardContent', pageData);

@@ -179,7 +179,8 @@
     {{ govukButton({
       text: "Add court",
       name: "saveNewCourt",
-      attributes: { href: redirectUrl, id: 'saveNewCourtBtn' }
+      attributes: { href: redirectUrl, id: 'saveNewCourtBtn' },
+      disabled: fatalError
     }) }}
   </form>
 {% endblock %}

@@ -22,18 +22,19 @@ export class ContactsController {
     contacts: Contact[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!contacts) {
       // Get contacts from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getContacts(slug)
         .then((value: Contact[]) => contacts = value.map(c => { c.isNew = false; return c; }))
-        .catch(() => error += this.getContactsErrorMsg);
+        .catch(() => {error += this.getContactsErrorMsg; fatalError= true; });
     }
 
     let types: ContactType[] = [];
     await req.scope.cradle.api.getContactTypes()
       .then((value: ContactType[]) => types = value)
-      .catch(() => error += this.getContactTypesErrorMsg);
+      .catch(() => {error += this.getContactTypesErrorMsg; fatalError= true;} );
 
     if (!contacts?.some(c => c.isNew === true)) {
       this.addEmptyFormsForNewEntries(contacts);
@@ -43,7 +44,8 @@ export class ContactsController {
       contacts: contacts,
       contactTypes: this.getContactTypesForSelect(types),
       errorMsg: error,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/phoneNumbersContent', pageData);

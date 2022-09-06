@@ -39,7 +39,7 @@ export class PostcodesController {
     courtTypes: string[] = null,
     updated = false): Promise<void> {
     const slug: string = req.params.slug as string;
-
+    let fatalError = false;
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
     // append it
@@ -50,26 +50,27 @@ export class PostcodesController {
     if (!areasOfLaw) {
       await req.scope.cradle.api.getCourtAreasOfLaw(slug)
         .then((value: AreaOfLaw[]) => areasOfLaw = value.map(ct => ct.name))
-        .catch(() => errors.push({text: this.getCourtAreasOfLawErrorMsg}));
+        .catch(() => {errors.push({text: this.getCourtAreasOfLawErrorMsg}); fatalError = true;});
     }
 
     if (areasOfLaw) {
       areasOfLaw = this.filterCountyAreasOfLaw(areasOfLaw).map(ct => ct.replace(/\s/g, '_'));
       if(!areasOfLaw.length){
         errors.push({text: this.familyAreaOfLawErrorMsg});
+        fatalError = true;
       }
     }
 
     if (!courtTypes) {
       await req.scope.cradle.api.getCourtTypesAndCodes(slug)
         .then((value: CourtTypesAndCodes) => courtTypes = value.types.map(ct => ct.name.replace(/\s/g, '_')))
-        .catch(() => errors.push({text: this.getCourtTypesErrorMsg}));
+        .catch(() => {errors.push({text: this.getCourtTypesErrorMsg}); fatalError = true;});
     }
 
     if (!postcodes)
       await req.scope.cradle.api.getPostcodes(slug)
         .then((value: string[]) => postcodes = value)
-        .catch(() => errors.push({text: this.getPostcodesErrorMsg}));
+        .catch(() => {errors.push({text: this.getPostcodesErrorMsg}); fatalError = true;});
 
     const courts = await req.scope.cradle.api.getCourts()
       .catch(() => {
@@ -85,7 +86,8 @@ export class PostcodesController {
       searchValue: searchValue,
       isEnabled: courtTypes?.some(ct => ct === 'County_Court') ?? false,
       areasOfLaw: areasOfLaw,
-      courtTypes: courtTypes
+      courtTypes: courtTypes,
+      fatalError: fatalError,
     };
     res.render('courts/tabs/postcodesContent', pageData);
   }

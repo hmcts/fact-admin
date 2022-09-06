@@ -108,14 +108,16 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveFacilities"
+  name: "saveFacilities",
+  disabled: fatalError
 }) }}
 
 {{ govukButton({
   text: "Add new facility",
   name: "addFacility",
   type: "button",
-  classes: "govuk-button--secondary addFacility"
+  classes: "govuk-button--secondary addFacility",
+  disabled: fatalError
 }) }}
 
 

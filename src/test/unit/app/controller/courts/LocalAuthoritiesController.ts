@@ -15,15 +15,15 @@ import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 describe ( 'LocalAuthoritiesController', () => {
 
   let mockApi: {
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>,
-    getAllLocalAuthorities: () => Promise<LocalAuthority[]>,
-    getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>,
-    updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]> };
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;
+    getAllLocalAuthorities: () => Promise<LocalAuthority[]>;
+    getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>;
+    updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>;};
 
   let mockApiAreaOfLaw: {
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;
   };
 
   const courtAreasOfLaw: AreaOfLaw[] = [
@@ -144,7 +144,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: '',
       isEnabled: true,
-      courtAreasOfLaw: areasOfLawItems
+      courtAreasOfLaw: areasOfLawItems,
+      fatalError: false,
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
@@ -166,7 +167,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.getCourtAreasOfLawErrorMsg,
       isEnabled: true,
-      courtAreasOfLaw: []
+      courtAreasOfLaw: [],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });
@@ -187,7 +189,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.getCourtTypesErrorMsg,
       isEnabled: false,
-      courtAreasOfLaw: areasOfLawItems
+      courtAreasOfLaw: areasOfLawItems,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });
@@ -210,7 +213,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.familyAreaOfLawErrorMsg,
       isEnabled: true,
-      courtAreasOfLaw: []
+      courtAreasOfLaw: [],
+      fatalError: true,
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });

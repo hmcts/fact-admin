@@ -8,9 +8,9 @@ import {Facility, FacilityPageData, FacilityType} from '../../../../../main/type
 describe('FacilitiesController', () => {
 
   let mockApi: {
-    getAllFacilityTypes: () => Promise<FacilityType[]>,
-    getCourtFacilities: () => Promise<Facility[]>,
-    updateCourtFacilities: () => Promise<Facility[]> };
+    getAllFacilityTypes: () => Promise<FacilityType[]>;
+    getCourtFacilities: () => Promise<Facility[]>;
+    updateCourtFacilities: () => Promise<Facility[]>;};
 
   const getFacilities: () => Facility[] = () => [
     { id: 1, description:'description1', descriptionCy:'descriptionCy1', isNew: false },
@@ -74,7 +74,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedCourtFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -210,7 +211,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: postedFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: false
     };
 
     await controller.put(req, res);
@@ -233,7 +235,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: null,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: true
     };
     await controller.get(req, res);
 
@@ -258,7 +261,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: [],
       courtFacilities: expectedCourtFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError : true
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -282,7 +286,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: postedFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -317,7 +322,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -356,7 +362,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
-      requiresValidation: true
+      requiresValidation: true,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
@@ -382,7 +389,8 @@ describe('FacilitiesController', () => {
       updated: false,
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedCourtFacilities,
-      requiresValidation: false
+      requiresValidation: false,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });

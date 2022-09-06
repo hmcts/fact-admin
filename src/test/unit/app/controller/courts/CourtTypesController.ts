@@ -10,9 +10,9 @@ import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 describe ( 'CourtTypesController', () =>{
 
   let mockApi: {
-    getCourtTypes: () => Promise<CourtType[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>,
-    updateCourtTypesAndCodes: () => Promise<CourtTypesAndCodes> };
+    getCourtTypes: () => Promise<CourtType[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;
+    updateCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;};
 
 
   const courtTypes: CourtType[] = [
@@ -73,7 +73,8 @@ describe ( 'CourtTypesController', () =>{
       errorMsg: '',
       courtTypes: courtTypeItems,
       gbs:courtTypesAndCodes.gbsCode,
-      dxCodes:courtTypesAndCodes.dxCodes
+      dxCodes:courtTypesAndCodes.dxCodes,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
@@ -259,7 +260,8 @@ describe ( 'CourtTypesController', () =>{
         { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false, isDuplicated: true },
         { code: '123', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false, isDuplicated: true },
         { code: null, explanation: null, explanationCy: null, isNew: true }
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
@@ -305,7 +307,8 @@ describe ( 'CourtTypesController', () =>{
       dxCodes:[
         { code: '', explanation: 'explanation', explanationCy: 'explanationCy', isNew: false,},
         { code: null, explanation: null, explanationCy: null, isNew: true }
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
@@ -362,7 +365,8 @@ describe ( 'CourtTypesController', () =>{
       errorMsg: controller.getCourtTypesAndCodesErrorMsg,
       courtTypes: [],
       gbs:null,
-      dxCodes:[]
+      dxCodes:[],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });
@@ -385,7 +389,8 @@ describe ( 'CourtTypesController', () =>{
       errorMsg: controller.getCourtTypesErrorMsg,
       courtTypes: [],
       gbs: courtTypesAndCodes.gbsCode,
-      dxCodes: courtTypesAndCodes.dxCodes
+      dxCodes: courtTypesAndCodes.dxCodes,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
   });

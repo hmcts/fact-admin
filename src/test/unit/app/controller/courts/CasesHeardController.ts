@@ -7,9 +7,9 @@ import {CasesHeardController} from '../../../../../main/app/controller/courts/Ca
 describe('CasesHeardController', () => {
 
   let mockApi: {
-    getAllAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    updateCourtAreasOfLaw: () => Promise<AreaOfLaw[]>};
+    getAllAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    updateCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;};
 
   const testSlug = 'plymouth-combined-court';
 
@@ -74,7 +74,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: false
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -96,7 +97,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: getCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.getAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: true
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -118,7 +120,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: null,
       slug: testSlug,
       errorMsg: [{text: controller.getCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: true
     });
     expect(mockApi.getAllAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtAreasOfLaw).toBeCalledWith(testSlug);
@@ -142,7 +145,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: true
+      updated: true,
+      fatalError: false
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -168,7 +172,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
@@ -193,7 +198,8 @@ describe('CasesHeardController', () => {
       courtAreasOfLaw: updatedCourtAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.updateCourtAreasOfLaw).not.toBeCalled();
   });

@@ -23,18 +23,19 @@ export class CourtFacilitiesController {
     errorMsg: string[] = [],
     courtFacilities: Facility[] = null,
     requiresValidation = true): Promise<void> {
+    let allFacilitiesTypes: FacilityType[] = [];
+    let fatalError = false;
+
     if (!courtFacilities) {
       const slug: string = req.params.slug as string;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
-        .catch(() => errorMsg.push(this.getCourtFacilitiesErrorMsg));
+        .catch(() => {errorMsg.push(this.getCourtFacilitiesErrorMsg); fatalError = true;});
     }
-
-    let allFacilitiesTypes: FacilityType[] = [];
 
     await req.scope.cradle.api.getAllFacilityTypes()
       .then((value: FacilityType[]) => allFacilitiesTypes = value)
-      .catch(() => errorMsg.push(this.getFacilityTypesErrorMsg));
+      .catch(() => {errorMsg.push(this.getFacilityTypesErrorMsg); fatalError = true;});
 
     if (!courtFacilities?.some(ot => ot.isNew === true)) {
       this.addEmptyFormsForNewEntries(courtFacilities);
@@ -50,7 +51,8 @@ export class CourtFacilitiesController {
       updated: updated,
       facilitiesTypes: CourtFacilitiesController.getFacilityTypesForSelect(allFacilitiesTypes),
       courtFacilities: courtFacilities,
-      requiresValidation: requiresValidation
+      requiresValidation: requiresValidation,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/facilitiesContent', pageData);

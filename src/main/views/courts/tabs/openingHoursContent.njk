@@ -187,12 +187,14 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveOpeningTime"
+  name: "saveOpeningTime",
+  disabled : fatalError
 }) }}
 
 {{ govukButton({
   text: "Add new opening time",
   name: "addOpeningTime",
   type: "button",
-  classes: "govuk-button--secondary addOpeningTime"
+  classes: "govuk-button--secondary addOpeningTime",
+  disabled : fatalError
 }) }}

@@ -26,18 +26,19 @@ export class EmailsController {
     emails: Email[] = null): Promise<void> {
 
     const slug: string = req.params.slug as string;
+    let fatalError = false;
 
     if (!emails) {
       // Get emails from API and set the isNew property to false on all email entries.
       await req.scope.cradle.api.getEmails(slug)
         .then((value: Email[]) => emails = value.map(e => { e.isNew = false; return e; }))
-        .catch(() => errorMsg.push(this.getEmailsErrorMsg));
+        .catch(() => {errorMsg.push(this.getEmailsErrorMsg); fatalError = true;});
     }
 
     let types: EmailType[] = [];
     await req.scope.cradle.api.getEmailTypes()
       .then((value: EmailType[]) => types = value)
-      .catch(() => errorMsg.push(this.getEmailTypesErrorMsg));
+      .catch(() => {errorMsg.push(this.getEmailTypesErrorMsg); fatalError = true;});
 
     if (!emails?.some(e => e.isNew === true)) {
       this.addEmptyFormsForNewEntries(emails);
@@ -52,7 +53,8 @@ export class EmailsController {
       'emails': emails,
       emailTypes: EmailsController.getEmailTypesForSelect(types),
       errors: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
     res.render('courts/tabs/emailsContent', pageData);
   }
