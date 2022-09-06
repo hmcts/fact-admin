@@ -1,17 +1,17 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
-import {EmailType} from '../../../../../main/types/EmailType';
 import {Email, EmailData} from '../../../../../main/types/Email';
 import {EmailsController} from '../../../../../main/app/controller/courts/EmailsController';
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
+import {ContactType} from "../../../../../main/types/ContactType";
 
 describe('EmailsController', () => {
 
   let mockApi: {
     getEmails: () => Promise<Email[]>;
     updateEmails: () => Promise<Email[]>;
-    getEmailTypes: () => Promise<EmailType[]>; };
+    getContactTypes: () => Promise<ContactType[]>; };
 
   const testEmail1 = 'abc@test.com';
   const testEmail2 = 'abc@test2.com';
@@ -42,11 +42,11 @@ describe('EmailsController', () => {
     }
   ];
 
-  const emailTypes: EmailType[] = [
-    { id: 1, description: 'desc 1', descriptionCy: 'desc cy 1'},
-    { id: 2, description: 'desc 2', descriptionCy: 'desc cy 2' },
-    { id: 3, description: 'desc 3', descriptionCy: 'desc cy 3'},
-    { id: 4, description: 'desc 4', descriptionCy: 'desc cy 4' }
+  const contactTypes: ContactType[] = [
+    { id: 1, type: 'desc 1', type_cy: 'desc cy 1'},
+    { id: 2, type: 'desc 2', type_cy: 'desc cy 2' },
+    { id: 3, type: 'desc 3', type_cy: 'desc cy 3'},
+    { id: 4, type: 'desc 4', type_cy: 'desc cy 4' }
   ];
 
   const expectedSelectItems: SelectItem[] = [
@@ -70,7 +70,7 @@ describe('EmailsController', () => {
     mockApi = {
       getEmails: async (): Promise<Email[]> => getEmails(),
       updateEmails: async (): Promise<Email[]> => getEmails(),
-      getEmailTypes: async (): Promise<EmailType[]> => emailTypes
+      getContactTypes: async (): Promise<ContactType[]> => contactTypes
     };
 
     CSRF.create = jest.fn().mockReturnValue('validCSRFToken');
@@ -89,7 +89,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       emails: emailsWithEmptyEntry,
-      emailTypes: expectedSelectItems,
+      contactTypes: expectedSelectItems,
       updated: false,
       errors: [],
       fatalError: false
@@ -179,7 +179,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       emails: emailsInvalidSyntax,
-      emailTypes: expectedSelectItems,
+      contactTypes: expectedSelectItems,
       updated: false,
       errors: [{text: controller.updateErrorMsg}],
       fatalError: false
@@ -218,7 +218,7 @@ describe('EmailsController', () => {
 
       const expectedResults: EmailData = {
         emails: postedEmails,
-        emailTypes: expectedSelectItems,
+        contactTypes: expectedSelectItems,
         updated: false,
         errors: [{text: controller.getEmailAddressFormatErrorMsg}],
         fatalError: false
@@ -240,7 +240,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       emails: null,
-      emailTypes: expectedSelectItems,
+      contactTypes: expectedSelectItems,
       updated: false,
       errors: [{text: controller.getEmailsErrorMsg}],
       fatalError: true
@@ -261,7 +261,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       emails: emailsWithEmptyEntry,
-      emailTypes: [],
+      contactTypes: [],
       updated: false,
       errors: [{text: controller.getEmailTypesErrorMsg}],
       fatalError: true
@@ -285,7 +285,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       'emails': postedEmails,
-      emailTypes: expectedSelectItems,
+      contactTypes: expectedSelectItems,
       updated: false,
       errors: [{text: controller.emailDuplicatedErrorMsg}],
       fatalError: false
@@ -313,7 +313,7 @@ describe('EmailsController', () => {
 
     const expectedResults: EmailData = {
       'emails': postedEmails,
-      emailTypes: expectedSelectItems,
+      contactTypes: expectedSelectItems,
       updated: false,
       errors: [
         {text: controller.emptyTypeOrAddressErrorMsg},

@@ -3,10 +3,10 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {SelectItem} from '../../../types/CourtPageData';
 import {Email, EmailData} from '../../../types/Email';
-import {EmailType} from '../../../types/EmailType';
 import {validateDuplication, validateEmailFormat} from '../../../utils/validation';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
+import {ContactType} from "../../../types/ContactType";
 
 @autobind
 export class EmailsController {
@@ -35,9 +35,9 @@ export class EmailsController {
         .catch(() => {errorMsg.push(this.getEmailsErrorMsg); fatalError = true;});
     }
 
-    let types: EmailType[] = [];
-    await req.scope.cradle.api.getEmailTypes()
-      .then((value: EmailType[]) => types = value)
+    let types: ContactType[] = [];
+    await req.scope.cradle.api.getContactTypes()
+      .then((value: ContactType[]) => types = value)
       .catch(() => {errorMsg.push(this.getEmailTypesErrorMsg); fatalError = true;});
 
     if (!emails?.some(e => e.isNew === true)) {
@@ -51,7 +51,7 @@ export class EmailsController {
 
     const pageData: EmailData = {
       'emails': emails,
-      emailTypes: EmailsController.getEmailTypesForSelect(types),
+      contactTypes: EmailsController.getContactTypesForSelect(types),
       errors: errors,
       updated: updated,
       fatalError: fatalError
@@ -80,9 +80,9 @@ export class EmailsController {
       .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], emails));
   }
 
-  private static getEmailTypesForSelect(standardTypes: EmailType[]): SelectItem[] {
-    return standardTypes.map((ott: EmailType) => (
-      {value: ott.id, text: ott.description, selected: false}));
+  private static getContactTypesForSelect(standardTypes: ContactType[]): SelectItem[] {
+    return standardTypes.map((ott: ContactType) => (
+      {value: ott.id, text: ott.type, selected: false}));
   }
 
   private addEmptyFormsForNewEntries(emails: Email[], numberOfForms = 1): void {

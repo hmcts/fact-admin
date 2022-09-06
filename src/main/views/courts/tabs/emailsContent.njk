@@ -66,7 +66,7 @@
       text: "Description"
     },
     errorMessage: descriptionError,
-    items: emailTypes | selectFilter(email.adminEmailTypeId)
+    items: contactTypes | selectFilter(email.adminEmailTypeId)
   }) }}
 
   {{ govukInput({
@@ -157,7 +157,7 @@
     label: {
       text: "Type"
     },
-    items: emailTypes | selectFilter('')
+    items: contactTypes | selectFilter('')
   }) }}
 
   {{ govukInput({

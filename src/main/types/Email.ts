@@ -11,7 +11,7 @@ export interface Email extends Element {
 
 export interface EmailData {
   emails: Email[],
-  emailTypes: SelectItem[],
+  contactTypes: SelectItem[],
   errors: Error[],
   updated: boolean,
   fatalError: boolean,
