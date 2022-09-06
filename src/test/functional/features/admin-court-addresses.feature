@@ -152,4 +152,3 @@ Feature: Court-addresses
     Then I enter third address "CF44 0JE" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Secondary addresses cannot have duplicate areas of law or court types selected. Conflicting options selected are: \"Children, County Court\""
-
