@@ -10,9 +10,11 @@ import {TAB_PREFIX} from '../../../utils/flagPrefix';
 @autobind
 export class EditCourtController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
+
     const featureFlags = await req.scope.cradle.featureFlags.getAllFlagValues();
     const filteredFlags = Object.fromEntries(Object.entries(featureFlags)
       .filter(([key]) => key.startsWith(TAB_PREFIX)));
+    const featureFlagsCount = Object.keys(featureFlags).length;
 
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
@@ -21,7 +23,7 @@ export class EditCourtController {
       csrfToken: CSRF.create(),
       featureFlags: {values: featureFlags, flags: flags}
     };
-    if(Object.values(filteredFlags).every((v) => v === false)){
+    if(Object.values(filteredFlags).every((v) => v === false) && featureFlagsCount > 0){
       pageData.error = { flagsError: { message: ALL_FLAGS_FALSE_ERROR }};
     }
 

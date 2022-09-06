@@ -22,7 +22,8 @@ export class FeatureFlags {
     return this.featureFlagClient.getAllFlagValues(defaultValue)
       .then(values => {
         return { ...values, ...localFlags };
-      });
+      })
+      .catch(() => {});
   };
 
   public toggleRoute = (flagKey: string, defaultValue = false) => {
