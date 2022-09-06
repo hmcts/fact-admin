@@ -8,8 +8,8 @@ import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
-import {FeatureFlags} from "../../app/feature-flags/FeatureFlags";
-import {LaunchDarkly} from "../../app/feature-flags/LaunchDarklyClient";
+import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
+import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 import {Logger} from '../../types/Logger';
 
 /**
