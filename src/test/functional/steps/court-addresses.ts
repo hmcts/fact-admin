@@ -1,15 +1,15 @@
-import {Then, Given, When} from 'cucumber';
+import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 import {config} from '../../config';
 
 import * as I from '../utlis/puppeteer.util';
 
 
-
-async function checkAndClearAddressField (addressFieldElement: string) {
+async function checkAndClearAddressField(addressFieldElement: string) {
   expect(await I.checkElement(addressFieldElement)).equal(true);
   await I.clearField(addressFieldElement);
 }
+
 async function populateField(fieldElement: string, value: string) {
   expect(await I.checkElement(fieldElement)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
@@ -33,14 +33,14 @@ When('I select the Address Type {string}', async (addressType: string) => {
   const selector = '#primaryAddressType';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-  await I.selectItem(selector,addressType);
+  await I.selectItem(selector, addressType);
 });
 
 Then('I select the primary County {string}', async (county: string) => {
   const selector = '#primaryAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-  await I.selectItem(selector,county);
+  await I.selectItem(selector, county);
 });
 
 Then('I enter secondary address description {string} in Description textbox', async (desc: string) => {
@@ -49,7 +49,7 @@ Then('I enter secondary address description {string} in Description textbox', as
 });
 
 
-Then ('I enter secondary address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
+Then('I enter secondary address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
   const selector = '#secondaryAddressDescriptionWelsh';
   await populateField(selector, welshDesc);
 });
@@ -105,7 +105,7 @@ Then('I select the secondary address type as {string}', async (addressType: stri
   const selector = '#secondaryAddressType';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-  await I.selectItem(selector,addressType);
+  await I.selectItem(selector, addressType);
 });
 
 Then('I enter the secondary court address {string} in the Address textbox', async (address: string) => {
@@ -122,7 +122,7 @@ Then('I select the secondary County {string}', async (county: string) => {
   const selector = '#secondaryAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-  await I.selectItem(selector,county);
+  await I.selectItem(selector, county);
 });
 
 Then('I enter the secondary address postcode {string}', async (postcode: string) => {
@@ -130,7 +130,7 @@ Then('I enter the secondary address postcode {string}', async (postcode: string)
   await populateField(selector, postcode);
 });
 
-Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string ) => {
+Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
@@ -196,7 +196,7 @@ Then('I select the third County {string}', async (county: string) => {
   const selector = '#thirdAddressCounty';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
-  await I.selectItem(selector,county);
+  await I.selectItem(selector, county);
 });
 
 Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {
@@ -208,7 +208,7 @@ When('I select the third address type {string}', async (addressType: string) => 
   const selector = '#thirdAddressType';
   //const elementExist = await I.checkElement(selector);
   expect(await I.checkElement(selector)).equal(true);
-  await I.selectItem(selector,addressType);
+  await I.selectItem(selector, addressType);
 });
 
 Given('I will make sure to remove entries for first secondary address', async () => {
@@ -239,20 +239,19 @@ Then('I select yes for area of law and court type', async () => {
 });
 
 Then('I select children and civil from area of law and county court for court type', async () => {
-  const selectorAolChildren = "input[id$='34249']";
-  const selectorAolCivil = "input[id$='34271']";
-  const selectorCounyCourt = "input[id$='11419']";
+  const selectorAolChildren = "input[name='secondaryAddressAOLItems'][data-name='secondaryChildren']";
+  const selectorAolCivil = "input[name='secondaryAddressAOLItems'][data-name='secondaryCivil']";
+  const selectorCountyCourt = "input[name='secondaryAddressCourtItems'][data-name='secondaryCounty Court']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
   await I.click(selectorAolCivil);
-  expect(await I.checkElement(selectorCounyCourt)).equal(true);
-  await I.click(selectorCounyCourt);
+  expect(await I.checkElement(selectorCountyCourt)).equal(true);
+  await I.click(selectorCountyCourt);
 });
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
-  console.log(await I.checkElement(selector));
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 
@@ -260,7 +259,6 @@ Then('I click the link view court in new tab to validate the label generated', a
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
-  console.log(await I.checkElement(selectorLabel));
 
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
@@ -273,8 +271,8 @@ Then('I select yes for second secondary court area of law and court type', async
 });
 
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
-  const selectorAolChildren = "input[name='thirdAddressAOLItems'][id='34249']";
-  const selectorCountyCourt = "input[name='thirdAddressCourtItems'][id='11419']";
+  const selectorAolChildren = "input[name='thirdAddressAOLItems'][data-name='thirdChildren']";
+  const selectorCountyCourt = "input[name='thirdAddressCourtItems'][data-name='thirdCounty Court']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);

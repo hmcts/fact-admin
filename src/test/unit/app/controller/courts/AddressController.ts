@@ -50,13 +50,16 @@ describe('AddressesController', () => {
       };
     };
 
-  const getRadioItem: (id: number, value: string, text: string, checked: boolean) => RadioItem =
-    (id: number, value: string, text: string, checked: boolean) => {
+  const getRadioItem: (id: number, value: string, text: string, checked: boolean, dataPrefix: string) => RadioItem =
+    (id: number, value: string, text: string, checked: boolean, dataPrefix: string) => {
       return {
         id: id,
         text: text,
         value: value,
-        checked: checked
+        checked: checked,
+        attributes: {
+          'data-name': dataPrefix + text
+        }
       };
     };
 
@@ -169,19 +172,19 @@ describe('AddressesController', () => {
     ];
   };
 
-  const getAllRadioAreasOfLaw: () => RadioItem[] = () => {
-    return [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false),
-      getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false),
-      getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false),
-      getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false),
-      getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-      getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)];
+  const getAllRadioAreasOfLaw: (dataPrefix: string) => RadioItem[] = (dataPrefix: string) => {
+    return [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false, dataPrefix),
+      getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, dataPrefix),
+      getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false, dataPrefix),
+      getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false, dataPrefix),
+      getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, dataPrefix),
+      getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, dataPrefix)];
   };
 
-  const getAllRadioCourtTypes: () => RadioItem[] = () => {
-    return [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', false),
-      getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false),
-      getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false)];
+  const getAllRadioCourtTypes: (dataPrefix: string) => RadioItem[] = (dataPrefix: string) => {
+    return [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', false, dataPrefix),
+      getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false, dataPrefix),
+      getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, dataPrefix)];
   };
 
   const getValidDisplayAddresses: () => DisplayCourtAddresses = () => {
@@ -218,14 +221,14 @@ describe('AddressesController', () => {
         postcode: secondary.postcode,
         fields_of_law: {
           areas_of_law: [
-            getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true),
-            getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false),
-            getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true),
-            getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false),
-            getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-            getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)
+            getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
+            getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
+            getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true, 'secondary'),
+            getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false, 'secondary'),
+            getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'secondary'),
+            getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'secondary')
           ],
-          courts: getAllRadioCourtTypes()
+          courts: getAllRadioCourtTypes('secondary')
         }
       },
       third: {
@@ -240,17 +243,17 @@ describe('AddressesController', () => {
         postcode: third.postcode,
         fields_of_law: {
           areas_of_law: [
-            getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false),
-            getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true),
-            getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false),
-            getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true),
-            getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-            getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)
+            getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false, 'third'),
+            getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true, 'third'),
+            getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false, 'third'),
+            getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true, 'third'),
+            getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'third'),
+            getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'third')
           ],
           courts: [
-            getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true),
-            getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true),
-            getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false),
+            getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true, 'third'),
+            getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true, 'third'),
+            getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'third'),
           ]
         }
       }
@@ -321,16 +324,16 @@ describe('AddressesController', () => {
   const setAddressExpectedFieldsOfLaw = (courtAddressInfo: CourtAddressPageData) => {
     const courtAddressInfoDuplicate = courtAddressInfo;
     courtAddressInfoDuplicate.addresses.primary.fields_of_law = {
-      areas_of_law: getAllRadioAreasOfLaw(),
-      courts: getAllRadioCourtTypes()
+      areas_of_law: getAllRadioAreasOfLaw('primary'),
+      courts: getAllRadioCourtTypes('primary')
     };
     courtAddressInfoDuplicate.addresses.secondary.fields_of_law = {
-      areas_of_law: getAllRadioAreasOfLaw(),
-      courts: getAllRadioCourtTypes()
+      areas_of_law: getAllRadioAreasOfLaw('secondary'),
+      courts: getAllRadioCourtTypes('secondary')
     };
     courtAddressInfoDuplicate.addresses.third.fields_of_law = {
-      areas_of_law: getAllRadioAreasOfLaw(),
-      courts: getAllRadioCourtTypes()
+      areas_of_law: getAllRadioAreasOfLaw('third'),
+      courts: getAllRadioCourtTypes('third')
     };
     return courtAddressInfoDuplicate;
   };
@@ -373,14 +376,14 @@ describe('AddressesController', () => {
     // Expect the secondary/third addresses to contain fields of law to allow for selection on creation of a new address
     expectedResults = getExpectedResults(expectedAddresses.primary, {
       fields_of_law: {
-        areas_of_law: getAllRadioAreasOfLaw(),
-        courts: getAllRadioCourtTypes()
+        areas_of_law: getAllRadioAreasOfLaw('secondary'),
+        courts: getAllRadioCourtTypes('secondary')
       }
     },
     {
       fields_of_law: {
-        areas_of_law: getAllRadioAreasOfLaw(),
-        courts: getAllRadioCourtTypes()
+        areas_of_law: getAllRadioAreasOfLaw('third'),
+        courts: getAllRadioCourtTypes('third')
       }
     }, [], false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
@@ -852,32 +855,32 @@ describe('AddressesController', () => {
     const addresses = getValidDisplayAddresses();
     addresses.secondary.fields_of_law = {
       areas_of_law: [
-        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true),
-        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false),
-        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true),
-        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false),
-        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)
+        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true, 'secondary'),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false, 'secondary'),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'secondary'),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'secondary')
       ],
       courts: [
-        getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true),
-        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false),
-        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false),
+        getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true, 'secondary'),
+        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false, 'secondary'),
+        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'secondary'),
       ]
     };
     addresses.third.fields_of_law = {
       areas_of_law: [
-        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true),
-        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true),
-        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false),
-        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true),
-        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)
+        getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'third'),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true, 'third'),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false, 'third'),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true, 'third'),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'third'),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'third')
       ],
       courts: [
-        getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true),
-        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true),
-        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false),
+        getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true, 'third'),
+        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true, 'third'),
+        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'third'),
       ]
     };
     req.body = {
@@ -914,26 +917,26 @@ describe('AddressesController', () => {
       setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
         false, false, false, false));
     expectedResults.addresses.secondary.fields_of_law = {
-      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true),
-        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false),
-        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true),
-        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false),
-        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)],
-      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true),
-        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false),
-        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false)]
+      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true, 'secondary'),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', false, 'secondary'),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'secondary'),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'secondary')],
+      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true, 'secondary'),
+        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false, 'secondary'),
+        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'secondary')]
     };
     expectedResults.addresses.third.fields_of_law = {
-      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true),
-        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true),
-        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false),
-        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true),
-        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false),
-        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false)],
-      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true),
-        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true),
-        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false)]
+      areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'third'),
+        getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true, 'third'),
+        getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false, 'third'),
+        getRadioItem(4, JSON.stringify(getAreaOfLaw(4, 'Civil Partnership')), 'Civil Partnership', true, 'third'),
+        getRadioItem(5, JSON.stringify(getAreaOfLaw(5, 'Court of Appeal')), 'Court of Appeal', false, 'third'),
+        getRadioItem(6, JSON.stringify(getAreaOfLaw(6, 'Crime')), 'Crime', false, 'third')],
+      courts: [getRadioItem(1, JSON.stringify(getCourtType(1, 'County Court', 456)), 'County Court', true, 'third'),
+        getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', true, 'third'),
+        getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'third')]
     };
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });

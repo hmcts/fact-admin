@@ -221,7 +221,7 @@ export class AddressController {
     res.render('courts/tabs/addressesContent', pageData);
   }
 
-  private mapAreaOfLawToRadioItem(allAreasOfLaw: AreaOfLaw[], courtAreasOfLaw: RadioItem[]): RadioItem[] {
+  private mapAreaOfLawToRadioItem(allAreasOfLaw: AreaOfLaw[], courtAreasOfLaw: RadioItem[], dataPrefix: string): RadioItem[] {
 
     if (courtAreasOfLaw) {
 
@@ -230,7 +230,10 @@ export class AddressController {
           id: aol.id,
           value: JSON.stringify(aol),
           text: aol.name,
-          checked: courtAreasOfLaw.some(e => e.id === aol.id)
+          checked: courtAreasOfLaw.some(e => e.id === aol.id),
+          attributes: {
+            'data-name': dataPrefix + aol.name
+          }
         }));
 
       return areaOfLawItems.sort((a, b) => (a.text < b.text ? -1 : 1));
@@ -239,16 +242,19 @@ export class AddressController {
     }
   }
 
-  private mapCourtTypeToRadioItem(allCourtTypes: CourtType[], courtType: RadioItem[]): RadioItem[] {
+  private mapCourtTypeToRadioItem(allCourtTypes: CourtType[], courtType: RadioItem[], dataPrefix: string): RadioItem[] {
 
     if (allCourtTypes) {
 
-      const courtTypeItems = allCourtTypes.map((aol: CourtType) => (
+      const courtTypeItems = allCourtTypes.map((ct: CourtType) => (
         {
-          id: aol.id,
-          value: JSON.stringify(aol),
-          text: aol.name,
-          checked: courtType.some(e => e.id === aol.id)
+          id: ct.id,
+          value: JSON.stringify(ct),
+          text: ct.name,
+          checked: courtType.some(e => e.id === ct.id),
+          attributes: {
+            'data-name': dataPrefix + ct.name
+          }
         }));
 
       return courtTypeItems.sort((a, b) => (a.text < b.text ? -1 : 1));
@@ -426,27 +432,27 @@ export class AddressController {
 
     switch (addresses.length) {
       case 0: {
-        courtAddresses.primary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
-        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
-        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.primary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
         break;
       }
       case 1: {
-        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
-        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
-        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
         break;
       }
       case 2: {
-        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
-        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
-        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes);
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.third.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
         break;
       }
       case 3: {
-        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes);
-        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes);
-        courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes);
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.third = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes, 'third');
         break;
       }
       default: {
@@ -457,10 +463,11 @@ export class AddressController {
     return courtAddresses;
   }
 
-  private createEmptyFieldsOfLawCheckboxItems(areasOfLaw: AreaOfLaw[], courtTypes: CourtType[]): FieldsOfLaw {
+  private createEmptyFieldsOfLawCheckboxItems(areasOfLaw: AreaOfLaw[], courtTypes: CourtType[],
+    dataPrefix: string): FieldsOfLaw {
     return {
-      areas_of_law: this.mapAreaOfLawToRadioItem(areasOfLaw, []),
-      courts: this.mapCourtTypeToRadioItem(courtTypes, []),
+      areas_of_law: this.mapAreaOfLawToRadioItem(areasOfLaw, [], dataPrefix),
+      courts: this.mapCourtTypeToRadioItem(courtTypes, [], dataPrefix),
     };
   }
 
@@ -513,7 +520,7 @@ export class AddressController {
   }
 
   private convertApiAddressToCourtAddressType(address: CourtAddress, areasOfLaw: AreaOfLaw[],
-    courtTypes: CourtType[]): DisplayAddress {
+    courtTypes: CourtType[], dataPrefix: string): DisplayAddress {
     return {
       'type_id': address.type_id,
       'description': address.description,
@@ -533,8 +540,10 @@ export class AddressController {
       'county_id': address.county_id,
       postcode: address.postcode?.trim().toUpperCase(),
       fields_of_law: {
-        areas_of_law: address.fields_of_law?.areas_of_law ? this.mapAreaOfLawToRadioItem(areasOfLaw, address.fields_of_law.areas_of_law) : [],
-        courts: address.fields_of_law?.courts ? this.mapCourtTypeToRadioItem(courtTypes, address.fields_of_law.courts) : [],
+        areas_of_law: address.fields_of_law?.areas_of_law
+          ? this.mapAreaOfLawToRadioItem(areasOfLaw, address.fields_of_law.areas_of_law, dataPrefix) : [],
+        courts: address.fields_of_law?.courts
+          ? this.mapCourtTypeToRadioItem(courtTypes, address.fields_of_law.courts, dataPrefix) : [],
       }
     };
   }
