@@ -46,8 +46,6 @@ Feature: Court-addresses
     Then I enter "<postcode>" in the postcode textbox
     When I will make sure to clear all entries for secondary address
     Then I select the secondary address type as "5880"
-    Then I enter secondary address description "test" in Description textbox
-    Then I enter secondary address welsh description "test welsh" in Welsh Description textbox
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I enter the secondary address town "<secondary town>"
     Then I select the secondary County "50"
@@ -63,8 +61,6 @@ Feature: Court-addresses
   Scenario: Adding third address of type: write to us
     Given I will make sure to clear all entries of third address
     When I select the third address type "5881"
-    Then I enter third address description "test" in Description textbox
-    Then I enter third address welsh description "test welsh" in Welsh Description textbox
     Then I enter third address address "test address" in the Address textbox
     Then I enter third address welsh address "test welsh address" in the Address Welsh textbox
     Then I enter third address "town" in the Town textbox
@@ -118,3 +114,41 @@ Feature: Court-addresses
     Examples:
       | address                       |  town     |  postcode |
       | The Court House, Cwmbach Road |  Aberdare |  BD9 6GS  |
+
+  Scenario: Adding secondary address 1 for an area of law or court type
+    Given I will make sure to remove entries for first secondary address
+    And I click the Save Addresses button
+    Then A green message is displayed for the updated address "Addresses updated"
+    Then I select the secondary address type as "5881"
+    Then I enter the secondary court address "test address" in the Address textbox
+    Then I select yes for area of law and court type
+    Then I select children and civil from area of law and county court for court type
+    Then I enter the secondary address town "test town"
+    Then I enter the secondary address town welsh "test town welsh"
+    Then I select the secondary County "50"
+    Then I enter the secondary address postcode "bd9 6sg"
+    And I click the Save Addresses button
+    Then A green message is displayed for the updated address "Addresses updated"
+    Then I click the link view court in new tab to validate the label generated
+
+  Scenario: Adding 2 secondary addresses with same area of law or court type
+    Given I will make sure to remove entries for first secondary address
+    Given I will make sure to clear all entries of third address
+    And I click the Save Addresses button
+    Then A green message is displayed for the updated address "Addresses updated"
+    Then I select the secondary address type as "5881"
+    Then I enter the secondary court address "test address" in the Address textbox
+    Then I select yes for area of law and court type
+    Then I select children and civil from area of law and county court for court type
+    Then I enter the secondary address town "test town"
+    Then I select the secondary County "50"
+    Then I enter the secondary address postcode "bd9 6sg"
+    When I select the third address type "5881"
+    Then I enter third address address "test address" in the Address textbox
+    Then I select yes for second secondary court area of law and court type
+    Then I select children and civil for second secondary court area of law and county court for court type
+    Then I enter third address "town" in the Town textbox
+    Then I select the third County "50"
+    Then I enter third address "CF44 0JE" in the postcode textbox
+    And I click the Save Addresses button
+    Then The error message display is "Secondary addresses cannot have duplicate areas of law or court types selected. Conflicting options selected are: \"Children, County Court\""

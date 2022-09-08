@@ -309,3 +309,12 @@ export const getTextFromElements = async (el: string) => {
     return [];
   }
 };
+
+export const getValueFromElements = async (el: string) => {
+  try {
+    return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.valueOf()));
+  } catch (error) {
+    console.log("The element didn't appear.");
+    return [];
+  }
+};

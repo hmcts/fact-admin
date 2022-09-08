@@ -134,6 +134,7 @@
     "html-webpack-plugin/html-minifier-terser/terser": ">=5.14.2",
     "webpack/terser-webpack-plugin/terser": ">=5.14.2",
     "uglifyjs-webpack-plugin/serialize-javascript": ">=3.1.0",
+    "node-sass/sass-graph/scss-tokenizer": ">=0.4.3",
     "node-sass/request/http-signature/jsprim/json-schema": ">=0.4.0",
     "node-sass/meow/read-pkg-up/read-pkg/normalize-package-data/resolve/path-parse": ">=1.0.7",
     "request/http-signature/jsprim/json-schema": ">=0.4.0",

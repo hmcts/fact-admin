@@ -1,4 +1,3 @@
-
 export interface DisplayCourtAddresses {
   primary: DisplayAddress;
   secondary: DisplayAddress;
@@ -6,15 +5,16 @@ export interface DisplayCourtAddresses {
 }
 
 export interface DisplayAddress {
-  type_id: number;
-  description: string;
-  description_cy: string;
-  address_lines: string;
-  address_lines_cy: string;
-  town: string;
-  town_cy: string;
-  county_id: number;
-  postcode: string;
+  type_id?: number;
+  description?: string;
+  description_cy?: string;
+  address_lines?: string;
+  address_lines_cy?: string;
+  town?: string;
+  town_cy?: string;
+  county_id?: number;
+  postcode?: string;
+  fields_of_law?: FieldsOfLaw;
 }
 
 
@@ -28,6 +28,12 @@ export interface CourtAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  fields_of_law?: FieldsOfLaw;
+}
+
+export interface FieldsOfLaw {
+  areas_of_law?: any,
+  courts?: any
 }
 
 export interface AddressType {
@@ -39,6 +45,5 @@ export interface AddressType {
 export interface AddressValidationResult {
   addressValid: boolean;
   postcodeValid: boolean;
-  descriptionValid: boolean;
   errors: string[];
 }
