@@ -3,6 +3,7 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {Audit, AuditPageData} from '../../../types/Audit';
 import {Court} from '../../../types/Court';
+import {Parser} from 'json2csv';
 
 @autobind
 export class AuditController {
@@ -58,6 +59,7 @@ export class AuditController {
     }
 
     if (audits.length)
+      // eslint-disable-next-line @typescript-eslint/camelcase
       audits.forEach(a => a.creation_time = new Date(a.creation_time).toLocaleString());
 
     const pageData: AuditPageData = {
@@ -75,4 +77,58 @@ export class AuditController {
 
     res.render('audits/auditContent', pageData);
   }
+
+  public async downloadAuditData(req: AuthedRequest, res: Response): Promise<void> {
+
+    const page = 0 as number;
+    const limit = 1000000000 as number; //maximum limit so all records can be returned from api
+    const location =  req.query?.location ? req.query.location as string : '';
+    const email = req.query?.email ? req.query.email as string : '';
+    const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
+    const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
+
+    const errors: { text: string }[] = [];
+
+    const audits = await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
+      .then((value: Audit[]) => value)
+      .catch(() => errors.push({text: this.getAuditsErrorMsg}));
+
+
+    const fields = [
+      {
+        label: 'username',
+        value: 'user_email'
+      },
+      {
+        label: 'action',
+        value: 'action.name'
+      },
+      {
+        label: 'location',
+        value: 'location'
+      },
+      {
+        label: 'before changes',
+        value: 'action_data_before'
+      },
+      {
+        label: 'after changes',
+        value: 'action_data_after'
+      },
+      {
+        label: 'created at',
+        value: 'creation_time'
+      }
+    ];
+
+    const json2csv = new Parser({fields});
+    const csv = json2csv.parse(audits);
+    res.header('Content-Type', 'text/csv');
+    const date = new Date();
+    const fileName = 'audits-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '.csv';
+    res.attachment(fileName);
+    res.send(csv);
+
+  }
+
 }
