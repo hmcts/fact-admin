@@ -59,7 +59,6 @@ export class AuditController {
     }
 
     if (audits.length)
-      // eslint-disable-next-line @typescript-eslint/camelcase
       audits.forEach(a => a.creation_time = new Date(a.creation_time).toLocaleString());
 
     const pageData: AuditPageData = {
