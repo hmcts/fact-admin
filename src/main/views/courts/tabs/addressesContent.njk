@@ -1,3 +1,4 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -5,6 +6,8 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 <h2 class="govuk-heading-l">Addresses</h2>
 
@@ -25,7 +28,6 @@
 {% set townRequiredError = { text: 'Town is required' } %}
 {% set postcodeRequiredError = { text: 'Postcode is required' } %}
 {% set postcodeInvalidError = { text: 'Postcode is invalid' } %}
-{% set descriptionInvalidError = { text: 'Maximum length is 50 characters'} %}
 
 <div class="govuk-body">
   <p>A court can have up to 3 addresses. The primary address can not be removed.<p>
@@ -120,32 +122,6 @@
   items: addressTypesSecondary  | selectFilter(addresses.secondary.type_id)
 }) }}
 
-{% if (addresses.secondary.description.length>100)  %}
- {% set secondaryDescriptionError = descriptionInvalidError %}
-{% endif %}
-{% if  (addresses.secondary.description_cy.length>100) %}
- {% set secondaryDescriptionCyError = descriptionInvalidError %}
-{% endif %}
-
-
-{{ govukInput({
-  id: "secondaryAddressDescription",
-  name: "secondary[description]",
-  label: { text: "Description" },
-  classes: "govuk-input--width-30",
-  value: addresses.secondary.description,
-  errorMessage: secondaryDescriptionError
-}) }}
-
-{{ govukInput({
-  id: "secondaryAddressDescriptionWelsh",
-  name: "secondary[description_cy]",
-  label: { text: "Description (Welsh)" },
-  classes: "govuk-input--width-30",
-  value: addresses.secondary.description_cy,
-  errorMessage: secondaryDescriptionCyError
-}) }}
-
 {% if (addresses.secondary.address_lines) or (addresses.secondary.address_lines_cy) or (addresses.secondary.town) or (addresses.secondary.town_cy) or (addresses.secondary.postcode) %}
   {% if addresses.secondary.address_lines == '' %}
     {% set secondaryAddressError = addressRequiredError %}
@@ -171,6 +147,93 @@
   classes: "govuk-input--width-30",
   value: addresses.secondary.address_lines_cy
 }) }}
+
+{% set radioCheckedSecondary = false %}
+{% for areaOfLaw in addresses.secondary.fields_of_law.areas_of_law %}
+  {% if areaOfLaw.checked %}
+    {% set radioCheckedSecondary = true %}
+  {% endif %}
+{% endfor %}
+{% for court in addresses.secondary.fields_of_law.courts %}
+  {% if court.checked %}
+    {% set radioCheckedSecondary = true %}
+  {% endif %}
+{% endfor %}
+
+{{ govukRadios({
+  classes: "govuk-radios--inline",
+  idPrefix: "secondaryFieldsOfLawRadio",
+  name: "secondaryFieldsOfLawRadio",
+  value: "No",
+  fieldset: {
+    legend: {
+      text: "Does this address only apply for specific areas of law and/or court types?",
+      classes: "govuk-input--width-50"
+    }
+  },
+  items: [
+    {
+      value: "yes",
+      text: "Yes",
+      checked: radioCheckedSecondary
+    },
+    {
+      value: "no",
+      text: "No",
+      checked: not radioCheckedSecondary
+    }
+  ]
+}) }}
+
+<div id="secondaryAddressFieldsOfLawContainer">
+
+  {{ govukDetails({
+    summaryText: "Help with areas of law",
+    html: "Select one or more areas of law that apply for a given address. An example of this may be where you
+    have a write to address that only applies for Civil cases"})
+  }}
+
+  <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+    {%- for items in addresses.secondary.fields_of_law.areas_of_law | slice(2) %}
+
+    <div class="govuk-grid-column-one-half">
+        {{ govukCheckboxes({
+          idPrefix: "areas-of-law",
+          name: "secondaryAddressAOLItems",
+          classes: "govuk-checkboxes--small",
+          items: items
+        }) }}
+    </div>
+
+    {%- endfor %}
+
+  </div>
+
+  {{ govukDetails({
+    summaryText: "Help with court types",
+    html: "Select one or more court types that apply for a given address. An example of this may be where you
+    have a write to address that only applies for Family courts"})
+  }}
+
+  <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+    {%- for items in addresses.secondary.fields_of_law.courts | slice(2) %}
+
+    <div class="govuk-grid-column-one-half">
+        {{ govukCheckboxes({
+          idPrefix: "courts",
+          name: "secondaryAddressCourtItems",
+          classes: "govuk-checkboxes--small",
+          items: items
+        }) }}
+    </div>
+
+    {%- endfor %}
+
+  </div>
+</div>
+
 
 {{ govukInput({
   id: "secondaryAddressTown",
@@ -235,31 +298,6 @@
   items: addressTypesThird  | selectFilter(addresses.third.type_id)
 }) }}
 
-{% if (addresses.third.description.length>100)  %}
- {% set thirdDescriptionError = descriptionInvalidError %}
-{% endif %}
-{% if  (addresses.third.description_cy.length>100) %}
- {% set thirdDescriptionCyError = descriptionInvalidError %}
-{% endif %}
-
-{{ govukInput({
-  id: "thirdAddressDescription",
-  name: "third[description]",
-  label: { text: "Description" },
-  classes: "govuk-input--width-30",
-  value: addresses.third.description,
-  errorMessage: thirdDescriptionError
-}) }}
-
-{{ govukInput({
-  id: "thirdAddressDescriptionWelsh",
-  name: "third[description_cy]",
-  label: { text: "Description (Welsh)" },
-  classes: "govuk-input--width-30",
-  value: addresses.third.description_cy,
-  errorMessage: thirdDescriptionCyError
-}) }}
-
 {% if (addresses.third.address_lines) or (addresses.third.address_lines_cy) or (addresses.third.town) or (addresses.third.town_cy) or (addresses.third.postcode) %}
   {% if addresses.third.address_lines == '' %}
     {% set thirdAddressError = addressRequiredError %}
@@ -285,6 +323,92 @@
   classes: "govuk-input--width-30",
   value: addresses.third.address_lines_cy
 }) }}
+
+{% set radioCheckedThird = false %}
+{% for areaOfLaw in addresses.third.fields_of_law.areas_of_law %}
+  {% if areaOfLaw.checked %}
+    {% set radioCheckedThird = true %}
+  {% endif %}
+{% endfor %}
+{% for court in addresses.third.fields_of_law.courts %}
+  {% if court.checked %}
+    {% set radioCheckedThird = true %}
+  {% endif %}
+{% endfor %}
+
+{{ govukRadios({
+  classes: "govuk-radios--inline",
+  idPrefix: "thirdFieldsOfLawRadio",
+  name: "thirdFieldsOfLawRadio",
+  value: "No",
+  fieldset: {
+    legend: {
+      text: "Does this address only apply for specific areas of law and/or court types?",
+      classes: "govuk-input--width-50"
+    }
+  },
+  items: [
+    {
+      value: "yes",
+      text: "Yes",
+      checked: radioCheckedThird
+    },
+    {
+      value: "no",
+      text: "No",
+      checked: not radioCheckedThird
+    }
+  ]
+}) }}
+
+<div id="thirdAddressFieldsOfLawContainer">
+
+  {{ govukDetails({
+    summaryText: "Help with areas of law",
+    html: "Select one or more areas of law that apply for a given address. An example of this may be where you
+    have a write to address that only applies for Civil cases"})
+  }}
+
+  <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+    {%- for items in addresses.third.fields_of_law.areas_of_law | slice(2) %}
+
+    <div class="govuk-grid-column-one-half">
+        {{ govukCheckboxes({
+          idPrefix: "areas-of-law",
+          name: "thirdAddressAOLItems",
+          classes: "govuk-checkboxes--small",
+          items: items
+        }) }}
+    </div>
+
+    {%- endfor %}
+
+  </div>
+
+  {{ govukDetails({
+    summaryText: "Help with court types",
+    html: "Select one or more court types that apply for a given address. An example of this may be where you
+    have a write to address that only applies for Family courts"})
+  }}
+
+  <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+    {%- for items in addresses.third.fields_of_law.courts | slice(2) %}
+
+    <div class="govuk-grid-column-one-half">
+        {{ govukCheckboxes({
+          idPrefix: "courts",
+          name: "thirdAddressCourtItems",
+          classes: "govuk-checkboxes--small",
+          items: items
+        }) }}
+    </div>
+
+    {%- endfor %}
+
+  </div>
+</div>
 
 {{ govukInput({
   id: "thirdAddressTown",

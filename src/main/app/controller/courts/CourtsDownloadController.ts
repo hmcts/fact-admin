@@ -14,7 +14,6 @@ export class CourtsDownloadController {
     const courts = await req.scope.cradle.api.getDownloadCourts();
 
     const frontEndUrl = config.get('services.frontend.url');
-    console.log(frontEndUrl);
     const createUrl = (item: any) => ({
       ...item,
       url: frontEndUrl + '/courts/' + item.slug
