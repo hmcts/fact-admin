@@ -190,6 +190,13 @@ describe ( 'AuditController', () => {
 
   test('Should send csv ', async () => {
     const req = mockRequest();
+    req.query = {
+      page: 1,
+      location: 'location',
+      email: 'email',
+      dateFrom: '',
+      dateTo: 'date to'
+    };
     req.scope.cradle.api = mockApi;
 
     const res = mockResponse();
