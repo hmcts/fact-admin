@@ -86,11 +86,7 @@ export class AuditController {
     const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
     const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
 
-    const errors: { text: string }[] = [];
-
-    const audits = await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo)
-      .then((value: Audit[]) => value)
-      .catch(() => errors.push({text: this.getAuditsErrorMsg}));
+    const audits: Audit[] = await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo);
 
 
     const fields = [
