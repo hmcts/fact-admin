@@ -6,6 +6,7 @@ import {when} from 'jest-when';
 describe('LaunchDarkly', function () {
 
   const testFlag = 'test-flag';
+  const multipleFlags = {'test-flag':true, 'test-flag2':true};
   jest.mock('config');
   jest.mock('launchdarkly-node-server-sdk');
 
@@ -20,15 +21,13 @@ describe('LaunchDarkly', function () {
 
   beforeEach(() => {
     mockLdClient = {
-      waitForInitialization: async (): Promise<any> => {
-      },
+      waitForInitialization: async (): Promise<any> => {},
       variation: async (flag: string, ldUser: LDUser): Promise<any> => Promise.resolve({testFlag: true}),
-      allFlagsState: async (ldUser: LDUser): Promise<any> => Promise.resolve(
-        {
-          allValues: () => {
-
-          }
+      allFlagsState: async (ldUser: LDUser): Promise<any> => Promise.resolve({
+        allValues: () => {
+          return multipleFlags;
         }
+      }
       )
     };
   });
@@ -65,6 +64,6 @@ describe('LaunchDarkly', function () {
     when(launchDarkly.init as jest.Mock)
       .mockReturnValue(mockLdClient);
 
-    expect(await new LaunchDarkly().getAllFlagValues(false)).toEqual({testFlag: true, testFlag2: true});
+    expect(await new LaunchDarkly().getAllFlagValues(false)).toEqual(multipleFlags);
   });
 });
