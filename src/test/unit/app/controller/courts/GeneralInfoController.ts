@@ -101,6 +101,16 @@ describe('GeneralInfoController', () => {
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
+      'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ' +
       'Urgent notice 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20. ',
     'alert_cy': 'an alert cy',
     'in_person': true,
@@ -327,7 +337,7 @@ describe('GeneralInfoController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
-  test('Should not put court general info if alerts have over 300 characters', async () => {
+  test('Should not put court general info if alerts have over 600 characters', async () => {
     const res = mockResponse();
     const req = mockRequest();
     req.params = { slug: slug };

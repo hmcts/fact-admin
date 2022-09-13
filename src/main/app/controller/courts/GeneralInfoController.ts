@@ -65,7 +65,7 @@ export class GeneralInfoController {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
     }
 
-    if (generalInfo.alert.length > 400 || generalInfo.alert_cy.length > 400) {
+    if (generalInfo.alert.length > 600 || generalInfo.alert_cy.length > 600) {
       return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);
     }
 
