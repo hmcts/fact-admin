@@ -20,11 +20,16 @@ describe('LaunchDarkly', function () {
 
   beforeEach(() => {
     mockLdClient = {
-      waitForInitialization: async (): Promise<any> => {},
+      waitForInitialization: async (): Promise<any> => {
+      },
       variation: async (flag: string, ldUser: LDUser): Promise<any> => Promise.resolve({testFlag: true}),
-      allFlagsState: async (ldUser: LDUser): Promise<any> => Promise.resolve({
-        allValues: {}
-      })
+      allFlagsState: async (ldUser: LDUser): Promise<any> => Promise.resolve(
+        {
+          allValues: () => {
+
+          }
+        }
+      )
     };
   });
 
