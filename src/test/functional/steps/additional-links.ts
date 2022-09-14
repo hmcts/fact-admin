@@ -2,6 +2,14 @@ import {Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
+import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
+import {FACT_ADMIN_TAB_ADDITIONAL_LINKS} from '../../../main/app/feature-flags/flags';
+
+When('Feature flag is on', async () => {
+  const f = new FeatureFlagHelper();
+  await f.init();
+  return f.getLocalFlag(FACT_ADMIN_TAB_ADDITIONAL_LINKS);
+});
 
 When('I hover over Additional Links nav element', async () => {
   const selector = '#nav';
