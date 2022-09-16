@@ -16,4 +16,5 @@ export class FeatureFlagHelper {
       return this.flagValues[flag];
     }
   }
+
 }
