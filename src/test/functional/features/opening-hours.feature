@@ -1,3 +1,4 @@
+
 Feature: Opening Hours
 
   Background:
@@ -11,9 +12,11 @@ Feature: Opening Hours
     When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
-    When I click the opening hours tab
-    Then I can view the existing opening hours
     When Feature flag is on
+
+#    When I click the opening hours tab
+#    Then I can view the existing opening hours
+
 
   Scenario: Add and remove Additional Links
     When test

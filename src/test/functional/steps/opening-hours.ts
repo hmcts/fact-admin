@@ -1,23 +1,41 @@
-import { Then, When } from 'cucumber';
+import { Then, When, Before} from 'cucumber';
 import { expect } from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-// import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
-// import {FACT_ADMIN_TAB_OPENING_HOURS} from '../../../main/app/feature-flags/flags';
-//
-//
-// When('Feature flag is on', async () => {
+import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
+import {FACT_ADMIN_TAB_OPENING_HOURS} from '../../../main/app/feature-flags/flags';
+
+
+When('Feature flag is on', async () => {
+  const f = new FeatureFlagHelper();
+  await f.init();
+
+  console.log('++++++++++++flag value ++++++++++++++' + f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS));
+});
+
+When('test', async () => {
+  console.log('++++++++++++++++++++++++++ test ++++++++++++++++++++++++++++++');
+});
+
+// BeforeAll(async () => {
+//   //console.log('++++++++++++++++++++++++++ beforeAll ++++++++++++++++++++++++++++++');
 //   const f = new FeatureFlagHelper();
 //   await f.init();
-//   console.log('++++++++++++++++++++++++++' + f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS));
-// });
-//
-// When('test', async () => {
-//   console.log('++++++++++++++++++++++++++ test ++++++++++++++++++++++++++++++');
-// });
+//   f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS);
+//   if(!f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS))
+//     return 'skipped' as any;
+//});
 
+Before(async () =>  {
+  const f = new FeatureFlagHelper();
+  f.init();
+  f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS);
+   if(!f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS))
+  {console.log('>>> skipped');
+  return 'skipped' as any;}
+});
 
 When('I hover over opening hours nav element', async () => {
   const selector = '#nav';

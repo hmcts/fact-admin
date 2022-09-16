@@ -1,6 +1,8 @@
-import {BeforeAll, AfterAll, After, setDefaultTimeout, Before} from 'cucumber';
+import {BeforeAll, AfterAll, After, setDefaultTimeout} from 'cucumber';
 import puppeteer from 'puppeteer';
 import { puppeteerConfig } from '../puppeteer.config';
+// import {FeatureFlagHelper} from "../utlis/feature-flag-helper";
+// import {FACT_ADMIN_TAB_OPENING_HOURS} from "../../../main/app/feature-flags/flags";
 
 const scope = require('./scope');
 
@@ -29,6 +31,16 @@ AfterAll(async () => {
   }
 });
 
-Before( { tags: '@ignore' }, function () {
-  return 'skipped' as any;
-});
+// Before( { tags: '@ignore' }, function () {
+//   return 'skipped' as any;
+// });
+
+// Before(async () => {
+//   const f = new FeatureFlagHelper();
+//   await f.init();
+//   f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS);
+//   if(f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS)) {
+//     console.log("-------------------------beforeAll.................");
+//     return 'skipped' as any;
+//   }
+//});
