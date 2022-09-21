@@ -1,4 +1,4 @@
-@courts
+
 Feature: Homepage
 
   Background:
@@ -14,18 +14,18 @@ Feature: Homepage
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
-#  Scenario Outline: Navigate to edit a court or tribunal page
-#    When I click edit next to court with "<edit_court_slug>"
-#    Then I am redirected to the Edit Court page for the "<edit_court_name>"
-#
-#    Examples:
-#      | edit_court_slug                            | edit_court_name                            |
-#      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |
-#
-#  Scenario Outline: Navigate to view court or tribunal page
-#    When I click view next to court with "<view_court_slug>"
-#    Then I am redirected to the View Court page for the "<view_court_name>"
-#
-#    Examples:
-#      | view_court_slug                            | view_court_name                            |
-#      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |
+  Scenario Outline: Navigate to edit a court or tribunal page
+    When I click edit next to court with "<edit_court_slug>"
+    Then I am redirected to the Edit Court page for the "<edit_court_name>"
+
+    Examples:
+      | edit_court_slug                            | edit_court_name                            |
+      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |
+
+  Scenario Outline: Navigate to view court or tribunal page
+    When I click view next to court with "<view_court_slug>"
+    Then I am redirected to the View Court page for the "<view_court_name>"
+
+    Examples:
+      | view_court_slug                            | view_court_name                            |
+      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |

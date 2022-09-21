@@ -10,9 +10,6 @@ export const launchBrowser = async () => {
 };
 const f = new FeatureFlagHelper();
 let allFlags: { [p: string]: boolean } | void;
-export const flagy = async () => {
-  await f.init();
-};
 
 setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
@@ -44,42 +41,16 @@ Before(async (scenario) => {
 
   // Note: all together in one
   // @ts-ignore
-  return (!allFlags[tagName] && tagName !== 'no tag found') ? 'skipped': 'run';
+ // return (!allFlags[tagName] && tagName !== 'no tag found') ? 'skipped': 'run';
 
-  // Note: can uncomment below for console logs
-  // if (!allFlags[tagName] && tagName !== 'no tag found') {
-  //   console.log('Skipped tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
-  //   return 'skipped' as any;
-  // }
-  // else {
-  //   console.log('Running tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
-  //   return 'run' as any;
-  // }
+  //Note: can uncomment below for console logs
+  if (!allFlags[tagName] && tagName !== 'no tag found') {
+    console.log('Skipped tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
+    return 'skipped' as any;
+  }
+  else {
+    console.log('Running tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
+    return 'run' as any;
+  }
 
 });
-
-// Before(async () =>  {
-//   const f = new FeatureFlagHelper();
-//   f.init();
-//   f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS);
-//   if(!f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS))
-//   {console.log('>>> skipped');
-//     return 'run' as any;}
-// });
-
-// Before(async (scenario) => {
-//
-//   console.log(scenario.pickle.tags);
-//   scenario.pickle.tags.forEach(function (obj){
-//     if(obj.name == '@opening_hours' && !f.getLocalFlag(FACT_ADMIN_TAB_OPENING_HOURS)){
-//       console.log('----- skipped '+obj.name+' ----');
-//       return 'skipped' as any;
-//     }
-//     else
-//     {
-//       console.log('----- ran '+obj.name+' ----');
-//     }
-//   });
-//   //remove else statement when done
-//
-// });

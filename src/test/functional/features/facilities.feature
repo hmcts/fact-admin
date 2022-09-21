@@ -1,3 +1,4 @@
+@fact-admin-tab-facilities
 Feature: Facilities
 
   Background:

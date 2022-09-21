@@ -1,3 +1,4 @@
+@fact-admin-tab-photo
 Feature: Update court photo
 
   Background:

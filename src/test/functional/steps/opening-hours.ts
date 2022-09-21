@@ -4,10 +4,6 @@ import { expect } from 'chai';
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-When('test', async () => {
-  console.log('++++++++++++++++++++++++++ test ++++++++++++++++++++++++++++++');
-});
-
 When('I hover over opening hours nav element', async () => {
   const selector = '#nav';
   const elementExist = await I.checkElement(selector);

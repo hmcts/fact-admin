@@ -1,4 +1,4 @@
-@Local
+@fact-admin-tab-local-authorities
 Feature: Local authorities
 
   Background:
