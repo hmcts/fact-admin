@@ -48,10 +48,10 @@ export class AuditController {
       e.preventDefault();
       const dataObj = this.getFormAndPageData();
 
-      const username = dataObj['searchUser'];
-      const location = dataObj['searchLocation'];
-      const dateFrom = dataObj['searchDateFrom'];
-      const dateTo = dataObj['searchDateTo'];
+      const username = AuditController.stripScripts(dataObj['searchUser']);
+      const location = AuditController.stripScripts(dataObj['searchLocation']);
+      const dateFrom = AuditController.stripScripts(dataObj['searchDateFrom']);
+      const dateTo = AuditController.stripScripts(dataObj['searchDateTo']);
       const page = $('#currentPage').val() as number;
 
       await this.getAuditContent(page == 0 ? 0 : page -1, 10,
@@ -65,10 +65,10 @@ export class AuditController {
       e.preventDefault();
       const dataObj = this.getFormAndPageData();
 
-      const username = dataObj['searchUser'];
-      const location = dataObj['searchLocation'];
-      const dateFrom = dataObj['searchDateFrom'];
-      const dateTo = dataObj['searchDateTo'];
+      const username = AuditController.stripScripts(dataObj['searchUser']);
+      const location = AuditController.stripScripts(dataObj['searchLocation']);
+      const dateFrom = AuditController.stripScripts(dataObj['searchDateFrom']);
+      const dateTo = AuditController.stripScripts(dataObj['searchDateTo']);
 
       await this.getAuditContent(parseInt($('#currentPage').val() as string) + 1, 10,
         location == 'select-court' ? '' : location,
@@ -83,10 +83,10 @@ export class AuditController {
 
       const dataObj = this.getFormAndPageData();
 
-      const username = dataObj['searchUser'];
-      const location = dataObj['searchLocation'];
-      const dateFrom = dataObj['searchDateFrom'];
-      const dateTo = dataObj['searchDateTo'];
+      const username = AuditController.stripScripts(dataObj['searchUser']);
+      const location = AuditController.stripScripts(dataObj['searchLocation']);
+      const dateFrom = AuditController.stripScripts(dataObj['searchDateFrom']);
+      const dateTo = AuditController.stripScripts(dataObj['searchDateTo']);
 
       await this.getAuditContent(0, 10, location == 'select-court' ? '' : location,
         username, dateFrom, dateTo);
@@ -101,5 +101,16 @@ export class AuditController {
     });
 
     return dataObj;
+  }
+
+  private static stripScripts(s: string) {
+    const div = document.createElement('div');
+    div.innerHTML = s;
+    const scripts = div.getElementsByTagName('script');
+    let i = scripts.length;
+    while (i--) {
+      scripts[i].parentNode.removeChild(scripts[i]);
+    }
+    return div.innerHTML;
   }
 }
