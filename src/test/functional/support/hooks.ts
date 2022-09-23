@@ -8,6 +8,7 @@ const scope = require('./scope');
 export const launchBrowser = async () => {
   scope.browser = await puppeteer.launch(puppeteerConfig);
 };
+
 const f = new FeatureFlagHelper();
 let allFlags: { [p: string]: boolean } | void;
 
@@ -37,20 +38,10 @@ AfterAll(async () => {
 
 Before(async (scenario) => {
 
-  const tagName = scenario.pickle.tags.length > 0 ? scenario.pickle.tags[0].name.replace('@', '') : 'no tag found'
 
-  // Note: all together in one
   // @ts-ignore
- // return (!allFlags[tagName] && tagName !== 'no tag found') ? 'skipped': 'run';
-
-  //Note: can uncomment below for console logs
-  if (!allFlags[tagName] && tagName !== 'no tag found') {
-    console.log('Skipped tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
-    return 'skipped' as any;
-  }
-  else {
-    console.log('Running tests in: ' + scenario.sourceLocation.uri + ' for tag: ' + tagName);
-    return 'run' as any;
-  }
+  const falseTagValues = scenario.pickle.tags.filter(item => !allFlags[item.name.replace('@', '')]);
+  console.log('tag uri is  ' + scenario.sourceLocation.uri + ' value is: ' + falseTagValues);
+  return falseTagValues.length > 0 ? 'skipped' : 'run';
 
 });

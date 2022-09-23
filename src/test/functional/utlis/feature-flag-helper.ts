@@ -1,6 +1,6 @@
 import {LaunchDarkly} from '../../../main/app/feature-flags/LaunchDarklyClient';
 import config from 'config';
-import {FeatureFlags} from "../../../main/app/feature-flags/FeatureFlags";
+import {FeatureFlags} from '../../../main/app/feature-flags/FeatureFlags';
 
 export class FeatureFlagHelper {
 
