@@ -212,12 +212,12 @@
             {% endif %}
 
             {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDITIONAL_LINKS] or featureFlags.values|length == 0 %}
-              {% set spoeTab =
+              {% set additionalLinksTab =
                 {
-                  label: "SPoE",
-                  id: "spoe",
+                  label: "Additional Links",
+                  id: "additional-links",
                   panel: {
-                    html: spoeHtml
+                    html: additionalLinksHtml
                   }
                 }
               %}
