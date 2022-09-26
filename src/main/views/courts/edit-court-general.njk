@@ -253,14 +253,17 @@
             {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
             {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
             {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
-            {% set tabItems = (tabItems.push(postcodesTab),tabItems) if isSuperAdmin %}
-            {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) if isSuperAdmin %}
             {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
             {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
             {% set tabItems = (tabItems.push(photoTab),tabItems) %}
-            {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) if isSuperAdmin %}
-            {% set tabItems = (tabItems.push(spoeTab),tabItems) if isSuperAdmin %}
             {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
+            {% if isSuperAdmin %}
+              {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
+              {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+              {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
+              {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
+            {% endif %}
+
 
           {% if not error %}
             {{ factTabs({
