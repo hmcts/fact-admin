@@ -14,12 +14,6 @@ export class FeatureFlagHelper {
     launchDarkly.closeConnection();
   }
 
-  public getLocalFlag(flag:string) : boolean {
-    if(this.flagValues){
-      return this.flagValues[flag];
-    }
-  }
-
   public getAllFlags(): { [p: string]: boolean } | void {
     return this.flagValues;
   }
