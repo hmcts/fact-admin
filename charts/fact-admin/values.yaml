@@ -25,6 +25,5 @@ nodejs:
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
     IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
     IDAM_USER_DASHBOARD_URL: "https://idam-user-dashboard.{{ .Values.global.environment }}.platform.hmcts.net"
-    LAUNCHDARKLY_SDK_KEY: "carrot"
 idam-pr:
   enabled: false
