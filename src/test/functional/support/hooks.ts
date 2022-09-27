@@ -21,6 +21,9 @@ BeforeAll(async () => {
   puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
   console.log(process.env.LAUNCHDARKLY_SDK_KEY);
   console.log(config.get('launchDarkly.sdkKey'));
+  console.log(process.env.TEST_URL);
+  console.log(process.env.FRONTEND_URL);
+  console.log('===hello===');
   await launchBrowser();
   await f.init();
   allFlags = f.getAllFlags();
