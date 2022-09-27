@@ -5,5 +5,5 @@ export const config = {
   IDAM_HEALTH_URL: 'https://idam-api.aat.platform.hmcts.net/health',
   IDAM_USER_DASHBOARD_HEALTH_URL: 'https://idam-user-dashboard.aat.platform.hmcts.net/health',
   FRONTEND_URL: process.env.FRONTEND_URL || 'https://fact.aat.platform.hmcts.net',
-  LAUNCHDARKLY_SDK_KEY: process.env.LAUNCHDARKLY_SDK_KEY
+  LAUNCHDARKLY_SDK_KEY: process.env.LAUNCHDARKLY_SDK_KEY || 'potato'
 };

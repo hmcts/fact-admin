@@ -2,6 +2,7 @@ import {After, AfterAll, Before, BeforeAll, setDefaultTimeout} from 'cucumber';
 import puppeteer from 'puppeteer';
 import {puppeteerConfig} from '../puppeteer.config';
 import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
+import config from 'config';
 
 const scope = require('./scope');
 
@@ -18,6 +19,8 @@ BeforeAll(async () => {
   puppeteerConfig.username = process.env.OAUTH_USER;
   puppeteerConfig.superUsername = process.env.OAUTH_SUPER_USER;
   puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
+  console.log(process.env.LAUNCHDARKLY_SDK_KEY);
+  console.log(config.get('launchDarkly.sdkKey'));
   await launchBrowser();
   await f.init();
   allFlags = f.getAllFlags();
