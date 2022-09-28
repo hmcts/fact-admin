@@ -15,7 +15,7 @@ export class PropertiesVolume {
       set(config, 'session.secret', get(config, 'secrets.fact.redis-access-key'));
       set(config, 'appInsights.instrumentationKey', get(config, 'secrets.fact.AppInsightsInstrumentationKey'));
       set(config, 'csrf.tokenSecret', get(config, 'secrets.fact.csrf-token-secret'));
-      set(config, 'launchDarkly.sdkKey', get(config, 'secrets.fact.launch-darkly-sdk-key'));
+      set(config, 'launchDarkly.sdkKey', get(config, 'secrets.fact.launchdarkly-sdk-key'));
       set(config, 'services.image-store.account-name',get(config, 'secrets.fact.storage-account-name'));
       set(config, 'services.image-store.account-key',get(config, 'secrets.fact.storage-account-primary-key'));
     } else {
