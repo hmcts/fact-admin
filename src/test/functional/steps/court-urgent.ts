@@ -2,7 +2,7 @@ import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
-import {config} from "../../config";
+import {config} from '../../config';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.getPageTitle();
