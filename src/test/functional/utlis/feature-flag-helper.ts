@@ -7,6 +7,8 @@ export class FeatureFlagHelper {
   private flagValues: { [p: string]: boolean } | void;
 
   public async init() {
+
+    console.log(process.env.LAUNCHDARKLY_SDK_KEY);
     console.log('inside of init');
     console.log(config.get('launchDarkly.ldUser'));
     console.log(config.get('launchDarkly.sdkKey'));
