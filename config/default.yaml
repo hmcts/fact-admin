@@ -33,6 +33,6 @@ appInsights:
 csrf:
   tokenSecret: 'get from AAT vault'
 launchDarkly:
-  sdkKey: 'get from AAT vault'
+  sdkKey:
   ldUser: 'fact-admin'
 flags:   # add feature-flag overrides below
