@@ -16,8 +16,8 @@ services:
     account-name: STORAGE_ACCOUNT_NAME
     account-key: STORAGE_ACCOUNT_PRIMARY_KEY
   launchDarkly:
-    sdkKey: "pancake"
-    ldUser: LAUNCHDARKLY_LD_USER
+    sdkKey: "pancake services"
+    ldUser: "pancake user services"
 port: PORT
 session:
   redis:
@@ -27,6 +27,6 @@ appInsights:
 csrf:
   tokenSecret: CSRF_TOKEN_SECRET
 launchDarkly:
-  sdkKey: LAUNCHDARKLY_SDK_KEY
-  ldUser: LAUNCHDARKLY_LD_USER
+  sdkKey: "pancake user ld"
+  ldUser: "pancake user ld"
 storageAccountConnectionString: STORAGE_ACCOUNT_CONNECTION_STRING
