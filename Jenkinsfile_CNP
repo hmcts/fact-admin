@@ -13,7 +13,7 @@ def secrets = [
     secret("oauth-user", "OAUTH_USER"),
     secret("oauth-user-password", "OAUTH_USER_PASSWORD"),
     secret("oauth-super-user", "OAUTH_SUPER_USER"),
-    secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY"),
+    secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY")
   ]
 ]
 
