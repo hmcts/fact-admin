@@ -7,6 +7,7 @@ export class FeatureFlagHelper {
 
   public async init() {
 
+    console.log(process.env);
     console.log(process.env.LAUNCHDARKLY_SDK_KEY);
     const launchDarkly = await new LaunchDarkly('fact-admin', process.env.LAUNCHDARKLY_SDK_KEY);
     this.flagValues = await new FeatureFlags(launchDarkly).getAllFlagValues();
