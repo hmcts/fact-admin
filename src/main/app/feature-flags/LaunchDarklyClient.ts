@@ -7,9 +7,6 @@ export class LaunchDarkly implements FeatureFlagClient {
   private readonly ldUser: LDUser;
 
   constructor(user: string = config.get('launchDarkly.ldUser'), sdkKey: string = config.get('launchDarkly.sdkKey')) {
-    console.log('inside of LDC');
-    console.log(config.get('launchDarkly.ldUser'));
-    console.log(config.get('launchDarkly.sdkKey'));
     this.ldUser = { key: user };
     this.client = launchDarkly.init(sdkKey, { diagnosticOptOut: true });
   }

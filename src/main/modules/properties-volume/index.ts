@@ -8,7 +8,6 @@ export class PropertiesVolume {
 
   enableFor(server: Application) {
     if (server.locals.ENV !== 'development') {
-      console.log('not development');
       propertiesVolume.addTo(config);
       set(config, 'services.idam.clientSecret', get(config, 'secrets.fact.oauth-client-secret'));
       set(config, 'session.redis.key', get(config, 'secrets.fact.redis-access-key'));
@@ -19,7 +18,6 @@ export class PropertiesVolume {
       set(config, 'services.image-store.account-name',get(config, 'secrets.fact.storage-account-name'));
       set(config, 'services.image-store.account-key',get(config, 'secrets.fact.storage-account-primary-key'));
     } else {
-      console.log('is development');
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
       this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
       this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');

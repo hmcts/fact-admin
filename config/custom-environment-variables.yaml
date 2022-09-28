@@ -15,9 +15,6 @@ services:
     url: IMAGE_BASE_URL
     account-name: STORAGE_ACCOUNT_NAME
     account-key: STORAGE_ACCOUNT_PRIMARY_KEY
-  launchDarkly:
-    sdkKey: "pancake services"
-    ldUser: "pancake user services"
 port: PORT
 session:
   redis:
