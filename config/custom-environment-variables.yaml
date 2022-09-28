@@ -27,6 +27,6 @@ appInsights:
 csrf:
   tokenSecret: CSRF_TOKEN_SECRET
 launchDarkly:
-  sdkKey: "pancake user ld"
-  ldUser: "pancake user ld"
+  sdkKey: LAUNCHDARKLY_SDK_KEY
+  ldUser: "fact-admin"
 storageAccountConnectionString: STORAGE_ACCOUNT_CONNECTION_STRING
