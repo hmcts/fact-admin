@@ -41,6 +41,7 @@ Before(async (scenario) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const falseTagValues = scenario.pickle.tags.filter(item => !allFlags[item.name.replace('@', '')]);
+  console.log('tag uri is  ' + scenario.sourceLocation.uri + ' value is: ' + falseTagValues);
   return falseTagValues.length > 0 ? 'skipped' : 'run';
 
 });
