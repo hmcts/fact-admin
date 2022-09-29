@@ -1,4 +1,4 @@
-@Types
+@fact-admin-tab-types
 Feature: Court Types
 
   Background:

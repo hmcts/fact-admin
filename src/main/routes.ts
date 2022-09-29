@@ -1,9 +1,26 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
-
+import {FeatureFlags} from './app/feature-flags/FeatureFlags';
+import {
+  FACT_ADMIN_TAB_GENERAL,
+  FACT_ADMIN_TAB_OPENING_HOURS,
+  FACT_ADMIN_TAB_PHONE_NUMBERS,
+  FACT_ADMIN_TAB_EMAILS,
+  FACT_ADMIN_TAB_TYPES,
+  FACT_ADMIN_TAB_FACILITIES,
+  FACT_ADMIN_TAB_POSTCODES,
+  FACT_ADMIN_TAB_LOCAL_AUTHORITIES,
+  FACT_ADMIN_TAB_CASES_HEARD,
+  FACT_ADMIN_TAB_ADDRESSES,
+  FACT_ADMIN_TAB_PHOTO,
+  FACT_ADMIN_TAB_ADDITIONAL_LINKS,
+  FACT_ADMIN_TAB_SPOE,
+  FACT_ADMIN_TAB_APPLICATION_PROGRESSION
+} from './app/feature-flags/flags';
 const multer = require('multer');
 
 export default function(app: Application): void {
+  const featureFlags: FeatureFlags = app.locals.container.cradle.featureFlags;
 
   const upload = multer();
 
@@ -19,45 +36,45 @@ export default function(app: Application): void {
   app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
 
   // Edit court
-  app.get('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
-  app.put('/courts/:slug/spoe',isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
+  app.get('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
+  app.put('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
-  app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
-  app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.renderRedirect);
-  app.put('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.put);
-  app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
-  app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
-  app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);
-  app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
-  app.get('/courts/:slug/contacts', app.locals.container.cradle.contactsController.get);
-  app.put('/courts/:slug/contacts', app.locals.container.cradle.contactsController.put);
-  app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
-  app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
-  app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
-  app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
-  app.delete('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.delete);
-  app.put('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.put);
-  app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
-  app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
-  app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
-  app.get('/courts/:slug/addresses', app.locals.container.cradle.addressController.get);
-  app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
-  app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
-  app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
-  app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
-  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', app.locals.container.cradle.photoController.getDeleteConfirmation);
-  app.put('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.put);
-  app.delete('/courts/:slug/photo', app.locals.container.cradle.photoController.delete);
-  app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
-  app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
-  app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
-  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
+  app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.get);
+  app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.renderRedirect);
+  app.put('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.put);
+  app.get('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.get);
+  app.put('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.put);
+  app.get('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.get);
+  app.put('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.put);
+  app.get('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.get);
+  app.put('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.put);
+  app.get('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.get);
+  app.put('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.put);
+  app.get('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.get);
+  app.post('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.post);
+  app.delete('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.delete);
+  app.put('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.put);
+  app.get('/courts/:slug/local-authorities-areas-of-law', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
+  app.get('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
+  app.put('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
+  app.get('/courts/:slug/addresses', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDRESSES), app.locals.container.cradle.addressController.get);
+  app.put('/courts/:slug/addresses', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDRESSES), app.locals.container.cradle.addressController.put);
+  app.get('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.get);
+  app.put('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.put);
+  app.get('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.get);
+  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.getDeleteConfirmation);
+  app.put('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), upload.single('photo'), app.locals.container.cradle.photoController.put);
+  app.delete('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.delete);
+  app.get('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
+  app.put('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
+  app.get('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.get);
+  app.put('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.put);
 
   // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
-  app.get('/courts/:slug/facilities', app.locals.container.cradle.courtFacilitiesController.get);
-  app.put('/courts/:slug/facilities', app.locals.container.cradle.courtFacilitiesController.put);
-  app.put('/courts/facilities/add-row', app.locals.container.cradle.courtFacilitiesController.addRow);
+  app.get('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.get);
+  app.put('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.put);
+  app.put('/courts/facilities/add-row', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.addRow);
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
 

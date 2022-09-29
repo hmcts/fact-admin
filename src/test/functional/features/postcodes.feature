@@ -1,3 +1,5 @@
+@fact-admin-tab-postcodes @fact-admin-tab-types
+
 Feature: Postcodes
 
   Background:

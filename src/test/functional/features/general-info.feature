@@ -1,3 +1,4 @@
+@fact-admin-tab-general
 Feature: General Info
 
   Background:

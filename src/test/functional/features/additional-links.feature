@@ -1,3 +1,5 @@
+
+@fact-admin-tab-additional-links
 Feature: Additional-links
 
   Background:

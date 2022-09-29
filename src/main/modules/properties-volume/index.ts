@@ -1,8 +1,8 @@
 import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
-import { Application } from 'express';
-import { get, set } from 'lodash';
-import { execSync } from 'child_process';
+import {Application} from 'express';
+import {get, set} from 'lodash';
+import {execSync} from 'child_process';
 
 export class PropertiesVolume {
 

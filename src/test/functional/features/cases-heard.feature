@@ -1,3 +1,4 @@
+@fact-admin-tab-cases-heard
 Feature: Cases-Heard tab
 
   Background:
@@ -14,9 +15,7 @@ Feature: Cases-Heard tab
     When I click the cases heard tab
     Then I can view the areas of law listed
 
-
   Scenario Outline: AS an admin user when I select and deselect areas of law and click update button I should be able to update it successfully.
-
     When I select areas of law "<areaOfLaw1>" and "<areaOfLaw2>"
     And And I click on update cases heard
     Then Success message is displayed for cases heard with summary "Cases heard updated"

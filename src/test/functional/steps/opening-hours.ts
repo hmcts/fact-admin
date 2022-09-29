@@ -1,9 +1,8 @@
-import { Then, When } from 'cucumber';
+import { Then, When} from 'cucumber';
 import { expect } from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
-
 
 When('I hover over opening hours nav element', async () => {
   const selector = '#nav';

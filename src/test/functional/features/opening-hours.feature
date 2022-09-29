@@ -1,3 +1,4 @@
+@fact-admin-tab-opening-hours
 Feature: Opening Hours
 
   Background:

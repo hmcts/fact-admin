@@ -1,3 +1,4 @@
+@fact-admin-tab-emails
 Feature: Email-addresses
 
   Background:
