@@ -25,19 +25,14 @@ BeforeAll(async () => {
 
 After(async () => {
   if (scope.page && scope.page.currentPage) {
-    console.log('goes into after');
     scope.page.currentPage.close();
   }
 });
 
 AfterAll(async () => {
   if (scope.browser) {
-    console.log('goes into after all, in the if');
     await scope.browser.close();
-  } else {
-    console.log('goes into after all, in the else');
   }
-
 });
 
 Before(async (scenario) => {
