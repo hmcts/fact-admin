@@ -1,7 +1,7 @@
 import {config} from '../config';
 
 export const puppeteerConfig = {
-  headless: false,
+  headless: config.TestHeadlessBrowser,
   slowMo: config.TestSlowMo,
   ignoreHTTPSErrors: true,
   'ignore-certificate-errors': true,
