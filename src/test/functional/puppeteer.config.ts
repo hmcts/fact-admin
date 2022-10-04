@@ -12,5 +12,6 @@ export const puppeteerConfig = {
   ],
   username: '',
   superUsername: '',
-  password: ''
+  password: '',
+  waitForInitialPage: true
 };
