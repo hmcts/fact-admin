@@ -7,8 +7,6 @@ Feature: Application Progression
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "probate-service-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
@@ -29,9 +27,6 @@ Feature: Application Progression
     Then a green update message Application progression updated "Application Progressions updated"
     Then the second last Email is "test@gmail.com"
     And the last email is "test2@gmail.com"
-    When I remove all existing application types entries and save
-    And I click application progression save button
-    Then a green update message Application progression updated "Application Progressions updated"
 
   Scenario: Add and remove application types for External link
     When I remove all existing application types entries and save

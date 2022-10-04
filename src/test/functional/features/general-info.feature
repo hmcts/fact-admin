@@ -10,7 +10,6 @@ Feature: General Info
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
@@ -20,26 +19,10 @@ Feature: General Info
     And I can view common platform flag checkbox
     And I cannot view super admin content
 
-  Scenario: Super user can view and update all fields
-    When I fill in the Username and Password fields with my super user authenticated credentials
-    And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
-    When I click edit next to court with "birmingham-civil-and-family-justice-centre"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over general nav element
-    When I click the general tab
-    Then I can view the open checkbox
-    And I can view the access scheme checkbox
-    And I can view common platform flag checkbox
-    And I can view the urgent notices
-    And I can view the additional information notices
-
   Scenario: Super user can view and edit the name field
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "basildon-combined-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
@@ -58,7 +41,6 @@ Feature: General Info
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "amersham-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
@@ -71,7 +53,6 @@ Feature: General Info
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "bankruptcy-court-high-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
@@ -84,7 +65,6 @@ Feature: General Info
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "north-west-regional-divorce-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
@@ -98,7 +78,6 @@ Feature: General Info
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "amersham-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element

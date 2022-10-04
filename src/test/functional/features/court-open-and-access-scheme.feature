@@ -39,4 +39,3 @@ Feature: Court Open and Access Scheme flags
     Examples:
       | view_court_slug                            |
       | birmingham-district-probate-registry       |
-
