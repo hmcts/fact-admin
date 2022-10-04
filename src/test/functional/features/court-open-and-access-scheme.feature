@@ -24,7 +24,7 @@ Feature: Court Open and Access Scheme flags
 
     Examples:
       | view_court_slug                            |
-      | birmingham-civil-and-family-justice-centre |
+      | birmingham-district-probate-registry       |
 
   Scenario Outline: Access scheme
     When I click edit next to court with "<view_court_slug>"
@@ -38,5 +38,5 @@ Feature: Court Open and Access Scheme flags
 
     Examples:
       | view_court_slug                            |
-      | birmingham-civil-and-family-justice-centre |
-    
+      | birmingham-district-probate-registry       |
+
