@@ -19,12 +19,6 @@ When('I click the types tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing court types', async () => {
-  const elementExist = await I.isElementVisible('#courtTypesForm');
-  expect(elementExist).equal(true);
-});
-
-
 When('I check a court type', async () => {
   const selector = '#court_types-3';
   const elementExist = await I.checkElement('#court_types-3');

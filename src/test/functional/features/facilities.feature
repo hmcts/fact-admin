@@ -11,7 +11,6 @@ Feature: Facilities
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     And I click the facilities tab
-    Then I can view the existing facilities
 
   Scenario: As a user I should be able to add and remove facilities successfully
     When I remove all existing facility entries and save

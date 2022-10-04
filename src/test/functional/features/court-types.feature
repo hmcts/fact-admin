@@ -11,7 +11,6 @@ Feature: Court Types
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over types nav element
     When I click the types tab
-    Then I can view the existing court types
 
   Scenario: Select and remove a court type
     When I check a court type

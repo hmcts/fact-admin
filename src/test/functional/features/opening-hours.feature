@@ -11,7 +11,6 @@ Feature: Opening Hours
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click the opening hours tab
-    Then I can view the existing opening hours
     When I remove all existing opening hours entries and save
 
   Scenario: Add and remove opening hours

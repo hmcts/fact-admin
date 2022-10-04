@@ -12,7 +12,6 @@ Feature: Additional-links
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over Additional Links nav element
     Then I click the Additional Links tab
-    Then I can view the existing Additional Links
     When I remove all existing Additional Links entries and save
     Then a green update message is displayed in the Additional Links tab "Additional links updated"
     And there are no  Additional Link entries

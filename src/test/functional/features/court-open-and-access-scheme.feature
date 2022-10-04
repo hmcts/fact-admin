@@ -7,9 +7,6 @@ Feature: Court Open and Access Scheme flags
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
-    And they are in alphabetical order
-
 
   Scenario Outline: Open
 

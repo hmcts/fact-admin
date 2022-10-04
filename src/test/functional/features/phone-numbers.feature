@@ -11,7 +11,6 @@ Feature: Phone Numbers
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over phone numbers nav element
     When I click the phone numbers tab
-    Then I can view the existing phone numbers
     When I remove all existing phone number entries and save
 
   Scenario: Add and remove phone numbers

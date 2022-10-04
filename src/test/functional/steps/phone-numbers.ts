@@ -17,11 +17,6 @@ Then('I click the phone numbers tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing phone numbers', async () => {
-  const elementExist = await I.isElementVisible('#phoneNumbersForm');
-  expect(elementExist).equal(true);
-});
-
 When('I enter new phone number entry by selecting description at index {int} and entering {string}, ' +
   '{string} and {string}', async (index: number, number: string, explanation: string, explanationCy: string) => {
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');

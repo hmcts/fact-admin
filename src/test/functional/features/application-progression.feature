@@ -11,7 +11,6 @@ Feature: Application Progression
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
     When I click the application progression tab
-    Then I can view the existing application types
 
   Scenario: Add and remove application types for Email
     When I remove all existing application types entries and save

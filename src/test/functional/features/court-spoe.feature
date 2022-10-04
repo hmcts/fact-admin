@@ -12,8 +12,6 @@ Feature: Spoe tab
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click spoe tab
-    Then I can view the spoe areas of law listed
-
 
   Scenario Outline: As an super admin user I can update the spoe areas of laws for the court.
 

@@ -11,7 +11,6 @@ Feature: Email-addresses
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over emails nav element
     Then I click the Emails tab
-    Then I can view the existing emails
 
   Scenario: Add and remove Email Addresses
     When I remove all existing email entries and save

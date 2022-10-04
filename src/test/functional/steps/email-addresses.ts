@@ -18,11 +18,6 @@ Then('I click the Emails tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing emails', async () => {
-  const elementExist = await I.isElementVisible('#emailsContent');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing email entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#emailsTab', 'deleteEmail', 'saveEmail');
 });
