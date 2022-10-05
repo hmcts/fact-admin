@@ -18,7 +18,7 @@
     "sonar-scan": "sonar-scanner",
     "fortifyScan": "./java/gradlew -p java fortifyScan",
     "test:smoke": "jest -c jest.smoke.config.js",
-    "test:cucumber": "cucumber-js --retry 5 --parallel 5",
+    "test:cucumber": "cucumber-js --retry 3 --parallel 30",
     "test:functional": "yarn test:cucumber && yarn test:pa11y",
     "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
