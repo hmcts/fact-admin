@@ -13,5 +13,6 @@ export const puppeteerConfig = {
   username: '',
   superUsername: '',
   password: '',
-  waitForInitialPage: true
+  waitForInitialPage: true,
+  timeout: 30000
 };
