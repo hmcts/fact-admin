@@ -10,11 +10,13 @@ cookieManager.init({
       cookies: [
         'i18next',
         'fact-session',
-        '_oauth2_proxy'
+        '_oauth2_proxy',
+        '__auth-token'
       ]
     },
     {
       categoryName: 'analytics',
+      optional: false,
       cookies: [
         '_ga',
         '_gid',
@@ -23,6 +25,7 @@ cookieManager.init({
     },
     {
       categoryName: 'apm',
+      optional: false,
       cookies: [
         'dtCookie',
         'dtLatC',
