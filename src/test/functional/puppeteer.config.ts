@@ -14,6 +14,6 @@ export const puppeteerConfig = {
   superUsername: '',
   password: '',
   waitForInitialPage: true,
-  timeout: 30000,
+  timeout: 10000,
   userDataDir: './src/test/functional/user_data'
 };
