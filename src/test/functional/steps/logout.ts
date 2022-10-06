@@ -12,6 +12,18 @@ Given('that I am a logged-in admin or super admin user', async () => {
   expect(element).equal(true);
 });
 
+Then('I am logged out if I am a super admin', async () => {
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && await I.isElementVisible('#audits')) {
+    await I.click('#logout');
+  }
+});
+
+Then('I am logged out if I am an admin user', async () => {
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && !(await I.isElementVisible('#audits'))) {
+    await I.click('#logout');
+  }
+});
+
 Given('I click the Logout link', async () => {
   if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK') {
     await I.click('#logout');
