@@ -9,7 +9,6 @@ cookieManager.init({
       optional: false,
       cookies: [
         'i18next',
-        'fact-session',
         '_oauth2_proxy',
         '__auth-token'
       ]
