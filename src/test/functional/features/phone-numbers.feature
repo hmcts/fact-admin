@@ -4,6 +4,7 @@ Feature: Phone Numbers
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    And I click the Logout link
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button

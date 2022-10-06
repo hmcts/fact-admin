@@ -13,7 +13,9 @@ Given('that I am a logged-in admin or super admin user', async () => {
 });
 
 Given('I click the Logout link', async () => {
-  await I.click('#logout');
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK') {
+    await I.click('#logout');
+  }
 });
 
 Then('the system will log me out', async () => {

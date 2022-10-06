@@ -3,6 +3,7 @@ Feature: Login/Logout
   Background:
     Given I am on new browser
     And I am on FACT homepage
+    And I click the Logout link
 
   Scenario Outline: Login Unsuccessful
 
