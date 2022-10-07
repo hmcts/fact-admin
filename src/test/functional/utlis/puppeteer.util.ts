@@ -274,7 +274,7 @@ export const setElementValueForInputField = async (selector: string, value: stri
 
 export const isElementVisible = async (selector: string) => {
   let visible = true;
-  await scope.page.waitForSelector(selector, {visible: true, timeout: 30000})
+  await scope.page.waitForSelector(selector, {visible: true, timeout: 6000})
     .catch(() => {
       console.log(`Element ${selector} was not visible`);
       visible = false;
