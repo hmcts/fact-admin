@@ -13,6 +13,6 @@ export const puppeteerConfig = {
   username: '',
   superUsername: '',
   password: '',
-  waitForInitialPage: true,
+  // waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data'
 };
