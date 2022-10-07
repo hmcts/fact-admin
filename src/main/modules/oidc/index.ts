@@ -9,6 +9,7 @@ import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
 import {Logger} from '../../types/Logger';
+import {CourtsController} from '../../app/controller/courts/CourtsController';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -143,7 +144,10 @@ export class OidcMiddleware {
         if (req.url.includes('/oauth2/callback')) {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
-          return res.render('courts/courts', {courts});
+          const regions = await req.scope.cradle.api.getRegions();
+          const courtsController = new CourtsController();
+          const regionsSelect = courtsController.getRegionsForSelect(regions);
+          return res.render('courts/courts', {courts, regionsSelect});
         }
         return next();
       } else if (req.xhr) {
@@ -151,6 +155,11 @@ export class OidcMiddleware {
       } else return res.redirect('/login');
     });
   }
+
+/*  private getRegionsForSelect(regions: Promise<Region[]>): SelectItem[] {
+    return regions.map((rg: Region) => (
+      {value: rg.id, text: rg.name, selected: false}));
+  }*/
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
