@@ -22,6 +22,7 @@ import {County} from '../../types/County';
 import {FactApiBase} from './FactApiBase';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
+import {Region} from '../../types/Region';
 
 
 
@@ -306,6 +307,10 @@ export class FactApi extends FactApiBase {
 
   public async updateCourtsInfo(body: UpdateCourtsInfoRequest): Promise<void> {
     return this.put<void,typeof body>(`${this.baseURL}/info`, body);
+  }
+
+  public getRegions(): Promise<Region[]> {
+    return this.get<Region[]>(`${this.adminUrl}/regions`);
   }
 
   private errorHandler<T>(defaultValue: T) {
