@@ -23,14 +23,11 @@
         }) }}
       </div>
 
-      <div id='courtRegions' class='govuk-grid-column-one-quarter'>
+      <div id='regionsSelector' class='govuk-grid-column-one-quarter'>
         {{ govukSelect({
-          id: "courtRegions",
+          id: "regions",
           name: "regions",
-          label: {
-            text: "Region"
-          },
-          items: court.slug
+          items: regionsSelect | selectFilter(regionsSelect.value)
         }) }}
       </div>
 

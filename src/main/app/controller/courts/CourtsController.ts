@@ -2,6 +2,7 @@ import autobind from 'autobind-decorator';
 import {Response} from 'express';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Region} from '../../../types/Region';
+import {SelectItem} from '../../../types/CourtPageData';
 
 @autobind
 export class CourtsController {
