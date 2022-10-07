@@ -4,7 +4,6 @@ Feature: General Info
   Background:
     Given I am on new browser
     Given I am on FACT homepage
-    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
 
   Scenario: Super user can view and edit the name field
