@@ -276,7 +276,7 @@ export const isElementVisible = async (selector: string, timeout: number) => {
   let visible = true;
   await scope.page.waitForSelector(selector, {visible: true, timeout: timeout})
     .catch(() => {
-      console.log(`Element ${selector} was not visible`);
+      console.log(`Element ${selector} was not visible after: ${timeout}ms`);
       visible = false;
     });
   return visible;
