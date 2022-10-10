@@ -2,6 +2,7 @@ import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
+import {isElementVisible} from '../utlis/puppeteer.util';
 
 Then('I can view the courts or tribunals in a list format', async () => {
   const elementExist = await I.checkElement('#courts');
@@ -15,6 +16,7 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
+  await isElementVisible('#edit-' + courtSlug, 10000);
   const elementExist = await I.checkElement('#edit-' + courtSlug);
   expect(elementExist).equal(true);
   await I.click('#edit-' + courtSlug);

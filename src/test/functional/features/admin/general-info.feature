@@ -4,7 +4,6 @@ Feature: General Info
   Background:
     Given I am on new browser
     Given I am on FACT homepage
-    Then I am logged out if I am a super admin
     And I am on the admin portal sign in page
 
   Scenario: Admin user can view and update urgent notices and PUAS flag only
