@@ -205,6 +205,7 @@ export const getLastElementValue = async (selector: string) => {
     const value = await scope.page.evaluate((x: any) => x.value, input[lastIdx]);
     return value;
   } catch (error) {
+    fail(error);
   }
 };
 
