@@ -6,24 +6,6 @@ Feature: General Info
     Given I am on FACT homepage
     And I am on the admin portal sign in page
 
-  Scenario: Super user can view and edit the name field
-    When I fill in the Username and Password fields with my super user authenticated credentials
-    And click the Sign In button
-    When I select Include closed courts
-    When I click edit next to court with "basildon-combined-court"
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over general nav element
-    When I click the general tab
-    Then I enter "Basildon Combined Court test" in the Name textbox
-    And I click the general info save button
-    Then a success message is displayed on the general info tab "General Information updated"
-    When I click on continue button
-    When I click on courts link
-    When I click edit next to court with "basildon-combined-court-test"
-    Then I enter "Basildon Combined Court" in the Name textbox
-    And I click the general info save button
-    Then a success message is displayed on the general info tab "General Information updated"
-
   Scenario: Cant leave the name blank
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
