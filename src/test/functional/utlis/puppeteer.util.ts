@@ -61,7 +61,7 @@ export const uploadFile = async (selector: string, path: string) => {
     ]);
     await fileChooser.accept([path]);
   } catch (error) {
-    fail(error);
+    console.log(`uploadFile for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -145,7 +145,7 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
 
     await frame.$eval('#tinymce > p', (el: HTMLElement, value: string) => el.innerText = value, value);
   } catch (error) {
-    fail(error);
+    console.log(`fillFieldInIframe for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -166,7 +166,7 @@ export const clearField = async (selector: string) => {
     await input.click({clickCount: 3});
     await scope.page.keyboard.press('Backspace');
   } catch (error) {
-    fail(error);
+    console.log(`clearField for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -174,7 +174,7 @@ export const selectItem = async (selector: string, value: string) => {
   try {
     await scope.page.select(selector, value);
   } catch (error) {
-    fail(error);
+    console.log(`selectItem for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -183,7 +183,7 @@ export const countElement = async (selector: string): Promise<number> => {
     const count = (await scope.page.$$(selector)).length;
     return count;
   } catch (error) {
-    fail(error);
+    console.log(`countElement for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -194,7 +194,7 @@ export const clickElementAtIndex = async (selector: string, index: number) => {
         (document.querySelectorAll(entrySelector)[index] as HTMLButtonElement).click(), selector, index
     );
   } catch (error) {
-    fail(error);
+    console.log(`clickElementAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -205,7 +205,7 @@ export const getLastElementValue = async (selector: string) => {
     const value = await scope.page.evaluate((x: any) => x.value, input[lastIdx]);
     return value;
   } catch (error) {
-    fail(error);
+    console.log(`getLastElementValue for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -219,7 +219,7 @@ export const getSelectedIndexAtIndex = async (selector: string, index: number) =
     const input = await scope.page.$$(selector);
     return await scope.page.evaluate((x: HTMLSelectElement) => x.selectedIndex, input[index]);
   } catch (error) {
-    fail(error);
+    console.log(`getSelectedIndexAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -233,7 +233,7 @@ export const getElementValueAtIndex = async (selector: string, index: number) =>
     const input = await scope.page.$$(selector);
     return await scope.page.evaluate((x: HTMLSelectElement | HTMLInputElement) => x.value, input[index]);
   } catch (error) {
-    fail(error);
+    console.log(`getElementValueAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -250,7 +250,7 @@ export const setElementValueAtIndex = async (selector: string, index: number, va
     return await scope.page.evaluate((el: HTMLSelectElement | HTMLInputElement, type: ('select' | 'input'), value: string) =>
       (type === 'select' ? (el as HTMLSelectElement).selectedIndex = parseInt(value) : el.value = value), input[index], type, value);
   } catch (error) {
-    fail(error);
+    console.log(`setElementValueAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -258,7 +258,7 @@ export const setElementValueForInputField = async (selector: string, value: stri
   try {
     await scope.page.$eval(selector, (el: HTMLInputElement, value: string) => el.value = value, value);
   } catch (error) {
-    fail(error);
+    console.log(`setElementValueForInputField for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -275,7 +275,7 @@ export const isElementChecked = async (selector: string) => {
   try {
     return await scope.page.$eval(selector, (checkbox: any) => checkbox.checked);
   } catch (error) {
-    fail(error);
+    console.log(`isElementChecked for Selector(${selector}) failed with: ${error}`);
   }
 };
 
