@@ -8,7 +8,6 @@ import './postcodes';
 import './local-authorities-list';
 import './spoe';
 import './application-progression';
-import './cookie-manager';
 import {OpeningHoursController} from './opening-hours';
 import {EmailsController} from './emails';
 import {CourtGeneralInfoController} from './courtGeneralInfo';
