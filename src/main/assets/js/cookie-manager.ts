@@ -14,7 +14,6 @@ cookieManager.init({
     },
     {
       categoryName: 'analytics',
-      optional: true,
       cookies: [
         '_ga',
         '_gid',
@@ -23,7 +22,6 @@ cookieManager.init({
     },
     {
       categoryName: 'apm',
-      optional: true,
       cookies: [
         'dtCookie',
         'dtLatC',
