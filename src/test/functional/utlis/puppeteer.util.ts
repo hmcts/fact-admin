@@ -258,7 +258,7 @@ export const setElementValueForInputField = async (selector: string, value: stri
   try {
     await scope.page.$eval(selector, (el: HTMLInputElement, value: string) => el.value = value, value);
   } catch (error) {
-    console.log(`setElementValueForInputField for Selector(${selector}) failed with: ${error}`);
+    console.log(`setElementValueForInputField for selector(${selector}) failed with: ${error}`);
   }
 };
 
