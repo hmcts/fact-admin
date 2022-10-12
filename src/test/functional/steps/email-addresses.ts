@@ -65,6 +65,11 @@ Then('the second last email address is displayed with description at index {int}
   const expInputSelector = '#emailsTab input[name$="[explanation]"]';
   const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
 
+  await I.isElementVisible(descriptionSelectSelector, 5000);
+  await I.isElementVisible(addressInputSelector, 5000);
+  await I.isElementVisible(expInputSelector, 5000);
+  await I.isElementVisible(expCyInputSelector, 5000);
+
   expect(await I.getSelectedIndexAtIndex(descriptionSelectSelector, secondLastEmailIdx)).equal(id);
   expect(await I.getElementValueAtIndex(addressInputSelector, secondLastEmailIdx)).equal(email);
   expect(await I.getElementValueAtIndex(expInputSelector, secondLastEmailIdx)).equal(explanation);

@@ -27,6 +27,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
 When('I select Include closed courts', async () => {
   const selector = '#toggle-closed-courts-display';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
