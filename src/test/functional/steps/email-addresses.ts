@@ -53,7 +53,7 @@ When('I click save button', async () => {
 
 Then('a green update message showing email updated is displayed', async () => {
   const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
-  await I.isElementVisible(selector, 10000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
