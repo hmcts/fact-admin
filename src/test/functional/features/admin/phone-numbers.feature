@@ -7,16 +7,13 @@ Feature: Phone Numbers
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over phone numbers nav element
     When I click the phone numbers tab
-    Then I can view the existing phone numbers
+    When I remove all existing phone number entries and save
 
   Scenario: Add and remove phone numbers
-    When I remove all existing phone number entries and save
     Then a green message is displayed for updated entries "Phone Numbers updated"
     When I enter new phone number entry by selecting description at index 4 and entering "0123 456 7890", "Fine" and "Dirwy"
     Then I click the Add button in the phone number tab
@@ -25,14 +22,8 @@ Feature: Phone Numbers
     Then a green message is displayed for updated entries "Phone Numbers updated"
     Then the phone number entry in second last position has description at index 4 number "0123 456 7890" explanation "Fine" and welsh explanation "Dirwy"
     And the phone number entry in last position has description at index 5 number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
-    When I click the remove button under a phone number entry
-    And I click the remove button under a phone number entry
-    Then I click save in the phone number tab
-    Then a green message is displayed for updated entries "Phone Numbers updated"
-    And there are no phone number entries
 
   Scenario: Reorder phone numbers
-    When I remove all existing phone number entries and save
     Then a green message is displayed for updated entries "Phone Numbers updated"
     When I enter new phone number entry by selecting description at index 2 and entering "0333 222 1111", "ReorderTest1" and "ReorderTest1Cy"
     Then I click the Add button in the phone number tab

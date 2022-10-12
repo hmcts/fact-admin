@@ -18,11 +18,6 @@ Then('I click the application progression tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing application types', async () => {
-  const elementExist = await I.isElementVisible('#applicationProgressionForm');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing application types entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#application-progression', 'deleteUpdate', 'saveUpdate');
 });

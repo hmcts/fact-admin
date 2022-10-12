@@ -8,14 +8,10 @@ Feature: Spoe tab
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "administrative-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click spoe tab
-    Then I can view the spoe areas of law listed
-
 
   Scenario Outline: As an super admin user I can update the spoe areas of laws for the court.
 

@@ -1,4 +1,4 @@
-import { config } from '../config';
+import {config} from '../config';
 
 export const puppeteerConfig = {
   headless: config.TestHeadlessBrowser,
@@ -12,5 +12,7 @@ export const puppeteerConfig = {
   ],
   username: '',
   superUsername: '',
-  password: ''
+  password: '',
+  waitForInitialPage: true,
+  userDataDir: './src/test/functional/user_data'
 };

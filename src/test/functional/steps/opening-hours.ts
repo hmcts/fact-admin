@@ -18,11 +18,6 @@ When('I click the opening hours tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing opening hours', async () => {
-  const elementExist = await I.isElementVisible('#openingTimesForm');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing opening hours entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#openingTimesTab', 'deleteOpeningHours', 'saveOpeningTime');
 });

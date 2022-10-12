@@ -3,6 +3,7 @@ Feature: Login/Logout
   Background:
     Given I am on new browser
     And I am on FACT homepage
+    Then I am logged out if I am a super admin
 
   Scenario Outline: Login Unsuccessful
 

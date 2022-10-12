@@ -7,13 +7,10 @@ Feature: Email-addresses
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "barnet-civil-and-family-courts-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over emails nav element
     Then I click the Emails tab
-    Then I can view the existing emails
 
   Scenario: Add and remove Email Addresses
     When I remove all existing email entries and save

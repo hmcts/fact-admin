@@ -7,13 +7,10 @@ Feature: Facilities
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     And I click the facilities tab
-    Then I can view the existing facilities
 
   Scenario: As a user I should be able to add and remove facilities successfully
     When I remove all existing facility entries and save

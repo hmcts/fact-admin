@@ -19,7 +19,7 @@ Feature: Facility Types List
     When I click facility type save button
     Then The error message displays for facility type "A facility type with the same name already exists."
 
-  Scenario: Deleting new Facility Type
+  Scenario: Adding and deleting new Facility Type
     Then I click on Add new facility type
     Then I am redirected to the "Add New Facility Type" facility type form
     Then I enter "Test123" in facility name textbox
