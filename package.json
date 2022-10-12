@@ -24,6 +24,7 @@
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
   },
   "dependencies": {
+    "@hmcts/cookie-manager": "1.0.0",
     "@azure/storage-blob": "^12.11.0",
     "@hmcts/info-provider": "^1.0.0",
     "@hmcts/nodejs-healthcheck": "^1.7.3",
@@ -109,7 +110,7 @@
     "node-sass": "^7.0.1",
     "nodemon": "^2.0.19",
     "pa11y": "^6.2.3",
-    "puppeteer": "^15.4.0",
+    "puppeteer": "^18.2.0",
     "request": "^2.88.2",
     "sass-lint": "^1.13.1",
     "sass-loader": "^13.0.2",
