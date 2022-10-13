@@ -27,14 +27,14 @@ Given('I click the update button', async () => {
 
 Then('a message is displayed on the page', async () => {
   const selector = '#updated-message';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   const selector = '#generalInfoTab #urgent-notice-welsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   await I.clearField(selector);
   await I.fillFieldInIframe(selector, welshMessage);
 });
@@ -93,7 +93,7 @@ When('I unclick the Participates in access scheme checkbox', async () => {
 
 Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
   const selector = '#view-in-new-window';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 

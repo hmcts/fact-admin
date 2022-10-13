@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 When('I enter {string} into search textbox', async (searchText: string) => {
   const selector = '#searchCourts';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.fillField(selector, searchText);
@@ -12,7 +12,7 @@ When('I enter {string} into search textbox', async (searchText: string) => {
 
 Then('All courts that include {string} should be displayed sorted by name', async (searchText: string) => {
   const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
@@ -29,7 +29,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
 When('I select Include closed courts', async () => {
   const selector = '#toggle-closed-courts-display';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
@@ -48,7 +48,7 @@ Then('All courts that include {string} should be displayed including closed clou
 
 When('I click on name to sort in a descending order', async () => {
   const selector = '#tableCourtsName';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -56,7 +56,7 @@ When('I click on name to sort in a descending order', async () => {
 
 Then('Then All courts should be displayed sorted by name in a descending order', async () => {
   const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 

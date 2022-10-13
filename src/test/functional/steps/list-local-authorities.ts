@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click on lists link', async () => {
   const selector = '#lists';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -13,14 +13,14 @@ When('I click on lists link', async () => {
 
 Then('I am redirected to the {string} page', async (editListTitle: string) => {
   const selector = '#main-content > h1';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const pageTitleElement = await I.getElement(selector);
   expect(await I.getElementText(pageTitleElement)).equal(editListTitle);
 });
 
 When('I hover over the tab title', async () => {
   const selector = '#nav';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -28,7 +28,7 @@ When('I hover over the tab title', async () => {
 
 When('I click on local authorities list', async () => {
   const selector = '#tab_local-authorities';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -36,14 +36,14 @@ When('I click on local authorities list', async () => {
 
 Then('I should land in {string} page', async (editLocalAuthorityTitle: string) => {
   const selector = '#localAuthoritiesListContent > h2';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const pageTitleElement = await I.getElement(selector);
   expect(await I.getElementText(pageTitleElement)).equal(editLocalAuthorityTitle);
 });
 
 When('I select local authority {string}', async (localAuthorityId: string) => {
   const selector = '#' + localAuthorityId;
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
@@ -54,7 +54,7 @@ When('I select local authority {string}', async (localAuthorityId: string) => {
 
 When('I edit the local authority {string}', async (newLocalAuthority: string) => {
   const selector = '#local-authority';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(selector, newLocalAuthority);
@@ -66,7 +66,7 @@ When('I click on save local authority list', async () => {
 
 Then('Success message is displayed for local authorities list with summary {string}', async (successMsg: string) => {
   const selector = '#localAuthoritiesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

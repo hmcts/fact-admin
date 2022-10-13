@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over emails nav element', async () => {
   const selector = '#nav';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -14,7 +14,7 @@ When('I hover over emails nav element', async () => {
 
 Then('I click the Emails tab', async () => {
   const selector = '#tab_emails';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -60,7 +60,7 @@ When('I click save button', async () => {
 
 Then('a green update message showing email updated is displayed', async () => {
   const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
-  expect(await I.isElementVisible(selector, 3000)).equal(false);
+  expect(await I.isElementVisible(selector, 3000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
