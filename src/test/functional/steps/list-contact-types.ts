@@ -10,6 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on contact type list', async () => {
   const selector = '#tab_contact-types';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -20,12 +21,14 @@ Given('I click edit contact type {string}', async (contactType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#contactTypeListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I am redirected to the contact type {string} form', async (editContactType: string) => {
   const selector = '#contactTypeListContent > h2';
+  await I.isElementVisible(selector, 5000);
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(editContactType);
 });
@@ -40,22 +43,26 @@ Given('I will make sure to clear entries for the Contact Type', async () => {
 
 Then('I enter {string} in name textbox', async (name: string) => {
   const selector = '#ct-type';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, name);
 });
 
 Then('I enter {string} in name welsh textbox', async (nameCy: string) => {
   const selector = '#ct-type-cy';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, nameCy);
 });
 
 When('I click Contact Type save button', async () => {
   const selector = '#saveContactTypeBtn';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed for the updated Contact Type {string}', async (message: string) => {
   const selector = '#contactTypeListContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
@@ -63,6 +70,7 @@ Then('A green message is displayed for the updated Contact Type {string}', async
 
 Then('I click on Add new Contact Type',async () => {
   const selector = '#contactTypeListContent > div > a';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -73,6 +81,7 @@ Then('The error message displays for a Contact type {string}', async (errMessage
   expect(errorTitle).equal(true);
 
   const selector = '#contactTypeListContent > div.govuk-error-summary > div > ul > li';
+  await I.isElementVisible(selector, 5000);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
@@ -82,6 +91,7 @@ Then('I click {string} delete Contact type button',async (contactTypeTest: strin
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#contactTypeListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });

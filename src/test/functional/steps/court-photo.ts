@@ -6,6 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over nav element', async () => {
   const selector = '#nav';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -13,6 +14,7 @@ When('I hover over nav element', async () => {
 
 When('I click the photo tab', async () => {
   const selector = '#tab_photo';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -25,12 +27,15 @@ Then('I can view the existing court photo form', async () => {
 
 When('I check for existing photo then delete it',  async () => {
   const selector = '#photoContent > h2:nth-child(2)';
+  await I.isElementVisible(selector, 5000);
   if(await I.checkElement(selector))
   {
     const selector = 'button[name="deletePhoto"]';
+    await I.isElementVisible(selector, 5000);
     expect(await I.checkElement(selector)).equal(true);
     await I.click(selector);
     const confirmDeleteSelector = '#confirmDelete';
+    await I.isElementVisible(confirmDeleteSelector, 5000);
     expect(await I.checkElement(confirmDeleteSelector)).equal(true);
     await I.click(confirmDeleteSelector);
   }
@@ -38,6 +43,7 @@ When('I check for existing photo then delete it',  async () => {
 
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
+  await I.isElementVisible(fileSelector, 5000);
   expect(await I.checkElement(fileSelector)).equal(true);
   const filePath = 'src/test/functional/SampleJPGImage_100kbmb (1).jpg';
   await I.uploadFile(fileSelector,filePath);
@@ -45,6 +51,7 @@ When('I upload new photo',  async () => {
 
 When('I click update photo button', async () => {
   const selector = 'button[name="updatePhoto"]';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -52,5 +59,6 @@ When('I click update photo button', async () => {
 
 Then('A green message is displayed for {string}', async (message: string) => {
   const selector = '#photoContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await I.isElementVisible(selector, 5000);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });

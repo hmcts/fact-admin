@@ -1,11 +1,12 @@
-import { Then, When} from 'cucumber';
-import { expect } from 'chai';
+import {Then, When} from 'cucumber';
+import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over opening hours nav element', async () => {
   const selector = '#nav';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -13,6 +14,7 @@ When('I hover over opening hours nav element', async () => {
 
 When('I click the opening hours tab', async () => {
   const selector = '#tab_opening-hours';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -33,6 +35,8 @@ When('I enter a new opening hours entry by selecting description at index {int} 
 
   const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
   const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
+  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(hoursSelector, 5000);
 
   await I.setElementValueAtIndex(typeSelector, entryFormIdx, typeIdx, 'select');
   await I.setElementValueAtIndex(hoursSelector, entryFormIdx, text, 'input');
@@ -53,6 +57,7 @@ Then('a green update message is displayed in the opening hours tab', async () =>
 
 Then('the second last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const secondLastIndex = numOpeningTimes - 4; // we deduct one each for zero-based index, hidden template fieldset, new opening hours fieldset and the last entry.
 
@@ -65,6 +70,7 @@ Then('the second last opening hours is displayed with description at index {int}
 
 Then('the last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const lastIndex = numOpeningTimes - 3; // we deduct one each for zero-based index, hidden template fieldset and new opening hours fieldset.
 
@@ -106,6 +112,9 @@ When('I enter duplicated opening hour description', async () => {
   const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
   const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
 
+  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(hoursSelector, 5000);
+
   await I.setElementValueAtIndex(typeSelector, entryFormIdx, 3, 'select');
   await I.setElementValueAtIndex(hoursSelector, entryFormIdx, '9:00am to 4:00pm', 'input');
 
@@ -116,6 +125,7 @@ When('I enter duplicated opening hour description', async () => {
 Then('An error is displayed for opening hours with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -136,11 +146,13 @@ Then('An error is displayed for opening hours with summary {string} and descript
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#openingTimesContent > div > div > ul > li';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -148,6 +160,7 @@ Then('An error is displayed for opening hours with summary {string} and hours fi
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#hours-' + fieldsetErrorIndex + '-error';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const hoursErrorElement = await I.getElement(selector);
   expect(await I.getElementText(hoursErrorElement)).contains(message);
@@ -163,6 +176,7 @@ When('I click the remove button under an opening hours entry', async () => {
 
 When('I click the move up button on the last opening hours entry', async () => {
   const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
   const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
 
@@ -172,6 +186,7 @@ When('I click the move up button on the last opening hours entry', async () => {
 
 When('I click the move down button on the second last opening hours entry', async () => {
   const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
   // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
   const secondLastOpeningHrsIdx = numEntries - 4;

@@ -1,7 +1,7 @@
-import {Then, When,Given} from 'cucumber';
+import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
-import {expect} from 'chai';
 import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
+import {expect} from 'chai';
 
 async function checkAndClearField (aofFieldElement: string) {
   expect(await I.checkElement(aofFieldElement)).equal(true);
@@ -15,6 +15,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on areas of law list', async () => {
   const selector = '#tab_areas-of-law';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);

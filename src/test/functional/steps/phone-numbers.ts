@@ -5,6 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over phone numbers nav element', async () => {
   const selector = '#nav';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -12,6 +13,7 @@ When('I hover over phone numbers nav element', async () => {
 
 Then('I click the phone numbers tab', async () => {
   const selector = '#tab_phone-numbers';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -31,6 +33,11 @@ When('I enter new phone number entry by selecting description at index {int} and
   const numberInputSelector = '#phoneNumbersTab input[name$="[number]"]';
   const explanationInputSelector = '#phoneNumbersTab input[name$="[explanation]"]';
   const explanationCyInputSelector = '#phoneNumbersTab input[name$="[explanation_cy]"]';
+
+  await I.isElementVisible(selectSelector, 5000);
+  await I.isElementVisible(numberInputSelector, 5000);
+  await I.isElementVisible(explanationInputSelector, 5000);
+  await I.isElementVisible(explanationCyInputSelector, 5000);
 
   await I.setElementValueAtIndex(selectSelector, entryFormIdx, index, 'select');
   await I.setElementValueAtIndex(numberInputSelector, entryFormIdx, number);
@@ -80,6 +87,7 @@ Then('the phone number entry in last position has description at index {int} num
 
 Then('a green message is displayed for updated entries {string}', async (message: string) => {
   const selector = '#phoneNumbersContent > div > h1';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
 
   const messageUpdate = await I.getElement('#phoneNumbersContent > div > h1');
@@ -112,11 +120,13 @@ When('I left the phone number entry blank and select description at index {int}'
 Then('an error message is displayed for phone number tab with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -124,6 +134,7 @@ Then('an error message is displayed for phone number tab with summary {string} a
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactDescription-' + fieldsetErrorIndex + '-error';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
@@ -133,11 +144,13 @@ Then('an error message is displayed for phone number tab with summary {string} a
 Then('an error message is displayed for phone number tab with summary {string} and number field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -145,6 +158,7 @@ Then('an error message is displayed for phone number tab with summary {string} a
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactNumber-' + fieldsetErrorIndex + '-error';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
@@ -156,6 +170,7 @@ Then('I click the Add button in the phone number tab', async () => {
 
 Then('I click save in the phone number tab', async () => {
   const selector = '#phoneNumbersTab button[name="savePhoneNumbers"]';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -170,6 +185,7 @@ When('I click the remove button under a phone number entry', async () => {
   const numPhoneNumbers = await I.countElement('#phoneNumbersTab fieldset');
 
   const selector = '#phoneNumbersTab button[name="deletePhoneNumber"]';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -190,6 +206,7 @@ Then('there are no phone number entries', async () => {
 
 When('I click the move down button on the second last phone number entry', async () => {
   const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numEntries = await I.countElement(fieldsetSelector);
   // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
   const secondLastOpeningHrsIdx = numEntries - 4;
@@ -200,6 +217,7 @@ When('I click the move down button on the second last phone number entry', async
 
 When('I click the move up button on the last phone number entry', async () => {
   const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numEntries = await I.countElement(fieldsetSelector);
   const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
 

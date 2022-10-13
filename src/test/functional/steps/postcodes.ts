@@ -5,6 +5,7 @@ import * as I from '../utlis/puppeteer.util';
 
 When('I click the postcodes tab', async () => {
   const selector = '#tab_postcodes';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -20,6 +21,7 @@ Then('A green message is displayed for the postcodes {string}', async (message: 
 
 Then('I click the select all', async () => {
   const selector = '#postcodes-select-all';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -27,6 +29,7 @@ Then('I click the select all', async () => {
 
 When('I click the delete all selected button', async () => {
   const selector = 'button[name="deletePostcodes"]';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -34,6 +37,7 @@ When('I click the delete all selected button', async () => {
 
 When('I add new postcodes {string}', async (postcodes: string) => {
   const postcodeInputSelector = '#addNewPostcodes';
+  await I.isElementVisible(postcodeInputSelector, 5000);
   const elementExist = await I.checkElement(postcodeInputSelector);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(postcodeInputSelector, postcodes);
@@ -41,6 +45,7 @@ When('I add new postcodes {string}', async (postcodes: string) => {
 
 Then('I click the add postcode button', async () => {
   const buttonSelector = 'button[name="addPostcodes"]';
+  await I.isElementVisible(buttonSelector, 5000);
   const elementExist = await I.checkElement(buttonSelector);
   expect(elementExist).equal(true);
   await I.click(buttonSelector);
@@ -51,6 +56,7 @@ Then('The error message display for the postcodes {string}', async (errorMessage
   expect(errorTitle).equal(true);
 
   const selector = '#postcodesContent > div.govuk-error-summary > div > ul';
+  await I.isElementVisible(selector, 5000);
   const errorList = await I.getElement(selector);
   expect(await I.getElementText(errorList)).equal(errorMessage);
 });

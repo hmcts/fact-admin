@@ -35,6 +35,7 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
 
 When('I click view next to court with {string}', async (courtSlug: string) => {
   const selector = '#view-' + courtSlug;
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -42,6 +43,7 @@ When('I click view next to court with {string}', async (courtSlug: string) => {
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
   const selector = '#main-content > div > div > h1';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const viewCourtHeading = await I.getElement(selector);

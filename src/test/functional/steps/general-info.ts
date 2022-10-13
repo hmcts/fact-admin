@@ -10,6 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I hover over general nav element', async () => {
   const selector = '#nav';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -17,20 +18,27 @@ When('I hover over general nav element', async () => {
 
 When('I click the general tab', async () => {
   const selector = '#tab_general';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('I can view the urgent notices', async () => {
-  const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice');
-  const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh');
+  const selector1 = '#generalInfoTab #urgent-notice';
+  const selector2 = '#generalInfoTab #urgent-notice-welsh';
+  await I.isElementVisible(selector1, 5000);
+  await I.isElementVisible(selector2, 5000);
+  const urgentNoticesExist = await I.checkElement(selector1);
+  const welshUrgentNoticesExist = await I.checkElement(selector2);
   expect(urgentNoticesExist).equal(true);
   expect(welshUrgentNoticesExist).equal(true);
 });
 
 Then('I can view the PUAS flag', async () => {
-  expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
+  const selector = '#generalInfoTab #access_scheme';
+  await I.isElementVisible(selector, 5000);
+  expect(await I.checkElement(selector)).equal(true);
 });
 
 Then('I cannot view super admin content', async () => {
@@ -40,29 +48,40 @@ Then('I cannot view super admin content', async () => {
 });
 
 Then('I can view the open checkbox', async () => {
-  const openCheckboxExists = await I.checkElement('#generalInfoTab #open');
+  const selector = '#generalInfoTab #open';
+  await I.isElementVisible(selector, 5000);
+  const openCheckboxExists = await I.checkElement(selector);
   expect(openCheckboxExists).equal(true);
 });
 
 Then('I can view the access scheme checkbox', async () => {
-  const accessSchemeCheckboxExists = await I.checkElement('#generalInfoTab #access_scheme');
+  const selector = '#generalInfoTab #access_scheme';
+  await I.isElementVisible(selector, 5000);
+  const accessSchemeCheckboxExists = await I.checkElement(selector);
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
 Then('I can view common platform flag checkbox', async () => {
-  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  const selector = '#common_platform';
+  await I.isElementVisible(selector, 5000);
+  const commonPlatformCheckboxExists = await I.checkElement(selector);
   expect(commonPlatformCheckboxExists).equal(true);
 });
 
 Then('I can view the additional information notices', async () => {
-  const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
-  const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
+  const selector1 = '#generalInfoTab #info';
+  const selector2 = '#generalInfoTab #info_cy';
+  await I.isElementVisible(selector1, 5000);
+  await I.isElementVisible(selector2, 5000);
+  const additionalInfoExists = await I.checkElement(selector1);
+  const welshAdditionalInfoExists = await I.checkElement(selector2);
   expect(additionalInfoExists).equal(true);
   expect(welshAdditionalInfoExists).equal(true);
 });
 
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
   const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await I.isElementVisible(selector, 5000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -74,6 +93,7 @@ Given('I click the general info save button', async () => {
 
 Then('I enter {string} in the Name textbox', async (name: string) => {
   const selector = '#edit-name';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, name);
 });
 
@@ -82,6 +102,7 @@ Then('The error message displays for general info {string}', async (errMessage: 
   expect(errorTitle).equal(true);
 
   const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
+  await I.isElementVisible(selector, 5000);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

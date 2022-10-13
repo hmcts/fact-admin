@@ -26,18 +26,22 @@ Given('I click the update button', async () => {
 });
 
 Then('a message is displayed on the page', async () => {
-  const elementExist = await I.checkElement('#updated-message');
+  const selector = '#updated-message';
+  await I.isElementVisible(selector, 5000);
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   const selector = '#generalInfoTab #urgent-notice-welsh';
+  await I.isElementVisible(selector, 5000);
   await I.clearField(selector);
   await I.fillFieldInIframe(selector, welshMessage);
 });
 
 When('I click the open checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
+  await I.isElementVisible(selectorOpen, 5000);
 
   const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
   expect(elementOpenCheckboxExist).equal(true);
@@ -50,6 +54,7 @@ When('I click the open checkbox', async () => {
 
 When('I click the close checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
+  await I.isElementVisible(selectorOpen, 5000);
 
   const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
   expect(elementOpenCheckboxExist).equal(true);
@@ -62,6 +67,7 @@ When('I click the close checkbox', async () => {
 
 When('I click the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
+  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 5000);
 
   const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
@@ -74,6 +80,7 @@ When('I click the Participates in access scheme checkbox', async () => {
 
 When('I unclick the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
+  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 5000);
 
   const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
@@ -86,6 +93,7 @@ When('I unclick the Participates in access scheme checkbox', async () => {
 
 Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
   const selector = '#view-in-new-window';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 

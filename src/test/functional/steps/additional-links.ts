@@ -5,6 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over Additional Links nav element', async () => {
   const selector = '#nav';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -12,6 +13,7 @@ When('I hover over Additional Links nav element', async () => {
 
 Then('I click the Additional Links tab', async () => {
   const selector = '#tab_additional-links';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -23,6 +25,7 @@ When('I remove all existing Additional Links entries and save', async () => {
 
 Then('a green update message is displayed in the Additional Links tab {string}', async (successMsg: string) => {
   const selector = '#additionalLinksContent > div > h1';
+  await I.isElementVisible(selector, 5000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -34,6 +37,10 @@ When('I enter a new Additional Links entry by adding URL {string} display name {
   const urlSelector = '#additionalLinksTab input[name$="[url]"]';
   const englishDisplayNameSelector = '#additionalLinksTab input[name$="[display_name]"]';
   const welshDisplayNameSelector = '#additionalLinksTab input[name$="[display_name_cy]"]';
+
+  await I.isElementVisible(urlSelector, 5000);
+  await I.isElementVisible(englishDisplayNameSelector, 5000);
+  await I.isElementVisible(welshDisplayNameSelector, 5000);
 
   await I.setElementValueAtIndex(urlSelector, entryFormIdx, url, 'input');
   await I.setElementValueAtIndex(englishDisplayNameSelector, entryFormIdx, englishDescriptio, 'input');
@@ -50,6 +57,7 @@ When('I click save Additional Links', async () => {
 
 Then('the second last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDisplayName: string, welshDisplayName: string) => {
   const fieldsetSelector = '#additionalLinksTab fieldset';
+  await I.isElementVisible(fieldsetSelector, 5000);
   const numAdditionalLinks = await I.countElement(fieldsetSelector);
   const secondLastIndex = numAdditionalLinks - 4; // we deduct one each for zero-based index, hidden template fieldset, new additional links fieldset and the last entry.
 
@@ -199,16 +207,19 @@ Then('An error is displayed for additional links with summary {string} and URL f
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 30000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
+  await I.isElementVisible(selector, 30000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#display_name-1-error';
+  await I.isElementVisible(selector, 30000);
   expect(await I.checkElement(selector)).equal(true);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);

@@ -4,6 +4,7 @@ import {expect} from 'chai';
 
 When('I enter {string} into search textbox', async (searchText: string) => {
   const selector = '#searchCourts';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.fillField(selector, searchText);
@@ -11,6 +12,7 @@ When('I enter {string} into search textbox', async (searchText: string) => {
 
 Then('All courts that include {string} should be displayed sorted by name', async (searchText: string) => {
   const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
+  await I.isElementVisible(selector, 5000);
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
@@ -27,6 +29,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
 When('I select Include closed courts', async () => {
   const selector = '#toggle-closed-courts-display';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
@@ -45,6 +48,7 @@ Then('All courts that include {string} should be displayed including closed clou
 
 When('I click on name to sort in a descending order', async () => {
   const selector = '#tableCourtsName';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -52,6 +56,7 @@ When('I click on name to sort in a descending order', async () => {
 
 Then('Then All courts should be displayed sorted by name in a descending order', async () => {
   const selector = 'tr:not(.courtTableRowHidden) .govuk-table__cell.courtTableColumnName';
+  await I.isElementVisible(selector, 5000);
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selector);
   expect(courtHtmlElement.length > 0).equal(true);
 
