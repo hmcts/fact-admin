@@ -1,32 +1,5 @@
 import cookieManager from '@hmcts/cookie-manager';
 
-// @ts-ignore
-cookieManager.on('UserPreferencesLoaded', (preferences) => {
-  // @ts-ignore
-  const dataLayer = window.dataLayer || [];
-  dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
-});
-
-// @ts-ignore
-cookieManager.on('UserPreferencesSaved', (preferences) => {
-  // @ts-ignore
-  const dataLayer = window.dataLayer || [];
-  // @ts-ignore
-  const dtrum = window.dtrum;
-
-  dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
-
-  if(dtrum !== undefined) {
-    if(preferences.apm === 'on') {
-      dtrum.enable();
-      dtrum.enableSessionReplay();
-    } else {
-      dtrum.disableSessionReplay();
-      dtrum.disable();
-    }
-  }
-});
-
 
 cookieManager.init({
 
@@ -41,6 +14,7 @@ cookieManager.init({
     },
     {
       categoryName: 'analytics',
+      optional: false,
       cookies: [
         '_ga',
         '_gid',
@@ -49,6 +23,7 @@ cookieManager.init({
     },
     {
       categoryName: 'apm',
+      optional: false,
       cookies: [
         'dtCookie',
         'dtLatC',
