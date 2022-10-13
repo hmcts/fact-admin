@@ -7,7 +7,7 @@ let end: Date;
 
 When('I click on audits link', async () => {
   const selector = '#audits';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -15,7 +15,7 @@ When('I click on audits link', async () => {
 
 When('I click on courts link', async () => {
   const selector = '#courts';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);

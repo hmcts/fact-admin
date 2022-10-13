@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over local authorities nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -15,7 +15,7 @@ When('I hover over local authorities nav element', async () => {
 
 When('I will make sure Family court type is selected', async () => {
   const selector = '#court_types-2';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
@@ -27,7 +27,7 @@ When('I will make sure Family court type is selected', async () => {
 
 When('I click the local authorities tab', async () => {
   const selector = '#tab_local-authorities';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);

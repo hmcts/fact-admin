@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 Then ('I can see the court postcodes appear in alpha numeric order', async ()=> {
   const selector = '#postcodesList > div > div > div > div > label';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const courtPostcodes: string[] = await I.getHtmlFromElements(selector);

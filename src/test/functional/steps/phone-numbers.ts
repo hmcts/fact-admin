@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over phone numbers nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -13,7 +13,7 @@ When('I hover over phone numbers nav element', async () => {
 
 Then('I click the phone numbers tab', async () => {
   const selector = '#tab_phone-numbers';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -34,10 +34,10 @@ When('I enter new phone number entry by selecting description at index {int} and
   const explanationInputSelector = '#phoneNumbersTab input[name$="[explanation]"]';
   const explanationCyInputSelector = '#phoneNumbersTab input[name$="[explanation_cy]"]';
 
-  await I.isElementVisible(selectSelector, 5000);
-  await I.isElementVisible(numberInputSelector, 5000);
-  await I.isElementVisible(explanationInputSelector, 5000);
-  await I.isElementVisible(explanationCyInputSelector, 5000);
+  await I.isElementVisible(selectSelector, 3000);
+  await I.isElementVisible(numberInputSelector, 3000);
+  await I.isElementVisible(explanationInputSelector, 3000);
+  await I.isElementVisible(explanationCyInputSelector, 3000);
 
   await I.setElementValueAtIndex(selectSelector, entryFormIdx, index, 'select');
   await I.setElementValueAtIndex(numberInputSelector, entryFormIdx, number);

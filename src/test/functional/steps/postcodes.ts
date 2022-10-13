@@ -5,23 +5,25 @@ import * as I from '../utlis/puppeteer.util';
 
 When('I click the postcodes tab', async () => {
   const selector = '#tab_postcodes';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed for the postcodes {string}', async (message: string) => {
-  const selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 10000);
+  let selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await I.isElementVisible(selector, 20000);
   expect(await I.checkElement(selector)).equal(true);
-  const messageUpdate = await I.getElement('#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1');
+  selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  await I.isElementVisible(selector, 20000);
+  const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
 Then('I click the select all', async () => {
   const selector = '#postcodes-select-all';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -29,7 +31,7 @@ Then('I click the select all', async () => {
 
 When('I click the delete all selected button', async () => {
   const selector = 'button[name="deletePostcodes"]';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -37,7 +39,7 @@ When('I click the delete all selected button', async () => {
 
 When('I add new postcodes {string}', async (postcodes: string) => {
   const postcodeInputSelector = '#addNewPostcodes';
-  await I.isElementVisible(postcodeInputSelector, 5000);
+  await I.isElementVisible(postcodeInputSelector, 3000);
   const elementExist = await I.checkElement(postcodeInputSelector);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(postcodeInputSelector, postcodes);

@@ -16,7 +16,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on facility types list', async () => {
   const selector = '#tab_facilities';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -24,14 +24,14 @@ When('I click on facility types list', async () => {
 
 Then('I should see {string} facility type page', async (facilityType: string) => {
   const selector = '#facilityTypesListContent > h2';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const pageTitleElement = await I.getElement(selector);
   expect(await I.getElementText(pageTitleElement)).equal(facilityType);
 });
 
 Then('I click on Add new facility type',async () => {
   const selector = '#facilityTypesListContent > div:nth-child(4) > a';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -39,26 +39,26 @@ Then('I click on Add new facility type',async () => {
 
 Then('I am redirected to the {string} facility type form', async (facilityType: string) => {
   const selector = '#facilityTypesListContent > h2';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(facilityType);
 });
 
 Then('I enter {string} in facility name textbox', async (displayName: string) => {
   const selector = '#facility-type-name';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await populateField(selector, displayName);
 });
 
 Then('I enter {string} in facility welsh name textbox', async (displayNameCy: string) => {
   const selector = '#facility-type-name-cy';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await populateField(selector, displayNameCy);
 });
 
 When('I click facility type save button', async () => {
   const selector = '#saveFacilityType';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });

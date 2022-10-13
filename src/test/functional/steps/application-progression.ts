@@ -5,18 +5,18 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function populateField(selector: string, value: string) {
   const appProgressionSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(appProgressionSelector, 5000);
+  await I.isElementVisible(appProgressionSelector, 3000);
   const numFieldSets = await I.countElement(appProgressionSelector);
   const entryFormIdx = numFieldSets - 2;
 
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.setElementValueAtIndex(selector, entryFormIdx, value, 'input');
 }
 
 Then('I click the application progression tab', async () => {
   const selector = '#tab_application-progression';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -33,13 +33,13 @@ Then('a green update message Application progression updated {string}', async (m
 
 Then('I entered {string} in Type TextBox', async (applicationType: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[type]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, applicationType);
 });
 
 Then('I entered {string} in welsh type TexTBox', async (applicationType: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[type_cy]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, applicationType);
 });
 

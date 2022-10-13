@@ -10,7 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on Opening type list', async () => {
   const selector = '#tab_opening-types';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -21,14 +21,14 @@ Given('I click edit opening type {string}', async (contactType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#openingTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I am redirected to the opening type {string} form', async (editContactType: string) => {
   const selector = '#openingTypesListContent > h2';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(editContactType);
 });
@@ -44,7 +44,7 @@ Given('I will make sure to clear entries for the opening Type', async () => {
 
 Then('I enter {string} in opening type name textbox', async (name: string) => {
   const selector = '#ct-type';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await populateField(selector, name);
 });
 

@@ -10,7 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I hover over general nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -18,7 +18,7 @@ When('I hover over general nav element', async () => {
 
 When('I click the general tab', async () => {
   const selector = '#tab_general';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -27,8 +27,8 @@ When('I click the general tab', async () => {
 Then('I can view the urgent notices', async () => {
   const selector1 = '#generalInfoTab #urgent-notice';
   const selector2 = '#generalInfoTab #urgent-notice-welsh';
-  await I.isElementVisible(selector1, 5000);
-  await I.isElementVisible(selector2, 5000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const urgentNoticesExist = await I.checkElement(selector1);
   const welshUrgentNoticesExist = await I.checkElement(selector2);
   expect(urgentNoticesExist).equal(true);
@@ -37,7 +37,7 @@ Then('I can view the urgent notices', async () => {
 
 Then('I can view the PUAS flag', async () => {
   const selector = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
 });
 
@@ -49,14 +49,14 @@ Then('I cannot view super admin content', async () => {
 
 Then('I can view the open checkbox', async () => {
   const selector = '#generalInfoTab #open';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const openCheckboxExists = await I.checkElement(selector);
   expect(openCheckboxExists).equal(true);
 });
 
 Then('I can view the access scheme checkbox', async () => {
   const selector = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const accessSchemeCheckboxExists = await I.checkElement(selector);
   expect(accessSchemeCheckboxExists).equal(true);
 });

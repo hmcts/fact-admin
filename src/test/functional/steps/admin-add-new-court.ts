@@ -3,7 +3,7 @@ import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 
 async function populateField(fieldElement: string, value: string) {
-  await I.isElementVisible(fieldElement, 5000);
+  await I.isElementVisible(fieldElement, 3000);
   expect(await I.checkElement(fieldElement)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }

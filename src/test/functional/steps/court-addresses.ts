@@ -6,20 +6,20 @@ import * as I from '../utlis/puppeteer.util';
 
 
 async function checkAndClearAddressField(addressFieldElement: string) {
-  await I.isElementVisible(addressFieldElement, 5000);
+  await I.isElementVisible(addressFieldElement, 3000);
   expect(await I.checkElement(addressFieldElement)).equal(true);
   await I.clearField(addressFieldElement);
 }
 
 async function populateField(fieldElement: string, value: string) {
-  await I.isElementVisible(fieldElement, 5000);
+  await I.isElementVisible(fieldElement, 3000);
   expect(await I.checkElement(fieldElement)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 Then('I click the Addresses tab', async () => {
   const selector = '#tab_addresses';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -34,7 +34,7 @@ Given('I will make sure to clear all entries of the primary address', async () =
 
 When('I select the Address Type {string}', async (addressType: string) => {
   const selector = '#primaryAddressType';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, addressType);
@@ -42,7 +42,7 @@ When('I select the Address Type {string}', async (addressType: string) => {
 
 Then('I select the primary County {string}', async (county: string) => {
   const selector = '#primaryAddressCounty';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
@@ -50,7 +50,7 @@ Then('I select the primary County {string}', async (county: string) => {
 
 Then('I enter secondary address description {string} in Description textbox', async (desc: string) => {
   const selector = '#secondaryAddressDescription';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await populateField(selector, desc);
 });
 
@@ -189,36 +189,43 @@ Given('I will make sure to clear all entries of third address', async () => {
 
 Then('I enter third address description {string} in Description textbox', async (desc: string) => {
   const selector = '#thirdAddressDescription';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, desc);
 });
 
 Then('I enter third address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
   const selector = '#thirdAddressDescriptionWelsh';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, welshDesc);
 });
 
 Then('I enter third address address {string} in the Address textbox', async (address: string) => {
   const selector = '#thirdAddressLines';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, address);
 });
 
 Then('I enter third address welsh address {string} in the Address Welsh textbox', async (welshAdd: string) => {
   const selector = '#thirdAddressLinesWelsh';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, welshAdd);
 });
 
 Then('I enter third address {string} in the Town textbox', async (town: string) => {
   const selector = '#thirdAddressTown';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, town);
 });
 
 Then('I enter third address {string} in the town Welsh textbox', async (welshtown: string) => {
   const selector = '#thirdAddressTownWelsh';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, welshtown);
 });
 
 Then('I select the third County {string}', async (county: string) => {
   const selector = '#thirdAddressCounty';
+  await I.isElementVisible(selector, 5000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
@@ -226,39 +233,45 @@ Then('I select the third County {string}', async (county: string) => {
 
 Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {
   const selector = '#thirdAddressPostcode';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, postcode);
 });
 
 When('I select the third address type {string}', async (addressType: string) => {
   const selector = '#thirdAddressType';
-  //const elementExist = await I.checkElement(selector);
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.selectItem(selector, addressType);
 });
 
 Given('I will make sure to remove entries for first secondary address', async () => {
   const selector = '#removeSecondAddressBtn';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I enter secondary address description {string}', async (description: string) => {
   const selector = '#secondaryAddressDescription';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, description);
 });
 
 Then('I enter secondary address description welsh {string}', async (descriptionCy: string) => {
   const selector = '#secondaryAddressDescriptionWelsh';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, descriptionCy);
 });
 
 Then('I enter the secondary address town welsh {string}', async (townCy: string) => {
   const selector = '#secondaryAddressTownWelsh';
+  await I.isElementVisible(selector, 5000);
   await populateField(selector, townCy);
 });
 
 Then('I select yes for area of law and court type', async () => {
   const selector = '#secondaryFieldsOfLawRadio';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -267,6 +280,9 @@ Then('I select children and civil from area of law and county court for court ty
   const selectorAolChildren = "input[name='secondaryAddressAOLItems'][data-name='secondaryChildren']";
   const selectorAolCivil = "input[name='secondaryAddressAOLItems'][data-name='secondaryCivil']";
   const selectorCountyCourt = "input[name='secondaryAddressCourtItems'][data-name='secondaryCounty Court']";
+  await I.isElementVisible(selectorAolChildren, 5000);
+  await I.isElementVisible(selectorAolCivil, 5000);
+  await I.isElementVisible(selectorCountyCourt, 5000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
@@ -277,6 +293,8 @@ Then('I select children and civil from area of law and county court for court ty
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
+  await I.isElementVisible(selector, 5000);
+
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 
@@ -284,6 +302,7 @@ Then('I click the link view court in new tab to validate the label generated', a
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
+  await I.isElementVisible(selectorLabel, 5000);
 
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
@@ -291,6 +310,7 @@ Then('I click the link view court in new tab to validate the label generated', a
 
 Then('I select yes for second secondary court area of law and court type', async () => {
   const selector = '#thirdFieldsOfLawRadio';
+  await I.isElementVisible(selector, 5000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -298,6 +318,8 @@ Then('I select yes for second secondary court area of law and court type', async
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
   const selectorAolChildren = "input[name='thirdAddressAOLItems'][data-name='thirdChildren']";
   const selectorCountyCourt = "input[name='thirdAddressCourtItems'][data-name='thirdCounty Court']";
+  await I.isElementVisible(selectorAolChildren, 5000);
+  await I.isElementVisible(selectorCountyCourt, 5000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);

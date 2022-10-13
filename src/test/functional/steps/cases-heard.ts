@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the cases heard tab', async () => {
   const selector = '#tab_cases-heard';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -14,8 +14,8 @@ When('I click the cases heard tab', async () => {
 When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 5000);
-  await I.isElementVisible(selector2, 5000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
@@ -36,7 +36,7 @@ When('And I click on update cases heard', async () => {
 
 Then('Success message is displayed for cases heard with summary {string}', async (successMsg: string) => {
   const selector = '#casesHeardContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -48,8 +48,8 @@ When('I reload the page', async () => {
 Then('areas of law {string} and {string} should be selected', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 5000);
-  await I.isElementVisible(selector2, 5000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const element1Exist = await I.checkElement(selector1);
   expect(element1Exist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);

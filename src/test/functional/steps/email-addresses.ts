@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over emails nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -14,7 +14,7 @@ When('I hover over emails nav element', async () => {
 
 Then('I click the Emails tab', async () => {
   const selector = '#tab_emails';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -43,10 +43,10 @@ When('I add Description from the dropdown at index {int} and Address {string} an
     const expInputSelector = '#emailsTab input[name$="[explanation]"]';
     const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
 
-    await I.isElementVisible(descriptionSelectSelector, 5000);
-    await I.isElementVisible(addressInputSelector, 5000);
-    await I.isElementVisible(expInputSelector, 5000);
-    await I.isElementVisible(expCyInputSelector, 5000);
+    await I.isElementVisible(descriptionSelectSelector, 3000);
+    await I.isElementVisible(addressInputSelector, 3000);
+    await I.isElementVisible(expInputSelector, 3000);
+    await I.isElementVisible(expCyInputSelector, 3000);
 
     await I.setElementValueAtIndex(descriptionSelectSelector, entryFormIdx, descriptionIndex, 'select');
     await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');

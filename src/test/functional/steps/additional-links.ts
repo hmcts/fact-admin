@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over Additional Links nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -13,7 +13,7 @@ When('I hover over Additional Links nav element', async () => {
 
 Then('I click the Additional Links tab', async () => {
   const selector = '#tab_additional-links';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -25,7 +25,7 @@ When('I remove all existing Additional Links entries and save', async () => {
 
 Then('a green update message is displayed in the Additional Links tab {string}', async (successMsg: string) => {
   const selector = '#additionalLinksContent > div > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

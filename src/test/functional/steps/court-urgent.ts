@@ -27,7 +27,7 @@ Given('I click the update button', async () => {
 
 Then('a message is displayed on the page', async () => {
   const selector = '#updated-message';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
