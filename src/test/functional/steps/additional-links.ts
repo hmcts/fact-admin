@@ -38,9 +38,9 @@ When('I enter a new Additional Links entry by adding URL {string} display name {
   const englishDisplayNameSelector = '#additionalLinksTab input[name$="[display_name]"]';
   const welshDisplayNameSelector = '#additionalLinksTab input[name$="[display_name_cy]"]';
 
-  await I.isElementVisible(urlSelector, 5000);
-  await I.isElementVisible(englishDisplayNameSelector, 5000);
-  await I.isElementVisible(welshDisplayNameSelector, 5000);
+  await I.isElementVisible(urlSelector, 3000);
+  await I.isElementVisible(englishDisplayNameSelector, 3000);
+  await I.isElementVisible(welshDisplayNameSelector, 3000);
 
   await I.setElementValueAtIndex(urlSelector, entryFormIdx, url, 'input');
   await I.setElementValueAtIndex(englishDisplayNameSelector, entryFormIdx, englishDescriptio, 'input');
@@ -57,7 +57,7 @@ When('I click save Additional Links', async () => {
 
 Then('the second last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDisplayName: string, welshDisplayName: string) => {
   const fieldsetSelector = '#additionalLinksTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 5000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numAdditionalLinks = await I.countElement(fieldsetSelector);
   const secondLastIndex = numAdditionalLinks - 4; // we deduct one each for zero-based index, hidden template fieldset, new additional links fieldset and the last entry.
 

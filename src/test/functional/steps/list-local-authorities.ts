@@ -54,7 +54,7 @@ When('I select local authority {string}', async (localAuthorityId: string) => {
 
 When('I edit the local authority {string}', async (newLocalAuthority: string) => {
   const selector = '#local-authority';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(selector, newLocalAuthority);
@@ -66,7 +66,7 @@ When('I click on save local authority list', async () => {
 
 Then('Success message is displayed for local authorities list with summary {string}', async (successMsg: string) => {
   const selector = '#localAuthoritiesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -75,8 +75,8 @@ Then('An error is displayed for edit local authorities with title {string} and s
   const errorTitleSelector = '#error-summary-title';
   const errorSummerySelector = '#localAuthoritiesListContent > div.govuk-error-summary > div > ul > li';
 
-  await I.isElementVisible(errorTitleSelector, 5000);
-  await I.isElementVisible(errorSummerySelector, 5000);
+  await I.isElementVisible(errorTitleSelector, 3000);
+  await I.isElementVisible(errorSummerySelector, 3000);
   expect(await I.checkElement(errorTitleSelector)).equal(true);
   expect(await I.checkElement(errorSummerySelector)).equal(true);
 

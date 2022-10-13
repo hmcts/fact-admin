@@ -45,26 +45,26 @@ Then('I entered {string} in welsh type TexTBox', async (applicationType: string)
 
 Then('I entered {string} in Email TextBox', async (email: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[email]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, email);
 });
 
 Then('I entered {string} in External link TextBox', async (externalLink: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLink);
 });
 
 
 Then('I entered {string} in External link description TextBox', async (externalLinkDec: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link_description]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLinkDec);
 });
 
 Then('I entered {string} in External link welsh description TextBox', async (externalLinkDec: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link_description_cy]"]';
-  await I.isElementVisible(typeSelector, 5000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLinkDec);
 });
 
@@ -79,13 +79,13 @@ Then('I click on add new application progression',async () => {
 
 Then('a green update message showing Application progression updated', async (message: string) =>  {
   const selector = '#applicationProgressionContent > div > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
 Then('the second last Email is {string}', async (email: string) => {
   const fieldsetSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 5000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEmail = await I.countElement(fieldsetSelector);
   const secondLastIndex = numEmail - 4;
 
@@ -96,7 +96,7 @@ Then('the second last Email is {string}', async (email: string) => {
 Then('the last email is {string}', async (lastEmail: string) => {
 
   const fieldsetSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 5000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numApplicationType = await I.countElement(fieldsetSelector);
   const lastIndex = numApplicationType - 3;
 

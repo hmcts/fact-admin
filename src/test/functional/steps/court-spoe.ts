@@ -70,8 +70,8 @@ When('I unselect spoe area of law {string} and {string}', async (areaOfLaw1: str
 Then('spoe areas of law {string} and {string} should be unselected', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 5000);
-  await I.isElementVisible(selector2, 5000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   expect(await I.checkElement(selector1)).equal(true);
   expect(await I.isElementChecked(selector1)).equal(false);
   expect(await I.checkElement(selector2)).equal(true);

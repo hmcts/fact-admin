@@ -43,7 +43,7 @@ When('I check for existing photo then delete it',  async () => {
 
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
-  await I.isElementVisible(fileSelector, 5000);
+  await I.isElementVisible(fileSelector, 3000);
   expect(await I.checkElement(fileSelector)).equal(true);
   const filePath = 'src/test/functional/SampleJPGImage_100kbmb (1).jpg';
   await I.uploadFile(fileSelector,filePath);
@@ -51,7 +51,7 @@ When('I upload new photo',  async () => {
 
 When('I click update photo button', async () => {
   const selector = 'button[name="updatePhoto"]';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -59,6 +59,6 @@ When('I click update photo button', async () => {
 
 Then('A green message is displayed for {string}', async (message: string) => {
   const selector = '#photoContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });

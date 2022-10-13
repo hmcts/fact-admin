@@ -47,7 +47,7 @@ When('I add new postcodes {string}', async (postcodes: string) => {
 
 Then('I click the add postcode button', async () => {
   const buttonSelector = 'button[name="addPostcodes"]';
-  await I.isElementVisible(buttonSelector, 5000);
+  await I.isElementVisible(buttonSelector, 3000);
   const elementExist = await I.checkElement(buttonSelector);
   expect(elementExist).equal(true);
   await I.click(buttonSelector);
@@ -58,7 +58,7 @@ Then('The error message display for the postcodes {string}', async (errorMessage
   expect(errorTitle).equal(true);
 
   const selector = '#postcodesContent > div.govuk-error-summary > div > ul';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const errorList = await I.getElement(selector);
   expect(await I.getElementText(errorList)).equal(errorMessage);
 });

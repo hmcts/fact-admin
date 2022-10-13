@@ -63,7 +63,7 @@ Then('I can view the access scheme checkbox', async () => {
 
 Then('I can view common platform flag checkbox', async () => {
   const selector = '#common_platform';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const commonPlatformCheckboxExists = await I.checkElement(selector);
   expect(commonPlatformCheckboxExists).equal(true);
 });
@@ -71,8 +71,8 @@ Then('I can view common platform flag checkbox', async () => {
 Then('I can view the additional information notices', async () => {
   const selector1 = '#generalInfoTab #info';
   const selector2 = '#generalInfoTab #info_cy';
-  await I.isElementVisible(selector1, 5000);
-  await I.isElementVisible(selector2, 5000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const additionalInfoExists = await I.checkElement(selector1);
   const welshAdditionalInfoExists = await I.checkElement(selector2);
   expect(additionalInfoExists).equal(true);
@@ -81,7 +81,7 @@ Then('I can view the additional information notices', async () => {
 
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
   const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -93,7 +93,7 @@ Given('I click the general info save button', async () => {
 
 Then('I enter {string} in the Name textbox', async (name: string) => {
   const selector = '#edit-name';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await populateField(selector, name);
 });
 
@@ -102,7 +102,7 @@ Then('The error message displays for general info {string}', async (errMessage: 
   expect(errorTitle).equal(true);
 
   const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

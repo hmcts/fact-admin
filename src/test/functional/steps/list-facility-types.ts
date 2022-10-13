@@ -68,7 +68,7 @@ Then('The error message displays for facility type {string}', async (errMessage:
   expect(errorTitle).equal(true);
 
   const selector = '#facilityTypesListContent > div.govuk-error-summary > div > ul > li';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
@@ -78,14 +78,14 @@ Then('I click delete button for facility type {string}',async (facilityType: str
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed {string}', async (message: string) => {
   const selector = '#facilityTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
@@ -94,7 +94,7 @@ Given('I click edit facility type {string}', async (facilityType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  await I.isElementVisible(selector, 5000);
+  await I.isElementVisible(selector, 3000);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
