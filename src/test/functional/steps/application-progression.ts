@@ -9,14 +9,14 @@ async function populateField(selector: string, value: string) {
   const numFieldSets = await I.countElement(appProgressionSelector);
   const entryFormIdx = numFieldSets - 2;
 
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   expect(await I.checkElement(selector)).equal(true);
   await I.setElementValueAtIndex(selector, entryFormIdx, value, 'input');
 }
 
 Then('I click the application progression tab', async () => {
   const selector = '#tab_application-progression';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -79,7 +79,7 @@ Then('I click on add new application progression',async () => {
 
 Then('a green update message showing Application progression updated', async (message: string) =>  {
   const selector = '#applicationProgressionContent > div > h1';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 

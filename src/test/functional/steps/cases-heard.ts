@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the cases heard tab', async () => {
   const selector = '#tab_cases-heard';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -36,7 +36,7 @@ When('And I click on update cases heard', async () => {
 
 Then('Success message is displayed for cases heard with summary {string}', async (successMsg: string) => {
   const selector = '#casesHeardContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

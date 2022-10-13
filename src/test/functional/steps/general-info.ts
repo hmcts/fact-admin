@@ -10,7 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I hover over general nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -18,7 +18,7 @@ When('I hover over general nav element', async () => {
 
 When('I click the general tab', async () => {
   const selector = '#tab_general';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -37,7 +37,7 @@ Then('I can view the urgent notices', async () => {
 
 Then('I can view the PUAS flag', async () => {
   const selector = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   expect(await I.checkElement(selector)).equal(true);
 });
 
@@ -49,21 +49,21 @@ Then('I cannot view super admin content', async () => {
 
 Then('I can view the open checkbox', async () => {
   const selector = '#generalInfoTab #open';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const openCheckboxExists = await I.checkElement(selector);
   expect(openCheckboxExists).equal(true);
 });
 
 Then('I can view the access scheme checkbox', async () => {
   const selector = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const accessSchemeCheckboxExists = await I.checkElement(selector);
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
 Then('I can view common platform flag checkbox', async () => {
   const selector = '#common_platform';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const commonPlatformCheckboxExists = await I.checkElement(selector);
   expect(commonPlatformCheckboxExists).equal(true);
 });
@@ -81,7 +81,7 @@ Then('I can view the additional information notices', async () => {
 
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
   const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -93,7 +93,7 @@ Given('I click the general info save button', async () => {
 
 Then('I enter {string} in the Name textbox', async (name: string) => {
   const selector = '#edit-name';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   await populateField(selector, name);
 });
 
@@ -102,7 +102,7 @@ Then('The error message displays for general info {string}', async (errMessage: 
   expect(errorTitle).equal(true);
 
   const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over types nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -15,7 +15,7 @@ When('I hover over types nav element', async () => {
 
 When('I click the types tab', async () => {
   const selector = '#tab_court-types';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -23,7 +23,7 @@ When('I click the types tab', async () => {
 
 When('I check a court type', async () => {
   const selector = '#court_types-3';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement('#court_types-3');
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -35,14 +35,14 @@ Then('I click on save court type', async () => {
 
 Then('a green update message is displayed showing Court Types updated', async () => {
   const selector = '#courtTypesTab .govuk-panel--confirmation';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
 
 When('I uncheck a court type', async () => {
   const selector = '#court_types-3';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   await I.click(selector);
 
   const checked = await I.isElementChecked('#court_types-3');
@@ -51,14 +51,14 @@ When('I uncheck a court type', async () => {
 
 Then('a court types error message is displayed', async () => {
   const selector = '#courtTypesContent > div.govuk-error-summary > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
 
 When('I check a court type which has code associated with it', async () => {
   const selector = '#court_types';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement('#court_types');
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -66,7 +66,7 @@ When('I check a court type which has code associated with it', async () => {
 
 Then('I will make sure that one of the court type is selected', async () => {
   const selector = '#court_types-2';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 
@@ -78,7 +78,7 @@ Then('I will make sure that one of the court type is selected', async () => {
 
 Then('I will clear the existing gbs code and enter new the one {string}', async (gbCode: string) => {
   const selector = 'input[name=gbsCode]';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 
@@ -92,7 +92,7 @@ When('I remove all existing DX Codes entries and save', async () => {
 
 Then('I click add new Dx Code button', async () => {
   const selector = 'button[name=addDxCode]';
-  await I.isElementVisible(selector, 3000);
+  expect(await I.isElementVisible(selector, 3000)).equal(false);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
