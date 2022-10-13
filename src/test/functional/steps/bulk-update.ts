@@ -15,8 +15,6 @@ Then('I am on the {string} page', async (title: string) => {
 });
 
 When('I select court {string}', async (court: string) => {
-  const selector = `input[value="${court}"]`;
-
   await I.click(`input[value="${court}"]`);
 });
 
