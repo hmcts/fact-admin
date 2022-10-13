@@ -10,12 +10,6 @@ When('I click the cases heard tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the areas of law listed', async () => {
-  const elementExist = await I.isElementVisible('#casesHeardForm');
-  expect(elementExist).equal(true);
-});
-
-
 When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;

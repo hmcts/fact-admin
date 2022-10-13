@@ -9,10 +9,6 @@ When('I click spoe tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the spoe areas of law listed', async () => {
-  expect(await I.isElementVisible('#spoeForm')).equal(true);
-});
-
 When('I select spoe areas of law {string} and {string}', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selectorAolAdoption = '#' + areaOfLaw1;
   const selectorAolChildren = '#' + areaOfLaw2;

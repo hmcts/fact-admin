@@ -14,7 +14,6 @@ Feature: courts audits
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click the opening hours tab
-    Then I can view the existing opening hours
     Then I check action start time
     And I enter a new opening hours entry by selecting description at index 5 and adding hours "10:00am to 4:00pm"
     And I click save

@@ -48,7 +48,6 @@ export const checkElement = async (selector: string) => {
     await scope.page.waitForSelector(selector);
     return true;
   } catch (error) {
-    console.log("The element didn't appear.");
     return false;
   }
 };
@@ -62,7 +61,7 @@ export const uploadFile = async (selector: string, path: string) => {
     ]);
     await fileChooser.accept([path]);
   } catch (error) {
-    console.log("The file didn't appear.");
+    console.log(`uploadFile for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -71,7 +70,6 @@ export const getElement = async (selector: string) => {
     await scope.page.waitForSelector(selector);
     return await scope.page.$(selector);
   } catch (error) {
-    console.log('Could not get element.');
     return null;
   }
 };
@@ -81,7 +79,6 @@ export const getElements = async (selector: string) => {
     await scope.page.waitForSelector(selector);
     return await scope.page.$$(selector);
   } catch (error) {
-    console.log('Could not get element.');
     return null;
   }
 };
@@ -90,7 +87,6 @@ export const getTextFromSelector = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.value));
   } catch (error) {
-    console.log(`Could not get element: ${el}`);
     return [];
   }
 };
@@ -99,7 +95,6 @@ export const getHtmlFromElements = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerHTML));
   } catch (error) {
-    console.log(`Could not get element: ${el}`);
     return [];
   }
 };
@@ -108,7 +103,6 @@ export const getElementText = async (el: any) => {
   try {
     return await scope.page.evaluate((element: HTMLElement) => element.innerText.trim(), el);
   } catch (error) {
-    console.log("The element didn't appear.");
     return false;
   }
 };
@@ -118,7 +112,6 @@ export const checkElementIsAnchor = async (el: any) => {
     const tagName = await scope.page.evaluate((element: HTMLElement) => element.tagName, el);
     return tagName === 'A';
   } catch (error) {
-    console.log("The anchor element didn't appear.");
     return false;
   }
 };
@@ -129,7 +122,6 @@ export const checkElementLength = async (selector: string) => {
     const el = await scope.page.$$(selector);
     return el.length;
   } catch (error) {
-    console.log("The element didn't appear.");
     return false;
   }
 };
@@ -140,7 +132,6 @@ export const getTextFromList = async (selector: string) => {
       (element: Element) => element.innerHTML.toString()), selector);
     return texts;
   } catch (error) {
-    console.log("The element didn't appear.");
     return [];
   }
 };
@@ -154,7 +145,7 @@ export const fillFieldInIframe = async (selector: string, value: string) => {
 
     await frame.$eval('#tinymce > p', (el: HTMLElement, value: string) => el.innerText = value, value);
   } catch (error) {
-    console.log("The element didn't appear.");
+    console.log(`fillFieldInIframe for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -165,7 +156,6 @@ export const getIframeContent = async (selector: string) => {
     const frame = await elementHandle.contentFrame();
     return await frame.$eval('#tinymce > p', (element: HTMLElement) => element.innerText.trim());
   } catch (error) {
-    console.log(`Could not get IframeContent with selector: ${selector}.`);
     return null;
   }
 };
@@ -176,7 +166,7 @@ export const clearField = async (selector: string) => {
     await input.click({clickCount: 3});
     await scope.page.keyboard.press('Backspace');
   } catch (error) {
-    console.log("The element didn't appear.");
+    console.log(`clearField for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -184,7 +174,7 @@ export const selectItem = async (selector: string, value: string) => {
   try {
     await scope.page.select(selector, value);
   } catch (error) {
-    console.log(`The element with selector: ${selector} and value: ${value} didn't appear.`);
+    console.log(`selectItem for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -193,7 +183,7 @@ export const countElement = async (selector: string): Promise<number> => {
     const count = (await scope.page.$$(selector)).length;
     return count;
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`countElement for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -204,7 +194,7 @@ export const clickElementAtIndex = async (selector: string, index: number) => {
         (document.querySelectorAll(entrySelector)[index] as HTMLButtonElement).click(), selector, index
     );
   } catch (error) {
-    console.log(`The element with selector: ${selector} at index ${index} didn't appear.`);
+    console.log(`clickElementAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -215,7 +205,7 @@ export const getLastElementValue = async (selector: string) => {
     const value = await scope.page.evaluate((x: any) => x.value, input[lastIdx]);
     return value;
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`getLastElementValue for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -229,7 +219,7 @@ export const getSelectedIndexAtIndex = async (selector: string, index: number) =
     const input = await scope.page.$$(selector);
     return await scope.page.evaluate((x: HTMLSelectElement) => x.selectedIndex, input[index]);
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`getSelectedIndexAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -243,7 +233,7 @@ export const getElementValueAtIndex = async (selector: string, index: number) =>
     const input = await scope.page.$$(selector);
     return await scope.page.evaluate((x: HTMLSelectElement | HTMLInputElement) => x.value, input[index]);
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`getElementValueAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -260,7 +250,7 @@ export const setElementValueAtIndex = async (selector: string, index: number, va
     return await scope.page.evaluate((el: HTMLSelectElement | HTMLInputElement, type: ('select' | 'input'), value: string) =>
       (type === 'select' ? (el as HTMLSelectElement).selectedIndex = parseInt(value) : el.value = value), input[index], type, value);
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`setElementValueAtIndex for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -268,13 +258,13 @@ export const setElementValueForInputField = async (selector: string, value: stri
   try {
     await scope.page.$eval(selector, (el: HTMLInputElement, value: string) => el.value = value, value);
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`setElementValueForInputField for selector(${selector}) failed with: ${error}`);
   }
 };
 
-export const isElementVisible = async (selector: string) => {
+export const isElementVisible = async (selector: string, timeout: number) => {
   let visible = true;
-  await scope.page.waitForSelector(selector, {visible: true, timeout: 3000})
+  await scope.page.waitForSelector(selector, {visible: true, timeout: timeout})
     .catch(() => {
       visible = false;
     });
@@ -285,7 +275,7 @@ export const isElementChecked = async (selector: string) => {
   try {
     return await scope.page.$eval(selector, (checkbox: any) => checkbox.checked);
   } catch (error) {
-    console.log(`The element with selector: ${selector} didn't appear.`);
+    console.log(`isElementChecked for Selector(${selector}) failed with: ${error}`);
   }
 };
 
@@ -305,7 +295,6 @@ export const getTextFromElements = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerText));
   } catch (error) {
-    console.log("The element didn't appear.");
     return [];
   }
 };
@@ -314,7 +303,6 @@ export const getValueFromElements = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.valueOf()));
   } catch (error) {
-    console.log("The element didn't appear.");
     return [];
   }
 };

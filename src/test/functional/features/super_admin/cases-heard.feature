@@ -7,13 +7,10 @@ Feature: Cases-Heard tab
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
     When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click the cases heard tab
-    Then I can view the areas of law listed
 
   Scenario Outline: AS an admin user when I select and deselect areas of law and click update button I should be able to update it successfully.
     When I select areas of law "<areaOfLaw1>" and "<areaOfLaw2>"

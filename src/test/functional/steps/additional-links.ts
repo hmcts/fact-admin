@@ -17,11 +17,6 @@ Then('I click the Additional Links tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing Additional Links', async () => {
-  const elementExist = await I.isElementVisible('#additionalLinksForm');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing Additional Links entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#additionalLinksTab', 'deleteAdditionalLink', 'saveAdditionalLink');
 });

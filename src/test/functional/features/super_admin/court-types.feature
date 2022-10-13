@@ -7,14 +7,10 @@ Feature: Court Types
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I select Include closed courts
-    Then I can view the courts or tribunals in a list format
-    And they are in alphabetical order
     When I click edit next to court with "basingstoke-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over types nav element
     When I click the types tab
-    Then I can view the existing court types
 
   Scenario: Select and remove a court type
     When I check a court type

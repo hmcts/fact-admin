@@ -1,6 +1,6 @@
 
 Feature: create admin user
-  
+
   Background:
     Given I am on new browser
     Given I am on FACT homepage

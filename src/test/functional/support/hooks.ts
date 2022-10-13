@@ -33,7 +33,6 @@ AfterAll(async () => {
   if (scope.browser) {
     await scope.browser.close();
   }
-
 });
 
 Before(async (scenario) => {
