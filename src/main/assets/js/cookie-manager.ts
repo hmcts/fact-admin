@@ -1,12 +1,17 @@
 import cookieManager from '@hmcts/cookie-manager';
 
+// @ts-ignore
 cookieManager.on('UserPreferencesLoaded', (preferences) => {
+  // @ts-ignore
   const dataLayer = window.dataLayer || [];
   dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
 });
 
+// @ts-ignore
 cookieManager.on('UserPreferencesSaved', (preferences) => {
+  // @ts-ignore
   const dataLayer = window.dataLayer || [];
+  // @ts-ignore
   const dtrum = window.dtrum;
 
   dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
