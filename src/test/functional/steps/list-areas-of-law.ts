@@ -15,7 +15,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on areas of law list', async () => {
   const selector = '#tab_areas-of-law';
-  expect(await I.isElementVisible(selector, 10000)).equal(true);
+
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
