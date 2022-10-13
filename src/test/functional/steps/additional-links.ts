@@ -203,21 +203,25 @@ Then('An error is displayed for additional links with summary {string} and URL f
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
+  await I.isElementVisible(selector, 10000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
+  await I.isElementVisible(selector, 10000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#display_name-1-error';
+  await I.isElementVisible(selector, 10000);
   expect(await I.checkElement(selector)).equal(true);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
 
   selector = '#display_name-2-error';
+  await I.isElementVisible(selector, 10000);
   expect(await I.checkElement(selector)).equal(true);
   const displayName2ErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayName2ErrorElement)).contains(errorMsg);
