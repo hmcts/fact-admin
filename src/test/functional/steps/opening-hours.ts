@@ -35,8 +35,8 @@ When('I enter a new opening hours entry by selecting description at index {int} 
 
   const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
   const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
-  await I.isElementVisible(typeSelector, 10000);
-  await I.isElementVisible(hoursSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
+  await I.isElementVisible(hoursSelector, 3000);
 
   await I.setElementValueAtIndex(typeSelector, entryFormIdx, typeIdx, 'select');
   await I.setElementValueAtIndex(hoursSelector, entryFormIdx, text, 'input');
@@ -57,7 +57,7 @@ Then('a green update message is displayed in the opening hours tab', async () =>
 
 Then('the second last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const secondLastIndex = numOpeningTimes - 4; // we deduct one each for zero-based index, hidden template fieldset, new opening hours fieldset and the last entry.
 
@@ -70,7 +70,7 @@ Then('the second last opening hours is displayed with description at index {int}
 
 Then('the last opening hours is displayed with description at index {int} and hours {string}', async (index: number, hoursText: string) => {
   const fieldsetSelector = '#openingTimesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numOpeningTimes = await I.countElement(fieldsetSelector);
   const lastIndex = numOpeningTimes - 3; // we deduct one each for zero-based index, hidden template fieldset and new opening hours fieldset.
 
@@ -112,8 +112,8 @@ When('I enter duplicated opening hour description', async () => {
   const typeSelector = '#openingTimesTab select[name$="[type_id]"]';
   const hoursSelector = '#openingTimesTab input[name$="[hours]"]';
 
-  await I.isElementVisible(typeSelector, 10000);
-  await I.isElementVisible(hoursSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
+  await I.isElementVisible(hoursSelector, 3000);
 
   await I.setElementValueAtIndex(typeSelector, entryFormIdx, 3, 'select');
   await I.setElementValueAtIndex(hoursSelector, entryFormIdx, '9:00am to 4:00pm', 'input');
@@ -176,7 +176,7 @@ When('I click the remove button under an opening hours entry', async () => {
 
 When('I click the move up button on the last opening hours entry', async () => {
   const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
   const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
 
@@ -186,7 +186,7 @@ When('I click the move up button on the last opening hours entry', async () => {
 
 When('I click the move down button on the second last opening hours entry', async () => {
   const fieldsetSelector = '#openingTimesTab fieldset.can-reorder';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEntries = await I.countElement('#openingTimesTab fieldset.can-reorder');
   // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
   const secondLastOpeningHrsIdx = numEntries - 4;

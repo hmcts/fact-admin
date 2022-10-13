@@ -39,7 +39,7 @@ When('I click the delete all selected button', async () => {
 
 When('I add new postcodes {string}', async (postcodes: string) => {
   const postcodeInputSelector = '#addNewPostcodes';
-  await I.isElementVisible(postcodeInputSelector, 10000);
+  await I.isElementVisible(postcodeInputSelector, 3000);
   const elementExist = await I.checkElement(postcodeInputSelector);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(postcodeInputSelector, postcodes);
@@ -47,7 +47,7 @@ When('I add new postcodes {string}', async (postcodes: string) => {
 
 Then('I click the add postcode button', async () => {
   const buttonSelector = 'button[name="addPostcodes"]';
-  await I.isElementVisible(buttonSelector, 10000);
+  await I.isElementVisible(buttonSelector, 3000);
   const elementExist = await I.checkElement(buttonSelector);
   expect(elementExist).equal(true);
   await I.click(buttonSelector);

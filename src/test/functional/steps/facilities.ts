@@ -14,7 +14,7 @@ When('I click the facilities tab', async () => {
 When('I remove all existing facility entries and save', async () => {
 
   const fieldsetSelector = '#courtFacilitiesContent > fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const fieldsetCount = await I.countElement(fieldsetSelector);
   // Remove all fieldsets except the empty new one
   for (let i = fieldsetCount; i > 1; i--) {
@@ -51,10 +51,10 @@ When('I enter facility {string} and enter description in english {string} and we
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
   const facilityOptionSelector = '#name-1 > option';
 
-  await I.isElementVisible(facilitySelector, 10000);
-  await I.isElementVisible(englishDescriptionSelector, 10000);
-  await I.isElementVisible(welshDescriptionSelector, 10000);
-  await I.isElementVisible(facilityOptionSelector, 10000);
+  await I.isElementVisible(facilitySelector, 3000);
+  await I.isElementVisible(englishDescriptionSelector, 3000);
+  await I.isElementVisible(welshDescriptionSelector, 3000);
+  await I.isElementVisible(facilityOptionSelector, 3000);
 
   const elementExist = await I.checkElement(facilityOptionSelector);
   expect(elementExist).equal(true);
@@ -101,7 +101,7 @@ When('I click clear in the facilities tab', async () => {
 
 Then('the facility entry in second last position has value {string} description in english {string} and welsh {string}', async (value: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numFacilities = await I.countElement(fieldsetSelector);
   const secondLastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
   const selectorIndex = secondLastIndex + 1;
@@ -109,11 +109,11 @@ Then('the facility entry in second last position has value {string} description 
   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
 
-  await I.isElementVisible(englishDescriptionSelector, 10000);
+  await I.isElementVisible(englishDescriptionSelector, 3000);
   const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
   expect(englishDescriptionTxt).equal(englishDescription);
 
-  await I.isElementVisible(welshDescriptionSelector, 10000);
+  await I.isElementVisible(welshDescriptionSelector, 3000);
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 
@@ -123,7 +123,7 @@ Then('the facility entry in second last position has value {string} description 
 
 Then('the facility entry in last position has index {string} description in english {string} and welsh {string}', async (value: string, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numFacilities = await I.countElement(fieldsetSelector);
   const lastIndex = numFacilities - 2; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
 
@@ -132,11 +132,11 @@ Then('the facility entry in last position has index {string} description in engl
   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
 
-  await I.isElementVisible(englishDescriptionSelector, 10000);
+  await I.isElementVisible(englishDescriptionSelector, 3000);
   const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
   expect(englishDescriptionTxt).equal(englishDescription);
 
-  await I.isElementVisible(welshDescriptionSelector, 10000);
+  await I.isElementVisible(welshDescriptionSelector, 3000);
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 

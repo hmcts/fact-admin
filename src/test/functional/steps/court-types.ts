@@ -107,15 +107,15 @@ When('I enter a new DX Code {string} explanation {string} and explanation Cy {st
   const selectorExp = '#courtTypesTab input[name$="[explanation]"]';
   const selectorExpCy = '#courtTypesTab input[name$="[explanationCy]"]';
 
-  await I.isElementVisible(selectorCode, 10000);
+  await I.isElementVisible(selectorCode, 3000);
   const elementExistCode = await I.checkElement(selectorCode);
   expect(elementExistCode).equal(true);
 
-  await I.isElementVisible(selectorExp, 10000);
+  await I.isElementVisible(selectorExp, 3000);
   const elementExistExp = await I.checkElement(selectorExp);
   expect(elementExistExp).equal(true);
 
-  await I.isElementVisible(selectorExpCy, 10000);
+  await I.isElementVisible(selectorExpCy, 3000);
   const elementExistExpCy = await I.checkElement(selectorExpCy);
   expect(elementExistExpCy).equal(true);
 

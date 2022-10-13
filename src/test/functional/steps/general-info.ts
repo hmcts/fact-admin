@@ -27,8 +27,8 @@ When('I click the general tab', async () => {
 Then('I can view the urgent notices', async () => {
   const selector1 = '#generalInfoTab #urgent-notice';
   const selector2 = '#generalInfoTab #urgent-notice-welsh';
-  await I.isElementVisible(selector1, 10000);
-  await I.isElementVisible(selector2, 10000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const urgentNoticesExist = await I.checkElement(selector1);
   const welshUrgentNoticesExist = await I.checkElement(selector2);
   expect(urgentNoticesExist).equal(true);
@@ -42,9 +42,9 @@ Then('I can view the PUAS flag', async () => {
 });
 
 Then('I cannot view super admin content', async () => {
-  expect(await I.isElementVisible('#generalInfoTab #open', 10000)).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #info', 10000)).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #info_cy', 10000)).equal(false);
+  expect(await I.isElementVisible('#generalInfoTab #open', 3000)).equal(false);
+  expect(await I.isElementVisible('#generalInfoTab #info', 3000)).equal(false);
+  expect(await I.isElementVisible('#generalInfoTab #info_cy', 3000)).equal(false);
 });
 
 Then('I can view the open checkbox', async () => {
@@ -71,8 +71,8 @@ Then('I can view common platform flag checkbox', async () => {
 Then('I can view the additional information notices', async () => {
   const selector1 = '#generalInfoTab #info';
   const selector2 = '#generalInfoTab #info_cy';
-  await I.isElementVisible(selector1, 10000);
-  await I.isElementVisible(selector2, 10000);
+  await I.isElementVisible(selector1, 3000);
+  await I.isElementVisible(selector2, 3000);
   const additionalInfoExists = await I.checkElement(selector1);
   const welshAdditionalInfoExists = await I.checkElement(selector2);
   expect(additionalInfoExists).equal(true);
@@ -88,7 +88,7 @@ Then('a success message is displayed on the general info tab {string}', async (s
 
 Given('I click the general info save button', async () => {
   await I.click('#saveGeneralInfoBtn');
-  await new Promise(f => setTimeout(f, 10000));
+  await new Promise(f => setTimeout(f, 3000));
 });
 
 Then('I enter {string} in the Name textbox', async (name: string) => {

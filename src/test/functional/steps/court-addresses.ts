@@ -6,13 +6,13 @@ import * as I from '../utlis/puppeteer.util';
 
 
 async function checkAndClearAddressField(addressFieldElement: string) {
-  await I.isElementVisible(addressFieldElement, 10000);
+  await I.isElementVisible(addressFieldElement, 3000);
   expect(await I.checkElement(addressFieldElement)).equal(true);
   await I.clearField(addressFieldElement);
 }
 
 async function populateField(fieldElement: string, value: string) {
-  await I.isElementVisible(fieldElement, 10000);
+  await I.isElementVisible(fieldElement, 3000);
   expect(await I.checkElement(fieldElement)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
@@ -154,17 +154,17 @@ Then('The error message display is {string} {string} {string}', async (errPrimar
   expect(errorTitle).equal(true);
 
   const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(1)';
-  await I.isElementVisible(selectorErrPrimaryAdd, 10000);
+  await I.isElementVisible(selectorErrPrimaryAdd, 3000);
   const eleErrPrimarAdd = await I.getElement(selectorErrPrimaryAdd);
   expect(await I.getElementText(eleErrPrimarAdd)).equal(errPrimaryAdd);
 
   const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(2)';
-  await I.isElementVisible(selectorErrSecondaryTown, 10000);
+  await I.isElementVisible(selectorErrSecondaryTown, 3000);
   const eleErrSecondaryTown = await I.getElement(selectorErrSecondaryTown);
   expect(await I.getElementText(eleErrSecondaryTown)).equal(errSecondaryTown);
 
   const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(3)';
-  await I.isElementVisible(selectorErrSecondaryPostcode, 10000);
+  await I.isElementVisible(selectorErrSecondaryPostcode, 3000);
   const eleErrSecondaryPostcode = await I.getElement(selectorErrSecondaryPostcode);
   expect(await I.getElementText(eleErrSecondaryPostcode)).equal(errSecondaryPostcode);
 });
@@ -280,9 +280,9 @@ Then('I select children and civil from area of law and county court for court ty
   const selectorAolChildren = "input[name='secondaryAddressAOLItems'][data-name='secondaryChildren']";
   const selectorAolCivil = "input[name='secondaryAddressAOLItems'][data-name='secondaryCivil']";
   const selectorCountyCourt = "input[name='secondaryAddressCourtItems'][data-name='secondaryCounty Court']";
-  await I.isElementVisible(selectorAolChildren, 10000);
-  await I.isElementVisible(selectorAolCivil, 10000);
-  await I.isElementVisible(selectorCountyCourt, 10000);
+  await I.isElementVisible(selectorAolChildren, 3000);
+  await I.isElementVisible(selectorAolCivil, 3000);
+  await I.isElementVisible(selectorCountyCourt, 3000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
@@ -302,7 +302,7 @@ Then('I click the link view court in new tab to validate the label generated', a
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
-  await I.isElementVisible(selectorLabel, 10000);
+  await I.isElementVisible(selectorLabel, 3000);
 
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
@@ -318,8 +318,8 @@ Then('I select yes for second secondary court area of law and court type', async
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
   const selectorAolChildren = "input[name='thirdAddressAOLItems'][data-name='thirdChildren']";
   const selectorCountyCourt = "input[name='thirdAddressCourtItems'][data-name='thirdCounty Court']";
-  await I.isElementVisible(selectorAolChildren, 10000);
-  await I.isElementVisible(selectorCountyCourt, 10000);
+  await I.isElementVisible(selectorAolChildren, 3000);
+  await I.isElementVisible(selectorCountyCourt, 3000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);

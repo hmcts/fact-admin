@@ -21,7 +21,7 @@ When('I click the photo tab', async () => {
 });
 
 Then('I can view the existing court photo form', async () => {
-  const elementExist = await I.isElementVisible('#photoForm', 10000);
+  const elementExist = await I.isElementVisible('#photoForm', 3000);
   expect(elementExist).equal(true);
 });
 
@@ -35,7 +35,7 @@ When('I check for existing photo then delete it',  async () => {
     expect(await I.checkElement(selector)).equal(true);
     await I.click(selector);
     const confirmDeleteSelector = '#confirmDelete';
-    await I.isElementVisible(confirmDeleteSelector, 10000);
+    await I.isElementVisible(confirmDeleteSelector, 3000);
     expect(await I.checkElement(confirmDeleteSelector)).equal(true);
     await I.click(confirmDeleteSelector);
   }
@@ -43,7 +43,7 @@ When('I check for existing photo then delete it',  async () => {
 
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
-  await I.isElementVisible(fileSelector, 10000);
+  await I.isElementVisible(fileSelector, 3000);
   expect(await I.checkElement(fileSelector)).equal(true);
   const filePath = 'src/test/functional/SampleJPGImage_100kbmb (1).jpg';
   await I.uploadFile(fileSelector,filePath);

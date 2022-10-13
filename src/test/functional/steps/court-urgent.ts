@@ -41,7 +41,7 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 
 When('I click the open checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
-  await I.isElementVisible(selectorOpen, 10000);
+  await I.isElementVisible(selectorOpen, 3000);
 
   const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
   expect(elementOpenCheckboxExist).equal(true);
@@ -54,7 +54,7 @@ When('I click the open checkbox', async () => {
 
 When('I click the close checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
-  await I.isElementVisible(selectorOpen, 10000);
+  await I.isElementVisible(selectorOpen, 3000);
 
   const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
   expect(elementOpenCheckboxExist).equal(true);
@@ -67,7 +67,7 @@ When('I click the close checkbox', async () => {
 
 When('I click the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 10000);
+  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 3000);
 
   const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
@@ -80,7 +80,7 @@ When('I click the Participates in access scheme checkbox', async () => {
 
 When('I unclick the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
-  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 10000);
+  await I.isElementVisible(selectorParticipantsAccessSchemeChkbox, 3000);
 
   const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);

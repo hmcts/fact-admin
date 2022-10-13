@@ -53,7 +53,7 @@ When('I click save Additional Links', async () => {
 
 Then('the second last Additional link is displayed with URL {string} display name {string} and welsh display name {string}', async (url: string, englishDisplayName: string, welshDisplayName: string) => {
   const fieldsetSelector = '#additionalLinksTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numAdditionalLinks = await I.countElement(fieldsetSelector);
   const secondLastIndex = numAdditionalLinks - 4; // we deduct one each for zero-based index, hidden template fieldset, new additional links fieldset and the last entry.
 
@@ -203,19 +203,16 @@ Then('An error is displayed for additional links with summary {string} and URL f
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 100000);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  await I.isElementVisible(selector, 100000);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#display_name-1-error';
-  await I.isElementVisible(selector, 100000);
   expect(await I.checkElement(selector)).equal(true);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);

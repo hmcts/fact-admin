@@ -8,7 +8,7 @@ When('I click bulk update', async () => {
 });
 
 Then('I am on the {string} page', async (title: string) => {
-  await I.isElementVisible('h1', 10000);
+  await I.isElementVisible('h1', 3000);
   const el = await I.getElement('h1');
   const pageTitle = await I.getElementText(el);
   expect(pageTitle).equal(title);

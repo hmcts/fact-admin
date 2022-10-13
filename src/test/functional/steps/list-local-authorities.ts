@@ -75,8 +75,8 @@ Then('An error is displayed for edit local authorities with title {string} and s
   const errorTitleSelector = '#error-summary-title';
   const errorSummerySelector = '#localAuthoritiesListContent > div.govuk-error-summary > div > ul > li';
 
-  await I.isElementVisible(errorTitleSelector, 10000);
-  await I.isElementVisible(errorSummerySelector, 10000);
+  await I.isElementVisible(errorTitleSelector, 3000);
+  await I.isElementVisible(errorSummerySelector, 3000);
   expect(await I.checkElement(errorTitleSelector)).equal(true);
   expect(await I.checkElement(errorSummerySelector)).equal(true);
 

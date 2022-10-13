@@ -13,14 +13,14 @@ Given('that I am a logged-in admin or super admin user', async () => {
 });
 
 Then('I am logged out if I am a super admin', async () => {
-  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && await I.isElementVisible('#audits', 100000)) {
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && await I.isElementVisible('#audits', 30000)) {
     console.log('logging out as super user');
     await I.click('#logout');
   }
 });
 
 Then('I am logged out if I am an admin user', async () => {
-  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && !(await I.isElementVisible('#audits', 100000))) {
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && !(await I.isElementVisible('#audits', 30000))) {
     console.log('logging out as an admin user');
     await I.click('#logout');
   }

@@ -34,10 +34,10 @@ When('I enter new phone number entry by selecting description at index {int} and
   const explanationInputSelector = '#phoneNumbersTab input[name$="[explanation]"]';
   const explanationCyInputSelector = '#phoneNumbersTab input[name$="[explanation_cy]"]';
 
-  await I.isElementVisible(selectSelector, 10000);
-  await I.isElementVisible(numberInputSelector, 10000);
-  await I.isElementVisible(explanationInputSelector, 10000);
-  await I.isElementVisible(explanationCyInputSelector, 10000);
+  await I.isElementVisible(selectSelector, 3000);
+  await I.isElementVisible(numberInputSelector, 3000);
+  await I.isElementVisible(explanationInputSelector, 3000);
+  await I.isElementVisible(explanationCyInputSelector, 3000);
 
   await I.setElementValueAtIndex(selectSelector, entryFormIdx, index, 'select');
   await I.setElementValueAtIndex(numberInputSelector, entryFormIdx, number);
@@ -206,7 +206,7 @@ Then('there are no phone number entries', async () => {
 
 When('I click the move down button on the second last phone number entry', async () => {
   const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEntries = await I.countElement(fieldsetSelector);
   // We deduct one each for zero-based indexing, the hidden form template, the new entry form and the last opening hours entry.
   const secondLastOpeningHrsIdx = numEntries - 4;
@@ -217,7 +217,7 @@ When('I click the move down button on the second last phone number entry', async
 
 When('I click the move up button on the last phone number entry', async () => {
   const fieldsetSelector = '#phoneNumbersTab fieldset.can-reorder';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEntries = await I.countElement(fieldsetSelector);
   const lastOpeningHrsIdx = numEntries - 3; // we deduct one each for zero-based indexing, the hidden form template and the new entry form.
 

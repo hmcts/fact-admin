@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function populateField(selector: string, value: string) {
   const appProgressionSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(appProgressionSelector, 10000);
+  await I.isElementVisible(appProgressionSelector, 3000);
   const numFieldSets = await I.countElement(appProgressionSelector);
   const entryFormIdx = numFieldSets - 2;
 
@@ -33,38 +33,38 @@ Then('a green update message Application progression updated {string}', async (m
 
 Then('I entered {string} in Type TextBox', async (applicationType: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[type]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, applicationType);
 });
 
 Then('I entered {string} in welsh type TexTBox', async (applicationType: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[type_cy]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, applicationType);
 });
 
 Then('I entered {string} in Email TextBox', async (email: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[email]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, email);
 });
 
 Then('I entered {string} in External link TextBox', async (externalLink: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLink);
 });
 
 
 Then('I entered {string} in External link description TextBox', async (externalLinkDec: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link_description]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLinkDec);
 });
 
 Then('I entered {string} in External link welsh description TextBox', async (externalLinkDec: string) => {
   const typeSelector = '#applicationProgressionTab input[name$="[external_link_description_cy]"]';
-  await I.isElementVisible(typeSelector, 10000);
+  await I.isElementVisible(typeSelector, 3000);
   await populateField(typeSelector, externalLinkDec);
 });
 
@@ -85,7 +85,7 @@ Then('a green update message showing Application progression updated', async (me
 
 Then('the second last Email is {string}', async (email: string) => {
   const fieldsetSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numEmail = await I.countElement(fieldsetSelector);
   const secondLastIndex = numEmail - 4;
 
@@ -96,7 +96,7 @@ Then('the second last Email is {string}', async (email: string) => {
 Then('the last email is {string}', async (lastEmail: string) => {
 
   const fieldsetSelector = '#applicationProgressionTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 10000);
+  await I.isElementVisible(fieldsetSelector, 3000);
   const numApplicationType = await I.countElement(fieldsetSelector);
   const lastIndex = numApplicationType - 3;
 
