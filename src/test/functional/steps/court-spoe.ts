@@ -12,8 +12,8 @@ When('I click spoe tab', async () => {
 When('I select spoe areas of law {string} and {string}', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selectorAolAdoption = '#' + areaOfLaw1;
   const selectorAolChildren = '#' + areaOfLaw2;
-  await I.isElementVisible(selectorAolAdoption, 3000);
-  await I.isElementVisible(selectorAolChildren, 3000);
+  await I.isElementVisible(selectorAolAdoption, 10000);
+  await I.isElementVisible(selectorAolChildren, 10000);
   expect(await I.checkElement(selectorAolAdoption)).equal(true);
   const element1Checked = await I.isElementChecked(selectorAolAdoption);
 
@@ -34,7 +34,7 @@ When('I click spoe update', async () => {
 
 Then('Success message is displayed for spoe with summary {string}', async (successMsg: string) => {
   const selector = '#spoeContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -42,8 +42,8 @@ Then('Success message is displayed for spoe with summary {string}', async (succe
 Then('spoe area of law  {string} and {string} should be selected', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 3000);
-  await I.isElementVisible(selector2, 3000);
+  await I.isElementVisible(selector1, 10000);
+  await I.isElementVisible(selector2, 10000);
   expect(await I.checkElement(selector1)).equal(true);
   expect(await I.isElementChecked(selector1)).equal(true);
   expect(await I.checkElement(selector2)).equal(true);
@@ -53,8 +53,8 @@ Then('spoe area of law  {string} and {string} should be selected', async (areaOf
 When('I unselect spoe area of law {string} and {string}', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 3000);
-  await I.isElementVisible(selector2, 3000);
+  await I.isElementVisible(selector1, 10000);
+  await I.isElementVisible(selector2, 10000);
   expect(await I.checkElement(selector1)).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
   if (element1Checked) {
@@ -70,8 +70,8 @@ When('I unselect spoe area of law {string} and {string}', async (areaOfLaw1: str
 Then('spoe areas of law {string} and {string} should be unselected', async (areaOfLaw1: string, areaOfLaw2: string) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 3000);
-  await I.isElementVisible(selector2, 3000);
+  await I.isElementVisible(selector1, 10000);
+  await I.isElementVisible(selector2, 10000);
   expect(await I.checkElement(selector1)).equal(true);
   expect(await I.isElementChecked(selector1)).equal(false);
   expect(await I.checkElement(selector2)).equal(true);

@@ -16,7 +16,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on facility types list', async () => {
   const selector = '#tab_facilities';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -24,14 +24,14 @@ When('I click on facility types list', async () => {
 
 Then('I should see {string} facility type page', async (facilityType: string) => {
   const selector = '#facilityTypesListContent > h2';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const pageTitleElement = await I.getElement(selector);
   expect(await I.getElementText(pageTitleElement)).equal(facilityType);
 });
 
 Then('I click on Add new facility type',async () => {
   const selector = '#facilityTypesListContent > div:nth-child(4) > a';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -39,26 +39,26 @@ Then('I click on Add new facility type',async () => {
 
 Then('I am redirected to the {string} facility type form', async (facilityType: string) => {
   const selector = '#facilityTypesListContent > h2';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(facilityType);
 });
 
 Then('I enter {string} in facility name textbox', async (displayName: string) => {
   const selector = '#facility-type-name';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, displayName);
 });
 
 Then('I enter {string} in facility welsh name textbox', async (displayNameCy: string) => {
   const selector = '#facility-type-name-cy';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, displayNameCy);
 });
 
 When('I click facility type save button', async () => {
   const selector = '#saveFacilityType';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -68,7 +68,7 @@ Then('The error message displays for facility type {string}', async (errMessage:
   expect(errorTitle).equal(true);
 
   const selector = '#facilityTypesListContent > div.govuk-error-summary > div > ul > li';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
@@ -78,14 +78,14 @@ Then('I click delete button for facility type {string}',async (facilityType: str
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed {string}', async (message: string) => {
   const selector = '#facilityTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
@@ -94,7 +94,7 @@ Given('I click edit facility type {string}', async (facilityType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });

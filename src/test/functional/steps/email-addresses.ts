@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over emails nav element', async () => {
   const selector = '#nav';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.hover(selector);
@@ -14,7 +14,7 @@ When('I hover over emails nav element', async () => {
 
 Then('I click the Emails tab', async () => {
   const selector = '#tab_emails';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -43,10 +43,10 @@ When('I add Description from the dropdown at index {int} and Address {string} an
     const expInputSelector = '#emailsTab input[name$="[explanation]"]';
     const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
 
-    await I.isElementVisible(descriptionSelectSelector, 3000);
-    await I.isElementVisible(addressInputSelector, 3000);
-    await I.isElementVisible(expInputSelector, 3000);
-    await I.isElementVisible(expCyInputSelector, 3000);
+    await I.isElementVisible(descriptionSelectSelector, 10000);
+    await I.isElementVisible(addressInputSelector, 10000);
+    await I.isElementVisible(expInputSelector, 10000);
+    await I.isElementVisible(expCyInputSelector, 10000);
 
     await I.setElementValueAtIndex(descriptionSelectSelector, entryFormIdx, descriptionIndex, 'select');
     await I.setElementValueAtIndex(addressInputSelector, entryFormIdx, email, 'input');
@@ -60,7 +60,7 @@ When('I click save button', async () => {
 
 Then('a green update message showing email updated is displayed', async () => {
   const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
@@ -74,10 +74,10 @@ Then('the second last email address is displayed with description at index {int}
   const expInputSelector = '#emailsTab input[name$="[explanation]"]';
   const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
 
-  await I.isElementVisible(descriptionSelectSelector, 3000);
-  await I.isElementVisible(addressInputSelector, 3000);
-  await I.isElementVisible(expInputSelector, 3000);
-  await I.isElementVisible(expCyInputSelector, 3000);
+  await I.isElementVisible(descriptionSelectSelector, 10000);
+  await I.isElementVisible(addressInputSelector, 10000);
+  await I.isElementVisible(expInputSelector, 10000);
+  await I.isElementVisible(expCyInputSelector, 10000);
 
   expect(await I.getSelectedIndexAtIndex(descriptionSelectSelector, secondLastEmailIdx)).equal(id);
   expect(await I.getElementValueAtIndex(addressInputSelector, secondLastEmailIdx)).equal(email);

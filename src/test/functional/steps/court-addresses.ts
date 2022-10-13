@@ -6,20 +6,20 @@ import * as I from '../utlis/puppeteer.util';
 
 
 async function checkAndClearAddressField(addressFieldElement: string) {
-  await I.isElementVisible(addressFieldElement, 3000);
+  await I.isElementVisible(addressFieldElement, 10000);
   expect(await I.checkElement(addressFieldElement)).equal(true);
   await I.clearField(addressFieldElement);
 }
 
 async function populateField(fieldElement: string, value: string) {
-  await I.isElementVisible(fieldElement, 3000);
+  await I.isElementVisible(fieldElement, 10000);
   expect(await I.checkElement(fieldElement)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 Then('I click the Addresses tab', async () => {
   const selector = '#tab_addresses';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -34,7 +34,7 @@ Given('I will make sure to clear all entries of the primary address', async () =
 
 When('I select the Address Type {string}', async (addressType: string) => {
   const selector = '#primaryAddressType';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, addressType);
@@ -42,7 +42,7 @@ When('I select the Address Type {string}', async (addressType: string) => {
 
 Then('I select the primary County {string}', async (county: string) => {
   const selector = '#primaryAddressCounty';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
@@ -50,50 +50,50 @@ Then('I select the primary County {string}', async (county: string) => {
 
 Then('I enter secondary address description {string} in Description textbox', async (desc: string) => {
   const selector = '#secondaryAddressDescription';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, desc);
 });
 
 Then('I enter secondary address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
   const selector = '#secondaryAddressDescriptionWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshDesc);
 });
 
 Then('I enter court {string} in the Address textbox', async (address: string) => {
   const selector = '#primaryAddressLines';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, address);
 });
 
 Then('I enter {string} in the Address Welsh textbox', async (welshAddress: string) => {
   const selector = '#primaryAddressWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshAddress);
 
 });
 
 Then('I enter {string} in the Town textbox', async (town: string) => {
   const selector = '#primaryAddressTown';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, town);
 });
 
 Then('I enter {string} in the town Welsh textbox', async (welshTown: string) => {
   const selector = '#primaryAddressTownWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshTown);
 });
 
 Then('I enter {string} in the postcode textbox', async (postcode: string) => {
   const selector = '#primaryAddressPostcode';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, postcode);
 });
 
 Then('I click the Save Addresses button', async () => {
   const selector = 'button[name="saveAddresses"]';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -101,7 +101,7 @@ Then('I click the Save Addresses button', async () => {
 
 Then('A green message is displayed for the updated address {string}', async (message: string) => {
   const selector = '#addressesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
@@ -109,7 +109,7 @@ Then('A green message is displayed for the updated address {string}', async (mes
 
 When('I will make sure to clear all entries for secondary address', async () => {
   const selector = 'button[name="removeSecondaryAddress"]';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -117,7 +117,7 @@ When('I will make sure to clear all entries for secondary address', async () => 
 
 Then('I select the secondary address type as {string}', async (addressType: string) => {
   const selector = '#secondaryAddressType';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, addressType);
@@ -125,19 +125,19 @@ Then('I select the secondary address type as {string}', async (addressType: stri
 
 Then('I enter the secondary court address {string} in the Address textbox', async (address: string) => {
   const selector = '#secondaryAddressLines';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, address);
 });
 
 Then('I enter the secondary address town {string}', async (town: string) => {
   const selector = '#secondaryAddressTown';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, town);
 });
 
 Then('I select the secondary County {string}', async (county: string) => {
   const selector = '#secondaryAddressCounty';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
@@ -154,17 +154,17 @@ Then('The error message display is {string} {string} {string}', async (errPrimar
   expect(errorTitle).equal(true);
 
   const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(1)';
-  await I.isElementVisible(selectorErrPrimaryAdd, 3000);
+  await I.isElementVisible(selectorErrPrimaryAdd, 10000);
   const eleErrPrimarAdd = await I.getElement(selectorErrPrimaryAdd);
   expect(await I.getElementText(eleErrPrimarAdd)).equal(errPrimaryAdd);
 
   const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(2)';
-  await I.isElementVisible(selectorErrSecondaryTown, 3000);
+  await I.isElementVisible(selectorErrSecondaryTown, 10000);
   const eleErrSecondaryTown = await I.getElement(selectorErrSecondaryTown);
   expect(await I.getElementText(eleErrSecondaryTown)).equal(errSecondaryTown);
 
   const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(3)';
-  await I.isElementVisible(selectorErrSecondaryPostcode, 3000);
+  await I.isElementVisible(selectorErrSecondaryPostcode, 10000);
   const eleErrSecondaryPostcode = await I.getElement(selectorErrSecondaryPostcode);
   expect(await I.getElementText(eleErrSecondaryPostcode)).equal(errSecondaryPostcode);
 });
@@ -174,14 +174,14 @@ Then('The error message display is {string}', async (errMessage: string) => {
   expect(errorTitle).equal(true);
 
   const selector = '#addressesContent > div.govuk-error-summary > div > ul > li';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
 
 Given('I will make sure to clear all entries of third address', async () => {
   const selector = 'button[name="removeThirdAddress"]';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click('button[name="removeThirdAddress"]');
@@ -189,43 +189,43 @@ Given('I will make sure to clear all entries of third address', async () => {
 
 Then('I enter third address description {string} in Description textbox', async (desc: string) => {
   const selector = '#thirdAddressDescription';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, desc);
 });
 
 Then('I enter third address welsh description {string} in Welsh Description textbox', async (welshDesc: string) => {
   const selector = '#thirdAddressDescriptionWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshDesc);
 });
 
 Then('I enter third address address {string} in the Address textbox', async (address: string) => {
   const selector = '#thirdAddressLines';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, address);
 });
 
 Then('I enter third address welsh address {string} in the Address Welsh textbox', async (welshAdd: string) => {
   const selector = '#thirdAddressLinesWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshAdd);
 });
 
 Then('I enter third address {string} in the Town textbox', async (town: string) => {
   const selector = '#thirdAddressTown';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, town);
 });
 
 Then('I enter third address {string} in the town Welsh textbox', async (welshtown: string) => {
   const selector = '#thirdAddressTownWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, welshtown);
 });
 
 Then('I select the third County {string}', async (county: string) => {
   const selector = '#thirdAddressCounty';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
@@ -233,45 +233,45 @@ Then('I select the third County {string}', async (county: string) => {
 
 Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {
   const selector = '#thirdAddressPostcode';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, postcode);
 });
 
 When('I select the third address type {string}', async (addressType: string) => {
   const selector = '#thirdAddressType';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.selectItem(selector, addressType);
 });
 
 Given('I will make sure to remove entries for first secondary address', async () => {
   const selector = '#removeSecondAddressBtn';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I enter secondary address description {string}', async (description: string) => {
   const selector = '#secondaryAddressDescription';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, description);
 });
 
 Then('I enter secondary address description welsh {string}', async (descriptionCy: string) => {
   const selector = '#secondaryAddressDescriptionWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, descriptionCy);
 });
 
 Then('I enter the secondary address town welsh {string}', async (townCy: string) => {
   const selector = '#secondaryAddressTownWelsh';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   await populateField(selector, townCy);
 });
 
 Then('I select yes for area of law and court type', async () => {
   const selector = '#secondaryFieldsOfLawRadio';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -280,9 +280,9 @@ Then('I select children and civil from area of law and county court for court ty
   const selectorAolChildren = "input[name='secondaryAddressAOLItems'][data-name='secondaryChildren']";
   const selectorAolCivil = "input[name='secondaryAddressAOLItems'][data-name='secondaryCivil']";
   const selectorCountyCourt = "input[name='secondaryAddressCourtItems'][data-name='secondaryCounty Court']";
-  await I.isElementVisible(selectorAolChildren, 3000);
-  await I.isElementVisible(selectorAolCivil, 3000);
-  await I.isElementVisible(selectorCountyCourt, 3000);
+  await I.isElementVisible(selectorAolChildren, 10000);
+  await I.isElementVisible(selectorAolCivil, 10000);
+  await I.isElementVisible(selectorCountyCourt, 10000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
@@ -293,7 +293,7 @@ Then('I select children and civil from area of law and county court for court ty
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
 
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
@@ -302,7 +302,7 @@ Then('I click the link view court in new tab to validate the label generated', a
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
-  await I.isElementVisible(selectorLabel, 3000);
+  await I.isElementVisible(selectorLabel, 10000);
 
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
@@ -310,7 +310,7 @@ Then('I click the link view court in new tab to validate the label generated', a
 
 Then('I select yes for second secondary court area of law and court type', async () => {
   const selector = '#thirdFieldsOfLawRadio';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -318,8 +318,8 @@ Then('I select yes for second secondary court area of law and court type', async
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
   const selectorAolChildren = "input[name='thirdAddressAOLItems'][data-name='thirdChildren']";
   const selectorCountyCourt = "input[name='thirdAddressCourtItems'][data-name='thirdCounty Court']";
-  await I.isElementVisible(selectorAolChildren, 3000);
-  await I.isElementVisible(selectorCountyCourt, 3000);
+  await I.isElementVisible(selectorAolChildren, 10000);
+  await I.isElementVisible(selectorCountyCourt, 10000);
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);

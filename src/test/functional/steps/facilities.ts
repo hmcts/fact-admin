@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the facilities tab', async () => {
   const selector = '#tab_court-facilities';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
@@ -14,7 +14,7 @@ When('I click the facilities tab', async () => {
 When('I remove all existing facility entries and save', async () => {
 
   const fieldsetSelector = '#courtFacilitiesContent > fieldset';
-  await I.isElementVisible(fieldsetSelector, 3000);
+  await I.isElementVisible(fieldsetSelector, 10000);
   const fieldsetCount = await I.countElement(fieldsetSelector);
   // Remove all fieldsets except the empty new one
   for (let i = fieldsetCount; i > 1; i--) {
@@ -27,12 +27,12 @@ When('I remove all existing facility entries and save', async () => {
 
 Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
   let selector = '#courtFacilitiesTab .govuk-panel--confirmation';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 
   selector = '#courtFacilitiesTab .govuk-panel--confirmation';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const element = await I.getElement(selector);
   const updateText = await I.getElementText(element);
   expect(updateText).equal(msgUpdated);
@@ -40,7 +40,7 @@ Then('a green message is displayed for updated facilities {string}', async (msgU
 
 When('I enter facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
   const selector = '#courtFacilitiesTab fieldset';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const numFieldsets = await I.countElement(selector);
   const entryFormIdx = numFieldsets - 1;
   let facilityIdx = 0;
@@ -51,10 +51,10 @@ When('I enter facility {string} and enter description in english {string} and we
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
   const facilityOptionSelector = '#name-1 > option';
 
-  await I.isElementVisible(facilitySelector, 3000);
-  await I.isElementVisible(englishDescriptionSelector, 3000);
-  await I.isElementVisible(welshDescriptionSelector, 3000);
-  await I.isElementVisible(facilityOptionSelector, 3000);
+  await I.isElementVisible(facilitySelector, 10000);
+  await I.isElementVisible(englishDescriptionSelector, 10000);
+  await I.isElementVisible(welshDescriptionSelector, 10000);
+  await I.isElementVisible(facilityOptionSelector, 10000);
 
   const elementExist = await I.checkElement(facilityOptionSelector);
   expect(elementExist).equal(true);
@@ -75,7 +75,7 @@ When('I enter facility {string} and enter description in english {string} and we
 
 When('I enter description in english {string}', async (englishDescription: string) => {
   const selector = '#courtFacilitiesTab fieldset';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const numFieldsets = await I.countElement(selector);
   const entryFormIdx = numFieldsets - 1;
 
@@ -101,7 +101,7 @@ When('I click clear in the facilities tab', async () => {
 
 Then('the facility entry in second last position has value {string} description in english {string} and welsh {string}', async (value: number, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 3000);
+  await I.isElementVisible(fieldsetSelector, 10000);
   const numFacilities = await I.countElement(fieldsetSelector);
   const secondLastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
   const selectorIndex = secondLastIndex + 1;
@@ -109,11 +109,11 @@ Then('the facility entry in second last position has value {string} description 
   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
 
-  await I.isElementVisible(englishDescriptionSelector, 3000);
+  await I.isElementVisible(englishDescriptionSelector, 10000);
   const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
   expect(englishDescriptionTxt).equal(englishDescription);
 
-  await I.isElementVisible(welshDescriptionSelector, 3000);
+  await I.isElementVisible(welshDescriptionSelector, 10000);
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 
@@ -123,7 +123,7 @@ Then('the facility entry in second last position has value {string} description 
 
 Then('the facility entry in last position has index {string} description in english {string} and welsh {string}', async (value: string, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
-  await I.isElementVisible(fieldsetSelector, 3000);
+  await I.isElementVisible(fieldsetSelector, 10000);
   const numFacilities = await I.countElement(fieldsetSelector);
   const lastIndex = numFacilities - 2; // we deduct one each for zero-based index, hidden template fieldset and new facility fieldset.
 
@@ -132,11 +132,11 @@ Then('the facility entry in last position has index {string} description in engl
   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
 
-  await I.isElementVisible(englishDescriptionSelector, 3000);
+  await I.isElementVisible(englishDescriptionSelector, 10000);
   const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
   expect(englishDescriptionTxt).equal(englishDescription);
 
-  await I.isElementVisible(welshDescriptionSelector, 3000);
+  await I.isElementVisible(welshDescriptionSelector, 10000);
   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
   expect(welshDescriptionTxt).equal(welshDescription);
 
@@ -155,7 +155,7 @@ When('I click the remove button under newly added facility entries', async () =>
 
 Then('there are no facility entries', async () => {
   const selector = '#courtFacilitiesTab fieldset';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   const numberOfFieldsets = await I.countElement(selector);
   const numFacilities = numberOfFieldsets - 1; // we deduct the hidden template and the new facilities form
   expect(numFacilities).to.equal(0);
@@ -164,25 +164,25 @@ Then('there are no facility entries', async () => {
 When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 
   selector = '#name-2-error';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement2 = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement2)).contains(message);
@@ -191,19 +191,19 @@ When('An error is displayed for facilities with summary {string} and field messa
 When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#description-1-error';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
@@ -212,19 +212,19 @@ When('An error is displayed for facilities with summary {string} and description
 When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.isElementVisible(selector, 3000)).equal(true);
+  expect(await I.isElementVisible(selector, 10000)).equal(true);
   expect(await I.checkElement(selector)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
