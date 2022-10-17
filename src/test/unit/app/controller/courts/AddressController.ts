@@ -959,7 +959,7 @@ describe('AddressesController', () => {
     req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
 
     // Primary postcode invalid only
-    errorResponse.response.data = [addresses.primary.postcode];
+    errorResponse.response.data = {'message': addresses.primary.postcode};
     await controller.put(req, res);
     let expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeNotFoundError}];
     let expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
@@ -967,7 +967,7 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
-    errorResponse.response.data = [addresses.secondary.postcode];
+    errorResponse.response.data = {'message': addresses.secondary.postcode};
     await controller.put(req, res);
     expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}];
     expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
@@ -976,7 +976,7 @@ describe('AddressesController', () => {
 
     // Both postcodes invalid and same
     addresses.primary.postcode = addresses.secondary.postcode;
-    errorResponse.response.data = [addresses.primary.postcode, addresses.secondary.postcode];
+    errorResponse.response.data = {'message': addresses.primary.postcode + ',' + addresses.secondary.postcode };
     await controller.put(req, res);
     expectedError = [
       {text: controller.primaryAddressPrefix + controller.postcodeNotFoundError},
@@ -989,7 +989,7 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Bad Request for reasons other than postcodes
-    errorResponse.response.data = null;
+    errorResponse.response.data = {'message':null};
     await controller.put(req, res);
     expectedError = [{text: controller.updateAddressError}];
     expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
