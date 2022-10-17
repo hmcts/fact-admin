@@ -4,6 +4,7 @@ import {Response} from 'express';
 import {Audit, AuditPageData} from '../../../types/Audit';
 import {Court} from '../../../types/Court';
 import {Parser} from 'json2csv';
+import sanitizeHtml from 'sanitize-html';
 
 @autobind
 export class AuditController {
@@ -30,10 +31,10 @@ export class AuditController {
     // size will increase by 1 for each button pressed.
     const page = req.query?.page ? req.query.page as unknown as number: 0;
     const limit = 10 as number;
-    const location = req.query?.location ? req.query.location as string : '';
-    const email = req.query?.email ? req.query.email as string : '';
-    const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
-    const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
+    const location = sanitizeHtml(req.query?.location ? req.query.location as string : '');
+    const email = sanitizeHtml(req.query?.email ? req.query.email as string : '');
+    const dateFrom = sanitizeHtml(req.query?.dateFrom ? req.query.dateFrom as string : '');
+    const dateTo = sanitizeHtml(req.query?.dateTo as string ? req.query.dateTo as string : '');
     const errors: { text: string }[] = [];
     let audits: Audit[] = [];
     let courts: Court[] = [];
@@ -125,5 +126,4 @@ export class AuditController {
     res.send(csv);
 
   }
-
 }

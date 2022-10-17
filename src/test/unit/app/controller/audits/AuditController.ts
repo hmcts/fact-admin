@@ -86,6 +86,38 @@ describe ( 'AuditController', () => {
     expect(res.render).toBeCalledWith('audits/auditContent', expectedResults);
   });
 
+  test('Should remove scripts from inputs', async () => {
+    const req = mockRequest();
+    req.query = {
+      page: 1,
+      location: '<script>location</script>',
+      email: '<script>email</script>',
+      dateFrom: '<script>3/1/2001, 12:00:00 AM</script>',
+      dateTo: '<script>2/1/2001, 12:00:00 AM</script>'
+    };
+    req.scope.cradle.api = {
+      getAudits: async (): Promise<Audit[]> => [],
+      getCourts: async (): Promise<object[]> => []
+    };
+    const res = mockResponse();
+
+    await controller.getAuditData(req, res);
+
+    const expectedResults: AuditPageData = {
+      audits: [],
+      courts: [],
+      errors: [],
+      currentPage: 1,
+      searchOptions: {
+        location: '',
+        username: '',
+        dateFrom: '',
+        dateTo: ''
+      }
+    };
+    expect(res.render).toBeCalledWith('audits/auditContent', expectedResults);
+  });
+
   test('Should get date error when before date after to date', async () => {
     const req = mockRequest();
     req.query = {

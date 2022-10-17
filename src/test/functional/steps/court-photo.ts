@@ -19,6 +19,7 @@ When('I click the photo tab', async () => {
 });
 
 Then('I can view the existing court photo form', async () => {
+  const elementExist = await I.isElementVisible('#photoForm', 3000);
   expect(elementExist).equal(true);
 });
 
