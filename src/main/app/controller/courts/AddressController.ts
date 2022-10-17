@@ -402,11 +402,8 @@ export class AddressController {
     // We expect an array of invalid postcodes in the body of the response
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (Array.isArray(error.response.data.message)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const invalidPostcodes = error.response.data.message as string[];
-
+    const invalidPostcodes = error.response.data.message.split(',');
+    if (Array.isArray(invalidPostcodes)) {
       invalidPostcodes.forEach(invalidPostcode => {
         if (!primaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.primary?.postcode?.toUpperCase()) {
           primaryPostcodeInvalid = true;
