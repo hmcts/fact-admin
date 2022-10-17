@@ -302,7 +302,7 @@ describe('PostcodeController', () => {
       'areasOfLaw': areasOfLawBodyInput
     };
     const errorResponse = mockResponse();
-    errorResponse.response.data = ['pl1'];
+    errorResponse.response.data = {'message':['pl1']};
     req.params = { slug: testSlug };
     req.scope.cradle.api = mockApi;
     req.scope.cradle.api.addPostcodes = jest.fn().mockRejectedValue(errorResponse);
