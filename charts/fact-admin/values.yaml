@@ -13,6 +13,7 @@ nodejs:
         - storage-account-connection-string
         - storage-account-name
         - storage-account-primary-key
+        - secure-flag
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:

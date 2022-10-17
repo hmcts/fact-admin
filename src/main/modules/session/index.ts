@@ -28,7 +28,7 @@ export class SessionStorage {
       cookie: {
         httpOnly: true,
         sameSite: true,
-        secure: false
+        secure: config.get('session.secure-flag')
       },
       store: this.getStore()
     }));
