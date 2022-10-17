@@ -53,7 +53,6 @@ When('I click save button', async () => {
 
 Then('a green update message showing email updated is displayed', async () => {
   const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
-  await I.isElementVisible(selector, 3000);
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
@@ -66,11 +65,6 @@ Then('the second last email address is displayed with description at index {int}
   const addressInputSelector = '#emailsTab input[name$="[address]"]';
   const expInputSelector = '#emailsTab input[name$="[explanation]"]';
   const expCyInputSelector = '#emailsTab input[name$="[explanationCy]"]';
-
-  await I.isElementVisible(descriptionSelectSelector, 5000);
-  await I.isElementVisible(addressInputSelector, 5000);
-  await I.isElementVisible(expInputSelector, 5000);
-  await I.isElementVisible(expCyInputSelector, 5000);
 
   expect(await I.getSelectedIndexAtIndex(descriptionSelectSelector, secondLastEmailIdx)).equal(id);
   expect(await I.getElementValueAtIndex(addressInputSelector, secondLastEmailIdx)).equal(email);
