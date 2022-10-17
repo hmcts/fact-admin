@@ -137,8 +137,10 @@ export class PostcodesController {
         // conflict, postcode(s) already exists on the database
         await this.get(req, res, newPostcodes, existingPostcodes,
           reason.response?.status === 409
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             ? this.duplicatePostcodeMsg + reason.response?.data.message
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             : this.addErrorMsg + reason.response?.data.message, areasOfLaw, courtTypes, true);
       });
