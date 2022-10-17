@@ -19,6 +19,7 @@ port: PORT
 session:
   redis:
     host: REDIS_HOST
+  secure-flag: SECURE_FLAG
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
 csrf:

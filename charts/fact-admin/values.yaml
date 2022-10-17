@@ -13,7 +13,6 @@ nodejs:
         - storage-account-connection-string
         - storage-account-name
         - storage-account-primary-key
-        - secure-flag
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctspublic.azurecr.io/fact/admin:latest'
   environment:
@@ -26,5 +25,6 @@ nodejs:
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
     IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
     IDAM_USER_DASHBOARD_URL: "https://idam-user-dashboard.{{ .Values.global.environment }}.platform.hmcts.net"
+    SECURE_FLAG : true
 idam-pr:
   enabled: false

@@ -20,6 +20,8 @@ export class SessionStorage {
     if (!this.developmentMode) {
       server.set('trust proxy', 1);
     }
+
+
     server.use(session({
       name: 'fact-session',
       resave: false,
@@ -28,7 +30,7 @@ export class SessionStorage {
       cookie: {
         httpOnly: true,
         sameSite: true,
-        secure: config.get('session.secure-flag')
+        secure:  config.get('session.secure-flag')
       },
       store: this.getStore()
     }));
