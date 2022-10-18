@@ -25,6 +25,7 @@ health:
   deadline: 15000
 session:
   secret: 'local'
+  secure-flag: false
   redis:
     host:
     key:
