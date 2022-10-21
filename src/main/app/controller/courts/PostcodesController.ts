@@ -84,7 +84,7 @@ export class PostcodesController {
       errors: errors,
       updated: updated,
       searchValue: searchValue,
-      isEnabled: courtTypes?.some(ct => ct === 'County_Court') ?? false,
+      isEnabled: res.locals.isViewer ? true : (courtTypes?.some(ct => ct === 'County_Court') ?? false),
       areasOfLaw: areasOfLaw,
       courtTypes: courtTypes,
       fatalError: fatalError,
