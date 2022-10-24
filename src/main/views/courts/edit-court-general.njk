@@ -21,7 +21,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters">
-          <h1 id="court-name" class="govuk-heading-l">Editing - {{ name }}</h1>
+          <h1 id="court-name" class="govuk-heading-l">
+            {% if isViewer %}
+              Details - {{ name }}
+            {% else %}
+              Editing - {{ name }}
+            {% endif %}
+          </h1>
         </div>
 
         <div class="govuk-grid-column-one-quarter">

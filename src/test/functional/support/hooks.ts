@@ -16,6 +16,7 @@ setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
 BeforeAll(async () => {
   puppeteerConfig.username = process.env.OAUTH_USER;
+  puppeteerConfig.viewerUsername = process.env.OAUTH_VIEWER_USER;
   puppeteerConfig.superUsername = process.env.OAUTH_SUPER_USER;
   puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
   await launchBrowser();
