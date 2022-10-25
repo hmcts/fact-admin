@@ -12,18 +12,22 @@ Feature: Login/Logout
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
 
-  Scenario: viewer can log in and only see specific tabs for a selected court
-    And It is "false" that the "#tab_opening-hours" tab is visible
-    And It is "false" that the "#tab_phone-numbers" tab is visible
-    And It is "false" that the "#tab_emails" tab is visible
-    And It is "false" that the "#tab_court-types" tab is visible
-    And It is "false" that the "#tab_court-facilities" tab is visible
-    And It is "false" that the "#tab_cases-heard" tab is visible
-    And It is "false" that the "#tab_court-types" tab is visible
-    And It is "false" that the "#tab_addresses" tab is visible
-    And It is "false" that the "#tab_photo" tab is visible
-    And It is "false" that the "#tab_application-progression" tab is visible
-    And It is "false" that the "#tab_additional-links" tab is visible
-    And It is "false" that the "#tab_spoe" tab is visible
-    And It is "true" that the "#tab_postcodes" tab is visible
-    And It is "true" that the "#tab_local-authorities" tab is visible
+  Scenario Outline: viewer can log in and only see specific tabs for a selected court
+    And It is "<shouldBeVisible>" that the "<tab>" tab is visible
+
+    Examples:
+      | tab                          | shouldBeVisible |
+      | #tab_opening-hours           | false           |
+      | #tab_phone-numbers           | false           |
+      | #tab_emails                  | false           |
+      | #tab_court-types             | false           |
+      | #tab_court-facilities        | false           |
+      | #tab_cases-heard             | false           |
+      | #tab_addresses               | false           |
+      | #tab_photo                   | false           |
+      | #tab_application-progression | false           |
+      | #tab_additional-links        | false           |
+      | #tab_spoe                    | false           |
+      | #tab_postcodes               | true            |
+      | #tab_local-authorities       | true            |
+
