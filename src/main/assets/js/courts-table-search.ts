@@ -7,6 +7,7 @@ export class CourtsTableSearch {
   private static toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private static numberOfCourts = '#numberOfCourts';
   private static searchCourtsFilterId = '#searchCourts';
+  private static searchCourtsByRegionId = '#searchByRegion';
   private static tableData = '#courtResults';
   private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';
@@ -23,9 +24,10 @@ export class CourtsTableSearch {
   public static setUpTable(): void {
     const toggleValues = CourtsTableSearch.getToggleStates();
     CourtsTableSearch.setUpTableData(
-        $(this.searchCourtsFilterId).val() as string,
-        $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
-        toggleValues[0], toggleValues[1]);
+      $(this.searchCourtsFilterId).val() as string,
+      $(this.searchCourtsByRegionId).val() as string,
+      $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
+      toggleValues[0], toggleValues[1]);
   }
 
   /**
@@ -39,10 +41,10 @@ export class CourtsTableSearch {
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
    * @private
    */
-  private static setUpTableData(searchFilterValue: string, includeClosedCourts: boolean,
+  private static setUpTableData(searchFilterValue: string, regionFilterValue: string, includeClosedCourts: boolean,
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): void {
     const filteredCourts = CourtsTableSearch.filterCourts(this.getExistingTableData(),
-      searchFilterValue, includeClosedCourts,
+      searchFilterValue, regionFilterValue, includeClosedCourts,
       orderNameAscendingFilter, orderUpdatedAscendingFilter);
     $(this.courtsResultsSection).html(CourtsTableSearch.getCourtsTableBody(filteredCourts));
     $(this.numberOfCourts).show().text('Showing '
@@ -69,6 +71,9 @@ export class CourtsTableSearch {
           case 'name':
             courtItem.name = $(dataCell).text();
             courtItem.slug = $(dataCell).data('name');
+            break;
+          case 'region':
+            courtItem.region = $(dataCell).data('region');
             break;
           case 'displayed':
             courtItem.displayed = $(dataCell).data('displayed');
@@ -106,11 +111,14 @@ export class CourtsTableSearch {
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
    * @private
    */
-  private static filterCourts(courts: CourtItem[], searchFilterValue: string, includeClosedCourts: boolean,
+  private static filterCourts(courts: CourtItem[], searchFilterValue: string, regionFilterValue: string, includeClosedCourts: boolean,
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): CourtItem[] {
 
     courts.forEach((courtItem) => {
-      if (searchFilterValue.trim().length > 0) {
+      if (regionFilterValue != '') {
+        courtItem.visible = ((includeClosedCourts || courtItem.displayed)
+          && courtItem.region[0].toLowerCase().includes(regionFilterValue.toString().toLowerCase()));
+      } else if (searchFilterValue.trim().length > 0) {
         courtItem.visible = ((includeClosedCourts || courtItem.displayed)
           && courtItem.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase()));
       } else

@@ -15,6 +15,7 @@ export interface DisplayAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  region: string;
 }
 
 
@@ -28,6 +29,7 @@ export interface CourtAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  region: string;
 }
 
 export interface AddressType {

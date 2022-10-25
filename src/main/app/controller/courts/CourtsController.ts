@@ -13,6 +13,7 @@ export class CourtsController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
 
     const courts = await req.scope.cradle.api.getCourts();
+    console.log(courts);
     const regions = req.scope.cradle.api.getRegions();
     const regionsSelect = this.getRegionsForSelect(regions);
 

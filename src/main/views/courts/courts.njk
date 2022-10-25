@@ -60,6 +60,14 @@
         },
         {
           attributes: {
+            'data-type': 'region',
+            'data-displayed': court.region
+          },
+          text: court.region,
+          classes: 'courtTableColumnRegion'
+        },
+        {
+          attributes: {
             'data-type': 'displayed',
             'data-displayed': court.displayed
           },
@@ -95,7 +103,7 @@
             id: 'tableCourtsName'
           },
           classes: 'govuk-!-width-one-half courts-table-header courts-table-header-inactive'
-        }, {},
+        }, {}, {},
         {
           text: "Last updated",
           attributes: {

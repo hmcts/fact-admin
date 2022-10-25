@@ -31,7 +31,8 @@ describe('AddressesController', () => {
         town: 'Redville',
         'town_cy': 'Redville_cy',
         'county_id': 1,
-        postcode: 'RR1 2AB'
+        postcode: 'RR1 2AB',
+        'region': 'North East'
       },
       {
         'type_id': 200,
@@ -42,7 +43,8 @@ describe('AddressesController', () => {
         town: 'Brownville',
         'town_cy': 'Brownville',
         'county_id': 2,
-        postcode: 'BB11 1BC'
+        postcode: 'BB11 1BC',
+        'region': 'North East'
       },
       {
         'type_id': 200,
@@ -53,7 +55,8 @@ describe('AddressesController', () => {
         town: 'Birmingham',
         'town_cy': 'Birmingham',
         'county_id': 3,
-        postcode: 'B1 1AA'
+        postcode: 'B1 1AA',
+        'region': 'North East'
       }
     ];
   };
@@ -74,7 +77,8 @@ describe('AddressesController', () => {
         town: primary.town,
         'town_cy': primary.town_cy,
         'county_id': 1,
-        postcode: primary.postcode
+        postcode: primary.postcode,
+        'region': 'North East'
       },
       secondary: {
         'type_id': secondary.type_id,
@@ -85,7 +89,8 @@ describe('AddressesController', () => {
         town: secondary.town,
         'town_cy': secondary.town_cy,
         'county_id': 2,
-        postcode: secondary.postcode
+        postcode: secondary.postcode,
+        'region': 'North East'
       },
       third: {
         'type_id': third.type_id,
@@ -96,7 +101,8 @@ describe('AddressesController', () => {
         town: third.town,
         'town_cy': third.town_cy,
         'county_id': 3,
-        postcode: third.postcode
+        postcode: third.postcode,
+        'region': 'North East'
       }
     };
   };
@@ -279,8 +285,8 @@ describe('AddressesController', () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '' },
-      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '' }
+      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '', 'region': '' },
+      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '', 'region': '' }
     };
 
     req.body = {
