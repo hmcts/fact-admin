@@ -11,6 +11,7 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def secrets = [
   'fact-${env}': [
     secret("oauth-user", "OAUTH_USER"),
+    secret("oauth-viewer-user", "OAUTH_VIEWER_USER"),
     secret("oauth-user-password", "OAUTH_USER_PASSWORD"),
     secret("oauth-super-user", "OAUTH_SUPER_USER"),
     secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY")
