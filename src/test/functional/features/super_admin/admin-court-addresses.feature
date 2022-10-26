@@ -168,4 +168,4 @@ Feature: Court-addresses
     Then I select the third County "50"
     Then I enter third address "CF44 0JE" in the postcode textbox
     And I click the Save Addresses button
-    Then The error message display is "Addresses must be unique."
+    Then The error message display is "All addresses must be unique."
