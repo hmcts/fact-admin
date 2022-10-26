@@ -5,7 +5,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 <h2 class="govuk-heading-l">Local Authorities</h2>
 
@@ -34,6 +34,18 @@
 {% endif %}
 
 {% if (courtAreasOfLaw | length) > 0 %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {% if isViewer %}
+        {{ govukDetails({
+          summaryText: "Help with local authorities",
+          html: "Please note that fact viewers will be unable to change the list below, if changes are required, please
+                contact a fact administrator"})
+        }}
+      {% endif %}
+    </div>
+  </div>
 
   <div class="govuk-grid-row" >
     <div class="govuk-grid-column-one-quarter">
@@ -68,13 +80,15 @@
 
   </div>
 
- <hr/>
+  {% if not isViewer %}
+    <hr/>
 
- {{ govukButton({
-   text: "Save",
-   name: "saveLocalAuthorities",
-   disabled: fatalError
- }) }}
+    {{ govukButton({
+      text: "Save",
+      name: "saveLocalAuthorities",
+      disabled: fatalError
+    }) }}
+  {% endif %}
 
 {% endif %}
 

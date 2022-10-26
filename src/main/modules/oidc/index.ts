@@ -141,6 +141,7 @@ export class OidcMiddleware {
         });
 
         res.locals.isLoggedIn = true;
+        res.locals.isViewer = req.session.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
 
         if (req.url.includes('/oauth2/callback')) {

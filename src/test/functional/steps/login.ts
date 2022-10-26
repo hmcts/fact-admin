@@ -48,6 +48,14 @@ When('I fill in the Username and Password fields with my super user authenticate
   }
 });
 
+When('I fill in the Username and Password fields with my viewer authenticated credentials', async () => {
+  if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
+    const username = puppeteerConfig.viewerUsername;
+    const password = puppeteerConfig.password;
+    await fillInUsernameAndPassword(username, password);
+  }
+});
+
 When('I fill in the Username and Password fields with my incorrect authenticated credentials {string} {string}',
   async (username: string, password: string) => {
     if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
