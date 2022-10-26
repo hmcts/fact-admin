@@ -53,8 +53,8 @@ Feature: Court-addresses
     Then The error message display is "Only one visit address is permitted."
 
     Examples:
-      | address                       | welsh address   | town     | welsh town   | postcode | secondary address             |secondary town | secondary postcode |
-      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, Cwmbach Road | Aberdare      | CF44 0JE           |
+      | address                       | welsh address   | town     | welsh town   | postcode | secondary address               | secondary town | secondary postcode |
+      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, 1 Cwmbach Road | Aberdare       | CF44 0JE           |
 
 
   Scenario: Adding third address of type: write to us
