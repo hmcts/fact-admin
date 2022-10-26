@@ -31,8 +31,8 @@ Feature: Court-addresses
     Then A green message is displayed for the updated address "Addresses updated"
 
     Examples:
-      | address                       | welsh address   | town     | welsh town   | postcode | secondary address             |secondary town | secondary postcode |
-      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, Cwmbach Road | Aberdare      | CF44 0JE           |
+      | address                       | welsh address   | town     | welsh town   | postcode | secondary address               | secondary town | secondary postcode |
+      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, 1 Cwmbach Road | Aberdare       | CF44 0JE           |
 
   Scenario Outline: Adding secondary address and primary address both of type: Visit us
     Given I will make sure to clear all entries of the primary address
@@ -151,3 +151,21 @@ Feature: Court-addresses
     Then I enter third address "CF44 0JE" in the postcode textbox
     And I click the Save Addresses button
     Then The error message display is "Secondary addresses cannot have duplicate areas of law or court types selected. Conflicting options selected are: \"Children, County Court\""
+
+  Scenario: Adding two identical addresses
+    Given I will make sure to remove entries for first secondary address
+    Given I will make sure to clear all entries of third address
+    And I click the Save Addresses button
+    Then A green message is displayed for the updated address "Addresses updated"
+    Then I select the secondary address type as "5881"
+    Then I enter the secondary court address "test address" in the Address textbox
+    Then I enter the secondary address town "test town"
+    Then I select the secondary County "50"
+    Then I enter the secondary address postcode "CF44 0JE"
+    When I select the third address type "5881"
+    Then I enter third address address "test address" in the Address textbox
+    Then I enter third address "town" in the Town textbox
+    Then I select the third County "50"
+    Then I enter third address "CF44 0JE" in the postcode textbox
+    And I click the Save Addresses button
+    Then The error message display is "Addresses must be unique."
