@@ -552,9 +552,7 @@ export class AddressController {
   }
 
   private checkAddressesAreUnique(addresses: DisplayCourtAddresses) : string[]{
-
     const errors: string[] = [];
-
     if ((addresses.primary.address_lines === addresses.secondary.address_lines && addresses.primary.postcode === addresses.secondary.postcode)
       || (!!addresses.third.address_lines?.trim() && !!addresses.third.postcode?.trim() && addresses.primary.address_lines === addresses.third.address_lines && addresses.primary.postcode === addresses.third.postcode)
       || (!!addresses.secondary.address_lines?.trim() && !!addresses.secondary.postcode?.trim() && addresses.secondary.address_lines === addresses.third.address_lines && addresses.secondary.postcode === addresses.third.postcode)) {
