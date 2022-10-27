@@ -14,7 +14,7 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  await I.isElementVisible('#edit-' + courtSlug, 3000);
+  await I.isElementVisible('#edit-' + courtSlug, 6000);
   await I.click('#edit-' + courtSlug);
 });
 
