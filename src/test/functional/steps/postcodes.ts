@@ -12,7 +12,7 @@ When('I click the postcodes tab', async () => {
 
 Then('A green message is displayed for the postcodes {string}', async (message: string) => {
   const selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
   const messageUpdate = await I.getElement('#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1');
   expect(await I.getElementText(messageUpdate)).equal(message);
 });

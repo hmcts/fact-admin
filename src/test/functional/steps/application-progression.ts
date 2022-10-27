@@ -7,7 +7,7 @@ async function populateField(selector: string, value: string) {
   const numFieldSets = await I.countElement('#applicationProgressionTab fieldset');
   const entryFormIdx = numFieldSets - 2;
 
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
   await I.setElementValueAtIndex(selector, entryFormIdx, value, 'input');
 }
 

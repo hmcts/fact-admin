@@ -45,7 +45,7 @@ export const fillField = async (selector: string, value: string) => {
 export const checkElement = async (selector: string) => {
   try {
     await scope.page.mouse.move(1000, 40);
-    await scope.page.waitForSelector(selector, {visible: true});
+    await scope.page.waitForSelector(selector);
     return true;
   } catch (error) {
     return false;

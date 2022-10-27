@@ -173,12 +173,12 @@ When('I click Save button', async () => {
 Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#emailsContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
 
   const errorListElement = await I.getElement(selector);
 
@@ -188,7 +188,7 @@ Then('An error is displayed for email address with summary {string} and address 
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
 
   selector = '#address-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(fieldErrMsg);
 

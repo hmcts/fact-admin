@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click spoe tab', async () => {
   const selector = '#tab_spoe';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.isElementVisible(selector, 3000);
   await I.click(selector);
 });
 
