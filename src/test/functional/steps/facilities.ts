@@ -5,8 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the facilities tab', async () => {
   const selector = '#tab_court-facilities';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
+  await I.isElementVisible(selector, 3000);
   await I.click(selector);
 });
 
@@ -24,9 +23,7 @@ When('I remove all existing facility entries and save', async () => {
 });
 
 Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
-  const elementExist = await I.checkElement('#courtFacilitiesTab .govuk-panel--confirmation');
-  expect(elementExist).equal(true);
-
+  await I.isElementVisible('#courtFacilitiesTab .govuk-panel--confirmation', 3000);
   const element = await I.getElement('#courtFacilitiesTab .govuk-panel--confirmation');
   const updateText = await I.getElementText(element);
   expect(updateText).equal(msgUpdated);
@@ -44,8 +41,7 @@ When('I enter facility {string} and enter description in english {string} and we
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
 
   const facilityOptionSelector = '#name-1 > option';
-  const elementExist = await I.checkElement(facilityOptionSelector);
-  expect(elementExist).equal(true);
+  await I.isElementVisible(facilityOptionSelector, 3000);
 
   const courtFacilities: string[] = await I.getHtmlFromElements(facilityOptionSelector);
 

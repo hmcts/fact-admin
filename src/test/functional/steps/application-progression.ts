@@ -13,8 +13,7 @@ async function populateField(selector: string, value: string) {
 
 Then('I click the application progression tab', async () => {
   const selector = '#tab_application-progression';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
+  await I.isElementVisible(selector, 3000);
   await I.click(selector);
 });
 
@@ -93,8 +92,7 @@ Then('the last email is {string}', async (lastEmail: string) => {
 });
 
 Then('An error is displayed for application progression with summary {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
-  expect(errorTitle).equal(true);
+  await I.isElementVisible('#error-summary-title', 3000);
 
   const selector = '#applicationProgressionContent > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);

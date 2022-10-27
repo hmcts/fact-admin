@@ -1,6 +1,6 @@
-import { Then, When } from 'cucumber';
+import {Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
-import { expect } from 'chai';
+import {expect} from 'chai';
 
 
 When('I click bulk update', async () => {
@@ -19,7 +19,6 @@ When('I select court {string}', async (court: string) => {
 
 When('I check include closed checkbox', async () => {
   const selector = '#toggle-closed-courts-display';
-  const elementExist = await I.checkElement(selector);
-  expect(elementExist).equal(true);
+  await I.isElementVisible(selector, 3000);
   await I.click(selector);
 });
