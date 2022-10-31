@@ -77,3 +77,18 @@ export function postcodeIsValidFormat(postcode: string): boolean {
   const match = postcode.match(postcodeRegex);
   return match?.length === 1 && match[0] === postcode;
 }
+
+export function replaceMultipleSpaces(data: any): void {
+  const feildsType = typeof data;
+  const regex = /[[:blank:]]{2,}|&nbsp; |&nbsp;/gmi;
+  if (feildsType == 'object')
+  {
+    Object.entries(data).forEach(([k, v]) => data[k] =
+      v.toString().replace(regex, '')
+    );
+  }
+  else if (feildsType == 'string')
+  {
+    data.replace(regex, '');
+  }
+}
