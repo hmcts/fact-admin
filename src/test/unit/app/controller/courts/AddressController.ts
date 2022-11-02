@@ -1047,4 +1047,56 @@ describe('AddressesController', () => {
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
+
+  test('Should not post court addresses if secondary and primary address are identical', async () => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    addresses.secondary.address_lines = '54 Green Street';
+    addresses.secondary.postcode = 'RR1 2AB';
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      third: addresses.third,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API to save data
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+
+    // Should render page with error
+    const expectedError = [{text: controller.duplicateAddressError}];
+    const expectedResults: CourtAddressPageData =
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
+  test('Should not post court addresses if secondary and third address are identical', async () => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    addresses.secondary.address_lines = '12 Yellow Road';
+    addresses.secondary.postcode = 'B1 1AA';
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      third: addresses.third,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API to save data
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+
+    // Should render page with error
+    const expectedError = [{text: controller.duplicateAddressError}];
+    const expectedResults: CourtAddressPageData =
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+        false, false, false, false));
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
 });

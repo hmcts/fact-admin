@@ -43,6 +43,7 @@ export class AddressController {
   thirdAddressPrefix = 'Secondary Address 2: ';
   fieldsOfLawDuplicateError = 'Secondary addresses cannot have duplicate areas of law or court types selected. '
     + 'Conflicting options selected are: ';
+  duplicateAddressError = 'All addresses must be unique.';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -275,8 +276,9 @@ export class AddressController {
     const thirdValidationResult = this.validateCourtAddress(addresses.third, false, false);
     const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary, addresses.third], writeToUsTypeId);
     const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary.fields_of_law, addresses.third.fields_of_law]);
+    const uniqueAddressError = this.checkAddressesAreUnique(addresses);
     const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors)
-      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fieldsOfLawErrors);
+      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fieldsOfLawErrors).concat(uniqueAddressError);
 
     return {
       primaryPostcodeValid: primaryValidationResult.postcodeValid,
@@ -551,5 +553,17 @@ export class AddressController {
           ? this.mapCourtTypeToRadioItem(courtTypes, address.fields_of_law.courts, dataPrefix) : [],
       }
     };
+  }
+
+  private checkAddressesAreUnique(addresses: DisplayCourtAddresses) : string[]{
+
+    const errors: string[] = [];
+
+    if ((addresses.primary.address_lines === addresses.secondary.address_lines && addresses.primary.postcode === addresses.secondary.postcode)
+      || (!!addresses.third.address_lines?.trim() && !!addresses.third.postcode?.trim() && addresses.primary.address_lines === addresses.third.address_lines && addresses.primary.postcode === addresses.third.postcode)
+      || (!!addresses.secondary.address_lines?.trim() && !!addresses.secondary.postcode?.trim() && addresses.secondary.address_lines === addresses.third.address_lines && addresses.secondary.postcode === addresses.third.postcode)) {
+      errors.push(this.duplicateAddressError);
+    }
+    return errors;
   }
 }
