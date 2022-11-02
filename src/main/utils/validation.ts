@@ -84,10 +84,8 @@ export function replaceMultipleSpaces(data: any): void {
   const spaceRegex = /\s+/gm;
   if (dataType == 'object')
   {
-    Object.entries(data).forEach(([k, v]) => data[k] = v.toString()
-      .replace(nbspRegex, '')
-      .replace(spaceRegex, ' ')
-      .trim()
+    Object.entries(data).forEach(([k, v]) => data[k] =
+      ((typeof v == 'string') ? v.replace(nbspRegex, '').replace(spaceRegex, ' ').trim() : v)
     );
   }
 }
