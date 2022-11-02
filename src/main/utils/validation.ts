@@ -79,16 +79,15 @@ export function postcodeIsValidFormat(postcode: string): boolean {
 }
 
 export function replaceMultipleSpaces(data: any): void {
-  const feildsType = typeof data;
-  const regex = /[[:blank:]]{2,}|&nbsp; |&nbsp;/gmi;
-  if (feildsType == 'object')
+  const dataType = typeof data;
+  const nbspRegex = /&nbsp;/gm;
+  const spaceRegex = /\s+/gm;
+  if (dataType == 'object')
   {
-    Object.entries(data).forEach(([k, v]) => data[k] =
-      v.toString().replace(regex, '')
+    Object.entries(data).forEach(([k, v]) => data[k] = v.toString()
+      .replace(nbspRegex, '')
+      .replace(spaceRegex, ' ')
+      .trim()
     );
-  }
-  else if (feildsType == 'string')
-  {
-    data.replace(regex, '');
   }
 }
