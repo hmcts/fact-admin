@@ -1,4 +1,4 @@
-import {isObjectEmpty, validateUrlFormat} from '../../../../main/utils/validation';
+import {isObjectEmpty, replaceMultipleSpaces, validateUrlFormat} from '../../../../main/utils/validation';
 
 describe('validation', () => {
   describe('isObjectEmpty', () => {
@@ -53,6 +53,25 @@ describe('validation', () => {
       it('Should return false for invalid URL format \'' + parameter.url + '\'', () => {
         expect(validateUrlFormat(parameter.url)).toBeFalsy();
       });
+    });
+  });
+
+  describe('Multiple space removal', () => {
+    const invalidParameters = {
+      a: 'hello world!',
+      b: ' hello      world!  ',
+      c: 'hello &nbsp; &nbsp;&nbsp;world!'
+    };
+    const validParameters = {
+      a: 'hello world!',
+      b: 'hello world!',
+      c: 'hello world!'
+    };
+
+    replaceMultipleSpaces(invalidParameters);
+
+    it('Should return cleaned up object', () => {
+      expect(invalidParameters).toEqual(validParameters);
     });
   });
 });

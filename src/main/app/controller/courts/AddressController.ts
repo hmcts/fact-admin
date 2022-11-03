@@ -13,7 +13,7 @@ import {
 } from '../../../types/CourtAddress';
 import {CourtAddressPageData} from '../../../types/CourtAddressPageData';
 import {SelectItem} from '../../../types/CourtPageData';
-import {postcodeIsValidFormat} from '../../../utils/validation';
+import {postcodeIsValidFormat, replaceMultipleSpaces} from '../../../utils/validation';
 import {County} from '../../../types/County';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {RadioItem} from '../../../types/RadioItem';
@@ -55,6 +55,10 @@ export class AddressController {
       secondary: req.body.secondary,
       third: req.body.third
     };
+
+    replaceMultipleSpaces(addresses.primary);
+    replaceMultipleSpaces(addresses.secondary);
+    replaceMultipleSpaces(addresses.third);
 
     const errors = [];
     const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()

@@ -5,6 +5,7 @@ import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../types/CourtGenera
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {CourtGeneralInfoRedirect} from '../../../types/CourtGeneralInfoRedirect';
+import {replaceMultipleSpaces} from '../../../utils/validation';
 
 @autobind
 export class GeneralInfoController {
@@ -64,6 +65,8 @@ export class GeneralInfoController {
     if (this.checkNameForInvalidCharacters(generalInfo.name)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
     }
+
+    replaceMultipleSpaces(generalInfo);
 
     if (generalInfo.alert.length > 400 || generalInfo.alert_cy.length > 400) {
       return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);
