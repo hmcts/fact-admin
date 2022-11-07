@@ -14,6 +14,8 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
+  const elementExist = await I.checkElement('#edit-' + courtSlug);
+  expect(elementExist).equal(true);
   await I.click('#edit-' + courtSlug);
 });
 
