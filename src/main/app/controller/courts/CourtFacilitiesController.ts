@@ -27,7 +27,7 @@ export class CourtFacilitiesController {
     let fatalError = false;
 
     if (!courtFacilities) {
-      const slug: string = req.params.slug as string;
+      const slug: string = req.params.slug;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
         .catch(() => {errorMsg.push(this.getCourtFacilitiesErrorMsg); fatalError = true;});

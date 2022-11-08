@@ -30,7 +30,7 @@ export class LocalAuthoritiesController {
     updated = false,
     error = '',
     areasOfLaw: AreaOfLaw[] = null): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
 
     if (!areasOfLaw) {
@@ -75,8 +75,8 @@ export class LocalAuthoritiesController {
     updated = false,
     error = '',
     courtLocalAuthorities: LocalAuthority[] = null): Promise<void> {
-    const slug: string = req.params.slug as string;
-    const areaOfLaw: string = req.params.areaOfLaw as string;
+    const slug: string = req.params.slug;
+    const areaOfLaw: string = req.params.areaOfLaw;
 
     let areasOfLaw: AreaOfLaw[] = null;
     await req.scope.cradle.api.getCourtAreasOfLaw(slug)

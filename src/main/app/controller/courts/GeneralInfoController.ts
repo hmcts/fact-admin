@@ -27,7 +27,7 @@ export class GeneralInfoController {
     nameFieldErrorMsg = '',
     generalInfo: CourtGeneralInfo = null): Promise<void> {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
 
     if (!generalInfo) {
@@ -49,7 +49,7 @@ export class GeneralInfoController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const generalInfo = req.body as CourtGeneralInfo;
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const updatedSlug = generalInfo.name
       ? generalInfo.name.toLowerCase().replace(/[^\w\s-]|_/g, '').split(' ').join('-')
       : slug;

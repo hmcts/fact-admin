@@ -31,7 +31,7 @@ export class CourtTypesController {
     updated = false,
     error = '',
     courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (courtTypesAndCodes == null) {
       await req.scope.cradle.api.getCourtTypesAndCodes(slug)
@@ -175,7 +175,7 @@ export class CourtTypesController {
 
   private ValidateCode(code: string)
   {
-    const regExp = /^[1-9][0-9]{0,8}$/;
+    const regExp = /^[1-9]\d{0,8}$/;
     return regExp.test(code) ? parseInt(code) : null ;
 
   }

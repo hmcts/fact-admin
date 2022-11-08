@@ -25,7 +25,7 @@ export class EmailsController {
     errorMsg: string[] = [],
     emails: Email[] = null): Promise<void> {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
 
     if (!emails) {

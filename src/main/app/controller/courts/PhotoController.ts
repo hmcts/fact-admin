@@ -23,10 +23,10 @@ export class PhotoController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const imageFileName = req.body.name as string;
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const fileType = req.body.fileType as string;
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
-    const imageFile = req.file as File;
+    const imageFile = req.file;
 
     if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
       return this.render(req, res, [this.imageTypeError], false, this.imageTypeError, null);
@@ -55,7 +55,7 @@ export class PhotoController {
   }
 
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
 
     if (!CSRF.verify(req.body.csrfToken)) {
@@ -94,7 +94,7 @@ export class PhotoController {
     uploadError: string = null,
     courtPhotoFileName: string = null,
     courtPhotoFileURL: string = null): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     if (!courtPhotoFileName) {
       await req.scope.cradle.api.getCourtImage(slug)
         .then((value: string) => {
