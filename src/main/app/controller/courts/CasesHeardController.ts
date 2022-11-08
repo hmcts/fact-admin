@@ -41,7 +41,7 @@ export class CasesHeardController {
     allAreasOfLaw: AreaOfLaw[] = null,
     courtAreasOfLaw: AreaOfLaw[] = null) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (!allAreasOfLaw) {
       await req.scope.cradle.api.getAllAreasOfLaw()

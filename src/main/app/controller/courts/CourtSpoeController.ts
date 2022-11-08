@@ -41,7 +41,7 @@ export class CourtSpoeController {
     allSpoeAreasOfLaw: SpoeAreaOfLaw[] = null,
     courtSpoeAreasOfLaw: SpoeAreaOfLaw[] = null) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (!allSpoeAreasOfLaw) {
       await req.scope.cradle.api.getAllSpoeAreasOfLaw()

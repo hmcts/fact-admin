@@ -24,7 +24,7 @@ export class OpeningTimesController {
     errorMsg: string[] = [],
     openingTimes: OpeningTime[] = null): Promise<void> {
     let fatalError = false;
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
 
     if (!openingTimes) {
       // Get opening times from API and set the isNew property to false on each if API call successful.

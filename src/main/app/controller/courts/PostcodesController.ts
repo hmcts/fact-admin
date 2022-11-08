@@ -38,7 +38,7 @@ export class PostcodesController {
     areasOfLaw: string[] = null,
     courtTypes: string[] = null,
     updated = false): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,

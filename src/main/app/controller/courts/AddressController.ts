@@ -150,7 +150,7 @@ export class AddressController {
     secondaryPostcodeInvalid = false,
     thirdPostcodeInvalid = false) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
 
     if (!addresses) {
