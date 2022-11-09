@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 
 Then('I can view the courts or tribunals in a list format', async () => {
-  await I.isElementVisible('#courts', 3000);
+  await I.isElementVisible('#courts', 10000);
 });
 
 Given('they are in alphabetical order', async () => {
@@ -34,13 +34,13 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
 
 When('I click view next to court with {string}', async (courtSlug: string) => {
   const selector = '#view-' + courtSlug;
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 });
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
   const selector = '#main-content > div > div > h1';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const viewCourtHeading = await I.getElement(selector);
   expect(await I.getElementText(viewCourtHeading)).equal(courtName);
 });

@@ -19,6 +19,6 @@ When('I select court {string}', async (court: string) => {
 
 When('I check include closed checkbox', async () => {
   const selector = '#toggle-closed-courts-display';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 });

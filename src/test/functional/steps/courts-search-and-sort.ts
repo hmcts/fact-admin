@@ -26,7 +26,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
 When('I select Include closed courts', async () => {
   const selector = '#toggle-closed-courts-display';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
     await I.click(selector);
@@ -43,7 +43,7 @@ Then('All courts that include {string} should be displayed including closed clou
 
 When('I click on name to sort in a descending order', async () => {
   const selector = '#tableCourtsName';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 });
 
@@ -68,14 +68,14 @@ Then('I should be able to see the message {string} correct number of {string}', 
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selectorCourts);
   const numberOfResults = courtHtmlElement.length;
 
-  await I.isElementVisible(selectorNumOfResults, 3000);
+  await I.isElementVisible(selectorNumOfResults, 10000);
   const numOfResultsElement = await I.getElement(selectorNumOfResults);
   expect(await I.getElementText(numOfResultsElement)).equal(firstHalfMsg + numberOfResults + secondHalfMsg);
 });
 
 When('I click on last updated to sort ascending', async () => {
   const selector = '#tableCourtsUpdated';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 });
 
@@ -98,7 +98,7 @@ Then('Then All courts should be displayed in a ascending order', async () => {
 
 When('I click on last updated to sort descending', async () => {
   const selector = '#tableCourtsUpdated';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   //This click is to sort in ascending order
   await I.click(selector);
   //This click is to sort in descending order

@@ -5,13 +5,13 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over Additional Links nav element', async () => {
   const selector = '#nav';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.hover(selector);
 });
 
 Then('I click the Additional Links tab', async () => {
   const selector = '#tab_additional-links';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 });
 
@@ -21,7 +21,7 @@ When('I remove all existing Additional Links entries and save', async () => {
 
 Then('a green update message is displayed in the Additional Links tab {string}', async (successMsg: string) => {
   const selector = '#additionalLinksContent > div > h1';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
@@ -120,19 +120,19 @@ When('When I enter a new Additional Links entry by adding URL {string} and leave
 Then('An error is displayed for additional links with summary {string} and display name field message {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#display_name-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
 });
@@ -149,19 +149,19 @@ When('When I enter a new Additional Links entry by adding english display name {
 Then('An error is displayed for additional links with summary {string} and URL field message {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#url-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const urlErrorElement = await I.getElement(selector);
   expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
 });
@@ -174,22 +174,22 @@ When('I clear additional link fields', async () => {
 Then('An error is displayed for additional links with summary {string} and URL field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#url-1-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const urlErrorElement = await I.getElement(selector);
   expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
 
   selector = '#url-2-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const url2ErrorElement = await I.getElement(selector);
   expect(await I.getElementText(url2ErrorElement)).contains(errorMsg);
 });
@@ -198,22 +198,22 @@ Then('An error is displayed for additional links with summary {string} and URL f
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#display_name-1-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
 
   selector = '#display_name-2-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const displayName2ErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayName2ErrorElement)).contains(errorMsg);
 });

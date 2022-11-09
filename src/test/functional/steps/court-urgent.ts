@@ -86,7 +86,7 @@ When('I unclick the Participates in access scheme checkbox', async () => {
 
 Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
   const selector = '#view-in-new-window';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   await I.click(selector);
 
   await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');

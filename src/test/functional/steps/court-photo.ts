@@ -19,7 +19,7 @@ When('I click the photo tab', async () => {
 });
 
 Then('I can view the existing court photo form', async () => {
-  const elementExist = await I.isElementVisible('#photoForm', 3000);
+  const elementExist = await I.isElementVisible('#photoForm', 10000);
   expect(elementExist).equal(true);
 });
 
@@ -28,7 +28,7 @@ When('I check for existing photo then delete it',  async () => {
   if(await I.checkElement(selector))
   {
     const selector = 'button[name="deletePhoto"]';
-    await I.isElementVisible(selector, 3000);
+    await I.isElementVisible(selector, 10000);
     await I.click(selector);
     const confirmDeleteSelector = '#confirmDelete';
     expect(await I.checkElement(confirmDeleteSelector)).equal(true);

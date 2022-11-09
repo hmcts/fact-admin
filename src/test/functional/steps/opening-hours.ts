@@ -116,19 +116,19 @@ When('I enter duplicated opening hour description', async () => {
 Then('An error is displayed for opening hours with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#openingTimesContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#description-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -136,19 +136,19 @@ Then('An error is displayed for opening hours with summary {string} and descript
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#openingTimesContent > div > div > ul > li';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#hours-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 3000);
+  await I.isElementVisible(selector, 10000);
   const hoursErrorElement = await I.getElement(selector);
   expect(await I.getElementText(hoursErrorElement)).contains(message);
 });
