@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 
 Then('I can view the courts or tribunals in a list format', async () => {
-  const elementExist = await I.checkElement('#courts');
+  const elementExist = await I.checkElement('#courts', 30000);
   expect(elementExist).equal(true);
 });
 
@@ -15,7 +15,7 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  const elementExist = await I.checkElement('#edit-' + courtSlug);
+  const elementExist = await I.checkElement('#edit-' + courtSlug, 30000);
   expect(elementExist).equal(true);
   await I.click('#edit-' + courtSlug);
 });
@@ -35,14 +35,14 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
 
 When('I click view next to court with {string}', async (courtSlug: string) => {
   const selector = '#view-' + courtSlug;
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
   const selector = '#main-content > div > div > h1';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   const viewCourtHeading = await I.getElement(selector);
   expect(await I.getElementText(viewCourtHeading)).equal(courtName);

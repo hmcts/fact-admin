@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 When('I click on users link', async () => {
   const selector = '#users';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });

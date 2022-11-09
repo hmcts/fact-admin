@@ -6,14 +6,14 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over opening hours nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 When('I click the opening hours tab', async () => {
   const selector = '#tab_opening-hours';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -47,7 +47,7 @@ Then('I click save', async () => {
 });
 
 Then('a green update message is displayed in the opening hours tab', async () => {
-  const elementExist = await I.checkElement('#openingTimesTab .govuk-panel--confirmation');
+  const elementExist = await I.checkElement('#openingTimesTab .govuk-panel--confirmation', 30000);
   expect(elementExist).equal(true);
 });
 
@@ -116,19 +116,19 @@ When('I enter duplicated opening hour description', async () => {
 Then('An error is displayed for opening hours with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#openingTimesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#description-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -136,19 +136,19 @@ Then('An error is displayed for opening hours with summary {string} and descript
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#openingTimesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#openingTimesTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#hours-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const hoursErrorElement = await I.getElement(selector);
   expect(await I.getElementText(hoursErrorElement)).contains(message);
 });

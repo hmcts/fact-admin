@@ -26,13 +26,13 @@ export class FunctionalTestHelpers {
 
   public static async clickButton(containerId: string, buttonName: string) {
     const selector = `${containerId} button[name="${buttonName}"]`;
-    const elementExist = await I.checkElement(selector);
+    const elementExist = await I.checkElement(selector, 30000);
     expect(elementExist).equal(true);
     await I.click(selector);
   }
 
   public static async checkGreenMessageSuccess(selector: string, message: string)  {
-    expect(await I.checkElement(selector)).equal(true);
+    expect(await I.checkElement(selector, 30000)).equal(true);
     const messageUpdate = await I.getElement(selector);
     expect(await I.getElementText(messageUpdate)).equal(message);
   }

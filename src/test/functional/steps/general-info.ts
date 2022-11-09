@@ -4,33 +4,33 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 
 async function populateField(fieldElement: string, value: string) {
-  expect(await I.checkElement(fieldElement)).equal(true);
+  expect(await I.checkElement(fieldElement, 30000)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 When('I hover over general nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 When('I click the general tab', async () => {
   const selector = '#tab_general';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('I can view the urgent notices', async () => {
-  const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice');
-  const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh');
+  const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice', 30000);
+  const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh', 30000);
   expect(urgentNoticesExist).equal(true);
   expect(welshUrgentNoticesExist).equal(true);
 });
 
 Then('I can view the PUAS flag', async () => {
-  expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
+  expect(await I.checkElement('#generalInfoTab #access_scheme', 30000)).equal(true);
 });
 
 Then('I cannot view super admin content', async () => {
@@ -40,23 +40,23 @@ Then('I cannot view super admin content', async () => {
 });
 
 Then('I can view the open checkbox', async () => {
-  const openCheckboxExists = await I.checkElement('#generalInfoTab #open');
+  const openCheckboxExists = await I.checkElement('#generalInfoTab #open', 30000);
   expect(openCheckboxExists).equal(true);
 });
 
 Then('I can view the access scheme checkbox', async () => {
-  const accessSchemeCheckboxExists = await I.checkElement('#generalInfoTab #access_scheme');
+  const accessSchemeCheckboxExists = await I.checkElement('#generalInfoTab #access_scheme', 30000);
   expect(accessSchemeCheckboxExists).equal(true);
 });
 
 Then('I can view common platform flag checkbox', async () => {
-  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform', 30000);
   expect(commonPlatformCheckboxExists).equal(true);
 });
 
 Then('I can view the additional information notices', async () => {
-  const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
-  const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
+  const additionalInfoExists = await I.checkElement('#generalInfoTab #info', 30000);
+  const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy', 30000);
   expect(additionalInfoExists).equal(true);
   expect(welshAdditionalInfoExists).equal(true);
 });
@@ -78,7 +78,7 @@ Then('I enter {string} in the Name textbox', async (name: string) => {
 });
 
 Then('The error message displays for general info {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('#error-summary-title', 30000);
   expect(errorTitle).equal(true);
 
   const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
@@ -91,7 +91,7 @@ Given('I click on continue button', async () => {
 });
 
 Then('I edit common platform checkbox', async () => {
-  const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
+  const commonPlatformCheckboxExists = await I.checkElement('#common_platform', 30000);
   expect(commonPlatformCheckboxExists).equal(true);
   await I.click('#common_platform');
 });

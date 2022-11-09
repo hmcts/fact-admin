@@ -5,18 +5,18 @@ import {puppeteerConfig} from '../puppeteer.config';
 
 
 async function fillInUsernameAndPassword(username: string, password: string) {
-  const usernameEl = await I.checkElement('#username');
+  const usernameEl = await I.checkElement('#username', 30000);
   expect(usernameEl).equal(true);
   await I.setElementValueForInputField('#username', username);
 
-  const passwordEl = await I.checkElement('#password');
+  const passwordEl = await I.checkElement('#password',30000);
   expect(passwordEl).equal(true);
 
   await I.setElementValueForInputField('#password', password);
 }
 
 Given('that I am a logged-out admin or super admin user', async () => {
-  const element = await I.checkElement('#login');
+  const element = await I.checkElement('#login', 30000);
   expect(element).equal(true);
 });
 
@@ -71,14 +71,14 @@ Given('click the Sign In button', async () => {
 
 Then('the system will sign me in', async () => {
   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const element = await I.checkElement('#logout');
+    const element = await I.checkElement('#logout', 30000);
     expect(element).equal(true);
   }
 });
 
 Then('an error message is shown', async () => {
   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const element = await I.checkElement('.error-summary');
+    const element = await I.checkElement('.error-summary', 30000);
     expect(element).equal(true);
   }
 });

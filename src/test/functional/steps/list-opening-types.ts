@@ -4,13 +4,13 @@ import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 
 async function populateField(fieldElement: string, value: string) {
-  expect(await I.checkElement(fieldElement)).equal(true);
+  expect(await I.checkElement(fieldElement, 30000)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 When('I click on Opening type list', async () => {
   const selector = '#tab_opening-types';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -20,7 +20,7 @@ Given('I click edit opening type {string}', async (contactType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#openingTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -31,10 +31,10 @@ Then('I am redirected to the opening type {string} form', async (editContactType
 });
 
 Given('I will make sure to clear entries for the opening Type', async () => {
-  expect(await I.checkElement('#ct-type-cy')).equal(true);
+  expect(await I.checkElement('#ct-type-cy', 30000)).equal(true);
   await I.clearField('#ct-type-cy');
 
-  expect(await I.checkElement('#ct-type')).equal(true);
+  expect(await I.checkElement('#ct-type', 30000)).equal(true);
   await I.clearField('#ct-type');
 });
 
@@ -51,26 +51,26 @@ Then('I enter {string} in opening type welsh name textbox', async (nameCy: strin
 
 When('I click Opening Type save button', async () => {
   const selector = '#saveOpeningTypeBtn';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed for the updated Opening Type {string}', async (message: string) => {
   const selector = '#openingTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
 Then('I click on Add new Opening Type',async () => {
   const selector = '#openingTypesListContent > div > a';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('The error message displays for a Opening type {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('#error-summary-title', 30000);
   expect(errorTitle).equal(true);
 
   const selector = '#openingTypesListContent > div.govuk-error-summary > div > ul > li';
@@ -83,6 +83,6 @@ Then('I click {string} delete Opening type button',async (contactTypeTest: strin
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#openingTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });

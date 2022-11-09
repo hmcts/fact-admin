@@ -4,10 +4,10 @@ import {Given, Then} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 
 Given('that I am a logged-in admin or super admin user', async () => {
-  let element = await I.checkElement('#logout');
+  let element = await I.checkElement('#logout', 30000);
   if (!element) {
     await I.click('#login');
-    element = await I.checkElement('#logout');
+    element = await I.checkElement('#logout', 30000);
   }
   expect(element).equal(true);
 });

@@ -5,18 +5,18 @@ import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function checkAndClearField (FieldElement: string) {
-  expect(await I.checkElement(FieldElement)).equal(true);
+  expect(await I.checkElement(FieldElement, 30000)).equal(true);
   await I.clearField(FieldElement);
 }
 
 async function populateField(fieldElement: string, value: string) {
-  expect(await I.checkElement(fieldElement)).equal(true);
+  expect(await I.checkElement(fieldElement, 30000)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 When('I click on facility types list', async () => {
   const selector = '#tab_facilities';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -29,7 +29,7 @@ Then('I should see {string} facility type page', async (facilityType: string) =>
 
 Then('I click on Add new facility type',async () => {
   const selector = '#facilityTypesListContent > div:nth-child(4) > a';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -53,12 +53,12 @@ Then('I enter {string} in facility welsh name textbox', async (displayNameCy: st
 
 When('I click facility type save button', async () => {
   const selector = '#saveFacilityType';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
 Then('The error message displays for facility type {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('#error-summary-title', 30000);
   expect(errorTitle).equal(true);
 
   const selector = '#facilityTypesListContent > div.govuk-error-summary > div > ul > li';
@@ -71,7 +71,7 @@ Then('I click delete button for facility type {string}',async (facilityType: str
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -85,7 +85,7 @@ Given('I click edit facility type {string}', async (facilityType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 

@@ -4,18 +4,18 @@ import {expect} from 'chai';
 import {getFirstTableRowIndexContainingText} from '../utlis/puppeteer.util';
 
 async function checkAndClearField (aofFieldElement: string) {
-  expect(await I.checkElement(aofFieldElement)).equal(true);
+  expect(await I.checkElement(aofFieldElement, 30000)).equal(true);
   await I.clearField(aofFieldElement);
 }
 
 async function populateField(fieldElement: string, value: string) {
-  expect(await I.checkElement(fieldElement)).equal(true);
+  expect(await I.checkElement(fieldElement, 30000)).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
 When('I click on areas of law list', async () => {
   const selector = '#tab_areas-of-law';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -31,7 +31,7 @@ Given('I click edit {string}', async (areaOfLawName: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -59,7 +59,7 @@ Then('I enter {string} in Display Name textbox', async (displayName: string) => 
 
 When('I click Area Of Law save button', async () => {
   const selector = '#saveAreaOfLawBtn';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -100,14 +100,14 @@ Then('I enter {string} in Display external link textbox', async (displayExtlink:
 
 Then('A green message is displayed for the updated Area Of Law {string}', async (message: string) => {
   const selector = '#areasOfLawListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 
 Then('I click on Add new Area of law',async () => {
   const selector = '#areasOfLawListContent > div > a';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -119,7 +119,7 @@ Then('I enter {string} in Name textbox', async (newName: string) => {
 
 When('I click confirm delete button',async () => {
   const selector = '#confirmDelete';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -128,7 +128,7 @@ Then('I click {string} delete button',async (aolTest: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
@@ -137,12 +137,12 @@ When('I click delete button for Area of law {string}',async (aolName: string) =>
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 });
 
 Then('The error message displays {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('#error-summary-title', 30000);
   expect(errorTitle).equal(true);
 
   const selector = '#areasOfLawListContent > div.govuk-error-summary > div > ul > li';

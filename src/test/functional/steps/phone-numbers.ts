@@ -5,14 +5,14 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over phone numbers nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 Then('I click the phone numbers tab', async () => {
   const selector = '#tab_phone-numbers';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -80,7 +80,7 @@ Then('the phone number entry in last position has description at index {int} num
 
 Then('a green message is displayed for updated entries {string}', async (message: string) => {
   const selector = '#phoneNumbersContent > div > h1';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
 
   const messageUpdate = await I.getElement('#phoneNumbersContent > div > h1');
   expect(await I.getElementText(messageUpdate)).equal(message);
@@ -112,19 +112,19 @@ When('I left the phone number entry blank and select description at index {int}'
 Then('an error message is displayed for phone number tab with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactDescription-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -133,19 +133,19 @@ Then('an error message is displayed for phone number tab with summary {string} a
 Then('an error message is displayed for phone number tab with summary {string} and number field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactNumber-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -156,13 +156,13 @@ Then('I click the Add button in the phone number tab', async () => {
 
 Then('I click save in the phone number tab', async () => {
   const selector = '#phoneNumbersTab button[name="savePhoneNumbers"]';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('an error message is displayed in the phone number tab', async () => {
-  const elementExist = await I.checkElement('#phoneNumbersTab .govuk-error-summary');
+  const elementExist = await I.checkElement('#phoneNumbersTab .govuk-error-summary', 30000);
   expect(elementExist).equal(true);
 });
 
@@ -170,7 +170,7 @@ When('I click the remove button under a phone number entry', async () => {
   const numPhoneNumbers = await I.countElement('#phoneNumbersTab fieldset');
 
   const selector = '#phoneNumbersTab button[name="deletePhoneNumber"]';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 

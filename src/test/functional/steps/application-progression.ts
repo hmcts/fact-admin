@@ -7,13 +7,13 @@ async function populateField(selector: string, value: string) {
   const numFieldSets = await I.countElement('#applicationProgressionTab fieldset');
   const entryFormIdx = numFieldSets - 2;
 
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.setElementValueAtIndex(selector, entryFormIdx, value, 'input');
 }
 
 Then('I click the application progression tab', async () => {
   const selector = '#tab_application-progression';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -93,7 +93,7 @@ Then('the last email is {string}', async (lastEmail: string) => {
 });
 
 Then('An error is displayed for application progression with summary {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('#error-summary-title', 30000);
   expect(errorTitle).equal(true);
 
   const selector = '#applicationProgressionContent > div > div > ul > li';

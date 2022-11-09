@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 When('I enter {string} into search textbox', async (searchText: string) => {
   const selector = '#searchCourts';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.fillField(selector, searchText);
 });
@@ -27,7 +27,7 @@ Then('All courts that include {string} should be displayed sorted by name', asyn
 
 When('I select Include closed courts', async () => {
   const selector = '#toggle-closed-courts-display';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
@@ -45,7 +45,7 @@ Then('All courts that include {string} should be displayed including closed clou
 
 When('I click on name to sort in a descending order', async () => {
   const selector = '#tableCourtsName';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -71,7 +71,7 @@ Then('I should be able to see the message {string} correct number of {string}', 
   const courtHtmlElement: string[] = await I.getHtmlFromElements(selectorCourts);
   const numberOfResults = courtHtmlElement.length;
 
-  const elementExist = await I.checkElement(selectorNumOfResults);
+  const elementExist = await I.checkElement(selectorNumOfResults, 30000);
   expect(elementExist).equal(true);
   const numOfResultsElement = await I.getElement(selectorNumOfResults);
   expect(await I.getElementText(numOfResultsElement)).equal(firstHalfMsg + numberOfResults + secondHalfMsg);
@@ -79,7 +79,7 @@ Then('I should be able to see the message {string} correct number of {string}', 
 
 When('I click on last updated to sort ascending', async () => {
   const selector = '#tableCourtsUpdated';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -103,7 +103,7 @@ Then('Then All courts should be displayed in a ascending order', async () => {
 
 When('I click on last updated to sort descending', async () => {
   const selector = '#tableCourtsUpdated';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   //This click is to sort in ascending order
   await I.click(selector);

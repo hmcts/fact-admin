@@ -6,14 +6,14 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 When('I click the photo tab', async () => {
   const selector = '#tab_photo';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -25,27 +25,27 @@ Then('I can view the existing court photo form', async () => {
 
 When('I check for existing photo then delete it',  async () => {
   const selector = '#photoContent > h2:nth-child(2)';
-  if(await I.checkElement(selector))
+  if(await I.checkElement(selector, 30000))
   {
     const selector = 'button[name="deletePhoto"]';
-    expect(await I.checkElement(selector)).equal(true);
+    expect(await I.checkElement(selector, 30000)).equal(true);
     await I.click(selector);
     const confirmDeleteSelector = '#confirmDelete';
-    expect(await I.checkElement(confirmDeleteSelector)).equal(true);
+    expect(await I.checkElement(confirmDeleteSelector, 30000)).equal(true);
     await I.click(confirmDeleteSelector);
   }
 });
 
 When('I upload new photo',  async () => {
   const fileSelector = '#court-photo-file-upload';
-  expect(await I.checkElement(fileSelector)).equal(true);
+  expect(await I.checkElement(fileSelector, 30000)).equal(true);
   const filePath = 'src/test/functional/SampleJPGImage_100kbmb (1).jpg';
   await I.uploadFile(fileSelector,filePath);
 });
 
 When('I click update photo button', async () => {
   const selector = 'button[name="updatePhoto"]';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });

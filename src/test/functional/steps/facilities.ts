@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the facilities tab', async () => {
   const selector = '#tab_court-facilities';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -24,7 +24,7 @@ When('I remove all existing facility entries and save', async () => {
 });
 
 Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
-  const elementExist = await I.checkElement('#courtFacilitiesTab .govuk-panel--confirmation');
+  const elementExist = await I.checkElement('#courtFacilitiesTab .govuk-panel--confirmation', 30000);
   expect(elementExist).equal(true);
 
   const element = await I.getElement('#courtFacilitiesTab .govuk-panel--confirmation');
@@ -44,7 +44,7 @@ When('I enter facility {string} and enter description in english {string} and we
   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex;
 
   const facilityOptionSelector = '#name-1 > option';
-  const elementExist = await I.checkElement(facilityOptionSelector);
+  const elementExist = await I.checkElement(facilityOptionSelector, 30000);
   expect(elementExist).equal(true);
 
   const courtFacilities: string[] = await I.getHtmlFromElements(facilityOptionSelector);
@@ -143,22 +143,22 @@ Then('there are no facility entries', async () => {
 When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 
   selector = '#name-2-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement2 = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement2)).contains(message);
 });
@@ -166,17 +166,17 @@ When('An error is displayed for facilities with summary {string} and field messa
 When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#description-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -184,17 +184,17 @@ When('An error is displayed for facilities with summary {string} and description
 When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });

@@ -42,10 +42,21 @@ export const fillField = async (selector: string, value: string) => {
   await scope.page.type(selector, value);
 };
 
-export const checkElement = async (selector: string) => {
+// export const checkElement = async (selector: string) => {
+//   try {
+//     await scope.page.mouse.move(1000, 40);
+//     await scope.page.waitForSelector(selector);
+//     return true;
+//   } catch (error) {
+//     return false;
+//   }
+// };
+
+
+export const checkElement = async (selector: string, timeout: number) => {
   try {
     await scope.page.mouse.move(1000, 40);
-    await scope.page.waitForSelector(selector);
+    await scope.page.waitForSelector(selector, {visible: true, timeout: timeout});
     return true;
   } catch (error) {
     return false;

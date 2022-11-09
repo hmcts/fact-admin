@@ -6,7 +6,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over local authorities nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
@@ -14,7 +14,7 @@ When('I hover over local authorities nav element', async () => {
 
 When('I will make sure Family court type is selected', async () => {
   const selector = '#court_types-2';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
@@ -25,21 +25,21 @@ When('I will make sure Family court type is selected', async () => {
 
 When('I click the local authorities tab', async () => {
   const selector = '#tab_local-authorities';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 When('I select area of law {string}', async (areaOfLaw: string) => {
   const selector = '#courtAreasOfLaw';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.selectItem(selector, areaOfLaw);
 });
 
 When('I select {string}', async (areaOfLaw: string) => {
   const selector = '#\\33 97353';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
@@ -61,8 +61,8 @@ Then('An error is displayed for local authorities with title {string} and summer
   const errorTitleSelector = '#error-summary-title';
   const errorSummerySelector = '#localAuthoritiesContent > div > div > ul > li';
 
-  expect(await I.checkElement(errorTitleSelector)).equal(true);
-  expect(await I.checkElement(errorSummerySelector)).equal(true);
+  expect(await I.checkElement(errorTitleSelector, 30000)).equal(true);
+  expect(await I.checkElement(errorSummerySelector, 30000)).equal(true);
 
   const errorTitleElement = await I.getElement(errorTitleSelector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -75,9 +75,9 @@ When('I will make sure Family court type is not selected', async () => {
   const selectorFamilyCourt = '#court_types-2';
   const selectorTribunalCourt = '#court_types-3';
 
-  const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
+  const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt, 30000);
   expect(elementFamilyCourtExist).equal(true);
-  const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
+  const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt, 30000);
   expect(elementTribunalCourtExist).equal(true);
 
   const elementFamilyCourtChecked = await I.isElementChecked(selectorFamilyCourt);
@@ -94,7 +94,7 @@ When('I will make sure Family court type is not selected', async () => {
 Then('The local authorities tab should be disabled', async () => {
 
   const selector = '#tab_local-authorities.disable-tab';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
 });
 

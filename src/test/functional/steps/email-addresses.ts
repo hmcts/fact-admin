@@ -6,14 +6,14 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I hover over emails nav element', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 Then('I click the Emails tab', async () => {
   const selector = '#tab_emails';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -53,7 +53,7 @@ When('I click save button', async () => {
 
 Then('a green update message showing email updated is displayed', async () => {
   const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
 });
 
@@ -102,7 +102,7 @@ When('I add address {string}', async (address: string) => {
 });
 
 Then('A red error message display', async () => {
-  const elementExist = await I.checkElement('#error-summary-title');
+  const elementExist = await I.checkElement('#error-summary-title', 30000);
   expect(elementExist).equal(true);
 });
 
@@ -126,8 +126,8 @@ When('I add Description from the dropdown {int} and wrong Email-Address {string}
   });
 
 Then('An error message is displayed with the text {string}', async (msg: string) => {
-  expect(await I.checkElement('#error-summary-title')).equal(true);
-  expect(await I.checkElement('#emailsContent > div > div > ul > li')).equal(true);
+  expect(await I.checkElement('#error-summary-title', 30000)).equal(true);
+  expect(await I.checkElement('#emailsContent > div > div > ul > li', 30000)).equal(true);
   expect(
     await I.getElementText(                                                // Get Text for the element below
       await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
@@ -173,12 +173,12 @@ When('I click Save button', async () => {
 Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#emailsContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
 
   const errorListElement = await I.getElement(selector);
 
@@ -188,7 +188,7 @@ Then('An error is displayed for email address with summary {string} and address 
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
 
   selector = '#address-' + fieldsetErrorIndex + '-error';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(fieldErrMsg);
 

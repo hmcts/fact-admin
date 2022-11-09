@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click on lists link', async () => {
   const selector = '#lists';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -18,14 +18,14 @@ Then('I am redirected to the {string} page', async (editListTitle: string) => {
 
 When('I hover over the tab title', async () => {
   const selector = '#nav';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.hover(selector);
 });
 
 When('I click on local authorities list', async () => {
   const selector = '#tab_local-authorities';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -38,7 +38,7 @@ Then('I should land in {string} page', async (editLocalAuthorityTitle: string) =
 
 When('I select local authority {string}', async (localAuthorityId: string) => {
   const selector = '#' + localAuthorityId;
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
@@ -48,7 +48,7 @@ When('I select local authority {string}', async (localAuthorityId: string) => {
 
 When('I edit the local authority {string}', async (newLocalAuthority: string) => {
   const selector = '#local-authority';
-  const elementExist = await I.checkElement(selector);
+  const elementExist = await I.checkElement(selector, 30000);
   expect(elementExist).equal(true);
   await I.setElementValueForInputField(selector, newLocalAuthority);
 });
@@ -67,8 +67,8 @@ Then('An error is displayed for edit local authorities with title {string} and s
   const errorTitleSelector = '#error-summary-title';
   const errorSummerySelector = '#localAuthoritiesListContent > div.govuk-error-summary > div > ul > li';
 
-  expect(await I.checkElement(errorTitleSelector)).equal(true);
-  expect(await I.checkElement(errorSummerySelector)).equal(true);
+  expect(await I.checkElement(errorTitleSelector, 30000)).equal(true);
+  expect(await I.checkElement(errorSummerySelector, 30000)).equal(true);
 
   const errorTitleElement = await I.getElement(errorTitleSelector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);

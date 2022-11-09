@@ -10,13 +10,13 @@ Then('I am redirected to the Edit Court page for the chosen court', async () => 
 });
 
 When('I add an {string} in the field provided {string}', async (message: string, id: string) => {
-  expect(await I.checkElement(id)).equal(true);
+  expect(await I.checkElement(id, 30000)).equal(true);
   await I.clearField(id);
   await I.fillField(id, message);
 });
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
-  expect(await I.checkElement(id)).equal(true);
+  expect(await I.checkElement(id, 30000)).equal(true);
   await I.clearField(id);
   await I.fillFieldInIframe(id, message);
 });
@@ -26,7 +26,7 @@ Given('I click the update button', async () => {
 });
 
 Then('a message is displayed on the page', async () => {
-  const elementExist = await I.checkElement('#updated-message');
+  const elementExist = await I.checkElement('#updated-message', 30000);
   expect(elementExist).equal(true);
 });
 
@@ -39,7 +39,7 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 When('I click the open checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
 
-  const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
+  const elementOpenCheckboxExist = await I.checkElement(selectorOpen, 30000);
   expect(elementOpenCheckboxExist).equal(true);
 
   const elementOpenChkboxChecked = await I.isElementChecked(selectorOpen);
@@ -51,7 +51,7 @@ When('I click the open checkbox', async () => {
 When('I click the close checkbox', async () => {
   const selectorOpen = '#generalInfoTab #open';
 
-  const elementOpenCheckboxExist = await I.checkElement(selectorOpen);
+  const elementOpenCheckboxExist = await I.checkElement(selectorOpen, 30000);
   expect(elementOpenCheckboxExist).equal(true);
 
   const elementOpenChkboxChecked = await I.isElementChecked(selectorOpen);
@@ -63,7 +63,7 @@ When('I click the close checkbox', async () => {
 When('I click the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
 
-  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
+  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox, 30000);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
 
   const elementParticipantsAccessSchemeChkboxChecked = await I.isElementChecked(selectorParticipantsAccessSchemeChkbox);
@@ -75,7 +75,7 @@ When('I click the Participates in access scheme checkbox', async () => {
 When('I unclick the Participates in access scheme checkbox', async () => {
   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
 
-  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox);
+  const elementParticipantsAccessSchemeChkboxExist = await I.checkElement(selectorParticipantsAccessSchemeChkbox, 30000);
   expect(elementParticipantsAccessSchemeChkboxExist).equal(true);
 
   const elementParticipantsAccessSchemeChkboxChecked = await I.isElementChecked(selectorParticipantsAccessSchemeChkbox);
@@ -86,7 +86,7 @@ When('I unclick the Participates in access scheme checkbox', async () => {
 
 Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
   const selector = '#view-in-new-window';
-  expect(await I.checkElement(selector)).equal(true);
+  expect(await I.checkElement(selector, 30000)).equal(true);
   await I.click(selector);
 
   await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');
