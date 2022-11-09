@@ -19,22 +19,33 @@ export class EditCourtController {
 
     // Check if the court is currently in use by any other user
     const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
-    console.log("Court locks are")
-    console.log(courtLocks);
-    console.log(req.session['user']['jwt']['sub']);
-
+    const user = req.session['user']['jwt']['sub'];
     if (courtLocks.length == 0) {
       // If there are no locks, assign the current user to the court
-      await req.scope.cradle.api.addCourtLock(req.params.slug, {court_slug: req.params.slug} as CourtLock);
+      await req.scope.cradle.api.addCourtLock(req.params.slug, {
+        court_slug: req.params.slug,
+        user_email: user
+      } as CourtLock);
     } else {
       // At the moment, the limit is one lock; but this may be extended in the future.
       // So for now we can check the first user only
-      if (courtLocks['user_email'] != req.session['user']['jwt']['sub']) {
+      if (courtLocks[0]['user_email'] != req.session['user']['jwt']['sub']) {
         // Check if the time of their last action would require the lock to be deleted
         // and transitioned over to this user instead.
         console.log('user is different');
+        // TODO: add in check here for time and delete if lock is
+
+        // Otherwise redirect back to the courts page and display an error
+        return res.render('courts/courts', {
+          'courts': await req.scope.cradle.api.getCourts(),
+          'errors': [{
+            text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
+          Please contact them to finish their changes, or try again later.`
+          }]
+        });
+
       } else {
-        // Otherwise, allow them to proceed if it is the same user
+        // Allow them to proceed if it is the same user
         console.log('user is the same');
       }
 
