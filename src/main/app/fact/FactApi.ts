@@ -22,7 +22,7 @@ import {County} from '../../types/County';
 import {FactApiBase} from './FactApiBase';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
-
+import {CourtLock} from "../../types/CourtLock";
 
 
 export class FactApi extends FactApiBase {
@@ -308,6 +308,18 @@ export class FactApi extends FactApiBase {
     return this.put<void,typeof body>(`${this.baseURL}/info`, body);
   }
 
+  public deleteCourtLocks(courtSlug: string, userEmail: string): Promise<CourtLock[]> {
+    return this.delete<CourtLock[], CourtLock[]>(`${this.adminBaseUrl}/${courtSlug}/lock/${userEmail}`);
+  }
+
+  public addCourtLock(slug: string, courtLock: CourtLock): Promise<CourtLock> {
+    return this.post<CourtLock, CourtLock>(`${this.adminBaseUrl}/${slug}/lock`, courtLock);
+  }
+
+  public getCourtLocks(courtSlug: string): Promise<CourtLock[]> {
+    return this.get<CourtLock[]>(`${this.adminBaseUrl}/${courtSlug}/lock`);
+  }
+
   private errorHandler<T>(defaultValue: T) {
     return (err: AxiosError) => {
       this.logError(err);
@@ -322,6 +334,3 @@ interface UpdateCourtsInfoRequest {
   'info_cy': string;
   'courts': string[];
 }
-
-
-
