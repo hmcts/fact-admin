@@ -7,6 +7,7 @@ import {CSRF} from '../../../modules/csrf';
 import * as flags from '../../feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../utils/error';
 import {TAB_PREFIX} from '../../../utils/flagPrefix';
+import config from "config";
 
 @autobind
 export class EditCourtController {
@@ -30,19 +31,24 @@ export class EditCourtController {
       // At the moment, the limit is one lock; but this may be extended in the future.
       // So for now we can check the first user only
       if (courtLocks[0]['user_email'] != req.session['user']['jwt']['sub']) {
-        // Check if the time of their last action would require the lock to be deleted
-        // and transitioned over to this user instead.
-        console.log('user is different');
-        // TODO: add in check here for time and delete if lock is
+        const currentTime = new Date();
+        const lockTimePlusTimeout = new Date((new Date(courtLocks[0]['lock_acquired'])).getTime()
+          + ((config.get('lock.timeout') as number) * 60000));
+        if (currentTime > lockTimePlusTimeout) {
+          // If the time of their last action would require the lock to be deleted,
+          // then remove and transition over to this user instead.
+          console.log('TODO: lock needs to be deleted and moved over');
 
-        // Otherwise redirect back to the courts page and display an error
-        return res.render('courts/courts', {
-          'courts': await req.scope.cradle.api.getCourts(),
-          'errors': [{
-            text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
+        } else {
+          // Otherwise redirect back to the courts page and display an error
+          return res.render('courts/courts', {
+            'courts': await req.scope.cradle.api.getCourts(),
+            'errors': [{
+              text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
           Please contact them to finish their changes, or try again later.`
-          }]
-        });
+            }]
+          });
+        }
 
       } else {
         // Allow them to proceed if it is the same user

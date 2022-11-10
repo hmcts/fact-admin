@@ -33,6 +33,8 @@ appInsights:
   instrumentationKey:
 csrf:
   tokenSecret: 'get from AAT vault'
+lock:
+  timeout: 1
 launchDarkly:
   sdkKey:
   ldUser: 'fact-admin'

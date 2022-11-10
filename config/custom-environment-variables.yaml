@@ -27,4 +27,6 @@ csrf:
 launchDarkly:
   sdkKey: LAUNCHDARKLY_SDK_KEY
   ldUser: "fact-admin"
+lock:
+  timeout: USER_LOCK_TIMEOUT
 storageAccountConnectionString: STORAGE_ACCOUNT_CONNECTION_STRING
