@@ -16,8 +16,9 @@ When('I add an {string} in the field provided {string}', async (message: string,
 });
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
-  expect(await I.checkElement(id)).equal(true);
-  await I.clearField(id);
+  await I.isElementVisible(id, 10000)
+  //expect(await I.checkElement(id)).equal(true);
+ // await I.clearField(id);
   await I.fillFieldInIframe(id, message);
 });
 
@@ -32,7 +33,7 @@ Then('a message is displayed on the page', async () => {
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   const selector = '#generalInfoTab #urgent-notice-welsh';
-  await I.clearField(selector);
+  //await I.clearField(selector);
   await I.fillFieldInIframe(selector, welshMessage);
 });
 
