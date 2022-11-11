@@ -7,7 +7,7 @@ Feature: Email-addresses
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I click edit next to court with "barnet-civil-and-family-courts-centre"
+    When I click edit next to court with "administrative-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over emails nav element
     Then I click the Emails tab
