@@ -323,7 +323,6 @@ export class AddressController {
       'town_cy': courtAddress.town_cy?.trim(),
       'county_id': courtAddress.county_id,
       postcode: courtAddress.postcode?.trim().toUpperCase(),
-      'region': courtAddress.region
     };
   }
 
@@ -338,7 +337,6 @@ export class AddressController {
       'town_cy': address.town_cy?.trim(),
       'county_id': address.county_id,
       postcode: address.postcode?.trim().toUpperCase(),
-      'region': address.region
     };
   }
 

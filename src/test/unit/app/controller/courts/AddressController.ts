@@ -285,8 +285,8 @@ describe('AddressesController', () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: '', 'region': '' },
-      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: '', 'region': '' }
+      'secondary': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 1 ,postcode: ''},
+      'third': { 'type_id': 100, description:'description', 'description_cy': 'description_cy', 'address_lines': '', 'address_lines_cy': '', town: '', 'town_cy':'', 'county_id': 2, postcode: ''}
     };
 
     req.body = {
