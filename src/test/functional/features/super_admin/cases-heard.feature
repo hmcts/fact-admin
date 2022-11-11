@@ -7,7 +7,7 @@ Feature: Cases-Heard tab
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I click edit next to court with "basingstoke-county-court-and-family-court"
+    When I click edit next to court with "aylesbury-crown-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click the cases heard tab
