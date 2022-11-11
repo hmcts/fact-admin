@@ -144,7 +144,6 @@ export class OidcMiddleware {
         if (req.url.includes('/oauth2/callback')) {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
-          console.log(courts);
           const regions = await req.scope.cradle.api.getRegions();
           const courtsController = new CourtsController();
           const regionsSelect = courtsController.getRegionsForSelect(regions);
@@ -157,10 +156,6 @@ export class OidcMiddleware {
     });
   }
 
-/*  private getRegionsForSelect(regions: Promise<Region[]>): SelectItem[] {
-    return regions.map((rg: Region) => (
-      {value: rg.id, text: rg.name, selected: false}));
-  }*/
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {
