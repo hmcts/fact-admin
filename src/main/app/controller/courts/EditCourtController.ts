@@ -7,7 +7,6 @@ import {CSRF} from '../../../modules/csrf';
 import * as flags from '../../feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../utils/error';
 import {TAB_PREFIX} from '../../../utils/flagPrefix';
-import config from "config";
 
 @autobind
 export class EditCourtController {
@@ -20,25 +19,29 @@ export class EditCourtController {
 
     // Check if the court is currently in use by any other user
     const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
-    const user = req.session['user']['jwt']['sub'];
     if (courtLocks.length == 0) {
       // If there are no locks, assign the current user to the court
       await req.scope.cradle.api.addCourtLock(req.params.slug, {
         court_slug: req.params.slug,
-        user_email: user
+        user_email: req.session['user']['jwt']['sub']
       } as CourtLock);
     } else {
       // At the moment, the limit is one lock; but this may be extended in the future.
       // So for now we can check the first user only
-      if (courtLocks[0]['user_email'] != req.session['user']['jwt']['sub']) {
+      const currentLockUserEmail = courtLocks[0]['user_email'];
+      const currentUserEmail = req.session['user']['jwt']['sub'];
+      if (currentLockUserEmail != currentUserEmail) {
         const currentTime = new Date();
         const lockTimePlusTimeout = new Date((new Date(courtLocks[0]['lock_acquired'])).getTime()
           + ((config.get('lock.timeout') as number) * 60000));
         if (currentTime > lockTimePlusTimeout) {
           // If the time of their last action would require the lock to be deleted,
           // then remove and transition over to this user instead.
-          console.log('TODO: lock needs to be deleted and moved over');
-
+          await req.scope.cradle.api.deleteCourtLocks(req.params.slug, courtLocks[0]['user_email']);
+          await req.scope.cradle.api.addCourtLock(req.params.slug, {
+            court_slug: req.params.slug,
+            user_email: currentUserEmail
+          } as CourtLock);
         } else {
           // Otherwise redirect back to the courts page and display an error
           return res.render('courts/courts', {
@@ -49,14 +52,8 @@ export class EditCourtController {
             }]
           });
         }
-
-      } else {
-        // Allow them to proceed if it is the same user
-        console.log('user is the same');
       }
-
     }
-
 
     const pageData: CourtPageData = {
       isSuperAdmin: req.session.user.isSuperAdmin,
