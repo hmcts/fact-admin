@@ -16,9 +16,9 @@ When('I add an {string} in the field provided {string}', async (message: string,
 });
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
-  await I.isElementVisible(id, 10000)
+  await I.isElementVisible(id, 10000);
   //expect(await I.checkElement(id)).equal(true);
- // await I.clearField(id);
+  // await I.clearField(id);
   await I.fillFieldInIframe(id, message);
 });
 
