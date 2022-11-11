@@ -1121,8 +1121,8 @@ describe('FactApi', () => {
   test('Should return results from getCourtAddresses request', async () => {
     const results: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD', 'region': '' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ', 'region': '' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD'},
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ'}
       ]
     };
     const mockAxios = { get: async () => results } as any;
@@ -1146,8 +1146,8 @@ describe('FactApi', () => {
   test('Should update court addresses and return results from updateCourtAddresses request', async () => {
     const addresses: { data: CourtAddress[] } = {
       data: [
-        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD', 'region': '' },
-        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ', 'region': '' }
+        { 'type_id': 100, description:'description', 'description_cy': 'description_cy','address_lines': ['100 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2CD'},
+        { 'type_id': 200, description:'description', 'description_cy': 'description_cy', 'address_lines': ['122 Green Street'], 'address_lines_cy': [], town: 'Red Town', 'town_cy': '', 'county_id': 1, postcode: 'AB1 2XZ'}
       ]
     };
     const mockAxios = { put: async () => addresses } as any;
