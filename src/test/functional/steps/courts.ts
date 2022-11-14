@@ -18,11 +18,6 @@ When('I click edit next to court with {string}', async (courtSlug: string) => {
   await I.click('#edit-' + courtSlug);
 });
 
-When('I click edit next to court with {string}', async (courtSlug: string) => {
-  await I.isElementVisible('#edit-' + courtSlug, 10000);
-  await I.click('#edit-' + courtSlug);
-});
-
 Then('I am redirected to the Edit Court page for the {string}', async (courtName: string) => {
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
@@ -43,7 +38,9 @@ When('I click view next to court with {string}', async (courtSlug: string) => {
 });
 
 When('I go to the courts page', async () => {
-  await I.click('#courts');
+  const selector = '#courts';
+  await I.isElementVisible(selector, 10000);
+  await I.click(selector);
 });
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
