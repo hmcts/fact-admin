@@ -6,6 +6,7 @@ import {CSRF} from '../../../modules/csrf';
 import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 import {DxCode} from '../../../types/DxCode';
 import {validateDuplication} from '../../../utils/validation';
+import {AxiosError} from "axios";
 
 export enum courtType {
   magistrate = "Magistrates' Court",
@@ -23,7 +24,7 @@ export class CourtTypesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
-
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -49,8 +50,6 @@ export class CourtTypesController {
         .then((value: CourtType[]) => courtTypes = value)
         .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true;});
     }
-
-
 
     const pageData: CourtTypePageData = {
       errorMsg: error,
@@ -100,7 +99,12 @@ export class CourtTypesController {
       {
         await req.scope.cradle.api.updateCourtTypesAndCodes(req.params.slug, courtTypesAndCodes)
           .then(() => this.get(req, res, true, '', courtTypesAndCodes))
-          .catch(() => this.get(req, res, false, this.updateErrorMsg, courtTypesAndCodes));
+          .catch((reason: AxiosError) => {
+            const error = reason.response?.status === 409
+              ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+              : this.updateErrorMsg;
+            this.get(req, res, false, error, courtTypesAndCodes)
+          });
       }
     }
     else

@@ -13,6 +13,7 @@ export class CasesHeardController {
   getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
   putCourtAreasOfLawErrorMsg = 'A problem occurred when updating the court areas of law. ';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -29,7 +30,10 @@ export class CasesHeardController {
       .then(async (value: AreaOfLaw[]) =>
         await this.render(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtAreasOfLawErrorMsg;
+        await this.render(req, res, [error], false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 
