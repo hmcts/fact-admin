@@ -12,7 +12,8 @@ export class GeneralInfoController {
 
   updateGeneralInfoErrorMsg = 'A problem occurred when saving the general information.';
   getGeneralInfoErrorMsg = 'A problem occurred when retrieving the general information.';
-  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. Court already exists with name: ';
+  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. Please check that a user is currently not '
+    + 'editing this court, and that a court does not already exists with name: ';
   duplicateNameErrorMsg = 'Duplicated name';
   blankNameErrorMsg = 'Name is required';
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';

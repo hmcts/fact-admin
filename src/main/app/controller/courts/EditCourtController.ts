@@ -4,6 +4,7 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {CourtPageData} from '../../../types/CourtPageData';
 import {CourtLock} from '../../../types/CourtLock';
 import {CSRF} from '../../../modules/csrf';
+import config from 'config';
 import {getCurrentDatePlusMinutes} from '../../../utils/DateUtils';
 import * as flags from '../../feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../utils/error';
@@ -29,6 +30,11 @@ export class EditCourtController {
           config.get('lock.timeout') as number)) {
           // If the time of their last action would require the lock to be deleted,
           // then remove and transition over to this user instead.
+
+          // TODO: Error message for conflict on endpoints for lock? Check what happens first
+          // TODO: unit tests
+
+
           await req.scope.cradle.api.deleteCourtLocks(req.params.slug, courtLocks[0]['user_email']);
           await req.scope.cradle.api.addCourtLock(req.params.slug, {
             court_slug: req.params.slug,
@@ -36,13 +42,13 @@ export class EditCourtController {
           } as CourtLock);
         } else {
           // Otherwise redirect back to the courts page and display an error
-          return res.render('courts/courts', {
-            'courts': await req.scope.cradle.api.getCourts(),
-            'errors': [{
-              text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
-          Please contact them to finish their changes, or try again later.`
-            }]
-          });
+          // return res.render('courts/courts', {
+          //   'courts': await req.scope.cradle.api.getCourts(),
+          //   'errors': [{
+          //     text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
+          // Please contact them to finish their changes, or try again later.`
+          //   }]
+          // });
         }
       }
     }

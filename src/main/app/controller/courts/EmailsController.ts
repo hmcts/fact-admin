@@ -7,6 +7,7 @@ import {EmailType} from '../../../types/EmailType';
 import {validateDuplication, validateEmailFormat} from '../../../utils/validation';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
+import {AxiosError} from "axios";
 
 @autobind
 export class EmailsController {
@@ -17,6 +18,7 @@ export class EmailsController {
   getEmailsErrorMsg = 'A problem occurred when retrieving the emails.';
   getEmailTypesErrorMsg = 'A problem occurred when retrieving the email descriptions.';
   getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -77,7 +79,12 @@ export class EmailsController {
 
     await req.scope.cradle.api.updateEmails(req.params.slug, emails)
       .then((value: Email[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], emails));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        this.get(req, res, false, [error], emails)
+      });
   }
 
   private static getEmailTypesForSelect(standardTypes: EmailType[]): SelectItem[] {

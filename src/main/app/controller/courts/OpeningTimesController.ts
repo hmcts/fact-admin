@@ -7,6 +7,7 @@ import {OpeningType} from '../../../types/OpeningType';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {validateDuplication} from '../../../utils/validation';
+import {AxiosError} from "axios";
 
 @autobind
 export class OpeningTimesController {
@@ -16,6 +17,7 @@ export class OpeningTimesController {
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
   getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
   updateErrorMsg = 'A problem occurred when saving the opening times.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -29,14 +31,23 @@ export class OpeningTimesController {
     if (!openingTimes) {
       // Get opening times from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getOpeningTimes(slug)
-        .then((value: OpeningTime[]) => openingTimes = value.map(ot => { ot.isNew = false; return ot; }))
-        .catch(() => {errorMsg.push(this.getOpeningTimesErrorMsg); fatalError = true;});
+        .then((value: OpeningTime[]) => openingTimes = value.map(ot => {
+          ot.isNew = false;
+          return ot;
+        }))
+        .catch(() => {
+          errorMsg.push(this.getOpeningTimesErrorMsg);
+          fatalError = true;
+        });
     }
 
     let types: OpeningType[] = [];
     await req.scope.cradle.api.getOpeningTimeTypes()
       .then((value: OpeningType[]) => types = value)
-      .catch(() => {errorMsg.push(this.getOpeningTypesErrorMsg); fatalError = true;});
+      .catch(() => {
+        errorMsg.push(this.getOpeningTypesErrorMsg);
+        fatalError = true;
+      });
 
     if (!openingTimes?.some(ot => ot.isNew === true)) {
       this.addEmptyFormsForNewEntries(openingTimes);
@@ -62,7 +73,7 @@ export class OpeningTimesController {
     let openingTimes = req.body.opening_times as OpeningTime[] ?? [];
     openingTimes.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
 
-    if(!CSRF.verify(req.body._csrf)) {
+    if (!CSRF.verify(req.body._csrf)) {
       return this.get(req, res, false, [this.updateErrorMsg], openingTimes);
     }
 
@@ -84,7 +95,12 @@ export class OpeningTimesController {
 
     await req.scope.cradle.api.updateOpeningTimes(req.params.slug, openingTimes)
       .then((value: OpeningTime[]) => this.get(req, res, true, [], value))
-      .catch(() => this.get(req, res, false, [this.updateErrorMsg], openingTimes));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        this.get(req, res, false, [error], openingTimes)
+      });
   }
 
   private static getOpeningTimeTypesForSelect(standardTypes: OpeningType[]): SelectItem[] {
