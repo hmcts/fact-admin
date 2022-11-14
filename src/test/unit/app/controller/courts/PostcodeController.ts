@@ -694,8 +694,8 @@ describe('PostcodeController', () => {
       slug: testSlug,
       searchValue: '',
       updated: false,
-      errors: [{'text': 'The postcode is already present on the destination ' +
-          'court (your changes have not been saved): PL11 1YY,PL1 1'}],
+      errors: [{'text': 'The postcode is already present on the destination court (your changes have not been saved). '
+          + 'If this is not the case please check that the court is not currently locked by another user: PL11 1YY,PL1 1'}],
       isEnabled: true,
       areasOfLaw: areasOfLawMethodOutput,
       courtTypes: courtTypesMethodOutput,

@@ -53,7 +53,7 @@ export class PhotoController {
       .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
-          : this.deleteCourtPhotoErrorMsg;
+          : this.putCourtPhotoErrorMsg;
         await this.render(req, res, [error], false);
       });
   }

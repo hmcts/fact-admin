@@ -20,8 +20,8 @@ export class PostcodesController {
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
-  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved): '
-    + '. If this is not the case please check that the court is not currently locked by another user';
+  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode ' +
     '(your changes have not been saved): ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.';
