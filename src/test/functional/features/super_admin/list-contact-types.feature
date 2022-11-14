@@ -6,6 +6,7 @@ Feature: Contact Types List
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    When I go to the courts page
     When I click on lists link
     Then I am redirected to the "Edit A List" page
     When I hover over the tab title
