@@ -11,7 +11,6 @@ Feature: Homepage
     When I select Include closed courts
 
   Scenario: View the list
-
     Then I can view the courts or tribunals in a list format
     And they are in alphabetical order
 
