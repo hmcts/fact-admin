@@ -25,7 +25,8 @@ export class PostcodesController {
   postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode ' +
     '(your changes have not been saved): ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.';
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved): ';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.';
   noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';

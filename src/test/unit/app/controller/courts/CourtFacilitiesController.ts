@@ -292,6 +292,32 @@ describe('FacilitiesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
 
+  test('Should handle conflict error with facilities when updating court facilities', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    const postedFacilities = getFacilities().concat([{id:null, description: null,descriptionCy: null, isNew: true }]);
+    req.params = { slug: 'southport-county-court' };
+    req.body = {
+      'courtFacilities': postedFacilities,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtFacilities = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: FacilityPageData = {
+      errors: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      updated: false,
+      facilitiesTypes: expectedSelectItems,
+      courtFacilities: postedFacilities,
+      requiresValidation: true,
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
+  });
 
   test('Should handle error with empty description when updating court facilities', async () => {
     const req = mockRequest();

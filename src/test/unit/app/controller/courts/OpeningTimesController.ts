@@ -261,4 +261,31 @@ describe('OpeningTimesController', () => {
     };
     expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
   });
+
+  test('Should handle conflict errors when updating opening time', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    req.params = { slug: 'southport-county-court' };
+    req.body = {
+      'opening_times': [{}],
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateOpeningTimes = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: OpeningTimeData = {
+      'opening_times': [{'hours': null, 'isNew': true, 'type_id': null}],
+      openingTimeTypes: expectedSelectItems,
+      updated: false,
+      errors: [
+        {text: controller.courtLockedExceptionMsg + 'test'}
+      ],
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/openingHoursContent', expectedResults);
+  });
 });

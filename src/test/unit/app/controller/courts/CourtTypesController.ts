@@ -6,7 +6,6 @@ import {CSRF} from '../../../../../main/modules/csrf';
 import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 
 
-
 describe ( 'CourtTypesController', () =>{
 
   let mockApi: {
@@ -346,7 +345,52 @@ describe ( 'CourtTypesController', () =>{
     expect(mockApi.updateCourtTypesAndCodes).not.toBeCalled();
   });
 
+  test('Should not post court types if conflict found', async() => {
+    const slug = 'another-county-court';
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    const req = mockRequest();
 
+    const types: string[]= [
+      '{"id":1,"name":"Magistrates\' Court","code":1}',
+      '{"id":2,"name":"County Court","code":2}',
+      '{"id":3,"name":"Crown Court","code":3}',
+      '{"id":4,"name":"Family Court","code":null}'
+    ];
+
+    req.body = {
+      'types': types,
+      'magistratesCourtCode' : '123',
+      'countyCourtCode' : '456',
+      'crownCourtCode': '789',
+      'gbsCode':courtTypesAndCodes.gbsCode,
+      'dxCodes':[
+        { code: null, explanation: 'explanation', explanationCy: 'explanationCy', isNew: false },
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ],
+      '_csrf': CSRF.create()
+    };
+
+    req.params = { slug: slug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: CourtTypePageData = {
+      updated: false,
+      errorMsg: controller.courtLockedExceptionMsg + 'test',
+      courtTypes: courtTypeItems,
+      gbs: courtTypesAndCodes.gbsCode,
+      dxCodes:[
+        { code: null, explanation: 'explanation', explanationCy: 'explanationCy', isNew: false,},
+        { code: null, explanation: null, explanationCy: null, isNew: true }
+      ],
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/typesContent', expectedResults);
+  });
 
   test('Should handle errors when getting court types and codes data from API', async () => {
     const slug = 'another-county-court';

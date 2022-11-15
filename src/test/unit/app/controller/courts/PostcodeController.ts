@@ -291,6 +291,44 @@ describe('PostcodeController', () => {
     expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });
 
+  test('Should not add postcodes if the api returns with a conflict error', async() => {
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    const req = mockRequest();
+    req.body = {
+      'existingPostcodes': getPostcodeInput,
+      'newPostcodes': newPostcodes,
+      'csrfToken': CSRF.create(),
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
+    };
+    const errorResponse = mockResponse();
+    errorResponse.response.data = {'message':['pl1']};
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.addPostcodes = jest.fn().mockRejectedValue(res);
+
+    await controller.post(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', {
+      postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'],
+      courts: [],
+      slug: testSlug,
+      searchValue: 'PL4,PL5,PL6',
+      updated: true,
+      errors: [{'text': 'One or more postcodes provided already exist (your changes have not been saved). '
+          + 'If this is not the case please check that the court is not currently locked by another user: test'}],
+      isEnabled: true,
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
+    });
+    expect(mockApi.addPostcodes).toBeCalledWith(testSlug, newPostcodes.split(','));
+    expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
+  });
+
   test('Should not add postcodes if the api returns with an error', async() => {
     const res = mockResponse();
     const req = mockRequest();
@@ -488,6 +526,43 @@ describe('PostcodeController', () => {
       fatalError: false,
     });
     expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, getDeletedPostcodes);
+    expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
+    expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
+  });
+
+  test('Should not delete postcodes if the api returns with a conflict error', async() => {
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    const req = mockRequest();
+    req.body = {
+      'existingPostcodes': getPostcodeInput,
+      'selectedPostcodes': getDeletedPostcodes,
+      'csrfToken': CSRF.create(),
+      'courtTypes': courtTypesBodyInput,
+      'areasOfLaw': areasOfLawBodyInput
+    };
+    const errorResponse = mockResponse();
+    errorResponse.response.data = ['PL1','PL2','PL3'];
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.deletePostcodes = jest.fn().mockRejectedValue(res);
+
+    await controller.delete(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/postcodesContent', {
+      postcodes: ['PL1', 'PL2', 'PL3', 'PL11 1YY', 'PL1 1', 'PL 1'],
+      courts: [],
+      slug: testSlug,
+      searchValue: '',
+      updated: false,
+      errors: [{'text': 'A conflict error has occurred: test'}],
+      isEnabled: true,
+      areasOfLaw: areasOfLawMethodOutput,
+      courtTypes: courtTypesMethodOutput,
+      fatalError: false,
+    });
+    expect(mockApi.deletePostcodes).toBeCalledWith(testSlug, ['PL1','PL2','PL3']);
     expect(mockApi.getCourtAreasOfLaw).not.toBeCalled();
     expect(mockApi.getCourtTypesAndCodes).not.toBeCalled();
   });

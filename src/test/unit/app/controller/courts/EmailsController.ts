@@ -324,4 +324,33 @@ describe('EmailsController', () => {
     };
     expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
   });
+
+  test('Should handle conflict errors when updating emails', async () => {
+    const req = mockRequest();
+    const postedEmails: Email[] = [];
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+
+    req.params = { slug: 'plymouth-combined-court' };
+    req.body = {
+      'emails': postedEmails,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateEmails = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: EmailData = {
+      'emails': [{'address': null, adminEmailTypeId: null, explanation: null, explanationCy: null, isNew: true}],
+      emailTypes: expectedSelectItems,
+      updated: false,
+      errors: [
+        {text: controller.courtLockedExceptionMsg + 'test'}
+      ],
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/emailsContent', expectedResults);
+  });
 });
