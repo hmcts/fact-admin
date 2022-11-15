@@ -31,7 +31,8 @@ Given('I click edit {string}', async (areaOfLawName: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -59,7 +60,8 @@ Then('I enter {string} in Display Name textbox', async (displayName: string) => 
 
 When('I click Area Of Law save button', async () => {
   const selector = '#saveAreaOfLawBtn';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -100,7 +102,8 @@ Then('I enter {string} in Display external link textbox', async (displayExtlink:
 
 Then('A green message is displayed for the updated Area Of Law {string}', async (message: string) => {
   const selector = '#areasOfLawListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
@@ -119,7 +122,8 @@ Then('I enter {string} in Name textbox', async (newName: string) => {
 
 When('I click confirm delete button',async () => {
   const selector = '#confirmDelete';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -128,7 +132,8 @@ Then('I click {string} delete button',async (aolTest: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -137,7 +142,8 @@ When('I click delete button for Area of law {string}',async (aolName: string) =>
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#areasOfLawListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 

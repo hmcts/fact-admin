@@ -53,7 +53,8 @@ Then('I enter {string} in facility welsh name textbox', async (displayNameCy: st
 
 When('I click facility type save button', async () => {
   const selector = '#saveFacilityType';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -71,7 +72,8 @@ Then('I click delete button for facility type {string}',async (facilityType: str
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -85,7 +87,8 @@ Given('I click edit facility type {string}', async (facilityType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#facilityTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 

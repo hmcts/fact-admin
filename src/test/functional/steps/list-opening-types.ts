@@ -20,7 +20,8 @@ Given('I click edit opening type {string}', async (contactType: string) => {
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#openingTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(2) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -51,13 +52,15 @@ Then('I enter {string} in opening type welsh name textbox', async (nameCy: strin
 
 When('I click Opening Type save button', async () => {
   const selector = '#saveOpeningTypeBtn';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('A green message is displayed for the updated Opening Type {string}', async (message: string) => {
   const selector = '#openingTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
@@ -83,6 +86,7 @@ Then('I click {string} delete Opening type button',async (contactTypeTest: strin
   expect(tableRow).greaterThan(-1);
   // The table row index returned is zero-based but nth-child works on a 1-based index so we add one.
   const selector = `#openingTypesListContent > table > tbody > tr:nth-child(${tableRow + 1}) > td:nth-child(3) > a`;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });

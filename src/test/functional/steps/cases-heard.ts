@@ -5,7 +5,8 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click the cases heard tab', async () => {
   const selector = '#tab_cases-heard';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -41,10 +42,12 @@ When('I reload the page', async () => {
 Then('areas of law {string} and {string} should be selected', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 10000);
-  const element1Checked = await I.isElementChecked(selector1);
-  expect(element1Checked).equal(true);
-  await I.isElementVisible(selector2, 10000);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
+  const elementChecked = await I.isElementChecked(selector1);
+  expect(elementChecked).equal(true);
+  const elementExist2 = await I.checkElement(selector2);
+  expect(elementExist2).equal(true);
   const element2Checked = await I.isElementChecked(selector2);
   expect(element2Checked).equal(true);
 });
@@ -52,7 +55,8 @@ Then('areas of law {string} and {string} should be selected', async (areaOfLaw1:
 When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 10000);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
   if (element1Checked) {
     await I.click(selector1);
@@ -67,10 +71,12 @@ When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, 
 Then('areas of law {string} and {string} should be unselected', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 10000);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
   expect(element1Checked).equal(false);
-  await I.isElementVisible(selector2, 10000);
+  const elementExist2 = await I.checkElement(selector2);
+  expect(elementExist2).equal(true);
   const element2Checked = await I.isElementChecked(selector2);
   expect(element2Checked).equal(false);
 });

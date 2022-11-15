@@ -7,13 +7,15 @@ let end: Date;
 
 When('I click on audits link', async () => {
   const selector = '#audits';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement('.button');
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 When('I click on courts link', async () => {
   const selector = '#courts';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement('.button');
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -27,13 +29,15 @@ Then('I check action end time', async () => {
 
 When('I select {string} from courts', async (court: string) => {
   const selector = '#searchLocation';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement('.button');
+  expect(elementExist).equal(true);
   await I.selectItem(selector, court);
 });
 
 Then('I click search audit button', async () => {
   const selector = '#searchAuditsBtn';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement('.button');
+  expect(elementExist).equal(true);
   await I.click(selector);
 
   //it takes half a second for a javascript to load new audits
@@ -42,10 +46,12 @@ Then('I click search audit button', async () => {
 
 Then('I enter between and end date', async () => {
   const selectorDateFrom = '#searchDateFrom';
-  await I.isElementVisible(selectorDateFrom, 10000);
+  const elementExist = await I.checkElement(selectorDateFrom);
+  expect(elementExist).equal(true);
 
   const selectorDateTo = '#searchDateTo';
-  await I.isElementVisible(selectorDateTo, 10000);
+  const elementExist2 = await I.checkElement(selectorDateTo);
+  expect(elementExist2).equal(true);
 
   // Date time on select picker is yyyy-mm-ddThh:mm
   const startTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + start.getHours() + ':' + start.getMinutes();
@@ -62,12 +68,14 @@ When('I can see the expected audits', async () => {
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
   const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(2)';
-  await I.isElementVisible(selectorAction, 10000);
+  const elementExist = await I.checkElement(selectorAction);
+  expect(elementExist).equal(true);
   const actionName = await I.getElement(selectorAction);
   expect(await I.getElementText(actionName)).equal('Update court opening times');
 
   const selectorLocation = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(3)';
-  await I.isElementVisible(selectorAction, 10000);
+  const elementExist2 = await I.checkElement(selectorLocation);
+  expect(elementExist2).equal(true);
   const locationName = await I.getElement(selectorLocation);
   expect(await I.getElementText(locationName)).equal('havant-justice-centre');
 });

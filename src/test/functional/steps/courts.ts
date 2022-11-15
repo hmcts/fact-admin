@@ -4,7 +4,8 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 
 Then('I can view the courts or tribunals in a list format', async () => {
-  await I.isElementVisible('#courts', 10000);
+  const elementExist = await I.checkElement('#courts');
+  expect(elementExist).equal(true);
 });
 
 Given('they are in alphabetical order', async () => {
@@ -28,13 +29,16 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
 
 When('I click view next to court with {string}', async (courtSlug: string) => {
   const selector = '#view-' + courtSlug;
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  await I.isElementVisible('#edit-' + courtSlug, 10000);
-  await I.click('#edit-' + courtSlug);
+  const selector = '#view-' + courtSlug;
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
 });
 
 When('I go to the courts page', async () => {
@@ -45,7 +49,8 @@ When('I go to the courts page', async () => {
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
   const selector = '#main-content > div > div > h1';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const viewCourtHeading = await I.getElement(selector);
   expect(await I.getElementText(viewCourtHeading)).equal(courtName);
 });

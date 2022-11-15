@@ -17,7 +17,8 @@ async function populateField(fieldElement: string, value: string) {
 
 Then('I click the Addresses tab', async () => {
   const selector = '#tab_addresses';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -89,7 +90,8 @@ Then('I click the Save Addresses button', async () => {
 
 Then('A green message is displayed for the updated address {string}', async (message: string) => {
   const selector = '#addressesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
@@ -206,14 +208,15 @@ Then('I enter third address {string} in the postcode textbox', async (postcode: 
 
 When('I select the third address type {string}', async (addressType: string) => {
   const selector = '#thirdAddressType';
-  //const elementExist = await I.checkElement(selector);
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.selectItem(selector, addressType);
 });
 
 Given('I will make sure to remove entries for first secondary address', async () => {
   const selector = '#removeSecondAddressBtn';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -234,7 +237,8 @@ Then('I enter the secondary address town welsh {string}', async (townCy: string)
 
 Then('I select yes for area of law and court type', async () => {
   const selector = '#secondaryFieldsOfLawRadio';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 
@@ -252,7 +256,8 @@ Then('I select children and civil from area of law and county court for court ty
 
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 
   await I.goTo(config.FRONTEND_URL + '/courts/amersham-law-courts');
@@ -266,7 +271,8 @@ Then('I click the link view court in new tab to validate the label generated', a
 
 Then('I select yes for second secondary court area of law and court type', async () => {
   const selector = '#thirdFieldsOfLawRadio';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   await I.click(selector);
 });
 

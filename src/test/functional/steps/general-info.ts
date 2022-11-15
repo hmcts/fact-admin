@@ -34,9 +34,12 @@ Then('I can view the PUAS flag', async () => {
 });
 
 Then('I cannot view super admin content', async () => {
-  expect(await I.isElementVisible('#generalInfoTab #open', 3000)).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #info', 3000)).equal(false);
-  expect(await I.isElementVisible('#generalInfoTab #info_cy', 3000)).equal(false);
+  const elementExist = await I.checkElement('#generalInfoTab #open');
+  expect(elementExist).equal(false);
+  const elementExist2 = await I.checkElement('#generalInfoTab #info');
+  expect(elementExist2).equal(false);
+  const elementExist3 = await I.checkElement('#generalInfoTab #info_cy');
+  expect(elementExist3).equal(false);
 });
 
 Then('I can view the open checkbox', async () => {

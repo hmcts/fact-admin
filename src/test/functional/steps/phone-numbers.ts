@@ -80,7 +80,8 @@ Then('the phone number entry in last position has description at index {int} num
 
 Then('a green message is displayed for updated entries {string}', async (message: string) => {
   const selector = '#phoneNumbersContent > div > h1';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
 
   const messageUpdate = await I.getElement('#phoneNumbersContent > div > h1');
   expect(await I.getElementText(messageUpdate)).equal(message);
@@ -112,19 +113,22 @@ When('I left the phone number entry blank and select description at index {int}'
 Then('an error message is displayed for phone number tab with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
-  await I.isElementVisible(selector, 10000);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactDescription-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 10000);
+  const elementExist3 = await I.checkElement(selector);
+  expect(elementExist3).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -133,19 +137,22 @@ Then('an error message is displayed for phone number tab with summary {string} a
 Then('an error message is displayed for phone number tab with summary {string} and number field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  await I.isElementVisible(selector, 10000);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#phoneNumbersContent > div > div > ul > li';
-  await I.isElementVisible(selector, 10000);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   const numFieldsets = await I.countElement('#phoneNumbersTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#contactNumber-' + fieldsetErrorIndex + '-error';
-  await I.isElementVisible(selector, 10000);
+  const elementExist3 = await I.checkElement(selector);
+  expect(elementExist3).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
