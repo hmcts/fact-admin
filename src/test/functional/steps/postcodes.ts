@@ -106,12 +106,6 @@ Then('I click the move button', async () => {
   await I.click(buttonSelector);
 });
 
-Then ('I go back to the editing postcodes for source court {string}', async (destinationCourt: string)=> {
-  await I.click('#courts');
-  await I.click('#edit-' + destinationCourt);
-  await I.click('#tab_postcodes');
-});
-
 Then('I will make sure to delete the existing postcodes for the court {string}', async (courtName: string) => {
   await I.click('#courts');
 

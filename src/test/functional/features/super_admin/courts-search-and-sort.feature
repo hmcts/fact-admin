@@ -6,7 +6,7 @@ Feature: Courts and tribunals search and sort
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    #When I go to the courts page
+    When I go to the courts page
     Then I can view the courts or tribunals in a list format
 
   Scenario Outline: As a user when I try to search courts by entering the letters in search box all court names which contains the searchtext should be displayed

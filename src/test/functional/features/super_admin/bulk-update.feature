@@ -6,7 +6,7 @@ Feature: Bulk update of court info
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    #When I go to the courts page
+    When I go to the courts page
 
   Scenario: Edit information for closed courts
     When I click bulk update
