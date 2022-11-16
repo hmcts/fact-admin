@@ -10,7 +10,7 @@ async function populateField(fieldElement: string, value: string) {
 
 When('I click on add new court link', async () => {
   const selector = '#add-court-nav';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -38,21 +38,20 @@ Then('I entered the latitude {string}', async (latitude: string) => {
 
 Then('I select yes for the court be service centre', async () => {
   const selector = '#serviceCentre';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('I click on add new court button', async () => {
   const selector = '#saveNewCourtBtn';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('The error message displays for a existing court name {string}', async (errMessage: string) => {
-  await I.isElementVisible('#error-summary-title', 10000);
-
+  expect(await I.checkElement('#error-summary-title')).equal(true);
   const selector = '#addNewCourtForm > div.govuk-error-summary > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
@@ -72,7 +71,7 @@ Then('The error message displays for not adding service area {string}', async (e
 
 Then('I select no for the court be service centre', async () => {
   const selector = '#serviceCentre-2';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });

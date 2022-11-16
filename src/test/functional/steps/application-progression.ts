@@ -7,14 +7,14 @@ async function populateField(selector: string, value: string) {
   const numFieldSets = await I.countElement('#applicationProgressionTab fieldset');
   const entryFormIdx = numFieldSets - 2;
 
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.setElementValueAtIndex(selector, entryFormIdx, value, 'input');
 }
 
 Then('I click the application progression tab', async () => {
   const selector = '#tab_application-progression';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });

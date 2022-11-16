@@ -129,7 +129,7 @@ Then('An error is displayed for additional links with summary {string} and displ
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  const elementExist1 = await I.checkElement('.button');
+  const elementExist1 = await I.checkElement(selector);
   expect(elementExist1).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
@@ -137,7 +137,7 @@ Then('An error is displayed for additional links with summary {string} and displ
   const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#display_name-' + fieldsetErrorIndex + '-error';
-  const elementExist2 = await I.checkElement('.button');
+  const elementExist2 = await I.checkElement(selector);
   expect(elementExist2).equal(true);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
@@ -155,13 +155,13 @@ When('When I enter a new Additional Links entry by adding english display name {
 Then('An error is displayed for additional links with summary {string} and URL field message {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  const elementExist2 = await I.checkElement('.button');
+  const elementExist2 = await I.checkElement(selector);
   expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
@@ -169,7 +169,7 @@ Then('An error is displayed for additional links with summary {string} and URL f
   const numFieldsets = await I.countElement('#additionalLinksTab fieldset');
   const fieldsetErrorIndex = numFieldsets - 1;  // The last field set is the hidden template fieldset
   selector = '#url-' + fieldsetErrorIndex + '-error';
-  const elementExist3 = await I.checkElement('.button');
+  const elementExist3 = await I.checkElement(selector);
   expect(elementExist3).equal(true);
   const urlErrorElement = await I.getElement(selector);
   expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
@@ -183,25 +183,25 @@ When('I clear additional link fields', async () => {
 Then('An error is displayed for additional links with summary {string} and URL field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  const elementExist2 = await I.checkElement('.button');
+  const elementExist2 = await I.checkElement(selector);
   expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#url-1-error';
-  const elementExist3 = await I.checkElement('.button');
+  const elementExist3 = await I.checkElement(selector);
   expect(elementExist3).equal(true);
   const urlErrorElement = await I.getElement(selector);
   expect(await I.getElementText(urlErrorElement)).contains(errorMsg);
 
   selector = '#url-2-error';
-  const elementExist4 = await I.checkElement('.button');
+  const elementExist4 = await I.checkElement(selector);
   expect(elementExist4).equal(true);
   const url2ErrorElement = await I.getElement(selector);
   expect(await I.getElementText(url2ErrorElement)).contains(errorMsg);
@@ -211,25 +211,25 @@ Then('An error is displayed for additional links with summary {string} and URL f
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#additionalLinksContent > div > div > ul > li';
-  const elementExist2 = await I.checkElement('.button');
+  const elementExist2 = await I.checkElement(selector);
   expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
 
   selector = '#display_name-1-error';
-  const elementExist3 = await I.checkElement('.button');
+  const elementExist3 = await I.checkElement(selector);
   expect(elementExist3).equal(true);
   const displayNameErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayNameErrorElement)).contains(errorMsg);
 
   selector = '#display_name-2-error';
-  const elementExist4 = await I.checkElement('.button');
+  const elementExist4 = await I.checkElement(selector);
   expect(elementExist4).equal(true);
   const displayName2ErrorElement = await I.getElement(selector);
   expect(await I.getElementText(displayName2ErrorElement)).contains(errorMsg);

@@ -13,12 +13,12 @@ When('I click the cases heard tab', async () => {
 When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  await I.isElementVisible(selector1, 10000);
+  await I.checkElement(selector1);
   const element1Checked = await I.isElementChecked(selector1);
   if (!element1Checked) {
     await I.click(selector1);
   }
-  await I.isElementVisible(selector2, 10000);
+  await I.checkElement(selector2);
   const element2Checked = await I.isElementChecked(selector2);
   if (!element2Checked) {
     await I.click(selector2);
@@ -61,8 +61,8 @@ When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, 
   if (element1Checked) {
     await I.click(selector1);
   }
-  await I.isElementVisible(selector2, 10000);
-  const element2Checked = await I.isElementChecked(selector2);
+  await I.checkElement(selector2);
+  const element2Checked = await I.checkElement(selector2);
   if (element2Checked) {
     await I.click(selector2);
   }

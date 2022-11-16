@@ -7,14 +7,14 @@ let end: Date;
 
 When('I click on audits link', async () => {
   const selector = '#audits';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 When('I click on courts link', async () => {
   const selector = '#courts';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
@@ -29,14 +29,14 @@ Then('I check action end time', async () => {
 
 When('I select {string} from courts', async (court: string) => {
   const selector = '#searchLocation';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, court);
 });
 
 Then('I click search audit button', async () => {
   const selector = '#searchAuditsBtn';
-  const elementExist = await I.checkElement('.button');
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 

@@ -35,7 +35,7 @@ When('I click view next to court with {string}', async (courtSlug: string) => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  const selector = '#view-' + courtSlug;
+  const selector = '#edit-' + courtSlug;
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
