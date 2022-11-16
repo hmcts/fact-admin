@@ -65,6 +65,8 @@ When('I fill in the Username and Password fields with my incorrect authenticated
 
 Given('click the Sign In button', async () => {
   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
+    const elementExist = await I.checkElement('.button');
+    expect(elementExist).equal(true);
     await I.click('.button');
   }
 });

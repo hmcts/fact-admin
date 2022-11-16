@@ -7,6 +7,7 @@ Feature: Login/Logout
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my viewer authenticated credentials
     And click the Sign In button
+    When I go to the courts page
     Then the system will sign me in
     And I cannot view super admin content
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"

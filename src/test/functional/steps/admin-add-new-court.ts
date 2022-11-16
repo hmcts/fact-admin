@@ -3,7 +3,8 @@ import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
 
 async function populateField(fieldElement: string, value: string) {
-  expect(await I.checkElement(fieldElement)).equal(true);
+  const elementExist = await I.checkElement(fieldElement);
+  expect(elementExist).equal(true);
   await I.setElementValueForInputField(fieldElement, value);
 }
 
@@ -13,8 +14,6 @@ When('I click on add new court link', async () => {
   expect(elementExist).equal(true);
   await I.click(selector);
 });
-
-
 
 Then('I am redirected to the add new court {string} page', async (addNewCourt: string) => {
   const selector = '#addNewCourtForm > h1';
@@ -52,9 +51,7 @@ Then('I click on add new court button', async () => {
 });
 
 Then('The error message displays for a existing court name {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
-  expect(errorTitle).equal(true);
-
+  expect(await I.checkElement('#error-summary-title')).equal(true);
   const selector = '#addNewCourtForm > div.govuk-error-summary > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);

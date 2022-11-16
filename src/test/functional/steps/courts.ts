@@ -14,12 +14,6 @@ Given('they are in alphabetical order', async () => {
   expect(courts).equals(courts.sort());
 });
 
-When('I click edit next to court with {string}', async (courtSlug: string) => {
-  const elementExist = await I.checkElement('#edit-' + courtSlug);
-  expect(elementExist).equal(true);
-  await I.click('#edit-' + courtSlug);
-});
-
 Then('I am redirected to the Edit Court page for the {string}', async (courtName: string) => {
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
@@ -38,6 +32,19 @@ When('I click view next to court with {string}', async (courtSlug: string) => {
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
+});
+
+When('I click edit next to court with {string}', async (courtSlug: string) => {
+  const selector = '#edit-' + courtSlug;
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.click(selector);
+});
+
+When('I go to the courts page', async () => {
+  const commonPlatformCheckboxExists = await I.checkElement('#courts');
+  expect(commonPlatformCheckboxExists).equal(true);
+  await I.click('#courts');
 });
 
 Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {

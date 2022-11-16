@@ -13,14 +13,12 @@ When('I click the cases heard tab', async () => {
 When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  const element1Exist = await I.checkElement(selector1);
-  expect(element1Exist).equal(true);
+  await I.checkElement(selector1);
   const element1Checked = await I.isElementChecked(selector1);
   if (!element1Checked) {
     await I.click(selector1);
   }
-  const element2Exist = await I.checkElement(selector2);
-  expect(element2Exist).equal(true);
+  await I.checkElement(selector2);
   const element2Checked = await I.isElementChecked(selector2);
   if (!element2Checked) {
     await I.click(selector2);
@@ -44,12 +42,12 @@ When('I reload the page', async () => {
 Then('areas of law {string} and {string} should be selected', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  const element1Exist = await I.checkElement(selector1);
-  expect(element1Exist).equal(true);
-  const element1Checked = await I.isElementChecked(selector1);
-  expect(element1Checked).equal(true);
-  const element2Exist = await I.checkElement(selector2);
-  expect(element2Exist).equal(true);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
+  const elementChecked = await I.isElementChecked(selector1);
+  expect(elementChecked).equal(true);
+  const elementExist2 = await I.checkElement(selector2);
+  expect(elementExist2).equal(true);
   const element2Checked = await I.isElementChecked(selector2);
   expect(element2Checked).equal(true);
 });
@@ -57,15 +55,14 @@ Then('areas of law {string} and {string} should be selected', async (areaOfLaw1:
 When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  const element1Exist = await I.checkElement(selector1);
-  expect(element1Exist).equal(true);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
   if (element1Checked) {
     await I.click(selector1);
   }
-  const element2Exist = await I.checkElement(selector2);
-  expect(element2Exist).equal(true);
-  const element2Checked = await I.isElementChecked(selector2);
+  await I.checkElement(selector2);
+  const element2Checked = await I.checkElement(selector2);
   if (element2Checked) {
     await I.click(selector2);
   }
@@ -74,12 +71,12 @@ When('I unselect area of law {string} and {string}', async (areaOfLaw1: number, 
 Then('areas of law {string} and {string} should be unselected', async (areaOfLaw1: number, areaOfLaw2: number) => {
   const selector1 = '#' + areaOfLaw1;
   const selector2 = '#' + areaOfLaw2;
-  const element1Exist = await I.checkElement(selector1);
-  expect(element1Exist).equal(true);
+  const elementExist = await I.checkElement(selector1);
+  expect(elementExist).equal(true);
   const element1Checked = await I.isElementChecked(selector1);
   expect(element1Checked).equal(false);
-  const element2Exist = await I.checkElement(selector2);
-  expect(element2Exist).equal(true);
+  const elementExist2 = await I.checkElement(selector2);
+  expect(elementExist2).equal(true);
   const element2Checked = await I.isElementChecked(selector2);
   expect(element2Checked).equal(false);
 });

@@ -11,6 +11,7 @@ Feature: courts audits
     And click the Sign In button
 
   Scenario: view audits for super admin user
+    When I go to the courts page
     When I click edit next to court with "havant-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element

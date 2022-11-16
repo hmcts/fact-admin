@@ -26,7 +26,6 @@ When('I remove all existing facility entries and save', async () => {
 Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
   const elementExist = await I.checkElement('#courtFacilitiesTab .govuk-panel--confirmation');
   expect(elementExist).equal(true);
-
   const element = await I.getElement('#courtFacilitiesTab .govuk-panel--confirmation');
   const updateText = await I.getElementText(element);
   expect(updateText).equal(msgUpdated);
@@ -143,22 +142,26 @@ Then('there are no facility entries', async () => {
 When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist3 = await I.checkElement(selector);
+  expect(elementExist3).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 
   selector = '#name-2-error';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist4 = await I.checkElement(selector);
+  expect(elementExist4).equal(true);
   const descriptionErrorElement2 = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement2)).contains(message);
 });
@@ -166,17 +169,20 @@ When('An error is displayed for facilities with summary {string} and field messa
 When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#description-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist3 = await I.checkElement(selector);
+  expect(elementExist3).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
@@ -184,17 +190,20 @@ When('An error is displayed for facilities with summary {string} and description
 When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
   let selector = '#error-summary-title';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
   selector = '#courtFacilitiesContent > div > div > ul > li';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
 
   selector = '#name-1-error';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist3 = await I.checkElement(selector);
+  expect(elementExist3).equal(true);
   const descriptionErrorElement = await I.getElement(selector);
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });

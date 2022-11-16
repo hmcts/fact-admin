@@ -17,7 +17,6 @@ When('I add an {string} in the field provided {string}', async (message: string,
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
   expect(await I.checkElement(id)).equal(true);
-  await I.clearField(id);
   await I.fillFieldInIframe(id, message);
 });
 
@@ -32,7 +31,6 @@ Then('a message is displayed on the page', async () => {
 
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   const selector = '#generalInfoTab #urgent-notice-welsh';
-  await I.clearField(selector);
   await I.fillFieldInIframe(selector, welshMessage);
 });
 
@@ -86,7 +84,8 @@ When('I unclick the Participates in access scheme checkbox', async () => {
 
 Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
   const selector = '#view-in-new-window';
-  expect(await I.checkElement(selector)).equal(true);
+  const elementExist2 = await I.checkElement(selector);
+  expect(elementExist2).equal(true);
   await I.click(selector);
 
   await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');

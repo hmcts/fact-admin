@@ -12,7 +12,7 @@ When('I click the postcodes tab', async () => {
 
 Then('A green message is displayed for the postcodes {string}', async (message: string) => {
   const selector = '#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  expect(await I.checkElement(selector)).equal(true);
+  await I.checkElement(selector);
   const messageUpdate = await I.getElement('#postcodesContent > div.govuk-panel.govuk-panel--confirmation > h1');
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
@@ -104,12 +104,6 @@ Then('I click the move button', async () => {
   const elementExist = await I.checkElement(buttonSelector);
   expect(elementExist).equal(true);
   await I.click(buttonSelector);
-});
-
-Then ('I go back to the editing postcodes for source court {string}', async (destinationCourt: string)=> {
-  await I.click('#courts');
-  await I.click('#edit-' + destinationCourt);
-  await I.click('#tab_postcodes');
 });
 
 Then('I will make sure to delete the existing postcodes for the court {string}', async (courtName: string) => {

@@ -46,12 +46,12 @@ Then('I click search audit button', async () => {
 
 Then('I enter between and end date', async () => {
   const selectorDateFrom = '#searchDateFrom';
-  const elementExistFrom = await I.checkElement(selectorDateFrom);
-  expect(elementExistFrom).equal(true);
+  const elementExist = await I.checkElement(selectorDateFrom);
+  expect(elementExist).equal(true);
 
   const selectorDateTo = '#searchDateTo';
-  const elementExistTO = await I.checkElement(selectorDateTo);
-  expect(elementExistTO).equal(true);
+  const elementExist2 = await I.checkElement(selectorDateTo);
+  expect(elementExist2).equal(true);
 
   // Date time on select picker is yyyy-mm-ddThh:mm
   const startTime = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate() + 'T' + start.getHours() + ':' + start.getMinutes();
@@ -68,12 +68,14 @@ When('I can see the expected audits', async () => {
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
   const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(2)';
-  expect(await I.checkElement(selectorAction)).equal(true);
+  const elementExist = await I.checkElement(selectorAction);
+  expect(elementExist).equal(true);
   const actionName = await I.getElement(selectorAction);
   expect(await I.getElementText(actionName)).equal('Update court opening times');
 
   const selectorLocation = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(3)';
-  expect(await I.checkElement(selectorLocation)).equal(true);
+  const elementExist2 = await I.checkElement(selectorLocation);
+  expect(elementExist2).equal(true);
   const locationName = await I.getElement(selectorLocation);
   expect(await I.getElementText(locationName)).equal('havant-justice-centre');
 });

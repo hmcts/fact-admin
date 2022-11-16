@@ -13,6 +13,7 @@ export class CourtsController {
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const errors: Error[] = [];
+    console.log('goes into courts controller');
     const courts = await req.scope.cradle.api.getCourts();
     if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
     res.render('courts/courts', { courts, errors });
