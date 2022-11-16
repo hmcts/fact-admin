@@ -6,7 +6,7 @@ Feature: Court Additional Information Message
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
 
   Scenario: Adding additional info English and Welsh

@@ -9,7 +9,7 @@ Feature: General Info
   Scenario: Cant leave the name blank
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
     When I click edit next to court with "amersham-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
@@ -22,7 +22,7 @@ Feature: General Info
   Scenario: Editing general info with the court name already exist
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
     When I click edit next to court with "bankruptcy-court-high-court"
     Then I am redirected to the Edit Court page for the chosen court
@@ -35,7 +35,7 @@ Feature: General Info
   Scenario: Adding intro paragraph welsh and English
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
     When I click edit next to court with "north-west-regional-divorce-centre"
     Then I am redirected to the Edit Court page for the chosen court
@@ -49,7 +49,7 @@ Feature: General Info
   Scenario: Editing common platform checkbox
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
     When I click edit next to court with "amersham-law-courts"
     Then I am redirected to the Edit Court page for the chosen court

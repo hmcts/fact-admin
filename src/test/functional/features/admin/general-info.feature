@@ -9,7 +9,7 @@ Feature: General Info
   Scenario: Admin user can view and update urgent notices and PUAS flag only
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
-    When I go to the courts page
+    #When I go to the courts page
     When I select Include closed courts
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
     Then I am redirected to the Edit Court page for the chosen court
