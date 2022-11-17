@@ -33,7 +33,7 @@ Feature: Court-addresses
 
     Examples:
       | address                       | welsh address   | town     | welsh town   | postcode | secondary address             |secondary town | secondary postcode |
-      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | The Court House, Cwmbach Road | Aberdare      | CF44 0JE           |
+      | The Court House, Cwmbach Road | stdtduguguhguhu | Aberdare | fctgfjyfyjgv | CF44 0JE | Test address                  | test town     | CF44 0JE           |
 
   Scenario Outline: Adding secondary address and primary address both of type: Visit us
     Given I will make sure to clear all entries of the primary address
