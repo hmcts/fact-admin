@@ -1,5 +1,5 @@
 export const config = {
-  TEST_URL: process.env.TEST_URL || 'http://localhost:3300',
+  TEST_URL: process.env.TEST_URL || 'https://fact-admin.aat.platform.hmcts.net/',
   TestHeadlessBrowser: true,
   TestSlowMo: 350,
   IDAM_HEALTH_URL: 'https://idam-api.aat.platform.hmcts.net/health',
