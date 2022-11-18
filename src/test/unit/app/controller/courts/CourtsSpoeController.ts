@@ -173,6 +173,33 @@ describe('CourtsSpoeController', () => {
     expect(mockApi.updateCourtSpoeAreasOfLaw).toBeCalledWith(testSlug, updatedCourtSpoeAreasOfLawData);
   });
 
+  test('Should not update court spoe if the api returns with a conflict error', async() => {
+    const req = mockRequest();
+    req.body = {
+      'courtSpoeAreasOfLaw': updatedCourtSpoeAreasOfLawData,
+      'allSpoeAreasOfLaw': getAllSpoeAreasOfLawData,
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'}
+    req.scope.cradle.api.updateCourtSpoeAreasOfLaw = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/spoeContent', {
+      allSpoeAreasOfLaw: getAllSpoeAreasOfLawData,
+      courtSpoeAreasOfLaw: updatedCourtSpoeAreasOfLawData,
+      slug: testSlug,
+      errorMsg: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      updated: false,
+      fatalError: false
+    });
+    expect(mockApi.updateCourtSpoeAreasOfLaw).toBeCalledWith(testSlug, updatedCourtSpoeAreasOfLawData);
+  });
+
   test('Should not update court spoeif CSRF token is invalid', async() => {
     const res = mockResponse();
     const req = mockRequest();

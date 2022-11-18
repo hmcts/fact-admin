@@ -15,14 +15,17 @@ describe('EditCourtController', () => {
   config.get = jest.fn();
   const mockApi = {
     getCourt: () => {},
-    getAllFlagValues: () => {}
+    getAllFlagValues: () => {},
+    getCourtLocks: () => {[]}
   };
 
   mockApi.getCourt = jest.fn();
   mockApi.getAllFlagValues = jest.fn();
+  mockApi.getCourtLocks = jest.fn();
 
   test('Should get court and render the edit court page as super admin', async () => {
     const req = mockRequest();
+    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
