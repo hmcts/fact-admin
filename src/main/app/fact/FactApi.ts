@@ -312,6 +312,10 @@ export class FactApi extends FactApiBase {
     return this.delete<CourtLock[], CourtLock[]>(`${this.adminBaseUrl}/${courtSlug}/lock/${userEmail}`);
   }
 
+  public deleteCourtLocksByEmail(userEmail: string): Promise<CourtLock[]> {
+    return this.delete<CourtLock[], CourtLock[]>(`${this.adminBaseUrl}/${userEmail}/lock`);
+  }
+
   public addCourtLock(slug: string, courtLock: CourtLock): Promise<CourtLock> {
     return this.post<CourtLock, CourtLock>(`${this.adminBaseUrl}/${slug}/lock`, courtLock);
   }

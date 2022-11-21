@@ -1,6 +1,7 @@
-import { mockRequest } from '../../../utils/mockRequest';
-import { mockResponse } from '../../../utils/mockResponse';
-import { CourtsController } from '../../../../../main/app/controller/courts/CourtsController';
+import {mockRequest} from '../../../utils/mockRequest';
+import {mockResponse} from '../../../utils/mockResponse';
+import {CourtsController} from '../../../../../main/app/controller/courts/CourtsController';
+import {CourtLock} from "../../../../../main/types/CourtLock";
 
 describe('CourtsController', () => {
   const controller = new CourtsController();
@@ -11,15 +12,18 @@ describe('CourtsController', () => {
         'slug': 'admiralty-and-commercial-court',
         'updated_at': '08 Jul 2022',
         'displayed': true
-      }]
+      }],
+    deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
 
   const mockApiWithoutCourts = {
-    getCourts: async (): Promise<object[]> => []
+    getCourts: async (): Promise<object[]> => [],
+    deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
 
   test('Should render the courts page', async () => {
     const req = mockRequest();
+    req.session['user']['jwt'] = {'sub': 'moshuser'};
     req.scope.cradle.api = mockApiWithCourts;
 
     const res = mockResponse();
@@ -35,6 +39,7 @@ describe('CourtsController', () => {
 
   test('Should display error message when api is down', async () => {
     const req = mockRequest();
+    req.session['user']['jwt'] = {'sub': 'moshuser'};
     req.scope.cradle.api = mockApiWithoutCourts;
 
     const res = mockResponse();

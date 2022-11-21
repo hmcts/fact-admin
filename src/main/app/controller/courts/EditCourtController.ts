@@ -40,12 +40,14 @@ export class EditCourtController {
           return res.render('courts/courts', {
             'courts': await req.scope.cradle.api.getCourts(),
             'errors': [{
-              text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}.
-          Please contact them to finish their changes, or try again later.`
+              text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}. ` +
+                'Please contact them to finish their changes, or try again later.'
             }]
           });
         }
       }
+      // If the user is the same, do nothing. Or continue once the delete and add has been applied if the
+      // condition of time is met
     }
     return await this.renderEditPage(req.scope.cradle.featureFlags, req, res);
   }

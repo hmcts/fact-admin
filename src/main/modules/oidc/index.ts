@@ -147,6 +147,7 @@ export class OidcMiddleware {
         if (req.url.includes('/oauth2/callback')) {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
+          await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
           return res.render('courts/courts', {courts});
         }
         return next();

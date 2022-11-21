@@ -14,6 +14,7 @@ export class CourtsController {
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const errors: Error[] = [];
     const courts = await req.scope.cradle.api.getCourts();
+    await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
     if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
     res.render('courts/courts', { courts, errors });
   }
