@@ -363,7 +363,7 @@ describe ( 'LocalAuthoritiesController', () => {
     const slug = 'southport-county-court';
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const req = mockRequest();
 
     req.body = {

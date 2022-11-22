@@ -349,7 +349,7 @@ describe ( 'CourtTypesController', () =>{
     const slug = 'another-county-court';
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const req = mockRequest();
 
     const types: string[]= [

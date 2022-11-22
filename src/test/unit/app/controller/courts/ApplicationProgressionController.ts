@@ -126,7 +126,7 @@ describe('ApplicationProgressionController', () => {
     const req = mockRequest();
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     req.params = {
       slug: 'royal-courts-of-justice'
     };

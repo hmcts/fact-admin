@@ -22,7 +22,7 @@ import {County} from '../../types/County';
 import {FactApiBase} from './FactApiBase';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
-import {CourtLock} from "../../types/CourtLock";
+import {CourtLock} from '../../types/CourtLock';
 
 
 export class FactApi extends FactApiBase {

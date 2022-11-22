@@ -7,7 +7,7 @@ import {EmailType} from '../../../types/EmailType';
 import {validateDuplication, validateEmailFormat} from '../../../utils/validation';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class EmailsController {
@@ -83,7 +83,7 @@ export class EmailsController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], emails)
+        this.get(req, res, false, [error], emails);
       });
   }
 

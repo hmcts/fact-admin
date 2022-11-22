@@ -1,7 +1,7 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {CourtsController} from '../../../../../main/app/controller/courts/CourtsController';
-import {CourtLock} from "../../../../../main/types/CourtLock";
+import {CourtLock} from '../../../../../main/types/CourtLock';
 
 describe('CourtsController', () => {
   const controller = new CourtsController();

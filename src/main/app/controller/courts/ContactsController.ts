@@ -5,7 +5,7 @@ import {SelectItem} from '../../../types/CourtPageData';
 import {Contact, ContactPageData} from '../../../types/Contact';
 import {ContactType} from '../../../types/ContactType';
 import {CSRF} from '../../../modules/csrf';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class ContactsController {
@@ -76,7 +76,7 @@ export class ContactsController {
           const error = reason.response?.status === 409
             ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
             : this.updateErrorMsg;
-          this.get(req, res, false, error, contacts) });
+          this.get(req, res, false, error, contacts); });
     }
   }
 

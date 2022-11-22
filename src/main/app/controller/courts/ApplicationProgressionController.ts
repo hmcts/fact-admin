@@ -6,7 +6,7 @@ import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {validateDuplication, validateStringEmailFormat, validateUrlFormat} from '../../../utils/validation';
 import {CourtGeneralInfo} from '../../../types/CourtGeneralInfo';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class ApplicationProgressionController {
@@ -88,7 +88,7 @@ export class ApplicationProgressionController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], applicationProgressions) });
+        this.get(req, res, false, [error], applicationProgressions); });
   }
 
   private addEmptyFormsForNewEntries(applicationProgressions: ApplicationProgression[], numberOfForms = 1):

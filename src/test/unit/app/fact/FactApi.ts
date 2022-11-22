@@ -2174,10 +2174,10 @@ describe('FactApi', () => {
   test('Should return results from deleteCourtLocks request', async () => {
     const results = {
       data: [{
-        "id": 1,
-        "lock_acquired": '2129-11-14 15:54:34.242539',
-        "user_email": "moshuser2",
-        "court_slug": "royal-courts-of-justice"
+        'id': 1,
+        'lock_acquired': '2129-11-14 15:54:34.242539',
+        'user_email': 'moshuser2',
+        'court_slug': 'royal-courts-of-justice'
       }]
     };
     const mockAxios = {delete: async () => results} as any;
@@ -2203,10 +2203,10 @@ describe('FactApi', () => {
   test('Should return results from deleteCourtLocksByEmail request', async () => {
     const results = {
       data: [{
-        "id": 1,
-        "lock_acquired": '2129-11-14 15:54:34.242539',
-        "user_email": "moshuser2",
-        "court_slug": "royal-courts-of-justice"
+        'id': 1,
+        'lock_acquired': '2129-11-14 15:54:34.242539',
+        'user_email': 'moshuser2',
+        'court_slug': 'royal-courts-of-justice'
       }]
     };
     const mockAxios = {delete: async () => results} as any;
@@ -2226,10 +2226,10 @@ describe('FactApi', () => {
     const spy = jest.spyOn(mockLogger, 'info');
     const api = new FactApi(mockAxios, mockLogger);
     await expect(api.addCourtLock('moshuser', {
-      "id": 1,
-      "lock_acquired": new Date(),
-      "user_email": "moshuser2",
-      "court_slug": "royal-courts-of-justice"
+      'id': 1,
+      'lock_acquired': new Date(),
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
     })).rejects.toBe(mockError);
     await expect(spy).toBeCalled();
   });
@@ -2237,10 +2237,10 @@ describe('FactApi', () => {
   test('Should return results from addCourtLock request', async () => {
     const results = {
       data: [{
-        "id": 1,
-        "lock_acquired": new Date(),
-        "user_email": "moshuser2",
-        "court_slug": "royal-courts-of-justice"
+        'id': 1,
+        'lock_acquired': new Date(),
+        'user_email': 'moshuser2',
+        'court_slug': 'royal-courts-of-justice'
       }]
     };
     const mockAxios = {post: async () => results} as any;
@@ -2266,10 +2266,10 @@ describe('FactApi', () => {
   test('Should return results from getCourtLocks request', async () => {
     const results = {
       data: [{
-        "id": 1,
-        "lock_acquired": new Date(),
-        "user_email": "moshuser2",
-        "court_slug": "royal-courts-of-justice"
+        'id': 1,
+        'lock_acquired': new Date(),
+        'user_email': 'moshuser2',
+        'court_slug': 'royal-courts-of-justice'
       }]
     };
     const mockAxios = {get: async () => results} as any;

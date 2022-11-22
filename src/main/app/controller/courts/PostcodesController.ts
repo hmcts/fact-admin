@@ -174,7 +174,7 @@ export class PostcodesController {
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.deleteErrorMsg + postcodesToDelete;
         await this.get(req, res, '', existingPostcodes,
-          error, areasOfLaw, courtTypes) });
+          error, areasOfLaw, courtTypes); });
   }
 
   public async put(

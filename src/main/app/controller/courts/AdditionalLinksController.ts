@@ -5,7 +5,7 @@ import {validateDuplication, validateNameDuplication, validateUrlFormat} from '.
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class AdditionalLinksController {
@@ -75,7 +75,7 @@ export class AdditionalLinksController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateAdditionalLinksErrorMsg;
-        this.get(req, res, false, [error], links) });
+        this.get(req, res, false, [error], links); });
   }
 
   private addEmptyFormsForNewEntries(links: AdditionalLink[], numberOfForms = 1): void {

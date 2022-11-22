@@ -184,7 +184,7 @@ describe('CourtsSpoeController', () => {
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     req.scope.cradle.api.updateCourtSpoeAreasOfLaw = jest.fn().mockRejectedValue(res);
 
     await controller.put(req, res);

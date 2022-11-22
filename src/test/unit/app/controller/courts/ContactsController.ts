@@ -248,7 +248,7 @@ describe('ContactsController', () => {
     const req = mockRequest();
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const postedContacts: Contact[] = [
       { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
       { 'type_id': 44, number: '0202 303 4040', fax: true, explanation: 'explanation3', 'explanation_cy': 'expl3 welsh', isNew: true }

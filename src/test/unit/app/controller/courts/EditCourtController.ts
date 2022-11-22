@@ -103,10 +103,10 @@ describe('EditCourtController', () => {
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
-      "id": 1,
-      "lock_acquired": '2022-11-14 15:54:34.242539',
-      "user_email": "moshuser",
-      "court_slug": "royal-courts-of-justice"
+      'id': 1,
+      'lock_acquired': '2022-11-14 15:54:34.242539',
+      'user_email': 'moshuser',
+      'court_slug': 'royal-courts-of-justice'
     }]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
     when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
@@ -154,10 +154,10 @@ describe('EditCourtController', () => {
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
-      "id": 1,
-      "lock_acquired": '2129-11-14 15:54:34.242539',
-      "user_email": "moshuser2",
-      "court_slug": "royal-courts-of-justice"
+      'id': 1,
+      'lock_acquired': '2129-11-14 15:54:34.242539',
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
     }]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
     when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
@@ -173,7 +173,7 @@ describe('EditCourtController', () => {
     await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
-    'errors': [{'text': 'royal-courts-of-justice is currently in use by moshuser2. '
+      'errors': [{'text': 'royal-courts-of-justice is currently in use by moshuser2. '
         + 'Please contact them to finish their changes, or try again later.'}]});
   });
 
@@ -201,10 +201,10 @@ describe('EditCourtController', () => {
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
-      "id": 1,
-      "lock_acquired": '2000-11-14 15:54:34.242539',
-      "user_email": "moshuser2",
-      "court_slug": "royal-courts-of-justice"
+      'id': 1,
+      'lock_acquired': '2000-11-14 15:54:34.242539',
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
     }]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
     when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);

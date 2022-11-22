@@ -330,7 +330,7 @@ describe('EmailsController', () => {
     const postedEmails: Email[] = [];
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
 
     req.params = { slug: 'plymouth-combined-court' };
     req.body = {

@@ -6,7 +6,7 @@ import {CSRF} from '../../../modules/csrf';
 import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 import {DxCode} from '../../../types/DxCode';
 import {validateDuplication} from '../../../utils/validation';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 export enum courtType {
   magistrate = "Magistrates' Court",
@@ -103,7 +103,7 @@ export class CourtTypesController {
             const error = reason.response?.status === 409
               ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
               : this.updateErrorMsg;
-            this.get(req, res, false, error, courtTypesAndCodes)
+            this.get(req, res, false, error, courtTypesAndCodes);
           });
       }
     }

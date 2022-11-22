@@ -6,7 +6,7 @@ import {Facility, FacilityPageData, FacilityType} from '../../../types/Facility'
 import {SelectItem} from '../../../types/CourtPageData';
 import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class CourtFacilitiesController {
@@ -97,7 +97,7 @@ export class CourtFacilitiesController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], courtFacilities)
+        this.get(req, res, false, [error], courtFacilities);
       });
   }
 

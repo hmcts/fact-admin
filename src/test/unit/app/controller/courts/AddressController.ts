@@ -1036,7 +1036,7 @@ describe('AddressesController', () => {
 
     const errorResponse = mockResponse();
     errorResponse.response.status = 409;
-    errorResponse.response.data = {'message': 'test'}
+    errorResponse.response.data = {'message': 'test'};
     req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
 
     await controller.put(req, res);

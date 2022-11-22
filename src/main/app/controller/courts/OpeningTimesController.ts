@@ -7,7 +7,7 @@ import {OpeningType} from '../../../types/OpeningType';
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {validateDuplication} from '../../../utils/validation';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class OpeningTimesController {
@@ -99,7 +99,7 @@ export class OpeningTimesController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], openingTimes)
+        this.get(req, res, false, [error], openingTimes);
       });
   }
 

@@ -181,7 +181,7 @@ describe('CasesHeardController', () => {
   test('Should not update cases heard if the api returns with a conflict error', async() => {
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const req = mockRequest();
     req.body = {
       'courtAreasOfLaw': updatedCourtAreasOfLawData,

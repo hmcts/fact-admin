@@ -294,7 +294,7 @@ describe('PostcodeController', () => {
   test('Should not add postcodes if the api returns with a conflict error', async() => {
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const req = mockRequest();
     req.body = {
       'existingPostcodes': getPostcodeInput,
@@ -533,7 +533,7 @@ describe('PostcodeController', () => {
   test('Should not delete postcodes if the api returns with a conflict error', async() => {
     const res = mockResponse();
     res.response.status = 409;
-    res.response.data = {'message': 'test'}
+    res.response.data = {'message': 'test'};
     const req = mockRequest();
     req.body = {
       'existingPostcodes': getPostcodeInput,

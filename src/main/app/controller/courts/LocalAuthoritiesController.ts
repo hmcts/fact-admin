@@ -13,7 +13,7 @@ import {CSRF} from '../../../modules/csrf';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
 import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 import {CourtType} from '../../../types/CourtType';
-import {AxiosError} from "axios";
+import {AxiosError} from 'axios';
 
 @autobind
 export class LocalAuthoritiesController {
@@ -128,7 +128,7 @@ export class LocalAuthoritiesController {
           const error = reason.response?.status === 409
             ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
             : this.updateErrorMsg;
-          await this.getLocalAuthorities(req, res, false, error, localAuthorities) }));
+          await this.getLocalAuthorities(req, res, false, error, localAuthorities); }));
     }
 
   }
