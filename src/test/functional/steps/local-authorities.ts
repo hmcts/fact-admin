@@ -19,9 +19,12 @@ When('I will make sure Family court type is selected', async () => {
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
     await I.click(selector);
+    await I.fillField('#familyCourtCode', '123');
+  }
+  if (await I.isElementVisible('#familyCourtCode-error', 5000)) {
+    await I.fillField('#familyCourtCode', '123');
   }
 });
-
 
 When('I click the local authorities tab', async () => {
   const selector = '#tab_local-authorities';
@@ -87,6 +90,7 @@ When('I will make sure Family court type is not selected', async () => {
   const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
   if (!elementTribunalCourtChecked) {
     await I.click(selectorTribunalCourt);
+    await I.fillField('#locationCourtCode', '123');
   }
 
 });

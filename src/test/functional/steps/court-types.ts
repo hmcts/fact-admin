@@ -26,6 +26,13 @@ When('I check a court type', async () => {
   await I.click(selector);
 });
 
+When('I enter the code {string}', async (code: string) => {
+  const selector = '#locationCourtCode';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.fillField(selector, code);
+});
+
 Then('I click on save court type', async () => {
   await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
 });
@@ -63,6 +70,7 @@ Then('I will make sure that one of the court type is selected', async () => {
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
     await I.click(selector);
+    await I.fillField('#familyCourtCode', '123');
   }
 });
 

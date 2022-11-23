@@ -14,6 +14,7 @@ Feature: Court Types
 
   Scenario: Select and remove a court type
     When I check a court type
+    When I enter the code "123"
     And I click on save court type
     Then a green update message is displayed showing Court Types updated
     When I uncheck a court type
