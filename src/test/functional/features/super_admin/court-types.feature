@@ -13,8 +13,9 @@ Feature: Court Types
     When I click the types tab
 
   Scenario: Select and remove a court type
+    When I check code errors
     When I check a court type
-    When I enter the code "123"
+    When I enter the code "111"
     And I click on save court type
     Then a green update message is displayed showing Court Types updated
     When I uncheck a court type
@@ -27,12 +28,14 @@ Feature: Court Types
     Then a court types error message is displayed
 
   Scenario: Adding and deleting GBS Code
+    When I check code errors
     Then I will make sure that one of the court type is selected
     Then I will clear the existing gbs code and enter new the one "Test Gbs Code"
     Then I click on save court type
     Then a green update message is displayed showing Court Types updated
 
   Scenario: Adding and removing DX Codes
+    When I check code errors
     When I remove all existing DX Codes entries and save
     Then a green update message is displayed showing Court Types updated
     Then I click add new Dx Code button
@@ -41,6 +44,7 @@ Feature: Court Types
     Then a green update message is displayed showing Court Types updated
 
   Scenario: Prevent duplicated entries being added for Dx Code
+    When I check code errors
     When I remove all existing DX Codes entries and save
     Then a green update message is displayed showing Court Types updated
     When I enter a new DX Code "Test123" explanation "test" and explanation Cy "test"

@@ -62,6 +62,19 @@ When('I check a court type which has code associated with it', async () => {
   await I.click(selector);
 });
 
+When('I check code errors', async () => {
+  if (await I.isElementVisible('#magistratesCourtCode-error', 3000))
+    await I.fillField('#magistratesCourtCode', '123');
+  if (await I.isElementVisible('#familyCourtCode-error', 3000))
+    await I.fillField('#familyCourtCode', '123');
+  if (await I.isElementVisible('#locationCourtCode-error', 3000))
+    await I.fillField('#locationCourtCode', '123');
+  if (await I.isElementVisible('#countyCourtCode-error', 3000))
+    await I.fillField('#countyCourtCode', '123');
+  if (await I.isElementVisible('#crownCourtCode-error', 3000))
+    await I.fillField('#crownCourtCode', '123');
+});
+
 Then('I will make sure that one of the court type is selected', async () => {
   const selector = '#court_types-2';
   const elementExist = await I.checkElement(selector);
