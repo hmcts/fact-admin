@@ -29,15 +29,13 @@ When('I will make sure Family court type is selected', async () => {
 Then('I make sure there is no area of law selected', async () => {
 
   const courtHtmlElement: [string] = await I.getTextFromSelector('#casesHearCheckboxes > div > div > div > div > input');
-  //const courtHtmlElement: [string] = await I.getIdFromSelector('#casesHearCheckboxes > div > div > div > div > input');
-  console.log(('........length..........' + courtHtmlElement.length));
   expect(courtHtmlElement.length > 0).equal(true);
 
   for (let i = 0; i < courtHtmlElement.length; ++i) {
-    // @ts-ignore
-    console.log('........selector..........' + courtHtmlElement[i]);
-    // if (await I.isElementChecked(courtHtmlElement[i]))
-    //   await I.click(courtHtmlElement[i]);
+    const selectorIdName = courtHtmlElement[i].toLowerCase().replace(/ /g, '-');
+    if (await I.isElementChecked('#' + selectorIdName)) {
+      await I.click('#' + selectorIdName);
+    }
   }
 });
 
