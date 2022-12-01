@@ -89,12 +89,23 @@ Then('An error is displayed for local authorities with title {string} and summer
 
 When('I will make sure Family court type is not selected', async () => {
   const selectorFamilyCourt = '#court_types-2';
+  const selectorTribunalCourt = '#court_types-3';
+
   const elementFamilyCourtExist = await I.checkElement(selectorFamilyCourt);
   expect(elementFamilyCourtExist).equal(true);
+  const elementTribunalCourtExist = await I.checkElement(selectorTribunalCourt);
+  expect(elementTribunalCourtExist).equal(true);
+
   const elementFamilyCourtChecked = await I.isElementChecked(selectorFamilyCourt);
   if (elementFamilyCourtChecked) {
     await I.click(selectorFamilyCourt);
   }
+  const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
+  if (!elementTribunalCourtChecked) {
+    await I.click(selectorTribunalCourt);
+    await I.fillField('#locationCourtCode', '123');
+  }
+
 });
 
 Then('The local authorities tab should be disabled', async () => {

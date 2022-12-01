@@ -91,14 +91,6 @@ export const getTextFromSelector = async (el: string) => {
   }
 };
 
-export const getIdFromSelector = async (el: string) => {
-  try {
-    return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.getProperty('name')).jsonValue());
-  } catch (error) {
-    return [];
-  }
-};
-
 export const getHtmlFromElements = async (el: string) => {
   try {
     return await scope.page.$$eval(el, (elements: any) => elements.map((e: any) => e.innerHTML));
