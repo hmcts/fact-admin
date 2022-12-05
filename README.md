@@ -2,7 +2,7 @@
 
 FACT administration interface.
 
-## Getting Started
+## Getting Started.
 
 ### Prerequisites
 
