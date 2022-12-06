@@ -11,6 +11,8 @@ export enum courtType {
   magistrate = "Magistrates' Court",
   county = 'County Court',
   crown = 'Crown Court',
+  family = 'Family Court',
+  tribunal = 'Tribunal'
 }
 
 @autobind
@@ -78,10 +80,12 @@ export class CourtTypesController {
 
       courtTypesAndCodes.types = this.mapBodyToCourtType(req);
 
-      if(courtTypesAndCodes.types.find( c => (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )){
-
+      if(courtTypesAndCodes.types.find(c =>
+        (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.family && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.tribunal && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )) {
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtTypesAndCodes);
       }
 
@@ -120,6 +124,8 @@ export class CourtTypesController {
           magistrate: ct.name === courtType.magistrate ? true: false,
           county: ct.name === courtType.county ? true: false,
           crown: ct.name === courtType.crown? true: false,
+          family: ct.name === courtType.family? true: false,
+          tribunal: ct.name === courtType.tribunal? true: false,
           checked: this.isChecked(ct, courtCourtTypes),
           code: this.getCode(ct.id, courtCourtTypes)
         }));
@@ -138,7 +144,14 @@ export class CourtTypesController {
       {
         id: ct.id,
         name:ct.name,
-        code: this.setCode(ct.name, req.body.magistratesCourtCode, req.body.countyCourtCode, req.body.crownCourtCode),
+        code: this.setCode(
+          ct.name,
+          req.body.magistratesCourtCode,
+          req.body.familyCourtCode,
+          req.body.locationCourtCode,
+          req.body.countyCourtCode,
+          req.body.crownCourtCode
+        ),
       }));
 
     return courtTypeItems;
@@ -156,11 +169,24 @@ export class CourtTypesController {
 
   }
 
-  private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
+  private setCode(
+    name: string,
+    magistratesCourtCode: string,
+    familyCourtCode: string,
+    locationCourtCode: string,
+    countyCourtCode: string,
+    crownCourtCode: string
+  ){
 
     switch (name) {
       case courtType.magistrate:
         return this.ValidateCode(magistratesCourtCode);
+
+      case courtType.family:
+        return this.ValidateCode(familyCourtCode);
+
+      case courtType.tribunal:
+        return this.ValidateCode(locationCourtCode);
 
       case courtType.county:
         return this.ValidateCode(countyCourtCode);
