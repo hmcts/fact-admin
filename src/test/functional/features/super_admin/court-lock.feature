@@ -3,6 +3,7 @@ Feature: Court lock
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
 
   Scenario: Court lock error should display if two users are trying to edit same court at the same time
