@@ -70,7 +70,7 @@ When('I can see the expected audits', async () => {
   const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(2)';
   expect(await I.checkElement(selectorAction)).equal(true);
   const actionName = await I.getElement(selectorAction);
-  expect(await I.getElementText(actionName)).equal('Update court opening times');
+  expect(await I.getElementText(actionName)).equal('Update court lock');
 
   const selectorLocation = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(3)';
   expect(await I.checkElement(selectorLocation)).equal(true);
