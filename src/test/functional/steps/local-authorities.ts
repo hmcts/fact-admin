@@ -19,9 +19,25 @@ When('I will make sure Family court type is selected', async () => {
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
     await I.click(selector);
+    await I.fillField('#familyCourtCode', '123');
+  }
+  if (await I.isElementVisible('#familyCourtCode-error', 5000)) {
+    await I.fillField('#familyCourtCode', '123');
   }
 });
 
+Then('I make sure there is no area of law selected', async () => {
+
+  const courtHtmlElement: [string] = await I.getTextFromSelector('#casesHearCheckboxes > div > div > div > div > input');
+  expect(courtHtmlElement.length > 0).equal(true);
+
+  for (let i = 0; i < courtHtmlElement.length; ++i) {
+    const selectorIdName = courtHtmlElement[i].toLowerCase().replace(/ /g, '-');
+    if (await I.isElementChecked('#' + selectorIdName)) {
+      await I.click('#' + selectorIdName);
+    }
+  }
+});
 
 When('I click the local authorities tab', async () => {
   const selector = '#tab_local-authorities';
@@ -87,6 +103,7 @@ When('I will make sure Family court type is not selected', async () => {
   const elementTribunalCourtChecked = await I.isElementChecked(selectorTribunalCourt);
   if (!elementTribunalCourtChecked) {
     await I.click(selectorTribunalCourt);
+    await I.fillField('#locationCourtCode', '123');
   }
 
 });
@@ -97,11 +114,3 @@ Then('The local authorities tab should be disabled', async () => {
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
-
-
-
-
-
-
-
-

@@ -21,6 +21,8 @@ export interface CourtTypeItem {
   magistrate: boolean,
   county: boolean,
   crown: boolean,
+  family: boolean,
+  tribunal: boolean,
   checked: boolean,
   code: number
 }
