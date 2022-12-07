@@ -4,6 +4,7 @@ const scope = require('../support/scope');
 
 export const newPage = async () => {
   scope.page = await scope.browser.newPage();
+  await scope.page.setDefaultNavigationTimeout(60000);
 };
 
 export const reloadPage = async () => {
