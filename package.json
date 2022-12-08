@@ -147,6 +147,8 @@
     "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1",
     "awilix/fast-glob/glob-parent": ">=6.0.1",
     "express-nunjucks/nunjucks-async-loader/chokidar/glob-parent": ">=6.0.1",
-    "babel-loader/loader-utils": ">=2.0.4"
+    "babel-loader/loader-utils": ">=2.0.4",
+    "@hmcts/info-provider/express": ">=4.17.3",
+    "qs": ">=6.5.3"
   }
 }
