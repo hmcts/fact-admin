@@ -13,7 +13,7 @@ Feature: Court lock
     When I click edit next to court with "evesham-county-court"
     When I click the Logout link
     Then the system will log me out
-    When I fill in the Username and Password fields with my authenticated credentials
+    When I fill in the Username and Password fields with my viewer authenticated credentials
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "evesham-county-court"
