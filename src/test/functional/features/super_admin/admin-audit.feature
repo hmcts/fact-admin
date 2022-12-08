@@ -1,5 +1,5 @@
 #Audit tests requires opening hours tab on to run
-@fact-admin-tab-opening-hours @skipped
+@fact-admin-tab-opening-hours
 Feature: courts audits
 
   Background:
