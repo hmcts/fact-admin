@@ -4,6 +4,7 @@ Feature: General Info
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
 
   Scenario: Cant leave the name blank
@@ -28,7 +29,7 @@ Feature: General Info
     When I click the general tab
     Then I enter "Amersham Law Courts" in the Name textbox
     And I click the general info save button
-    Then The error message displays for general info "All names must be unique. Court already exists with name: Amersham Law Courts"
+    Then The error message displays for general info "All names must be unique. Please check that a user is currently not editing this court, and that a court does not already exists with name: Amersham Law Courts"
 
   Scenario: Adding intro paragraph welsh and English
     When I fill in the Username and Password fields with my super user authenticated credentials

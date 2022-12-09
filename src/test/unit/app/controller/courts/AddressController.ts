@@ -1022,6 +1022,32 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
+  test('Put should handle conflict error response from API', async () => {
+    const slug = 'central-london-county-court';
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      third: addresses.third,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+    req.params = {slug: slug};
+
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    errorResponse.response.data = {'message': 'test'};
+    req.scope.cradle.api.updateCourtAddresses = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedError = [{text: controller.courtLockedExceptionMsg + 'test'}];
+    const expectedResults: CourtAddressPageData =
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+        expectedError, false, false, false, false));
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
   test('Should not post court addresses if CSRF token is invalid', async () => {
     const addresses = getValidDisplayAddresses();
 

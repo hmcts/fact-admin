@@ -264,6 +264,29 @@ describe('GeneralInfoController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
   });
 
+  test('Should handle conflict lock errors when posting court general info to API', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + 'court name',
+      updated: false,
+      nameFieldError: 'Duplicated name',
+      fatalError: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
   test('Should not put court general info if name has invalid characters', async () => {
     const res = mockResponse();
     const req = mockRequest();

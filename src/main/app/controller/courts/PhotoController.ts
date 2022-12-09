@@ -16,6 +16,7 @@ export class PhotoController {
   deleteCourtPhotoErrorMsg = 'A problem occurred when deleting the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -50,7 +51,10 @@ export class PhotoController {
         await this.render(req, res, [], true, null, imageFileName);
       })
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtPhotoErrorMsg;
+        await this.render(req, res, [error], false);
       });
   }
 
@@ -68,7 +72,10 @@ export class PhotoController {
         await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.deleteCourtPhotoErrorMsg], false);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.deleteCourtPhotoErrorMsg;
+        await this.render(req, res, [error], false);
       });
   }
 

@@ -6,6 +6,7 @@ import {Facility, FacilityPageData, FacilityType} from '../../../types/Facility'
 import {SelectItem} from '../../../types/CourtPageData';
 import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
+import {AxiosError} from 'axios';
 
 @autobind
 export class CourtFacilitiesController {
@@ -15,6 +16,7 @@ export class CourtFacilitiesController {
   getFacilityTypesErrorMsg = 'A problem occurred when retrieving the list of facility types.';
   getCourtFacilitiesErrorMsg = 'A problem occurred when retrieving the court facilities.';
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -91,7 +93,12 @@ export class CourtFacilitiesController {
 
     await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
       .then((value: Facility[]) => this.get(req, res, true, [], value))
-      .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        this.get(req, res, false, [error], courtFacilities);
+      });
   }
 
   public async addRow(req: AuthedRequest, res: Response): Promise<void> {

@@ -39,10 +39,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: 'date from',
-      dateTo: 'date to'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: 'date from',
+      searchDateTo: 'date to'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -90,10 +90,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: '<script>location</script>',
-      email: '<script>email</script>',
-      dateFrom: '<script>3/1/2001, 12:00:00 AM</script>',
-      dateTo: '<script>2/1/2001, 12:00:00 AM</script>'
+      searchLocation: '<script>location</script>',
+      searchUser: '<script>email</script>',
+      searchDateFrom: '<script>3/1/2001, 12:00:00 AM</script>',
+      searchDateTo: '<script>2/1/2001, 12:00:00 AM</script>'
     };
     req.scope.cradle.api = {
       getAudits: async (): Promise<Audit[]> => [],
@@ -122,10 +122,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: '3/1/2001, 12:00:00 AM',
-      dateTo: '2/1/2001, 12:00:00 AM'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '3/1/2001, 12:00:00 AM',
+      searchDateTo: '2/1/2001, 12:00:00 AM'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -151,10 +151,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: '',
-      dateTo: 'date to'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '',
+      searchDateTo: 'date to'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -224,10 +224,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: '',
-      dateTo: 'date to'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '',
+      searchDateTo: 'date to'
     };
     req.scope.cradle.api = mockApi;
 

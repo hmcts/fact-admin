@@ -13,6 +13,7 @@ import {CSRF} from '../../../modules/csrf';
 import {familyAreaOfLaw} from '../../../enums/familyAreaOfLaw';
 import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 import {CourtType} from '../../../types/CourtType';
+import {AxiosError} from 'axios';
 
 @autobind
 export class LocalAuthoritiesController {
@@ -23,6 +24,7 @@ export class LocalAuthoritiesController {
   getCourtLocalAuthoritiesErrorMsg = 'A problem occurred when retrieving the court local authorities. ';
   updateErrorMsg = 'A problem occurred when saving the local authorities. ';
   familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law ';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async getAreasOfLaw(
     req: AuthedRequest,
@@ -122,7 +124,11 @@ export class LocalAuthoritiesController {
     } else {
       await req.scope.cradle.api.updateCourtLocalAuthoritiesByAreaOfLaw(req.params.slug, req.params.areaOfLaw, localAuthorities)
         .then((value: LocalAuthority[]) => this.getLocalAuthorities(req, res, true, '', value))
-        .catch(() => this.getLocalAuthorities(req, res, false, this.updateErrorMsg, localAuthorities));
+        .catch((async (reason: AxiosError) => {
+          const error = reason.response?.status === 409
+            ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+            : this.updateErrorMsg;
+          await this.getLocalAuthorities(req, res, false, error, localAuthorities); }));
     }
 
   }

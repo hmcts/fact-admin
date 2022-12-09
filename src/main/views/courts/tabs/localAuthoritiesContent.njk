@@ -6,90 +6,99 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 <h2 class="govuk-heading-l">Local Authorities</h2>
 
-{% if errorMsg != '' %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: [
-      {
-        text: errorMsg
-      }
-    ]
+
+{% if isViewer and (courtAreasOfLaw | length) == 0 %}
+  {{ govukWarningText({
+    text: "There are currently no local authorities assigned to this court. Please note that relevant areas of law
+    will also need to enabled before these can be added by an administrator.",
+    iconFallbackText: "Warning"
   }) }}
-{% endif %}
+{% else %}
 
-{% set selectError = false %}
-{% if errorMsg === 'Please select a area of law.' %}
-{% set selectError = true %}
-{% endif %}
-
-<input type="hidden" name="enabled" id='enabled' value="{{ isEnabled }}">
-
-{% if updated === true %}
-  {{ govukPanel({
-    titleText: "Local authorities updated"
-  }) }}
-{% endif %}
-
-{% if (courtAreasOfLaw | length) > 0 %}
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      {% if isViewer %}
-        {{ govukDetails({
-          summaryText: "Help with local authorities",
-          html: "Please note that fact viewers will be unable to change the list below, if changes are required, please
-                contact a fact administrator"})
-        }}
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="govuk-grid-row" >
-    <div class="govuk-grid-column-one-quarter">
-      {{ govukSelect({
-          id: "courtAreasOfLaw",
-         name: "courtAreasOfLaw",
-         label: {
-               text: "Select a area of law"
-             },
-        items: courtAreasOfLaw ,
-      errorMessage: selectError
-      }) }}
-    </div>
-  </div>
-{% endif %}
-{% if ((localAuthoritiesItems | length) > 0) and selectedAreaOfLaw != '' %}
-
-  <div id="localAuthoritiesList" class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
-
-    {%- for items in localAuthoritiesItems | slice(2) %}
-
-      <div class="govuk-grid-column-one-half">
-          {{ govukCheckboxes({
-            idPrefix: "local-authorities",
-            name: "localAuthoritiesItems",
-            classes: "govuk-checkboxes--small",
-            items: items
-          }) }}
-      </div>
-
-    {%- endfor %}
-
-  </div>
-
-  {% if not isViewer %}
-    <hr/>
-
-    {{ govukButton({
-      text: "Save",
-      name: "saveLocalAuthorities",
-      disabled: fatalError
+  {% if errorMsg != '' %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        {
+          text: errorMsg
+        }
+      ]
     }) }}
   {% endif %}
 
+  {% set selectError = false %}
+  {% if errorMsg === 'Please select a area of law.' %}
+  {% set selectError = true %}
+  {% endif %}
+
+  <input type="hidden" name="enabled" id='enabled' value="{{ isEnabled }}">
+
+  {% if updated === true %}
+    {{ govukPanel({
+      titleText: "Local authorities updated"
+    }) }}
+  {% endif %}
+
+  {% if (courtAreasOfLaw | length) > 0 %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {% if isViewer %}
+          {{ govukDetails({
+            summaryText: "Help with local authorities",
+            html: "Please note that fact viewers will be unable to change the list below, if changes are required, please
+                  contact a fact administrator"})
+          }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="govuk-grid-row" >
+      <div class="govuk-grid-column-one-quarter">
+        {{ govukSelect({
+            id: "courtAreasOfLaw",
+           name: "courtAreasOfLaw",
+           label: {
+                 text: "Select a area of law"
+               },
+          items: courtAreasOfLaw ,
+        errorMessage: selectError
+        }) }}
+      </div>
+    </div>
+  {% endif %}
+  {% if ((localAuthoritiesItems | length) > 0) and selectedAreaOfLaw != '' %}
+
+    <div id="localAuthoritiesList" class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
+
+      {%- for items in localAuthoritiesItems | slice(2) %}
+
+        <div class="govuk-grid-column-one-half">
+            {{ govukCheckboxes({
+              idPrefix: "local-authorities",
+              name: "localAuthoritiesItems",
+              classes: "govuk-checkboxes--small",
+              items: items
+            }) }}
+        </div>
+
+      {%- endfor %}
+
+    </div>
+
+    {% if not isViewer %}
+      <hr/>
+
+      {{ govukButton({
+        text: "Save",
+        name: "saveLocalAuthorities",
+        disabled: fatalError
+      }) }}
+    {% endif %}
+
+  {% endif %}
 {% endif %}
-
-

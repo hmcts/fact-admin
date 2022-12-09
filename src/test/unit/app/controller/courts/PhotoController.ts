@@ -208,6 +208,36 @@ describe('PhotoController', () => {
     });
   });
 
+  test('Should not update court image if api returns a conflict error', async() => {
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    const req = mockRequest();
+
+    req.body = {
+      'name': updateCourtImageData,
+      'fileType': 'image/jpeg',
+      'oldCourtPhoto': getCourtImageData,
+      'csrfToken': CSRF.create()
+    };
+    req.file = imageFile;
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtImage = jest.fn().mockRejectedValue(res);
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A conflict error has occurred: test'}],
+      updated: false,
+      uploadError: null
+    });
+  });
+
   test('Should not update court image if CSRF token is invalid', async() => {
     const res = mockResponse();
     const req = mockRequest();
@@ -321,6 +351,31 @@ describe('PhotoController', () => {
       courtPhotoFileURL: courtImageURLData,
       slug: testSlug,
       errorMsg: [{text: 'A problem occurred when deleting the court photo. '}],
+      updated: false,
+      uploadError: null
+    });
+  });
+
+  test('Should not delete court photo if api returns a conflict error', async() => {
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    const req = mockRequest();
+    req.body = {
+      'oldCourtPhoto': getCourtImageData,
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtImage = jest.fn().mockRejectedValue(res);
+    req.scope.cradle.azure = mockAzureBlobStorage;
+
+    await controller.delete(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/photoContent', {
+      courtPhotoFileName: getCourtImageData,
+      courtPhotoFileURL: courtImageURLData,
+      slug: testSlug,
+      errorMsg: [{text: 'A conflict error has occurred: test'}],
       updated: false,
       uploadError: null
     });

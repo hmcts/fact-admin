@@ -6,6 +6,7 @@ import {Error} from '../../../types/Error';
 import {CSRF} from '../../../modules/csrf';
 import {validateDuplication, validateStringEmailFormat, validateUrlFormat} from '../../../utils/validation';
 import {CourtGeneralInfo} from '../../../types/CourtGeneralInfo';
+import {AxiosError} from 'axios';
 
 @autobind
 export class ApplicationProgressionController {
@@ -19,6 +20,7 @@ export class ApplicationProgressionController {
   invalidEmailFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   doubleInputErrorMsg = 'Enter either an email address or an external link per application progression';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -82,7 +84,11 @@ export class ApplicationProgressionController {
 
     await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
       .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateErrorMsg], applicationProgressions));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        this.get(req, res, false, [error], applicationProgressions); });
   }
 
   private addEmptyFormsForNewEntries(applicationProgressions: ApplicationProgression[], numberOfForms = 1):

@@ -5,6 +5,7 @@ import {validateDuplication, validateNameDuplication, validateUrlFormat} from '.
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink';
+import {AxiosError} from 'axios';
 
 @autobind
 export class AdditionalLinksController {
@@ -15,6 +16,7 @@ export class AdditionalLinksController {
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -69,7 +71,11 @@ export class AdditionalLinksController {
 
     await req.scope.cradle.api.updateCourtAdditionalLinks(req.params.slug, links)
       .then((value: AdditionalLink[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateAdditionalLinksErrorMsg], links));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateAdditionalLinksErrorMsg;
+        this.get(req, res, false, [error], links); });
   }
 
   private addEmptyFormsForNewEntries(links: AdditionalLink[], numberOfForms = 1): void {

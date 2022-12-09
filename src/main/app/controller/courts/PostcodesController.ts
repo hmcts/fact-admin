@@ -13,7 +13,6 @@ import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 export class PostcodesController {
 
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
-  getCourtAreasErrorMsg = 'A problem occurred when retrieving the court areas of law.';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
   familyAreaOfLawErrorMsg = 'You need to enable relevant county court areas of law: Housing, Money Claims, or Bankruptcy';
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
@@ -21,13 +20,16 @@ export class PostcodesController {
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
-  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved): ';
+  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode ' +
     '(your changes have not been saved): ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.';
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved): ';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.';
   noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -137,12 +139,8 @@ export class PostcodesController {
         // conflict, postcode(s) already exists on the database
         await this.get(req, res, newPostcodes, existingPostcodes,
           reason.response?.status === 409
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            ? this.duplicatePostcodeMsg + reason.response?.data.message
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            : this.addErrorMsg + reason.response?.data.message, areasOfLaw, courtTypes, true);
+            ? this.duplicatePostcodeMsg + (<any>reason.response).data['message']
+            : this.addErrorMsg + (<any>reason.response).data['message'], areasOfLaw, courtTypes, true);
       });
   }
 
@@ -171,9 +169,12 @@ export class PostcodesController {
           existingPostcodes.filter( ( postcode ) => !postcodesToDelete.includes( postcode ) );
         await this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
       })
-      .catch(async () =>
+      .catch(async (reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.deleteErrorMsg + postcodesToDelete;
         await this.get(req, res, '', existingPostcodes,
-          this.deleteErrorMsg + postcodesToDelete, areasOfLaw, courtTypes));
+          error, areasOfLaw, courtTypes); });
   }
 
   public async put(

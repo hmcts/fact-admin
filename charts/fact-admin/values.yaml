@@ -5,6 +5,7 @@ nodejs:
     fact:
       resourceGroup: fact
       secrets:
+        - user-lock-timeout
         - oauth-client-secret
         - redis-access-key
         - AppInsightsInstrumentationKey

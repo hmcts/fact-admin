@@ -5,6 +5,7 @@ import {SelectItem} from '../../../types/CourtPageData';
 import {Contact, ContactPageData} from '../../../types/Contact';
 import {ContactType} from '../../../types/ContactType';
 import {CSRF} from '../../../modules/csrf';
+import {AxiosError} from 'axios';
 
 @autobind
 export class ContactsController {
@@ -13,6 +14,7 @@ export class ContactsController {
   updateErrorMsg = 'A problem occurred when saving the phone numbers.';
   getContactsErrorMsg = 'A problem occurred when retrieving the phone numbers.';
   getContactTypesErrorMsg = 'A problem occurred when retrieving the phone number types.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -70,7 +72,11 @@ export class ContactsController {
     } else {
       await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
         .then((value: Contact[]) => this.get(req, res, true, '', value))
-        .catch(() => this.get(req, res, false, this.updateErrorMsg, contacts));
+        .catch((reason: AxiosError) => {
+          const error = reason.response?.status === 409
+            ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+            : this.updateErrorMsg;
+          this.get(req, res, false, error, contacts); });
     }
   }
 

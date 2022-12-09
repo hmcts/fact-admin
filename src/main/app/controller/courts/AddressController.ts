@@ -44,6 +44,7 @@ export class AddressController {
   fieldsOfLawDuplicateError = 'Secondary addresses cannot have duplicate areas of law or court types selected. '
     + 'Conflicting options selected are: ';
   duplicateAddressError = 'All addresses must be unique.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -129,7 +130,17 @@ export class AddressController {
               addresses.third as unknown as CourtAddress,
             ], areasOfLaw, courtTypes), errors, postcodeValidation.primaryInvalid,
             postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid);
-        } else {
+        }
+        else if (reason.response.status === 409) {
+          const error = this.courtLockedExceptionMsg + (<any>reason.response).data['message'];
+          await this.render(req, res, false,
+            this.convertToDisplayAddresses([
+              addresses.primary as unknown as CourtAddress,
+              addresses.secondary as unknown as CourtAddress,
+              addresses.third as unknown as CourtAddress,
+            ], areasOfLaw, courtTypes), [error]);
+        }
+        else {
           await this.render(req, res, false,
             this.convertToDisplayAddresses([
               addresses.primary as unknown as CourtAddress,

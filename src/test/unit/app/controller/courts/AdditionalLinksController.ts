@@ -293,4 +293,28 @@ describe('AdditionalLinksController', () => {
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
   });
+
+  test('Should handle a conflict error when updating additional links', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    req.params = {slug: 'royal-courts-of-justice'};
+    req.body = {
+      'additionalLinks': linksWithEmptyEntry,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtAdditionalLinks = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: AdditionalLinkData = {
+      links: linksWithEmptyEntry,
+      updated: false,
+      errors: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
+  });
 });
