@@ -37,4 +37,8 @@ withPipeline(type, product, component) {
     yarnBuilder.yarn('build')
   }
 
+  after('functionalTest') {
+    yarn('test:cucumber2')
+  }
+
 }
