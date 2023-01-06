@@ -68,12 +68,12 @@ describe('CourtsController', () => {
       regionsSelect: [],
       errors: [{text: controller.getCourtsErrorMsg}]
     });
-
-    test.todo('Should return regions as selectItems'), async () => {
-      const courtsController = new CourtsController();
-      const regionSelectItems = courtsController.getRegionsForSelect(regions);
-      expect(regionSelectItems).toStrictEqual(expectedRegions);
-    };
   });
+
+  test.todo('Should return regions as selectItems'), async () => {
+    const courtsController = new CourtsController();
+    const regionSelectItems = courtsController.getRegionsForSelect(regions);
+    expect(regionSelectItems).toStrictEqual(expectedRegions);
+  };
 });
 
