@@ -9,9 +9,9 @@ import {CSRF} from '../../../../../main/modules/csrf';
 describe('ContactsController', () => {
 
   let mockApi: {
-    getContacts: () => Promise<Contact[]>,
-    updateContacts: () => Promise<Contact[]>,
-    getContactTypes: () => Promise<ContactType[]> };
+    getContacts: () => Promise<Contact[]>;
+    updateContacts: () => Promise<Contact[]>;
+    getContactTypes: () => Promise<ContactType[]>; };
 
   const getContacts: () => Contact[] = () => [
     { 'type_id': 1, number: '0123 456 7890', fax: false, explanation: 'Exp 1', 'explanation_cy': 'Exp_cy 1', isNew: false },
@@ -61,7 +61,8 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: ''
+      errorMsg: '',
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -164,7 +165,8 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg
+      errorMsg: controller.updateErrorMsg,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -184,7 +186,8 @@ describe('ContactsController', () => {
       contacts: null,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.getContactsErrorMsg
+      errorMsg: controller.getContactsErrorMsg,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -204,7 +207,8 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: [],
       updated: false,
-      errorMsg: controller.getContactTypesErrorMsg
+      errorMsg: controller.getContactTypesErrorMsg,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });
@@ -234,7 +238,40 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg
+      errorMsg: controller.updateErrorMsg,
+      fatalError: false
+    };
+    expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
+  });
+
+  test('Should handle conflict errors when posting contacts from API', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    const postedContacts: Contact[] = [
+      { 'type_id': 54, number: '01234 555 6060', fax: false, explanation: 'explanation1', 'explanation_cy': 'expl1 welsh', isNew: false },
+      { 'type_id': 44, number: '0202 303 4040', fax: true, explanation: 'explanation3', 'explanation_cy': 'expl3 welsh', isNew: true }
+    ];
+
+    req.params = {
+      slug: 'royal-courts-of-justice'
+    };
+    req.body = {
+      'contacts': postedContacts,
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateContacts = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: ContactPageData = {
+      contacts: postedContacts,
+      contactTypes: expectedSelectItems,
+      updated: false,
+      errorMsg: controller.courtLockedExceptionMsg + 'test',
+      fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
   });

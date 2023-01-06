@@ -12,6 +12,7 @@ export interface CourtTypePageData {
   courtTypes: CourtTypeItem[],
   gbs? : string,
   dxCodes?: DxCode[];
+  fatalError: boolean;
 }
 
 export interface CourtTypeItem {
@@ -20,6 +21,8 @@ export interface CourtTypeItem {
   magistrate: boolean,
   county: boolean,
   crown: boolean,
+  family: boolean,
+  tribunal: boolean,
   checked: boolean,
   code: number
 }

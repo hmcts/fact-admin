@@ -3,6 +3,8 @@ import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Response} from 'express';
 import {Audit, AuditPageData} from '../../../types/Audit';
 import {Court} from '../../../types/Court';
+import {Parser} from 'json2csv';
+import sanitizeHtml from 'sanitize-html';
 
 @autobind
 export class AuditController {
@@ -29,10 +31,12 @@ export class AuditController {
     // size will increase by 1 for each button pressed.
     const page = req.query?.page ? req.query.page as unknown as number: 0;
     const limit = 10 as number;
-    const location = req.query?.location ? req.query.location as string : '';
-    const email = req.query?.email ? req.query.email as string : '';
-    const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
-    const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
+
+    const location = sanitizeHtml(req.query?.searchLocation
+      ? (req.query.searchLocation == 'select-court' ? '': req.query.searchLocation) as string : '');
+    const email = sanitizeHtml(req.query?.searchUser ? req.query.searchUser as string : '');
+    const dateFrom = sanitizeHtml(req.query?.searchDateFrom ? req.query.searchDateFrom as string : '');
+    const dateTo = sanitizeHtml(req.query?.searchDateTo as string ? req.query.searchDateTo as string : '');
     const errors: { text: string }[] = [];
     let audits: Audit[] = [];
     let courts: Court[] = [];
@@ -74,5 +78,54 @@ export class AuditController {
     };
 
     res.render('audits/auditContent', pageData);
+  }
+
+  public async downloadAuditData(req: AuthedRequest, res: Response): Promise<void> {
+
+    const page = 0 as number;
+    const limit = 1000000000 as number; //maximum limit so all records can be returned from api
+    const location =  req.query?.location ? req.query.location as string : '';
+    const email = req.query?.email ? req.query.email as string : '';
+    const dateFrom = req.query?.dateFrom ? req.query.dateFrom as string : '';
+    const dateTo = req.query?.dateTo as string ? req.query.dateTo as string : '';
+
+    const audits: Audit[] = await req.scope.cradle.api.getAudits(page, limit, location, email, dateFrom, dateTo);
+
+
+    const fields = [
+      {
+        label: 'username',
+        value: 'user_email'
+      },
+      {
+        label: 'action',
+        value: 'action.name'
+      },
+      {
+        label: 'location',
+        value: 'location'
+      },
+      {
+        label: 'before changes',
+        value: 'action_data_before'
+      },
+      {
+        label: 'after changes',
+        value: 'action_data_after'
+      },
+      {
+        label: 'created at',
+        value: 'creation_time'
+      }
+    ];
+
+    const json2csv = new Parser({fields});
+    const csv = json2csv.parse(audits);
+    res.header('Content-Type', 'text/csv');
+    const date = new Date();
+    const fileName = 'audits-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '.csv';
+    res.attachment(fileName);
+    res.send(csv);
+
   }
 }

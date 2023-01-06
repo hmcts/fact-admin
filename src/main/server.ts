@@ -12,8 +12,6 @@ import {PropertiesVolume} from './modules/properties-volume';
 import {SessionStorage} from './modules/session';
 import {AppInsights} from './modules/appinsights';
 import {OidcMiddleware} from './modules/oidc';
-import FeatureToggleService from './modules/featureToggle';
-import LaunchDarkly from './utils/LaunchDarkly';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -43,7 +41,6 @@ setupDev(server,developmentMode);
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
 new SessionStorage(developmentMode).enableFor(server);
-new FeatureToggleService(LaunchDarkly.getInstance());
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);

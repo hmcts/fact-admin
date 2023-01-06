@@ -67,7 +67,7 @@ When('I can see the expected audits', async () => {
   const lastActionCreatedTime = Date.parse(rows[1]);
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
 
-  const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(2)';
+  const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-2) + ') > td:nth-child(2)';
   expect(await I.checkElement(selectorAction)).equal(true);
   const actionName = await I.getElement(selectorAction);
   expect(await I.getElementText(actionName)).equal('Update court opening times');

@@ -8,6 +8,8 @@ import jwt_decode from 'jwt-decode';
 import {AzureBlobStorage} from '../../app/azure/AzureBlobStorage';
 import {IdamApi} from '../../app/fact/IdamApi';
 import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure/storage-blob';
+import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
+import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 import {Logger} from '../../types/Logger';
 import {CourtsController} from '../../app/controller/courts/CourtsController';
 
@@ -134,11 +136,13 @@ export class OidcMiddleware {
             }
           })),
           api: asClass(FactApi),
+          featureFlags: asValue(new FeatureFlags(new LaunchDarkly())),
           azure: asValue(new AzureBlobStorage(containerClient)),
           idamApi: asClass(IdamApi)
         });
 
         res.locals.isLoggedIn = true;
+        res.locals.isViewer = req.session.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
 
         if (req.url.includes('/oauth2/callback')) {
@@ -147,6 +151,7 @@ export class OidcMiddleware {
           const regions = await req.scope.cradle.api.getRegions();
           const courtsController = new CourtsController();
           const regionsSelect = courtsController.getRegionsForSelect(regions);
+          await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
           return res.render('courts/courts', {courts, regionsSelect});
         }
         return next();

@@ -5,6 +5,7 @@ import {validateDuplication, validateNameDuplication, validateUrlFormat} from '.
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink';
+import {AxiosError} from 'axios';
 
 @autobind
 export class AdditionalLinksController {
@@ -15,6 +16,7 @@ export class AdditionalLinksController {
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -23,13 +25,14 @@ export class AdditionalLinksController {
     errorMessages: string[] = [],
     links: AdditionalLink[] = null): Promise<void> {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
+    let fatalError = false;
 
     if (!links) {
       // Retrieve additional links from API and set the isNew property to false on all existing link entries.
       await req.scope.cradle.api.getCourtAdditionalLinks(slug)
         .then((value: AdditionalLink[]) => links = value.map(e => { e.isNew = false; return e; }))
-        .catch(() => errorMessages.push(this.getAdditionalLinksErrorMsg));
+        .catch(() => {errorMessages.push(this.getAdditionalLinksErrorMsg); fatalError = true;});
     }
 
     if (!links?.some(e => e.isNew === true)) {
@@ -44,7 +47,8 @@ export class AdditionalLinksController {
     const pageData: AdditionalLinkData = {
       links: links,
       errors: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError,
     };
     res.render('courts/tabs/additionalLinksContent', pageData);
   }
@@ -67,7 +71,11 @@ export class AdditionalLinksController {
 
     await req.scope.cradle.api.updateCourtAdditionalLinks(req.params.slug, links)
       .then((value: AdditionalLink[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateAdditionalLinksErrorMsg], links));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateAdditionalLinksErrorMsg;
+        this.get(req, res, false, [error], links); });
   }
 
   private addEmptyFormsForNewEntries(links: AdditionalLink[], numberOfForms = 1): void {

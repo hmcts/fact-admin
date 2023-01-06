@@ -7,10 +7,10 @@
 
 <h2 class="govuk-heading-l">Cases Heard</h2>
 
-{% if errors|length %}
+{% if errorMsg|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
-    errorList: errors
+    errorList: errorMsg
   }) }}
 {% endif %}
 
@@ -70,7 +70,8 @@
     {{ govukButton({
       text: "Update",
       name: "updateCasesHeard",
-      id: "updateCasesHeardSelect"
+      id: "updateCasesHeardSelect",
+      disabled : fatalError
     }) }}
   </div>
 {% endif %}

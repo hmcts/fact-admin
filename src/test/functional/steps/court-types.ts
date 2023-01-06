@@ -19,17 +19,18 @@ When('I click the types tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing court types', async () => {
-  const elementExist = await I.isElementVisible('#courtTypesForm');
-  expect(elementExist).equal(true);
-});
-
-
 When('I check a court type', async () => {
   const selector = '#court_types-3';
   const elementExist = await I.checkElement('#court_types-3');
   expect(elementExist).equal(true);
   await I.click(selector);
+});
+
+When('I enter the code {string}', async (code: string) => {
+  const selector = '#locationCourtCode';
+  const elementExist = await I.checkElement(selector);
+  expect(elementExist).equal(true);
+  await I.fillField(selector, code);
 });
 
 Then('I click on save court type', async () => {
@@ -61,6 +62,19 @@ When('I check a court type which has code associated with it', async () => {
   await I.click(selector);
 });
 
+When('I check code errors', async () => {
+  if (await I.isElementVisible('#magistratesCourtCode-error', 3000))
+    await I.fillField('#magistratesCourtCode', '123');
+  if (await I.isElementVisible('#familyCourtCode-error', 3000))
+    await I.fillField('#familyCourtCode', '123');
+  if (await I.isElementVisible('#locationCourtCode-error', 3000))
+    await I.fillField('#locationCourtCode', '123');
+  if (await I.isElementVisible('#countyCourtCode-error', 3000))
+    await I.fillField('#countyCourtCode', '123');
+  if (await I.isElementVisible('#crownCourtCode-error', 3000))
+    await I.fillField('#crownCourtCode', '123');
+});
+
 Then('I will make sure that one of the court type is selected', async () => {
   const selector = '#court_types-2';
   const elementExist = await I.checkElement(selector);
@@ -69,6 +83,7 @@ Then('I will make sure that one of the court type is selected', async () => {
   const elementChecked = await I.isElementChecked(selector);
   if (!elementChecked) {
     await I.click(selector);
+    await I.fillField('#familyCourtCode', '123');
   }
 });
 

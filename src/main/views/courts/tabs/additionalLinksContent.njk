@@ -197,14 +197,18 @@
 
 {% endcall %}
 
+
 {{ govukButton({
   text: "Save",
-  name: "saveAdditionalLink"
+  name: "saveAdditionalLink",
+  disabled: fatalError
 }) }}
+
 
 {{ govukButton({
   text: "Add new additional link",
   name: "addAdditionalLink",
   type: "button",
-  classes: "govuk-button--secondary addAdditionalLink"
+  classes: "govuk-button--secondary addAdditionalLink",
+  disabled: fatalError
 }) }}

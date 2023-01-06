@@ -28,6 +28,8 @@ import {AdditionalLinksController} from '../../app/controller/courts/AdditionalL
 import {UserController} from '../../app/controller/users/UserController';
 import {NewCourtController} from '../../app/controller/courts/NewCourtController';
 import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
+import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
+import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -41,6 +43,7 @@ export class Container {
 
     server.locals.container = createContainer({ injectionMode: InjectionMode.CLASSIC }).register({
       logger: asValue(logger),
+      featureFlags: asValue(new FeatureFlags(new LaunchDarkly())),
       bulkUpdateController: asClass(BulkUpdateController),
       courtsController: asClass(CourtsController),
       newCourtController: asClass(NewCourtController),

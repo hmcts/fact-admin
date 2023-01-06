@@ -6,6 +6,7 @@ import {Facility, FacilityPageData, FacilityType} from '../../../types/Facility'
 import {SelectItem} from '../../../types/CourtPageData';
 import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
+import {AxiosError} from 'axios';
 
 @autobind
 export class CourtFacilitiesController {
@@ -15,6 +16,7 @@ export class CourtFacilitiesController {
   getFacilityTypesErrorMsg = 'A problem occurred when retrieving the list of facility types.';
   getCourtFacilitiesErrorMsg = 'A problem occurred when retrieving the court facilities.';
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(
     req: AuthedRequest,
@@ -23,18 +25,19 @@ export class CourtFacilitiesController {
     errorMsg: string[] = [],
     courtFacilities: Facility[] = null,
     requiresValidation = true): Promise<void> {
+    let allFacilitiesTypes: FacilityType[] = [];
+    let fatalError = false;
+
     if (!courtFacilities) {
-      const slug: string = req.params.slug as string;
+      const slug: string = req.params.slug;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
-        .catch(() => errorMsg.push(this.getCourtFacilitiesErrorMsg));
+        .catch(() => {errorMsg.push(this.getCourtFacilitiesErrorMsg); fatalError = true;});
     }
-
-    let allFacilitiesTypes: FacilityType[] = [];
 
     await req.scope.cradle.api.getAllFacilityTypes()
       .then((value: FacilityType[]) => allFacilitiesTypes = value)
-      .catch(() => errorMsg.push(this.getFacilityTypesErrorMsg));
+      .catch(() => {errorMsg.push(this.getFacilityTypesErrorMsg); fatalError = true;});
 
     if (!courtFacilities?.some(ot => ot.isNew === true)) {
       this.addEmptyFormsForNewEntries(courtFacilities);
@@ -50,7 +53,8 @@ export class CourtFacilitiesController {
       updated: updated,
       facilitiesTypes: CourtFacilitiesController.getFacilityTypesForSelect(allFacilitiesTypes),
       courtFacilities: courtFacilities,
-      requiresValidation: requiresValidation
+      requiresValidation: requiresValidation,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/facilitiesContent', pageData);
@@ -89,7 +93,12 @@ export class CourtFacilitiesController {
 
     await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
       .then((value: Facility[]) => this.get(req, res, true, [], value))
-      .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
+      .catch((reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        this.get(req, res, false, [error], courtFacilities);
+      });
   }
 
   public async addRow(req: AuthedRequest, res: Response): Promise<void> {

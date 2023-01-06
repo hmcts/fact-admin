@@ -2,6 +2,7 @@ import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
+import {config} from '../../config';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.getPageTitle();
@@ -32,7 +33,7 @@ Then('a message is displayed on the page', async () => {
 When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
   const selector = '#generalInfoTab #urgent-notice-welsh';
   await I.clearField(selector);
-  await I.fillField(selector, welshMessage);
+  await I.fillFieldInIframe(selector, welshMessage);
 });
 
 When('I click the open checkbox', async () => {
@@ -81,4 +82,17 @@ When('I unclick the Participates in access scheme checkbox', async () => {
   if (elementParticipantsAccessSchemeChkboxChecked) {
     await I.click(selectorParticipantsAccessSchemeChkbox);
   }
+});
+
+Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
+  const selector = '#view-in-new-window';
+  expect(await I.checkElement(selector)).equal(true);
+  await I.click(selector);
+
+  await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');
+  const label = 'Urgent Notice';
+  const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div.urgent-message > div:nth-child(2) > strong';
+
+  const labelElement = await I.getElement(selectorLabel);
+  expect(await I.getElementText(labelElement)).equal(label);
 });

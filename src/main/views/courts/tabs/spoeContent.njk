@@ -7,10 +7,10 @@
 
 <h2 class="govuk-heading-l">Single point of Entry</h2>
 
-{% if errors|length %}
+{% if errorMsg|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
-    errorList: errors
+    errorList: errorMsg
   }) }}
 {% endif %}
 
@@ -48,5 +48,6 @@
 
 {{ govukButton({
   text: "Update",
-  name: "saveSpoe"
+  name: "saveSpoe",
+  disabled: fatalError
 }) }}

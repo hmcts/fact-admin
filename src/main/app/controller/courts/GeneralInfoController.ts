@@ -5,13 +5,15 @@ import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../types/CourtGenera
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {CourtGeneralInfoRedirect} from '../../../types/CourtGeneralInfoRedirect';
+import {replaceMultipleSpaces} from '../../../utils/validation';
 
 @autobind
 export class GeneralInfoController {
 
   updateGeneralInfoErrorMsg = 'A problem occurred when saving the general information.';
   getGeneralInfoErrorMsg = 'A problem occurred when retrieving the general information.';
-  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. Court already exists with name: ';
+  updateDuplicateGeneralInfoErrorMsg = 'All names must be unique. Please check that a user is currently not '
+    + 'editing this court, and that a court does not already exists with name: ';
   duplicateNameErrorMsg = 'Duplicated name';
   blankNameErrorMsg = 'Name is required';
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
@@ -26,19 +28,21 @@ export class GeneralInfoController {
     nameFieldErrorMsg = '',
     generalInfo: CourtGeneralInfo = null): Promise<void> {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
+    let fatalError = false;
 
     if (!generalInfo) {
       await req.scope.cradle.api.getGeneralInfo(slug)
         .then((value: CourtGeneralInfo) => generalInfo = value)
-        .catch(() => error += this.getGeneralInfoErrorMsg);
+        .catch(() => {error += this.getGeneralInfoErrorMsg; fatalError = true;});
     }
 
     const pageData: CourtGeneralInfoData = {
       generalInfo: generalInfo,
       errorMsg: error,
       updated: updated,
-      nameFieldError: nameFieldErrorMsg
+      nameFieldError: nameFieldErrorMsg,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/generalContent', pageData);
@@ -46,7 +50,7 @@ export class GeneralInfoController {
 
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const generalInfo = req.body as CourtGeneralInfo;
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const updatedSlug = generalInfo.name
       ? generalInfo.name.toLowerCase().replace(/[^\w\s-]|_/g, '').split(' ').join('-')
       : slug;
@@ -62,6 +66,8 @@ export class GeneralInfoController {
     if (this.checkNameForInvalidCharacters(generalInfo.name)) {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
     }
+
+    replaceMultipleSpaces(generalInfo);
 
     if (generalInfo.alert.length > 400 || generalInfo.alert_cy.length > 400) {
       return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);

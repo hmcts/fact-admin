@@ -12,7 +12,7 @@
     {% set auditItems = [] %}
     {% for audit in audits %}
       {% set auditItems = (auditItems.push([
-        {
+       {
           text: audit.user_email,
           classes: 'table-data-overflow'
         },
@@ -120,14 +120,24 @@
         }) }}
       </div>
 
+{% set item = searchOptions.location %}
       <div class='govuk-grid-column-one-quarter'>
+        <div class="govuk-button-group">
         {{ govukButton({
           text: "Search",
           name: "searchAuditsBtn",
           attributes: { id: "searchAuditsBtn" },
           classes: "govuk-button--primary"
         }) }}
+        {{ govukButton({
+           text: "Download",
+           name: "downloadAuditsBtn",
+           href: "/audit-data-download?location="+ searchOptions.location +"&email="+ searchOptions.username + "&dateFrom=" + searchOptions.dateFrom + "&dateTo="+ searchOptions.dateTo ,
+           classes: "govuk-button--primary downloadAuditsBtn"
+        }) }}
+        </div>
       </div>
+
     </div>
 
     <div id = 'tableContainer'>

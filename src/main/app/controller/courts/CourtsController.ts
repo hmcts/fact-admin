@@ -3,6 +3,7 @@ import {Response} from 'express';
 import {AuthedRequest} from '../../../types/AuthedRequest';
 import {Region} from '../../../types/Region';
 import {SelectItem} from '../../../types/CourtPageData';
+import {Error} from '../../../types/Error';
 
 @autobind
 export class CourtsController {
@@ -10,17 +11,21 @@ export class CourtsController {
   /**
    * GET /courts and /regions
    */
-  public async get(req: AuthedRequest, res: Response): Promise<void> {
+  getCourtsErrorMsg = 'A problem occurred when retrieving all court information.';
 
+  public async get(req: AuthedRequest, res: Response): Promise<void> {
+    const errors: Error[] = [];
     const courts = await req.scope.cradle.api.getCourts();
     const regions = await req.scope.cradle.api.getRegions();
     const regionsSelect = this.getRegionsForSelect(regions);
-
-    res.render('courts/courts', { courts, regionsSelect });
+    await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
+    if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
+    res.render('courts/courts', { courts, regionsSelect, errors });
   }
 
   public getRegionsForSelect(regions: Region[]): SelectItem[] {
     return regions.map((rg: Region) => (
       {value: rg.id, text: rg.name, selected: false}));
   }
+
 }

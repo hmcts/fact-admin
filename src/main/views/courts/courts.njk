@@ -2,11 +2,20 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% extends "template.njk" %}
 
 {% block content %}
   <h1 class="govuk-heading-xl">Courts and tribunals</h1>
+
+
+  {% if errors|length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors
+    }) }}
+  {% endif %}
 
   <div id = 'tableContainer'>
     <div id='courtOptionsRow' class='govuk-grid-row'>
@@ -85,7 +94,7 @@
           html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
         },
         {
-          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
+          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">details</a>' if isViewer else '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
         }
         ]), courtItems) %}
     {% endfor %}
