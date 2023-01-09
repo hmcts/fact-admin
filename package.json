@@ -152,7 +152,7 @@
     "babel-loader/loader-utils": ">=2.0.4",
     "@hmcts/info-provider/express": ">=4.17.3",
     "qs": ">=6.5.3",
-    "config/json5": ">=2.2.2",
+    "json5": ">=2.2.2",
     "tsconfig-paths/json5" : ">=2.2.2"
   }
 }
