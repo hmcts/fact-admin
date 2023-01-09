@@ -1276,7 +1276,7 @@ describe('FactApi', () => {
           town: 'Red Town',
           'town_cy': '',
           'county_id': 1,
-          postcode: 'AB1 2XZ'
+          postcode: 'AB1 2XZ',
         }
       ]
     };
