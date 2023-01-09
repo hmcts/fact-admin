@@ -79,6 +79,62 @@
 
 {% endif %}
 
+
+{% if courtType.family %}
+
+  {% set familyCourtCode = false %}
+  {% if courtType.checked and  courtType.code | valid === false  %}
+    {% set familyCourtCode = { text: 'Family court code is required and must be numeric. eg(1234)' } %}
+  {% endif %}
+
+  {% set familyCourtCodeHtml %}
+    {{ govukInput({
+      id: "familyCourtCode",
+      name: "familyCourtCode",
+      type: "text",
+      value: courtType.code,
+      errorMessage: familyCourtCode,
+      classes: "govuk-!-width-one-third",
+      label: {
+        text: "Family Court Code"
+      }
+    }) }}
+  {% endset -%}
+
+  {% set courtType = courtType | setAttribute('conditional',{ html: familyCourtCodeHtml }) %}
+{% endif %}
+
+
+
+
+
+{% if courtType.tribunal %}
+
+  {% set locationCourtCode = false %}
+  {% if courtType.checked and  courtType.code | valid === false  %}
+    {% set locationCourtCode = { text: 'Tribunal location code is required and must be numeric. eg(1234)' } %}
+  {% endif %}
+
+  {% set locationCourtCodeHtml %}
+    {{ govukInput({
+      id: "locationCourtCode",
+      name: "locationCourtCode",
+      type: "text",
+      value: courtType.code,
+      errorMessage: locationCourtCode,
+      classes: "govuk-!-width-one-third",
+      label: {
+        text: "Tribunal Location Code"
+      }
+    }) }}
+  {% endset -%}
+
+  {% set courtType = courtType | setAttribute('conditional',{ html: locationCourtCodeHtml }) %}
+{% endif %}
+
+
+
+
 {% if courtType.crown %}
 
 {% set crownCourtCode = false %}
@@ -270,7 +326,8 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveCourtTypes"
+  name: "saveCourtTypes",
+  disabled: fatalError
 }) }}
 
 
@@ -280,7 +337,8 @@
   text: "Add new Dx code",
   name: "addDxCode",
   type: "button",
-  classes: "govuk-button--secondary addDxCode"
+  classes: "govuk-button--secondary addDxCode",
+  disabled: fatalError
 }) }}
 
 

@@ -7,9 +7,9 @@ import {CourtSpoeController} from '../../../../../main/app/controller/courts/Cou
 describe('CourtsSpoeController', () => {
 
   let mockApi: {
-    getAllSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>,
-    getCourtSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>,
-    updateCourtSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>};
+    getAllSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>;
+    getCourtSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>;
+    updateCourtSpoeAreasOfLaw: () => Promise<SpoeAreaOfLaw[]>;};
 
   const testSlug = 'plymouth-combined-court';
 
@@ -68,7 +68,8 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: getCourtSpoeAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: false
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.getAllSpoeAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtSpoeAreasOfLaw).toBeCalledWith(testSlug);
@@ -90,7 +91,8 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: getCourtSpoeAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.getSpoeAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: true
     });
     expect(mockApi.getAllSpoeAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtSpoeAreasOfLaw).toBeCalledWith(testSlug);
@@ -112,7 +114,8 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: null,
       slug: testSlug,
       errorMsg: [{text: controller.getCourtSpoeAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: true
     });
     expect(mockApi.getAllSpoeAreasOfLaw).toBeCalled();
     expect(mockApi.getCourtSpoeAreasOfLaw).toBeCalledWith(testSlug);
@@ -137,7 +140,8 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: updatedCourtSpoeAreasOfLawData,
       slug: testSlug,
       errorMsg: [],
-      updated: true
+      updated: true,
+      fatalError: false
     });
     expect(mockApi.updateCourtSpoeAreasOfLaw).toBeCalledWith(testSlug, updatedCourtSpoeAreasOfLawData );
   });
@@ -163,7 +167,35 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: updatedCourtSpoeAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtSpoeAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
+    });
+    expect(mockApi.updateCourtSpoeAreasOfLaw).toBeCalledWith(testSlug, updatedCourtSpoeAreasOfLawData);
+  });
+
+  test('Should not update court spoe if the api returns with a conflict error', async() => {
+    const req = mockRequest();
+    req.body = {
+      'courtSpoeAreasOfLaw': updatedCourtSpoeAreasOfLawData,
+      'allSpoeAreasOfLaw': getAllSpoeAreasOfLawData,
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    req.scope.cradle.api.updateCourtSpoeAreasOfLaw = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/spoeContent', {
+      allSpoeAreasOfLaw: getAllSpoeAreasOfLawData,
+      courtSpoeAreasOfLaw: updatedCourtSpoeAreasOfLawData,
+      slug: testSlug,
+      errorMsg: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.updateCourtSpoeAreasOfLaw).toBeCalledWith(testSlug, updatedCourtSpoeAreasOfLawData);
   });
@@ -188,7 +220,8 @@ describe('CourtsSpoeController', () => {
       courtSpoeAreasOfLaw: updatedCourtSpoeAreasOfLawData,
       slug: testSlug,
       errorMsg: [{text: controller.putCourtSpoeAreasOfLawErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
     });
     expect(mockApi.updateCourtSpoeAreasOfLaw).not.toBeCalled();
   });

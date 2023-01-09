@@ -4,7 +4,8 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {
   LocalAuthoritiesAreaOfLaw,
   LocalAuthoritiesPageData,
-  LocalAuthority, LocalAuthorityItem
+  LocalAuthority,
+  LocalAuthorityItem
 } from '../../../../../main/types/LocalAuthority';
 import {AreaOfLaw} from '../../../../../main/types/AreaOfLaw';
 import {LocalAuthoritiesController} from '../../../../../main/app/controller/courts/LocalAuthoritiesController';
@@ -15,15 +16,15 @@ import {CourtTypesAndCodes} from '../../../../../main/types/CourtTypesAndCodes';
 describe ( 'LocalAuthoritiesController', () => {
 
   let mockApi: {
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>,
-    getAllLocalAuthorities: () => Promise<LocalAuthority[]>,
-    getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>,
-    updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]> };
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;
+    getAllLocalAuthorities: () => Promise<LocalAuthority[]>;
+    getCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>;
+    updateCourtLocalAuthoritiesByAreaOfLaw: () => Promise<LocalAuthority[]>;};
 
   let mockApiAreaOfLaw: {
-    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>,
-    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>
+    getCourtAreasOfLaw: () => Promise<AreaOfLaw[]>;
+    getCourtTypesAndCodes: () => Promise<CourtTypesAndCodes>;
   };
 
   const courtAreasOfLaw: AreaOfLaw[] = [
@@ -144,7 +145,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: '',
       isEnabled: true,
-      courtAreasOfLaw: areasOfLawItems
+      courtAreasOfLaw: areasOfLawItems,
+      fatalError: false,
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
@@ -166,7 +168,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.getCourtAreasOfLawErrorMsg,
       isEnabled: true,
-      courtAreasOfLaw: []
+      courtAreasOfLaw: [],
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });
@@ -187,7 +190,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.getCourtTypesErrorMsg,
       isEnabled: false,
-      courtAreasOfLaw: areasOfLawItems
+      courtAreasOfLaw: areasOfLawItems,
+      fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });
@@ -210,7 +214,8 @@ describe ( 'LocalAuthoritiesController', () => {
       updated: false,
       errorMsg: controller.familyAreaOfLawErrorMsg,
       isEnabled: true,
-      courtAreasOfLaw: []
+      courtAreasOfLaw: [],
+      fatalError: true,
     };
     expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
   });
@@ -352,6 +357,37 @@ describe ( 'LocalAuthoritiesController', () => {
 
     // Should call API to save data
     expect(mockApi.updateCourtLocalAuthoritiesByAreaOfLaw).toBeCalledWith(slug, areaOfLaw, courtlocalAuthorites);
+  });
+
+  test('Should not post court local authorities for area of law when there is a lock conflict', async () => {
+    const slug = 'southport-county-court';
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    const req = mockRequest();
+
+    req.body = {
+      'localAuthoritiesItems': [],
+      '_csrf': CSRF.create()
+    };
+
+    req.params = { slug: slug, areaOfLaw: [] };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtLocalAuthoritiesByAreaOfLaw = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+    const expectedResults: LocalAuthoritiesPageData = {
+      updated: false,
+      errorMsg: controller.courtLockedExceptionMsg + 'test',
+      courtAreasOfLaw: areasOfLawItems,
+      localAuthoritiesItems: localAuthoritiesItems,
+      selectedAreaOfLaw: [] as any
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/localAuthoritiesContent', expectedResults);
+
+    // Should call API to save data
+    expect(mockApi.updateCourtLocalAuthoritiesByAreaOfLaw).toBeCalledWith(slug, [], []);
   });
 
   test('Should not post court local authorities for area of law if no csrf token provided .', async () => {

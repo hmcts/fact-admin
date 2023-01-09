@@ -13,6 +13,7 @@ export class CasesHeardController {
   getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
   putCourtAreasOfLawErrorMsg = 'A problem occurred when updating the court areas of law. ';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
@@ -29,7 +30,10 @@ export class CasesHeardController {
       .then(async (value: AreaOfLaw[]) =>
         await this.render(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtAreasOfLawErrorMsg;
+        await this.render(req, res, [error], false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 
@@ -41,12 +45,14 @@ export class CasesHeardController {
     allAreasOfLaw: AreaOfLaw[] = null,
     courtAreasOfLaw: AreaOfLaw[] = null) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
+    let fatalError = false;
     if (!allAreasOfLaw) {
       await req.scope.cradle.api.getAllAreasOfLaw()
         .then((value: AreaOfLaw[]) => allAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -55,6 +61,7 @@ export class CasesHeardController {
         .then((value: AreaOfLaw[]) => courtAreasOfLaw = value)
         .catch(() => {
           errorMsg.push(this.getCourtAreasOfLawErrorMsg);
+          fatalError = true;
         });
     }
 
@@ -68,7 +75,8 @@ export class CasesHeardController {
       courtAreasOfLaw: courtAreasOfLaw,
       slug: slug,
       errorMsg: errors,
-      updated: updated
+      updated: updated,
+      fatalError: fatalError
     };
 
     res.render('courts/tabs/casesHeardContent', pageData);

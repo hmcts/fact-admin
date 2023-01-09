@@ -5,6 +5,5 @@ export interface CourtItem {
   slug: string
   visible: boolean,
   row: JQuery,
-  region: string[]
-  //address: CourtAddress
+  region: string
 }

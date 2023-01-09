@@ -8,23 +8,51 @@ import {CourtGeneralInfo} from '../../../../../main/types/CourtGeneralInfo';
 describe('ApplicationProgressionController', () => {
 
   let mockApi: {
-    getApplicationUpdates: () => Promise<ApplicationProgression[]>,
-    updateApplicationUpdates: () => Promise<ApplicationProgression[]>,
-    getGeneralInfo: () => Promise<CourtGeneralInfo>
+    getApplicationUpdates: () => Promise<ApplicationProgression[]>;
+    updateApplicationUpdates: () => Promise<ApplicationProgression[]>;
+    getGeneralInfo: () => Promise<CourtGeneralInfo>;
   };
 
   const controller = new ApplicationProgressionController();
 
   const applicationUpdates: () => ApplicationProgression[] = () => [
     {
-      type: 'type', type_cy:'type_cy', email: 'email@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: false
+      type: 'type',
+      type_cy: 'type_cy',
+      email: 'email@test.com',
+      external_link: null,
+      external_link_description: null,
+      external_link_description_cy: null,
+      isNew: false
     },
     {
-      type: 'type 2', type_cy:'type_cy 2', email: 'email2@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: false
+      type: 'type 2',
+      type_cy: 'type_cy 2',
+      email: 'email2@test.com',
+      external_link: null,
+      external_link_description: null,
+      external_link_description_cy: null,
+      isNew: false
     }
   ];
-  const updatesWithEmptyEntry: ApplicationProgression[] = applicationUpdates().concat({type: null, type_cy: null, email: null, external_link: null, external_link_description: null, external_link_description_cy: null, isNew: true});
-  const updatesWithNewEntry: ApplicationProgression[] = applicationUpdates().concat({type: 'type 3', type_cy: 'type_cy 3', email: 'email3@test.com', external_link: null, external_link_description: null, external_link_description_cy: null, isNew: true});
+  const updatesWithEmptyEntry: ApplicationProgression[] = applicationUpdates().concat({
+    type: null,
+    type_cy: null,
+    email: null,
+    external_link: null,
+    external_link_description: null,
+    external_link_description_cy: null,
+    isNew: true
+  });
+  const updatesWithNewEntry: ApplicationProgression[] = applicationUpdates().concat({
+    type: 'type 3',
+    type_cy: 'type_cy 3',
+    email: 'email3@test.com',
+    external_link: null,
+    external_link_description: null,
+    external_link_description_cy: null,
+    isNew: true
+  });
   const applicationUpdatesPage = 'courts/tabs/applicationProgressionContent';
 
 
@@ -67,7 +95,8 @@ describe('ApplicationProgressionController', () => {
       application_progression: updatesWithEmptyEntry,
       isEnabled: courtGeneralInfo.service_centre,
       errors: [],
-      updated: false
+      updated: false,
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -87,7 +116,34 @@ describe('ApplicationProgressionController', () => {
       application_progression: null,
       isEnabled: courtGeneralInfo.service_centre,
       updated: false,
-      errors: [{text: controller.getApplicationUpdatesErrorMsg}]
+      errors: [{text: controller.getApplicationUpdatesErrorMsg}],
+      fatalError: true
+    };
+    expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
+  });
+
+  test('Should handle conflict errors from the API', async () => {
+    const req = mockRequest();
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    req.params = {
+      slug: 'royal-courts-of-justice'
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateApplicationUpdates = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults: ApplicationProgressionData = {
+      application_progression: [{
+        email: null, external_link: null, external_link_description: null,
+        external_link_description_cy: null, isNew: true, type: null, type_cy: null
+      }],
+      isEnabled: courtGeneralInfo.service_centre,
+      updated: false,
+      errors: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -133,11 +189,51 @@ describe('ApplicationProgressionController', () => {
     const req = mockRequest();
     const res = mockResponse();
     const postedUpdates: ApplicationProgression[] = applicationUpdates()
-      .concat({ type: '', type_cy: '', email: 'email 3', external_link: 'external_link 3', external_link_description: 'external_link_desc 3', external_link_description_cy: 'external_link_desc_cy 3', isNew: true })
-      .concat({ type: 'type 4', type_cy: 'type_cy 4', email: '', external_link: '', external_link_description: '', external_link_description_cy: '', isNew: true })
-      .concat({ type: 'type 5', type_cy: 'type_cy 5', email: '', external_link: 'external_link 5', external_link_description: '', external_link_description_cy: '', isNew: true })
-      .concat({ type: 'type 5a', type_cy: 'type_cy 5a', email: '', external_link: '', external_link_description: 'external_link_description 5a', external_link_description_cy: '', isNew: true })
-      .concat({ type: 'type 6', type_cy: 'type_cy 6', email: 'email 6', external_link: 'external_link 6', external_link_description: 'external_link_description 6', external_link_description_cy: '', isNew: true });
+      .concat({
+        type: '',
+        type_cy: '',
+        email: 'email 3',
+        external_link: 'external_link 3',
+        external_link_description: 'external_link_desc 3',
+        external_link_description_cy: 'external_link_desc_cy 3',
+        isNew: true
+      })
+      .concat({
+        type: 'type 4',
+        type_cy: 'type_cy 4',
+        email: '',
+        external_link: '',
+        external_link_description: '',
+        external_link_description_cy: '',
+        isNew: true
+      })
+      .concat({
+        type: 'type 5',
+        type_cy: 'type_cy 5',
+        email: '',
+        external_link: 'external_link 5',
+        external_link_description: '',
+        external_link_description_cy: '',
+        isNew: true
+      })
+      .concat({
+        type: 'type 5a',
+        type_cy: 'type_cy 5a',
+        email: '',
+        external_link: '',
+        external_link_description: 'external_link_description 5a',
+        external_link_description_cy: '',
+        isNew: true
+      })
+      .concat({
+        type: 'type 6',
+        type_cy: 'type_cy 6',
+        email: 'email 6',
+        external_link: 'external_link 6',
+        external_link_description: 'external_link_description 6',
+        external_link_description_cy: '',
+        isNew: true
+      });
     req.params = {
       slug: 'royal-courts-of-justice'
     };
@@ -161,7 +257,8 @@ describe('ApplicationProgressionController', () => {
         {text: controller.doubleInputErrorMsg},
         {text: controller.invalidEmailFormatErrorMsg},
         {text: controller.invalidUrlFormatErrorMsg}
-      ]
+      ],
+      fatalError: false
     };
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);
   });
@@ -170,9 +267,17 @@ describe('ApplicationProgressionController', () => {
   test('Should handle error with duplicated email addresses when updating application updates (ignoring casing)', async () => {
     const req = mockRequest();
     const postedUpdates: ApplicationProgression[] = applicationUpdates().concat(
-      { type: 'type 3', type_cy: 'type_cy 3', email: 'email2@test.com', external_link: null, external_link_description: null, external_link_description_cy: 'external_link_desc_cy 3', isNew: true }
+      {
+        type: 'type 3',
+        type_cy: 'type_cy 3',
+        email: 'email2@test.com',
+        external_link: null,
+        external_link_description: null,
+        external_link_description_cy: 'external_link_desc_cy 3',
+        isNew: true
+      }
     );
-    req.params = { slug: 'royal-courts-of-justice' };
+    req.params = {slug: 'royal-courts-of-justice'};
     req.body = {
       progression: postedUpdates,
       '_csrf': CSRF.create()
@@ -186,7 +291,8 @@ describe('ApplicationProgressionController', () => {
       application_progression: postedUpdates,
       isEnabled: true,
       errors: [{text: controller.emailDuplicatedErrorMsg}],
-      updated: false
+      updated: false,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith(applicationUpdatesPage, expectedResults);

@@ -1,5 +1,5 @@
-import {When,Then} from 'cucumber';
-import { expect } from 'chai';
+import {Then, When} from 'cucumber';
+import {expect} from 'chai';
 
 import * as I from '../utlis/puppeteer.util';
 

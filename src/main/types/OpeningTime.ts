@@ -11,5 +11,6 @@ export interface OpeningTimeData {
   opening_times: OpeningTime[],
   openingTimeTypes: SelectItem[],
   errors: Error[],
-  updated: boolean
+  updated: boolean,
+  fatalError: boolean,
 }

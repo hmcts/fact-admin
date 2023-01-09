@@ -1,5 +1,5 @@
 import * as I from '../utlis/puppeteer.util';
-import {Then,When} from 'cucumber';
+import {Then, When} from 'cucumber';
 import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
@@ -16,15 +16,6 @@ Then('I click the application progression tab', async () => {
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
-});
-
-Then('I can view the existing application types', async () => {
-  const elementExist = await I.isElementVisible('#applicationProgressionForm');
-  expect(elementExist).equal(true);
-});
-
-When('I test', async () => {
-  console.log('hello world');
 });
 
 When('I remove all existing application types entries and save', async () => {

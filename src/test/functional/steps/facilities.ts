@@ -10,11 +10,6 @@ When('I click the facilities tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing facilities', async () => {
-  const elementExist = await I.isElementVisible('#courtFacilitiesForm');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing facility entries and save', async () => {
 
   const fieldsetSelector = '#courtFacilitiesContent > fieldset';

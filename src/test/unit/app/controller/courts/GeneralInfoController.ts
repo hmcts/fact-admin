@@ -7,8 +7,8 @@ import {CSRF} from '../../../../../main/modules/csrf';
 describe('GeneralInfoController', () => {
 
   let mockApi: {
-    getGeneralInfo: () => Promise<CourtGeneralInfo>,
-    updateGeneralInfo: () => Promise<CourtGeneralInfo>
+    getGeneralInfo: () => Promise<CourtGeneralInfo>;
+    updateGeneralInfo: () => Promise<CourtGeneralInfo>;
   };
 
   const courtGeneralInfo: CourtGeneralInfo = {
@@ -138,7 +138,8 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfo,
       errorMsg: '',
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -180,7 +181,8 @@ describe('GeneralInfoController', () => {
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: false
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -207,7 +209,8 @@ describe('GeneralInfoController', () => {
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      nameFieldError: controller.blankNameErrorMsg
+      nameFieldError: controller.blankNameErrorMsg,
+      fatalError: false
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -231,7 +234,8 @@ describe('GeneralInfoController', () => {
       generalInfo: null,
       errorMsg: controller.getGeneralInfoErrorMsg,
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: true
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -253,7 +257,31 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should handle conflict lock errors when posting court general info to API', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + 'court name',
+      updated: false,
+      nameFieldError: 'Duplicated name',
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -272,7 +300,8 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfoInvalidCharacters,
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
-      nameFieldError: controller.specialCharacterErrorMsg
+      nameFieldError: controller.specialCharacterErrorMsg,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -291,7 +320,8 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfoTooManyCharsForIntroParagraph,
       errorMsg: controller.updateIntroParagraphErrorMsg,
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -313,7 +343,8 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
       updated: false,
-      nameFieldError: controller.duplicateNameErrorMsg
+      nameFieldError: controller.duplicateNameErrorMsg,
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -332,7 +363,8 @@ describe('GeneralInfoController', () => {
       generalInfo: courtGeneralInfoOverCharacterLimit,
       errorMsg: controller.updateAlertErrorMsg,
       updated: false,
-      nameFieldError: ''
+      nameFieldError: '',
+      fatalError: false
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);

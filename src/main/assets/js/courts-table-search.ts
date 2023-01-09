@@ -7,7 +7,7 @@ export class CourtsTableSearch {
   private static toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private static numberOfCourts = '#numberOfCourts';
   private static searchCourtsFilterId = '#searchCourts';
-  private static searchCourtsByRegionId = '#searchRegions';
+  private static searchCourtsByRegionId = '#regionSelector';
   private static tableData = '#courtResults';
   private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';
@@ -73,7 +73,7 @@ export class CourtsTableSearch {
             courtItem.slug = $(dataCell).data('name');
             break;
           case 'region':
-            courtItem.region = $(dataCell).data('region');
+            courtItem.region = $(dataCell).text();
             break;
           case 'displayed':
             courtItem.displayed = $(dataCell).data('displayed');
@@ -115,9 +115,13 @@ export class CourtsTableSearch {
     orderNameAscendingFilter: string, orderUpdatedAscendingFilter: string): CourtItem[] {
 
     courts.forEach((courtItem) => {
-      if (regionFilterValue != '') {
+      if (regionFilterValue != '' && searchFilterValue.trim().length > 0) {
         courtItem.visible = ((includeClosedCourts || courtItem.displayed)
-          && courtItem.region[0].toLowerCase().includes(regionFilterValue.toString().toLowerCase()));
+          && courtItem.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase())
+          && courtItem.region == regionFilterValue);
+      } else if (regionFilterValue != '') {
+        courtItem.visible = ((includeClosedCourts || courtItem.displayed)
+          && courtItem.region == regionFilterValue);
       } else if (searchFilterValue.trim().length > 0) {
         courtItem.visible = ((includeClosedCourts || courtItem.displayed)
           && courtItem.name.toLowerCase().includes(searchFilterValue.toString().toLowerCase()));

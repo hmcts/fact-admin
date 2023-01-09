@@ -219,7 +219,8 @@
 
 {{ govukButton({
   text: "Save",
-  name: "saveEmail"
+  name: "saveEmail",
+  disabled: fatalError
 }) }}
 
 
@@ -227,5 +228,6 @@
   text: "Add new email address",
   name: "addEmail",
   type: "button",
-  classes: "govuk-button--secondary addEmail"
+  classes: "govuk-button--secondary addEmail",
+  disabled: fatalError
 }) }}

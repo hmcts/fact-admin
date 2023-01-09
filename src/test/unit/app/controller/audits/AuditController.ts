@@ -39,10 +39,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: 'date from',
-      dateTo: 'date to'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: 'date from',
+      searchDateTo: 'date to'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -86,14 +86,46 @@ describe ( 'AuditController', () => {
     expect(res.render).toBeCalledWith('audits/auditContent', expectedResults);
   });
 
+  test('Should remove scripts from inputs', async () => {
+    const req = mockRequest();
+    req.query = {
+      page: 1,
+      searchLocation: '<script>location</script>',
+      searchUser: '<script>email</script>',
+      searchDateFrom: '<script>3/1/2001, 12:00:00 AM</script>',
+      searchDateTo: '<script>2/1/2001, 12:00:00 AM</script>'
+    };
+    req.scope.cradle.api = {
+      getAudits: async (): Promise<Audit[]> => [],
+      getCourts: async (): Promise<object[]> => []
+    };
+    const res = mockResponse();
+
+    await controller.getAuditData(req, res);
+
+    const expectedResults: AuditPageData = {
+      audits: [],
+      courts: [],
+      errors: [],
+      currentPage: 1,
+      searchOptions: {
+        location: '',
+        username: '',
+        dateFrom: '',
+        dateTo: ''
+      }
+    };
+    expect(res.render).toBeCalledWith('audits/auditContent', expectedResults);
+  });
+
   test('Should get date error when before date after to date', async () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: '3/1/2001, 12:00:00 AM',
-      dateTo: '2/1/2001, 12:00:00 AM'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '3/1/2001, 12:00:00 AM',
+      searchDateTo: '2/1/2001, 12:00:00 AM'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -119,10 +151,10 @@ describe ( 'AuditController', () => {
     const req = mockRequest();
     req.query = {
       page: 1,
-      location: 'location',
-      email: 'email',
-      dateFrom: '',
-      dateTo: 'date to'
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '',
+      searchDateTo: 'date to'
     };
     req.scope.cradle.api = mockApi;
     const res = mockResponse();
@@ -186,5 +218,21 @@ describe ( 'AuditController', () => {
       }
     };
     expect(res.render).toBeCalledWith('audits/auditContent', expectedResults);
+  });
+
+  test('Should send csv ', async () => {
+    const req = mockRequest();
+    req.query = {
+      page: 1,
+      searchLocation: 'location',
+      searchUser: 'email',
+      searchDateFrom: '',
+      searchDateTo: 'date to'
+    };
+    req.scope.cradle.api = mockApi;
+
+    const res = mockResponse();
+    await controller.downloadAuditData(req, res);
+    expect(res.send).toBeCalledTimes(1);
   });
 });

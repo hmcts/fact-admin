@@ -18,11 +18,6 @@ Then('I click the Emails tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing emails', async () => {
-  const elementExist = await I.isElementVisible('#emailsContent');
-  expect(elementExist).equal(true);
-});
-
 When('I remove all existing email entries and save', async () => {
   await FunctionalTestHelpers.clearFieldsetsAndSave('#emailsTab', 'deleteEmail', 'saveEmail');
 });
@@ -57,7 +52,8 @@ When('I click save button', async () => {
 });
 
 Then('a green update message showing email updated is displayed', async () => {
-  const elementExist = await I.checkElement('div[class=\'govuk-panel govuk-panel--confirmation\']');
+  const selector = 'div[class=\'govuk-panel govuk-panel--confirmation\']';
+  const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
 });
 

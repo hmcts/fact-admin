@@ -25,6 +25,7 @@ health:
   deadline: 15000
 session:
   secret: 'local'
+  secure-flag: false
   redis:
     host:
     key:
@@ -32,5 +33,9 @@ appInsights:
   instrumentationKey:
 csrf:
   tokenSecret: 'get from AAT vault'
-launchdarkly:
+lock:
+  timeout: 1
+launchDarkly:
   sdkKey:
+  ldUser: 'fact-admin'
+flags:   # add feature-flag overrides below
