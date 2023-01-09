@@ -7,7 +7,7 @@ export class CourtsController {
   private tableContainerId = '#tableContainer';
   private toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private searchCourtsFilter = 'searchCourts';
-  private searchCourtsRegionFilter = 'regionsSelector';
+  private searchCourtsRegionFilter = 'regionSelector';
   private tableCourtsNameId = '#tableCourtsName';
   private tableCourtsUpdatedId = '#tableCourtsUpdated';
 
@@ -46,7 +46,7 @@ export class CourtsController {
   }
 
   private setUpCourtsRegionSearchFilter(): void {
-    $(this.contentId).on('click', `input[name=${this.searchCourtsRegionFilter}]`, e => {
+    $(this.contentId).on('change', `select[name=${this.searchCourtsRegionFilter}]`, e => {
       e.preventDefault();
       console.log('ping ping ping');
 
