@@ -7,7 +7,7 @@ export class CourtsTableSearch {
   private static toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private static numberOfCourts = '#numberOfCourts';
   private static searchCourtsFilterId = '#searchCourts';
-  private static searchCourtsByRegionId = '#searchByRegion';
+  private static searchCourtsByRegionId = '#searchRegions';
   private static tableData = '#courtResults';
   private static courtsResultsSection = '#courtResults > tbody';
   private static courtsTableHeaderAsc = 'courts-table-header-asc';

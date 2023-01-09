@@ -25,8 +25,8 @@
 
       <div id='regionsSelector' class='govuk-grid-column-one-quarter'>
         {{ govukSelect({
-          id: "regions",
-          name: "regions",
+          id: "searchRegions",
+          name: "searchRegions",
           items: regionsSelect | selectFilter(regionsSelect.value)
         }) }}
       </div>
