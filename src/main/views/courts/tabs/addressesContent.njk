@@ -318,10 +318,10 @@
 <div class="govuk-grid-column-three-quarters">
 {{ govukButton({
    text: "Remove",
-   name: "removeSecondaryAddress",
+   name: "removeSecondaryAddress"+ (loop.index),
    type: "button",
    classes: "govuk-button--warning clearAddress",
-   attributes: { id: "removeSecondAddressBtn" },
+   attributes: { id: "removeSecondAddressBtn"+ (loop.index) },
    disabled: true if fatalError
  }) }}
  </div>
