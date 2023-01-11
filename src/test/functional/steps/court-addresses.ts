@@ -233,7 +233,7 @@ Then('I enter the secondary address town welsh {string}', async (townCy: string)
 });
 
 Then('I select yes for area of law and court type', async () => {
-  const selector = '#secondaryFieldsOfLawRadio';
+  const selector = '#secondaryFieldsOfLawRadio1';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -253,31 +253,28 @@ Then('I select children and civil from area of law and county court for court ty
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
   expect(await I.checkElement(selector)).equal(true);
-  await I.click(selector);
 
+  await I.click(selector);
   await I.goTo(config.FRONTEND_URL + '/courts/amersham-law-courts');
 
-  //const label = 'Children, Civil or County Court cases';
+  const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
-
   const labelElement = await I.getElement(selectorLabel);
-
-  console.log('lable.........' + await I.getElementText(labelElement));
-
-  //expect(await I.getElementText(labelElement)).equal(label);
+  expect(await I.getElementText(labelElement)).equal(label);
 });
 
 Then('I select yes for second secondary court area of law and court type', async () => {
-  const selector = '#thirdFieldsOfLawRadio';
+  const selector = '#secondaryFieldsOfLawRadio2';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
-  const selectorAolChildren = "input[name='thirdAddressAOLItems1'][data-name='thirdChildren']";
-  const selectorCountyCourt = "input[name='thirdAddressCourtItems1'][data-name='thirdCounty Court']";
+  const selectorAolChildren = "input[name='secondaryAddressAOLItems1'][data-name='thirdChildren']";
+  const selectorCountyCourt = "input[name='secondaryAddressCourtItems1'][data-name='thirdCounty Court']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);
   await I.click(selectorCountyCourt);
 });
+
