@@ -184,7 +184,7 @@
 
 {{ govukRadios({
   classes: "govuk-radios--inline",
-  idPrefix: "secondaryFieldsOfLawRadio",
+  idPrefix: "secondaryFieldsOfLawRadio"+ loop.index,
   name: "secondaryFieldsOfLawRadio" + (loop.index - 1),
   value: "No",
   fieldset: {
