@@ -33,7 +33,6 @@ export class CourtsController {
   private setUpToggleClosedCourtsDisplay(): void {
     $(this.contentId).on('change', `input[name=${this.toggleClosedCourtsDisplay}]`, e => {
       e.preventDefault();
-      console.log('ping toggle closed');
       CourtsTableSearch.setUpTable();
     });
   }
@@ -48,8 +47,6 @@ export class CourtsController {
   private setUpCourtsRegionSearchFilter(): void {
     $(this.contentId).on('change', `select[name=${this.searchCourtsRegionFilter}]`, e => {
       e.preventDefault();
-      console.log('ping ping ping');
-
       CourtsTableSearch.setUpTable();
     });
   }
