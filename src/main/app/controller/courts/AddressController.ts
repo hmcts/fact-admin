@@ -38,7 +38,6 @@ export class AddressController {
   postcodeNotFoundError = 'Postcode entered could not be found.';
   writeToUsAddressType = 'Write to us';
   visitOrContactUsAddressType = 'Visit or contact us';
-  visitUsAddressType = 'Visit us';
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address 1: ';
   thirdAddressPrefix = 'Secondary Address 2: ';
@@ -506,7 +505,7 @@ export class AddressController {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[1]));
     }
     //need to make sure that visit us address is saved in first index of the addresses array being posted to the api.
-    visitUsAddress = apiAddresses.filter(c => c.type_id!== writeToUsTypeId);
+    visitUsAddress = apiAddresses.filter(c => c.type_id !== writeToUsTypeId);
     apiAddresses = visitUsAddress.concat(apiAddresses.filter(c => c.type_id == writeToUsTypeId));
     return apiAddresses;
   }
