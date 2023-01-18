@@ -83,7 +83,6 @@ export class AddressController {
     };
 
 
-
     addresses.secondary[0].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[0].secondaryFieldsOfLawRadio,
       req.body.secondaryAddressAOLItems0, req.body.secondaryAddressCourtItems0);
     addresses.secondary[1].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[1].secondaryFieldsOfLawRadio,
@@ -115,7 +114,7 @@ export class AddressController {
     }
 
     // Post addresses to API if valid
-    await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses))
+    await req.scope.cradle.api.updateCourtAddresses(req.params.slug, this.convertToApiType(addresses, writeToUsTypeId))
       .then(async (addressList: CourtAddress[]) => {
         await this.render(req, res, true, this.convertToDisplayAddresses(addressList, areasOfLaw, courtTypes));
       })
@@ -490,8 +489,10 @@ export class AddressController {
     };
   }
 
-  private convertToApiType(courtAddresses: DisplayCourtAddresses): CourtAddress[] {
-    const apiAddresses: CourtAddress[] = [];
+  private convertToApiType(courtAddresses: DisplayCourtAddresses, writeToUsTypeId: number): CourtAddress[] {
+    let apiAddresses: CourtAddress[] = [];
+    let visitUsAddress: CourtAddress[] = [];
+
     if (courtAddresses.primary) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.primary));
     }
@@ -503,6 +504,9 @@ export class AddressController {
       courtAddresses.secondary[1].town && courtAddresses.secondary[1].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[1]));
     }
+    //need to make sure that visit us address is saved in first index of the addresses array being posted to the api.
+    visitUsAddress = apiAddresses.filter(c => c.type_id !== writeToUsTypeId);
+    apiAddresses = visitUsAddress.concat(apiAddresses.filter(c => c.type_id == writeToUsTypeId));
     return apiAddresses;
   }
 
