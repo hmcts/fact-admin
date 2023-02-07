@@ -145,6 +145,7 @@
     "node-sass/meow/read-pkg-up/read-pkg/normalize-package-data/resolve/path-parse": ">=1.0.7",
     "request/http-signature/jsprim/json-schema": ">=0.4.0",
     "@hmcts/nodejs-healthcheck/@hmcts/nodejs-logging/moment": ">=2.29.4",
+    "@hmcts/nodejs-healthcheck/superagent/cookiejar": ">=2.1.4",
     "@hmcts/nodejs-logging/moment": ">=2.29.4",
     "html-webpack-plugin/pretty-error/renderkid/css-select/nth-check": ">=2.0.1",
     "awilix/fast-glob/glob-parent": ">=6.0.1",
