@@ -33,7 +33,7 @@ withPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
 
-  after('build') {
+  afterSuccess('build') {
     yarnBuilder.yarn('build')
   }
 }
