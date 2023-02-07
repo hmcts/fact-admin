@@ -9,6 +9,7 @@ export const puppeteerConfig = {
   args: [
     '--no-sandbox',
     '--window-size=1440,1400',
+    '--shm-size=1gb'
   ],
   username: '',
   viewerUsername: '',
