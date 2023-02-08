@@ -142,7 +142,7 @@ When('I click delete button for Area of law {string}',async (aolName: string) =>
 });
 
 Then('The error message displays {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selector = '#areasOfLawListContent > div.govuk-error-summary > div > div > ul > li';

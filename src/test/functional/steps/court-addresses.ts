@@ -131,7 +131,7 @@ Then('I enter the secondary address postcode {string}', async (postcode: string)
 });
 
 Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(1)';
@@ -148,7 +148,7 @@ Then('The error message display is {string} {string} {string}', async (errPrimar
 });
 
 Then('The error message display is {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selector = '#addressesContent > div.govuk-error-summary > div > div  > div > ul > li';

@@ -115,7 +115,7 @@ When('I enter duplicated opening hour description', async () => {
 
 Then('An error is displayed for opening hours with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -135,7 +135,7 @@ Then('An error is displayed for opening hours with summary {string} and descript
 
 Then('An error is displayed for opening hours with summary {string} and hours field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);

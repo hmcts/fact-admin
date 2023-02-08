@@ -58,7 +58,7 @@ When('I click facility type save button', async () => {
 });
 
 Then('The error message displays for facility type {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selector = '#facilityTypesListContent > div.govuk-error-summary > div > div > ul > li';

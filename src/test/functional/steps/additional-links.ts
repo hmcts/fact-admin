@@ -120,7 +120,7 @@ When('When I enter a new Additional Links entry by adding URL {string} and leave
 
 Then('An error is displayed for additional links with summary {string} and display name field message {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -149,7 +149,7 @@ When('When I enter a new Additional Links entry by adding english display name {
 
 Then('An error is displayed for additional links with summary {string} and URL field message {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -174,7 +174,7 @@ When('I clear additional link fields', async () => {
 
 Then('An error is displayed for additional links with summary {string} and URL field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
@@ -198,7 +198,7 @@ Then('An error is displayed for additional links with summary {string} and URL f
 
 Then('An error is displayed for additional links with summary {string} and display name field messages {string}', async (msgSummery: string, errorMsg: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);

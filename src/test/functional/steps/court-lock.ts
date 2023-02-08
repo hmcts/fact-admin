@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
 
 Then('An error is displayed for court lock with title {string} and summery {string}', async (errorTitle: string, errorSummery: string) => {
-  const errorTitleSelector = '#error-summary-title';
+  const errorTitleSelector = '.govuk-error-summary__title';
   const errorSummerySelector = '#main-content > div.govuk-error-summary > div > div  > ul > li';
 
   expect(await I.checkElement(errorTitleSelector)).equal(true);

@@ -102,7 +102,7 @@ When('I add address {string}', async (address: string) => {
 });
 
 Then('A red error message display', async () => {
-  const elementExist = await I.checkElement('#error-summary-title');
+  const elementExist = await I.checkElement('.govuk-error-summary__title');
   expect(elementExist).equal(true);
 });
 
@@ -126,7 +126,7 @@ When('I add Description from the dropdown {int} and wrong Email-Address {string}
   });
 
 Then('An error message is displayed with the text {string}', async (msg: string) => {
-  expect(await I.checkElement('#error-summary-title')).equal(true);
+  expect(await I.checkElement('#.govuk-error-summary__title')).equal(true);
   expect(await I.checkElement('#emailsContent > div > div > div > ul > li')).equal(true);
   expect(
     await I.getElementText(                                                // Get Text for the element below
@@ -172,7 +172,7 @@ When('I click Save button', async () => {
 
 Then('An error is displayed for email address with summary {string} and address field message {string}', async (summaryErrMsg: string, fieldErrMsg: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);

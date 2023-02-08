@@ -70,7 +70,7 @@ Then('I click on Add new Opening Type',async () => {
 });
 
 Then('The error message displays for a Opening type {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selector = '#openingTypesListContent > div.govuk-error-summary > div > div > ul > li';

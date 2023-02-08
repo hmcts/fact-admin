@@ -69,7 +69,7 @@ Then('I click on Add new Contact Type',async () => {
 });
 
 Then('The error message displays for a Contact type {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
   const selector = '#contactTypeListContent > div.govuk-error-summary > div > div > ul > li';

@@ -52,10 +52,10 @@ Then('I click on add new court button', async () => {
 });
 
 Then('The error message displays for a existing court name {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#addNewCourtForm > div.govuk-error-summary > div > ul > li';
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div >  ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
@@ -67,7 +67,7 @@ Then('The error message displays for invalid name {string}', async (errMessage: 
 });
 
 Then('The error message displays for not adding service area {string}', async (errMessage: string) => {
-  const selector = '#addNewCourtForm > div.govuk-error-summary > div > ul > li';
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
