@@ -67,7 +67,7 @@ Then('The error message displays for invalid name {string}', async (errMessage: 
 });
 
 Then('The error message displays for not adding service area {string}', async (errMessage: string) => {
-  const selector = '#addNewCourtForm > div.govuk-error-summary > div > > div > ul > li';
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
