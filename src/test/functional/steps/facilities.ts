@@ -147,7 +147,7 @@ When('An error is displayed for facilities with summary {string} and field messa
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -170,7 +170,7 @@ When('An error is displayed for facilities with summary {string} and description
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -188,7 +188,7 @@ When('An error is displayed for facilities with summary {string} and name field 
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);

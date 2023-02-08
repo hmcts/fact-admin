@@ -125,7 +125,7 @@ Then('An error is displayed for additional links with summary {string} and displ
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#additionalLinksContent > div > div > ul > li';
+  selector = '#additionalLinksContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
@@ -154,7 +154,7 @@ Then('An error is displayed for additional links with summary {string} and URL f
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#additionalLinksContent > div > div > ul > li';
+  selector = '#additionalLinksContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
@@ -179,7 +179,7 @@ Then('An error is displayed for additional links with summary {string} and URL f
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#additionalLinksContent > div > div > ul > li';
+  selector = '#additionalLinksContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);
@@ -203,7 +203,7 @@ Then('An error is displayed for additional links with summary {string} and displ
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#additionalLinksContent > div > div > ul > li';
+  selector = '#additionalLinksContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(msgSummery);

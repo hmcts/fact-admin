@@ -96,7 +96,7 @@ Then('An error is displayed for application progression with summary {string}', 
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
-  const selector = '#applicationProgressionContent > div > div > ul > li';
+  const selector = '#applicationProgressionContent > div > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

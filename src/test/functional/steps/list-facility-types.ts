@@ -61,7 +61,7 @@ Then('The error message displays for facility type {string}', async (errMessage:
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
-  const selector = '#facilityTypesListContent > div.govuk-error-summary > div > ul > li';
+  const selector = '#facilityTypesListContent > div.govuk-error-summary > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

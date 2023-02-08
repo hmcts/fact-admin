@@ -127,10 +127,10 @@ When('I add Description from the dropdown {int} and wrong Email-Address {string}
 
 Then('An error message is displayed with the text {string}', async (msg: string) => {
   expect(await I.checkElement('#error-summary-title')).equal(true);
-  expect(await I.checkElement('#emailsContent > div > div > ul > li')).equal(true);
+  expect(await I.checkElement('#emailsContent > div > div > div > ul > li')).equal(true);
   expect(
     await I.getElementText(                                                // Get Text for the element below
-      await I.getElement('#emailsContent > div > div > ul > li'))) // Get the element for the error
+      await I.getElement('#emailsContent > div > div > div > ul > li'))) // Get the element for the error
     .equal(msg);
 });
 
@@ -177,7 +177,7 @@ Then('An error is displayed for email address with summary {string} and address 
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#emailsContent > div > div > ul > li';
+  selector = '#emailsContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
 
   const errorListElement = await I.getElement(selector);

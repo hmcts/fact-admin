@@ -116,7 +116,7 @@ Then('an error message is displayed for phone number tab with summary {string} a
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#phoneNumbersContent > div > div > ul > li';
+  selector = '#phoneNumbersContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -137,7 +137,7 @@ Then('an error message is displayed for phone number tab with summary {string} a
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#phoneNumbersContent > div > div > ul > li';
+  selector = '#phoneNumbersContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);

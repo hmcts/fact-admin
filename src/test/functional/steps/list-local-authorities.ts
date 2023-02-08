@@ -65,7 +65,7 @@ Then('Success message is displayed for local authorities list with summary {stri
 
 Then('An error is displayed for edit local authorities with title {string} and summary {string}', async (errorTitle: string, errorSummery: string) => {
   const errorTitleSelector = '#error-summary-title';
-  const errorSummerySelector = '#localAuthoritiesListContent > div.govuk-error-summary > div > ul > li';
+  const errorSummerySelector = '#localAuthoritiesListContent > div.govuk-error-summary > div > div > ul > li';
 
   expect(await I.checkElement(errorTitleSelector)).equal(true);
   expect(await I.checkElement(errorSummerySelector)).equal(true);

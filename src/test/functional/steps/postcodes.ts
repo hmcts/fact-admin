@@ -49,7 +49,7 @@ Then('The error message display for the postcodes {string}', async (errorMessage
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
-  const selector = '#postcodesContent > div.govuk-error-summary > div > ul';
+  const selector = '#postcodesContent > div.govuk-error-summary > div >  div > ul';
   const errorList = await I.getElement(selector);
   expect(await I.getElementText(errorList)).equal(errorMessage);
 });

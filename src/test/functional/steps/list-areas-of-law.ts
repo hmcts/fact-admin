@@ -145,7 +145,7 @@ Then('The error message displays {string}', async (errMessage: string) => {
   const errorTitle = await I.checkElement('#error-summary-title');
   expect(errorTitle).equal(true);
 
-  const selector = '#areasOfLawListContent > div.govuk-error-summary > div > ul > li';
+  const selector = '#areasOfLawListContent > div.govuk-error-summary > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

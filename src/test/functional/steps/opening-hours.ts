@@ -120,7 +120,7 @@ Then('An error is displayed for opening hours with summary {string} and descript
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#openingTimesContent > div > div > ul > li';
+  selector = '#openingTimesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -140,7 +140,7 @@ Then('An error is displayed for opening hours with summary {string} and hours fi
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#openingTimesContent > div > div > ul > li';
+  selector = '#openingTimesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
