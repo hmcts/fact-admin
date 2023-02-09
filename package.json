@@ -111,7 +111,7 @@
     "merge": ">=2.1.1",
     "mini-css-extract-plugin": "^2.6.1",
     "nock": "^13.2.8",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "nodemon": "^2.0.20",
     "pa11y": "^6.2.3",
     "puppeteer": "19.6.3",
