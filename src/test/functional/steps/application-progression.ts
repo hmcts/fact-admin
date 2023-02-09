@@ -93,10 +93,10 @@ Then('the last email is {string}', async (lastEmail: string) => {
 });
 
 Then('An error is displayed for application progression with summary {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#applicationProgressionContent > div > div > ul > li';
+  const selector = '#applicationProgressionContent > div > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

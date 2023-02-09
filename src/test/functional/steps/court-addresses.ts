@@ -131,27 +131,27 @@ Then('I enter the secondary address postcode {string}', async (postcode: string)
 });
 
 Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(1)';
+  const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(1)';
   const eleErrPrimarAdd = await I.getElement(selectorErrPrimaryAdd);
   expect(await I.getElementText(eleErrPrimarAdd)).equal(errPrimaryAdd);
 
-  const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(2)';
+  const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(2)';
   const eleErrSecondaryTown = await I.getElement(selectorErrSecondaryTown);
   expect(await I.getElementText(eleErrSecondaryTown)).equal(errSecondaryTown);
 
-  const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(3)';
+  const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(3)';
   const eleErrSecondaryPostcode = await I.getElement(selectorErrSecondaryPostcode);
   expect(await I.getElementText(eleErrSecondaryPostcode)).equal(errSecondaryPostcode);
 });
 
 Then('The error message display is {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#addressesContent > div.govuk-error-summary > div > ul > li';
+  const selector = '#addressesContent > div.govuk-error-summary > div  > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

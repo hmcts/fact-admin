@@ -1,5 +1,10 @@
 import {Application} from 'express';
 import session from 'express-session';
+declare module 'express-session' {
+  export interface SessionData {
+    user: { [key: string]: any };
+  }
+}
 import ConnectRedis from 'connect-redis';
 import * as redis from 'redis';
 import config from 'config';
