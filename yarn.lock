@@ -6350,7 +6350,7 @@ __metadata:
     sinon-chai: ^3.7.0
     sonar-scanner: ^3.1.0
     style-loader: ^3.3.1
-    tinymce: ^5.10.7
+    tinymce: ^6.3.1
     ts-jest: ^28.0.7
     ts-loader: ^9.3.1
     ts-node: ^10.9.1
@@ -12219,10 +12219,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinymce@npm:^5.10.7":
-  version: 5.10.7
-  resolution: "tinymce@npm:5.10.7"
-  checksum: fe471f1004a29523d5ac39fc5023c2aa30efee653366dfd1c3c6649be2178bd04f87985c9cec00662465cd623a4f3572734ee1009c4edcf0f5af339dd7a544ad
+"tinymce@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "tinymce@npm:6.3.1"
+  checksum: 43c5dd3de9bfbdc3092b4eeeca56cff5df39a097764b60bc12940161f69e396f9fed590528d9d29457f8887c97e4213f603ed8cee9796d851dcce5dfb998d934
   languageName: node
   linkType: hard
 
