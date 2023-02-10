@@ -38,6 +38,7 @@ export class CourtsTableSearch {
    * of the tbody element of the table accordingly
    *
    * @param searchFilterValue the search value from the 'search courts or tribunals' input field
+   * @param regionFilterValue the id for the selected region in the drop-down selector
    * @param includeClosedCourts whether or not to include closed courts in the result
    * @param orderNameAscendingFilter whether to sort by name asc or desc
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
@@ -108,6 +109,7 @@ export class CourtsTableSearch {
    *
    * @param courts the list of public courts
    * @param searchFilterValue the string value of the search input field
+   * @param regionFilterValue the id value of the selected region in the drop-down
    * @param includeClosedCourts whether or not to include closed courts in the result
    * @param orderNameAscendingFilter whether to sort by name asc or desc
    * @param orderUpdatedAscendingFilter whether to sort by last updated date asc or desc
