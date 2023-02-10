@@ -26,6 +26,8 @@ export class CourtsController {
         this.setUpCourtsRegionSearchFilter();
         this.setUpAscDecNameFilter();
         this.setUpAscDecUpdatedDateFilter();
+        // To hide the region id column
+        $('td:nth-child(2)').hide();
       }
     });
   }

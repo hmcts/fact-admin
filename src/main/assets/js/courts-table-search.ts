@@ -28,6 +28,8 @@ export class CourtsTableSearch {
       $(this.searchCourtsByRegionId).val() as string,
       $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
       toggleValues[0], toggleValues[1]);
+    // To hide the region id column
+    $('td:nth-child(2)').hide();
   }
 
   /**
