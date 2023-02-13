@@ -2278,4 +2278,19 @@ describe('FactApi', () => {
 
     await expect(api.getCourtLocks('kupo-court-slug')).resolves.toEqual(results.data);
   });
+
+  test('Should return results from getRegions request', async () => {
+    const results = {
+      data: [
+        {id: 100, name: 'North West', country: 'England'},
+        {id: 200, name: 'North Wales', country: 'Wales'},
+        {id: 200, name: 'West Midlands', country: 'England'},
+      ]
+    };
+    const mockAxios = {get: async () => results} as any;
+    const mockLogger = {} as any;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getRegions()).resolves.toEqual(results.data);
+  });
 });
