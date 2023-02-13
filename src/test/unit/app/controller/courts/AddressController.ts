@@ -93,7 +93,6 @@ describe('AddressesController', () => {
         'town_cy': 'Redville_cy',
         'county_id': 1,
         postcode: 'RR1 2AB',
-        'region': 'North East'
       },
       {
         'type_id': 200,
@@ -159,7 +158,6 @@ describe('AddressesController', () => {
         'town_cy': 'Brownville',
         'county_id': 2,
         postcode: 'BB11 1BC',
-        'region': 'North East'
       },
       {
         'type_id': 200,
@@ -171,7 +169,6 @@ describe('AddressesController', () => {
         'town_cy': 'Birmingham',
         'county_id': 3,
         postcode: 'B1 1AA',
-        'region': 'North East'
       }
     ];
   };
