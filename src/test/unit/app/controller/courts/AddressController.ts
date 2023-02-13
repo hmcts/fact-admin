@@ -146,7 +146,8 @@ describe('AddressesController', () => {
         town: 'Redville',
         'town_cy': 'Redville_cy',
         'county_id': 1,
-        postcode: 'RR1 2AB'
+        postcode: 'RR1 2AB',
+
       },
       {
         'type_id': 200,
@@ -193,8 +194,7 @@ describe('AddressesController', () => {
   const getValidDisplayAddresses: () => DisplayCourtAddresses = () => {
     const courtAddresses = getValidCourtAddresses();
     const primary = courtAddresses[0];
-    const secondary = courtAddresses[1];
-    const third = courtAddresses[2];
+    const secondary : CourtAddress[] = [courtAddresses[1],courtAddresses[2]] ;
 
     return {
       primary: {
@@ -212,16 +212,16 @@ describe('AddressesController', () => {
           courts: []
         }
       },
-      secondary: {
-        'type_id': secondary.type_id,
-        'description': secondary.description,
-        'description_cy': secondary.description_cy,
-        'address_lines': secondary.address_lines.join('\n'),
-        'address_lines_cy': secondary.address_lines_cy.join('\n'),
-        town: secondary.town,
-        'town_cy': secondary.town_cy,
+      secondary: [{
+        'type_id': secondary[0].type_id,
+        'description': secondary[0].description,
+        'description_cy': secondary[0].description_cy,
+        'address_lines': secondary[0].address_lines.join('\n'),
+        'address_lines_cy': secondary[0].address_lines_cy.join('\n'),
+        town: secondary[0].town,
+        'town_cy': secondary[0].town_cy,
         'county_id': 2,
-        postcode: secondary.postcode,
+        postcode: secondary[0].postcode,
         fields_of_law: {
           areas_of_law: [
             getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
@@ -234,16 +234,16 @@ describe('AddressesController', () => {
           courts: getAllRadioCourtTypes('secondary')
         }
       },
-      third: {
-        'type_id': third.type_id,
-        'description': third.description,
-        'description_cy': third.description_cy,
-        'address_lines': third.address_lines.join('\n'),
-        'address_lines_cy': third.address_lines_cy.join('\n'),
-        town: third.town,
-        'town_cy': third.town_cy,
+      {
+        'type_id': secondary[1].type_id,
+        'description': secondary[1].description,
+        'description_cy': secondary[1].description_cy,
+        'address_lines': secondary[1].address_lines.join('\n'),
+        'address_lines_cy': secondary[1].address_lines_cy.join('\n'),
+        town: secondary[1].town,
+        'town_cy': secondary[1].town_cy,
         'county_id': 3,
-        postcode: third.postcode,
+        postcode: secondary[1].postcode,
         fields_of_law: {
           areas_of_law: [
             getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false, 'third'),
@@ -259,8 +259,10 @@ describe('AddressesController', () => {
             getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'third'),
           ]
         }
-      }
-    };
+      }]
+    }
+
+    ;
   };
 
   const addressTypes: AddressType[] = [
@@ -301,18 +303,16 @@ describe('AddressesController', () => {
 
   const getExpectedResults = (
     primaryAddress: DisplayAddress,
-    secondaryAddress: DisplayAddress,
-    thirdAddress: DisplayAddress,
+    secondaryAddress: DisplayAddress[],
     expectedErrors: { text: string }[],
     primaryPostcodeInvalid: boolean,
     secondaryPostcodeInvalid: boolean,
     thirdPostcodeInvalid: boolean,
     isFatalError: boolean) => {
     return {
-      addresses: {primary: primaryAddress, secondary: secondaryAddress, third: thirdAddress},
+      addresses: {primary: primaryAddress, secondary: secondaryAddress},
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
-      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
       counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
@@ -330,11 +330,11 @@ describe('AddressesController', () => {
       areas_of_law: getAllRadioAreasOfLaw('primary'),
       courts: getAllRadioCourtTypes('primary')
     };
-    courtAddressInfoDuplicate.addresses.secondary.fields_of_law = {
+    courtAddressInfoDuplicate.addresses.secondary[0].fields_of_law = {
       areas_of_law: getAllRadioAreasOfLaw('secondary'),
       courts: getAllRadioCourtTypes('secondary')
     };
-    courtAddressInfoDuplicate.addresses.third.fields_of_law = {
+    courtAddressInfoDuplicate.addresses.secondary[1].fields_of_law = {
       areas_of_law: getAllRadioAreasOfLaw('third'),
       courts: getAllRadioCourtTypes('third')
     };
@@ -368,7 +368,7 @@ describe('AddressesController', () => {
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, expectedAddresses.third, [], false, false, false, false);
+      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, [], false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // When there is no secondary address or third address
@@ -377,7 +377,7 @@ describe('AddressesController', () => {
     };
     await controller.get(req, res);
     // Expect the secondary/third addresses to contain fields of law to allow for selection on creation of a new address
-    expectedResults = getExpectedResults(expectedAddresses.primary, {
+    expectedResults = getExpectedResults(expectedAddresses.primary, [{
       fields_of_law: {
         areas_of_law: getAllRadioAreasOfLaw('secondary'),
         courts: getAllRadioCourtTypes('secondary')
@@ -388,30 +388,29 @@ describe('AddressesController', () => {
         areas_of_law: getAllRadioAreasOfLaw('third'),
         courts: getAllRadioCourtTypes('third')
       }
-    }, [], false, false, false, false);
+    }], [], false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
   test('Should post court addresses if addresses are valid', async () => {
     const slug = 'central-london-county-court';
     const addresses = getValidDisplayAddresses();
+    addresses.secondary[0].secondaryFieldsOfLawRadio = 'yes';
+    addresses.secondary[1].secondaryFieldsOfLawRadio = 'yes';
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
-      secondaryFieldsOfLawRadio: 'yes',
-      secondaryAddressAOLItems: [
+      secondaryAddressAOLItems0: [
         JSON.stringify(getAreaOfLaw(1, 'Adoption')),
         JSON.stringify(getAreaOfLaw(3, 'Children'))
       ],
       secondaryAddressCourtItems: [],
-      thirdFieldsOfLawRadio: 'yes',
-      thirdAddressAOLItems: [
+      secondaryAddressAOLItems1: [
         JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')),
         JSON.stringify(getAreaOfLaw(4, 'Civil Partnership'))
       ],
-      thirdAddressCourtItems: [
+      secondaryAddressCourtItems1: [
         JSON.stringify(getCourtType(1, 'County Court', 456)),
         JSON.stringify(getCourtType(2, 'Crown Court', 789))
       ],
@@ -464,7 +463,6 @@ describe('AddressesController', () => {
       addresses: null,
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
-      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
       counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
@@ -494,7 +492,6 @@ describe('AddressesController', () => {
       addresses: null,
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
-      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
       counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
@@ -524,7 +521,6 @@ describe('AddressesController', () => {
       addresses: null,
       addressTypesPrimary: expectedSelectItems,
       addressTypesSecondary: [expectedSelectItems[0], expectedSelectItems[1]],
-      addressTypesThird: [expectedSelectItems[0], expectedSelectItems[1]],
       counties: expectedCounties,
       writeToUsTypeId: addressTypes[1].id,
       updated: false,
@@ -553,7 +549,6 @@ describe('AddressesController', () => {
       addresses: getValidDisplayAddresses(),
       addressTypesPrimary: [],
       addressTypesSecondary: [],
-      addressTypesThird: [],
       counties: expectedCounties,
       writeToUsTypeId: null,
       updated: false,
@@ -571,7 +566,7 @@ describe('AddressesController', () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
-      'secondary': {
+      'secondary': [{
         'type_id': 100,
         description: 'description',
         'description_cy': 'description_cy',
@@ -583,7 +578,7 @@ describe('AddressesController', () => {
         postcode: '',
         fields_of_law: null
       },
-      'third': {
+      {
         'type_id': 100,
         description: 'description',
         'description_cy': 'description_cy',
@@ -594,13 +589,12 @@ describe('AddressesController', () => {
         'county_id': 2,
         postcode: '',
         fields_of_law: null
-      }
+      }]
     };
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -620,13 +614,12 @@ describe('AddressesController', () => {
   test('Should not post court addresses if address type not selected', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
     addresses.primary['type_id'] = null;
-    addresses.secondary['type_id'] = null;
-    addresses.third['type_id'] = null;
+    addresses.secondary[0]['type_id'] = null;
+    addresses.secondary[1]['type_id'] = null;
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       secondaryFieldsOfLawRadio: 'yes',
       secondaryAddressAOLItems: [],
       secondaryAddressCourtItems: [],
@@ -650,7 +643,7 @@ describe('AddressesController', () => {
 
     ];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -662,7 +655,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -675,7 +667,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         true, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
@@ -683,12 +675,11 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary address exists but postcode is missing', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    addresses.secondary.postcode = '';
+    addresses.secondary[0].postcode = '';
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -701,7 +692,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, true, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
@@ -715,7 +706,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -730,20 +720,19 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.addressRequiredError},
       {text: controller.primaryAddressPrefix + controller.townRequiredError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
   test('Should not post court addresses if secondary address exists but address lines are missing', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    addresses.secondary['address_lines'] = '';
-    addresses.secondary.town = '';
+    addresses.secondary[0]['address_lines'] = '';
+    addresses.secondary[0].town = '';
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -759,7 +748,7 @@ describe('AddressesController', () => {
       {text: controller.secondaryAddressPrefix + controller.townRequiredError}
     ];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -771,7 +760,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -783,7 +771,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -791,12 +779,11 @@ describe('AddressesController', () => {
   test('Should not post court addresses if secondary address postcode is invalid', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
 
-    addresses.secondary.postcode = 'SW1A 99XYZ'; // invalid
+    addresses.secondary[0].postcode = 'SW1A 99XYZ'; // invalid
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -809,7 +796,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -820,43 +807,43 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id, // Write to us
       '_csrf': CSRF.create()
     };
 
     // Both have different visit us types
     addresses.primary['type_id'] = addressTypes[2].id; // Visit or contact us
-    addresses.secondary['type_id'] = addressTypes[0].id; // Visit us
+    addresses.secondary[0]['type_id'] = addressTypes[0].id; // Visit us
 
     await controller.put(req, res);
 
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{text: controller.multipleVisitAddressError}];
     let expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
         expectedError, false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Both have same visit us type
     addresses.primary['type_id'] = addressTypes[0].id; // Visit us
-    addresses.secondary['type_id'] = addressTypes[0].id; // Visit us
+    addresses.secondary[0]['type_id'] = addressTypes[0].id; // Visit us
 
     await controller.put(req, res);
 
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     expectedError = [{text: controller.multipleVisitAddressError}];
     expectedResults =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-        req.body.third, expectedError, false, false, false,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false,
         false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
   test('Should not post court addresses if secondary addresses have conflicting areas of law or court types', async () => {
     const addresses = getValidDisplayAddresses();
-    addresses.secondary.fields_of_law = {
+    addresses.secondary[0].secondaryFieldsOfLawRadio = 'yes';
+    addresses.secondary[1].secondaryFieldsOfLawRadio = 'yes';
+    addresses.secondary[0].fields_of_law = {
       areas_of_law: [
         getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
         getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
@@ -871,7 +858,7 @@ describe('AddressesController', () => {
         getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'secondary'),
       ]
     };
-    addresses.third.fields_of_law = {
+    addresses.secondary[1].fields_of_law = {
       areas_of_law: [
         getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'third'),
         getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true, 'third'),
@@ -889,22 +876,19 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
-      secondaryFieldsOfLawRadio: 'yes',
-      secondaryAddressAOLItems: [
+      secondaryAddressAOLItems0: [
         JSON.stringify(getAreaOfLaw(1, 'Adoption')),
         JSON.stringify(getAreaOfLaw(3, 'Children'))
       ],
-      secondaryAddressCourtItems: [
+      secondaryAddressCourtItems0: [
         JSON.stringify(getCourtType(1, 'County Court', 456))
       ],
-      thirdFieldsOfLawRadio: 'yes',
-      thirdAddressAOLItems: [
+      secondaryAddressAOLItems1: [
         JSON.stringify(getAreaOfLaw(1, 'Adoption')),
         JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')),
         JSON.stringify(getAreaOfLaw(4, 'Civil Partnership'))
       ],
-      thirdAddressCourtItems: [
+      secondaryAddressCourtItems1: [
         JSON.stringify(getCourtType(1, 'County Court', 456)),
         JSON.stringify(getCourtType(2, 'Crown Court', 789))
       ],
@@ -917,9 +901,9 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     const expectedError = [{text: controller.fieldsOfLawDuplicateError + '"Adoption, County Court"'}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
-    expectedResults.addresses.secondary.fields_of_law = {
+    expectedResults.addresses.secondary[0].fields_of_law = {
       areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
         getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
         getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', true, 'secondary'),
@@ -930,7 +914,7 @@ describe('AddressesController', () => {
         getRadioItem(2, JSON.stringify(getCourtType(2, 'Crown Court', 789)), 'Crown Court', false, 'secondary'),
         getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'secondary')]
     };
-    expectedResults.addresses.third.fields_of_law = {
+    expectedResults.addresses.secondary[1].fields_of_law = {
       areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'third'),
         getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', true, 'third'),
         getRadioItem(3, JSON.stringify(getAreaOfLaw(3, 'Children')), 'Children', false, 'third'),
@@ -951,7 +935,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -965,21 +948,20 @@ describe('AddressesController', () => {
     errorResponse.response.data = {'message': addresses.primary.postcode};
     await controller.put(req, res);
     let expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeNotFoundError}];
-    let expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-      req.body.third, expectedError, true, false, false, false));
+    let expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
-    errorResponse.response.data = {'message': addresses.secondary.postcode};
+    errorResponse.response.data = {'message': addresses.secondary[0].postcode};
     await controller.put(req, res);
     expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
       expectedError, false, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Both postcodes invalid and same
-    addresses.primary.postcode = addresses.secondary.postcode;
-    errorResponse.response.data = {'message': addresses.primary.postcode + ',' + addresses.secondary.postcode };
+    addresses.primary.postcode = addresses.secondary[0].postcode;
+    errorResponse.response.data = {'message': addresses.primary.postcode + ',' + addresses.secondary[0].postcode };
     await controller.put(req, res);
     expectedError = [
       {text: controller.primaryAddressPrefix + controller.postcodeNotFoundError},
@@ -987,7 +969,7 @@ describe('AddressesController', () => {
     ];
 
     expectedResults =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         true, true, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -995,7 +977,7 @@ describe('AddressesController', () => {
     errorResponse.response.data = {'message':null};
     await controller.put(req, res);
     expectedError = [{text: controller.updateAddressError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
       expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -1006,7 +988,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1020,7 +1001,7 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
         expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -1031,7 +1012,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1046,7 +1026,7 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.courtLockedExceptionMsg + 'test'}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
         expectedError, false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -1057,7 +1037,6 @@ describe('AddressesController', () => {
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1071,7 +1050,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
@@ -1079,13 +1058,12 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary and primary address are identical', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    addresses.secondary.address_lines = '54 Green Street';
-    addresses.secondary.postcode = 'RR1 2AB';
+    addresses.secondary[0].address_lines = '54 Green Street';
+    addresses.secondary[0].postcode = 'RR1 2AB';
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1098,20 +1076,19 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
   test('Should not post court addresses if secondary and third address are identical', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    addresses.secondary.address_lines = '12 Yellow Road';
-    addresses.secondary.postcode = 'B1 1AA';
+    addresses.secondary[0].address_lines = '12 Yellow Road';
+    addresses.secondary[0].postcode = 'B1 1AA';
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      third: addresses.third,
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1124,7 +1101,7 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, req.body.third, expectedError,
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });

@@ -61,7 +61,7 @@ Feature: Court-addresses
   Scenario: Adding third address of type: write to us
     Given I will make sure to clear all entries of third address
     When I select the third address type "5881"
-    Then I enter third address address "test address" in the Address textbox
+    Then I enter third address address "third test address" in the Address textbox
     Then I enter third address welsh address "test welsh address" in the Address Welsh textbox
     Then I enter third address "town" in the Town textbox
     Then I enter third address "welsh town" in the town Welsh textbox
@@ -86,7 +86,7 @@ Feature: Court-addresses
     Examples:
       | town     |  postcode | secondary address             |
       | Aberdare |  CF44 0JE | The Court House, Cwmbach Road |
-
+#
   Scenario Outline: Adding primary address with invalid postcode
     Given I will make sure to clear all entries of the primary address
     When I select the Address Type "5880"

@@ -95,71 +95,71 @@ Then('A green message is displayed for the updated address {string}', async (mes
 });
 
 When('I will make sure to clear all entries for secondary address', async () => {
-  const selector = 'button[name="removeSecondaryAddress"]';
+  const selector = 'button[name="removeSecondaryAddress1"]';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.click(selector);
 });
 
 Then('I select the secondary address type as {string}', async (addressType: string) => {
-  const selector = '#secondaryAddressType';
+  const selector = '#type_id-0';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, addressType);
 });
 
 Then('I enter the secondary court address {string} in the Address textbox', async (address: string) => {
-  const selector = '#secondaryAddressLines';
+  const selector = '#address_lines-0';
   await populateField(selector, address);
 });
 
 Then('I enter the secondary address town {string}', async (town: string) => {
-  const selector = '#secondaryAddressTown';
+  const selector = '#town-0';
   await populateField(selector, town);
 });
 
 Then('I select the secondary County {string}', async (county: string) => {
-  const selector = '#secondaryAddressCounty';
+  const selector = '#county_id-0';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
 });
 
 Then('I enter the secondary address postcode {string}', async (postcode: string) => {
-  const selector = '#secondaryAddressPostcode';
+  const selector = '#postcode-0';
   await populateField(selector, postcode);
 });
 
 Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(1)';
+  const selectorErrPrimaryAdd = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(1)';
   const eleErrPrimarAdd = await I.getElement(selectorErrPrimaryAdd);
   expect(await I.getElementText(eleErrPrimarAdd)).equal(errPrimaryAdd);
 
-  const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(2)';
+  const selectorErrSecondaryTown = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(2)';
   const eleErrSecondaryTown = await I.getElement(selectorErrSecondaryTown);
   expect(await I.getElementText(eleErrSecondaryTown)).equal(errSecondaryTown);
 
-  const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > ul > li:nth-child(3)';
+  const selectorErrSecondaryPostcode = '#addressesContent > div.govuk-error-summary > div > div > ul > li:nth-child(3)';
   const eleErrSecondaryPostcode = await I.getElement(selectorErrSecondaryPostcode);
   expect(await I.getElementText(eleErrSecondaryPostcode)).equal(errSecondaryPostcode);
 });
 
 Then('The error message display is {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#addressesContent > div.govuk-error-summary > div > ul > li';
+  const selector = '#addressesContent > div.govuk-error-summary > div  > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
 
 Given('I will make sure to clear all entries of third address', async () => {
-  const elementExist = await I.checkElement('button[name="removeThirdAddress"]');
+  const elementExist = await I.checkElement('button[name="removeSecondaryAddress2"]');
   expect(elementExist).equal(true);
-  await I.click('button[name="removeThirdAddress"]');
+  await I.click('button[name="removeSecondaryAddress2"]');
 });
 
 Then('I enter third address description {string} in Description textbox', async (desc: string) => {
@@ -173,46 +173,46 @@ Then('I enter third address welsh description {string} in Welsh Description text
 });
 
 Then('I enter third address address {string} in the Address textbox', async (address: string) => {
-  const selector = '#thirdAddressLines';
+  const selector = '#address_lines-1';
   await populateField(selector, address);
 });
 
 Then('I enter third address welsh address {string} in the Address Welsh textbox', async (welshAdd: string) => {
-  const selector = '#thirdAddressLinesWelsh';
+  const selector = '#address_lines_cy-1';
   await populateField(selector, welshAdd);
 });
 
 Then('I enter third address {string} in the Town textbox', async (town: string) => {
-  const selector = '#thirdAddressTown';
+  const selector = '#town-1';
   await populateField(selector, town);
 });
 
 Then('I enter third address {string} in the town Welsh textbox', async (welshtown: string) => {
-  const selector = '#thirdAddressTownWelsh';
+  const selector = '#town_cy-1';
   await populateField(selector, welshtown);
 });
 
 Then('I select the third County {string}', async (county: string) => {
-  const selector = '#thirdAddressCounty';
+  const selector = '#county_id-1';
   const elementExist = await I.checkElement(selector);
   expect(elementExist).equal(true);
   await I.selectItem(selector, county);
 });
 
 Then('I enter third address {string} in the postcode textbox', async (postcode: string) => {
-  const selector = '#thirdAddressPostcode';
+  const selector = '#postcode-1';
   await populateField(selector, postcode);
 });
 
 When('I select the third address type {string}', async (addressType: string) => {
-  const selector = '#thirdAddressType';
+  const selector = '#type_id-1';
   //const elementExist = await I.checkElement(selector);
   expect(await I.checkElement(selector)).equal(true);
   await I.selectItem(selector, addressType);
 });
 
 Given('I will make sure to remove entries for first secondary address', async () => {
-  const selector = '#removeSecondAddressBtn';
+  const selector = '#removeSecondAddressBtn1';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
@@ -228,20 +228,20 @@ Then('I enter secondary address description welsh {string}', async (descriptionC
 });
 
 Then('I enter the secondary address town welsh {string}', async (townCy: string) => {
-  const selector = '#secondaryAddressTownWelsh';
+  const selector = '#town_cy-0';
   await populateField(selector, townCy);
 });
 
 Then('I select yes for area of law and court type', async () => {
-  const selector = '#secondaryFieldsOfLawRadio';
+  const selector = '#secondaryFieldsOfLawRadio1';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I select children and civil from area of law and county court for court type', async () => {
-  const selectorAolChildren = "input[name='secondaryAddressAOLItems'][data-name='secondaryChildren']";
-  const selectorAolCivil = "input[name='secondaryAddressAOLItems'][data-name='secondaryCivil']";
-  const selectorCountyCourt = "input[name='secondaryAddressCourtItems'][data-name='secondaryCounty Court']";
+  const selectorAolChildren = "input[name='secondaryAddressAOLItems0'][data-name='secondaryChildren']";
+  const selectorAolCivil = "input[name='secondaryAddressAOLItems0'][data-name='secondaryCivil']";
+  const selectorCountyCourt = "input[name='secondaryAddressCourtItems0'][data-name='secondaryCounty Court']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorAolCivil)).equal(true);
@@ -253,28 +253,28 @@ Then('I select children and civil from area of law and county court for court ty
 Then('I click the link view court in new tab to validate the label generated', async () => {
   const selector = '#view-in-new-window';
   expect(await I.checkElement(selector)).equal(true);
-  await I.click(selector);
 
+  await I.click(selector);
   await I.goTo(config.FRONTEND_URL + '/courts/amersham-law-courts');
 
   const label = 'Children, Civil or County Court cases';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div:nth-child(1) > div:nth-child(2) > h2.govuk-heading-s';
-
   const labelElement = await I.getElement(selectorLabel);
   expect(await I.getElementText(labelElement)).equal(label);
 });
 
 Then('I select yes for second secondary court area of law and court type', async () => {
-  const selector = '#thirdFieldsOfLawRadio';
+  const selector = '#secondaryFieldsOfLawRadio2';
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 });
 
 Then('I select children and civil for second secondary court area of law and county court for court type', async () => {
-  const selectorAolChildren = "input[name='thirdAddressAOLItems'][data-name='thirdChildren']";
-  const selectorCountyCourt = "input[name='thirdAddressCourtItems'][data-name='thirdCounty Court']";
+  const selectorAolChildren = "input[name='secondaryAddressAOLItems1'][data-name='thirdChildren']";
+  const selectorCountyCourt = "input[name='secondaryAddressCourtItems1'][data-name='thirdCounty Court']";
   expect(await I.checkElement(selectorAolChildren)).equal(true);
   await I.click(selectorAolChildren);
   expect(await I.checkElement(selectorCountyCourt)).equal(true);
   await I.click(selectorCountyCourt);
 });
+

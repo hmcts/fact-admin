@@ -142,12 +142,12 @@ Then('there are no facility entries', async () => {
 
 When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -165,12 +165,12 @@ When('An error is displayed for facilities with summary {string} and field messa
 
 When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -183,12 +183,12 @@ When('An error is displayed for facilities with summary {string} and description
 
 When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#courtFacilitiesContent > div > div > ul > li';
+  selector = '#courtFacilitiesContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);

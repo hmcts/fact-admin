@@ -51,7 +51,7 @@ When('I uncheck a court type', async () => {
 });
 
 Then('a court types error message is displayed', async () => {
-  const elementExist = await I.checkElement('#courtTypesContent > div.govuk-error-summary > div > ul > li');
+  const elementExist = await I.checkElement('#courtTypesContent > div.govuk-error-summary > div > div  > ul > li');
   expect(elementExist).equal(true);
 });
 

@@ -1,7 +1,6 @@
 export interface DisplayCourtAddresses {
   primary: DisplayAddress;
-  secondary: DisplayAddress;
-  third: DisplayAddress;
+  secondary: DisplayAddress[];
 }
 
 export interface DisplayAddress {
@@ -14,6 +13,7 @@ export interface DisplayAddress {
   town_cy?: string;
   county_id?: number;
   postcode?: string;
+  secondaryFieldsOfLawRadio?: string
   fields_of_law?: FieldsOfLaw;
 }
 
@@ -28,6 +28,7 @@ export interface CourtAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  secondaryFieldsOfLawRadio?: string
   fields_of_law?: FieldsOfLaw;
 }
 

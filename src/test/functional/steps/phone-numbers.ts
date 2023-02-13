@@ -111,12 +111,12 @@ When('I left the phone number entry blank and select description at index {int}'
 
 Then('an error message is displayed for phone number tab with summary {string} and description field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#phoneNumbersContent > div > div > ul > li';
+  selector = '#phoneNumbersContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);
@@ -132,12 +132,12 @@ Then('an error message is displayed for phone number tab with summary {string} a
 
 Then('an error message is displayed for phone number tab with summary {string} and number field message {string}', async (summary: string, message: string) => {
   const errorTitle = 'There is a problem';
-  let selector = '#error-summary-title';
+  let selector = '.govuk-error-summary__title';
   expect(await I.checkElement(selector)).equal(true);
   const errorTitleElement = await I.getElement(selector);
   expect(await I.getElementText(errorTitleElement)).equal(errorTitle);
 
-  selector = '#phoneNumbersContent > div > div > ul > li';
+  selector = '#phoneNumbersContent > div > div > div > ul > li';
   expect(await I.checkElement(selector)).equal(true);
   const errorListElement = await I.getElement(selector);
   expect(await I.getElementText(errorListElement)).equal(summary);

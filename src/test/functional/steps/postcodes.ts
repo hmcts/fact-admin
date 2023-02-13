@@ -46,10 +46,10 @@ Then('I click the add postcode button', async () => {
 });
 
 Then('The error message display for the postcodes {string}', async (errorMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#postcodesContent > div.govuk-error-summary > div > ul';
+  const selector = '#postcodesContent > div.govuk-error-summary > div >  div > ul';
   const errorList = await I.getElement(selector);
   expect(await I.getElementText(errorList)).equal(errorMessage);
 });
