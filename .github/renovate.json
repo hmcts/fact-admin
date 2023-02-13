@@ -1,5 +1,5 @@
 {
-  "enabledManagers": ["helm-requirements", "nvm"],
+  "enabledManagers": ["helm-requirements"],
   "automerge": true,
   "helm-requirements":
   {
@@ -7,5 +7,21 @@
     "aliases": {
       "hmctspublic": "https://hmctspublic.azurecr.io/helm/v1/repo/"
     }
+  },
+  "groupName": "all dependencies",
+  "separateMajorMinor": false,
+  "groupSlug": "all",
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "groupName": "all dependencies",
+      "groupSlug": "all"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": false
   }
+
 }
