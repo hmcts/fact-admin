@@ -32,11 +32,38 @@
         }) }}
       </div>
 
+    {% set regionItems = [] %}
+    {% set regionItems = (regionItems.push(
+      {
+        attributes: {
+          'data-type': 'name',
+          'data-name': base
+        },
+        value: null,
+        text: 'Select Region',
+        selected: true
+      }
+    ), regionItems) %}
+    {% for region in regions|sort(false, true, 'name') %}
+      {% set regionItems = (regionItems.push(
+          {
+            attributes: {
+              'data-type': 'name',
+              'data-name': region.name
+            },
+            value: region.id,
+            text: region.name,
+            selected: false
+          }
+        ), regionItems) %}
+    {% endfor %}
+
       <div id='regions' class='govuk-grid-column-one-quarter'>
         {{ govukSelect({
           id: "regionSelector",
           name: "regionSelector",
-          items: regionsSelect | selectFilter(regionsSelect.value)
+          value: regionItems.value,
+          items: regionItems
         }) }}
       </div>
 

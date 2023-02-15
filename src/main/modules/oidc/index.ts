@@ -11,7 +11,6 @@ import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure
 import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
 import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 import {Logger} from '../../types/Logger';
-import {CourtsController} from '../../app/controller/courts/CourtsController';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -149,10 +148,8 @@ export class OidcMiddleware {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
           const regions = await req.scope.cradle.api.getRegions();
-          const courtsController = new CourtsController();
-          const regionsSelect = courtsController.getRegionsForSelect(regions);
           await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
-          return res.render('courts/courts', {courts, regionsSelect});
+          return res.render('courts/courts', {courts, regions});
         }
         return next();
       } else if (req.xhr) {
