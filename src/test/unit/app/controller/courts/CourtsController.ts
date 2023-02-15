@@ -2,7 +2,6 @@ import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { CourtsController } from '../../../../../main/app/controller/courts/CourtsController';
 import {Region} from '../../../../../main/types/Region';
-import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {CourtLock} from '../../../../../main/types/CourtLock';
 
 
@@ -16,7 +15,12 @@ describe('CourtsController', () => {
         'updated_at': '08 Jul 2022',
         'displayed': true
       }],
-    getRegions: async (): Promise<Region[]> => [],
+    getRegions: async (): Promise<Region[]> => [
+      {
+        'id': 1,
+        'name': 'North West',
+        'country': 'England',
+      }],
     deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
 
@@ -25,18 +29,6 @@ describe('CourtsController', () => {
     getRegions: async (): Promise<Region[]> => [],
     deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
-
-  const regions: Region[] = [
-    {id: 1, name: 'North West', country: 'England'},
-    {id: 2, name: 'South East', country: 'England'},
-    {id: 3, name: 'North Wales', country: 'Wales'}
-  ];
-
-  const expectedRegions: SelectItem[] = [
-    {value: 1, text: 'North West', selected: false},
-    {value: 2, text: 'South East', selected: false},
-    {value: 3, text: 'North Wales', selected: false}
-  ];
 
   test('Should render the courts page', async () => {
     const req = mockRequest();
@@ -52,7 +44,14 @@ describe('CourtsController', () => {
           'slug': 'admiralty-and-commercial-court',
           'updated_at': '08 Jul 2022',
           'displayed': true
-        }], regionsSelect: [], errors: []
+        }],
+      regions: [
+        {
+          'id': 1,
+          'name': 'North West',
+          'country': 'England',
+        }],
+      errors: []
     });
   });
 
@@ -65,15 +64,9 @@ describe('CourtsController', () => {
     await controller.get(req, res);
     expect(res.render).toBeCalledWith('courts/courts', {
       courts: [],
-      regionsSelect: [],
+      regions: [],
       errors: [{text: controller.getCourtsErrorMsg}]
     });
-  });
-
-  test('Should return regions as selectItems', async () => {
-    const courtsController = new CourtsController();
-    const regionSelectItems = courtsController.getRegionsForSelect(regions);
-    expect(regionSelectItems).toStrictEqual(expectedRegions);
   });
 });
 
