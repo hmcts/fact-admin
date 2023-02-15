@@ -92,7 +92,7 @@ describe('AddressesController', () => {
         town: 'Redville',
         'town_cy': 'Redville_cy',
         'county_id': 1,
-        postcode: 'RR1 2AB',
+        postcode: 'RR1 2AB'
       },
       {
         'type_id': 200,
@@ -157,7 +157,7 @@ describe('AddressesController', () => {
         town: 'Brownville',
         'town_cy': 'Brownville',
         'county_id': 2,
-        postcode: 'BB11 1BC',
+        postcode: 'BB11 1BC'
       },
       {
         'type_id': 200,
@@ -168,7 +168,7 @@ describe('AddressesController', () => {
         town: 'Birmingham',
         'town_cy': 'Birmingham',
         'county_id': 3,
-        postcode: 'B1 1AA',
+        postcode: 'B1 1AA'
       }
     ];
   };
