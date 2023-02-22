@@ -7,12 +7,12 @@ services:
   api:
     url: 'http://localhost:8080'
   idam:
-    authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/login'
-    tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
+    authorizationURL: 'https://login.microsoftonline.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082/oauth2/v2.0/authorize'
+    tokenURL: 'https://login.microsoftonline.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082/oauth2/v2.0/token'
     sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
     addNewUserURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/registration'
     updateUserDetailsURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/'
-    clientID: 'fact_admin'
+    clientID: 'eee960dc-ae6a-406e-b6bd-91a4419f94da'
     clientSecret: 'get from AAT vault'
     callbackURL: 'http://localhost:3300/oauth2/callback'
     idamUserDashboardURL : 'https://idam-user-dashboard.aat.platform.hmcts.net'
