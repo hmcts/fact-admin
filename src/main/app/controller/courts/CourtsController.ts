@@ -7,15 +7,16 @@ import {Error} from '../../../types/Error';
 export class CourtsController {
 
   /**
-   * GET /courts
+   * GET /courts and /regions
    */
   getCourtsErrorMsg = 'A problem occurred when retrieving all court information.';
 
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const errors: Error[] = [];
     const courts = await req.scope.cradle.api.getCourts();
+    const regions = await req.scope.cradle.api.getRegions();
     await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
     if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
-    res.render('courts/courts', { courts, errors });
+    res.render('courts/courts', { courts, regions, errors });
   }
 }

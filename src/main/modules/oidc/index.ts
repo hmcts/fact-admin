@@ -147,8 +147,9 @@ export class OidcMiddleware {
         if (req.url.includes('/oauth2/callback')) {
           // Redirect to the main page without including an intermediary redirect page
           const courts = await req.scope.cradle.api.getCourts();
+          const regions = await req.scope.cradle.api.getRegions();
           await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
-          return res.render('courts/courts', {courts});
+          return res.render('courts/courts', {courts, regions});
         }
         return next();
       } else if (req.xhr) {
@@ -156,6 +157,7 @@ export class OidcMiddleware {
       } else return res.redirect('/login');
     });
   }
+
 }
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {

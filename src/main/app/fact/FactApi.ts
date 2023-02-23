@@ -23,6 +23,7 @@ import {FactApiBase} from './FactApiBase';
 import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 import {CourtLock} from '../../types/CourtLock';
+import {Region} from '../../types/Region';
 
 
 export class FactApi extends FactApiBase {
@@ -322,6 +323,10 @@ export class FactApi extends FactApiBase {
 
   public getCourtLocks(courtSlug: string): Promise<CourtLock[]> {
     return this.get<CourtLock[]>(`${this.adminBaseUrl}/${courtSlug}/lock`);
+  }
+
+  public getRegions(): Promise<Region[]> {
+    return this.get<Region[]>(`${this.adminUrl}/regions`);
   }
 
   private errorHandler<T>(defaultValue: T) {

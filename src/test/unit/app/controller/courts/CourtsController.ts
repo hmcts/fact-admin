@@ -1,7 +1,9 @@
-import {mockRequest} from '../../../utils/mockRequest';
-import {mockResponse} from '../../../utils/mockResponse';
-import {CourtsController} from '../../../../../main/app/controller/courts/CourtsController';
+import { mockRequest } from '../../../utils/mockRequest';
+import { mockResponse } from '../../../utils/mockResponse';
+import { CourtsController } from '../../../../../main/app/controller/courts/CourtsController';
+import {Region} from '../../../../../main/types/Region';
 import {CourtLock} from '../../../../../main/types/CourtLock';
+
 
 describe('CourtsController', () => {
   const controller = new CourtsController();
@@ -13,11 +15,18 @@ describe('CourtsController', () => {
         'updated_at': '08 Jul 2022',
         'displayed': true
       }],
+    getRegions: async (): Promise<Region[]> => [
+      {
+        'id': 1,
+        'name': 'North West',
+        'country': 'England',
+      }],
     deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
 
   const mockApiWithoutCourts = {
     getCourts: async (): Promise<object[]> => [],
+    getRegions: async (): Promise<Region[]> => [],
     deleteCourtLocksByEmail: async (): Promise<CourtLock[]> => []
   };
 
@@ -28,13 +37,22 @@ describe('CourtsController', () => {
 
     const res = mockResponse();
     await controller.get(req, res);
-    expect(res.render).toBeCalledWith('courts/courts', { courts: [
-      {
-        'name': 'Admiralty and Commercial Court',
-        'slug': 'admiralty-and-commercial-court',
-        'updated_at': '08 Jul 2022',
-        'displayed': true
-      }], errors : [] });
+    expect(res.render).toBeCalledWith('courts/courts', {
+      courts: [
+        {
+          'name': 'Admiralty and Commercial Court',
+          'slug': 'admiralty-and-commercial-court',
+          'updated_at': '08 Jul 2022',
+          'displayed': true
+        }],
+      regions: [
+        {
+          'id': 1,
+          'name': 'North West',
+          'country': 'England',
+        }],
+      errors: []
+    });
   });
 
   test('Should display error message when api is down', async () => {
@@ -44,6 +62,11 @@ describe('CourtsController', () => {
 
     const res = mockResponse();
     await controller.get(req, res);
-    expect(res.render).toBeCalledWith('courts/courts', { courts: [], errors : [{text:controller.getCourtsErrorMsg}] });
+    expect(res.render).toBeCalledWith('courts/courts', {
+      courts: [],
+      regions: [],
+      errors: [{text: controller.getCourtsErrorMsg}]
+    });
   });
 });
+

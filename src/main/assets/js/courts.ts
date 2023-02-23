@@ -7,6 +7,7 @@ export class CourtsController {
   private tableContainerId = '#tableContainer';
   private toggleClosedCourtsDisplay = 'toggleClosedCourtsDisplay';
   private searchCourtsFilter = 'searchCourts';
+  private searchCourtsRegionFilter = 'regionSelector';
   private tableCourtsNameId = '#tableCourtsName';
   private tableCourtsUpdatedId = '#tableCourtsUpdated';
 
@@ -22,8 +23,11 @@ export class CourtsController {
         CourtsTableSearch.setUpTable();
         this.setUpToggleClosedCourtsDisplay();
         this.setUpCourtsDynamicSearchFilter();
+        this.setUpCourtsRegionSearchFilter();
         this.setUpAscDecNameFilter();
         this.setUpAscDecUpdatedDateFilter();
+        // To hide the region id column
+        $('td:nth-child(2)').hide();
       }
     });
   }
@@ -37,6 +41,13 @@ export class CourtsController {
 
   private setUpCourtsDynamicSearchFilter(): void {
     $(this.contentId).on('input', `input[name=${this.searchCourtsFilter}]`, e => {
+      e.preventDefault();
+      CourtsTableSearch.setUpTable();
+    });
+  }
+
+  private setUpCourtsRegionSearchFilter(): void {
+    $(this.contentId).on('change', `select[name=${this.searchCourtsRegionFilter}]`, e => {
       e.preventDefault();
       CourtsTableSearch.setUpTable();
     });
