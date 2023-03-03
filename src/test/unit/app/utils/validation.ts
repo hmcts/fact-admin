@@ -74,4 +74,14 @@ describe('validation', () => {
       expect(invalidParameters).toEqual(validParameters);
     });
   });
+
+  describe('Removing multiple spaces should keep new lines', () => {
+    const badAddress = 'line 1\nline 2\nline      3';
+    const fixedAddress = replaceMultipleSpaces(badAddress);
+    const validAddress = 'line 1\nline 2\nline 3';
+    it('Should return string without multiple spaces', async () => {
+      expect(fixedAddress).toMatch(validAddress);
+    });
+  });
+
 });
