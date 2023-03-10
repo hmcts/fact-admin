@@ -9,7 +9,9 @@ variable "location" {
 
 variable "env" {}
 
-variable "ilbIp" { }
+variable "ilbIp" {
+  default = ""
+}
 
 variable "subscription" {}
 
