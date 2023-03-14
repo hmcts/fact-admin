@@ -173,7 +173,7 @@ describe('EditCourtController', () => {
     await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
-      'errors': [{'text': 'royal-courts-of-justice is currently in use by moshuser2. '
+      'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
         + 'Please contact them to finish their changes, or try again later.'}]});
   });
 
