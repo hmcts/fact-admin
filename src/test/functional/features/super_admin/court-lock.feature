@@ -18,4 +18,4 @@ Feature: Court lock
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "evesham-county-court"
-    Then An error is displayed for court lock with title "There is a problem" and summery "evesham-county-court is currently in use by hmcts.fact@gmail.com. Please contact them to finish their changes, or try again later."
+    Then An error is displayed for court lock with title "There is a problem" and summery "Evesham County Court is currently in use by hmcts.fact@gmail.com. Please contact them to finish their changes, or try again later."
