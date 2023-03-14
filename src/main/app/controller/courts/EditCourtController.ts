@@ -17,7 +17,7 @@ export class EditCourtController {
     // Check if the court is currently in use by any other user
     const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
     const currentUserEmail = req.session['user']['jwt']['sub'];
-    const court_name = (req.params.slug).replaceAll('-', ' ').replace(/(\b[a-z](?!\s))/g, (c) => c.toUpperCase());
+    const court_name = (req.params.slug).replace(/-/g, ' ').replace(/(\b[a-z](?!\s))/g, (c) => c.toUpperCase());
     if (courtLocks.length == 0) {
       // If there are no locks, assign the current user to the court
       await req.scope.cradle.api.addCourtLock(req.params.slug, {

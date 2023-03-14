@@ -13,8 +13,7 @@
     "lib": [
       "es6",
       "es2017.object",
-      "dom",
-      "es2021"
+      "dom"
     ],
     "baseUrl": "src/main",
     "paths": {
