@@ -17,6 +17,7 @@ export class EditCourtController {
     // Check if the court is currently in use by any other user
     const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
     const currentUserEmail = req.session['user']['jwt']['sub'];
+    const court_name = (req.params.slug).replace(/-/g, ' ').replace(/(\b[a-z](?!\s))/g, (c) => c.toUpperCase());
     if (courtLocks.length == 0) {
       // If there are no locks, assign the current user to the court
       await req.scope.cradle.api.addCourtLock(req.params.slug, {
@@ -37,10 +38,11 @@ export class EditCourtController {
           } as CourtLock);
         } else {
           // Otherwise redirect back to the courts page and display an error
+
           return res.render('courts/courts', {
             'courts': await req.scope.cradle.api.getCourts(),
             'errors': [{
-              text: `${req.params.slug} is currently in use by ${courtLocks[0]['user_email']}. ` +
+              text: `${court_name} is currently in use by ${courtLocks[0]['user_email']}. ` +
                 'Please contact them to finish their changes, or try again later.'
             }]
           });
