@@ -12,5 +12,8 @@ export class CourtAddressPageData {
   primaryPostcodeInvalid: boolean;
   secondaryPostcodeInvalid: boolean;
   thirdPostcodeInvalid: boolean;
+  fourthPostcodeInvalid: boolean;
+  fifthPostcodeInvalid: boolean;
+  sixthPostcodeInvalid: boolean;
   updated: boolean;
 };
