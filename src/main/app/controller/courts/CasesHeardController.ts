@@ -15,10 +15,18 @@ export class CasesHeardController {
   putCourtAreasOfLawErrorMsg = 'A problem occurred when updating the court areas of law. ';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/cases-heard
+   * render the view with data from database for cases heard tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
 
+  /**
+   * PUT /courts/:slug/cases-heard
+   * validate input data and update the cases heard by a court and then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCasesHeard = req.body.courtAreasOfLaw as AreaOfLaw[] ?? [];
     const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];

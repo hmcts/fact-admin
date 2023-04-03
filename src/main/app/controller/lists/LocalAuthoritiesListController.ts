@@ -19,7 +19,10 @@ export class LocalAuthoritiesListController {
   invalidErrorMsg = 'Invalid Local Authority entered.';
   notFoundErrorMsg = 'Local Authority not found.';
 
-
+  /**
+   * GET /lists/local-authorities-list
+   * render the view with all local authorities list
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -44,7 +47,10 @@ export class LocalAuthoritiesListController {
     res.render('lists/tabs/localAuthoritiesListContent', pageData);
 
   }
-
+  /**
+   * PUT /lists/local-authorities-list
+   * validate input data and update the local authorities list and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
     let selectedLocalAuthority: LocalAuthority;
@@ -71,7 +77,9 @@ export class LocalAuthoritiesListController {
         });
     }
   }
-
+  /**
+   * map LocalAuthority to checkbox item
+   */
   private mapLocalAuthorityToLocalAuthorityItem(localAuthorities: LocalAuthority[], selectedLocalAuthority: LocalAuthority): LocalAuthorityItem[] {
 
     if (localAuthorities) {

@@ -25,7 +25,10 @@ export class LocalAuthoritiesController {
   updateErrorMsg = 'A problem occurred when saving the local authorities. ';
   familyAreaOfLawErrorMsg = 'You need to enable relevant family court areas of law ';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/local-authorities-areas-of-law
+   * get the areas of law and render the view with single dropdown.
+   */
   public async getAreasOfLaw(
     req: AuthedRequest,
     res: Response,
@@ -70,7 +73,10 @@ export class LocalAuthoritiesController {
 
     res.render('courts/tabs/localAuthoritiesContent', pageData);
   }
-
+  /**
+   * GET /courts/:slug/:areaOfLaw/local-authorities
+   * render the view with data from database for local authorities tab
+   */
   public async getLocalAuthorities(
     req: AuthedRequest,
     res: Response,
@@ -110,7 +116,10 @@ export class LocalAuthoritiesController {
 
     res.render('courts/tabs/localAuthoritiesContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/:areaOfLaw/local-authorities
+   * validate input data and update the local authorities associated with a court then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
     let localAuthorities: LocalAuthority[] = [];
@@ -133,6 +142,9 @@ export class LocalAuthoritiesController {
 
   }
 
+  /**
+   * map the LocalAuthority model to check box items
+   */
   private mapLocalAuthorityToLocalAuthorityItem(allLocalAuthorities: LocalAuthority[], courtLocalAuthorities: LocalAuthority[], disabled: boolean): LocalAuthorityItem[] {
 
     if (courtLocalAuthorities) {
@@ -151,7 +163,9 @@ export class LocalAuthoritiesController {
       return [];
     }
   }
-
+  /**
+   * filter the area of law to only include family areas of law (children,divorce,adoption,civilPartnership).
+   */
   private checkFamilyAreasOfLaw(courtAreasOfLaw: AreaOfLaw[]) {
     if (courtAreasOfLaw && courtAreasOfLaw.length) {
       return courtAreasOfLaw.filter(c => c.name == familyAreaOfLaw.children || c.name == familyAreaOfLaw.divorce

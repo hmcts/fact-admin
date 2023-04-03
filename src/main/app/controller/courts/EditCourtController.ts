@@ -12,6 +12,10 @@ import {TAB_PREFIX} from '../../../utils/flagPrefix';
 
 @autobind
 export class EditCourtController {
+  /**
+   * GET /courts/:slug/edit
+   * render the view with data from database for edit court
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
 
     // Check if the court is currently in use by any other user

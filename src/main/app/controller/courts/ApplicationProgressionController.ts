@@ -21,7 +21,10 @@ export class ApplicationProgressionController {
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   doubleInputErrorMsg = 'Enter either an email address or an external link per application progression';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/application-progression
+   * render the view with data from database for application progression
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -65,7 +68,10 @@ export class ApplicationProgressionController {
 
     res.render('courts/tabs/applicationProgressionContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/application-progression
+   * validate input data and update the application updates then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let applicationProgressions = req.body.progression as ApplicationProgression[] ?? [];
     applicationProgressions.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
@@ -90,7 +96,9 @@ export class ApplicationProgressionController {
           : this.updateErrorMsg;
         this.get(req, res, false, [error], applicationProgressions); });
   }
-
+  /**
+   * adds an empty form so view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(applicationProgressions: ApplicationProgression[], numberOfForms = 1):
     void {
     if (applicationProgressions) {
@@ -100,12 +108,16 @@ export class ApplicationProgressionController {
       }
     }
   }
-
+  /**
+   * check if additionalLinkEntry is empty
+   */
   private applicationProgressionEntryIsEmpty(applicationProgressions: ApplicationProgression): boolean {
     return (!applicationProgressions.type && !applicationProgressions.email?.trim() &&
       !applicationProgressions.external_link?.trim() && !applicationProgressions.external_link_description?.trim());
   }
-
+  /**
+   * determine which error messages to pass to view
+   */
   private getErrorMessages(applicationProgressions: ApplicationProgression[]): string[] {
     const errorMsg: string[] = [];
     if (applicationProgressions.some(ot => !ot.type)) {
@@ -156,7 +168,9 @@ export class ApplicationProgressionController {
     }
     return errorMsg;
   }
-
+  /**
+   * check if email is duplicated
+   */
   private emailsDuplicated(applicationProgressions: ApplicationProgression[], index1: number, index2: number):
     boolean {
     return applicationProgressions[index1].email && applicationProgressions[index1].email.toLowerCase() ===
