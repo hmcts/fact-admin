@@ -19,7 +19,10 @@ export class GeneralInfoController {
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
   updateAlertErrorMsg = 'Urgent notices are limited to 250 characters including spaces.';
   updateIntroParagraphErrorMsg = 'Intro paragraphs for service centres are limited to 400 characters including spaces.';
-
+  /**
+   * GET /courts/:slug/general-info
+   * render the view with data from database for court general tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -47,7 +50,10 @@ export class GeneralInfoController {
 
     res.render('courts/tabs/generalContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/general-info
+   * validate input data and update court general data then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const generalInfo = req.body as CourtGeneralInfo;
     const slug: string = req.params.slug;
@@ -98,7 +104,10 @@ export class GeneralInfoController {
         await this.get(req, res, false, error, nameFieldErrorMsg, generalInfo);
       });
   }
-
+  /**
+   * GET /courts/:slug/general-info
+   * once data is successfully validated view is redirected for confirmation of changes
+   */
   public renderRedirect(res: Response, redirectURL: string): void {
     const pageData: CourtGeneralInfoRedirect = {
       redirectURL: redirectURL

@@ -19,7 +19,10 @@ export class EmailsController {
   getEmailTypesErrorMsg = 'A problem occurred when retrieving the email descriptions.';
   getEmailAddressFormatErrorMsg = 'Enter an email address in the correct format, like name@example.com';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/emails
+   * render the view with data from database for court emails tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -60,7 +63,10 @@ export class EmailsController {
     };
     res.render('courts/tabs/emailsContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/emails
+   * validate input data and update the courts emails then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let emails = req.body.emails as Email[] ?? [];
     emails.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
@@ -91,7 +97,9 @@ export class EmailsController {
     return standardTypes.map((ott: EmailType) => (
       {value: ott.id, text: ott.description, selected: false}));
   }
-
+  /**
+   * adds an empty form so the view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(emails: Email[], numberOfForms = 1): void {
     if (emails) {
       for (let i = 0; i < numberOfForms; i++) {
@@ -99,15 +107,21 @@ export class EmailsController {
       }
     }
   }
-
+  /**
+   * check if email entry is empty
+   */
   private emailEntryIsEmpty(email: Email): boolean {
     return (!email.adminEmailTypeId && !email.address?.trim() && !email.explanation?.trim() && !email.explanationCy?.trim());
   }
-
+  /**
+   * check if email entry is duplicated
+   */
   private emailsDuplicated(emails: Email[], index1: number, index2: number): boolean {
     return emails[index1].address && emails[index1].address.toLowerCase() === emails[index2].address.toLowerCase();
   }
-
+  /**
+   * returns the error messages to the view
+   */
   private getErrorMessages(emails: Email[]): string[] {
     const errorMsg: string[] = [];
     if (emails.some(ot => !ot.adminEmailTypeId || ot.address === '')) {

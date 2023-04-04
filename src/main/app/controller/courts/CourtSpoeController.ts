@@ -15,10 +15,17 @@ export class CourtSpoeController {
   putCourtSpoeAreasOfLawErrorMsg = 'A problem occurred when updating the court spoe areas of law. ';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/spoe
+   * render the view with data from database for court spoe (single point of entry) entries tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
-
+  /**
+   * PUT /courts/:slug/spoe
+   * validate input data and update the court spoe (single point of entry) then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCourtSpoe = req.body.courtSpoeAreasOfLaw as SpoeAreaOfLaw[] ?? [];
     const allSpoeAreasOfLaw = req.body.allSpoeAreasOfLaw as SpoeAreaOfLaw[] ?? [];

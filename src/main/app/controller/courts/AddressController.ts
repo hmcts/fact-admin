@@ -46,10 +46,18 @@ export class AddressController {
   duplicateAddressError = 'All addresses must be unique.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/addresses
+   * render the view with data from database for court addresses
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
 
+  /**
+   * PUT /courts/:slug/addresses
+   * validate input data and update the court addresses then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const addresses: DisplayCourtAddresses = {
       primary: req.body.primary,
@@ -152,6 +160,9 @@ export class AddressController {
       });
   }
 
+  /**
+   * render the view with data from database for court addresses
+   */
   private async render(
     req: AuthedRequest,
     res: Response,
@@ -236,7 +247,9 @@ export class AddressController {
 
     res.render('courts/tabs/addressesContent', pageData);
   }
-
+  /**
+   * mapping the Area of Law model to radio Item in order to be rendered correctly
+   */
   private mapAreaOfLawToRadioItem(allAreasOfLaw: AreaOfLaw[], courtAreasOfLaw: RadioItem[], dataPrefix: string): RadioItem[] {
 
     if (courtAreasOfLaw) {
@@ -257,7 +270,9 @@ export class AddressController {
       return [];
     }
   }
-
+  /**
+   * mapping the CourtType model to radio Item in order to be rendered correctly
+   */
   private mapCourtTypeToRadioItem(allCourtTypes: CourtType[], courtType: RadioItem[], dataPrefix: string): RadioItem[] {
 
     if (allCourtTypes) {
@@ -278,7 +293,9 @@ export class AddressController {
       return [];
     }
   }
-
+  /**
+   * validating court addresses entered
+   */
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
     { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; errors: string[] } {
 

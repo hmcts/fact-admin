@@ -27,7 +27,10 @@ export class CourtTypesController {
   updateErrorMsg = 'A problem occurred when saving the court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/court-types
+   * render the view with data from database for court types
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -64,7 +67,10 @@ export class CourtTypesController {
 
     res.render('courts/tabs/typesContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/court-types
+   * validate input data and update the court types then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
     let courtTypesAndCodes: CourtTypesAndCodes = null;
@@ -118,6 +124,9 @@ export class CourtTypesController {
 
   }
 
+  /**
+   * mapping the CourtType model to checkbox item in order to be rendered correctly
+   */
   private mapCourtTypeToCourtTypeItem(allCourtTypes: CourtType[], courtCourtTypes: CourtType[]): CourtTypeItem[] {
 
     if( courtCourtTypes && allCourtTypes) {
@@ -139,7 +148,9 @@ export class CourtTypesController {
     else
       return [];
   }
-
+  /**
+   * mapping the checkbox item to CourtType model in order to update selected court types.
+   */
   private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
     const courtTypes: CourtType[] = Array.isArray(req.body.types) ? req.body.types.map((ct: string) => JSON.parse(ct)) : [JSON.parse(req.body.types)];
@@ -161,18 +172,24 @@ export class CourtTypesController {
     return courtTypeItems;
   }
 
-
+  /**
+   * check is court type is checked
+   */
   private isChecked(courtType: CourtType, courtCourtTypes: CourtType[]) {
     return (courtCourtTypes.some(e => e.id === courtType.id));
   }
 
-
+  /**
+   * return the code for given court type.
+   */
   private getCode(id: number, courtCourtTypes: CourtType[]) {
 
     return (courtCourtTypes.find(e => e.id === id) ? courtCourtTypes.find(e => e.id === id).code : null);
 
   }
-
+  /**
+   * validate and map the court type to its corresponding code.
+   */
   private setCode(
     name: string,
     magistratesCourtCode: string,
