@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {SpoeAreaOfLaw} from '../../types/SpoeAreaOfLaw';
-
+import {setUpTabClick} from './tab-reset';
 
 export class SpoeController {
   private formId = '#spoeForm';
   private tabId = '#spoeTab';
   private spoeContentId = '#spoeContent';
+  private tab = '#tab_spoe';
 
   constructor() {
     this.initialize();
@@ -15,6 +16,7 @@ export class SpoeController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getSpoeAreasOfLaw.bind(this));
         this.getSpoeAreasOfLaw();
         this.setUpUpdateEventHandler();
       }

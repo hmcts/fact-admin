@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -22,6 +23,7 @@ export class CourtTypesController {
   private codeInputName = 'code';
   private explanationInputName = 'explanation';
   private explanationCyInputName = 'explanationCy';
+  private tab = '#tab_court-types';
 
   constructor() {
     this.initialize();
@@ -30,6 +32,7 @@ export class CourtTypesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getCourtTypes.bind(this));
         this.getCourtTypes();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
