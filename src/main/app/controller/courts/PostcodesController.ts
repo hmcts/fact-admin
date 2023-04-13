@@ -30,7 +30,10 @@ export class PostcodesController {
   noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.';
   noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/postcodes
+   * render the view with data from database for court postcodes tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -93,7 +96,10 @@ export class PostcodesController {
     };
     res.render('courts/tabs/postcodesContent', pageData);
   }
-
+  /**
+   * POST /courts/:slug/postcodes
+   * validate input data and update the court postcodes and re-render the view
+   */
   public async post(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -143,7 +149,10 @@ export class PostcodesController {
             : this.addErrorMsg + (<any>reason.response).data['message'], areasOfLaw, courtTypes, true);
       });
   }
-
+  /**
+   * DELETE /courts/:slug/postcodes
+   * validate input data and delete the court postcodes and re-render the view
+   */
   public async delete(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -176,7 +185,10 @@ export class PostcodesController {
         await this.get(req, res, '', existingPostcodes,
           error, areasOfLaw, courtTypes); });
   }
-
+  /**
+   * PUT /courts/:slug/postcodes
+   * validate input data and update the court postcodes and re-render the view
+   */
   public async put(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -211,7 +223,9 @@ export class PostcodesController {
             : this.moveErrorMsg + postcodesToMove, areasOfLaw, courtTypes);
       });
   }
-
+  /**
+   * filter county areas of law (moneyClaims,housing,bankruptcy)
+   */
   private filterCountyAreasOfLaw(courtAreasOfLaw: string[]): string[] {
     if(courtAreasOfLaw && courtAreasOfLaw.length) {
       // Note: the frontend for the input fields cut out the rest of the values if not for the replace below
@@ -221,11 +235,15 @@ export class PostcodesController {
     }
     return [];
   }
-
+  /**
+   * check if postcode is vaid
+   */
   private getInvalidPostcodes(newPostcodesArray: string[]): string[] {
     return newPostcodesArray.filter((value: string) => value.length < 2 || value.length > 7);
   }
-
+  /**
+   * check if postcode is duplicated
+   */
   private getDuplicatedPostcodes(existingPostcodes: string[], newPostcodesArray: string[]): string[] {
     return existingPostcodes.filter(
       value => newPostcodesArray.includes(String(value).toUpperCase()));

@@ -16,7 +16,10 @@ export class NewCourtController {
   emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again. '
     + 'If you are adding a service centre, make sure to ensure at least one service area is selected. ';
   courtNameValidationErrorMsg = 'Invalid court name: please amend and try again.';
-
+  /**
+   * GET /courts/add-court
+   * render the view with data from database for new court tab
+   */
   public async get(req: AuthedRequest,
     res: Response,
     created = false,
@@ -56,7 +59,10 @@ export class NewCourtController {
       fatalError: fatalError,
     });
   }
-
+  /**
+   * POST /courts/add-court
+   * validate input data and add new court then re-render the view
+   */
   public async addNewCourt(req: AuthedRequest, res: Response): Promise<void> {
     const newCourtName = req.body.newCourtName;
     const serviceCentreChecked = req.body.serviceCentre == 'true';
@@ -109,7 +115,9 @@ export class NewCourtController {
             : [this.addNewCourtErrorMsg]);
       });
   }
-
+  /**
+   * check if court name is valid
+   */
   private static isInvalidCourtName(name: string): boolean {
     return /[!@#$%^&*_+=[\]{};:"\\|.<>/?]+/.test(name);
   }

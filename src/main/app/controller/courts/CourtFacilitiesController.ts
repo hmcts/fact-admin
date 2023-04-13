@@ -18,6 +18,10 @@ export class CourtFacilitiesController {
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/facilities
+   * render the view with data from database for court facilities tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -59,7 +63,10 @@ export class CourtFacilitiesController {
 
     res.render('courts/tabs/facilitiesContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/facilities
+   * validate input data and update the court facilities then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
     courtFacilities.forEach(f => {
@@ -112,7 +119,9 @@ export class CourtFacilitiesController {
     return standardTypes.map((ft: FacilityType) => (
       {value: ft.id, text: ft.name, selected: false}));
   }
-
+  /**
+   * adds an empty form so the view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(courFacilities: Facility[], numberOfForms = 1): void {
     if (courFacilities) {
       for (let i = 0; i < numberOfForms; i++) {
@@ -120,11 +129,15 @@ export class CourtFacilitiesController {
       }
     }
   }
-
+  /**
+   * check if facility is empty
+   */
   private facilityEntryIsEmpty(courtFacility: Facility): boolean {
     return (!courtFacility.id && !courtFacility.description && !courtFacility.descriptionCy?.trim());
   }
-
+  /**
+   * check if facility is duplicated
+   */
   private facilityDuplicated(courFacilities: Facility[], index1: number, index2: number): boolean {
     return courFacilities[index1].id === courFacilities[index2].id;
   }
