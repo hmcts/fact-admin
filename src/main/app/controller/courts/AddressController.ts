@@ -319,12 +319,12 @@ export class AddressController {
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
     { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; fourthPostcodeValid: boolean; fifthPostcodeValid: boolean; sixthPostcodeValid: boolean; errors: string[] } {
 
-    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
-    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true);
-    const thirdValidationResult = this.validateCourtAddress(addresses.secondary[1], false, true);
-    const fourthValidationResult = this.validateCourtAddress(addresses.secondary[2], false, true);
-    const fifthValidationResult = this.validateCourtAddress(addresses.secondary[3], false, true);
-    const sixthValidationResult = this.validateCourtAddress(addresses.secondary[4], false, true);
+    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false, '0');
+    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true, '1');
+    const thirdValidationResult = this.validateCourtAddress(addresses.secondary[1], false, true, '2');
+    const fourthValidationResult = this.validateCourtAddress(addresses.secondary[2], false, true, '3');
+    const fifthValidationResult = this.validateCourtAddress(addresses.secondary[3], false, true, '4');
+    const sixthValidationResult = this.validateCourtAddress(addresses.secondary[4], false, true, '5');
     const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary[0], addresses.secondary[1], addresses.secondary[2], addresses.secondary[3], addresses.secondary[4]], writeToUsTypeId);
     const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary[0].fields_of_law, addresses.secondary[1].fields_of_law, addresses.secondary[2].fields_of_law, addresses.secondary[3].fields_of_law, addresses.secondary[4].fields_of_law]);
     const uniqueAddressError = this.checkAddressesAreUnique(addresses);
@@ -343,12 +343,39 @@ export class AddressController {
     };
   }
 
-  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean): AddressValidationResult {
+  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean, index: string): AddressValidationResult {
     const typeErrors = this.validateAddressTypeExists(address, isPrimaryAddress);
     const countyErrors = this.validateCountyExists(address);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
-    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : (isSecondaryAddress ? this.secondaryAddressPrefix : this.thirdAddressPrefix);
+    let errorPrefix = '';
+
+    switch (index) {
+      case '0': {
+        errorPrefix = this.primaryAddressPrefix;
+        break;
+      }
+      case '1': {
+        errorPrefix = this.secondaryAddressPrefix;
+        break;
+      }
+      case '2': {
+        errorPrefix = this.thirdAddressPrefix;
+        break;
+      }
+      case '3': {
+        errorPrefix = this.fourthAddressPrefix;
+        break;
+      }
+      case '4': {
+        errorPrefix = this.fifthAddressPrefix;
+        break;
+      }
+      case '5': {
+        errorPrefix = this.sixthAddressPrefix;
+        break;
+      }
+    }
 
     return {
       postcodeValid: postcodeErrors.length === 0,
@@ -751,10 +778,12 @@ export class AddressController {
       [addresses.primary.postcode.toUpperCase(), ...addresses.secondary.map(address => address.postcode.toUpperCase())];
 
     for (let i = 0; i < addressLines.length; i++) {
-      for (let j = i + 1; j < addressLines.length; j++) {
-        if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
-          errors.push(this.duplicateAddressError);
-          break;
+      if (addressLines[i] !== '' && addressLines[i] !== null && postcodes[i] !== '' && postcodes[i] !== null) {
+        for (let j = i + 1; j < addressLines.length; j++) {
+          if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
+            errors.push(this.duplicateAddressError);
+            break;
+          }
         }
       }
     }
