@@ -130,6 +130,51 @@ describe('AddressesController', () => {
             getCourtType(2, 'Crown Court', 789)
           ]
         }
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['20 Blue Street'],
+        'address_lines_cy': ['20 Blue Street_cy'],
+        town: 'Blueton',
+        'town_cy': 'Blueton',
+        'county_id': 4,
+        postcode: 'BL1 1UE',
+        fields_of_law: {
+          areas_of_law: [],
+          courts: []
+        }
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['30 Pink Avenue'],
+        'address_lines_cy': ['30 Pink Avenue_cy'],
+        town: 'Pinkburgh',
+        'town_cy': 'Pinkburgh',
+        'county_id': 5,
+        postcode: 'PN5 5NK',
+        fields_of_law: {
+          areas_of_law: [],
+          courts: []
+        }
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['25 Cyan Crescent'],
+        'address_lines_cy': ['25 Cyan Crescent_cy'],
+        town: 'Cyanton',
+        'town_cy': 'Cyanton',
+        'county_id': 6,
+        postcode: 'CY3 3AN',
+        fields_of_law: {
+          areas_of_law: [],
+          courts: []
+        }
       }
     ];
   };
@@ -169,6 +214,39 @@ describe('AddressesController', () => {
         'town_cy': 'Birmingham',
         'county_id': 3,
         postcode: 'B1 1AA'
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['20 Blue Street'],
+        'address_lines_cy': ['20 Blue Street_cy'],
+        town: 'Blueton',
+        'town_cy': 'Blueton',
+        'county_id': 4,
+        postcode: 'BL1 1UE'
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['30 Pink Avenue'],
+        'address_lines_cy': ['30 Pink Avenue_cy'],
+        town: 'Pinkburgh',
+        'town_cy': 'Pinkburgh',
+        'county_id': 5,
+        postcode: 'PN5 5NK'
+      },
+      {
+        'type_id': 200,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': ['25 Cyan Crescent'],
+        'address_lines_cy': ['25 Cyan Crescent_cy'],
+        town: 'Cyanton',
+        'town_cy': 'Cyanton',
+        'county_id': 6,
+        postcode: 'CY3 3AN'
       }
     ];
   };
@@ -191,7 +269,7 @@ describe('AddressesController', () => {
   const getValidDisplayAddresses: () => DisplayCourtAddresses = () => {
     const courtAddresses = getValidCourtAddresses();
     const primary = courtAddresses[0];
-    const secondary : CourtAddress[] = [courtAddresses[1],courtAddresses[2]] ;
+    const secondary : CourtAddress[] = [courtAddresses[1],courtAddresses[2], courtAddresses[3], courtAddresses[4], courtAddresses[5]] ;
 
     return {
       primary: {
@@ -256,7 +334,53 @@ describe('AddressesController', () => {
             getRadioItem(3, JSON.stringify(getCourtType(3, 'Family Court', null)), 'Family Court', false, 'third'),
           ]
         }
-      }]
+      },
+      {
+        'type_id': secondary[2].type_id,
+        'description': secondary[2].description,
+        'description_cy': secondary[2].description_cy,
+        'address_lines': secondary[2].address_lines.join('\n'),
+        'address_lines_cy': secondary[2].address_lines_cy.join('\n'),
+        town: secondary[2].town,
+        'town_cy': secondary[2].town_cy,
+        'county_id': 4,
+        postcode: secondary[2].postcode,
+        fields_of_law: {
+          areas_of_law: getAllRadioAreasOfLaw('fourth'),
+          courts: getAllRadioCourtTypes('fourth')
+        }
+      },
+      {
+        'type_id': secondary[3].type_id,
+        'description': secondary[3].description,
+        'description_cy': secondary[3].description_cy,
+        'address_lines': secondary[3].address_lines.join('\n'),
+        'address_lines_cy': secondary[3].address_lines_cy.join('\n'),
+        town: secondary[3].town,
+        'town_cy': secondary[3].town_cy,
+        'county_id': 5,
+        postcode: secondary[3].postcode,
+        fields_of_law: {
+          areas_of_law: getAllRadioAreasOfLaw('fifth'),
+          courts: getAllRadioCourtTypes('fifth')
+        }
+      },
+      {
+        'type_id': secondary[4].type_id,
+        'description': secondary[4].description,
+        'description_cy': secondary[4].description_cy,
+        'address_lines': secondary[4].address_lines.join('\n'),
+        'address_lines_cy': secondary[4].address_lines_cy.join('\n'),
+        town: secondary[4].town,
+        'town_cy': secondary[4].town_cy,
+        'county_id': 6,
+        postcode: secondary[4].postcode,
+        fields_of_law: {
+          areas_of_law: getAllRadioAreasOfLaw('sixth'),
+          courts: getAllRadioCourtTypes('sixth')
+        }
+      },
+      ]
     }
 
     ;
@@ -341,6 +465,18 @@ describe('AddressesController', () => {
       areas_of_law: getAllRadioAreasOfLaw('third'),
       courts: getAllRadioCourtTypes('third')
     };
+    courtAddressInfoDuplicate.addresses.secondary[2].fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw('fourth'),
+      courts: getAllRadioCourtTypes('fourth')
+    };
+    courtAddressInfoDuplicate.addresses.secondary[3].fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw('fifth'),
+      courts: getAllRadioCourtTypes('fifth')
+    };
+    courtAddressInfoDuplicate.addresses.secondary[4].fields_of_law = {
+      areas_of_law: getAllRadioAreasOfLaw('sixth'),
+      courts: getAllRadioCourtTypes('sixth')
+    };
     return courtAddressInfoDuplicate;
   };
 
@@ -391,6 +527,24 @@ describe('AddressesController', () => {
         areas_of_law: getAllRadioAreasOfLaw('third'),
         courts: getAllRadioCourtTypes('third')
       }
+    },
+    {
+      fields_of_law: {
+        areas_of_law: getAllRadioAreasOfLaw('fourth'),
+        courts: getAllRadioCourtTypes('fourth')
+      }
+    },
+    {
+      fields_of_law: {
+        areas_of_law: getAllRadioAreasOfLaw('fifth'),
+        courts: getAllRadioCourtTypes('fifth')
+      }
+    },
+    {
+      fields_of_law: {
+        areas_of_law: getAllRadioAreasOfLaw('sixth'),
+        courts: getAllRadioCourtTypes('sixth')
+      }
     }], [], false, false, false, false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -400,6 +554,9 @@ describe('AddressesController', () => {
     const addresses = getValidDisplayAddresses();
     addresses.secondary[0].secondaryFieldsOfLawRadio = 'yes';
     addresses.secondary[1].secondaryFieldsOfLawRadio = 'yes';
+    addresses.secondary[2].secondaryFieldsOfLawRadio = 'no';
+    addresses.secondary[3].secondaryFieldsOfLawRadio = 'no';
+    addresses.secondary[4].secondaryFieldsOfLawRadio = 'no';
 
     req.body = {
       primary: addresses.primary,
@@ -408,7 +565,7 @@ describe('AddressesController', () => {
         JSON.stringify(getAreaOfLaw(1, 'Adoption')),
         JSON.stringify(getAreaOfLaw(3, 'Children'))
       ],
-      secondaryAddressCourtItems: [],
+      secondaryAddressCourtItems0: [],
       secondaryAddressAOLItems1: [
         JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')),
         JSON.stringify(getAreaOfLaw(4, 'Civil Partnership'))
@@ -417,6 +574,12 @@ describe('AddressesController', () => {
         JSON.stringify(getCourtType(1, 'County Court', 456)),
         JSON.stringify(getCourtType(2, 'Crown Court', 789))
       ],
+      secondaryAddressAOLItems2: [],
+      secondaryAddressCourtItems2: [],
+      secondaryAddressAOLItems3: [],
+      secondaryAddressCourtItems3: [],
+      secondaryAddressAOLItems4: [],
+      secondaryAddressCourtItems4: [],
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -446,6 +609,18 @@ describe('AddressesController', () => {
         getCourtType(1, 'County Court', 456),
         getCourtType(2, 'Crown Court', 789)
       ]
+    };
+    expectedResults[3].fields_of_law = {
+      areas_of_law: [],
+      courts: [],
+    };
+    expectedResults[4].fields_of_law = {
+      areas_of_law: [],
+      courts: [],
+    };
+    expectedResults[5].fields_of_law = {
+      areas_of_law: [],
+      courts: [],
     };
     expect(mockApi.updateCourtAddresses).toBeCalledWith(slug, expectedResults);
   });
@@ -577,31 +752,67 @@ describe('AddressesController', () => {
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
-  test('Should post court addresses if secondary and third address is empty', async () => {
+  test('Should post court address if secondary addresses are empty', async () => {
     const slug = 'central-london-county-court';
     const addresses: DisplayCourtAddresses = {
       'primary': getValidDisplayAddresses().primary,
       'secondary': [{
-        'type_id': 100,
+        'type_id': null,
         description: 'description',
         'description_cy': 'description_cy',
         'address_lines': '',
         'address_lines_cy': '',
         town: '',
         'town_cy': '',
-        'county_id': 1,
+        'county_id': null,
         postcode: '',
         fields_of_law: null
       },
       {
-        'type_id': 100,
+        'type_id': null,
         description: 'description',
         'description_cy': 'description_cy',
         'address_lines': '',
         'address_lines_cy': '',
         town: '',
         'town_cy': '',
-        'county_id': 2,
+        'county_id': null,
+        postcode: '',
+        fields_of_law: null
+      },
+      {
+        'type_id': null,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': '',
+        'address_lines_cy': '',
+        town: '',
+        'town_cy': '',
+        'county_id': null,
+        postcode: '',
+        fields_of_law: null
+      },
+      {
+        'type_id': null,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': '',
+        'address_lines_cy': '',
+        town: '',
+        'town_cy': '',
+        'county_id': null,
+        postcode: '',
+        fields_of_law: null
+      },
+      {
+        'type_id': null,
+        description: 'description',
+        'description_cy': 'description_cy',
+        'address_lines': '',
+        'address_lines_cy': '',
+        town: '',
+        'town_cy': '',
+        'county_id': null,
         postcode: '',
         fields_of_law: null
       }]
@@ -631,16 +842,21 @@ describe('AddressesController', () => {
     addresses.primary['type_id'] = null;
     addresses.secondary[0]['type_id'] = null;
     addresses.secondary[1]['type_id'] = null;
+    addresses.secondary[2]['type_id'] = null;
+    addresses.secondary[3]['type_id'] = null;
+    addresses.secondary[4]['type_id'] = null;
+    addresses.primary['secondaryFieldsOfLawRadio'] = null;
+    addresses.secondary[0]['secondaryFieldsOfLawRadio'] = null;
+    addresses.secondary[1]['secondaryFieldsOfLawRadio'] = null;
+    addresses.secondary[2]['secondaryFieldsOfLawRadio'] = null;
+    addresses.secondary[3]['secondaryFieldsOfLawRadio'] = null;
+    addresses.secondary[4]['secondaryFieldsOfLawRadio'] = null;
+
+
 
     req.body = {
       primary: addresses.primary,
       secondary: addresses.secondary,
-      secondaryFieldsOfLawRadio: 'yes',
-      secondaryAddressAOLItems: [],
-      secondaryAddressCourtItems: [],
-      thirdFieldsOfLawRadio: 'yes',
-      thirdAddressAOLItems: [],
-      thirdAddressCourtItems: [],
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -655,7 +871,9 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.typeRequiredError},
       {text: controller.secondaryAddressPrefix + controller.typeRequiredError},
       {text: controller.thirdAddressPrefix + controller.typeRequiredError},
-
+      {text: controller.fourthAddressPrefix + controller.typeRequiredError},
+      {text: controller.fifthAddressPrefix + controller.typeRequiredError},
+      {text: controller.sixthAddressPrefix + controller.typeRequiredError},
     ];
     const expectedResults: CourtAddressPageData =
       setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
