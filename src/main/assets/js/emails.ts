@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 export class EmailsController {
   private formId = '#emailsForm';
@@ -20,6 +21,7 @@ export class EmailsController {
   private explanationCyInputName = 'explanationCy';
   private explanationCyInputId = 'explanation-cy';
   private hiddenNewInputName = 'isNew';
+  private tab = '#tab_emails';
 
   constructor() {
     this.initialize();
@@ -28,6 +30,7 @@ export class EmailsController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getEmails.bind(this));
         this.getEmails();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
