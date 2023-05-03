@@ -70,7 +70,6 @@ Given('click the Sign In button', async () => {
 });
 
 Then('the system will sign me in', async () => {
-  console.log(await I.getPageTitle());
   if (await I.getPageTitle() == 'Find a court or tribunal - GOV.UK') {
     const element = await I.checkElement('#logout');
     expect(element).equal(true);
