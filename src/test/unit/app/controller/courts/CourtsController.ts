@@ -3,6 +3,7 @@ import { mockResponse } from '../../../utils/mockResponse';
 import { CourtsController } from '../../../../../main/app/controller/courts/CourtsController';
 import {Region} from '../../../../../main/types/Region';
 import {CourtLock} from '../../../../../main/types/CourtLock';
+import {GET_COURTS_ERROR} from '../../../../../main/utils/error';
 
 
 describe('CourtsController', () => {
@@ -65,7 +66,7 @@ describe('CourtsController', () => {
     expect(res.render).toBeCalledWith('courts/courts', {
       courts: [],
       regions: [],
-      errors: [{text: controller.getCourtsErrorMsg}]
+      errors: [{text: GET_COURTS_ERROR}]
     });
   });
 });

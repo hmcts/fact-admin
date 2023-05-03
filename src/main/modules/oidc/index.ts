@@ -11,6 +11,10 @@ import {BlobServiceClient, newPipeline, StorageSharedKeyCredential} from '@azure
 import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
 import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 import {Logger} from '../../types/Logger';
+import {Region} from '../../types/Region';
+import {Error} from '../../types/Error';
+import {GET_COURTS_ERROR, NO_MATCHING_ROLES_ERROR} from '../../utils/error';
+import {ALLOWED_ROLES} from '../../utils/roles';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -145,11 +149,22 @@ export class OidcMiddleware {
         res.locals.isSuperAdmin = req.session.user.jwt.roles.includes('fact-super-admin');
 
         if (req.url.includes('/oauth2/callback')) {
-          // Redirect to the main page without including an intermediary redirect page
-          const courts = await req.scope.cradle.api.getCourts();
-          const regions = await req.scope.cradle.api.getRegions();
-          await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
-          return res.render('courts/courts', {courts, regions});
+          let courts: Array<unknown> = [];
+          let regions: Array<Region> = [];
+          const errors: Error[] = [];
+          const currentRoles = req.session['user']['jwt']['roles'] as string[];
+          if (currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
+            // Redirect to the main page without including an intermediary redirect page
+            courts = await req.scope.cradle.api.getCourts();
+            regions = await req.scope.cradle.api.getRegions();
+            await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
+          }
+          if (!currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
+            errors.push({text: NO_MATCHING_ROLES_ERROR});
+          } else if (courts.length == 0) {
+            errors.push({text: GET_COURTS_ERROR});
+          }
+          return res.render('courts/courts', {courts, regions, errors});
         }
         return next();
       } else if (req.xhr) {
