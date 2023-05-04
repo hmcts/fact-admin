@@ -3,7 +3,8 @@ import { mockResponse } from '../../../utils/mockResponse';
 import { CourtsController } from '../../../../../main/app/controller/courts/CourtsController';
 import {Region} from '../../../../../main/types/Region';
 import {CourtLock} from '../../../../../main/types/CourtLock';
-import {GET_COURTS_ERROR} from '../../../../../main/utils/error';
+import {GET_COURTS_ERROR, NO_MATCHING_ROLES_ERROR} from '../../../../../main/utils/error';
+import {ALLOWED_ROLES} from '../../../../../main/utils/roles';
 
 
 describe('CourtsController', () => {
@@ -34,6 +35,7 @@ describe('CourtsController', () => {
   test('Should render the courts page', async () => {
     const req = mockRequest();
     req.session['user']['jwt'] = {'sub': 'moshuser'};
+    req.session['user']['jwt']['roles'] = ALLOWED_ROLES;
     req.scope.cradle.api = mockApiWithCourts;
 
     const res = mockResponse();
@@ -59,6 +61,7 @@ describe('CourtsController', () => {
   test('Should display error message when api is down', async () => {
     const req = mockRequest();
     req.session['user']['jwt'] = {'sub': 'moshuser'};
+    req.session['user']['jwt']['roles'] = ALLOWED_ROLES;
     req.scope.cradle.api = mockApiWithoutCourts;
 
     const res = mockResponse();
@@ -69,5 +72,21 @@ describe('CourtsController', () => {
       errors: [{text: GET_COURTS_ERROR}]
     });
   });
+
+  test('Should render incorrect roles error message when logging in with no roles', async () => {
+    const req = mockRequest();
+    req.session['user']['jwt'] = {'sub': 'moshuser'};
+    req.session['user']['jwt']['roles'] = [];
+    req.scope.cradle.api = mockApiWithCourts;
+
+    const res = mockResponse();
+    await controller.get(req, res);
+    expect(res.render).toBeCalledWith('courts/courts', {
+      courts: [],
+      regions: [],
+      errors: [{text: NO_MATCHING_ROLES_ERROR}]
+    });
+  });
+
 });
 
