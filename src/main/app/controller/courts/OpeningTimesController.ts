@@ -101,11 +101,11 @@ export class OpeningTimesController {
 
     await req.scope.cradle.api.updateOpeningTimes(req.params.slug, openingTimes)
       .then((value: OpeningTime[]) => this.get(req, res, true, [], value))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], openingTimes);
+        await this.get(req, res, false, [error], openingTimes);
       });
   }
   /**

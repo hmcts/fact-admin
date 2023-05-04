@@ -85,11 +85,11 @@ export class EmailsController {
 
     await req.scope.cradle.api.updateEmails(req.params.slug, emails)
       .then((value: Email[]) => this.get(req, res, true, [], value))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], emails);
+        await this.get(req, res, false, [error], emails);
       });
   }
 

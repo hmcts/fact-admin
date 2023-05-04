@@ -86,11 +86,11 @@ export class OpeningTypesController {
     const idToDelete = req.params.id;
     await req.scope.cradle.api.deleteOpeningType(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.openingTypeInUseError
           : this.deleteOpeningTypeError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{text: error}]);
       });
   }
   /**

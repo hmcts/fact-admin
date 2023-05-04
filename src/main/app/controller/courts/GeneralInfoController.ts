@@ -89,9 +89,9 @@ export class GeneralInfoController {
     generalInfo['common_platform'] = generalInfo['common_platform'] ?? false;
 
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
-      .then((value: CourtGeneralInfo) => {
+      .then(async (value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
-          this.get(req, res, true, '', '', value);
+          await this.get(req, res, true, '', '', value);
         } else {
           this.renderRedirect(res, '/courts/' + updatedSlug + '/edit#general');
         }
