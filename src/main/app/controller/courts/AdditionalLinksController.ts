@@ -78,11 +78,12 @@ export class AdditionalLinksController {
 
     await req.scope.cradle.api.updateCourtAdditionalLinks(req.params.slug, links)
       .then((value: AdditionalLink[]) => this.get(req, res, true, [], value))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateAdditionalLinksErrorMsg;
-        this.get(req, res, false, [error], links); });
+        await this.get(req, res, false, [error], links);
+      });
   }
   /**
    * adds an empty form so view is rendered with one blank form
