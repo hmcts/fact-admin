@@ -102,11 +102,11 @@ export class AreasOfLawController {
 
     await req.scope.cradle.api.deleteAreaOfLaw(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.areaOfLawInUseError
           : this.deleteError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{ text: error }]);
       });
   }
 
