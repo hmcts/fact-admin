@@ -24,7 +24,7 @@ health:
   timeout: 5000
   deadline: 15000
 session:
-  secret: 'local'
+  secret: 'LONG_RANDOM_STRING'
   secure-flag: false
   redis:
     host:

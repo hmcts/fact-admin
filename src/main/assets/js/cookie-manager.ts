@@ -8,6 +8,7 @@ cookieManager.init({
       categoryName: 'essential',
       optional: false,
       cookies: [
+        'auth_verification',
         'i18next',
         '_oauth2_proxy',
 

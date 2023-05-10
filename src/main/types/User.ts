@@ -5,5 +5,16 @@ export interface User extends Element{
   forename: string,
   surname: string,
   roles: string[],
+  active: boolean;
+  locked: boolean;
+  pending: boolean;
+  stale: boolean;
+  pwdAccountLockedTime?: string;
+  ssoProvider: string;
+  ssoId: string;
+  lastModified: string;
+  createDate: string;
+  assignableRoles?: string[];
+  multiFactorAuthentication?: boolean;
 }
 
