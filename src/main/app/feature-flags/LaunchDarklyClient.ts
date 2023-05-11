@@ -28,9 +28,9 @@ export class LaunchDarkly implements FeatureFlagClient {
 
   public onFlagChange(callback: Function, defaultValue: boolean, flag?: string): void {
     if(flag) {
-      this.client.on(`update:${flag}` , async ():Promise<any> => callback(await this.getFlagValue(flag, defaultValue)));
+      this.client.on(`update:${flag}` , async () => callback(this.getFlagValue(flag, defaultValue)));
     } else {
-      this.client.on('update' , async ():Promise<any> => callback(await this.getAllFlagValues(defaultValue)));
+      this.client.on('update' , async () => callback(this.getAllFlagValues(defaultValue)));
     }
   }
 
