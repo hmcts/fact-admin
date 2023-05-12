@@ -19,9 +19,11 @@
           </a>
         {% endif %}
 
-        <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
-          download csv
-        </a>
+        {% if errors|length == 0 %}
+          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
+            download csv
+          </a>
+        {% endif %}
 
         {% if isSuperAdmin %}
           <a id="add-court-nav" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/add-court">
