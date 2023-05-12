@@ -94,10 +94,10 @@ Then('an error message is shown', async () => {
 });
 
 Then('an error message is shown {string}', async (errmsg: string) => {
-    const element = await I.checkElement('.govuk-error-summary');
-    expect(element).equal(true);
-    const elementErr = await  I.getElement('#main-content > div.govuk-error-summary > div > div > ul > li');
-    expect(errmsg).equal(await I.getElementText(elementErr));
+  const element = await I.checkElement('.govuk-error-summary');
+  expect(element).equal(true);
+  const elementErr = await  I.getElement('#main-content > div.govuk-error-summary > div > div > ul > li');
+  expect(errmsg).equal(await I.getElementText(elementErr));
 });
 
 
