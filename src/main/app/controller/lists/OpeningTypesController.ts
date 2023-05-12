@@ -18,11 +18,17 @@ export class OpeningTypesController {
   nameDuplicatedError = 'A opening type with the same name already exists.';
   openingTypeInUseError = 'You cannot delete this opening type at the moment, as one or more courts are dependent on it. ' +
     'Please remove the opening from the relevant courts first.';
-
+  /**
+   * GET /lists/opening-types
+   * render the view with all opening types
+   */
   public async getAll(req: AuthedRequest, res: Response): Promise<void> {
     await this.renderAll(req, res);
   }
-
+  /**
+   * GET /lists/opening-type/:id or //lists/opening-type
+   * get the data for a specific opening type and render the view
+   */
   public async getOpeningType(req: AuthedRequest, res: Response): Promise<void> {
     const errors: { text: string }[] = [];
     const id = req.params?.id;
@@ -40,7 +46,10 @@ export class OpeningTypesController {
 
     this.renderOpeningType(res, openingType, false, errors, true, fatalError);
   }
-
+  /**
+   * PUT /lists/opening-type
+   * validate input data and update the opening type and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let openingType = req.body.openingType as OpeningType;
 
@@ -68,20 +77,26 @@ export class OpeningTypesController {
         this.renderOpeningType(res, openingType, false, [{text: error }]);
       });
   }
-
+  /**
+   * DELETE /lists/opening-type/:id
+   * delete the opening type and re-render the main view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
 
     const idToDelete = req.params.id;
     await req.scope.cradle.api.deleteOpeningType(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.openingTypeInUseError
           : this.deleteOpeningTypeError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{text: error}]);
       });
   }
-
+  /**
+   * GET /lists/opening-types/delete-confirm/:id
+   * render the confirmation view
+   */
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
     const idToDelete = req.params.id;
     const name = req.query?.type?.toString();

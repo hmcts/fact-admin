@@ -17,11 +17,17 @@ export class PhotoController {
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
-
+  /**
+   * GET /courts/:slug/photo
+   * render the view with data from database for court photo tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
-
+  /**
+   * PUT /courts/:slug/photo
+   * validate input data and update the court photo and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const imageFileName = req.body.name as string;
     const slug: string = req.params.slug;
@@ -57,7 +63,10 @@ export class PhotoController {
         await this.render(req, res, [error], false);
       });
   }
-
+  /**
+   * DELETE /courts/:slug/photo
+   * delete the court photo and re-render the view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
     const slug: string = req.params.slug;
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
@@ -78,7 +87,10 @@ export class PhotoController {
         await this.render(req, res, [error], false);
       });
   }
-
+  /**
+   * GET /courts/:slug/photo/:imageToDelete/confirm-delete
+   * render the delete confirmation view
+   */
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
     const courtPhotoFileName = req.params.imageToDelete;
     const courtPhotoFileURL = config.get('services.image-store.url') + '/' + courtPhotoFileName;

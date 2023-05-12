@@ -21,7 +21,10 @@ export class FacilityTypesController {
   facilityTypeInUseError = 'You cannot delete this facility type at the moment, as one or more courts are dependent on it. ' +
     'Please remove the facility from the relevant courts first.';
   reorderError = 'An error occurred when trying to reorder the facility types.';
-
+  /**
+   * GET /lists/facility-types
+   * render the view with all facility types
+   */
   public async getAll(req: AuthedRequest, res: Response): Promise<void> {
     await this.renderAll(req, res);
   }
@@ -29,7 +32,10 @@ export class FacilityTypesController {
   public async getAllReorder(req: AuthedRequest, res: Response): Promise<void> {
     await this.renderAll(req, res, false, [], false);
   }
-
+  /**
+   * GET /lists/facility-type/:id or /lists/facility-type
+   * get the data for a specific facility and render the view
+   */
   public async getFacilityType(req: AuthedRequest, res: Response): Promise<void> {
     const errors: { text: string }[] = [];
     const id = req.params?.id;
@@ -47,7 +53,10 @@ export class FacilityTypesController {
 
     this.renderFacilityType(res, facilityType, false, errors, true, fatalError);
   }
-
+  /**
+   * PUT /lists/facility-type
+   * validate input data and update the facility type and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const facilityType = req.body.facilityType;
 
@@ -89,7 +98,10 @@ export class FacilityTypesController {
         this.renderAll(req, res, false, [{ text: this.reorderError }], false)
       );
   }
-
+  /**
+   * DELETE /lists/facility-types/:id
+   * delete the facility type and re-render the main view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
     if(!CSRF.verify(req.body._csrf)) {
       await this.renderAll(req, res, false, [{ text: this.deleteFacilityTypeError}]);
@@ -99,14 +111,17 @@ export class FacilityTypesController {
     const idToDelete = req.params.id;
     await req.scope.cradle.api.deleteFacilityType(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.facilityTypeInUseError
           : this.deleteFacilityTypeError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{text: error}]);
       });
   }
-
+  /**
+   * GET /lists/facility-types/delete-confirm/:id
+   * render the confirmation view
+   */
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
     const idToDelete = req.params.id;
     const name = req.query?.name?.toString();

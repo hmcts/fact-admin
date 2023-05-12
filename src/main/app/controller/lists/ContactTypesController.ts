@@ -20,11 +20,17 @@ export class ContactTypesController {
   contactTypeInUseError = 'You cannot delete this contact type at the moment, as one or more courts are dependent on it. ' +
     'Please remove the contact type from the relevant courts first';
   nameRequiredError = 'Name is required.';
-
+  /**
+   * GET /lists/contact-types
+   * render the view with all contact types list
+   */
   public async getAll(req: AuthedRequest, res: Response): Promise<void> {
     await this.renderAll(req, res);
   }
-
+  /**
+   * GET /lists/contact-type/:id or /lists/contact-type
+   * get the data for a specific contact type and render the view
+   */
   public async getContactType(req: AuthedRequest, res: Response): Promise<void> {
     const errors: { text: string }[] = [];
     const id = req.params?.id;
@@ -43,7 +49,10 @@ export class ContactTypesController {
     this.renderContactType(res, contactType, false, errors, fatalError);
   }
 
-
+  /**
+   * PUT /lists/contact-type
+   * validate input data and update the contact type and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let contactType = req.body.contactType as ContactType;
 
@@ -79,17 +88,20 @@ export class ContactTypesController {
     const name = req.query?.type?.toString();
     this.renderDeleteConfirmation(res, name, idToDelete);
   }
-
+  /**
+   * DELETE /lists/contact-type/:id
+   * delete the contact type and re-render the main view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
     const idToDelete = req.params.id;
 
     await req.scope.cradle.api.deleteContactType(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.contactTypeInUseError
           : this.deleteError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{text: error}]);
       });
   }
 
@@ -155,7 +167,9 @@ export class ContactTypesController {
 
     return contactType;
   }
-
+  /**
+   * sanitize all input before saving
+   */
   private sanitizeInput(input: string): string {
     return input?.trim() || null;
   }

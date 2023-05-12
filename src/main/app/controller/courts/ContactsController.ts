@@ -16,6 +16,10 @@ export class ContactsController {
   getContactTypesErrorMsg = 'A problem occurred when retrieving the phone number types.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/contacts
+   * render the view with data from database for contacts tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -52,7 +56,10 @@ export class ContactsController {
 
     res.render('courts/tabs/phoneNumbersContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/contacts
+   * validate input data and update the court contacts then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let contacts = req.body.contacts as Contact[] ?? [];
     contacts.forEach(c => {
@@ -72,11 +79,12 @@ export class ContactsController {
     } else {
       await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
         .then((value: Contact[]) => this.get(req, res, true, '', value))
-        .catch((reason: AxiosError) => {
+        .catch(async (reason: AxiosError) => {
           const error = reason.response?.status === 409
             ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
             : this.updateErrorMsg;
-          this.get(req, res, false, error, contacts); });
+          await this.get(req, res, false, error, contacts);
+        });
     }
   }
 
@@ -84,7 +92,9 @@ export class ContactsController {
     return standardTypes.map((ct: ContactType) => (
       {value: ct.id, text: ct.type, selected: false}));
   }
-
+  /**
+   * adds an empty form so view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(contacts: Contact[], numberOfForms = 1): void {
     if (contacts) {
       for (let i = 0; i < numberOfForms; i++) {
@@ -92,7 +102,9 @@ export class ContactsController {
       }
     }
   }
-
+  /**
+   * check if contact is empty
+   */
   private contactIsEmpty(contact: Contact): boolean {
     return (!contact.type_id && !contact.number?.trim() && !contact.explanation?.trim() && !contact.explanation_cy?.trim());
   }
