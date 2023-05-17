@@ -40,6 +40,16 @@ When('I fill in the Username and Password fields with my authenticated credentia
   }
 });
 
+When('I fill in the Username and Password fields with test user credentials with no role', async () => {
+  if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
+    const username = puppeteerConfig.testUsername;
+    const password = puppeteerConfig.password;
+    await fillInUsernameAndPassword(username, password);
+  }
+});
+
+
+
 When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
     const username = puppeteerConfig.superUsername;
@@ -82,3 +92,12 @@ Then('an error message is shown', async () => {
     expect(element).equal(true);
   }
 });
+
+Then('an error message is shown {string}', async (errmsg: string) => {
+  const element = await I.checkElement('.govuk-error-summary');
+  expect(element).equal(true);
+  const elementErr = await  I.getElement('#main-content > div.govuk-error-summary > div > div > ul > li');
+  expect(errmsg).equal(await I.getElementText(elementErr));
+});
+
+
