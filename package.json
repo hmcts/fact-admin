@@ -57,12 +57,12 @@
     "autobind-decorator": "^2.4.0",
     "awilix": "^6.1.0",
     "axios": "^0.27.2",
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.2",
     "config": "^3.3.7",
     "connect-redis": "^6.1.3",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "express-nunjucks": "^2.2.5",
     "express-session": "^1.17.3",
     "glob-parent": "6.0.2",
@@ -136,8 +136,6 @@
     "@hmcts/nodejs-logging/moment": ">=2.29.4",
     "qs": ">=6.5.3",
     "json5": ">=2.2.2",
-    "express/debug": ">=3.1.0",
-    "body-parser/debug": ">=3.1.0",
     "express-session/debug": ">=3.1.0"
   },
   "packageManager": "yarn@3.4.1"
