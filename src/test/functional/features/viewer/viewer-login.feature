@@ -29,5 +29,5 @@ Feature: Login/Logout
 #      | #tab_additional-links        | false           |
 #      | #tab_spoe                    | false           |
 #      | #tab_postcodes               | true            |
-      | #tab_local-authorities       | true            |
+ #     | #tab_local-authorities       | true            |
 
