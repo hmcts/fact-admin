@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 const {initAll} = require('govuk-frontend');
 
 export class PhoneNumbersController {
@@ -21,6 +22,7 @@ export class PhoneNumbersController {
   private explanationCyInputName = 'explanation_cy';
   private faxInputName = 'fax';
   private hiddenNewInputName = 'isNew';
+  private tab = '#tab_phone-numbers';
 
   constructor() {
     this.initialize();
@@ -29,6 +31,7 @@ export class PhoneNumbersController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getContacts.bind(this));
         this.getContacts();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();

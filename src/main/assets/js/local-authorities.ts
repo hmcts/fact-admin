@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {setUpTabClick} from './tab-reset';
 
 
 const { initAll } = require('govuk-frontend');
@@ -9,10 +10,8 @@ export class LocalAuthoritiesController {
   private tabId = '#localAuthoritiesTab';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
   private localAuthoritiesTabId ='#tab_local-authorities';
-
   private slug = $('#slug').val();
   private areaOfLaw = ($('#courtAreasOfLaw').val() == undefined ) ? 'unknown': $('#courtAreasOfLaw').val();
-
   private getLocalAuthoritiesSelect = '#courtAreasOfLaw';
 
 
@@ -24,6 +23,7 @@ export class LocalAuthoritiesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.localAuthoritiesTabId, this.getAreasOfLaw.bind(this));
         this.getAreasOfLaw();
         this.setUpGetLocalAuthoritiesEventHandler();
         this.setUpSubmitEventHandler();

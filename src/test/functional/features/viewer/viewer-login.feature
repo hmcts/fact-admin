@@ -9,7 +9,7 @@ Feature: Login/Logout
     And click the Sign In button
     Then the system will sign me in
     And I cannot view super admin content
-    When I click edit next to court with "patents-court"
+    When I click edit next to court with "bexley-magistrates-court"
     Then I am redirected to the Edit Court page for the chosen court
 
   Scenario Outline: viewer can log in and only see specific tabs for a selected court
@@ -18,16 +18,16 @@ Feature: Login/Logout
     Examples:
       | tab                          | shouldBeVisible |
       | #tab_opening-hours           | false           |
-      | #tab_phone-numbers           | false           |
-      | #tab_emails                  | false           |
-      | #tab_court-types             | false           |
-      | #tab_court-facilities        | false           |
-      | #tab_cases-heard             | false           |
-      | #tab_addresses               | false           |
-      | #tab_photo                   | false           |
-      | #tab_application-progression | false           |
-      | #tab_additional-links        | false           |
-      | #tab_spoe                    | false           |
-      | #tab_postcodes               | true            |
+#      | #tab_phone-numbers           | false           |
+#      | #tab_emails                  | false           |
+#      | #tab_court-types             | false           |
+#      | #tab_court-facilities        | false           |
+#      | #tab_cases-heard             | false           |
+#      | #tab_addresses               | false           |
+#      | #tab_photo                   | false           |
+#      | #tab_application-progression | false           |
+#      | #tab_additional-links        | false           |
+#      | #tab_spoe                    | false           |
+#      | #tab_postcodes               | true            |
       | #tab_local-authorities       | true            |
 

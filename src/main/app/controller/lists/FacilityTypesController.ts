@@ -111,11 +111,11 @@ export class FacilityTypesController {
     const idToDelete = req.params.id;
     await req.scope.cradle.api.deleteFacilityType(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.facilityTypeInUseError
           : this.deleteFacilityTypeError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{text: error}]);
       });
   }
   /**

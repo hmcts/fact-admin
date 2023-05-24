@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -26,6 +27,7 @@ export class PostcodesController {
     $(() => {
       if ($(this.tabId).length > 0) {
         Utilities.toggleTabEnabled(this.tabId, false);
+        setUpTabClick(this.postcodesNavTab, this.getPostcodes.bind(this));
         this.getPostcodes();
         this.setUpAddEventHandler();
         this.setUpSelectAllEventHandler();
