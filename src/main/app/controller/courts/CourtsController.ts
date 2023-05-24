@@ -19,13 +19,16 @@ export class CourtsController {
     let regions = await req.scope.cradle.api.getRegions();
     const currentRoles = req.appSession['user']['jwt']['roles'] as string[];
     await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession.user.email);
+
+    if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
+
     if (!currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
       errors.push({text: NO_MATCHING_ROLES_ERROR});
       courts = [];
       regions = [];
       res.render('courts/courts', {courts, regions, errors });
     }
-    if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
+
     res.render('courts/courts', { courts, regions, errors });
   }
 }
