@@ -9,7 +9,6 @@ import {Container} from './modules/awilix';
 import {HealthCheck} from './modules/health';
 import addRoutes from './routes';
 import {PropertiesVolume} from './modules/properties-volume';
-//import {SessionStorage} from './modules/session';
 import {AppInsights} from './modules/appinsights';
 import {OidcMiddleware} from './modules/oidc';
 import cookieParser from 'cookie-parser';

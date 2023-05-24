@@ -4,7 +4,6 @@ export interface User extends Element{
   email: string,
   forename: string,
   surname: string,
-  roles: string[],
   active: boolean;
   locked: boolean;
   pending: boolean;
@@ -16,5 +15,12 @@ export interface User extends Element{
   createDate: string;
   assignableRoles?: string[];
   multiFactorAuthentication?: boolean;
+  jwt: jwtToken;
+  isSuperAdmin: boolean;
+  isViewer: boolean;
 }
 
+export interface jwtToken {
+  roles: string[],
+  sub: string
+}

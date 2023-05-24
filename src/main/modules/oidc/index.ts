@@ -7,7 +7,7 @@ import ConnectRedis from 'connect-redis';
 import session from 'express-session';
 import FileStoreFactory from 'session-file-store';
 import {auth, Session} from 'express-openid-connect';
-import {User} from '../../types/User';
+import {jwtToken, User} from '../../types/User';
 import {createClient} from 'redis';
 import { BlobServiceClient, newPipeline, StorageSharedKeyCredential } from '@azure/storage-blob';
 import { asClass, asValue } from 'awilix';
@@ -16,6 +16,7 @@ import { LaunchDarkly } from '../../app/feature-flags/LaunchDarklyClient';
 import { AzureBlobStorage } from '../../app/azure/AzureBlobStorage';
 import { FactApi } from '../../app/fact/FactApi';
 import Axios from 'axios';
+
 
 export class OidcMiddleware {
 
@@ -53,6 +54,7 @@ export class OidcMiddleware {
       },
       afterCallback: (req: Request, res: Response, session: Session) => {
         const user = jwt_decode(session.access_token) as User;
+        user.jwt = jwt_decode(session.id_token) as jwtToken;
 
         return { ...session, user };
       }
@@ -85,10 +87,13 @@ export class OidcMiddleware {
         });
 
         res.locals.isLoggedIn = true;
-        res.locals.isViewer = req.appSession.user.roles.includes('fact-viewer');
-        res.locals.isSuperAdmin = req.appSession.user.roles.includes('fact-super-admin');
+        req.appSession.user.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
+        req.appSession.user.isSuperAdmin = req.appSession.user.jwt.roles.includes('fact-super-admin');
+        res.locals.isViewer = req.appSession.user.isViewer;
+        res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
 
         return next();
+
       } else if (req.xhr) {
         res.status(302).send({url: '/login'});
       } else return res.redirect('/login');
@@ -127,6 +132,3 @@ export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFuncti
   }
 };
 
-export type AuthedUser = {
-  id_token: string
-}
