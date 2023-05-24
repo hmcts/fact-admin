@@ -36,7 +36,7 @@ describe('EditCourtController', () => {
 
   test('Should get court and render the edit court page as super admin', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
+    //req.appSession.user.email = user;
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -62,7 +62,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -82,7 +82,6 @@ describe('EditCourtController', () => {
 
   test('Should get court and render the edit court page as super admin if lock user the same', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -113,7 +112,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -133,7 +132,6 @@ describe('EditCourtController', () => {
 
   test('Should return error if court lock user is different and time condition not met', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -164,7 +162,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -179,7 +177,6 @@ describe('EditCourtController', () => {
 
   test('Should switch locks with user if time period has expired', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -211,7 +208,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -231,7 +228,6 @@ describe('EditCourtController', () => {
 
   test('Should get court and render the edit court page as admin', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -257,7 +253,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = false;
+    req.appSession.user.isSuperAdmin = false;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -277,7 +273,6 @@ describe('EditCourtController', () => {
 
   test('Should get court and render the edit court page with error if flags are all off', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
@@ -303,7 +298,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = false;
+    req.appSession.user.isSuperAdmin = false;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
@@ -324,7 +319,6 @@ describe('EditCourtController', () => {
 
   test('Should get court and render the edit court page without error if flags are not retrievable', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {};
@@ -335,7 +329,7 @@ describe('EditCourtController', () => {
 
     req.params = {slug: slug};
     req.query = {name: name};
-    req.session.user.isSuperAdmin = false;
+    req.appSession.user.isSuperAdmin = false;
     req.scope.cradle.api = mockApi;
     req.scope.cradle.featureFlags = mockApi;
 
