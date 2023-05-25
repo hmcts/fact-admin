@@ -8,10 +8,7 @@ services:
     url: 'http://localhost:8080'
   idam:
     authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/o'
-    tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
     sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
-    addNewUserURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/registration'
-    updateUserDetailsURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/'
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
     baseURL: 'http://localhost:3300'

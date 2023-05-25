@@ -5,7 +5,6 @@ services:
     url: FACT_API_URL
   idam:
     authorizationURL: IDAM_WEB_URL
-    tokenURL: IDAM_API_URL
     sessionURL: IDAM_SESSION_URL
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
