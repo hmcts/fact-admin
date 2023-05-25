@@ -31,6 +31,9 @@ export class OidcMiddleware {
     const issuerBaseURL: string = config.get('services.idam.authorizationURL');
     const baseURL: string = config.get('services.idam.baseURL');
 
+    console.log(baseURL);
+    console.log(issuerBaseURL);
+
     app.use(auth({
       issuerBaseURL: issuerBaseURL,
       baseURL: baseURL,
