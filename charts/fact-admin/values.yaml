@@ -20,7 +20,7 @@ nodejs:
     FACT_API_URL: "http://fact-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"
     IDAM_SESSION_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session"
-    BASE_URL: "https://fact-admin-{{ .Values.global.environment }}.platform.hmcts.net"
+    BASE_URL: "https://fact-admin.{{ .Values.global.environment }}.platform.hmcts.net"
     REDIS_HOST: "fact-admin-session-storage-{{ .Values.global.environment }}.redis.cache.windows.net"
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
     IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
