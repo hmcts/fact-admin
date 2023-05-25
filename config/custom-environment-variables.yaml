@@ -9,7 +9,7 @@ services:
     sessionURL: IDAM_SESSION_URL
     clientID: OAUTH_CLIENT_ID
     clientSecret: OAUTH_CLIENT_SECRET
-    callbackURL: OAUTH_CLIENT_REDIRECT
+    baseURL: BASE_URL
     idamUserDashboardURL : IDAM_USER_DASHBOARD_URL
   image-store:
     url: IMAGE_BASE_URL

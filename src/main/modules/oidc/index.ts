@@ -28,10 +28,12 @@ export class OidcMiddleware {
     const clientId: string = config.get('services.idam.clientID');
     const clientSecret: string = config.get('services.idam.clientSecret');
     const secret: string = config.get('session.secret');
+    const issuerBaseURL: string = config.get('services.idam.authorizationURL');
+    const baseURL: string = config.get('services.idam.baseURL');
 
     app.use(auth({
-      issuerBaseURL: 'https://idam-web-public.aat.platform.hmcts.net/o',
-      baseURL: 'http://localhost:3300/',
+      issuerBaseURL: issuerBaseURL,
+      baseURL: baseURL,
       clientID: clientId,
       secret: secret,
       clientSecret: clientSecret,
@@ -87,9 +89,8 @@ export class OidcMiddleware {
         });
 
         res.locals.isLoggedIn = true;
-        req.appSession.user.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
         req.appSession.user.isSuperAdmin = req.appSession.user.jwt.roles.includes('fact-super-admin');
-        res.locals.isViewer = req.appSession.user.isViewer;
+        res.locals.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
 
         return next();
