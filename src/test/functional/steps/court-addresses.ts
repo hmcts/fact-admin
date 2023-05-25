@@ -7,6 +7,7 @@ import * as I from '../utlis/puppeteer.util';
 
 async function checkAndClearAddressField(addressFieldElement: string) {
   expect(await I.checkElement(addressFieldElement)).equal(true);
+  await I.setInputField(addressFieldElement, "");
   await I.clearField(addressFieldElement);
 }
 
