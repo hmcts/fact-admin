@@ -16,45 +16,9 @@ Given('they are in alphabetical order', async () => {
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  console.log(' Fact page title  ' + await I.getPageTitle());
   const elementExist = await I.checkElement('#edit-' + courtSlug);
   expect(elementExist).equal(true);
   await I.click('#edit-' + courtSlug);
-
-
-
-  // console.log('court slug: ' + courtSlug);
-  //
-  // console.log('sign in button');
-  // console.log(await I.checkElement('#authorizeCommand > div.form-section > div.login-list > input.button'));
-  //
-  // console.log('puppeteerConfig');
-  // console.log(puppeteerConfig);
-  //
-  // const elementExist = await I.checkElement('#edit-' + courtSlug);
-  // console.log('element exists: ' + elementExist);
-  //
-  // console.log('dump element:');
-  // const selector = '#edit-bexley-magistrates-court';
-  // const viewCourtName = await I.getElement(selector);
-  // console.log('court name: ' + await I.getElementText(viewCourtName));
-  //
-  // console.log('tableCourtsName:');
-  // console.log(await I.getElement('#tableCourtsName'));
-  //
-  // console.log('numberOfCourts:');
-  // console.log(await I.getElement('#numberOfCourts'));
-  //
-  // console.log('main-content > h1:');
-  // console.log(await I.getElement('#main-content > h1'));
-  //
-  // console.log('tableCourtsUpdated:');
-  // console.log(await I.getElement('#tableCourtsUpdated'));
-  //
-  // console.log('body > div...:');
-  // console.log(await I.getElement('body > div > div > div.govuk-grid-column-three-quarters > a:nth-child(2)'));
-  // expect(elementExist).equal(true);
-  // await I.click('#edit-' + courtSlug);
 });
 
 Then('I am redirected to the Edit Court page for the {string}', async (courtName: string) => {
