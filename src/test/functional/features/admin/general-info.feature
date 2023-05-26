@@ -11,10 +11,10 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "stafford-combined-court-centre"
-#    Then I am redirected to the Edit Court page for the chosen court
-#    When I hover over general nav element
-#    When I click the general tab
-#    Then I can view the urgent notices
-#    And I can view the PUAS flag
-#    And I can view common platform flag checkbox
-#    And I cannot view super admin content
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over general nav element
+    When I click the general tab
+    Then I can view the urgent notices
+    And I can view the PUAS flag
+    And I can view common platform flag checkbox
+    And I cannot view super admin content
