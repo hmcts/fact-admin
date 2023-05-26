@@ -71,4 +71,3 @@ Feature: Additional-links
     And I click save Additional Links
     Then An error is displayed for additional links with summary "All display names must be unique." and display name field messages "Duplicated display name"
 
-
