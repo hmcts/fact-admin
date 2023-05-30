@@ -18,7 +18,7 @@ export class CourtsController {
     let courts = await req.scope.cradle.api.getCourts();
     let regions = await req.scope.cradle.api.getRegions();
     const currentRoles = req.appSession['user']['jwt']['roles'] as string[];
-    await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession.user.email);
+    await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession.user.sub);
 
     if (courts.length == 0) {errors.push({text: this.getCourtsErrorMsg});}
 

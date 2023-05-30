@@ -57,7 +57,6 @@ export class OidcMiddleware {
       afterCallback: (req: Request, res: Response, session: Session) => {
         const user = jwt_decode(session.access_token) as User;
         user.jwt = jwt_decode(session.id_token) as jwtToken;
-
         return { ...session, user };
       }
     }));

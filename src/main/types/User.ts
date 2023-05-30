@@ -1,7 +1,7 @@
 import {Element} from "./Element";
 export interface User extends Element{
   id?: string,
-  email: string,
+  sub: string,
   forename: string,
   surname: string,
   active: boolean;
@@ -21,6 +21,5 @@ export interface User extends Element{
 }
 
 export interface jwtToken {
-  roles: string[],
-  sub: string
+  roles: string[]
 }
