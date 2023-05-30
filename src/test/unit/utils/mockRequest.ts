@@ -11,7 +11,7 @@ export const mockRequest = () => {
     appSession: {
       user: {
         isSuperAdmin: '',
-        email: 'moshuser'
+        sub: 'moshuser'
       }
     }
   };
