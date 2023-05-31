@@ -50,6 +50,8 @@ export class OidcMiddleware {
         rollingDuration: 20 * 60,
         cookie: {
           httpOnly: true,
+          sameSite: 'Lax',
+          secure:  config.get('session.secure-flag')
         },
         rolling: true,
         store: this.getStore(app)
