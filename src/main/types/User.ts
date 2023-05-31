@@ -21,5 +21,6 @@ export interface User extends Element{
 }
 
 export interface jwtToken {
-  roles: string[]
+  roles: string[],
+  sub: string
 }
