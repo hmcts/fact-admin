@@ -4,7 +4,13 @@ import { I } from '../utlis/codecept-util';
 //import * as I from '../utlis/puppeteer.util';
 
 Given('that I am a logged-in admin or super admin user', async () => {
- I.dontSeeElementInDOM('#logout')
+  // let element = await I.checkElement('#logout');
+  // if (!element) {
+  //   await I.click('#login');
+  //   element = await I.checkElement('#logout');
+  // }
+  // expect(element).equal(true);
+ I.waitForElement('#logout');
 });
 
 Then('I am logged out if I am a super admin', async () => {

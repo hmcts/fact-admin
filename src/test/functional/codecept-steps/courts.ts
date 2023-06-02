@@ -1,0 +1,51 @@
+import { I } from '../utlis/codecept-util';
+import {expect} from 'chai';
+
+Then('I can view the courts or tribunals in a list format', async () => {
+  I.seeElement('#courts');
+});
+
+Given('they are in alphabetical order', async () => {
+  const courts = await I.grabTextFromAll('#courts > tbody > tr > td:first-child');
+  console.log('courts');
+  expect(courts).not.equal([]);
+  expect(courts).equals(courts.sort());
+});
+
+Then('test', async () => {
+  const output = require('codeceptjs').output;
+  output.log('..................test................');
+  //console.log('..................test................');
+});
+
+When('I click edit next to court with {string}', async (courtSlug: string) => {
+  I.seeElement('#edit-' + courtSlug);
+  I.click('#edit-' + courtSlug);
+});
+
+Then('I am redirected to the Edit Court page for the {string}', async (courtName: string) => {
+  const pageTitle = await I.grabTitle();
+  const editCourtHeadingText = await I.grabTextFrom('#court-name');
+  expect(pageTitle).equal('Edit Court');
+  expect(editCourtHeadingText).equal('Editing - ' + courtName);
+  await I.seeElement('#courts');
+  await I.seeElement('#my-account');
+  await I.seeElement('#logout');
+  await I.seeElement('#view-in-new-window');
+  await I.seeElement('#general');
+});
+//
+// When('I click view next to court with {string}', async (courtSlug: string) => {
+//   const selector = '#view-' + courtSlug;
+//   const elementExist = await I.checkElement(selector);
+//   expect(elementExist).equal(true);
+//   await I.click(selector);
+// });
+//
+// Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
+//   const selector = '#main-content > div > div > h1';
+//   const elementExist = await I.checkElement(selector);
+//   expect(elementExist).equal(true);
+//   const viewCourtHeading = await I.getElement(selector);
+//   expect(await I.getElementText(viewCourtHeading)).equal(courtName);
+// });

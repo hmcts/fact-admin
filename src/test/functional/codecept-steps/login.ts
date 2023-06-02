@@ -1,4 +1,4 @@
-//import { config as testConfig } from '../../config';
+import { config as testConfig } from '../../config';
 import { expect } from 'chai';
 import { I } from '../utlis/codecept-util';
 import {puppeteerConfig} from '../puppeteer.config';
@@ -31,8 +31,9 @@ Given('I am on the admin portal sign in page', async function() {
 
 When('I fill in the Username and Password fields with my authenticated credentials', async function() {
   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const username = puppeteerConfig.username;
-    const password = puppeteerConfig.password;
+    const username = testConfig.username;
+    const password = testConfig.password;
+    // @ts-ignore
     await fillInUsernameAndPassword(username, password);
   }
 });
