@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import { I } from '../utlis/codecept-util';
-//import {config} from '../../config';
+import {config} from '../../config';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.grabTitle();
@@ -18,6 +18,7 @@ When('I add an {string} in the rich editor field provided {string}', async (mess
   within({frame: id}, () => {
     I.seeElement('#tinymce');
     I.clearField('#tinymce');
+    // I.fillField('#tinymce', "");
     I.fillField('#tinymce', message);
   });
 });
@@ -31,11 +32,15 @@ Given('I click the update button', async () => {
 //   expect(elementExist).equal(true);
 // });
 //
-// When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
-//   const selector = '#generalInfoTab #urgent-notice-welsh';
-//   await I.clearField(selector);
-//   await I.fillFieldInIframe(selector, welshMessage);
-// });
+When('I have added the {string} in the Urgent Notice Welsh field', async (welshMessage: string) => {
+  const selector = '#generalInfoTab #urgent-notice-welsh_ifr';
+  I.seeElement(selector);
+  within({frame: selector}, () => {
+    I.seeElement('#tinymce');
+    I.clearField('#tinymce');
+    I.fillField('#tinymce', welshMessage);
+  });
+});
 //
 // When('I click the open checkbox', async () => {
 //   const selectorOpen = '#generalInfoTab #open';
@@ -85,15 +90,15 @@ Given('I click the update button', async () => {
 //   }
 // });
 //
-// Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
-//   const selector = '#view-in-new-window';
-//   expect(await I.checkElement(selector)).equal(true);
-//   await I.click(selector);
-//
-//   await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');
-//   const label = 'Urgent Notice';
-//   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div.urgent-message > div:nth-child(2) > strong';
-//
-//   const labelElement = await I.getElement(selectorLabel);
-//   expect(await I.getElementText(labelElement)).equal(label);
-// });
+Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
+  const selector = '#view-in-new-window';
+  I.seeElement(selector);
+  await I.click(selector);
+
+  await I.amOnPage(config.FRONTEND_URL + '/courts/administrative-court');
+  const label = 'Urgent Notice';
+  const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div.urgent-message > div:nth-child(2) > strong';
+
+  const labelElement = await I.grabTextFrom(selectorLabel);
+  expect(labelElement).equal(label);
+});

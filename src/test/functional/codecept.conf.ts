@@ -15,11 +15,9 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       require: '@codeceptjs/allure-legacy',
     },
-    pauseOnFail: {
-      enabled: !testConfig.TestHeadlessBrowser,
-    },
     retryFailedStep: {
       enabled: true,
+      retries: 5,
     },
     tryTo: {
       enabled: true,

@@ -179,6 +179,7 @@ export const selectItem = async (selector: string, value: string) => {
   }
 };
 
+// @ts-ignore
 export const countElement = async (selector: string): Promise<number> => {
   try {
     const count = (await scope.page.$$(selector)).length;

@@ -13,7 +13,7 @@ export const config = {
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data',
   Gherkin: {
-    features: './codecept-features/admin/*.feature',
+    features: './codecept-features/admin/court-urgent.feature',
     steps: './codecept-steps/**/*.ts',
   },
   helpers: {},

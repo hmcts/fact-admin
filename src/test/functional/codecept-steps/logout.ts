@@ -10,7 +10,7 @@ Given('that I am a logged-in admin or super admin user', async () => {
   //   element = await I.checkElement('#logout');
   // }
   // expect(element).equal(true);
- I.waitForElement('#logout');
+  I.waitForElement('#logout');
 });
 
 Then('I am logged out if I am a super admin', async () => {
@@ -29,7 +29,7 @@ Then('I am logged out if I am an admin user', async () => {
 
 Given('I click the Logout link', async () => {
   if (await I.grabTitle() !== 'Sign in - HMCTS Access - GOV.UK') {
-     I.click('#logout');
+    I.click('#logout');
   }
 });
 

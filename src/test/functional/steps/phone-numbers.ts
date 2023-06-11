@@ -150,9 +150,9 @@ Then('an error message is displayed for phone number tab with summary {string} a
   expect(await I.getElementText(descriptionErrorElement)).contains(message);
 });
 
-Then('I click the Add button in the phone number tab', async () => {
-  await FunctionalTestHelpers.clickButtonAndCheckFieldsetAdded('#phoneNumbersTab', 'addPhoneNumber');
-});
+// Then('I click the Add button in the phone number tab', async () => {
+//   await FunctionalTestHelpers.clickButtonAndCheckFieldsetAdded('#phoneNumbersTab', 'addPhoneNumber');
+// });
 
 Then('I click save in the phone number tab', async () => {
   const selector = '#phoneNumbersTab button[name="savePhoneNumbers"]';

@@ -5,12 +5,9 @@ import {puppeteerConfig} from '../puppeteer.config';
 
 
 async function fillInUsernameAndPassword(username: string, password: string) {
-   I.seeElement('#username');
-
+  I.seeElement('#username');
   await I.fillField('#username', username);
-
   await I.seeElement('#password');
-
   await I.fillField('#password', password);
 }
 
@@ -40,8 +37,9 @@ When('I fill in the Username and Password fields with my authenticated credentia
 
 When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const username = puppeteerConfig.superUsername;
-    const password = puppeteerConfig.password;
+    const username = testConfig.superUsername;
+    const password = testConfig.password;
+    // @ts-ignore
     await fillInUsernameAndPassword(username, password);
   }
 });
@@ -69,7 +67,7 @@ Given('click the Sign In button', async () => {
 
 Then('the system will sign me in', async () => {
   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-     await I.seeElement('#logout');
+    await I.seeElement('#logout');
   }
 });
 

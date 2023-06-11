@@ -27,25 +27,22 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   const pageTitle = await I.grabTitle();
   const editCourtHeadingText = await I.grabTextFrom('#court-name');
   expect(pageTitle).equal('Edit Court');
-  expect(editCourtHeadingText).equal('Editing - ' + courtName);
+  expect(editCourtHeadingText.trim()).equal('Editing - ' + courtName);
   await I.seeElement('#courts');
   await I.seeElement('#my-account');
   await I.seeElement('#logout');
   await I.seeElement('#view-in-new-window');
   await I.seeElement('#general');
 });
-//
-// When('I click view next to court with {string}', async (courtSlug: string) => {
-//   const selector = '#view-' + courtSlug;
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   await I.click(selector);
-// });
-//
-// Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
-//   const selector = '#main-content > div > div > h1';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   const viewCourtHeading = await I.getElement(selector);
-//   expect(await I.getElementText(viewCourtHeading)).equal(courtName);
-// });
+
+When('I click view next to court with {string}', async (courtSlug: string) => {
+  const selector = '#view-' + courtSlug;
+  I.seeElement(selector);
+  await I.click(selector);
+});
+
+Then('I am redirected to the View Court page for the {string}', async (courtName: string) => {
+  const selector = '#main-content > div > div > h1';
+  I.seeElement(selector);
+  expect((await I.grabTextFrom(selector)).trim()).equal(courtName);
+});

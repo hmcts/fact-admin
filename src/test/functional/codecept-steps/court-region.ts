@@ -1,7 +1,7 @@
 import { I } from '../utlis/codecept-util';
 
 Then('I can view the courts regions', async () => {
-   I.seeElement('#regionSelector');
+  I.seeElement('#regionSelector');
 });
 
 When('I select the region Yorkshire and the Humber {string}', async (region: string) => {
