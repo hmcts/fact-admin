@@ -20,7 +20,9 @@ export class EditCourtController {
 
     // Check if the court is currently in use by any other user
     // const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
-    // const currentUserEmail = req.session['user']['jwt']['sub'];
+
+    const currentUserEmail = req.session['user']['jwt']['sub'];
+    console.log('userEmail ='+  currentUserEmail);
     // const court_name = (req.params.slug).replace(/-/g, ' ').replace(/(\b[a-z](?!\s))/g, (c) => c.toUpperCase());
     // if (courtLocks.length == 0) {
     //   // If there are no locks, assign the current user to the court
@@ -30,7 +32,6 @@ export class EditCourtController {
     // } else {
     //   // At the moment, the limit is one lock; but this may be extended in the future.
     //   // So for now we can check the first user only
-    //   console.log('userEmail ='+  currentUserEmail);
     //   if(currentUserEmail != null && courtLocks[0]['user_email'] != currentUserEmail) {
     //     if (new Date() > getCurrentDatePlusMinutes(courtLocks[0]['lock_acquired'],
     //       config.get('lock.timeout') as number)) {
