@@ -30,7 +30,7 @@ export class EditCourtController {
     } else {
       // At the moment, the limit is one lock; but this may be extended in the future.
       // So for now we can check the first user only
-      if (courtLocks[0]['user_email'] != currentUserEmail) {
+      if(currentUserEmail != null && courtLocks[0]['user_email'] != currentUserEmail) {
         if (new Date() > getCurrentDatePlusMinutes(courtLocks[0]['lock_acquired'],
           config.get('lock.timeout') as number)) {
           // If the time of their last action would require the lock to be deleted,
