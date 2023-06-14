@@ -131,51 +131,51 @@ describe('EditCourtController', () => {
     expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
   });
 
-  // test('Should return error if court lock user is different and time condition not met', async () => {
-  //   const req = mockRequest();
-  //   req.session['user']['jwt'] = {'sub': 'moshuser'};
-  //   const slug = 'royal-courts-of-justice';
-  //   const name = 'Royal Courts of Justice';
-  //   const featureFlags = {
-  //     'fact-admin-tab-additional-links': true,
-  //     'fact-admin-tab-addresses': true,
-  //     'fact-admin-tab-application-progression': true,
-  //     'fact-admin-tab-cases-heard': true,
-  //     'fact-admin-tab-emails': true,
-  //     'fact-admin-tab-facilities': true,
-  //     'fact-admin-tab-general': true,
-  //     'fact-admin-tab-local-authorities': true,
-  //     'fact-admin-tab-opening-hours': true,
-  //     'fact-admin-tab-phone-numbers': true,
-  //     'fact-admin-tab-photo': true,
-  //     'fact-admin-tab-postcodes': true,
-  //     'fact-admin-tab-spoe': true,
-  //     'fact-admin-tab-types': true
-  //   };
-  //   when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
-  //   when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
-  //     'id': 1,
-  //     'lock_acquired': '2129-11-14 15:54:34.242539',
-  //     'user_email': 'moshuser2',
-  //     'court_slug': 'royal-courts-of-justice'
-  //   }]);
-  //   when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
-  //   when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
-  //
-  //   req.params = {slug: slug};
-  //   req.query = {name: name};
-  //   req.session.user.isSuperAdmin = true;
-  //   req.scope.cradle.api = mockApi;
-  //   req.scope.cradle.featureFlags = mockApi;
-  //
-  //   const res = mockResponse();
-  //
-  //   await controller.get(req, res);
-  //
-  //   expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
-  //     'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
-  //       + 'Please contact them to finish their changes, or try again later.'}]});
-  // });
+  test('Should return error if court lock user is different and time condition not met', async () => {
+    const req = mockRequest();
+    req.session['user']['jwt'] = {'sub': 'moshuser'};
+    const slug = 'royal-courts-of-justice';
+    const name = 'Royal Courts of Justice';
+    const featureFlags = {
+      'fact-admin-tab-additional-links': true,
+      'fact-admin-tab-addresses': true,
+      'fact-admin-tab-application-progression': true,
+      'fact-admin-tab-cases-heard': true,
+      'fact-admin-tab-emails': true,
+      'fact-admin-tab-facilities': true,
+      'fact-admin-tab-general': true,
+      'fact-admin-tab-local-authorities': true,
+      'fact-admin-tab-opening-hours': true,
+      'fact-admin-tab-phone-numbers': true,
+      'fact-admin-tab-photo': true,
+      'fact-admin-tab-postcodes': true,
+      'fact-admin-tab-spoe': true,
+      'fact-admin-tab-types': true
+    };
+    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
+      'id': 1,
+      'lock_acquired': '2129-11-14 15:54:34.242539',
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
+    }]);
+    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
+    when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
+
+    req.params = {slug: slug};
+    req.query = {name: name};
+    req.session.user.isSuperAdmin = true;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.featureFlags = mockApi;
+
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
+      'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
+        + 'Please contact them to finish their changes, or try again later.'}]});
+  });
 
   test('Should switch locks with user if time period has expired', async () => {
     const req = mockRequest();
