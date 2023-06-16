@@ -29,7 +29,7 @@ Feature: Opening Types List
     Then The error message displays for a Opening type "A opening type with the same name already exists."
 
   Scenario: Deleting new Opening Type
-    Then I will make sure there is no type test entry "TEST 123" in the list "#openingTypesListContent"
+    Then I will make sure there is no test entry "TEST 123" in the list "#openingTypesListContent"
     Then I click on Add new Opening Type
     Then I am redirected to the opening type "Add New Opening Type" form
     Then I enter "TEST 123" in opening type name textbox
