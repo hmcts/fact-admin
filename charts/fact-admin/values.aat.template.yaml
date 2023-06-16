@@ -3,9 +3,9 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/
 idam-pr:
   enabled: false
   redirect_uris:
     fact_admin:
-      - https://${SERVICE_FQDN}/oauth2/callback
+      - https://${SERVICE_FQDN}/

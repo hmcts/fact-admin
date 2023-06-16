@@ -34,8 +34,8 @@ describe('CourtsController', () => {
 
   test('Should render the courts page', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
-    req.session['user']['jwt']['roles'] = ALLOWED_ROLES;
+    req.appSession['user']['jwt'] = {'sub': 'moshuser'};
+    req.appSession['user']['jwt']['roles'] = ALLOWED_ROLES;
     req.scope.cradle.api = mockApiWithCourts;
 
     const res = mockResponse();
@@ -60,8 +60,8 @@ describe('CourtsController', () => {
 
   test('Should display error message when api is down', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
-    req.session['user']['jwt']['roles'] = ALLOWED_ROLES;
+    req.appSession['user']['jwt'] = {'sub': 'moshuser'};
+    req.appSession['user']['jwt']['roles'] = ALLOWED_ROLES;
     req.scope.cradle.api = mockApiWithoutCourts;
 
     const res = mockResponse();
@@ -75,8 +75,8 @@ describe('CourtsController', () => {
 
   test('Should render incorrect roles error message when logging in with no roles', async () => {
     const req = mockRequest();
-    req.session['user']['jwt'] = {'sub': 'moshuser'};
-    req.session['user']['jwt']['roles'] = [];
+    req.appSession['user']['jwt'] = {'sub': 'moshuser'};
+    req.appSession['user']['jwt']['roles'] = [];
     req.scope.cradle.api = mockApiWithCourts;
 
     const res = mockResponse();

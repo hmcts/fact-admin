@@ -8,9 +8,10 @@ export const mockRequest = () => {
       }
     },
     query: {},
-    session: {
+    appSession: {
       user: {
-        isSuperAdmin: ''
+        isSuperAdmin: '',
+        sub: 'moshuser'
       }
     }
   };

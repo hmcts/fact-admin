@@ -1,6 +1,7 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
 import {FeatureFlags} from './app/feature-flags/FeatureFlags';
+//const { requiresAuth } = require('express-openid-connect');
 import {
   FACT_ADMIN_TAB_GENERAL,
   FACT_ADMIN_TAB_OPENING_HOURS,
@@ -24,7 +25,7 @@ export default function(app: Application): void {
 
   const upload = multer();
 
-  app.get('/', (req, res) => res.redirect('/courts'));
+  app.get('/',(req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);
