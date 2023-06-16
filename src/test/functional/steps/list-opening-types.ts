@@ -72,11 +72,25 @@ Then('I click on Add new Opening Type',async () => {
 Then('The error message displays for a Opening type {string}', async (errMessage: string) => {
   const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
-
   const selector = '#openingTypesListContent > div.govuk-error-summary > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
+
+Then('I will make sure there is no test entry {string} in the list {string}',async (testEntry: string, listContent: string) => {
+  const selector = listContent + '> table > tbody > tr > td:nth-child(1)';
+  const courtHtmlElement: string[] = await I.getTextFromElements(selector);
+  expect(courtHtmlElement.length > 0).equal(true);
+  let isEqual = true;
+  for (let i = 0; i < courtHtmlElement.length && isEqual; i++) {
+    isEqual = courtHtmlElement[i] !== testEntry;
+    if(!isEqual) {
+      await I.click(listContent + `> table > tbody > tr:nth-child(${i + 1}) > td:nth-child(3) > a`);
+      await I.click('#confirmDelete');
+    }
+  }
+});
+
 
 Then('I click {string} delete Opening type button',async (contactTypeTest: string) => {
   const tableRow = await getFirstTableRowIndexContainingText('#openingTypesListContent', 1, contactTypeTest);
