@@ -29,6 +29,7 @@ Feature: Contact Types List
     Then The error message displays for a Contact type "A contact type with the proposed name already exists. The name must be unique."
 
   Scenario: Deleting new Contact Type
+    Then I will make sure there is no test entry "Test123" in the list "#contactTypeListContent"
     Then I click on Add new Contact Type
     Then I am redirected to the contact type "Add New Contact Type" form
     Then I enter "Test123" in name textbox

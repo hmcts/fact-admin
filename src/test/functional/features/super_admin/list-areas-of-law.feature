@@ -37,6 +37,7 @@ Feature: Areas Of Law List
 
 
   Scenario: Deleting new Area of law
+    Then I will make sure there is no test entry "Test123" in the list "#areasOfLawListContent"
     Then I click on Add new Area of law
     Then I am redirected to the "Add New Area of Law" form
     Then I enter "Test123" in Name textbox
