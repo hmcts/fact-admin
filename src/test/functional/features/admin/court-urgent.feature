@@ -11,7 +11,7 @@ Feature: Court Update Urgent Message
     And they are in alphabetical order
 
   Scenario: Adding urgent notice English & Welsh
-    When I click edit next to court with "cardiff-magistrates-court"
+    When I click edit next to court with "carmarthen-county-court-and-family-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I add an "Urgent Notice" in the rich editor field provided "#generalInfoTab #urgent-notice"
     When I have added the "Welsh translation of the urgent notice" in the Urgent Notice Welsh field
