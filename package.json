@@ -29,7 +29,7 @@
     "@azure/storage-blob": "^12.11.0",
     "@hmcts/cookie-manager": "1.0.0",
     "@hmcts/info-provider": "^1.1.0",
-    "@hmcts/nodejs-healthcheck": "^1.7.3",
+    "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^0.0.14",
     "@types/config": "^0.0.41",
@@ -139,9 +139,9 @@
     "qs": ">=6.5.3",
     "json5": ">=2.2.2",
     "express-session/debug": ">=3.1.0",
-    "@hmcts/nodejs-healthcheck/cookiejar": ">=2.1.4",
-    "express-openid-connect/http-cache-semantics": ">=4.1.1",
-    "@azure/storage-blob/xml2js": ">=0.5.0"
+    "cookiejar": ">=2.1.4",
+    "http-cache-semantics": ">=4.1.1",
+    "xml2js": ">=0.5.0"
   },
   "packageManager": "yarn@3.4.1"
 }
