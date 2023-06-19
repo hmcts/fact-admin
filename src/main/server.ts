@@ -21,6 +21,9 @@ const developmentMode = env === 'development';
 const server = express();
 
 server.locals.ENV = env;
+if (!developmentMode) {
+  server.set('trust proxy', 1);
+}
 server.use(Express.accessLogger());
 server.use(cookieParser());
 server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
