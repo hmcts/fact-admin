@@ -44,7 +44,6 @@ setupDev(server,developmentMode);
 
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
-//new SessionStorage(developmentMode).enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);

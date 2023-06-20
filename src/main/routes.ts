@@ -1,7 +1,6 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
 import {FeatureFlags} from './app/feature-flags/FeatureFlags';
-//const { requiresAuth } = require('express-openid-connect');
 import {
   FACT_ADMIN_TAB_GENERAL,
   FACT_ADMIN_TAB_OPENING_HOURS,
