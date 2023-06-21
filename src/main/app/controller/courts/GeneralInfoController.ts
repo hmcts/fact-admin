@@ -65,7 +65,7 @@ export class GeneralInfoController {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', generalInfo);
     }
 
-    if (req.session.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
+    if (req.appSession.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.blankNameErrorMsg, generalInfo);
     }
 

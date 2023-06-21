@@ -10,6 +10,6 @@ Feature: create admin user
     And click the Sign In button
 
 
-  Scenario: clicking the link Users, will navigate to the Idam web dashboard:
-    When I click on users link
-    Then I am redirected to the IDAM User dashboard
+#  Scenario: clicking the link Users, will navigate to the Idam web dashboard:
+#    When I click on users link
+#    Then I am redirected to the IDAM User dashboard

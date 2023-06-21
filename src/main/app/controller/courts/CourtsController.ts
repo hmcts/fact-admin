@@ -16,11 +16,11 @@ export class CourtsController {
     const errors: Error[] = [];
     let courts: Array<unknown> = [];
     let regions: Array<Region> = [];
-    const currentRoles = req.session['user']['jwt']['roles'] as string[];
+    const currentRoles = req.appSession['user']['jwt']['roles'] as string[];
     if (currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
       courts = await req.scope.cradle.api.getCourts();
       regions = await req.scope.cradle.api.getRegions();
-      await req.scope.cradle.api.deleteCourtLocksByEmail(req.session['user']['jwt']['sub']);
+      await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession['user']['jwt']['sub']);
     }
     if (!currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
       errors.push({text: NO_MATCHING_ROLES_ERROR});
