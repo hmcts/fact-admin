@@ -6,6 +6,7 @@ import {Facility, FacilityPageData, FacilityType} from '../../../types/Facility'
 import {SelectItem} from '../../../types/CourtPageData';
 import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
+import {AxiosError} from 'axios';
 
 @autobind
 export class CourtFacilitiesController {
@@ -15,7 +16,12 @@ export class CourtFacilitiesController {
   getFacilityTypesErrorMsg = 'A problem occurred when retrieving the list of facility types.';
   getCourtFacilitiesErrorMsg = 'A problem occurred when retrieving the court facilities.';
   updateErrorMsg = 'A problem occurred when saving the court facilities.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/facilities
+   * render the view with data from database for court facilities tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -27,7 +33,7 @@ export class CourtFacilitiesController {
     let fatalError = false;
 
     if (!courtFacilities) {
-      const slug: string = req.params.slug as string;
+      const slug: string = req.params.slug;
       await req.scope.cradle.api.getCourtFacilities(slug)
         .then((value: Facility[]) => courtFacilities = value)
         .catch(() => {errorMsg.push(this.getCourtFacilitiesErrorMsg); fatalError = true;});
@@ -57,7 +63,10 @@ export class CourtFacilitiesController {
 
     res.render('courts/tabs/facilitiesContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/facilities
+   * validate input data and update the court facilities then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let courtFacilities = req.body.courtFacilities as Facility[] ?? [];
     courtFacilities.forEach(f => {
@@ -91,7 +100,12 @@ export class CourtFacilitiesController {
 
     await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
       .then((value: Facility[]) => this.get(req, res, true, [], value))
-      .catch(() => this.get(req, res, false, [this.updateErrorMsg], courtFacilities));
+      .catch(async (reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        await this.get(req, res, false, [error], courtFacilities);
+      });
   }
 
   public async addRow(req: AuthedRequest, res: Response): Promise<void> {
@@ -105,7 +119,9 @@ export class CourtFacilitiesController {
     return standardTypes.map((ft: FacilityType) => (
       {value: ft.id, text: ft.name, selected: false}));
   }
-
+  /**
+   * adds an empty form so the view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(courFacilities: Facility[], numberOfForms = 1): void {
     if (courFacilities) {
       for (let i = 0; i < numberOfForms; i++) {
@@ -113,11 +129,15 @@ export class CourtFacilitiesController {
       }
     }
   }
-
+  /**
+   * check if facility is empty
+   */
   private facilityEntryIsEmpty(courtFacility: Facility): boolean {
     return (!courtFacility.id && !courtFacility.description && !courtFacility.descriptionCy?.trim());
   }
-
+  /**
+   * check if facility is duplicated
+   */
   private facilityDuplicated(courFacilities: Facility[], index1: number, index2: number): boolean {
     return courFacilities[index1].id === courFacilities[index2].id;
   }

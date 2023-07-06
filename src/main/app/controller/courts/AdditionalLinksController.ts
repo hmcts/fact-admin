@@ -5,6 +5,7 @@ import {validateDuplication, validateNameDuplication, validateUrlFormat} from '.
 import {CSRF} from '../../../modules/csrf';
 import {Error} from '../../../types/Error';
 import {AdditionalLink, AdditionalLinkData} from '../../../types/AdditionalLink';
+import {AxiosError} from 'axios';
 
 @autobind
 export class AdditionalLinksController {
@@ -15,7 +16,12 @@ export class AdditionalLinksController {
   invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/additionalLinks
+   * render the view with data from database for additional links
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -23,7 +29,7 @@ export class AdditionalLinksController {
     errorMessages: string[] = [],
     links: AdditionalLink[] = null): Promise<void> {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
 
     if (!links) {
@@ -50,7 +56,10 @@ export class AdditionalLinksController {
     };
     res.render('courts/tabs/additionalLinksContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/additionalLinks
+   * updates the additional links and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let links = req.body.additionalLinks as AdditionalLink[] ?? [];
     links.forEach(l => l.isNew = (l.isNew === true) || ((l.isNew as any) === 'true'));
@@ -69,9 +78,16 @@ export class AdditionalLinksController {
 
     await req.scope.cradle.api.updateCourtAdditionalLinks(req.params.slug, links)
       .then((value: AdditionalLink[]) => this.get(req, res, true, [], value))
-      .catch((err: any) => this.get(req, res, false, [this.updateAdditionalLinksErrorMsg], links));
+      .catch(async (reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateAdditionalLinksErrorMsg;
+        await this.get(req, res, false, [error], links);
+      });
   }
-
+  /**
+   * adds an empty form so view is rendered with one blank form
+   */
   private addEmptyFormsForNewEntries(links: AdditionalLink[], numberOfForms = 1): void {
     if (links) {
       for (let i = 0; i < numberOfForms; i++) {
@@ -79,18 +95,30 @@ export class AdditionalLinksController {
       }
     }
   }
-
+  /**
+   * check if additionalLinkEntry is Empty
+   */
   private additionalLinkEntryIsEmpty(link: AdditionalLink): boolean {
     return !link.url?.trim() && !link.display_name?.trim() && !link.display_name_cy?.trim();
   }
-
+  /**
+   * check if url is duplicated
+   */
   private urlDuplicated(links: AdditionalLink[], index1: number, index2: number): boolean {
     return links[index1].url && links[index1].url.toLowerCase() === links[index2].url.toLowerCase();
   }
+  /**
+   * check if display name is duplicated
+   */
   private displayNameDuplicated(links: AdditionalLink[], index1: number, index2: number): boolean {
     return links[index1].display_name && links[index1].display_name.toLowerCase() === links[index2].display_name.toLowerCase();
   }
 
+  /**
+   * getErrorMessages
+   * @param links - array of AdditionalLink model
+   * @return string[] - array of error messages
+   */
   private getErrorMessages(links: AdditionalLink[]): string[] {
     const errorMsg: string[] = [];
     if (links.some(link => link.url === '' || link.display_name === '')) {

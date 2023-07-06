@@ -6,11 +6,14 @@ import {CSRF} from '../../../modules/csrf';
 import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 import {DxCode} from '../../../types/DxCode';
 import {validateDuplication} from '../../../utils/validation';
+import {AxiosError} from 'axios';
 
 export enum courtType {
   magistrate = "Magistrates' Court",
   county = 'County Court',
   crown = 'Crown Court',
+  family = 'Family Court',
+  tribunal = 'Tribunal'
 }
 
 @autobind
@@ -23,15 +26,18 @@ export class CourtTypesController {
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the list of court types.';
   updateErrorMsg = 'A problem occurred when saving the court types.';
   emptyCourtTypesErrorMsg = 'One or more court types are required for types entries.';
-
-
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
+  /**
+   * GET /courts/:slug/court-types
+   * render the view with data from database for court types
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
     updated = false,
     error = '',
     courtTypesAndCodes: CourtTypesAndCodes = null ): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (courtTypesAndCodes == null) {
       await req.scope.cradle.api.getCourtTypesAndCodes(slug)
@@ -50,8 +56,6 @@ export class CourtTypesController {
         .catch(() => {error += this.getCourtTypesErrorMsg; fatalError = true;});
     }
 
-
-
     const pageData: CourtTypePageData = {
       errorMsg: error,
       updated: updated,
@@ -63,7 +67,10 @@ export class CourtTypesController {
 
     res.render('courts/tabs/typesContent', pageData);
   }
-
+  /**
+   * PUT /courts/:slug/court-types
+   * validate input data and update the court types then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
 
     let courtTypesAndCodes: CourtTypesAndCodes = null;
@@ -78,10 +85,12 @@ export class CourtTypesController {
 
       courtTypesAndCodes.types = this.mapBodyToCourtType(req);
 
-      if(courtTypesAndCodes.types.find( c => (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))
-      || (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )){
-
+      if(courtTypesAndCodes.types.find(c =>
+        (c.name === courtType.magistrate && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.county && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.family && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.tribunal && this.CheckCodeIsNullOrNan(c.code))||
+        (c.name === courtType.crown && this.CheckCodeIsNullOrNan(c.code)) )) {
         return this.get(req, res, false, this.emptyCourtCodeErrorMsg, courtTypesAndCodes);
       }
 
@@ -100,7 +109,12 @@ export class CourtTypesController {
       {
         await req.scope.cradle.api.updateCourtTypesAndCodes(req.params.slug, courtTypesAndCodes)
           .then(() => this.get(req, res, true, '', courtTypesAndCodes))
-          .catch(() => this.get(req, res, false, this.updateErrorMsg, courtTypesAndCodes));
+          .catch(async (reason: AxiosError) => {
+            const error = reason.response?.status === 409
+              ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+              : this.updateErrorMsg;
+            await this.get(req, res, false, error, courtTypesAndCodes);
+          });
       }
     }
     else
@@ -110,6 +124,9 @@ export class CourtTypesController {
 
   }
 
+  /**
+   * mapping the CourtType model to checkbox item in order to be rendered correctly
+   */
   private mapCourtTypeToCourtTypeItem(allCourtTypes: CourtType[], courtCourtTypes: CourtType[]): CourtTypeItem[] {
 
     if( courtCourtTypes && allCourtTypes) {
@@ -120,6 +137,8 @@ export class CourtTypesController {
           magistrate: ct.name === courtType.magistrate ? true: false,
           county: ct.name === courtType.county ? true: false,
           crown: ct.name === courtType.crown? true: false,
+          family: ct.name === courtType.family? true: false,
+          tribunal: ct.name === courtType.tribunal? true: false,
           checked: this.isChecked(ct, courtCourtTypes),
           code: this.getCode(ct.id, courtCourtTypes)
         }));
@@ -129,7 +148,9 @@ export class CourtTypesController {
     else
       return [];
   }
-
+  /**
+   * mapping the checkbox item to CourtType model in order to update selected court types.
+   */
   private mapBodyToCourtType(req: AuthedRequest): CourtType[] {
 
     const courtTypes: CourtType[] = Array.isArray(req.body.types) ? req.body.types.map((ct: string) => JSON.parse(ct)) : [JSON.parse(req.body.types)];
@@ -138,29 +159,55 @@ export class CourtTypesController {
       {
         id: ct.id,
         name:ct.name,
-        code: this.setCode(ct.name, req.body.magistratesCourtCode, req.body.countyCourtCode, req.body.crownCourtCode),
+        code: this.setCode(
+          ct.name,
+          req.body.magistratesCourtCode,
+          req.body.familyCourtCode,
+          req.body.locationCourtCode,
+          req.body.countyCourtCode,
+          req.body.crownCourtCode
+        ),
       }));
 
     return courtTypeItems;
   }
 
-
+  /**
+   * check is court type is checked
+   */
   private isChecked(courtType: CourtType, courtCourtTypes: CourtType[]) {
     return (courtCourtTypes.some(e => e.id === courtType.id));
   }
 
-
+  /**
+   * return the code for given court type.
+   */
   private getCode(id: number, courtCourtTypes: CourtType[]) {
 
     return (courtCourtTypes.find(e => e.id === id) ? courtCourtTypes.find(e => e.id === id).code : null);
 
   }
-
-  private setCode(name: string, magistratesCourtCode: string, countyCourtCode: string, crownCourtCode: string){
+  /**
+   * validate and map the court type to its corresponding code.
+   */
+  private setCode(
+    name: string,
+    magistratesCourtCode: string,
+    familyCourtCode: string,
+    locationCourtCode: string,
+    countyCourtCode: string,
+    crownCourtCode: string
+  ){
 
     switch (name) {
       case courtType.magistrate:
         return this.ValidateCode(magistratesCourtCode);
+
+      case courtType.family:
+        return this.ValidateCode(familyCourtCode);
+
+      case courtType.tribunal:
+        return this.ValidateCode(locationCourtCode);
 
       case courtType.county:
         return this.ValidateCode(countyCourtCode);
@@ -175,7 +222,7 @@ export class CourtTypesController {
 
   private ValidateCode(code: string)
   {
-    const regExp = /^[1-9][0-9]{0,8}$/;
+    const regExp = /^[1-9]\d{0,8}$/;
     return regExp.test(code) ? parseInt(code) : null ;
 
   }

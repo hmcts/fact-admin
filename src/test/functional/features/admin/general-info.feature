@@ -10,7 +10,7 @@ Feature: General Info
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     When I select Include closed courts
-    When I click edit next to court with "birmingham-civil-and-family-justice-centre"
+    When I click edit next to court with "stafford-combined-court-centre"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over general nav element
     When I click the general tab

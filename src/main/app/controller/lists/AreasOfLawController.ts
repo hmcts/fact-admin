@@ -23,11 +23,17 @@ export class AreasOfLawController {
   nameRequiredError = 'Name is required.';
   externalLinkInvalidError = 'External Link URL is invalid.';
   dispExternalLinkInvalidError = 'Display External Link URL is invalid.';
-
+  /**
+   * GET /lists/areas-of-law
+   * render the view with all area of law list
+   */
   public async getAll(req: AuthedRequest, res: Response): Promise<void> {
     await this.renderAll(req, res);
   }
-
+  /**
+   * GET /lists/area-of-law/:id
+   * get the data for a specific area of law and render the view
+   */
   public async getAreaOfLaw(req: AuthedRequest, res: Response): Promise<void> {
     const errors: { text: string }[] = [];
     const id = req.params?.id;
@@ -44,13 +50,19 @@ export class AreasOfLawController {
     }
     this.renderAreaOfLaw(res, areaOfLaw, false, errors, fatalError);
   }
-
+  /**
+   * GET /lists/area-of-law/delete-confirm/:id
+   * render the view for deletion of the specific area of law
+   */
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
     const idToDelete = req.params.id;
     const name = req.query?.name?.toString();
     this.renderDeleteConfirmation(res, name, idToDelete);
   }
-
+  /**
+   * PUT /lists/area-of-law
+   * validate input data and update the area of law lists and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     let areaOfLaw = req.body.areaOfLaw as AreaOfLaw;
 
@@ -81,17 +93,20 @@ export class AreasOfLawController {
         validationResult.linkValid, validationResult.displayLinkValid);
     }
   }
-
+  /**
+   * DELETE /lists/area-of-law/:id
+   * delete the area of law  and re-render the main view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
     const idToDelete = req.params.id;
 
     await req.scope.cradle.api.deleteAreaOfLaw(idToDelete)
       .then(() => this.renderAll(req, res, true))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.areaOfLawInUseError
           : this.deleteError;
-        this.renderAll(req, res, false, [{ text: error }]);
+        await this.renderAll(req, res, false, [{ text: error }]);
       });
   }
 
@@ -178,6 +193,9 @@ export class AreasOfLawController {
     return areaOfLaw;
   }
 
+  /**
+   * sanitize all input before saving
+   */
   private sanitizeInput(input: string): string {
     return input?.trim() || null;
   }

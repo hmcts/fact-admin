@@ -78,10 +78,10 @@ Then('I enter {string} in the Name textbox', async (name: string) => {
 });
 
 Then('The error message displays for general info {string}', async (errMessage: string) => {
-  const errorTitle = await I.checkElement('#error-summary-title');
+  const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#generalInfoContent > div.govuk-error-summary > div > ul > li';
+  const selector = '#generalInfoContent > div.govuk-error-summary > div > div > ul > li';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });

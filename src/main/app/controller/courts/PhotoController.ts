@@ -16,17 +16,24 @@ export class PhotoController {
   deleteCourtPhotoErrorMsg = 'A problem occurred when deleting the court photo. ';
   imageTypeError = 'File must be a JPEG or PNG.';
   imageSizeError = 'File must be a less than 2mb.';
-
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
+  /**
+   * GET /courts/:slug/photo
+   * render the view with data from database for court photo tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
-
+  /**
+   * PUT /courts/:slug/photo
+   * validate input data and update the court photo and re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const imageFileName = req.body.name as string;
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const fileType = req.body.fileType as string;
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
-    const imageFile = req.file as File;
+    const imageFile = req.file;
 
     if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
       return this.render(req, res, [this.imageTypeError], false, this.imageTypeError, null);
@@ -50,12 +57,18 @@ export class PhotoController {
         await this.render(req, res, [], true, null, imageFileName);
       })
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtPhotoErrorMsg], false);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtPhotoErrorMsg;
+        await this.render(req, res, [error], false);
       });
   }
-
+  /**
+   * DELETE /courts/:slug/photo
+   * delete the court photo and re-render the view
+   */
   public async delete(req: AuthedRequest, res: Response): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     const oldCourtPhoto = req.body.oldCourtPhoto as string;
 
     if (!CSRF.verify(req.body.csrfToken)) {
@@ -68,10 +81,16 @@ export class PhotoController {
         await this.render(req, res, [], true);
       })
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.deleteCourtPhotoErrorMsg], false);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.deleteCourtPhotoErrorMsg;
+        await this.render(req, res, [error], false);
       });
   }
-
+  /**
+   * GET /courts/:slug/photo/:imageToDelete/confirm-delete
+   * render the delete confirmation view
+   */
   public async getDeleteConfirmation(req: AuthedRequest, res: Response): Promise<void> {
     const courtPhotoFileName = req.params.imageToDelete;
     const courtPhotoFileURL = config.get('services.image-store.url') + '/' + courtPhotoFileName;
@@ -94,7 +113,7 @@ export class PhotoController {
     uploadError: string = null,
     courtPhotoFileName: string = null,
     courtPhotoFileURL: string = null): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     if (!courtPhotoFileName) {
       await req.scope.cradle.api.getCourtImage(slug)
         .then((value: string) => {

@@ -13,11 +13,19 @@ export class CourtSpoeController {
   getSpoeAreasOfLawErrorMsg = 'A problem occurred when retrieving the spoe areas of law. ';
   getCourtSpoeAreasOfLawErrorMsg = 'A problem occurred when retrieving the court spoe areas of law. ';
   putCourtSpoeAreasOfLawErrorMsg = 'A problem occurred when updating the court spoe areas of law. ';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/spoe
+   * render the view with data from database for court spoe (single point of entry) entries tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
-
+  /**
+   * PUT /courts/:slug/spoe
+   * validate input data and update the court spoe (single point of entry) then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCourtSpoe = req.body.courtSpoeAreasOfLaw as SpoeAreaOfLaw[] ?? [];
     const allSpoeAreasOfLaw = req.body.allSpoeAreasOfLaw as SpoeAreaOfLaw[] ?? [];
@@ -29,7 +37,10 @@ export class CourtSpoeController {
       .then(async (value: SpoeAreaOfLaw[]) =>
         await this.render(req, res, [], true, allSpoeAreasOfLaw, updatedCourtSpoe))
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtSpoeAreasOfLawErrorMsg], false, allSpoeAreasOfLaw, updatedCourtSpoe);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtSpoeAreasOfLawErrorMsg;
+        await this.render(req, res, [error], false, allSpoeAreasOfLaw, updatedCourtSpoe);
       });
   }
 
@@ -41,7 +52,7 @@ export class CourtSpoeController {
     allSpoeAreasOfLaw: SpoeAreaOfLaw[] = null,
     courtSpoeAreasOfLaw: SpoeAreaOfLaw[] = null) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (!allSpoeAreasOfLaw) {
       await req.scope.cradle.api.getAllSpoeAreasOfLaw()

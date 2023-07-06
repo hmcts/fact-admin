@@ -32,9 +32,7 @@ export class FeatureFlags {
         .then(value => {
           value ? next() : next(new HTTPError(http.HTTP_STATUS_FORBIDDEN));
         })
-        .catch(() => {
-          next(new HTTPError(http.HTTP_STATUS_INTERNAL_SERVER_ERROR));
-        });
+        .catch(() => next(http.HTTP_STATUS_INTERNAL_SERVER_ERROR));
     };
   };
 }

@@ -3,9 +3,12 @@ Feature: Bulk update of court info
   Background: Log in
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
+    Then I can view the courts or tribunals in a list format
+    And they are in alphabetical order
 
   Scenario: Edit information for closed courts
     When I click bulk update

@@ -4,7 +4,6 @@ import {DisplayCourtAddresses} from "./CourtAddress";
 export class CourtAddressPageData {
   addressTypesPrimary: SelectItem[];
   addressTypesSecondary: SelectItem[];
-  addressTypesThird: SelectItem[];
   counties: SelectItem[];
   addresses: DisplayCourtAddresses;
   writeToUsTypeId: number;

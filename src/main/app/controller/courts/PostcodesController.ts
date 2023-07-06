@@ -13,7 +13,6 @@ import {CourtTypesAndCodes} from '../../../types/CourtTypesAndCodes';
 export class PostcodesController {
 
   getCourtTypesErrorMsg = 'A problem occurred when retrieving the court types.';
-  getCourtAreasErrorMsg = 'A problem occurred when retrieving the court areas of law.';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
   familyAreaOfLawErrorMsg = 'You need to enable relevant county court areas of law: Housing, Money Claims, or Bankruptcy';
   getPostcodesErrorMsg = 'A problem occurred when retrieving the postcodes.';
@@ -21,14 +20,20 @@ export class PostcodesController {
   addErrorMsg = 'A problem has occurred (your changes have not been saved). The following postcodes are invalid: ';
   deleteErrorMsg = 'A problem has occurred when attempting to delete the following postcodes: ';
   moveErrorMsg = 'A problem has occurred when attempting to move the following postcodes: ';
-  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved): ';
+  moveErrorDuplicatedMsg = 'The postcode is already present on the destination court (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   postcodesNotValidMsg = 'The postcode provided needs to be more than one character up to the full length of a postcode ' +
     '(your changes have not been saved): ';
   noPostcodeErrorMsg = 'Please update the required form below and try again.';
-  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved): ';
+  duplicatePostcodeMsg = 'One or more postcodes provided already exist (your changes have not been saved).'
+    + ' If this is not the case please check that the court is not currently locked by another user: ';
   noSelectedPostcodeMsg = 'Please select one or more postcodes to delete.';
   noSelectedPostcodeOrCourtMsg = 'Please select one or more postcodes and a court before selecting the move option.';
-
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
+  /**
+   * GET /courts/:slug/postcodes
+   * render the view with data from database for court postcodes tab
+   */
   public async get(
     req: AuthedRequest,
     res: Response,
@@ -38,7 +43,7 @@ export class PostcodesController {
     areasOfLaw: string[] = null,
     courtTypes: string[] = null,
     updated = false): Promise<void> {
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     const errors: Error[] = [];
     // If we have an error from validation when adding/removing or moving postcodes,
@@ -84,14 +89,17 @@ export class PostcodesController {
       errors: errors,
       updated: updated,
       searchValue: searchValue,
-      isEnabled: courtTypes?.some(ct => ct === 'County_Court') ?? false,
+      isEnabled: res.locals.isViewer ? true : (courtTypes?.some(ct => ct === 'County_Court') ?? false),
       areasOfLaw: areasOfLaw,
       courtTypes: courtTypes,
       fatalError: fatalError,
     };
     res.render('courts/tabs/postcodesContent', pageData);
   }
-
+  /**
+   * POST /courts/:slug/postcodes
+   * validate input data and update the court postcodes and re-render the view
+   */
   public async post(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -137,15 +145,14 @@ export class PostcodesController {
         // conflict, postcode(s) already exists on the database
         await this.get(req, res, newPostcodes, existingPostcodes,
           reason.response?.status === 409
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            ? this.duplicatePostcodeMsg + reason.response?.data.message
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            : this.addErrorMsg + reason.response?.data.message, areasOfLaw, courtTypes, true);
+            ? this.duplicatePostcodeMsg + (<any>reason.response).data['message']
+            : this.addErrorMsg + (<any>reason.response).data['message'], areasOfLaw, courtTypes, true);
       });
   }
-
+  /**
+   * DELETE /courts/:slug/postcodes
+   * validate input data and delete the court postcodes and re-render the view
+   */
   public async delete(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -171,11 +178,17 @@ export class PostcodesController {
           existingPostcodes.filter( ( postcode ) => !postcodesToDelete.includes( postcode ) );
         await this.get(req, res, '', existingMinusDeleted, '', areasOfLaw, courtTypes, true);
       })
-      .catch(async () =>
+      .catch(async (reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.deleteErrorMsg + postcodesToDelete;
         await this.get(req, res, '', existingPostcodes,
-          this.deleteErrorMsg + postcodesToDelete, areasOfLaw, courtTypes));
+          error, areasOfLaw, courtTypes); });
   }
-
+  /**
+   * PUT /courts/:slug/postcodes
+   * validate input data and update the court postcodes and re-render the view
+   */
   public async put(
     req: AuthedRequest,
     res: Response): Promise<void> {
@@ -210,7 +223,9 @@ export class PostcodesController {
             : this.moveErrorMsg + postcodesToMove, areasOfLaw, courtTypes);
       });
   }
-
+  /**
+   * filter county areas of law (moneyClaims,housing,bankruptcy)
+   */
   private filterCountyAreasOfLaw(courtAreasOfLaw: string[]): string[] {
     if(courtAreasOfLaw && courtAreasOfLaw.length) {
       // Note: the frontend for the input fields cut out the rest of the values if not for the replace below
@@ -220,11 +235,15 @@ export class PostcodesController {
     }
     return [];
   }
-
+  /**
+   * check if postcode is vaid
+   */
   private getInvalidPostcodes(newPostcodesArray: string[]): string[] {
     return newPostcodesArray.filter((value: string) => value.length < 2 || value.length > 7);
   }
-
+  /**
+   * check if postcode is duplicated
+   */
   private getDuplicatedPostcodes(existingPostcodes: string[], newPostcodesArray: string[]): string[] {
     return existingPostcodes.filter(
       value => newPostcodesArray.includes(String(value).toUpperCase()));

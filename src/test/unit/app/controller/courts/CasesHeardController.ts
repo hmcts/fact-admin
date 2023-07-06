@@ -178,6 +178,33 @@ describe('CasesHeardController', () => {
     expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
   });
 
+  test('Should not update cases heard if the api returns with a conflict error', async() => {
+    const res = mockResponse();
+    res.response.status = 409;
+    res.response.data = {'message': 'test'};
+    const req = mockRequest();
+    req.body = {
+      'courtAreasOfLaw': updatedCourtAreasOfLawData,
+      'allAreasOfLaw': getAllAreasOfLawData,
+      'csrfToken': CSRF.create()
+    };
+    req.params = { slug: testSlug };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateCourtAreasOfLaw = jest.fn().mockRejectedValue(res);
+
+    await controller.put(req, res);
+
+    expect(res.render).toBeCalledWith('courts/tabs/casesHeardContent', {
+      allAreasOfLaw: getAllAreasOfLawData,
+      courtAreasOfLaw: updatedCourtAreasOfLawData,
+      slug: testSlug,
+      errorMsg: [{text: controller.courtLockedExceptionMsg + 'test'}],
+      updated: false,
+      fatalError: false
+    });
+    expect(mockApi.updateCourtAreasOfLaw).toBeCalledWith(testSlug, updatedCourtAreasOfLawData);
+  });
+
   test('Should not update cases heard if CSRF token is invalid', async() => {
     const res = mockResponse();
     const req = mockRequest();

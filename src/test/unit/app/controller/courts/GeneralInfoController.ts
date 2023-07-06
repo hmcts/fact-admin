@@ -193,7 +193,7 @@ describe('GeneralInfoController', () => {
   test('Should not put court general info if name is left blank', async () => {
     const res = mockResponse();
     const req = mockRequest();
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.params = { slug: slug };
     req.body = {
       ...courtGeneralInfoBlankNameField,
@@ -258,6 +258,29 @@ describe('GeneralInfoController', () => {
       errorMsg: controller.updateGeneralInfoErrorMsg,
       updated: false,
       nameFieldError: '',
+      fatalError: false
+    };
+
+    expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
+  });
+
+  test('Should handle conflict lock errors when posting court general info to API', async () => {
+    const errorResponse = mockResponse();
+    errorResponse.response.status = 409;
+    const res = mockResponse();
+    const req = mockRequest();
+    req.params = { slug: slug };
+    req.body = courtGeneralInfo;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateGeneralInfo = jest.fn().mockRejectedValue(errorResponse);
+
+    await controller.put(req, res);
+
+    const expectedResult: CourtGeneralInfoData = {
+      generalInfo: courtGeneralInfo,
+      errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + 'court name',
+      updated: false,
+      nameFieldError: 'Duplicated name',
       fatalError: false
     };
 

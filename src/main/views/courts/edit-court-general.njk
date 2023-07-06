@@ -21,7 +21,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters">
-          <h1 id="court-name" class="govuk-heading-l">Editing - {{ name }}</h1>
+          <h1 id="court-name" class="govuk-heading-l">
+            {% if isViewer %}
+              Details - {{ name }}
+            {% else %}
+              Editing - {{ name }}
+            {% endif %}
+          </h1>
         </div>
 
         <div class="govuk-grid-column-one-quarter">
@@ -247,21 +253,26 @@
               %}
             {% endif %}
 
-            {% set tabItems = (tabItems.push(generalTab),tabItems) %}
-            {% set tabItems = (tabItems.push(openingHoursTab),tabItems) %}
-            {% set tabItems = (tabItems.push(phoneNumbersTab),tabItems) %}
-            {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
-            {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
-            {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
-            {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
-            {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
-            {% set tabItems = (tabItems.push(photoTab),tabItems) %}
-            {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
-            {% if isSuperAdmin %}
+            {% if isViewer %}
               {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
               {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
-              {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
-              {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
+            {% else %}
+              {% set tabItems = (tabItems.push(generalTab),tabItems) %}
+              {% set tabItems = (tabItems.push(openingHoursTab),tabItems) %}
+              {% set tabItems = (tabItems.push(phoneNumbersTab),tabItems) %}
+              {% set tabItems = (tabItems.push(emailsTab),tabItems) %}
+              {% set tabItems = (tabItems.push(courtTypesTab),tabItems) %}
+              {% set tabItems = (tabItems.push(courtFacilitiesTab),tabItems) %}
+              {% set tabItems = (tabItems.push(casesHeardTab),tabItems) %}
+              {% set tabItems = (tabItems.push(addressesTab),tabItems) %}
+              {% set tabItems = (tabItems.push(photoTab),tabItems) %}
+              {% set tabItems = (tabItems.push(applicationProgressionTab),tabItems) %}
+              {% if isSuperAdmin %}
+                {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
+                {% set tabItems = (tabItems.push(localAuthoritiesTab),tabItems) %}
+                {% set tabItems = (tabItems.push(additionalLinksTab),tabItems) %}
+                {% set tabItems = (tabItems.push(spoeTab),tabItems) %}
+              {% endif %}
             {% endif %}
 
 

@@ -7,14 +7,11 @@ services:
   api:
     url: 'http://localhost:8080'
   idam:
-    authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/login'
-    tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
+    authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/o'
     sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
-    addNewUserURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/registration'
-    updateUserDetailsURL: 'https://idam-api.aat.platform.hmcts.net/api/v1/users/'
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
-    callbackURL: 'http://localhost:3300/oauth2/callback'
+    baseURL: 'http://localhost:3300'
     idamUserDashboardURL : 'https://idam-user-dashboard.aat.platform.hmcts.net'
   image-store:
     url: 'https://factaat.blob.core.windows.net/images'
@@ -24,7 +21,7 @@ health:
   timeout: 5000
   deadline: 15000
 session:
-  secret: 'local'
+  secret: 'LONG_RANDOM_STRING'
   secure-flag: false
   redis:
     host:
@@ -33,6 +30,8 @@ appInsights:
   instrumentationKey:
 csrf:
   tokenSecret: 'get from AAT vault'
+lock:
+  timeout: 1
 launchDarkly:
   sdkKey:
   ldUser: 'fact-admin'

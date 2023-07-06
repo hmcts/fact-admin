@@ -5,6 +5,7 @@ Feature: Postcodes
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -32,7 +33,7 @@ Feature: Postcodes
     Then I click the add postcode button
     When I add new postcodes "bd1"
     Then I click the add postcode button
-    Then The error message display for the postcodes "One or more postcodes provided already exist (your changes have not been saved): BD1"
+    Then The error message display for the postcodes "One or more postcodes provided already exist (your changes have not been saved). If this is not the case please check that the court is not currently locked by another user: BD1"
 
   Scenario Outline: Moving postcodes from the source court to the destination court
     When I will make sure to delete the existing postcodes

@@ -89,7 +89,7 @@ Then('I click the link view court in new tab to validate urgent notice label gen
   expect(await I.checkElement(selector)).equal(true);
   await I.click(selector);
 
-  await I.goTo(config.FRONTEND_URL + '/courts/administrative-court');
+  await I.goTo(config.FRONTEND_URL + '/courts/carmarthen-county-court-and-family-court');
   const label = 'Urgent Notice';
   const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div.urgent-message > div:nth-child(2) > strong';
 

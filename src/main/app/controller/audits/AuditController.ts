@@ -31,10 +31,12 @@ export class AuditController {
     // size will increase by 1 for each button pressed.
     const page = req.query?.page ? req.query.page as unknown as number: 0;
     const limit = 10 as number;
-    const location = sanitizeHtml(req.query?.location ? req.query.location as string : '');
-    const email = sanitizeHtml(req.query?.email ? req.query.email as string : '');
-    const dateFrom = sanitizeHtml(req.query?.dateFrom ? req.query.dateFrom as string : '');
-    const dateTo = sanitizeHtml(req.query?.dateTo as string ? req.query.dateTo as string : '');
+
+    const location = sanitizeHtml(req.query?.searchLocation
+      ? (req.query.searchLocation == 'select-court' ? '': req.query.searchLocation) as string : '');
+    const email = sanitizeHtml(req.query?.searchUser ? req.query.searchUser as string : '');
+    const dateFrom = sanitizeHtml(req.query?.searchDateFrom ? req.query.searchDateFrom as string : '');
+    const dateTo = sanitizeHtml(req.query?.searchDateTo as string ? req.query.searchDateTo as string : '');
     const errors: { text: string }[] = [];
     let audits: Audit[] = [];
     let courts: Court[] = [];

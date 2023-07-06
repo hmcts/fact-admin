@@ -1,4 +1,4 @@
-import {isObjectEmpty, validateUrlFormat} from '../../../../main/utils/validation';
+import {isObjectEmpty, replaceMultipleSpaces, validateUrlFormat} from '../../../../main/utils/validation';
 
 describe('validation', () => {
   describe('isObjectEmpty', () => {
@@ -55,4 +55,33 @@ describe('validation', () => {
       });
     });
   });
+
+  describe('Multiple space removal', () => {
+    const invalidParameters = {
+      a: 'hello world!',
+      b: ' hello      world!  ',
+      c: 'hello &nbsp; &nbsp;&nbsp;world!'
+    };
+    const validParameters = {
+      a: 'hello world!',
+      b: 'hello world!',
+      c: 'hello world!'
+    };
+
+    replaceMultipleSpaces(invalidParameters);
+
+    it('Should return cleaned up object', () => {
+      expect(invalidParameters).toEqual(validParameters);
+    });
+  });
+
+  describe('Removing multiple spaces should keep new lines', () => {
+    const badAddress = 'line 1\nline 2\nline      3';
+    const fixedAddress = replaceMultipleSpaces(badAddress);
+    const validAddress = 'line 1\nline 2\nline 3';
+    it('Should return string without multiple spaces', async () => {
+      expect(fixedAddress).toMatch(validAddress);
+    });
+  });
+
 });

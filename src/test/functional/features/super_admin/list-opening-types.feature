@@ -3,6 +3,7 @@ Feature: Opening Types List
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -28,6 +29,7 @@ Feature: Opening Types List
     Then The error message displays for a Opening type "A opening type with the same name already exists."
 
   Scenario: Deleting new Opening Type
+    Then I will make sure there is no test entry "TEST 123" in the list "#openingTypesListContent"
     Then I click on Add new Opening Type
     Then I am redirected to the opening type "Add New Opening Type" form
     Then I enter "TEST 123" in opening type name textbox

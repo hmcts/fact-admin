@@ -1,6 +1,7 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% extends "template.njk" %}
@@ -28,6 +29,41 @@
           },
           id: 'searchCourts',
           name: 'searchCourts'
+        }) }}
+      </div>
+
+    {% set regionItems = [] %}
+    {% set regionItems = (regionItems.push(
+      {
+        attributes: {
+          'data-type': 'name',
+          'data-name': base
+        },
+        value: null,
+        text: 'Select Region',
+        selected: true
+      }
+    ), regionItems) %}
+    {% for region in regions|sort(false, true, 'name') %}
+      {% set regionItems = (regionItems.push(
+          {
+            attributes: {
+              'data-type': 'name',
+              'data-name': region.name
+            },
+            value: region.id,
+            text: region.name,
+            selected: false
+          }
+        ), regionItems) %}
+    {% endfor %}
+
+      <div id='regions' class='govuk-grid-column-one-quarter'>
+        {{ govukSelect({
+          id: "regionSelector",
+          name: "regionSelector",
+          value: regionItems.value,
+          items: regionItems
         }) }}
       </div>
 
@@ -60,6 +96,14 @@
         },
         {
           attributes: {
+            'data-type': 'region',
+            'data-name': court.region
+          },
+          text: court.region,
+          classes: 'courtTableColumnRegion'
+        },
+        {
+          attributes: {
             'data-type': 'displayed',
             'data-displayed': court.displayed
           },
@@ -77,7 +121,7 @@
           html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
         },
         {
-          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
+          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">details</a>' if isViewer else '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
         }
         ]), courtItems) %}
     {% endfor %}
@@ -95,7 +139,8 @@
             id: 'tableCourtsName'
           },
           classes: 'govuk-!-width-one-half courts-table-header courts-table-header-inactive'
-        }, {},
+        },
+        {},
         {
           text: "Last updated",
           attributes: {

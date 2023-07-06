@@ -13,7 +13,9 @@
 
 {{ govukDetails({
   summaryText: "Help with postcodes",
-  html: "Only full or partials postcodes are accepted. For example, SA1 1AA, or SA1."})
+  html: "Please note that fact viewers will be unable to change the list below, if changes are required, please
+         contact a fact administrator" if isViewer else "Only full or partials postcodes are accepted. For example,
+         SA1 1AA, or SA1."})
 }}
 
 {% if not postcodes|length %}
@@ -30,16 +32,43 @@
   }) }}
 {% endif %}
 
-{% if errors|length %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: errors
-  }) }}
+{% if not isViewer %}
+  {% if errors|length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors
+    }) }}
+  {% endif %}
 {% endif %}
 
 <input type="hidden" name="postcodesEnabled" id='postcodesEnabled' value="{{ isEnabled }}">
 
-{% if (areasOfLaw|length) %}
+{% if isViewer %}
+
+  {% if postcodes|length %}
+
+    {% set postcodesCheckboxItems = [] %}
+    {% for postcode in postcodes %}
+      {% set postcodesCheckboxItems =
+        (postcodesCheckboxItems.push({'text': postcode, 'value': postcode,
+        'id': postcode, 'checked': true, 'disabled': true}), postcodesCheckboxItems) %}
+    {% endfor %}
+
+    <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
+      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(2) %}
+        <div class="govuk-grid-column-one-half">
+            {{ govukCheckboxes({
+              idPrefix: "postcodes-checkbox",
+              name: "postcodesCheckboxItems",
+              classes: "govuk-checkboxes--medium",
+              items: items
+            }) }}
+        </div>
+      {% endfor %}
+    </div>
+
+  {% endif %}
+{% elif (areasOfLaw|length) %}
 
   {% if searchValue == '' and updated and errors|length %}
     {% set addError = { text: 'One or more postcodes are required.' } %}

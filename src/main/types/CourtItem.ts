@@ -4,5 +4,6 @@ export interface CourtItem {
   displayed: boolean,
   slug: string
   visible: boolean,
-  row: JQuery
+  row: JQuery,
+  region: string
 }

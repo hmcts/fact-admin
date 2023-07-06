@@ -11,7 +11,9 @@ export const puppeteerConfig = {
     '--window-size=1440,1400',
   ],
   username: '',
+  viewerUsername: '',
   superUsername: '',
+  testUsername:'',
   password: '',
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data'

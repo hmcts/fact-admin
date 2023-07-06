@@ -3,6 +3,7 @@ Feature: Areas Of Law List
   Background:
     Given I am on new browser
     Given I am on FACT homepage
+    Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -36,6 +37,7 @@ Feature: Areas Of Law List
 
 
   Scenario: Deleting new Area of law
+    Then I will make sure there is no test entry "Test123" in the list "#areasOfLawListContent"
     Then I click on Add new Area of law
     Then I am redirected to the "Add New Area of Law" form
     Then I enter "Test123" in Name textbox

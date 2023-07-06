@@ -13,11 +13,20 @@ export class CasesHeardController {
   getAreasOfLawErrorMsg = 'A problem occurred when retrieving the areas of law. ';
   getCourtAreasOfLawErrorMsg = 'A problem occurred when retrieving the court areas of law. ';
   putCourtAreasOfLawErrorMsg = 'A problem occurred when updating the court areas of law. ';
+  courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
+  /**
+   * GET /courts/:slug/cases-heard
+   * render the view with data from database for cases heard tab
+   */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     await this.render(req, res);
   }
 
+  /**
+   * PUT /courts/:slug/cases-heard
+   * validate input data and update the cases heard by a court and then re-render the view
+   */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
     const updatedCasesHeard = req.body.courtAreasOfLaw as AreaOfLaw[] ?? [];
     const allAreasOfLaw = req.body.allAreasOfLaw as AreaOfLaw[] ?? [];
@@ -29,7 +38,10 @@ export class CasesHeardController {
       .then(async (value: AreaOfLaw[]) =>
         await this.render(req, res, [], true, allAreasOfLaw, updatedCasesHeard))
       .catch(async (reason: AxiosError) => {
-        await this.render(req, res, [this.putCourtAreasOfLawErrorMsg], false, allAreasOfLaw, updatedCasesHeard);
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.putCourtAreasOfLawErrorMsg;
+        await this.render(req, res, [error], false, allAreasOfLaw, updatedCasesHeard);
       });
   }
 
@@ -41,7 +53,7 @@ export class CasesHeardController {
     allAreasOfLaw: AreaOfLaw[] = null,
     courtAreasOfLaw: AreaOfLaw[] = null) {
 
-    const slug: string = req.params.slug as string;
+    const slug: string = req.params.slug;
     let fatalError = false;
     if (!allAreasOfLaw) {
       await req.scope.cradle.api.getAllAreasOfLaw()
