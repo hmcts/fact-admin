@@ -1,6 +1,7 @@
 import { I } from '../utlis/codecept-util';
 import {expect} from 'chai';
 
+
 Then('I can view the courts or tribunals in a list format', async () => {
   I.seeElement('#courts');
 });
@@ -13,9 +14,34 @@ Given('they are in alphabetical order', async () => {
 });
 
 Then('test', async () => {
+
+  // I.executeScript(() => {
+  //   console.log('This is a console log message');
+  // });
+  //
+  // I.wait(1000);
+
+  // I.say('mmmmmmmmmmmmmmmmmmm');
+  //
+  // const event = require('codeceptjs').event;
+  //
+  // module.exports = function() {
+  //
+  //   event.dispatcher.on(event.test.before, function (test) {
+  //
+  //     console.log('--- I am before test --');
+  //
+  //   });
+  // }
+  //
+  //
   const output = require('codeceptjs').output;
+
   output.log('..................test................');
-  //console.log('..................test................');
+
+  I.wait(1000);
+  // console.log('..................test puppeeteer................');
+
 });
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {

@@ -22,7 +22,7 @@
     "test:cucumber-super-admin": "cucumber-js --retry 5 --parallel 8 --require-module 'ts-node/register' --require 'src/test/functional/**/*.ts' --tags 'not @skipped and not @pending' src/test/functional/features/super_admin/admin-login.feature",
     "test:cucumber-admin": "cucumber-js --retry 3 --parallel 3 --require-module 'ts-node/register' --require 'src/test/functional/**/*.ts' --tags 'not @skipped and not @pending' src/test/functional/features/admin/*.feature",
     "test:functional": "yarn test:cucumber-viewer && yarn test:cucumber-super-admin && yarn test:cucumber-admin && yarn test:pa11y",
-    "test:codecept": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs --config ./src/test/functional/codecept.conf.js run-workers 4 parallel",
+    "test:codecept": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs --config ./src/test/functional/codecept.conf.js  run-workers 4 parallel",
     "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
   },
@@ -60,7 +60,7 @@
     "awilix": "^6.1.0",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
-    "codeceptjs": "^3.3.7",
+    "codeceptjs": "^3.5.2",
     "config": "^3.3.7",
     "connect-redis": "^6.1.3",
     "cookie-parser": "^1.4.6",

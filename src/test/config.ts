@@ -13,7 +13,7 @@ export const config = {
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data',
   Gherkin: {
-    features: './codecept-features/admin/court-urgent.feature',
+    features: './codecept-features/super_admin/opening-hours.feature',
     steps: './codecept-steps/**/*.ts',
   },
   helpers: {},
@@ -30,5 +30,6 @@ config.helpers = {
     waitForNavigation: 'networkidle0',
     ignoreHTTPSErrors: true,
   }
+
 
 };
