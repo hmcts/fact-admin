@@ -18,6 +18,7 @@ import {County} from '../../../types/County';
 import {AreaOfLaw} from '../../../types/AreaOfLaw';
 import {RadioItem} from '../../../types/RadioItem';
 import {CourtType} from '../../../types/CourtType';
+import {compareAddressLines, removeSpecialCharacters} from '../../../utils/AddressUtils';
 
 @autobind
 export class AddressController {
@@ -45,6 +46,7 @@ export class AddressController {
     + 'Conflicting options selected are: ';
   duplicateAddressError = 'All addresses must be unique.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
+  dupilcateWelshAddressError = 'All welsh addresses must be unique.';
 
   /**
    * GET /courts/:slug/addresses
@@ -593,11 +595,26 @@ export class AddressController {
 
     const errors: string[] = [];
 
-    if ((addresses.primary.address_lines === addresses.secondary[0].address_lines && addresses.primary.postcode === addresses.secondary[0].postcode)
-      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && addresses.primary.address_lines === addresses.secondary[1].address_lines && addresses.primary.postcode === addresses.secondary[1].postcode)
-      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && addresses.secondary[0].address_lines === addresses.secondary[1].address_lines && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
+    const primaryAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines.split(/\r?\n/));
+    const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
+    const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
+
+    if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) &&  addresses.primary.postcode === addresses.secondary[0].postcode)
+      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode === addresses.secondary[1].postcode)
+      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
       errors.push(this.duplicateAddressError);
+    }
+
+    const primaryWelshAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines_cy.split(/\r?\n/));
+    const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
+    const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
+
+    if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode === addresses.secondary[0].postcode)
+      || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode === addresses.secondary[1].postcode)
+      || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
+      errors.push(this.dupilcateWelshAddressError);
     }
     return errors;
   }
+
 }
