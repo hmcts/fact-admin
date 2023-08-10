@@ -6,7 +6,10 @@ setHeadlessWhen(testConfig.TestHeadlessBrowser);
 
 export const config: CodeceptJS.MainConfig = {
   name: 'functional',
-  gherkin: testConfig.Gherkin,
+  gherkin: {
+  features: './codecept-features/super_admin/court-lock.feature',
+    steps: './codecept-steps/**/*.ts',
+},
   output: '../../../functional-output/functional/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
@@ -15,14 +18,14 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       require: '@codeceptjs/allure-legacy',
     },
-    // retryFailedStep: {
-    //   enabled: true,
-    //   Scenario: 3,
-    // },
-    // retryTo: {
-    //   enabled: true,
-    //   Scenario: 3,
-    // },
+    retryFailedStep: {
+      enabled: true,
+      Scenario: 3,
+    },
+    retryTo: {
+      enabled: true,
+      Scenario: 3,
+    },
 
     retry: {
       Scenario: 3,
