@@ -37,10 +37,14 @@ export class AddressController {
   postcodeMissingError = 'Postcode is required.';
   postcodeNotFoundError = 'Postcode entered could not be found.';
   writeToUsAddressType = 'Write to us';
+  noAddressType = 'Address type empty';
   visitOrContactUsAddressType = 'Visit or contact us';
   primaryAddressPrefix = 'Primary Address: ';
   secondaryAddressPrefix = 'Secondary Address 1: ';
   thirdAddressPrefix = 'Secondary Address 2: ';
+  fourthAddressPrefix = 'Secondary Address 3: ';
+  fifthAddressPrefix = 'Secondary Address 4: ';
+  sixthAddressPrefix = 'Secondary Address 5: ';
   fieldsOfLawDuplicateError = 'Secondary addresses cannot have duplicate areas of law or court types selected. '
     + 'Conflicting options selected are: ';
   duplicateAddressError = 'All addresses must be unique.';
@@ -67,6 +71,10 @@ export class AddressController {
     replaceMultipleSpaces(addresses.primary);
     replaceMultipleSpaces(addresses.secondary[0]);
     replaceMultipleSpaces(addresses.secondary[1]);
+    replaceMultipleSpaces(addresses.secondary[2]);
+    replaceMultipleSpaces(addresses.secondary[3]);
+    replaceMultipleSpaces(addresses.secondary[4]);
+
 
     const errors = [];
     const areasOfLaw = await req.scope.cradle.api.getAllAreasOfLaw()
@@ -92,9 +100,15 @@ export class AddressController {
 
 
     addresses.secondary[0].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[0].secondaryFieldsOfLawRadio,
-      req.body.secondaryAddressAOLItems0, req.body.secondaryAddressCourtItems0);
+      req.body.secondaryAddressAOLItems0, req.body.secondaryAddressCourtItems0 );
     addresses.secondary[1].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[1].secondaryFieldsOfLawRadio,
       req.body.secondaryAddressAOLItems1, req.body.secondaryAddressCourtItems1 );
+    addresses.secondary[2].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[2].secondaryFieldsOfLawRadio,
+      req.body.secondaryAddressAOLItems2, req.body.secondaryAddressCourtItems2 );
+    addresses.secondary[3].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[3].secondaryFieldsOfLawRadio,
+      req.body.secondaryAddressAOLItems3, req.body.secondaryAddressCourtItems3 );
+    addresses.secondary[4].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[4].secondaryFieldsOfLawRadio,
+      req.body.secondaryAddressAOLItems4, req.body.secondaryAddressCourtItems4 );
 
     // Validate token
     if (!CSRF.verify(req.body._csrf)) {
@@ -103,6 +117,9 @@ export class AddressController {
           addresses.primary as unknown as CourtAddress,
           addresses.secondary[0] as unknown as CourtAddress,
           addresses.secondary[1] as unknown as CourtAddress,
+          addresses.secondary[2] as unknown as CourtAddress,
+          addresses.secondary[3] as unknown as CourtAddress,
+          addresses.secondary[4] as unknown as CourtAddress,
         ], areasOfLaw, courtTypes), [this.updateAddressError]);
       return;
     }
@@ -116,8 +133,12 @@ export class AddressController {
           addresses.primary as unknown as CourtAddress,
           addresses.secondary[0] as unknown as CourtAddress,
           addresses.secondary[1] as unknown as CourtAddress,
+          addresses.secondary[2] as unknown as CourtAddress,
+          addresses.secondary[3] as unknown as CourtAddress,
+          addresses.secondary[4] as unknown as CourtAddress,
         ], areasOfLaw, courtTypes), addressesValid.errors,
-        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid, !addressesValid.thirdPostcodeValid);
+        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid, !addressesValid.thirdPostcodeValid,
+        !addressesValid.fourthPostcodeValid, !addressesValid.fifthPostcodeValid, !addressesValid.sixthPostcodeValid);
       return;
     }
 
@@ -137,8 +158,12 @@ export class AddressController {
               addresses.primary as unknown as CourtAddress,
               addresses.secondary[0] as unknown as CourtAddress,
               addresses.secondary[1] as unknown as CourtAddress,
+              addresses.secondary[2] as unknown as CourtAddress,
+              addresses.secondary[3] as unknown as CourtAddress,
+              addresses.secondary[4] as unknown as CourtAddress,
             ], areasOfLaw, courtTypes), errors, postcodeValidation.primaryInvalid,
-            postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid);
+            postcodeValidation.secondaryInvalid, postcodeValidation.thirdInvalid, postcodeValidation.fourthInvalid,
+            postcodeValidation.fifthInvalid, postcodeValidation.sixthInvalid);
         }
         else if (reason.response.status === 409) {
           const error = this.courtLockedExceptionMsg + (<any>reason.response).data['message'];
@@ -147,6 +172,9 @@ export class AddressController {
               addresses.primary as unknown as CourtAddress,
               addresses.secondary[0] as unknown as CourtAddress,
               addresses.secondary[1] as unknown as CourtAddress,
+              addresses.secondary[2] as unknown as CourtAddress,
+              addresses.secondary[3] as unknown as CourtAddress,
+              addresses.secondary[4] as unknown as CourtAddress,
             ], areasOfLaw, courtTypes), [error]);
         }
         else {
@@ -155,6 +183,9 @@ export class AddressController {
               addresses.primary as unknown as CourtAddress,
               addresses.secondary[0] as unknown as CourtAddress,
               addresses.secondary[1] as unknown as CourtAddress,
+              addresses.secondary[2] as unknown as CourtAddress,
+              addresses.secondary[3] as unknown as CourtAddress,
+              addresses.secondary[4] as unknown as CourtAddress,
             ], areasOfLaw, courtTypes), [this.updateAddressError]);
         }
       });
@@ -171,7 +202,10 @@ export class AddressController {
     errorMsgs: string[] = [],
     primaryPostcodeInvalid = false,
     secondaryPostcodeInvalid = false,
-    thirdPostcodeInvalid = false) {
+    thirdPostcodeInvalid = false,
+    fourthPostcodeInvalid = false,
+    fifthPostcodeInvalid = false,
+    sixthPostcodeInvalid = false) {
 
     const slug: string = req.params.slug;
     let fatalError = false;
@@ -242,6 +276,9 @@ export class AddressController {
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
       thirdPostcodeInvalid: thirdPostcodeInvalid,
+      fourthPostcodeInvalid: fourthPostcodeInvalid,
+      fifthPostcodeInvalid: fifthPostcodeInvalid,
+      sixthPostcodeInvalid: sixthPostcodeInvalid,
       updated: updated
     };
 
@@ -297,31 +334,65 @@ export class AddressController {
    * validating court addresses entered
    */
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
-    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; errors: string[] } {
+    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; fourthPostcodeValid: boolean; fifthPostcodeValid: boolean; sixthPostcodeValid: boolean; errors: string[] } {
 
-    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
-    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true);
-    const thirdValidationResult = this.validateCourtAddress(addresses.secondary[1], false, false);
-    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary[0], addresses.secondary[1]], writeToUsTypeId);
-    const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary[0].fields_of_law, addresses.secondary[1].fields_of_law]);
+    const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false, '0');
+    const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true, '1');
+    const thirdValidationResult = this.validateCourtAddress(addresses.secondary[1], false, true, '2');
+    const fourthValidationResult = this.validateCourtAddress(addresses.secondary[2], false, true, '3');
+    const fifthValidationResult = this.validateCourtAddress(addresses.secondary[3], false, true, '4');
+    const sixthValidationResult = this.validateCourtAddress(addresses.secondary[4], false, true, '5');
+    const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary[0], addresses.secondary[1], addresses.secondary[2], addresses.secondary[3], addresses.secondary[4]], writeToUsTypeId);
+    const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary[0].fields_of_law, addresses.secondary[1].fields_of_law, addresses.secondary[2].fields_of_law, addresses.secondary[3].fields_of_law, addresses.secondary[4].fields_of_law]);
     const uniqueAddressError = this.checkAddressesAreUnique(addresses);
     const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors)
-      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fieldsOfLawErrors).concat(uniqueAddressError);
+      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fourthValidationResult.errors).concat(fifthValidationResult.errors)
+      .concat(sixthValidationResult.errors).concat(fieldsOfLawErrors).concat(uniqueAddressError);
 
     return {
       primaryPostcodeValid: primaryValidationResult.postcodeValid,
       secondaryPostcodeValid: secondaryValidationResult.postcodeValid,
       thirdPostcodeValid: thirdValidationResult.postcodeValid,
+      fourthPostcodeValid: fourthValidationResult.postcodeValid,
+      fifthPostcodeValid: fifthValidationResult.postcodeValid,
+      sixthPostcodeValid: sixthValidationResult.postcodeValid,
       errors: allErrors
     };
   }
 
-  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean): AddressValidationResult {
+  private validateCourtAddress(address: DisplayAddress, isPrimaryAddress: boolean, isSecondaryAddress: boolean, index: string): AddressValidationResult {
     const typeErrors = this.validateAddressTypeExists(address, isPrimaryAddress);
     const countyErrors = this.validateCountyExists(address);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
-    const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : (isSecondaryAddress ? this.secondaryAddressPrefix : this.thirdAddressPrefix);
+    let errorPrefix = '';
+
+    switch (index) {
+      case '0': {
+        errorPrefix = this.primaryAddressPrefix;
+        break;
+      }
+      case '1': {
+        errorPrefix = this.secondaryAddressPrefix;
+        break;
+      }
+      case '2': {
+        errorPrefix = this.thirdAddressPrefix;
+        break;
+      }
+      case '3': {
+        errorPrefix = this.fourthAddressPrefix;
+        break;
+      }
+      case '4': {
+        errorPrefix = this.fifthAddressPrefix;
+        break;
+      }
+      case '5': {
+        errorPrefix = this.sixthAddressPrefix;
+        break;
+      }
+    }
 
     return {
       postcodeValid: postcodeErrors.length === 0,
@@ -359,24 +430,69 @@ export class AddressController {
     return errors;
   }
 
+  private validateAreasOfLaw(addressFolItems: FieldsOfLaw[]): string[] {
+    const secondCourtFolItems: string[] = addressFolItems[0].areas_of_law.map((aol: AreaOfLaw) => aol.name);
+    const thirdCourtFolItems: string[] = addressFolItems[1].areas_of_law.map((aol: AreaOfLaw) => aol.name);
+    const fourthCourtFolItems: string[] = addressFolItems[2].areas_of_law.map((aol: AreaOfLaw) => aol.name);
+    const fifthCourtFolItems: string[] = addressFolItems[3].areas_of_law.map((aol: AreaOfLaw) => aol.name);
+    const sixthCourtFolItems: string[] = addressFolItems[4].areas_of_law.map((aol: AreaOfLaw) => aol.name);
+    let checkedCourtFolItems: string[] = [];
+    let duplicateAreasOfLaw: string[] = [];
+
+    duplicateAreasOfLaw = secondCourtFolItems.filter((name: string) => thirdCourtFolItems.includes(name));
+    if (duplicateAreasOfLaw.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(secondCourtFolItems).concat(thirdCourtFolItems);
+    }
+    duplicateAreasOfLaw = duplicateAreasOfLaw.concat(checkedCourtFolItems.filter((name: string) => fourthCourtFolItems.includes(name)));
+    if (duplicateAreasOfLaw.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(fourthCourtFolItems);
+    }
+    duplicateAreasOfLaw = duplicateAreasOfLaw.concat(checkedCourtFolItems.filter((name: string) => fifthCourtFolItems.includes(name)));
+    if (duplicateAreasOfLaw.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(fifthCourtFolItems);
+    }
+    duplicateAreasOfLaw = duplicateAreasOfLaw.concat(checkedCourtFolItems.filter((name: string) => sixthCourtFolItems.includes(name)));
+
+    return duplicateAreasOfLaw;
+  }
+
+  private validateCourts(addressFolItems: FieldsOfLaw[]): string[] {
+    const secondCourtFolItems: string[] = addressFolItems[0].courts.map((court: CourtType) => court.name);
+    const thirdCourtFolItems: string[] = addressFolItems[1].courts.map((court: CourtType) => court.name);
+    const fourthCourtFolItems: string[] = addressFolItems[2].courts.map((court: CourtType) => court.name);
+    const fifthCourtFolItems: string[] = addressFolItems[3].courts.map((court: CourtType) => court.name);
+    const sixthCourtFolItems: string[] = addressFolItems[4].courts.map((court: CourtType) => court.name);
+    let checkedCourtFolItems: string[] = [];
+    let duplicateCourts: string[] = [];
+
+    duplicateCourts = secondCourtFolItems.filter((name: string) => thirdCourtFolItems.includes(name));
+    if (duplicateCourts.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(secondCourtFolItems).concat(thirdCourtFolItems);
+    }
+    duplicateCourts = duplicateCourts.concat(checkedCourtFolItems.filter((name: string) => fourthCourtFolItems.includes(name)));
+    if (duplicateCourts.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(fourthCourtFolItems);
+    }
+    duplicateCourts = duplicateCourts.concat(checkedCourtFolItems.filter((name: string) => fifthCourtFolItems.includes(name)));
+    if (duplicateCourts.length == 0) {
+      checkedCourtFolItems = checkedCourtFolItems.concat(fifthCourtFolItems);
+    }
+    duplicateCourts = duplicateCourts.concat(checkedCourtFolItems.filter((name: string) => sixthCourtFolItems.includes(name)));
+
+    return duplicateCourts;
+  }
+
   private validateFieldsOfLaw(addressFolItems: FieldsOfLaw[]): string[] {
     // Check for the address sent, that the fields of law for all addresses to not overlap with one another
     // in other words, that there are no duplicates
     const errors: string[] = [];
-    const duplicateAreasOfLaw = addressFolItems[0].areas_of_law
-      .map((aol: AreaOfLaw) => aol.name)
-      .filter((name: string) => addressFolItems[1].areas_of_law
-        .map((aol: AreaOfLaw) => aol.name)
-        .includes(name));
-    const duplicateCourts = addressFolItems[0].courts
-      .map((court: CourtType) => court.name)
-      .filter((name: string) => addressFolItems[1].courts
-        .map((court: CourtType) => court.name)
-        .includes(name));
+    const duplicateAreasOfLaw = this.validateAreasOfLaw(addressFolItems);
+    const duplicateCourts = this.validateCourts(addressFolItems);
+
     if (duplicateAreasOfLaw.length > 0 || duplicateCourts.length > 0) {
       errors.push(this.fieldsOfLawDuplicateError + '"'
         + duplicateAreasOfLaw
-        + (duplicateAreasOfLaw.length > 0 ? ', ': '')
+        + (duplicateAreasOfLaw.length > 0 ? ', ' : '')
         + duplicateCourts + '"');
     }
     return errors;
@@ -399,12 +515,24 @@ export class AddressController {
   }
 
   private validateNoMoreThanOneVisitAddress(addresses: DisplayAddress[], writeToUsTypeId: number): string[] {
+    const emptyAddressTypes: string[] = [];
+    this.addressTypeEmpty(addresses[0], emptyAddressTypes);
+    this.addressTypeEmpty(addresses[1], emptyAddressTypes);
+    this.addressTypeEmpty(addresses[2], emptyAddressTypes);
+    this.addressTypeEmpty(addresses[3], emptyAddressTypes);
+    this.addressTypeEmpty(addresses[4], emptyAddressTypes);
+    this.addressTypeEmpty(addresses[5], emptyAddressTypes);
 
-    return (writeToUsTypeId && !!addresses[0].type_id && !!addresses[1].type_id) &&
-    (!(addresses[2].type_id) && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 2) ||
-    (!!addresses[2].type_id && this.addressFieldsNotEmpty(addresses[1]) && (addresses.filter(add => add.type_id !== writeToUsTypeId).length) > 1)
+    return ((emptyAddressTypes.length) + (addresses.filter(add => add.type_id === writeToUsTypeId).length) < 5)
       ? [this.multipleVisitAddressError]
       : [];
+  }
+
+  private addressTypeEmpty(courtAddress: DisplayAddress, emptyAddressTypes: string[]): string[] {
+    if (!courtAddress.type_id || courtAddress.type_id.toString() === '') {
+      emptyAddressTypes.push(this.noAddressType);
+    }
+    return emptyAddressTypes;
   }
 
   private addressFieldsNotEmpty(courtAddress: DisplayAddress): boolean {
@@ -426,11 +554,14 @@ export class AddressController {
   }
 
   private checkErrorResponseForPostcodeErrors(error: AxiosError, addresses: DisplayCourtAddresses):
-    { primaryInvalid: boolean; secondaryInvalid: boolean; thirdInvalid: boolean; errors: string[] } {
+    { primaryInvalid: boolean; secondaryInvalid: boolean; thirdInvalid: boolean; fourthInvalid: boolean, fifthInvalid: boolean, sixthInvalid: boolean, errors: string[] } {
 
     let primaryPostcodeInvalid = false;
     let secondaryPostcodeInvalid = false;
     let thirdPostcodeInvalid = false;
+    let fourthPostcodeInvalid = false;
+    let fifthPostcodeInvalid = false;
+    let sixthPostcodeInvalid = false;
     const errors: string[] = [];
 
     // We expect an array of invalid postcodes in the body of the response
@@ -446,9 +577,21 @@ export class AddressController {
         if (!secondaryPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[0]?.postcode?.toUpperCase()) {
           secondaryPostcodeInvalid = true;
           errors.push(this.secondaryAddressPrefix + this.postcodeNotFoundError);
-        } else if (!thirdPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[1]?.postcode?.toUpperCase()) {
+        }
+        if (!thirdPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[1]?.postcode?.toUpperCase()) {
           thirdPostcodeInvalid = true;
           errors.push(this.thirdAddressPrefix + this.postcodeNotFoundError);
+        }
+        if (!fourthPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[2]?.postcode?.toUpperCase()) {
+          fourthPostcodeInvalid = true;
+          errors.push(this.fourthAddressPrefix + this.postcodeNotFoundError);
+        }
+        if (!fifthPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[3]?.postcode?.toUpperCase()) {
+          fifthPostcodeInvalid = true;
+          errors.push(this.fifthAddressPrefix + this.postcodeNotFoundError);
+        } else if (!sixthPostcodeInvalid && invalidPostcode.toUpperCase() === addresses.secondary[4]?.postcode?.toUpperCase()) {
+          sixthPostcodeInvalid = true;
+          errors.push(this.sixthAddressPrefix + this.postcodeNotFoundError);
         }
       });
     }
@@ -457,41 +600,83 @@ export class AddressController {
       primaryInvalid: primaryPostcodeInvalid,
       secondaryInvalid: secondaryPostcodeInvalid,
       thirdInvalid: thirdPostcodeInvalid,
+      fourthInvalid: fourthPostcodeInvalid,
+      fifthInvalid: fifthPostcodeInvalid,
+      sixthInvalid: sixthPostcodeInvalid,
       errors: errors
     };
   }
 
   private convertToDisplayAddresses(addresses: CourtAddress[], areasOfLaw: AreaOfLaw[],
     courtTypes: CourtType[]): DisplayCourtAddresses {
-    const courtAddresses: DisplayCourtAddresses = {primary: {}, secondary: [{},{}]};
+    const courtAddresses: DisplayCourtAddresses = {primary: {}, secondary: [{},{},{},{},{}]};
 
     switch (addresses.length) {
       case 0: {
         courtAddresses.primary.fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'primary');
         courtAddresses.secondary[0].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'secondary');
         courtAddresses.secondary[1].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
         break;
       }
       case 1: {
         courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
         courtAddresses.secondary[0].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'secondary');
         courtAddresses.secondary[1].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
         break;
       }
       case 2: {
         courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
         courtAddresses.secondary[0] = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
         courtAddresses.secondary[1].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
         break;
       }
       case 3: {
         courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
         courtAddresses.secondary[0] = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
         courtAddresses.secondary[1] = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
+        break;
+      }
+      case 4: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary[0] = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.secondary[1] = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2] = this.convertApiAddressToCourtAddressType(addresses[3], areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
+        break;
+      }
+      case 5: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary[0] = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.secondary[1] = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2] = this.convertApiAddressToCourtAddressType(addresses[3], areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3] = this.convertApiAddressToCourtAddressType(addresses[4], areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4].fields_of_law = this.createEmptyFieldsOfLawCheckboxItems(areasOfLaw, courtTypes, 'sixth');
+        break;
+      }
+      case 6: {
+        courtAddresses.primary = this.convertApiAddressToCourtAddressType(addresses[0], areasOfLaw, courtTypes, 'primary');
+        courtAddresses.secondary[0] = this.convertApiAddressToCourtAddressType(addresses[1], areasOfLaw, courtTypes, 'secondary');
+        courtAddresses.secondary[1] = this.convertApiAddressToCourtAddressType(addresses[2], areasOfLaw, courtTypes, 'third');
+        courtAddresses.secondary[2] = this.convertApiAddressToCourtAddressType(addresses[3], areasOfLaw, courtTypes, 'fourth');
+        courtAddresses.secondary[3] = this.convertApiAddressToCourtAddressType(addresses[4], areasOfLaw, courtTypes, 'fifth');
+        courtAddresses.secondary[4] = this.convertApiAddressToCourtAddressType(addresses[5], areasOfLaw, courtTypes, 'sixth');
         break;
       }
       default: {
-        throw new RangeError('Only expecting three addresses at max for now');
+        throw new RangeError('Only expecting six addresses at max for now');
       }
     }
 
@@ -520,6 +705,18 @@ export class AddressController {
     if (courtAddresses.secondary[1] && courtAddresses.secondary[1].type_id && courtAddresses.secondary[1].address_lines &&
       courtAddresses.secondary[1].town && courtAddresses.secondary[1].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[1]));
+    }
+    if (courtAddresses.secondary[2] && courtAddresses.secondary[2].type_id && courtAddresses.secondary[2].address_lines &&
+      courtAddresses.secondary[2].town && courtAddresses.secondary[2].postcode) {
+      apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[2]));
+    }
+    if (courtAddresses.secondary[3] && courtAddresses.secondary[3].type_id && courtAddresses.secondary[3].address_lines &&
+      courtAddresses.secondary[3].town && courtAddresses.secondary[3].postcode) {
+      apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[3]));
+    }
+    if (courtAddresses.secondary[4] && courtAddresses.secondary[4].type_id && courtAddresses.secondary[4].address_lines &&
+      courtAddresses.secondary[4].town && courtAddresses.secondary[4].postcode) {
+      apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[4]));
     }
     //need to make sure that visit us address is saved in first index of the addresses array being posted to the api.
     visitUsAddress = apiAddresses.filter(c => c.type_id !== writeToUsTypeId);
@@ -589,14 +786,23 @@ export class AddressController {
     };
   }
 
-  private checkAddressesAreUnique(addresses: DisplayCourtAddresses) : string[]{
 
+  private checkAddressesAreUnique(addresses: DisplayCourtAddresses): string[]{
     const errors: string[] = [];
+    const addressLines: string[] =
+      [addresses.primary.address_lines, ...addresses.secondary.map(address => address.address_lines)];
+    const postcodes: string[] =
+      [addresses.primary.postcode.toUpperCase(), ...addresses.secondary.map(address => address.postcode.toUpperCase())];
 
-    if ((addresses.primary.address_lines === addresses.secondary[0].address_lines && addresses.primary.postcode === addresses.secondary[0].postcode)
-      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && addresses.primary.address_lines === addresses.secondary[1].address_lines && addresses.primary.postcode === addresses.secondary[1].postcode)
-      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && addresses.secondary[0].address_lines === addresses.secondary[1].address_lines && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
-      errors.push(this.duplicateAddressError);
+    for (let i = 0; i < addressLines.length; i++) {
+      if (addressLines[i] !== '' && addressLines[i] !== null && postcodes[i] !== '' && postcodes[i] !== null) {
+        for (let j = i + 1; j < addressLines.length; j++) {
+          if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
+            errors.push(this.duplicateAddressError);
+            break;
+          }
+        }
+      }
     }
     return errors;
   }
