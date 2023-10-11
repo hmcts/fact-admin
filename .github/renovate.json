@@ -1,5 +1,4 @@
 {
-  "enabledManagers": ["helm-requirements"],
   "automerge": true,
   "helm-requirements":
   {
