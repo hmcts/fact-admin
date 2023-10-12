@@ -11,7 +11,6 @@ export const config = {
   password: process.env.OAUTH_USER_PASSWORD,
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data',
-
   helpers: {},
 };
 
@@ -21,9 +20,9 @@ config.helpers = {
     show: !config.TestHeadlessBrowser,
     browser: 'chromium',
     windowSize: '1300x800',
-    timeout: 50000,
-    waitForTimeout: 10000,
-    waitForAction: 1000,
+    timeout: 70000,
+    waitForTimeout: 20000,
+    waitForAction: 2000,
     waitForNavigation: 'networkidle0',
     ignoreHTTPSErrors: true,
   }

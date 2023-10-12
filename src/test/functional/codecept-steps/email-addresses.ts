@@ -5,7 +5,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 When('I hover over emails nav element', async () => {
   const selector = '#nav';
   I.seeElement(selector);
-  I.moveCursorTo(selector);;
+  I.moveCursorTo(selector);
 });
 
 Then('I click the Emails tab', async () => {
@@ -189,7 +189,7 @@ Then('An error is displayed for email address with summary {string} and address 
 
 //
 When('I click the move up button on the last entry', async () => {
-  I.seeElement('//*[@id="emailsContent"]/fieldset[2]/div[5]/div[2]/button[1]')
+  I.seeElement('//*[@id="emailsContent"]/fieldset[2]/div[5]/div[2]/button[1]');
   await I.click('//*[@id="emailsContent"]/fieldset[2]/div[5]/div[2]/button[1]');
 });
 

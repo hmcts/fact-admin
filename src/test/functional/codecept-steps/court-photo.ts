@@ -14,7 +14,7 @@ When('I click the photo tab', async () => {
 });
 
 Then('I can view the existing court photo form', async () => {
-  I.waitForVisible('#photoForm', 3000)
+  I.waitForVisible('#photoForm', 3000);
 });
 
 When('I check for existing photo then delete it',  async () => {
