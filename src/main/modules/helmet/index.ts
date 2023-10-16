@@ -17,26 +17,30 @@ export class Helmet {
 
   public enableFor(app: express.Express): void {
     // include default helmet functions
-    app.use(helmet({
-      crossOriginEmbedderPolicy: false,
-    }));
-    app.use(helmet.hidePoweredBy());
-    app.use(helmet.xssFilter());
+    app.use(helmet());
 
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
   }
 
   private setContentSecurityPolicy(app: express.Express): void {
+    const scriptSrc = [self, googleAnalyticsDomain];
+
+    if (app.locals.ENV === 'development') {
+      scriptSrc.push("'unsafe-inline'");
+      scriptSrc.push("'unsafe-eval'");
+    }
+
     app.use(
       helmet.contentSecurityPolicy({
+        useDefaults: false,
         directives: {
           connectSrc: [self],
           defaultSrc: ["'none'"],
           fontSrc: [self, 'data:'],
           imgSrc: [self, googleAnalyticsDomain, azureBlob],
           objectSrc: [self],
-          scriptSrc: [self, googleAnalyticsDomain, "'unsafe-eval'", "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"],
+          scriptSrc: scriptSrc,
           styleSrc: [self]
         }
       })
