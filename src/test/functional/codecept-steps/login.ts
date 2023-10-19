@@ -1,7 +1,7 @@
 import { config as testConfig } from '../../config';
 import { expect } from 'chai';
 import { I } from '../utlis/codecept-util';
-import {puppeteerConfig} from '../puppeteer.config';
+
 
 
 async function fillInUsernameAndPassword(username: string, password: string) {
@@ -28,29 +28,28 @@ Given('I am on the admin portal sign in page', async function() {
 
 When('I fill in the Username and Password fields with my authenticated credentials', async function() {
   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const username = testConfig.username;
-    const password = testConfig.password;
-    // @ts-ignore
+    const username = testConfig.username as string;
+    const password = testConfig.password as string;
     await fillInUsernameAndPassword(username, password);
   }
 });
+
 
 When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const username = testConfig.superUsername;
-    const password = testConfig.password;
-    // @ts-ignore
+    const username = testConfig.superUsername as string;
+    const password = testConfig.password as string;
     await fillInUsernameAndPassword(username, password);
   }
 });
 
-When('I fill in the Username and Password fields with my viewer authenticated credentials', async () => {
-  if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    const username = puppeteerConfig.viewerUsername;
-    const password = puppeteerConfig.password;
-    await fillInUsernameAndPassword(username, password);
-  }
-});
+// When('I fill in the Username and Password fields with my viewer authenticated credentials', async () => {
+//   if (await I.grabTitle() == 'Sign in - HMCTS Access - GOV.UK') {
+//     const username = puppeteerConfig.viewerUsername;
+//     const password = puppeteerConfig.password;
+//     await fillInUsernameAndPassword(username, password);
+//   }
+// });
 
 When('I fill in the Username and Password fields with my incorrect authenticated credentials {string} {string}',
   async (username: string, password: string) => {

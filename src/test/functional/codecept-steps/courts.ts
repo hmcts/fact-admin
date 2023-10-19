@@ -46,7 +46,7 @@ Then('test', async () => {
 
 When('I click edit next to court with {string}', async (courtSlug: string) => {
   // making this fail
-  expect(true).equal(false);
+  //expect(true).equal(false);
   I.seeElement('#edit-' + courtSlug);
   I.click('#edit-' + courtSlug);
 });
