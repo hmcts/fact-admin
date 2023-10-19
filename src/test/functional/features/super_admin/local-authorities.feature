@@ -51,18 +51,18 @@ Feature: Local authorities
       | view_court_slug      |
       | administrative-court |
 
-  #  Scenario Outline: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user.
-  #
-  #    When I click edit next to court with "<view_court_slug>"
-  #    Then I am redirected to the Edit Court page for the chosen court
-  #    And I hover over types nav element
-  #    And I click the types tab
-  #    When I check code errors
-  #    And I will make sure Family court type is not selected
-  #    And I click on save court type
-  #    And I hover over local authorities nav element
-  #    Then The local authorities tab should be disabled
-  #
-  #    Examples:
-  #      | view_court_slug          |
-  #      | administrative-court     |
+    Scenario Outline: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user.
+
+      When I click edit next to court with "<view_court_slug>"
+      Then I am redirected to the Edit Court page for the chosen court
+      And I hover over types nav element
+      And I click the types tab
+      When I check code errors
+      And I will make sure Family court type is not selected
+      And I click on save court type
+      And I hover over local authorities nav element
+      Then The local authorities tab should be disabled
+
+      Examples:
+        | view_court_slug          |
+        | administrative-court     |

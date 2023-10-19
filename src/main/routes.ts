@@ -24,7 +24,7 @@ export default function(app: Application): void {
 
   const upload = multer();
 
-  app.get('/', (req, res) => res.redirect('/courts'));
+  app.get('/',(req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
   app.post('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.post);
   app.get('/courts', app.locals.container.cradle.courtsController.get);

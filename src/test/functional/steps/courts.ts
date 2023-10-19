@@ -1,6 +1,5 @@
 import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
-
 import * as I from '../utlis/puppeteer.util';
 
 Then('I can view the courts or tribunals in a list format', async () => {

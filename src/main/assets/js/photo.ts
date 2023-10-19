@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
+import {setUpTabClick} from './tab-reset';
 
 export class PhotoController {
   private formId = '#photoForm';
@@ -8,6 +9,7 @@ export class PhotoController {
   private deleteBtnClass = '.deletePhoto';
   private deleteConfirmBtnId = '#confirmDelete';
   private cancelBtnId = '#cancelDeletePhotoBtn';
+  private tab = '#tab_photo';
 
   constructor() {
     this.initialize();
@@ -16,6 +18,7 @@ export class PhotoController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getPhoto.bind(this));
         this.getPhoto();
       }
     });

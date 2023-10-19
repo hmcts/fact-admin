@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {CasesHeard} from '../../types/CasesHeard';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -9,6 +10,7 @@ export class CasesHeardController {
   private tabId = '#casesHeardTab';
   private casesHeardContentId = '#casesHeardContent';
   private localAuthoritiesContentId = '#localAuthoritiesContent';
+  private tab = '#tab_cases-heard';
 
   constructor() {
     this.initialize();
@@ -17,6 +19,7 @@ export class CasesHeardController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getCasesHeard.bind(this));
         this.getCasesHeard();
         this.setUpUpdateEventHandler();
       }

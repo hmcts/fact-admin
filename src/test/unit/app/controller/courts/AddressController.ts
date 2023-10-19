@@ -87,7 +87,8 @@ describe('AddressesController', () => {
         'type_id': 100,
         description: 'description',
         'description_cy': 'description_cy,',
-        'address_lines': ['54 Green Street'],
+        'address_lines': ['54 Green Street\n' +
+        'Redville House' ],
         'address_lines_cy': ['54 Green Street_cy'],
         town: 'Redville',
         'town_cy': 'Redville_cy',
@@ -140,7 +141,7 @@ describe('AddressesController', () => {
         'type_id': 100,
         description: 'description',
         'description_cy': 'description_cy,',
-        'address_lines': ['54 Green Street'],
+        'address_lines': ['54 Green Street', 'Redville House'],
         'address_lines_cy': ['54 Green Street_cy'],
         town: 'Redville',
         'town_cy': 'Redville_cy',
@@ -1055,7 +1056,8 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary and primary address are identical', async () => {
     const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
-    addresses.secondary[0].address_lines = '54 Green Street';
+    addresses.secondary[0].address_lines = '54 Green Street\n  + ' +
+    'Redville House';
     addresses.secondary[0].postcode = 'RR1 2AB';
 
     req.body = {
@@ -1097,6 +1099,57 @@ describe('AddressesController', () => {
 
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
+    const expectedResults: CourtAddressPageData =
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
+        false, false, false, false));
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
+  test('Should not post court addresses if secondary and primary address are identical but structure is different', async () => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    addresses.secondary[0].address_lines = 'Redville House\n' +
+      '54 Green Street';
+    addresses.secondary[0].postcode = 'RR1 2AB';
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API to save data
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+
+    // Should render page with error
+    const expectedError = [{text: controller.duplicateAddressError}];
+    const expectedResults: CourtAddressPageData =
+      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
+        false, false, false, false));
+    expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
+  });
+
+  test('Should not post court addresses if secondary and primary welsh addresses are identical', async () => {
+    const addresses: DisplayCourtAddresses = getValidDisplayAddresses();
+    addresses.secondary[0].address_lines_cy = '54 Green Street_cy';
+    addresses.secondary[0].postcode = 'RR1 2AB';
+
+    req.body = {
+      primary: addresses.primary,
+      secondary: addresses.secondary,
+      writeToUsTypeId: addressTypes[1].id,
+      '_csrf': CSRF.create()
+    };
+
+    await controller.put(req, res);
+
+    // Should not call API to save data
+    expect(mockApi.updateCourtAddresses).not.toBeCalled();
+
+    // Should render page with error
+    const expectedError = [{text: controller.dupilcateWelshAddressError}];
     const expectedResults: CourtAddressPageData =
       setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
         false, false, false, false));

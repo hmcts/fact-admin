@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 export class AdditionalLinksController {
   private formId = '#additionalLinksForm';
@@ -18,6 +19,7 @@ export class AdditionalLinksController {
   private displayNameInputName = 'display_name';
   private displayNameCyInputName = 'display_name_cy';
   private hiddenNewInputName = 'isNew';
+  private tab = '#tab_additional-links';
 
   constructor() {
     this.initialise();
@@ -26,6 +28,7 @@ export class AdditionalLinksController {
   private initialise(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getCourtAdditionalLinks.bind(this));
         this.getCourtAdditionalLinks();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
