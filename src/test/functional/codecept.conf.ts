@@ -6,7 +6,7 @@ setHeadlessWhen(testConfig.TestHeadlessBrowser);
 export const config: CodeceptJS.MainConfig = {
   name: 'functional',
   gherkin: {
-    features: './codecept-features/admin/admin-login.feature',
+    features: './codecept-features/**/*.feature',
     steps: './codecept-steps/**/*.ts',
   },
   output: '../../../functional-output/functional/reports',
