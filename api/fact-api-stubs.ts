@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import * as bodyParser from 'body-parser';
 const app = express();
 
 const data = require('./courts.json');
@@ -7,7 +6,7 @@ const courtDetails = require('./court-details.json');
 const port = 8080;
 const baseURL = '/courts';
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 
 app.get(`${baseURL}/all`, (req: Request, res: Response) => {
   res.json(data);
