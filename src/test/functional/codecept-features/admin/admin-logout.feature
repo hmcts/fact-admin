@@ -1,5 +1,6 @@
 Feature: Logout
 
+
   Background:
     Given I am on FACT homepage '/'
     Then I am logged out if I am a super admin
@@ -8,7 +9,7 @@ Feature: Logout
     And click the Sign In button
     Then the system will sign me in
 
-  Scenario: Logout
+  Scenario: User Logout test
   Given that I am a logged-in admin or super admin user
   When I click the Logout link
   Then the system will log me out

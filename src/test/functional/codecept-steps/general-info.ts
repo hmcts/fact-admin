@@ -13,52 +13,45 @@ When('I hover over general nav element', async () => {
   I.moveCursorTo(selector);
 });
 
-// When('I click the general tab', async () => {
-//   const selector = '#tab_general';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   await I.click(selector);
-// });
-//
-// Then('I can view the urgent notices', async () => {
-//   const urgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice');
-//   const welshUrgentNoticesExist = await I.checkElement('#generalInfoTab #urgent-notice-welsh');
-//   expect(urgentNoticesExist).equal(true);
-//   expect(welshUrgentNoticesExist).equal(true);
-// });
-//
-// Then('I can view the PUAS flag', async () => {
-//   expect(await I.checkElement('#generalInfoTab #access_scheme')).equal(true);
-// });
-//
-// Then('I cannot view super admin content', async () => {
-//   expect(await I.isElementVisible('#generalInfoTab #open', 3000)).equal(false);
-//   expect(await I.isElementVisible('#generalInfoTab #info', 3000)).equal(false);
-//   expect(await I.isElementVisible('#generalInfoTab #info_cy', 3000)).equal(false);
-// });
-//
-// Then('I can view the open checkbox', async () => {
-//   const openCheckboxExists = await I.checkElement('#generalInfoTab #open');
-//   expect(openCheckboxExists).equal(true);
-// });
-//
-// Then('I can view the access scheme checkbox', async () => {
-//   const accessSchemeCheckboxExists = await I.checkElement('#generalInfoTab #access_scheme');
-//   expect(accessSchemeCheckboxExists).equal(true);
-// });
-//
-// Then('I can view common platform flag checkbox', async () => {
-//   const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
-//   expect(commonPlatformCheckboxExists).equal(true);
-// });
-//
-// Then('I can view the additional information notices', async () => {
-//   const additionalInfoExists = await I.checkElement('#generalInfoTab #info');
-//   const welshAdditionalInfoExists = await I.checkElement('#generalInfoTab #info_cy');
-//   expect(additionalInfoExists).equal(true);
-//   expect(welshAdditionalInfoExists).equal(true);
-// });
-//
+When('I click the general tab', async () => {
+  const selector = '#tab_general';
+  I.seeElement(selector);
+  await I.click(selector);
+});
+
+Then('I can view the urgent notices', async () => {
+  I.seeElementInDOM('#urgent-notice');
+  I.seeElementInDOM('#generalInfoTab #urgent-notice-welsh');
+});
+
+Then('I can view the PUAS flag', async () => {
+  I.seeElement('#generalInfoTab #access_scheme');
+});
+
+Then('I cannot view super admin content', async () => {
+  I.dontSee('#generalInfoTab #open');
+  I.dontSee('#generalInfoTab #info');
+  I.dontSee('#generalInfoTab #info_cy');
+
+});
+
+Then('I can view the open checkbox', async () => {
+  I.seeElement('#generalInfoTab #open');
+});
+
+Then('I can view the access scheme checkbox', async () => {
+  I.seeElement('#generalInfoTab #access_scheme');
+});
+
+Then('I can view common platform flag checkbox', async () => {
+  I.seeElement('#common_platform');
+});
+
+Then('I can view the additional information notices', async () => {
+  I.seeElement('#generalInfoTab #info');
+  I.seeElement('#generalInfoTab #info_cy');
+});
+
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
   const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
   const successTitleElement = await I.grabTextFrom(selector);

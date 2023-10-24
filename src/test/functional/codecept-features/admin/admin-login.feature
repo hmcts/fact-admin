@@ -1,4 +1,4 @@
-Feature: Login/Logout
+Feature: User Login/Logout
 
   Background:
     Given I am on FACT homepage '/'

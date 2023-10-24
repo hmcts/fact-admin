@@ -2,8 +2,7 @@
 Feature: General Info
 
   Background:
-    Given I am on new browser
-    Given I am on FACT homepage
+    Given I am on FACT homepage '/'
     And I am on the admin portal sign in page
 
   Scenario: Admin user can view and update urgent notices and PUAS flag only

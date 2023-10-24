@@ -42,7 +42,7 @@ Feature: Courts and tribunals search and sort
       | searchText |
       | as         |
 
-  Scenario Outline: As a user I should be able to sort in a ascending order courts by last updated @special
+  Scenario Outline: As a user I should be able to sort in a ascending order courts by last updated
 
     When I enter "<searchText>" into search textbox
     When I click on last updated to sort ascending

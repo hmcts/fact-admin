@@ -1,4 +1,4 @@
-Feature: Homepage
+Feature: Court region
 
   Background:
     Given I am on FACT homepage '/'
@@ -6,7 +6,7 @@ Feature: Homepage
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
 
-  Scenario: View the list
+  Scenario: View the list of courts regions
     Then I can view the courts regions
     When I select the region Yorkshire and the Humber "9"
     Then I can see the courts "bradford-combined-court-centre" and "leeds-combined-court-centre" in the list

@@ -6,6 +6,8 @@ import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
 const scope = require('./scope');
 
 export const launchBrowser = async () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   scope.browser = await puppeteer.launch(puppeteerConfig);
 };
 

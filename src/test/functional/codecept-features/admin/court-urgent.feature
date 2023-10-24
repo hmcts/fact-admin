@@ -1,6 +1,6 @@
 Feature: Court Update Urgent Message
 
-  Background: View the list
+  Background:
     Given I am on FACT homepage '/'
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
