@@ -17,32 +17,35 @@ export class Helmet {
 
   public enableFor(app: express.Express): void {
     // include default helmet functions
-    app.use(helmet());
+    app.use(helmet({
+      crossOriginEmbedderPolicy: false,
+    }));
 
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
   }
 
   private setContentSecurityPolicy(app: express.Express): void {
-    const scriptSrc = [self, googleAnalyticsDomain];
+    const scriptSrc = [self, googleAnalyticsDomain, "'unsafe-inline'"];
 
+    //todo: should really only use this in dev
     if (app.locals.ENV === 'development') {
-      scriptSrc.push("'unsafe-inline'");
-      scriptSrc.push("'unsafe-eval'");
+      // scriptSrc.push("'unsafe-inline'");
+      // scriptSrc.push("'unsafe-eval'");
     }
 
     app.use(
       helmet.contentSecurityPolicy({
         useDefaults: false,
         directives: {
-          connectSrc: [self],
+          connectSrc: [self, azureBlob],
           defaultSrc: ["'none'"],
           fontSrc: [self, 'data:'],
-          imgSrc: [self, googleAnalyticsDomain, azureBlob],
+          imgSrc: [self, 'data:', googleAnalyticsDomain, azureBlob],
           objectSrc: [self],
           scriptSrc: scriptSrc,
-          styleSrc: [self]
-        }
+          styleSrc: [self, "'unsafe-inline'"],
+        },
       })
     );
   }
