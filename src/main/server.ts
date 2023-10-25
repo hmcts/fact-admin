@@ -1,4 +1,3 @@
-import * as bodyParser from 'body-parser';
 import config from 'config';
 import express from 'express';
 import {Helmet} from './modules/helmet';
@@ -27,8 +26,8 @@ if (!developmentMode) {
 server.use(Express.accessLogger());
 server.use(cookieParser());
 server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(express.static(path.join(__dirname, 'public')));
 server.use('/tinymce', express.static(path.join(__dirname, '..', '..', 'node_modules', 'tinymce')));
 
