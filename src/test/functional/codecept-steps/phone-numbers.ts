@@ -28,7 +28,7 @@ Then('the phone number entry in second last position has description value {stri
   let numFieldsets = await I.grabNumberOfVisibleElements('#phoneNumbersTab fieldset');
   numFieldsets -= 2;
 
-  const descriptionText = await I.grabAttributeFrom(('#contactDescription-' + numFieldsets), 'value');
+  const descriptionText = await I.grabValueFrom('#contactDescription-' + numFieldsets);
   expect(descriptionText).equal(descriptionValue);
 
   const numberText = await I.grabAttributeFrom(('#contactNumber-' + numFieldsets), 'value');
@@ -39,6 +39,7 @@ Then('the phone number entry in second last position has description value {stri
 
   const explanationTextCy = await I.grabAttributeFrom(('#contactExplanationCy-' + numFieldsets), 'value');
   expect(explanationTextCy).equal(explanationCy);
+
 });
 
 Then('the phone number entry in last position has description value {string} number {string} ' +
@@ -46,7 +47,7 @@ Then('the phone number entry in last position has description value {string} num
   let numFieldsets = await I.grabNumberOfVisibleElements('#phoneNumbersTab fieldset');
   numFieldsets -= 1;
 
-  const descriptionText = await I.grabAttributeFrom(('#contactDescription-' + numFieldsets), 'value');
+  const descriptionText = await I.grabValueFrom('#contactDescription-' + numFieldsets);
   expect(descriptionText).equal(descriptionValue);
 
   const numberText = await I.grabAttributeFrom(('#contactNumber-' + numFieldsets), 'value');

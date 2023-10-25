@@ -13,10 +13,6 @@ When('I click the photo tab', async () => {
   await I.click(selector);
 });
 
-Then('I can view the existing court photo form', async () => {
-  I.waitForVisible('#photoForm', 3000);
-});
-
 When('I check for existing photo then delete it',  async () => {
   const selector = '#photoContent > h2:nth-child(2)';
   const photoContent = await I.grabNumberOfVisibleElements(selector);

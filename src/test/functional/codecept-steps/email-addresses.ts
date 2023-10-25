@@ -46,7 +46,7 @@ Then('the email entry in second last position has description value {string} ema
   let numFieldsets = await I.grabNumberOfVisibleElements('#emailsTab fieldset');
   numFieldsets -= 2;
 
-  const descriptionText = await I.grabAttributeFrom(('#emails-' + numFieldsets), 'value');
+  const descriptionText = await I.grabValueFrom('#emails-' + numFieldsets);
   expect(descriptionText).equal(descriptionValue);
 
   const numberText = await I.grabAttributeFrom(('#address-' + numFieldsets), 'value');
@@ -64,7 +64,7 @@ Then('the email entry in last position has description value {string} email {str
   let numFieldsets = await I.grabNumberOfVisibleElements('#emailsTab fieldset');
   numFieldsets -= 1;
 
-  const descriptionText = await I.grabAttributeFrom(('#emails-' + numFieldsets), 'value');
+  const descriptionText = await I.grabValueFrom('#emails-' + numFieldsets);
   expect(descriptionText).equal(descriptionValue);
 
   const numberText = await I.grabAttributeFrom(('#address-' + numFieldsets), 'value');
