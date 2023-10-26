@@ -13,6 +13,7 @@ node_modules/
 src/main/public/img/lib/*
 src/main/public/js/lib/**/*.js
 src/main/public/stylesheets/lib/*
+/src/main/views/govuk/
 
 node-rpm-packaging/
 mochawesome-report/
@@ -26,9 +27,19 @@ coverage/
 
 /src/test/functional/user_data
 
-.yarn/*
 !.yarn/patches
-!.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# yarn v2
+.yarn/*
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# yarn v2 zero-install
+!.pnp.cjs
+!.yarn/unplugged
+!.yarn/plugins
+!.yarn/cache
