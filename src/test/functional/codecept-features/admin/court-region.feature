@@ -1,12 +1,7 @@
 Feature: Court region
 
-  Background:
-    Given I am on FACT homepage '/'
-    And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials
-    And click the Sign In button
-
   Scenario: View the list of courts regions
+    When I log in as an admin
     Then I can view the courts regions
     When I select the region Yorkshire and the Humber "9"
     Then I can see the courts "bradford-combined-court-centre" and "leeds-combined-court-centre" in the list

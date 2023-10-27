@@ -2,10 +2,7 @@ Feature: Court Update Urgent Message
 
   Background:
     Given a court is created through the API
-    When I am on FACT homepage '/'
-    And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials
-    And click the Sign In button
+    When I log in as an admin
     When I click edit next to the test court
     Then I am redirected to the Edit Court page for the chosen court
 
