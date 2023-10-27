@@ -28,5 +28,8 @@ config.helpers = {
     waitForAction: 2000,
     waitForNavigation: 'networkidle0',
     ignoreHTTPSErrors: true,
+  },
+  FactApiHelper: {
+    require: './helpers/FactApiHelper.ts',
   }
 };
