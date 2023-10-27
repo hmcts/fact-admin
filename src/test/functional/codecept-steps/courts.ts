@@ -1,6 +1,9 @@
-import { I } from '../utlis/codecept-util';
 import {expect} from 'chai';
+import {NewCourt} from '../../../main/types/NewCourt';
+import {generateCourtName} from '../utlis/dataGenerator';
+const container = require('codeceptjs').container;
 
+const { I } = inject();
 
 Then('I can view the courts or tribunals in a list format', async () => {
   I.seeElement('#courts');
@@ -73,4 +76,27 @@ Then('I am redirected to the View Court page for the {string}', async (courtName
   const selector = '#main-content > div > div > h1';
   I.seeElement(selector);
   expect((await I.grabTextFrom(selector)).trim()).equal(courtName);
+});
+
+When('a court is created through the API', async() => {
+  const court = await I.createCourtThroughApi({
+    'new_court_name': generateCourtName(),
+    'service_centre': false,
+    lon: -1.826323,
+    lat: 51.178844,
+    'service_areas': []
+  } as NewCourt);
+
+  container.share({ court }, { local: true });
+});
+
+When('I click edit next to the test court', () => {
+  const { court } = inject() as any;
+  I.seeElement('#edit-' + court.slug);
+  I.click('#edit-' + court.slug);
+});
+
+Then('the court is cleaned up through the API', async () => {
+  const { court } = inject() as any;
+  await I.deleteCourtThroughApi(court.slug);
 });

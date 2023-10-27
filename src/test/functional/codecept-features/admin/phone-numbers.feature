@@ -2,18 +2,17 @@
 Feature: Phone Numbers
 
   Background:
-    Given I am on FACT homepage '/'
+    Given a court is created through the API
+    When I am on FACT homepage '/'
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
-    When I click edit next to court with "stafford-combined-court-centre"
+    When I click edit next to the test court
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over phone numbers nav element
     When I click the phone numbers tab
-    When I remove all existing phone number entries and save
 
   Scenario: Add and remove phone numbers
-    Then a green message is displayed for updated entries "Phone Numbers updated"
     When I enter new phone number entry by selecting description "Admin" and entering "0123 456 7890", "Fine" and "Dirwy"
     Then I click the Add button in the phone number tab
     And I click save in the phone number tab
@@ -22,9 +21,9 @@ Feature: Phone Numbers
     Then a green message is displayed for updated entries "Phone Numbers updated"
     Then the phone number entry in second last position has description value "199" number "0123 456 7890" explanation "Fine" and welsh explanation "Dirwy"
     And the phone number entry in last position has description value "201" number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
+    And the court is cleaned up through the API
 
   Scenario: Reorder phone numbers
-    Then a green message is displayed for updated entries "Phone Numbers updated"
     When I enter new phone number entry by selecting description "Admin" and entering "0123 456 7890", "Fine" and "Dirwy"
     Then I click the Add button in the phone number tab
     And I click save in the phone number tab
@@ -43,6 +42,7 @@ Feature: Phone Numbers
     Then a green message is displayed for updated entries "Phone Numbers updated"
     Then the phone number entry in second last position has description value "199" number "0123 456 7890" explanation "Fine" and welsh explanation "Dirwy"
     And the phone number entry in last position has description value "201" number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
+    And the court is cleaned up through the API
 
   Scenario: Prevent blank entries being added
     When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
@@ -52,3 +52,4 @@ Feature: Phone Numbers
     When I left the phone number entry blank and select description "Admin"
     And I click save in the phone number tab
     Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Error: Number is required"
+    And the court is cleaned up through the API
