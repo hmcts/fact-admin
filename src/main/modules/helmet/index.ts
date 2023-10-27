@@ -30,8 +30,7 @@ export class Helmet {
 
     //todo: should really only use this in dev
     if (app.locals.ENV === 'development') {
-      // scriptSrc.push("'unsafe-inline'");
-      // scriptSrc.push("'unsafe-eval'");
+      scriptSrc.push("'unsafe-eval'");
     }
 
     app.use(
