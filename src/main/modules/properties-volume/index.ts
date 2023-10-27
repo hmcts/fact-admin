@@ -21,6 +21,10 @@ export class PropertiesVolume {
       this.setLocalSecret('AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
       this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
+      this.setLocalSecret('storage-account-name', 'services.image-store.account-name');
+      this.setLocalSecret('storage-account-primary-key', 'services.image-store.account-key');
+      this.setLocalSecret('csrf-token-secret', 'csrf.tokenSecret');
+      this.setLocalSecret('user-lock-timeout', 'lock.timeout');
     }
   }
 
