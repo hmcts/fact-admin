@@ -7,6 +7,7 @@ export const config = {
   IDAM_HEALTH_URL: 'https://idam-api.aat.platform.hmcts.net/health',
   IDAM_USER_DASHBOARD_HEALTH_URL: 'https://idam-user-dashboard.aat.platform.hmcts.net/health',
   FRONTEND_URL: process.env.FRONTEND_URL || 'https://fact.aat.platform.hmcts.net',
+  API_URL: process.env.API_URL || 'https://fact-api.aat.platform.hmcts.net',
   username: process.env.OAUTH_USER,
   viewerUsername: process.env.OAUTH_VIEWER_USER,
   superUsername: process.env.OAUTH_SUPER_USER,
@@ -28,5 +29,4 @@ config.helpers = {
     waitForNavigation: 'networkidle0',
     ignoreHTTPSErrors: true,
   }
-
 };
