@@ -24,6 +24,7 @@ npm-debug.log.*
 dist/
 public/
 coverage/
+/functional-output/
 
 /src/test/functional/user_data
 
