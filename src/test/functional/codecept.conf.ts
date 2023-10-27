@@ -1,4 +1,5 @@
 import { config as testConfig } from '../config';
+import SupportObject = CodeceptJS.SupportObject;
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 setHeadlessWhen(testConfig.TestHeadlessBrowser);
@@ -23,5 +24,48 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       fullPageScreenshots: true,
     },
+
+    autoLogin: {
+      enabled: true,
+      saveToFile: true,
+      users: {
+        viewer: {
+          login: (I: SupportObject['I']) => {
+            I.amOnPage('/');
+            I.fillField('username', testConfig.viewerUsername as string);
+            I.fillField('password', testConfig.password as string);
+            I.click('input[type="submit"][name="save"]');
+          },
+          check: async (I: SupportObject['I']) => {
+            I.amOnPage('/courts');
+            I.seeCookie('appSession');
+          },
+        },
+        admin: {
+          login: (I: SupportObject['I']) => {
+            I.amOnPage('/');
+            I.fillField('username', testConfig.username as string);
+            I.fillField('password', testConfig.password as string);
+            I.click('input[type="submit"][name="save"]');
+          },
+          check: async (I: SupportObject['I']) => {
+            I.amOnPage('/courts');
+            I.seeCookie('appSession');
+          },
+        },
+        superAdmin: {
+          login: (I: SupportObject['I']) => {
+            I.amOnPage('/');
+            I.fillField('username', testConfig.superUsername as string);
+            I.fillField('password', testConfig.password as string);
+            I.click('input[type="submit"][name="save"]');
+          },
+          check: async (I: SupportObject['I']) => {
+            I.amOnPage('/courts');
+            I.seeCookie('appSession');
+          },
+        },
+      }
+    }
   },
 };

@@ -1,8 +1,6 @@
 import { config as testConfig } from '../../config';
 import { expect } from 'chai';
-import { I } from '../utlis/codecept-util';
-
-
+const { I, login } = inject();
 
 async function fillInUsernameAndPassword(username: string, password: string) {
   I.seeElement('#username');
@@ -10,6 +8,18 @@ async function fillInUsernameAndPassword(username: string, password: string) {
   await I.seeElement('#password');
   await I.fillField('#password', password);
 }
+
+When('I log in as a viewer', function() {
+  login('viewer');
+});
+
+When('I log in as an admin', function() {
+  login('admin');
+});
+
+When('I log in as a super-admin', function() {
+  login('superAdmin');
+});
 
 Given('that I am a logged-out admin or super admin user', async function() {
   I.seeElement('#login');
