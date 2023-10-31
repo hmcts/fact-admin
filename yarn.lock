@@ -6599,7 +6599,7 @@ __metadata:
     nunjucks: ^3.2.4
     openid-client: ^5.6.1
     pa11y: ^6.2.3
-    playwright: ^1.39.0
+    playwright: 1.39.0
     puppeteer: 19.6.3
     redis: ^3.1.2
     request: ^2.88.2
@@ -10981,7 +10981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:1.39.0, playwright@npm:^1.39.0":
+"playwright@npm:1.39.0":
   version: 1.39.0
   resolution: "playwright@npm:1.39.0"
   dependencies:
