@@ -6,4 +6,4 @@ export const generateCourtName = () => {
       .map(() => characters.charAt(Math.floor(Math.random() * characters.length)))
       .join('')
   }`;
-}
+};
