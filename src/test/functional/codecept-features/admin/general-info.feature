@@ -1,10 +1,8 @@
 @fact-admin-tab-general
 Feature: General Info
 
-  Background:
-    Given a court is created through the API
-
   Scenario: Admin user can view and update urgent notices and PUAS flag only
+    Given a court is created through the API
     When I log in as an admin
     When I click edit next to the test court
     Then I am redirected to the Edit Court page for the chosen court

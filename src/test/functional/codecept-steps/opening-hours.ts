@@ -41,7 +41,7 @@ Then('the phone number entry in last position has description value {string} num
   let numFieldsets = await I.grabNumberOfVisibleElements('#phoneNumbersTab fieldset');
   numFieldsets -= 1;
 
-  const descriptionText = await I.grabAttributeFrom(('#contactDescription-' + numFieldsets), 'value');
+  const descriptionText = await I.grabValueFrom('#contactDescription-' + numFieldsets);
   expect(descriptionText).equal(descriptionValue);
 
   const numberText = await I.grabAttributeFrom(('#contactNumber-' + numFieldsets), 'value');
@@ -59,7 +59,7 @@ Then('the second last opening hours is displayed with description value {string}
   let numOpeningTimes = await I.grabNumberOfVisibleElements(fieldsetSelector);
   numOpeningTimes -= 2; // we deduct one each for zero-based index, hidden template fieldset, new opening hours fieldset and the last entry.
 
-  const typeIdx = await I.grabAttributeFrom(('#description-' + numOpeningTimes), 'value');
+  const typeIdx = await I.grabValueFrom('#description-' + numOpeningTimes);
   expect(typeIdx).equal(description);
 
   const hours = await I.grabAttributeFrom(`${fieldsetSelector} input[name$="[hours]"]`, 'value');
@@ -72,7 +72,7 @@ Then('the last opening hours is displayed with description value {string} and ho
   let numOpeningTimes = await I.grabNumberOfVisibleElements(fieldsetSelector);
   numOpeningTimes -= 1; // we deduct one each for zero-based index, hidden template fieldset and new opening hours fieldset.
 
-  const typeIdx = await I.grabAttributeFrom('#description-' + numOpeningTimes, 'value');
+  const typeIdx = await I.grabValueFrom('#description-' + numOpeningTimes);
   expect(typeIdx).equal(index);
 
   const hours = await I.grabAttributeFrom('#hours-' + numOpeningTimes, 'value');

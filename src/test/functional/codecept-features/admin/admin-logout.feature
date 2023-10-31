@@ -1,15 +1,12 @@
 Feature: Logout
 
+  Scenario: Admin user logout test
+    When I log in as an admin
+    When I click the Logout link
+    Then the system will log me out
 
-  Background:
-    Given I am on FACT homepage '/'
-    Then I am logged out if I am a super admin
-    And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my authenticated credentials
-    And click the Sign In button
-    Then the system will sign me in
+  Scenario: Super-admin user logout test
+    When I log in as a super-admin
+    When I click the Logout link
+    Then the system will log me out
 
-  Scenario: User Logout test
-  Given that I am a logged-in admin or super admin user
-  When I click the Logout link
-  Then the system will log me out

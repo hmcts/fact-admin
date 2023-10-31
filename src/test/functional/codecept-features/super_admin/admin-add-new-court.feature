@@ -1,11 +1,7 @@
 Feature: Add new court
 
   Background:
-    Given I am on FACT homepage '/'
-    Then I am logged out if I am an admin user
-    And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my super user authenticated credentials
-    And click the Sign In button
+    When I log in as a super-admin
     When I click on add new court link
     Then I am redirected to the add new court "Add new court" page
 

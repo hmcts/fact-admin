@@ -16,40 +16,7 @@ Given('they are in alphabetical order', async () => {
   expect(courts).equals(courts.sort());
 });
 
-Then('test', async () => {
-
-  // I.executeScript(() => {
-  //   console.log('This is a console log message');
-  // });
-  //
-  // I.wait(1000);
-
-  // I.say('mmmmmmmmmmmmmmmmmmm');
-  //
-  // const event = require('codeceptjs').event;
-  //
-  // module.exports = function() {
-  //
-  //   event.dispatcher.on(event.test.before, function (test) {
-  //
-  //     console.log('--- I am before test --');
-  //
-  //   });
-  // }
-  //
-  //
-  const output = require('codeceptjs').output;
-
-  output.log('..................test................');
-
-  I.wait(1000);
-  // console.log('..................test puppeeteer................');
-
-});
-
 When('I click edit next to court with {string}', async (courtSlug: string) => {
-  // making this fail
-  //expect(true).equal(false);
   I.seeElement('#edit-' + courtSlug);
   I.click('#edit-' + courtSlug);
 });
@@ -87,7 +54,7 @@ When('a court is created through the API', async() => {
     'service_areas': []
   } as NewCourt);
 
-  container.share({ court }, { local: true });
+  await container.share({court}, {local: true});
 });
 
 When('I click edit next to the test court', () => {
@@ -99,4 +66,11 @@ When('I click edit next to the test court', () => {
 Then('the court is cleaned up through the API', async () => {
   const { court } = inject() as any;
   await I.deleteCourtThroughApi(court.slug);
+});
+
+When('I select test court from courts', async () => {
+  const { court } = inject() as any;
+  const selector = '#searchLocation';
+  I.seeElement(selector);
+  I.selectOption(selector, court.slug);
 });

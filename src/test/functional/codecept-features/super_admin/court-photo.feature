@@ -2,12 +2,9 @@
 Feature: Update court photo
 
   Background:
-    Given I am on FACT homepage '/'
-    Then I am logged out if I am an admin user
-    And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my super user authenticated credentials
-    And click the Sign In button
-    When I click edit next to court with "aberdeen-tribunal-hearing-centre"
+    Given a court is created through the API
+    When I log in as a super-admin
+    When I click edit next to the test court
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
     When I click the photo tab
@@ -17,3 +14,4 @@ Feature: Update court photo
     Then I upload new photo
     Then I click update photo button
     Then A green message is displayed for "Photo updated"
+    And the court is cleaned up through the API
