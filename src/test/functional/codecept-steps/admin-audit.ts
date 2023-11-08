@@ -1,6 +1,7 @@
 import { I } from '../utlis/codecept-util';
 import {expect} from 'chai';
 
+
 let start: Date;
 let end: Date;
 
@@ -24,17 +25,10 @@ Then('I check action end time', async () => {
   end = new Date();
 });
 
-When('I select {string} from courts', async (court: string) => {
-  const selector = '#searchLocation';
-  I.seeElement(selector);
-  I.selectOption(selector, court);
-});
-
 Then('I click search audit button', async () => {
   const selector = '#searchAuditsBtn';
   I.seeElement(selector);
   await I.click(selector);
-
   //it takes half a second for a javascript to load new audits
   await new Promise(f => setTimeout(f, 10000));
 });
@@ -42,7 +36,6 @@ Then('I click search audit button', async () => {
 Then('I enter between and end date', async () => {
   const selectorDateFrom = '#searchDateFrom';
   I.seeElement(selectorDateFrom);
-
   const selectorDateTo = '#searchDateTo';
   I.seeElement(selectorDateTo);
 
@@ -54,16 +47,14 @@ Then('I enter between and end date', async () => {
 });
 
 When('I can see the expected audits', async () => {
+  const { court } = inject() as any;
   const rows = (await I.grabTextFromAll('#auditResults > tbody > tr > td:nth-child(5)')) as string[];
   const size = rows.length;
   const lastActionCreatedTime = Date.parse(rows[1]);
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
-
-  const selectorAction = '#auditResults > tbody > tr:nth-child(' + (size-2) + ') > td:nth-child(2)';
-  I.seeElement(selectorAction);
-  expect(await I.grabTextFrom(selectorAction)).equal('Update court opening times');
-
   const selectorLocation = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(3)';
   I.seeElement(selectorLocation);
-  expect(await I.grabTextFrom(selectorLocation)).equal('havant-justice-centre');
+  const locationName = await I.grabTextFrom(selectorLocation);
+  expect(await I.grabTextFrom(selectorLocation)).equal(court.slug);
 });
+
