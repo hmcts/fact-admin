@@ -9,7 +9,7 @@ async function checkAndClearField (aofFieldElement: string) {
 async function populateField(fieldElement: string, value: string) {
   I.seeElement(fieldElement);
   I.fillField(fieldElement, value);
- }
+}
 
 When('I click on areas of law list', async () => {
   const selector = '#tab_areas-of-law';
@@ -47,7 +47,7 @@ Given('I will make sure to clear all entries for the Area of law', async () => {
   await checkAndClearField('#aol-external-link-desc');
   await checkAndClearField('#aol-external-link-desc-cy');
   await checkAndClearField('#aol-display-external-link');
- });
+});
 
 Then('I enter {string} in Display Name textbox', async (displayName: string) => {
   const selector = '#aol-display-name';
