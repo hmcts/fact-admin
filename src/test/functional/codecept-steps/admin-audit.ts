@@ -54,7 +54,7 @@ When('I can see the expected audits', async () => {
   expect((lastActionCreatedTime > start.getTime()) && (lastActionCreatedTime < end.getTime())).equal(true);
   const selectorLocation = '#auditResults > tbody > tr:nth-child(' + (size-1) + ') > td:nth-child(3)';
   I.seeElement(selectorLocation);
-  const locationName = await I.grabTextFrom(selectorLocation);
+  //const locationName = await I.grabTextFrom(selectorLocation);
   expect(await I.grabTextFrom(selectorLocation)).equal(court.slug);
 });
 
