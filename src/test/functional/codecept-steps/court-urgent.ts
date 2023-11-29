@@ -9,8 +9,8 @@ Then('I am redirected to the Edit Court page for the chosen court', async () => 
 
 When('I add an {string} in the field provided {string}', async (message: string, id: string) => {
   I.seeElement(id);
-  await I.clearField(id);
-  await I.fillField(id, message);
+  I.clearField(id);
+  I.fillField(id, message);
 });
 
 When('I add an {string} in the rich editor field provided {string}', async (message: string, id: string) => {
