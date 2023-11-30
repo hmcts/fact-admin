@@ -1,4 +1,4 @@
-Feature: Opening Types List  @special
+Feature: Opening Types List
 
   Background:
     When I log in as a super-admin

@@ -47,7 +47,8 @@ class FactApiHelper extends Helper {
     try {
       return (await this.axiosInstance.post('/courts/', court)).data;
     } catch (e) {
-      throw new Error('Failed to create/retrieve newly added court: ' + court.new_court_name);
+      throw new Error(`Failed to create/retrieve newly added court, http-status: ${e.response}`);
+      //throw new Error('Failed to create/retrieve newly added court: ' + court.new_court_name);
     }
   };
 
