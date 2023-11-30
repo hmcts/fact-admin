@@ -1,5 +1,5 @@
 @fact-admin-tab-emails
-Feature: Email-addresses
+Feature: Email-addresses @special
 
   Background:
     Given a court is created through the API
@@ -9,7 +9,7 @@ Feature: Email-addresses
     When I hover over emails nav element
     Then I click the Emails tab
 
-  Scenario: Add and remove Email Addresses
+  Scenario: Add and remove Email Addresses @special
     When I enter new email entry by selecting description "Admin" and Address "abs@gmail.com" and Explanation "County Court" and Welsh Explanation "Llys sirol"
     Then I click on Add new Email
     And I click save button
