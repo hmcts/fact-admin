@@ -1,5 +1,5 @@
 @fact-admin-tab-emails
-Feature: Email-addresses @special
+Feature: Email-addresses
 
   Background:
     Given a court is created through the API
