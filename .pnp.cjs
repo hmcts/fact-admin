@@ -126,7 +126,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.8"],\
+            ["tinymce", "npm:5.10.9"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -9105,7 +9105,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.8"],\
+            ["tinymce", "npm:5.10.9"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -15954,10 +15954,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["tinymce", [\
-        ["npm:5.10.8", {\
-          "packageLocation": "./.yarn/cache/tinymce-npm-5.10.8-8d4beac901-702f4f576e.zip/node_modules/tinymce/",\
+        ["npm:5.10.9", {\
+          "packageLocation": "./.yarn/cache/tinymce-npm-5.10.9-cec3f671f8-9927f31328.zip/node_modules/tinymce/",\
           "packageDependencies": [\
-            ["tinymce", "npm:5.10.8"]\
+            ["tinymce", "npm:5.10.9"]\
           ],\
           "linkType": "HARD"\
         }]\
