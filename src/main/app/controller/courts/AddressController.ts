@@ -599,9 +599,9 @@ export class AddressController {
     const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
     const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
 
-    if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) &&  addresses.primary.postcode === addresses.secondary[0].postcode)
-      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode === addresses.secondary[1].postcode)
-      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
+    if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) &&  addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
       errors.push(this.duplicateAddressError);
     }
 
@@ -609,9 +609,9 @@ export class AddressController {
     const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
     const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
 
-    if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode === addresses.secondary[0].postcode)
-      || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode === addresses.secondary[1].postcode)
-      || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode === addresses.secondary[1].postcode)) {
+    if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+      || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+      || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
       errors.push(this.dupilcateWelshAddressError);
     }
     return errors;
