@@ -5,13 +5,13 @@ export function getCurrentDatePlusMinutes(time: Date, timeToAdd: number): Date {
 
 export function changeDateToUTCDate(date: Date): Date {
 
-  let year = new Date(date).getUTCFullYear();
-  let month = new Date(date).getUTCMonth();
-  let date_ = new Date(date).getUTCDate();
-  let hours = new Date(date).getUTCHours();
-  let minutes = new Date(date).getUTCMinutes();
-  let seconds = new Date(date).getUTCSeconds();
-  let milliseconds = new Date(date).getUTCMilliseconds();
+  const year = new Date(date).getUTCFullYear();
+  const month = new Date(date).getUTCMonth();
+  const date_ = new Date(date).getUTCDate();
+  const hours = new Date(date).getUTCHours();
+  const minutes = new Date(date).getUTCMinutes();
+  const seconds = new Date(date).getUTCSeconds();
+  const milliseconds = new Date(date).getUTCMilliseconds();
 
   return new Date(year, month, date_, hours, minutes, seconds, milliseconds);
 }
