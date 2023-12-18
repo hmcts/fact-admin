@@ -68,7 +68,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["applicationinsights", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.3.3"],\
             ["autobind-decorator", "npm:2.4.0"],\
-            ["awilix", "npm:6.1.0"],\
+            ["awilix", "npm:7.0.3"],\
             ["axios", "npm:1.6.1"],\
             ["babel-eslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.1.0"],\
             ["babel-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.1.2"],\
@@ -126,7 +126,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.8"],\
+            ["tinymce", "npm:5.10.9"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -192,42 +192,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@azure/core-http", [\
-        ["npm:2.2.2", {\
-          "packageLocation": "./.yarn/cache/@azure-core-http-npm-2.2.2-2da5bdded2-92c4ad4fd1.zip/node_modules/@azure/core-http/",\
+        ["npm:3.0.4", {\
+          "packageLocation": "./.yarn/cache/@azure-core-http-npm-3.0.4-cea7ceef9f-dc7cb65f78.zip/node_modules/@azure/core-http/",\
           "packageDependencies": [\
-            ["@azure/core-http", "npm:2.2.2"],\
+            ["@azure/core-http", "npm:3.0.4"],\
             ["@azure/abort-controller", "npm:1.0.4"],\
-            ["@azure/core-asynciterator-polyfill", "npm:1.0.0"],\
             ["@azure/core-auth", "npm:1.3.2"],\
             ["@azure/core-tracing", "npm:1.0.0-preview.13"],\
+            ["@azure/core-util", "npm:1.6.1"],\
             ["@azure/logger", "npm:1.0.3"],\
             ["@types/node-fetch", "npm:2.5.12"],\
             ["@types/tunnel", "npm:0.0.3"],\
             ["form-data", "npm:4.0.0"],\
-            ["node-fetch", "virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7"],\
+            ["node-fetch", "virtual:cea7ceef9f047ea067fd7fb27ac6fc8337d8e806d0f165413c69931cf25c16deaf18c3c74a10474fa525d9452c5e88293c637974a11fa1fb7649d2cebe5928ea#npm:2.6.7"],\
             ["process", "npm:0.11.10"],\
-            ["tough-cookie", "npm:4.1.3"],\
-            ["tslib", "npm:2.3.1"],\
-            ["tunnel", "npm:0.0.6"],\
-            ["uuid", "npm:8.3.2"],\
-            ["xml2js", "npm:0.6.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:2.2.5", {\
-          "packageLocation": "./.yarn/cache/@azure-core-http-npm-2.2.5-1d8b5a3f34-e5b67a5756.zip/node_modules/@azure/core-http/",\
-          "packageDependencies": [\
-            ["@azure/core-http", "npm:2.2.5"],\
-            ["@azure/abort-controller", "npm:1.0.4"],\
-            ["@azure/core-auth", "npm:1.3.2"],\
-            ["@azure/core-tracing", "npm:1.0.0-preview.13"],\
-            ["@azure/logger", "npm:1.0.3"],\
-            ["@types/node-fetch", "npm:2.5.12"],\
-            ["@types/tunnel", "npm:0.0.3"],\
-            ["form-data", "npm:4.0.0"],\
-            ["node-fetch", "virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7"],\
-            ["process", "npm:0.11.10"],\
-            ["tough-cookie", "npm:4.1.3"],\
             ["tslib", "npm:2.3.1"],\
             ["tunnel", "npm:0.0.6"],\
             ["uuid", "npm:8.3.2"],\
@@ -271,6 +249,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@azure/core-util", [\
+        ["npm:1.6.1", {\
+          "packageLocation": "./.yarn/cache/@azure-core-util-npm-1.6.1-320643eba9-1f8cd13099.zip/node_modules/@azure/core-util/",\
+          "packageDependencies": [\
+            ["@azure/core-util", "npm:1.6.1"],\
+            ["@azure/abort-controller", "npm:1.0.4"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@azure/logger", [\
         ["npm:1.0.3", {\
           "packageLocation": "./.yarn/cache/@azure-logger-npm-1.0.3-0ce7dd5b3a-f3443c70c6.zip/node_modules/@azure/logger/",\
@@ -287,7 +276,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@azure/storage-blob", "npm:12.11.0"],\
             ["@azure/abort-controller", "npm:1.0.4"],\
-            ["@azure/core-http", "npm:2.2.2"],\
+            ["@azure/core-http", "npm:3.0.4"],\
             ["@azure/core-lro", "npm:2.2.1"],\
             ["@azure/core-paging", "npm:1.2.0"],\
             ["@azure/core-tracing", "npm:1.0.0-preview.13"],\
@@ -5740,7 +5729,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/applicationinsights-virtual-b569420e00/0/cache/applicationinsights-npm-2.3.3-80d08c9728-901a609660.zip/node_modules/applicationinsights/",\
           "packageDependencies": [\
             ["applicationinsights", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.3.3"],\
-            ["@azure/core-http", "npm:2.2.5"],\
+            ["@azure/core-http", "npm:3.0.4"],\
             ["@opentelemetry/api", "npm:1.1.0"],\
             ["@opentelemetry/core", "virtual:b569420e005740ecd0e49f1bd51c3df751d20e9ff005d11f35fd7772935527646fe669e1cb349bc694b48d8d1c68e7ae3e271cd56b720074e4c5f0d25c9488e8#npm:1.4.0"],\
             ["@opentelemetry/sdk-trace-base", "virtual:b569420e005740ecd0e49f1bd51c3df751d20e9ff005d11f35fd7772935527646fe669e1cb349bc694b48d8d1c68e7ae3e271cd56b720074e4c5f0d25c9488e8#npm:1.4.0"],\
@@ -5980,10 +5969,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["awilix", [\
-        ["npm:6.1.0", {\
-          "packageLocation": "./.yarn/cache/awilix-npm-6.1.0-7dc60cd0d3-03be4758b8.zip/node_modules/awilix/",\
+        ["npm:7.0.3", {\
+          "packageLocation": "./.yarn/cache/awilix-npm-7.0.3-35c9f7b1b5-2f4251753a.zip/node_modules/awilix/",\
           "packageDependencies": [\
-            ["awilix", "npm:6.1.0"],\
+            ["awilix", "npm:7.0.3"],\
             ["camel-case", "npm:4.1.2"],\
             ["fast-glob", "npm:3.2.11"]\
           ],\
@@ -7491,7 +7480,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/cross-fetch-npm-3.1.5-e414995db9-f6b8c6ee3e.zip/node_modules/cross-fetch/",\
           "packageDependencies": [\
             ["cross-fetch", "npm:3.1.5"],\
-            ["node-fetch", "virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7"]\
+            ["node-fetch", "virtual:cea7ceef9f047ea067fd7fb27ac6fc8337d8e806d0f165413c69931cf25c16deaf18c3c74a10474fa525d9452c5e88293c637974a11fa1fb7649d2cebe5928ea#npm:2.6.7"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9047,7 +9036,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["applicationinsights", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.3.3"],\
             ["autobind-decorator", "npm:2.4.0"],\
-            ["awilix", "npm:6.1.0"],\
+            ["awilix", "npm:7.0.3"],\
             ["axios", "npm:1.6.1"],\
             ["babel-eslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.1.0"],\
             ["babel-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.1.2"],\
@@ -9105,7 +9094,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.8"],\
+            ["tinymce", "npm:5.10.9"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -12837,10 +12826,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7", {\
-          "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-7d0b7e7a35/0/cache/node-fetch-npm-2.6.7-777aa2a6df-8d816ffd1e.zip/node_modules/node-fetch/",\
+        ["virtual:cea7ceef9f047ea067fd7fb27ac6fc8337d8e806d0f165413c69931cf25c16deaf18c3c74a10474fa525d9452c5e88293c637974a11fa1fb7649d2cebe5928ea#npm:2.6.7", {\
+          "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-36a0087d76/0/cache/node-fetch-npm-2.6.7-777aa2a6df-8d816ffd1e.zip/node_modules/node-fetch/",\
           "packageDependencies": [\
-            ["node-fetch", "virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7"],\
+            ["node-fetch", "virtual:cea7ceef9f047ea067fd7fb27ac6fc8337d8e806d0f165413c69931cf25c16deaf18c3c74a10474fa525d9452c5e88293c637974a11fa1fb7649d2cebe5928ea#npm:2.6.7"],\
             ["@types/encoding", null],\
             ["encoding", null],\
             ["whatwg-url", "npm:5.0.0"]\
@@ -13251,7 +13240,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["levn", "npm:0.3.0"],\
             ["prelude-ls", "npm:1.1.2"],\
             ["type-check", "npm:0.3.2"],\
-            ["word-wrap", "npm:1.2.3"]\
+            ["word-wrap", "npm:1.2.5"]\
           ],\
           "linkType": "HARD"\
         }],\
@@ -13264,7 +13253,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["levn", "npm:0.4.1"],\
             ["prelude-ls", "npm:1.2.1"],\
             ["type-check", "npm:0.4.0"],\
-            ["word-wrap", "npm:1.2.3"]\
+            ["word-wrap", "npm:1.2.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14040,7 +14029,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["devtools-protocol", "npm:0.0.869402"],\
             ["extract-zip", "npm:2.0.1"],\
             ["https-proxy-agent", "npm:5.0.1"],\
-            ["node-fetch", "virtual:2da5bdded2d9789455493c82d0d92399df6c4a9dd93d6731eb73d5f29600fe75ee657a3f1da5a5d9a9aa6e1e29b23b4644e112e773f98d34781a718c21fbd92c#npm:2.6.7"],\
+            ["node-fetch", "virtual:cea7ceef9f047ea067fd7fb27ac6fc8337d8e806d0f165413c69931cf25c16deaf18c3c74a10474fa525d9452c5e88293c637974a11fa1fb7649d2cebe5928ea#npm:2.6.7"],\
             ["pkg-dir", "npm:4.2.0"],\
             ["progress", "npm:2.0.3"],\
             ["proxy-from-env", "npm:1.1.0"],\
@@ -15954,10 +15943,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["tinymce", [\
-        ["npm:5.10.8", {\
-          "packageLocation": "./.yarn/cache/tinymce-npm-5.10.8-8d4beac901-702f4f576e.zip/node_modules/tinymce/",\
+        ["npm:5.10.9", {\
+          "packageLocation": "./.yarn/cache/tinymce-npm-5.10.9-cec3f671f8-9927f31328.zip/node_modules/tinymce/",\
           "packageDependencies": [\
-            ["tinymce", "npm:5.10.8"]\
+            ["tinymce", "npm:5.10.9"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -17094,10 +17083,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["word-wrap", [\
-        ["npm:1.2.3", {\
-          "packageLocation": "./.yarn/cache/word-wrap-npm-1.2.3-7fb15ab002-30b48f91fc.zip/node_modules/word-wrap/",\
+        ["npm:1.2.5", {\
+          "packageLocation": "./.yarn/cache/word-wrap-npm-1.2.5-42d00c4b09-f93ba3586f.zip/node_modules/word-wrap/",\
           "packageDependencies": [\
-            ["word-wrap", "npm:1.2.3"]\
+            ["word-wrap", "npm:1.2.5"]\
           ],\
           "linkType": "HARD"\
         }]\
