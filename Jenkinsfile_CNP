@@ -31,7 +31,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline(type, product, component) {
-  env.API_URL = 'https://fact-api-aat.service.core-compute-aat.internal'
+  env.API_URL = 'http://fact-api-aat.service.core-compute-aat.internal'
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
   syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
