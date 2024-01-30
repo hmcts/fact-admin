@@ -46,7 +46,7 @@ export class AdditionalLinksController {
       url: `/courts/${slug}/additionalLinks`,
       method: 'get',
       success: (res) => {
-        $(this.additionalLinksContentContentId).text(res);
+        $(this.additionalLinksContentContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET court additional links failed.')
