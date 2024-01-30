@@ -29,7 +29,7 @@ export class SpoeController {
       url: `/courts/${slug}/spoe`,
       method: 'get',
       success: (res) => {
-        $(this.spoeContentId).text(res);
+        $(this.spoeContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET spoe cases heard failed.');

@@ -169,7 +169,7 @@ export class FacilityTypesController {
   }
 
   private updateContent(content: any , contentId: string): void {
-    $(contentId).text(content);
+    $(contentId).html(content);
     initAll({scope: document.getElementById('facilityTypesListTab')});
     window.scrollTo(0, 0);
   }

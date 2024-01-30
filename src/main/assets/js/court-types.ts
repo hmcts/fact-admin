@@ -43,7 +43,7 @@ export class CourtTypesController {
   }
 
   private async updateContent(content: any , contentId: string): Promise<void> {
-    $(contentId).text(content);
+    $(contentId).html(content);
     initAll({ scope: document.getElementById('courtTypesTab') });
     initAll({scope: document.getElementById('localAuthoritiesTab')});
   }
