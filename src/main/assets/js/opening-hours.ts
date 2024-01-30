@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
+import sanitizeHtml from 'sanitize-html';
 const { initAll } = require('govuk-frontend');
 
 export class OpeningHoursController {
@@ -47,7 +48,7 @@ export class OpeningHoursController {
       url: `/courts/${slug}/opening-times`,
       method: 'get',
       success: (res) => {
-        $(this.openingTimesContentId).html(res);
+        $(this.openingTimesContentId).html(sanitizeHtml(res));
         initAll({ scope: document.getElementById('openingTimesTab') });
       },
       error: (jqxhr, errorTextStatus, err) =>
