@@ -2,7 +2,6 @@ import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
-import sanitizeHtml from 'sanitize-html';
 
 export class AdditionalLinksController {
   private formId = '#additionalLinksForm';
@@ -47,7 +46,7 @@ export class AdditionalLinksController {
       url: `/courts/${slug}/additionalLinks`,
       method: 'get',
       success: (res) => {
-        $(this.additionalLinksContentContentId).html(sanitizeHtml(res));
+        $(this.additionalLinksContentContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) =>
         AjaxErrorHandler.handleError(jqxhr, 'GET court additional links failed.')
