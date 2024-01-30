@@ -42,5 +42,6 @@ export class PropertiesVolume {
     // Load a secret from the AAT vault using azure cli
     const result = spawnSync('az', ['keyvault', 'secret', 'show', '--vault-name', 'fact-aat', '-o', 'tsv', '--query', 'value', '--name', secret], {encoding: 'utf8'});
     set(config, toPath, encodeURI(result.stdout.replace('\n', '')));
+
   }
 }
