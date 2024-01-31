@@ -47,7 +47,7 @@ export class OpeningHoursController {
       url: `/courts/${slug}/opening-times`,
       method: 'get',
       success: (res) => {
-        $(this.openingTimesContentId).html(res);
+        $(this.openingTimesContentId).text(res);
         initAll({ scope: document.getElementById('openingTimesTab') });
       },
       error: (jqxhr, errorTextStatus, err) =>
