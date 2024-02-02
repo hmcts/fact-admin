@@ -1,7 +1,7 @@
 @fact-admin-tab-emails
 Feature: Email-addresses
 
-  Scenario: Add and remove Email Addresses @special
+  Scenario: Add and remove Email Addresses
     Given a court is created through the API
     When I log in as a super-admin
     When I click edit next to the test court
