@@ -16,7 +16,7 @@ Feature: courts audits
     When I hover over opening hours nav element
     When I click the opening hours tab
     Then I check action start time
-    And I enter a new opening hours entry by selecting description at index 5 and adding hours "10:00am to 4:00pm"
+    And I enter a new opening hours entry by selecting description at index 6 and adding hours "10:00am to 4:00pm"
     And I click save
     Then a green update message is displayed in the opening hours tab
     When I remove all existing opening hours entries and save

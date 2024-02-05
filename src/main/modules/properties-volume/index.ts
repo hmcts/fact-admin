@@ -2,7 +2,7 @@ import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
 import {Application} from 'express';
 import {get, set} from 'lodash';
-import {execSync} from 'child_process';
+import {spawnSync} from 'child_process';
 
 export class PropertiesVolume {
 
@@ -40,7 +40,7 @@ export class PropertiesVolume {
 
   private setLocalSecret(secret: string, toPath: string): void {
     // Load a secret from the AAT vault using azure cli
-    const result = execSync('az keyvault secret show --vault-name fact-aat -o tsv --query value --name ' + secret);
-    set(config, toPath, result.toString().replace('\n', ''));
+    const result = spawnSync('az', ['keyvault', 'secret', 'show', '--vault-name', 'fact-aat', '-o', 'tsv', '--query', 'value', '--name', secret], {encoding: 'utf8'});
+    set(config, toPath, encodeURI(result.stdout.replace('\n', '')));
   }
 }
