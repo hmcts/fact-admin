@@ -7,6 +7,7 @@
 {% from "macros/csrf.njk" import csrfProtection %}
 
 {% extends "template.njk" %}
+{% block pageTitle %}Add new court{% endblock %}
 
 {% block content %}
   {% if created === true %}
