@@ -68,7 +68,7 @@ $backgorund-colour: #f1f1f1;
 
       &:hover {
         .fact-tabs-list {
-          display: block;
+          display: block !important;
         }
 
         // sass-lint:disable force-pseudo-nesting
