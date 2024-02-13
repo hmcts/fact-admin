@@ -53,10 +53,18 @@ export class CourtsController {
 
   private setUpAscDecNameFilter(): void {
     $(this.contentId).on('click', `${this.tableCourtsNameId}`, e => {
-      e.preventDefault();
-      CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
-      CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
-      CourtsTableSearch.setUpTable();
+        e.preventDefault();
+        CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
+        CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
+        CourtsTableSearch.setUpTable();
+    });
+    $(this.contentId).on('keydown', `${this.tableCourtsNameId}`, e => {
+      if( e.keyCode === 13){
+        e.preventDefault();
+        CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
+        CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
+        CourtsTableSearch.setUpTable();
+      }
     });
   }
 
@@ -66,6 +74,14 @@ export class CourtsController {
       CourtsTableSearch.setTableClasses($(this.tableCourtsUpdatedId), CourtsTableSearch.getToggleStates()[1]);
       CourtsTableSearch.resetTableClasses($(this.tableCourtsNameId));
       CourtsTableSearch.setUpTable();
+    });
+    $(this.contentId).on('keydown', `${this.tableCourtsUpdatedId}`, e => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        CourtsTableSearch.setTableClasses($(this.tableCourtsUpdatedId), CourtsTableSearch.getToggleStates()[1]);
+        CourtsTableSearch.resetTableClasses($(this.tableCourtsNameId));
+        CourtsTableSearch.setUpTable();
+      }
     });
   }
 }

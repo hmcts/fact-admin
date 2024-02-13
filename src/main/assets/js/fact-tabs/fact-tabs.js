@@ -299,10 +299,21 @@ FactTabs.prototype.getSelectedTab = function() {
 
 FactTabs.prototype.setSelected = function(string){
   var selectedTab = this.$module.querySelector('.fact-tabs-title');
-  selectedTab.style.paddingTop = '20px';
-  selectedTab.style.paddingBottom= '11px';
-  return selectedTab.innerText = string;
 
+  selectedTab.style.paddingTop = '20px';
+  selectedTab.style.paddingBottom= '11px'
+  selectedTab.setAttribute('tabindex','0');
+  selectedTab.addEventListener('keydown', this.onTabEnter.bind(this), true);
+  return selectedTab.innerText = string;
+};
+
+
+
+FactTabs.prototype.onTabEnter = function (e) {
+  var tabList = this.$module.querySelector('.fact-tabs-list');
+  if(e.key === 'Enter') {
+    (tabList.style.display === "block") ? tabList.style.display = "none": tabList.style.display = "block"
+  }
 };
 
 export default FactTabs;
