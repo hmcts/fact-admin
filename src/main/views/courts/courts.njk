@@ -5,7 +5,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% extends "template.njk" %}
-
+{% block pageTitle %}Courts and tribunals{% endblock %}
 {% block content %}
   <h1 class="govuk-heading-xl">Courts and tribunals</h1>
 
@@ -19,7 +19,7 @@
 
   <div id = 'tableContainer'>
     <div id='courtOptionsRow' class='govuk-grid-row'>
-      <div class='govuk-grid-column-one-half'>
+      <div class='govuk-grid-column-one-third'>
         {{ govukInput({
           attributes: {
             placeholder: ' Search courts and tribunals'
@@ -58,16 +58,16 @@
         ), regionItems) %}
     {% endfor %}
 
-      <div id='regions' class='govuk-grid-column-one-quarter'>
+      <div id='regions' class='govuk-grid-column-one-third'>
         {{ govukSelect({
           id: "regionSelector",
           name: "regionSelector",
           value: regionItems.value,
           items: regionItems
         }) }}
-      </div>
+        </div>
 
-      <div id='toggleClosedCourtsDisplay' class='govuk-grid-column-one-quarter'>
+      <div id='toggleClosedCourtsDisplay' class='govuk-grid-column-one-third'>
        {{ govukCheckboxes({
          idPrefix: 'toggle-closed-courts-display',
          name: 'toggleClosedCourtsDisplay',
@@ -79,6 +79,7 @@
            }]
        }) }}
       </div>
+    </div>
     </div>
 
     <div id='numberOfCourts' class='govuk-hint'></div>

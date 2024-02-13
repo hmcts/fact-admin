@@ -7,15 +7,16 @@
 
 
 {% extends "template.njk" %}
+{% block pageTitle %}Bulk edit of additional information{% endblock %}
 
 
 {% block content %}
   <h1 class="govuk-heading-xl">Bulk edit of additional information</h1>
   {% if updated %}
     <div class="govuk-panel govuk-panel--confirmation" id="updated-message">
-      <h1 class="govuk-panel__title">
+      <h2 class="govuk-panel__title">
         Court information updated
-      </h1>
+      </h2>
     </div>
   {% elif error %}
     {{ govukErrorSummary({
@@ -32,18 +33,18 @@
   <form method="POST">
 
     <div class="govuk-form-group">
-      <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message">
+      <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message">
         Additional information
       </label>
-      </h1>
+      </h2>
       <textarea class="govuk-textarea rich-editor" id="info_message" name="info" rows="3">{{ court['info'] }}</textarea>
     </div>
 
     <div class="govuk-form-group">
-      <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
+      <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
         Additional information (Welsh)
       </label>
-      </h1>
+      </h2>
       <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
     </div>
 
