@@ -53,10 +53,10 @@ export class CourtsController {
 
   private setUpAscDecNameFilter(): void {
     $(this.contentId).on('click', `${this.tableCourtsNameId}`, e => {
-        e.preventDefault();
-        CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
-        CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
-        CourtsTableSearch.setUpTable();
+      e.preventDefault();
+      CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
+      CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
+      CourtsTableSearch.setUpTable();
     });
     $(this.contentId).on('keydown', `${this.tableCourtsNameId}`, e => {
       if( e.keyCode === 13){
