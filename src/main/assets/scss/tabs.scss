@@ -65,7 +65,7 @@ $backgorund-colour: #f1f1f1;
     .nav {
       display: inline-block;
       position: relative;
-
+      // sass-lint:disable no-important
       &:hover {
         .fact-tabs-list {
           display: block !important;
