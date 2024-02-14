@@ -89,7 +89,7 @@
         {% for court in courts|sort(false, true, 'name') %}
           {% set courtItems = (courtItems.push([
             {
-            html: '<input name="courts" value='+ court.slug +' type="checkbox" />'
+            html: '<input aria-label="'+ court.name +'" name="courts" value='+ court.slug +' type="checkbox" />'
             },
             {
               attributes: {
@@ -127,7 +127,7 @@
             id: 'courtResults'
           },
           head: [
-          {html: '<input type="checkbox" id="selectAll" />'},
+          {html: '<input type="checkbox" aria-label="Select all courts" id="selectAll" />'},
             {
               text: 'Name',
               attributes: {
