@@ -119,10 +119,10 @@
          classes: 'courtTableColumnLastUpdated'
         },
         {
-          html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '">view</a>'
+          html: '<a id="view-' + court.slug + '" class="govuk-link" href="' + factFrontendURL +  '/courts/' + court.slug + '" aria-label="View ' + court.name + '">view</a>'
         },
         {
-          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">details</a>' if isViewer else '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">edit</a>'
+          html: '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general">details</a>' if isViewer else '<a id="edit-' + court.slug + '" class="govuk-link" href="/courts/' + court.slug + '/edit#general" aria-label="Edit ' + court.name + '">edit</a>'
         }
         ]), courtItems) %}
     {% endfor %}
