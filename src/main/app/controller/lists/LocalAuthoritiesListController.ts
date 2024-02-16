@@ -60,7 +60,7 @@ export class LocalAuthoritiesListController {
       selectedLocalAuthority = JSON.parse(req.body.localAuthorities);
     }
 
-    if(updatedName === '')
+    if(!updatedName || updatedName.trim().length === 0)
     {
       return this.get(req, res, false, this.emptyLocalAuthorityErrorMsg, updatedName, selectedLocalAuthority);
     }
