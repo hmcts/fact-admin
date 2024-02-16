@@ -72,6 +72,12 @@ Then('The error message displays for not adding service area {string}', async (e
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
 
+Then('Then this error message displays: {string}', async (errMessage: string) => {
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
 Then('I select no for the court be service centre', async () => {
   const selector = '#serviceCentre-2';
   const elementExist = await I.checkElement(selector);
