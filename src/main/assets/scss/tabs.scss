@@ -66,9 +66,10 @@ $backgorund-colour: #f1f1f1;
       display: inline-block;
       position: relative;
 
+      // sass-lint:disable no-important
       &:hover {
         .fact-tabs-list {
-          display: block;
+          display: block !important;
         }
 
         // sass-lint:disable force-pseudo-nesting
