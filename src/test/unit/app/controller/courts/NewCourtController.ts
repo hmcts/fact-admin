@@ -458,4 +458,79 @@ describe('NewCourtController', () => {
       'new_court_name': 'mosh court', 'service_centre': true,
       'service_areas': ['one', 'two', 'three']});
   });
+
+  test('Should expect errors that have been fixed to not be present in form errors object', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      newCourtName: 'mosh court @£@!£',
+      serviceCentre: 'true',
+      lon: '@@',
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
+    };
+    req.scope.cradle.api = mockApi;
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': false,
+      'csrfToken': 'validCSRFToken',
+      'latEntered': '10',
+      'lonEntered': '@@',
+      'nameEntered': 'mosh court @£@!£',
+      'redirectUrl': '',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': 'The longitude value needs to be a number'
+        },
+        'nameError': {
+          'text': 'Invalid court name: Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens'
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
+    });
+    expect(mockApi.addCourt).not.toBeCalled();
+
+    //request again with valid inputs
+    req.body = {
+      newCourtName: 'mosh court',
+      serviceCentre: 'true',
+      lon: '10',
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
+    };
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': true,
+      'csrfToken': 'validCSRFToken',
+      'latEntered': '10',
+      'lonEntered': '10',
+      'nameEntered': 'mosh court',
+      'redirectUrl': '/courts/mosh-court/edit#general',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
+      'formErrors': null
+    });
+    expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
+      'new_court_name': 'mosh court', 'service_centre': true,
+      'service_areas': ['one', 'two', 'three']});
+  });
 });
