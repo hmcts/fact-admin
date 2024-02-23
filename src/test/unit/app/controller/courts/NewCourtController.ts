@@ -406,7 +406,7 @@ describe('NewCourtController', () => {
       'fatalError': false,
       'formErrors': {
         'addCourtError': {
-          'text': 'A court already exists for court provided: mosh court'
+          'text': null
         },
         'latitudeError': {
           'text': null
@@ -415,7 +415,7 @@ describe('NewCourtController', () => {
           'text': null
         },
         'nameError': {
-          'text': null
+          'text': 'A court already exists for court provided: mosh court'
         },
         'serviceAreaError': {
           'text': null

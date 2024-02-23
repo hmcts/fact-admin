@@ -63,7 +63,8 @@ export class NewCourtController {
       allServiceAreas: allServiceAreas,
       csrfToken: CSRF.create(),
       fatalError: fatalError,
-      formErrors: this.formErrors.addCourtError.text ? this.formErrors : formErrors
+      formErrors: this.formErrors.addCourtError.text || this.formErrors.nameError.text
+        ? this.formErrors : formErrors //if problem adding court or duplicate name show errors
     });
   }
   /**
@@ -111,9 +112,12 @@ export class NewCourtController {
         '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, serviceAreas))
       .catch(async (reason: AxiosError) => {
         // Check if we have a duplicated court response (409), cater error response accordingly
-        this.formErrors.addCourtError.text = reason.response?.status === 409
-          ? newCourtErrorMessage.duplicateCourt + newCourtName
-          : newCourtErrorMessage.addNewCourt;
+        if(reason.response?.status === 409) {
+          this.formErrors.nameError.text = newCourtErrorMessage.duplicateCourt + newCourtName;
+        }
+        else {
+          this.formErrors.addCourtError.text = newCourtErrorMessage.addNewCourt;
+        }
         await this.get(req, res, false,
           '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, null);
       });
