@@ -32,31 +32,31 @@ Feature: Add new court
     Then I select yes for the court be service centre
     And I click on add new court button
     Then The error message displays for not adding service area "At least one service area must be selected"
-
+#
   Scenario: Adding a new court with invalid longitude
     Given I entered the new court name as "Test123" in the name text box
     Then I entered the longitude "xyz"
     Then I entered the latitude "12"
     And I click on add new court button
-    Then Then this error message displays: "The longitude value needs to be a number"
+    Then the error message displays for longitude: "The longitude value needs to be a number"
 
   Scenario: Adding a new court with invalid latitude
     Given I entered the new court name as "Test123" in the name text box
     Then I entered the longitude "12"
     Then I entered the latitude "!!"
     And I click on add new court button
-    Then Then this error message displays: "The latitude value needs to be a number"
+    Then the error message displays for latitude: "The latitude value needs to be a number"
 
   Scenario: Adding a new court with empty longitude
     Given I entered the new court name as "Test123" in the name text box
     Then I entered the longitude " "
     Then I entered the latitude "12"
     And I click on add new court button
-    Then Then this error message displays: "A longitude value is required"
+    Then the error message displays for longitude: "A longitude value is required"
 
   Scenario: Adding a new court with empty latitude
     Given I entered the new court name as "Test123" in the name text box
     Then I entered the longitude "12"
     Then I entered the latitude ""
     And I click on add new court button
-    Then Then this error message displays: "A latitude value is required"
+    Then the error message displays for latitude: "A latitude value is required"
