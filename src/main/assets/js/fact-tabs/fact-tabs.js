@@ -320,10 +320,9 @@ FactTabs.prototype.setSelected = function(string){
 };
 
 FactTabs.prototype.onTabEnter = function (e) {
-  e.preventDefault();
   var tabList = this.$module.querySelector('.fact-tabs-list');
   if(e.key === 'Enter') {
-    (tabList.style.display === 'block') ? tabList.style.display = 'none': tabList.style.display = 'block';
+    tabList.style.display = 'block';
   }
 };
 
