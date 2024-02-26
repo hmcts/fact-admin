@@ -68,7 +68,7 @@
     "express-openid-connect": "^2.13.0",
     "express-session": "^1.17.3",
     "glob-parent": "6.0.2",
-    "govuk-frontend": "^4.5.0",
+    "govuk-frontend": "^4.8.0",
     "helmet": "5.0.2",
     "into-stream": "^7.0.0",
     "jquery": "^3.6.0",

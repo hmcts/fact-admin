@@ -90,7 +90,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
-            ["govuk-frontend", "npm:4.5.0"],\
+            ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
             ["html-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.5.0"],\
             ["into-stream", "npm:7.0.0"],\
@@ -9058,7 +9058,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
-            ["govuk-frontend", "npm:4.5.0"],\
+            ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
             ["html-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.5.0"],\
             ["into-stream", "npm:7.0.0"],\
@@ -9890,10 +9890,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["govuk-frontend", [\
-        ["npm:4.5.0", {\
-          "packageLocation": "./.yarn/cache/govuk-frontend-npm-4.5.0-077ac6cb8b-7a999ffb49.zip/node_modules/govuk-frontend/",\
+        ["npm:4.8.0", {\
+          "packageLocation": "./.yarn/cache/govuk-frontend-npm-4.8.0-48d4f1031d-e255f924f3.zip/node_modules/govuk-frontend/",\
           "packageDependencies": [\
-            ["govuk-frontend", "npm:4.5.0"]\
+            ["govuk-frontend", "npm:4.8.0"]\
           ],\
           "linkType": "HARD"\
         }]\
