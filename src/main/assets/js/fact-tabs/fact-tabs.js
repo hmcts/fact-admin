@@ -221,7 +221,8 @@ FactTabs.prototype.onTabKeydown = function (e) {
       e.preventDefault();
       break;
     case 13:
-      this.activateTab();
+      this.hideList();
+      e.preventDefault();
       break;
   }
 };
@@ -236,6 +237,7 @@ FactTabs.prototype.activateNextTab = function () {
     this.hideTab(currentTab);
     this.showTab(nextTab);
     nextTab.focus();
+    this.setSelected(nextTab.innerText);
     this.createHistoryEntry(nextTab);
   }
 };
@@ -250,16 +252,12 @@ FactTabs.prototype.activatePreviousTab = function () {
     this.hideTab(currentTab);
     this.showTab(previousTab);
     previousTab.focus();
+    this.setSelected(previousTab.innerText);
     this.createHistoryEntry(previousTab);
   }
 };
 
-FactTabs.prototype.activateTab = function () {
-  var $currentTab = this.getCurrentTab();
-  this.setSelected($currentTab.innerText);
-  this.showTab($currentTab);
-  $currentTab.focus();
-  this.createHistoryEntry($currentTab);
+FactTabs.prototype.hideList = function () {
   var tabList = this.$module.querySelector('.fact-tabs-list');
   tabList.style.display = 'none';
 };
@@ -321,10 +319,9 @@ FactTabs.prototype.setSelected = function(string){
 
 FactTabs.prototype.onTabEnter = function (e) {
   var tabList = this.$module.querySelector('.fact-tabs-list');
-  if(e.key === 'Enter') {
+  if (e.key === 'Enter') {
     tabList.style.display = 'block';
   }
 };
-
 
 export default FactTabs;
