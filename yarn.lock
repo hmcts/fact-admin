@@ -6610,7 +6610,7 @@ __metadata:
     express-openid-connect: ^2.13.0
     express-session: ^1.17.3
     glob-parent: 6.0.2
-    govuk-frontend: ^4.5.0
+    govuk-frontend: ^4.8.0
     helmet: 5.0.2
     html-webpack-plugin: ^5.5.0
     into-stream: ^7.0.0
@@ -7384,10 +7384,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "govuk-frontend@npm:4.5.0"
-  checksum: 7a999ffb49c2f32f9dc3b0b743b698f8385d39cd0213d8aea1d7f2dfcc9f035f597030faac34659e8981d3c4a596379e99f5ea8c4d088cf486340eeaafdc800d
+"govuk-frontend@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "govuk-frontend@npm:4.8.0"
+  checksum: e255f924f399319e109347ec4993e0441fc5847a6a73ba44a465b1599c7d03e85c29212743b081ccd60e19224c6301143c77540b8e4bfe615fcb3e162b8663f4
   languageName: node
   linkType: hard
 
