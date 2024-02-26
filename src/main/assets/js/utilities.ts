@@ -104,22 +104,26 @@ export class Utilities {
 
     await tinymce.init({
       selector: '.urgent-notice-rich-editor',
-      plugins: 'autolink link paste ',
+      plugins: 'autolink link paste help tabfocus',
       base_url: '/assets/tinymce', // Point to the new location of TinyMCE assets
       menubar: '',
       toolbar: 'link',
-      height: 120,
-      statusbar: false,
+      height: 180,
+      help_accessibility: true,
+      promotion: false,
+      tabfocus_elements : ':prev,:next',
     });
 
     await tinymce.init({
       selector: '.rich-editor',
-      plugins: 'autolink link paste ',
+      plugins: 'autolink link paste help tabfocus',
       base_url: '/assets/tinymce', // Point to the new location of TinyMCE assets
       menubar: '',
       toolbar: 'link bold italic underline',
-      height: 120,
-      statusbar: false,
+      height: 180,
+      help_accessibility: true,
+      promotion: false,
+      tabfocus_elements : ':prev,:next',
     });
   }
 }

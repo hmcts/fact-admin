@@ -62,7 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/sanitize-html", "npm:2.6.2"],\
             ["@types/serve-favicon", "npm:2.5.3"],\
             ["@types/session-file-store", "npm:1.2.2"],\
-            ["@types/tinymce", "npm:4.6.5"],\
+            ["@types/tinymce", "npm:4.6.9"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/eslint-plugin-tslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
@@ -126,7 +126,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.9"],\
+            ["tinymce", "npm:6.8.3"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -4783,10 +4783,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/tinymce", [\
-        ["npm:4.6.5", {\
-          "packageLocation": "./.yarn/cache/@types-tinymce-npm-4.6.5-892e7d4c2b-5db7fe352f.zip/node_modules/@types/tinymce/",\
+        ["npm:4.6.9", {\
+          "packageLocation": "./.yarn/cache/@types-tinymce-npm-4.6.9-e87cee83a7-974073d233.zip/node_modules/@types/tinymce/",\
           "packageDependencies": [\
-            ["@types/tinymce", "npm:4.6.5"],\
+            ["@types/tinymce", "npm:4.6.9"],\
             ["@types/jquery", "npm:3.5.6"]\
           ],\
           "linkType": "HARD"\
@@ -9030,7 +9030,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/sanitize-html", "npm:2.6.2"],\
             ["@types/serve-favicon", "npm:2.5.3"],\
             ["@types/session-file-store", "npm:1.2.2"],\
-            ["@types/tinymce", "npm:4.6.5"],\
+            ["@types/tinymce", "npm:4.6.9"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/eslint-plugin-tslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
@@ -9094,7 +9094,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sonar-scanner", "npm:3.1.0"],\
             ["style-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.3.1"],\
             ["superagent", "npm:8.1.2"],\
-            ["tinymce", "npm:5.10.9"],\
+            ["tinymce", "npm:6.8.3"],\
             ["ts-jest", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:28.0.7"],\
             ["ts-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.3.1"],\
             ["ts-node", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.9.1"],\
@@ -15943,10 +15943,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["tinymce", [\
-        ["npm:5.10.9", {\
-          "packageLocation": "./.yarn/cache/tinymce-npm-5.10.9-cec3f671f8-9927f31328.zip/node_modules/tinymce/",\
+        ["npm:6.8.3", {\
+          "packageLocation": "./.yarn/cache/tinymce-npm-6.8.3-0ff3e2bee5-2ce922ceb6.zip/node_modules/tinymce/",\
           "packageDependencies": [\
-            ["tinymce", "npm:5.10.9"]\
+            ["tinymce", "npm:6.8.3"]\
           ],\
           "linkType": "HARD"\
         }]\

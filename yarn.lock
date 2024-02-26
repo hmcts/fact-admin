@@ -3119,12 +3119,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tinymce@npm:^4.6.5":
-  version: 4.6.5
-  resolution: "@types/tinymce@npm:4.6.5"
+"@types/tinymce@npm:^4.6.9":
+  version: 4.6.9
+  resolution: "@types/tinymce@npm:4.6.9"
   dependencies:
     "@types/jquery": "*"
-  checksum: 5db7fe352f664d48c7ed83a422bc7f743acea0e6d5756dee7d1a4faeb5dfaaa3114b6e6345699ea25cf49e1f0e7150c527dd31415e16153bc42e61a56f38686a
+  checksum: 974073d233e8297d0a10ef2290c50a64aa88c44e1b9ee57cd17c6d919df40b581717548e6de1b93b3fb90a9c5857ba743df9189e2780ab1060e728f9ec04b40e
   languageName: node
   linkType: hard
 
@@ -6582,7 +6582,7 @@ __metadata:
     "@types/sanitize-html": ^2.6.2
     "@types/serve-favicon": ^2.5.3
     "@types/session-file-store": ^1.2.2
-    "@types/tinymce": ^4.6.5
+    "@types/tinymce": ^4.6.9
     "@typescript-eslint/eslint-plugin": ^5.30.7
     "@typescript-eslint/eslint-plugin-tslint": ^5.30.7
     "@typescript-eslint/parser": ^5.30.7
@@ -6646,7 +6646,7 @@ __metadata:
     sonar-scanner: ^3.1.0
     style-loader: ^3.3.1
     superagent: ^8.1.2
-    tinymce: ^5.10.9
+    tinymce: ^6.8.3
     ts-jest: ^28.0.7
     ts-loader: ^9.3.1
     ts-node: ^10.9.1
@@ -12747,10 +12747,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinymce@npm:^5.10.9":
-  version: 5.10.9
-  resolution: "tinymce@npm:5.10.9"
-  checksum: 9927f3132820c183ca1a3ed19b4e650b16276385b4c253e51cf2a399a5981522d4197901b7abd8a7bf7000d783880eda9727b5eee9381b5c4c42c48c48a1d6f5
+"tinymce@npm:^6.8.3":
+  version: 6.8.3
+  resolution: "tinymce@npm:6.8.3"
+  checksum: 2ce922ceb60636778afb21a493e99d561e73f82c5fb331a4f666d973129ca27277bc1b6332d6932ab8fe0a379b1f201285f143a2d72646a813fda88a0dec5312
   languageName: node
   linkType: hard
 
