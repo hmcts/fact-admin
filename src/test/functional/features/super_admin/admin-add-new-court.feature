@@ -23,7 +23,7 @@ Feature: Add new court
     Then I entered the longitude "0"
     Then I entered the latitude "0"
     And I click on add new court button
-    Then The error message displays for invalid name "Invalid court name: please amend and try again. Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens"
+    Then The error message displays for invalid name "Invalid court name: Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens"
 
   Scenario: Adding a new service centre without adding service areas
     Given I entered the new court name as "test service centre" in the name text box
@@ -31,4 +31,32 @@ Feature: Add new court
     Then I entered the latitude "0"
     Then I select yes for the court be service centre
     And I click on add new court button
-    Then The error message displays for not adding service area "One or more mandatory fields are empty or have invalid values, please check allow and try again. If you are adding a service centre, make sure to ensure at least one service area is selected."
+    Then The error message displays for not adding service area "At least one service area must be selected"
+#
+  Scenario: Adding a new court with invalid longitude
+    Given I entered the new court name as "Test123" in the name text box
+    Then I entered the longitude "xyz"
+    Then I entered the latitude "12"
+    And I click on add new court button
+    Then the error message displays for longitude: "The longitude value needs to be a number"
+
+  Scenario: Adding a new court with invalid latitude
+    Given I entered the new court name as "Test123" in the name text box
+    Then I entered the longitude "12"
+    Then I entered the latitude "!!"
+    And I click on add new court button
+    Then the error message displays for latitude: "The latitude value needs to be a number"
+
+  Scenario: Adding a new court with empty longitude
+    Given I entered the new court name as "Test123" in the name text box
+    Then I entered the longitude " "
+    Then I entered the latitude "12"
+    And I click on add new court button
+    Then the error message displays for longitude: "A longitude value is required"
+
+  Scenario: Adding a new court with empty latitude
+    Given I entered the new court name as "Test123" in the name text box
+    Then I entered the longitude "12"
+    Then I entered the latitude ""
+    And I click on add new court button
+    Then the error message displays for latitude: "A latitude value is required"
