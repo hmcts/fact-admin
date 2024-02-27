@@ -139,6 +139,30 @@ describe ( 'LocalAuthoritiesListController', () => {
     const req = mockRequest();
 
     req.body = {
+      'localAuthorityName': ' ',
+      '_csrf': CSRF.create()
+    };
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.api.updateLocalAuthority = jest.fn().mockResolvedValue(res);
+
+    await controller.put(req, res);
+
+    const expectedResults:  LocalAuthoritiesListPageData = {
+      errorMsg: controller.emptyLocalAuthorityErrorMsg,
+      updated: false,
+      selected : null,
+      updatedName: ' ',
+      localAuthorities: localAuthoritiesItems
+    };
+
+    expect(res.render).toBeCalledWith('lists/tabs/localAuthoritiesListContent', expectedResults);
+  });
+
+  test('Should display error when local authority name is empty', async () => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
       'localAuthorityName': '',
       '_csrf': CSRF.create()
     };

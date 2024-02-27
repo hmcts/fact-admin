@@ -6,16 +6,30 @@ import {NewCourt} from '../../../types/NewCourt';
 import {Court} from '../../../types/Court';
 import {AxiosError} from 'axios';
 import {ServiceArea} from '../../../types/ServiceArea';
+import {newCourtErrorMessage} from '../../../enums/newCourtErrorMessage';
 
 @autobind
 export class NewCourtController {
 
-  getServiceAreasErrorMsg = 'A problem occurred when retrieving the service areas. ';
-  addNewCourtErrorMsg = 'A problem occurred when adding the new court';
-  duplicateCourtErrorMsg = 'A court already exists for court provided: ';
-  emptyOrInvalidValueMsg = 'One or more mandatory fields are empty or have invalid values, please check allow and try again. '
-    + 'If you are adding a service centre, make sure to ensure at least one service area is selected. ';
-  courtNameValidationErrorMsg = 'Invalid court name: please amend and try again.';
+  // Form Error JSON
+
+  formErrors = {
+    nameError: {
+      text: null as string
+    },
+    latitudeError: {
+      text: null as string
+    },
+    longitudeError: {
+      text: null as string
+    },
+    serviceAreaError: {
+      text: null as string
+    },
+    addCourtError: {
+      text: null as string
+    }
+  };
   /**
    * GET /courts/add-court
    * render the view with data from database for new court tab
@@ -23,30 +37,23 @@ export class NewCourtController {
   public async get(req: AuthedRequest,
     res: Response,
     created = false,
-    nameValidationPassed = true,
-    emptyValueFound = false,
-    invalidLonOrLat = false,
     redirectUrl = '',
     nameEntered = '',
     lonEntered = 0,
     latEntered = 0,
     serviceAreaChecked = false,
     serviceAreas: ServiceArea[] = [],
-    errorMsg: string[] = []): Promise<void> {
+    formErrors: {} = null): Promise<void> {
 
     let fatalError = false;
     const allServiceAreas = await req.scope.cradle.api.getAllServiceAreas()
       .catch(() => {
-        errorMsg.push(this.getServiceAreasErrorMsg);
+        this.formErrors.addCourtError.text = newCourtErrorMessage.getServiceAreas;
         fatalError = true;
       });
 
-
     res.render('courts/addNewCourt', {
       created: created,
-      nameValidationPassed: nameValidationPassed,
-      emptyValueFound: emptyValueFound,
-      invalidLonOrLat: invalidLonOrLat,
       redirectUrl: redirectUrl,
       nameEntered: nameEntered,
       lonEntered: lonEntered,
@@ -54,9 +61,10 @@ export class NewCourtController {
       serviceAreaChecked: serviceAreaChecked,
       serviceAreas: serviceAreas,
       allServiceAreas: allServiceAreas,
-      errorMsg: errorMsg,
       csrfToken: CSRF.create(),
       fatalError: fatalError,
+      formErrors: this.formErrors.addCourtError.text || this.formErrors.nameError.text
+        ? this.formErrors : formErrors //if problem adding court or duplicate name show errors
     });
   }
   /**
@@ -64,6 +72,12 @@ export class NewCourtController {
    * validate input data and add new court then re-render the view
    */
   public async addNewCourt(req: AuthedRequest, res: Response): Promise<void> {
+    this.formErrors.addCourtError.text = null;
+    this.formErrors.nameError.text = null;
+    this.formErrors.latitudeError.text = null;
+    this.formErrors.serviceAreaError.text = null;
+    this.formErrors.longitudeError.text = null;
+
     const newCourtName = req.body.newCourtName;
     const serviceCentreChecked = req.body.serviceCentre == 'true';
     const lon = req.body.lon;
@@ -71,30 +85,19 @@ export class NewCourtController {
     const serviceAreas = serviceCentreChecked ? (Array.isArray(req.body.serviceAreaItems)
       ? req.body.serviceAreaItems as ServiceArea[] ?? []
       : (!req.body.serviceAreaItems ? [] : Array(req.body.serviceAreaItems))) : [];
+    let validForm = false;
 
-    if (newCourtName === '' || lon === '' || lat === '') {
-      return this.get(req, res, false, true, true, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas,[this.emptyOrInvalidValueMsg]);
-    }
+    validForm = this.isValidForm(newCourtName, lon, lat, serviceCentreChecked, serviceAreas);
 
-    if (serviceCentreChecked && !serviceAreas.length) {
-      return this.get(req, res, false, true, true, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.emptyOrInvalidValueMsg]);
-    }
-
-    if (isNaN(lon) || isNaN(lat)) {
-      return this.get(req, res, false, true, true, true,
-        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.emptyOrInvalidValueMsg]);
-    }
-
-    if (NewCourtController.isInvalidCourtName(newCourtName)) {
-      return this.get(req, res, false, false, false, false,
-        '', newCourtName, lon, lat, serviceCentreChecked,serviceAreas, [this.courtNameValidationErrorMsg]);
+    if(!validForm) {
+      return this.get(req, res, false,
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, this.formErrors);
     }
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, true, false, false,
-        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, [this.addNewCourtErrorMsg]);
+      this.formErrors.addCourtError.text = newCourtErrorMessage.addNewCourt;
+      return this.get(req, res, false,
+        '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, this.formErrors);
     }
 
     // If all validation passes, add the court
@@ -105,14 +108,18 @@ export class NewCourtController {
       lat: lat,
       'service_areas': serviceAreas
     } as NewCourt)
-      .then((court: Court) => this.get(req, res, true, true, false, false,
+      .then((court: Court) => this.get(req, res, true,
         '/courts/' + court.slug + '/edit#general', newCourtName, lon, lat, serviceCentreChecked, serviceAreas))
       .catch(async (reason: AxiosError) => {
         // Check if we have a duplicated court response (409), cater error response accordingly
-        await this.get(req, res, false, true, false, false,
-          '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, reason.response?.status === 409
-            ? [this.duplicateCourtErrorMsg + newCourtName]
-            : [this.addNewCourtErrorMsg]);
+        if(reason.response?.status === 409) {
+          this.formErrors.nameError.text = newCourtErrorMessage.duplicateCourt + newCourtName;
+        }
+        else {
+          this.formErrors.addCourtError.text = newCourtErrorMessage.addNewCourt;
+        }
+        await this.get(req, res, false,
+          '', newCourtName, lon, lat, serviceCentreChecked, serviceAreas, null);
       });
   }
   /**
@@ -120,5 +127,48 @@ export class NewCourtController {
    */
   private static isInvalidCourtName(name: string): boolean {
     return /[!@#$%^&*_+=[\]{};:"\\|.<>/?]+/.test(name);
+  }
+
+  /**
+   * check if form inputs are valid
+   */
+  private isValidForm(newCourtName: any, lon: any, lat: any, serviceCentreChecked: boolean, serviceAreas: any[]) {
+    let validForm = true;
+
+    if (!newCourtName || newCourtName.trim().length === 0) {
+      this.formErrors.nameError.text = newCourtErrorMessage.nameEmpty;
+      validForm = false;
+    }
+
+    if (NewCourtController.isInvalidCourtName(newCourtName)) {
+      this.formErrors.nameError.text = newCourtErrorMessage.nameInvalid;
+      validForm = false;
+    }
+
+    if(!lon || lon.trim().length === 0) {
+      this.formErrors.longitudeError.text = newCourtErrorMessage.longitudeEmpty;
+      validForm = false;
+    }
+
+    if(isNaN(lon)) {
+      this.formErrors.longitudeError.text = newCourtErrorMessage.longitudeInvalid;
+      validForm = false;
+    }
+
+    if(!lat || lat.trim().length === 0) {
+      this.formErrors.latitudeError.text = newCourtErrorMessage.latitudeEmpty;
+      validForm = false;
+    }
+
+    if(isNaN(lat)) {
+      this.formErrors.latitudeError.text = newCourtErrorMessage.latitudeInvalid;
+      validForm = false;
+    }
+
+    if(serviceCentreChecked && !serviceAreas.length) {
+      this.formErrors.serviceAreaError.text = newCourtErrorMessage.serviceAreaNotSelected;
+      validForm = false;
+    }
+    return validForm;
   }
 }
