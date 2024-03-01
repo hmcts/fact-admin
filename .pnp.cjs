@@ -115,7 +115,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redis", "npm:3.1.2"],\
             ["request", "npm:2.88.2"],\
             ["require-directory", "npm:2.1.1"],\
-            ["sanitize-html", "npm:2.7.2"],\
+            ["sanitize-html", "npm:2.12.1"],\
             ["sass", "npm:1.69.3"],\
             ["sass-lint", "npm:1.13.1"],\
             ["sass-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:13.0.2"],\
@@ -8059,6 +8059,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["entities", "npm:2.1.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.0.0", {\
+          "packageLocation": "./.yarn/cache/dom-serializer-npm-2.0.0-378ebc7200-cd1810544f.zip/node_modules/dom-serializer/",\
+          "packageDependencies": [\
+            ["dom-serializer", "npm:2.0.0"],\
+            ["domelementtype", "npm:2.3.0"],\
+            ["domhandler", "npm:5.0.3"],\
+            ["entities", "npm:4.5.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["domelementtype", [\
@@ -8075,6 +8085,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["domelementtype", "npm:2.2.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.3.0", {\
+          "packageLocation": "./.yarn/cache/domelementtype-npm-2.3.0-02de7cbfba-ee837a318f.zip/node_modules/domelementtype/",\
+          "packageDependencies": [\
+            ["domelementtype", "npm:2.3.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["domhandler", [\
@@ -8083,6 +8100,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["domhandler", "npm:4.2.0"],\
             ["domelementtype", "npm:2.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:5.0.3", {\
+          "packageLocation": "./.yarn/cache/domhandler-npm-5.0.3-3ede73dc10-0f58f4a6af.zip/node_modules/domhandler/",\
+          "packageDependencies": [\
+            ["domhandler", "npm:5.0.3"],\
+            ["domelementtype", "npm:2.3.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8095,6 +8120,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dom-serializer", "npm:1.3.2"],\
             ["domelementtype", "npm:2.2.0"],\
             ["domhandler", "npm:4.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:3.1.0", {\
+          "packageLocation": "./.yarn/cache/domutils-npm-3.1.0-66c92ef7eb-e5757456dd.zip/node_modules/domutils/",\
+          "packageDependencies": [\
+            ["domutils", "npm:3.1.0"],\
+            ["dom-serializer", "npm:2.0.0"],\
+            ["domelementtype", "npm:2.3.0"],\
+            ["domhandler", "npm:5.0.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8246,6 +8281,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/entities-npm-2.1.0-b27b8aebc6-a10a877e48.zip/node_modules/entities/",\
           "packageDependencies": [\
             ["entities", "npm:2.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/entities-npm-4.5.0-7cdb83b832-853f8ebd5b.zip/node_modules/entities/",\
+          "packageDependencies": [\
+            ["entities", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9083,7 +9125,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redis", "npm:3.1.2"],\
             ["request", "npm:2.88.2"],\
             ["require-directory", "npm:2.1.1"],\
-            ["sanitize-html", "npm:2.7.2"],\
+            ["sanitize-html", "npm:2.12.1"],\
             ["sass", "npm:1.69.3"],\
             ["sass-lint", "npm:1.13.1"],\
             ["sass-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:13.0.2"],\
@@ -10155,6 +10197,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["domhandler", "npm:4.2.0"],\
             ["domutils", "npm:2.7.0"],\
             ["entities", "npm:2.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:8.0.2", {\
+          "packageLocation": "./.yarn/cache/htmlparser2-npm-8.0.2-5d9f901bb6-29167a0f92.zip/node_modules/htmlparser2/",\
+          "packageDependencies": [\
+            ["htmlparser2", "npm:8.0.2"],\
+            ["domelementtype", "npm:2.3.0"],\
+            ["domhandler", "npm:5.0.3"],\
+            ["domutils", "npm:3.1.0"],\
+            ["entities", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14743,13 +14796,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["sanitize-html", [\
-        ["npm:2.7.2", {\
-          "packageLocation": "./.yarn/cache/sanitize-html-npm-2.7.2-1e719b08e7-4c15e87a41.zip/node_modules/sanitize-html/",\
+        ["npm:2.12.1", {\
+          "packageLocation": "./.yarn/cache/sanitize-html-npm-2.12.1-af8fd6c44f-fb96ea7170.zip/node_modules/sanitize-html/",\
           "packageDependencies": [\
-            ["sanitize-html", "npm:2.7.2"],\
+            ["sanitize-html", "npm:2.12.1"],\
             ["deepmerge", "npm:4.2.2"],\
             ["escape-string-regexp", "npm:4.0.0"],\
-            ["htmlparser2", "npm:6.1.0"],\
+            ["htmlparser2", "npm:8.0.2"],\
             ["is-plain-object", "npm:5.0.0"],\
             ["parse-srcset", "npm:1.0.2"],\
             ["postcss", "npm:8.4.33"]\
