@@ -63,7 +63,6 @@ FactTabs.prototype.setup = function () {
     // Handle events
     $tab.addEventListener('click', $tab.boundTabClick, true);
     $tab.addEventListener('keydown', $tab.boundTabKeydown, true);
-
     // Remove old active panels
     this.hideTab($tab);
   }.bind(this));
@@ -221,6 +220,10 @@ FactTabs.prototype.onTabKeydown = function (e) {
       this.activateNextTab();
       e.preventDefault();
       break;
+    case 13:
+      this.hideList();
+      e.preventDefault();
+      break;
   }
 };
 
@@ -234,6 +237,7 @@ FactTabs.prototype.activateNextTab = function () {
     this.hideTab(currentTab);
     this.showTab(nextTab);
     nextTab.focus();
+    this.setSelected(nextTab.innerText);
     this.createHistoryEntry(nextTab);
   }
 };
@@ -248,8 +252,14 @@ FactTabs.prototype.activatePreviousTab = function () {
     this.hideTab(currentTab);
     this.showTab(previousTab);
     previousTab.focus();
+    this.setSelected(previousTab.innerText);
     this.createHistoryEntry(previousTab);
   }
+};
+
+FactTabs.prototype.hideList = function () {
+  var tabList = this.$module.querySelector('.fact-tabs-list');
+  tabList.style.display = 'none';
 };
 
 FactTabs.prototype.getPanel = function ($tab) {
@@ -307,12 +317,10 @@ FactTabs.prototype.setSelected = function(string){
   return selectedTab.innerText = string;
 };
 
-
-
 FactTabs.prototype.onTabEnter = function (e) {
   var tabList = this.$module.querySelector('.fact-tabs-list');
-  if(e.key === 'Enter') {
-    (tabList.style.display === 'block') ? tabList.style.display = 'none': tabList.style.display = 'block';
+  if (e.key === 'Enter') {
+    tabList.style.display = 'block';
   }
 };
 
