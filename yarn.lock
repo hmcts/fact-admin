@@ -3067,12 +3067,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sanitize-html@npm:^2.11.0":
-  version: 2.11.0
-  resolution: "@types/sanitize-html@npm:2.11.0"
+"@types/sanitize-html@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "@types/sanitize-html@npm:2.6.2"
   dependencies:
-    htmlparser2: ^8.0.0
-  checksum: a901d55d31cd946a7fce0130cc7cf6bcf56602af9c87291be77d8149c60e7afc47c83ca74c67c2d84e6ba029fe9bbd6f14f89a8cb30fbd185766eebc5722c251
+    htmlparser2: ^6.0.0
+  checksum: 08b43427427cbd8acd2843bbf9e00576c06e3916fc523d27fd9016f39563f7999f78b632ff473ef83a77f86bdea9286de2f81e3a8f8a05af6721687651c84f1c
   languageName: node
   linkType: hard
 
@@ -6624,7 +6624,7 @@ __metadata:
     "@types/puppeteer": ^5.4.6
     "@types/redis": 2.8.31
     "@types/require-directory": ^2.1.2
-    "@types/sanitize-html": ^2.11.0
+    "@types/sanitize-html": ^2.6.2
     "@types/serve-favicon": ^2.5.3
     "@types/session-file-store": ^1.2.2
     "@types/tinymce": ^4.6.9
@@ -7642,7 +7642,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmlparser2@npm:^6.1.0":
+"htmlparser2@npm:^6.0.0, htmlparser2@npm:^6.1.0":
   version: 6.1.0
   resolution: "htmlparser2@npm:6.1.0"
   dependencies:

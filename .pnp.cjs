@@ -59,7 +59,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/puppeteer", "npm:5.4.6"],\
             ["@types/redis", "npm:2.8.31"],\
             ["@types/require-directory", "npm:2.1.2"],\
-            ["@types/sanitize-html", "npm:2.11.0"],\
+            ["@types/sanitize-html", "npm:2.6.2"],\
             ["@types/serve-favicon", "npm:2.5.3"],\
             ["@types/session-file-store", "npm:1.2.2"],\
             ["@types/tinymce", "npm:4.6.9"],\
@@ -4723,11 +4723,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/sanitize-html", [\
-        ["npm:2.11.0", {\
-          "packageLocation": "./.yarn/cache/@types-sanitize-html-npm-2.11.0-90c3cd7dd4-a901d55d31.zip/node_modules/@types/sanitize-html/",\
+        ["npm:2.6.2", {\
+          "packageLocation": "./.yarn/cache/@types-sanitize-html-npm-2.6.2-d901d5414f-08b4342742.zip/node_modules/@types/sanitize-html/",\
           "packageDependencies": [\
-            ["@types/sanitize-html", "npm:2.11.0"],\
-            ["htmlparser2", "npm:8.0.2"]\
+            ["@types/sanitize-html", "npm:2.6.2"],\
+            ["htmlparser2", "npm:6.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9069,7 +9069,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/puppeteer", "npm:5.4.6"],\
             ["@types/redis", "npm:2.8.31"],\
             ["@types/require-directory", "npm:2.1.2"],\
-            ["@types/sanitize-html", "npm:2.11.0"],\
+            ["@types/sanitize-html", "npm:2.6.2"],\
             ["@types/serve-favicon", "npm:2.5.3"],\
             ["@types/session-file-store", "npm:1.2.2"],\
             ["@types/tinymce", "npm:4.6.9"],\
