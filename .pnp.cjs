@@ -87,7 +87,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.20.0"],\
             ["express", "npm:4.18.2"],\
             ["express-nunjucks", "npm:2.2.5"],\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
@@ -8918,17 +8918,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["express-openid-connect", [\
-        ["npm:2.17.1", {\
-          "packageLocation": "./.yarn/cache/express-openid-connect-npm-2.17.1-ab6b29f7f6-96c27f8e1a.zip/node_modules/express-openid-connect/",\
+        ["npm:2.13.0", {\
+          "packageLocation": "./.yarn/cache/express-openid-connect-npm-2.13.0-80bd22325a-36f580794a.zip/node_modules/express-openid-connect/",\
           "packageDependencies": [\
-            ["express-openid-connect", "npm:2.17.1"]\
+            ["express-openid-connect", "npm:2.13.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1", {\
-          "packageLocation": "./.yarn/__virtual__/express-openid-connect-virtual-7d2aa6e007/0/cache/express-openid-connect-npm-2.17.1-ab6b29f7f6-96c27f8e1a.zip/node_modules/express-openid-connect/",\
+        ["virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0", {\
+          "packageLocation": "./.yarn/__virtual__/express-openid-connect-virtual-53f09bfe16/0/cache/express-openid-connect-npm-2.13.0-80bd22325a-36f580794a.zip/node_modules/express-openid-connect/",\
           "packageDependencies": [\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
             ["@types/express", "npm:4.17.17"],\
             ["base64url", "npm:3.0.1"],\
             ["clone", "npm:2.1.2"],\
@@ -9088,7 +9088,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.20.0"],\
             ["express", "npm:4.18.2"],\
             ["express-nunjucks", "npm:2.2.5"],\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
