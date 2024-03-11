@@ -1,6 +1,6 @@
 # FACT Admin
 
-FACT administration interface..
+FACT administration interface.
 
 ## Getting Started
 
