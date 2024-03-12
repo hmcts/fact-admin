@@ -155,10 +155,7 @@
     "sanitize-html/postcss": ">=8.4.33",
     "loader-utils": ">=2.0.4",
     "@azure/core-http": ">=2.3.2",
-    "word-wrap": ">=1.2.5",
-    "jose": ">=2.0.7",
-    "ip": ">=2.0.1",
-    "postcss": ">=8.4.33"
+    "word-wrap": ">=1.2.5"
   },
   "packageManager": "yarn@3.6.4"
 }
