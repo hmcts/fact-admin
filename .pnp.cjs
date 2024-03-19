@@ -3966,15 +3966,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@panva/asn1.js", [\
-        ["npm:1.0.0", {\
-          "packageLocation": "./.yarn/cache/@panva-asn1.js-npm-1.0.0-2bf51df722-cb6bcc1918.zip/node_modules/@panva/asn1.js/",\
-          "packageDependencies": [\
-            ["@panva/asn1.js", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@sideway/address", [\
         ["npm:4.1.4", {\
           "packageLocation": "./.yarn/cache/@sideway-address-npm-4.1.4-32f94bc9f5-b9fca2a93a.zip/node_modules/@sideway/address/",\
@@ -6011,7 +6002,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/axios-npm-1.6.5-87404a12d6-e28d67b2d9.zip/node_modules/axios/",\
           "packageDependencies": [\
             ["axios", "npm:1.6.5"],\
-            ["follow-redirects", "virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.5"],\
+            ["follow-redirects", "virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.6"],\
             ["form-data", "npm:4.0.0"],\
             ["proxy-from-env", "npm:1.1.0"]\
           ],\
@@ -8947,7 +8938,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["futoin-hkdf", "npm:1.5.2"],\
             ["http-errors", "npm:1.8.1"],\
             ["joi", "npm:17.9.1"],\
-            ["jose", "npm:2.0.6"],\
+            ["jose", "npm:5.2.3"],\
             ["on-headers", "npm:1.0.2"],\
             ["openid-client", "npm:4.9.1"],\
             ["url-join", "npm:4.0.1"]\
@@ -9359,17 +9350,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["follow-redirects", [\
-        ["npm:1.15.5", {\
-          "packageLocation": "./.yarn/cache/follow-redirects-npm-1.15.5-9d14db76ca-5ca49b5ce6.zip/node_modules/follow-redirects/",\
+        ["npm:1.15.6", {\
+          "packageLocation": "./.yarn/cache/follow-redirects-npm-1.15.6-50635fe51d-a62c378dfc.zip/node_modules/follow-redirects/",\
           "packageDependencies": [\
-            ["follow-redirects", "npm:1.15.5"]\
+            ["follow-redirects", "npm:1.15.6"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.5", {\
-          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-1897902bf4/0/cache/follow-redirects-npm-1.15.5-9d14db76ca-5ca49b5ce6.zip/node_modules/follow-redirects/",\
+        ["virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.6", {\
+          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-5efaff0660/0/cache/follow-redirects-npm-1.15.6-50635fe51d-a62c378dfc.zip/node_modules/follow-redirects/",\
           "packageDependencies": [\
-            ["follow-redirects", "virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.5"],\
+            ["follow-redirects", "virtual:87404a12d617a0f284f46fa368966665b2913bbd41d7ad24d282540aefa3360d8754e9717ae9b8aa4b57d1893372657e94658e9e39b9d068bbcf6ea38c2ceb2f#npm:1.15.6"],\
             ["@types/debug", null],\
             ["debug", null]\
           ],\
@@ -11711,18 +11702,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jose", [\
-        ["npm:2.0.6", {\
-          "packageLocation": "./.yarn/cache/jose-npm-2.0.6-28b3274077-c13a95f38f.zip/node_modules/jose/",\
+        ["npm:5.2.3", {\
+          "packageLocation": "./.yarn/cache/jose-npm-5.2.3-11c452707f-7c41025d3e.zip/node_modules/jose/",\
           "packageDependencies": [\
-            ["jose", "npm:2.0.6"],\
-            ["@panva/asn1.js", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:4.15.4", {\
-          "packageLocation": "./.yarn/cache/jose-npm-4.15.4-c518ec3da8-dccad91cb3.zip/node_modules/jose/",\
-          "packageDependencies": [\
-            ["jose", "npm:4.15.4"]\
+            ["jose", "npm:5.2.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13263,7 +13246,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["openid-client", "npm:4.9.1"],\
             ["aggregate-error", "npm:3.1.0"],\
             ["got", "npm:11.8.6"],\
-            ["jose", "npm:2.0.6"],\
+            ["jose", "npm:5.2.3"],\
             ["lru-cache", "npm:6.0.0"],\
             ["make-error", "npm:1.3.6"],\
             ["object-hash", "npm:2.2.0"],\
@@ -13275,7 +13258,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/openid-client-npm-5.6.1-dc7fdc5d76-9d939cec57.zip/node_modules/openid-client/",\
           "packageDependencies": [\
             ["openid-client", "npm:5.6.1"],\
-            ["jose", "npm:4.15.4"],\
+            ["jose", "npm:5.2.3"],\
             ["lru-cache", "npm:6.0.0"],\
             ["object-hash", "npm:2.2.0"],\
             ["oidc-token-hash", "npm:5.0.3"]\
