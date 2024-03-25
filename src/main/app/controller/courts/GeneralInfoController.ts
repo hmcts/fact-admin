@@ -103,7 +103,7 @@ export class GeneralInfoController {
         const error = reason.response?.status === 409
           ? this.updateDuplicateGeneralInfoErrorMsg + generalInfo.name
           : this.updateGeneralInfoErrorMsg;
-        await this.get(req, res, false, error, '', nameFieldErrorMsg, generalInfo);
+        await this.get(req, res, false, error, 'edit-name', nameFieldErrorMsg, generalInfo);
       });
   }
   /**
