@@ -262,7 +262,7 @@ describe('GeneralInfoController', () => {
       errorMsg: controller.updateGeneralInfoErrorMsg,
       errorHref: '',
       updated: false,
-      nameFieldError: '',
+      nameFieldError: 'edit-name',
       fatalError: false
     };
 
@@ -284,7 +284,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + 'court name',
-      errorHref: '',
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: 'Duplicated name',
       fatalError: false
@@ -350,7 +350,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
-      errorHref: '',
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.duplicateNameErrorMsg,
       fatalError: false
