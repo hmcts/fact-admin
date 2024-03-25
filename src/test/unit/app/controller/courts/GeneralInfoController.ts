@@ -262,7 +262,7 @@ describe('GeneralInfoController', () => {
       errorMsg: controller.updateGeneralInfoErrorMsg,
       errorHref: '',
       updated: false,
-      nameFieldError: 'edit-name',
+      nameFieldError: '',
       fatalError: false
     };
 
