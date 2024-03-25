@@ -260,7 +260,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
-      errorHref: '',
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: '',
       fatalError: false
