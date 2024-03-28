@@ -1,4 +1,4 @@
-import {AuthedRequest} from "../types/AuthedRequest";
+import {AuthedRequest} from '../types/AuthedRequest';
 import {Email} from '../types/Email';
 import {Element} from '../types/Element';
 
