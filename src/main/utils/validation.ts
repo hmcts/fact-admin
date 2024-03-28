@@ -1,4 +1,3 @@
-import {AuthedRequest} from '../types/AuthedRequest';
 import {Email} from '../types/Email';
 import {Element} from '../types/Element';
 
@@ -92,24 +91,5 @@ export function replaceMultipleSpaces(data: any): any {
     Object.entries(data).forEach(([k, v]) => data[k] =
       ((typeof v == 'string') ? v.replace(nbspRegex, '').replace(spaceRegex, ' ').trim() : v)
     );
-  }
-}
-
-/**
- * Filter out the unwanted rubbish from slugs in the request body
- * This issue may be happening due to the new version of express (4.19.2)
- * @param req the request object
- */
-export function filterSlugs(req: AuthedRequest): any {
-  const toRemove = 'type="checkbox"';
-  console.log(typeof req.body.courts);
-  if (typeof req.body.courts === 'string' && req.body.courts == toRemove) {
-    req.body.courts = '';
-  }
-  else if (typeof req.body.courts === 'object'){
-    const index = req.body.courts.indexOf(toRemove, 0);
-    if (index > -1) {
-      req.body.courts.splice(index, 1);
-    }
   }
 }
