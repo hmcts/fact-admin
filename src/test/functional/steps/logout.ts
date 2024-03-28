@@ -28,6 +28,14 @@ Then('I am logged out if I am an admin user', async () => {
   }
 });
 
+Then('I am logged out if I am a viewer user', async () => {
+  await new Promise(f => setTimeout(f, 30000));
+  if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && await I.isElementVisible('#audits', 30000)) {
+    console.log('logging out as viewer user');
+    await I.click('#logout');
+  }
+});
+
 Given('I click the Logout link', async () => {
   if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK') {
     await I.click('#logout');

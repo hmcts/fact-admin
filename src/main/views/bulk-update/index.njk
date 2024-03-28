@@ -24,7 +24,8 @@
       titleText: "There is a problem",
       errorList: [
         {
-          text: error
+          text: error,
+          href: "#courtResults"
         }
       ]
     }) }}
@@ -124,6 +125,13 @@
             ]), courtItems) %}
         {% endfor %}
 
+
+        {% if error %}
+          <div class="govuk-form-group govuk-form-group--error">
+          <p id="countries-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{error}}
+          </p>
+        {% endif %}
         {{ govukTable({
           id: 'courtsResults',
           name: 'courtResults',
@@ -151,6 +159,9 @@
           ],
           rows: courtItems
         }) }}
+        {% if error %}
+          </div>
+        {% endif %}
       </div>
 {% endblock %}
 

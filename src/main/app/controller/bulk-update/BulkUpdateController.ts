@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { AuthedRequest } from '../../../types/AuthedRequest';
+import {filterSlugs} from '../../../utils/validation';
 
 export class BulkUpdateController {
 
@@ -18,6 +19,7 @@ export class BulkUpdateController {
   public async post(req: AuthedRequest, res: Response): Promise<void> {
     let error = '';
 
+    filterSlugs(req); // This is a custom function that filters out unwanted data from the request body
     if (req.body.courts && req.body.courts.length > 0) {
       try {
         await req.scope.cradle.api.updateCourtsInfo({

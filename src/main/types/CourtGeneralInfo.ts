@@ -16,6 +16,7 @@ export interface CourtGeneralInfo {
 export interface CourtGeneralInfoData {
   generalInfo: CourtGeneralInfo;
   errorMsg: string;
+  errorHref: string;
   updated: boolean;
   nameFieldError: string;
   fatalError: boolean;
