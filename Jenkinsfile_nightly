@@ -12,6 +12,7 @@ def product = "fact"
 def component = "admin"
 
 withNightlyPipeline(type, product, component) {
+
 //  enableFortifyScan()
 //
 //  afterSuccess('fortify-scan') {
