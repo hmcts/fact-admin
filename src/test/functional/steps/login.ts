@@ -34,7 +34,6 @@ Given('I am on the admin portal sign in page', async () => {
 
 When('I fill in the Username and Password fields with my authenticated credentials', async () => {
   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-    console.log('using email: ' + puppeteerConfig.username);
     const username = puppeteerConfig.username;
     const password = puppeteerConfig.password;
     await fillInUsernameAndPassword(username, password);
