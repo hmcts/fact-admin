@@ -12,9 +12,10 @@ def product = "fact"
 def component = "admin"
 
 withNightlyPipeline(type, product, component) {
-  enableFortifyScan()
 
-  afterSuccess('fortify-scan') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-  }
+//  enableFortifyScan()
+//
+//  afterSuccess('fortify-scan') {
+//    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+//  }
 }
