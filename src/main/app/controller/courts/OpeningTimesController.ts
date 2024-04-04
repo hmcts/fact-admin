@@ -93,11 +93,11 @@ export class OpeningTimesController {
       index = index + 1;
       if (!ot.type_id)
       {
-        errorMsg.push({text: (this.emptyDescriptionErrorMsg +index+'.') , href: '#description-'});
+        errorMsg.push({text: (this.emptyDescriptionErrorMsg +index+'.')});
       }
       else if (ot.hours === '')
       {
-        errorMsg.push({text: (this.emptyHoursErrorMsg +index+'.') , href: '#hours-'});
+        errorMsg.push({text: (this.emptyHoursErrorMsg +index+'.')});
       }
     });
 
