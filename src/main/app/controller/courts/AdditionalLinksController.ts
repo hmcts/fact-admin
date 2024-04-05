@@ -10,11 +10,11 @@ import {AxiosError} from 'axios';
 @autobind
 export class AdditionalLinksController {
 
-  emptyUrlErrorMsg = 'URL is required for all additional link ';
-  emptyDisplayNameErrorMsg = 'Display name is required for all additional link ';
+  emptyUrlErrorMsg = 'URL is required for additional link ';
+  emptyDisplayNameErrorMsg = 'Display name is required for additional link ';
   urlDuplicatedErrorMsg = 'All URLs must be unique.';
   displayNameDuplicatedErrorMsg = 'All display names must be unique.';
-  invalidUrlFormatErrorMsg = 'URL must be in valid format for all additional link';
+  invalidUrlFormatErrorMsg = 'URL must be in valid format for additional link ';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
@@ -130,7 +130,7 @@ export class AdditionalLinksController {
       {
         errorMsg.push({text: (this.emptyUrlErrorMsg +index+'.') , href: '#url-'+ index});
       }
-      else if (link.display_name === '')
+      if (link.display_name === '')
       {
         errorMsg.push({text: (this.emptyDisplayNameErrorMsg +index+'.') , href: '#display_name-'+ index });
       }
