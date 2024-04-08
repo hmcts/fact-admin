@@ -45,7 +45,7 @@
       <textarea class="govuk-textarea rich-editor" id="info_message" name="info" tabindex=0>{{ court['info'] }}</textarea>
     </div>
 
-    <div class="govuk-form-group">
+    <div  class="govuk-form-group">
       <h2 class="govuk-label-wrapper"><label class="govuk-label govuk-label--m" for="info_message_cy">
         Additional information (Welsh)
       </label>
@@ -60,7 +60,7 @@
     }) }}
 
     <div id = 'tableContainer'>
-        <div id='courtOptionsRow' class='govuk-grid-row'>
+        <div id="courtError" class='govuk-grid-row'>
           <div class='govuk-grid-column-one-half'>
             {{ govukInput({
               attributes: {
@@ -127,8 +127,8 @@
 
 
         {% if error %}
-          <div id="courtError" class="govuk-form-group govuk-form-group--error">
-          <p class="govuk-error-message">
+        <div class="govuk-form-group govuk-form-group--error">
+          <p id="countries-error" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{error}}
           </p>
         {% endif %}
