@@ -25,7 +25,7 @@
       errorList: [
         {
           text: error,
-          href: "#courtResults"
+          href: "#courtError"
         }
       ]
     }) }}
@@ -127,8 +127,8 @@
 
 
         {% if error %}
-          <div class="govuk-form-group govuk-form-group--error">
-          <p id="countries-error" class="govuk-error-message">
+          <div id="courtError" class="govuk-form-group govuk-form-group--error">
+          <p class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{error}}
           </p>
         {% endif %}
@@ -164,4 +164,3 @@
         {% endif %}
       </div>
 {% endblock %}
-
