@@ -21,6 +21,7 @@ Feature: Facility Types List
     Then The error message displays for facility type "A facility type with the same name already exists."
 
   Scenario: Adding and deleting new Facility Type
+    Then I will make sure there is no test entry "Test123" in the list "#facilityTypesListContent"
     Then I click on Add new facility type
     Then I am redirected to the "Add New Facility Type" facility type form
     Then I enter "Test123" in facility name textbox

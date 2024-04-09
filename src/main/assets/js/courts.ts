@@ -26,8 +26,6 @@ export class CourtsController {
         this.setUpCourtsRegionSearchFilter();
         this.setUpAscDecNameFilter();
         this.setUpAscDecUpdatedDateFilter();
-        // To hide the region id column
-        $('td:nth-child(2)').hide();
       }
     });
   }
@@ -60,6 +58,14 @@ export class CourtsController {
       CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
       CourtsTableSearch.setUpTable();
     });
+    $(this.contentId).on('keydown', `${this.tableCourtsNameId}`, e => {
+      if( e.keyCode === 13){
+        e.preventDefault();
+        CourtsTableSearch.setTableClasses($(this.tableCourtsNameId), CourtsTableSearch.getToggleStates()[0]);
+        CourtsTableSearch.resetTableClasses($(this.tableCourtsUpdatedId));
+        CourtsTableSearch.setUpTable();
+      }
+    });
   }
 
   private setUpAscDecUpdatedDateFilter(): void {
@@ -68,6 +74,14 @@ export class CourtsController {
       CourtsTableSearch.setTableClasses($(this.tableCourtsUpdatedId), CourtsTableSearch.getToggleStates()[1]);
       CourtsTableSearch.resetTableClasses($(this.tableCourtsNameId));
       CourtsTableSearch.setUpTable();
+    });
+    $(this.contentId).on('keydown', `${this.tableCourtsUpdatedId}`, e => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        CourtsTableSearch.setTableClasses($(this.tableCourtsUpdatedId), CourtsTableSearch.getToggleStates()[1]);
+        CourtsTableSearch.resetTableClasses($(this.tableCourtsNameId));
+        CourtsTableSearch.setUpTable();
+      }
     });
   }
 }

@@ -16,7 +16,8 @@
     titleText: "There is a problem",
     errorList: [
       {
-        text: errorMsg
+        text: errorMsg,
+        href: "#local-authority"
       }
     ]
   }) }}
@@ -66,7 +67,7 @@
       label: {
         text: "Edit " + selected.name,
         classes: "govuk-label--m",
-        isPageHeading: true,
+        isPageHeading: false,
         attributes :  { "id": "selected" }
       },
       id: "local-authority",

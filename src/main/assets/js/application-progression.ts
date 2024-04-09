@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -26,7 +27,6 @@ export class ApplicationProgressionController {
   private externalLinkDescriptionCyInputName = 'external_link_description_cy';
   private hiddenNewInputName = 'isNew';
 
-
   constructor() {
     this.initialize();
   }
@@ -35,6 +35,7 @@ export class ApplicationProgressionController {
     $(() => {
       if ($(this.applicationProgressionTabId).length > 0) {
         Utilities.toggleTabEnabled(this.applicationProgressionTabId, false);
+        setUpTabClick(this.applicationProgressionNavTab, this.getApplicationProgression.bind(this));
         this.getApplicationProgression();
         this.setUpAddEventHandler();
         this.setUpDeleteEventHandler();

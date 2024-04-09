@@ -65,7 +65,7 @@ export class GeneralInfoController {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', generalInfo);
     }
 
-    if (req.session.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
+    if (req.appSession.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
       return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.blankNameErrorMsg, generalInfo);
     }
 
@@ -89,9 +89,9 @@ export class GeneralInfoController {
     generalInfo['common_platform'] = generalInfo['common_platform'] ?? false;
 
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
-      .then((value: CourtGeneralInfo) => {
+      .then(async (value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
-          this.get(req, res, true, '', '', value);
+          await this.get(req, res, true, '', '', value);
         } else {
           this.renderRedirect(res, '/courts/' + updatedSlug + '/edit#general');
         }

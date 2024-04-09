@@ -1,4 +1,3 @@
-import * as bodyParser from 'body-parser';
 import config from 'config';
 import express from 'express';
 import {Helmet} from './modules/helmet';
@@ -9,9 +8,9 @@ import {Container} from './modules/awilix';
 import {HealthCheck} from './modules/health';
 import addRoutes from './routes';
 import {PropertiesVolume} from './modules/properties-volume';
-import {SessionStorage} from './modules/session';
 import {AppInsights} from './modules/appinsights';
 import {OidcMiddleware} from './modules/oidc';
+import cookieParser from 'cookie-parser';
 
 const { Express, Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -21,10 +20,14 @@ const developmentMode = env === 'development';
 const server = express();
 
 server.locals.ENV = env;
+if (!developmentMode) {
+  server.set('trust proxy', 1);
+}
 server.use(Express.accessLogger());
+server.use(cookieParser());
 server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(express.static(path.join(__dirname, 'public')));
 server.use('/tinymce', express.static(path.join(__dirname, '..', '..', 'node_modules', 'tinymce')));
 
@@ -40,7 +43,6 @@ setupDev(server,developmentMode);
 
 new PropertiesVolume().enableFor(server);
 new Container().enableFor(server);
-new SessionStorage(developmentMode).enableFor(server);
 new Nunjucks(developmentMode).enableFor(server);
 new Helmet(config.get('security')).enableFor(server);
 new HealthCheck().enableFor(server);

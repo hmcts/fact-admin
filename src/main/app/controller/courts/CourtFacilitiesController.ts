@@ -100,11 +100,11 @@ export class CourtFacilitiesController {
 
     await req.scope.cradle.api.updateCourtFacilities(req.params.slug, courtFacilities)
       .then((value: Facility[]) => this.get(req, res, true, [], value))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], courtFacilities);
+        await this.get(req, res, false, [error], courtFacilities);
       });
   }
 

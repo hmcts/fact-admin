@@ -79,11 +79,12 @@ export class ContactsController {
     } else {
       await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
         .then((value: Contact[]) => this.get(req, res, true, '', value))
-        .catch((reason: AxiosError) => {
+        .catch(async (reason: AxiosError) => {
           const error = reason.response?.status === 409
             ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
             : this.updateErrorMsg;
-          this.get(req, res, false, error, contacts); });
+          await this.get(req, res, false, error, contacts);
+        });
     }
   }
 

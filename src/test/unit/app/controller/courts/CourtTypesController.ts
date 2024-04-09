@@ -115,7 +115,7 @@ describe ( 'CourtTypesController', () =>{
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.session.user.isSuperAdmin = false;
+    req.appSession.user.isSuperAdmin = false;
     req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockResolvedValue(res);
 
 
@@ -151,7 +151,7 @@ describe ( 'CourtTypesController', () =>{
     };
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockResolvedValue(res);
 
     await controller.put(req, res);
@@ -239,7 +239,7 @@ describe ( 'CourtTypesController', () =>{
 
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
 
     await controller.put(req, res);
@@ -287,7 +287,7 @@ describe ( 'CourtTypesController', () =>{
 
     req.params = { slug: slug };
     req.scope.cradle.api = mockApi;
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api.updateCourtTypesAndCodes = jest.fn().mockReturnValue(res);
 
     await controller.put(req, res);
@@ -391,7 +391,7 @@ describe ( 'CourtTypesController', () =>{
 
     req.params = { slug: slug};
     req.scope.cradle.api = mockApi;
-    req.session.user.isSuperAdmin = true;
+    req.appSession.user.isSuperAdmin = true;
     req.scope.cradle.api.getCourtTypesAndCodes = jest.fn().mockRejectedValue(new Error('Mock API Error'));
     const res = mockResponse();
 

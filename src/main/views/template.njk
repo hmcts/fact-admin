@@ -1,7 +1,14 @@
 {% extends "govuk/template.njk" %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
 
 {% block head %}
   {% include "webpack/css.njk" %}
+  {% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+     useTudorCrown: true
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -19,9 +26,11 @@
           </a>
         {% endif %}
 
-        <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
-          download csv
-        </a>
+        {% if errors|length == 0 %}
+          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
+            download csv
+          </a>
+        {% endif %}
 
         {% if isSuperAdmin %}
           <a id="add-court-nav" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/add-court">
@@ -57,6 +66,5 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
   {% include "webpack/js.njk" %}
 {% endblock %}

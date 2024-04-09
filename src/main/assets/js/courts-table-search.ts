@@ -27,9 +27,13 @@ export class CourtsTableSearch {
       $(this.searchCourtsFilterId).val() as string,
       $(this.searchCourtsByRegionId).val() as string,
       $(`#main-content input[name=${this.toggleClosedCourtsDisplay}]`).prop('checked'),
-      toggleValues[0], toggleValues[1]);
-    // To hide the region id column
-    $('td:nth-child(2)').hide();
+      toggleValues[0],
+      toggleValues[1]
+    );
+    //hide region column from showing on main courts list. required for filter to work
+    $('tr').each(function(){
+      $(this).find('td:eq('+$('td.courtTableColumnRegion').index()+')').hide();
+    });
   }
 
   /**

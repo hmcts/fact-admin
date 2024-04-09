@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -50,6 +51,7 @@ export class AddressesController {
   private townCyInputName = 'town_cy';
   private countySelectName = 'county_id';
   private postcodeInputName = 'postcode';
+  private tab = '#tab_addresses';
 
 
   constructor() {
@@ -59,6 +61,7 @@ export class AddressesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getCourtAddresses.bind(this));
         this.getCourtAddresses();
         this.setUpSubmitEventHandler();
         this.setUpClearEventHandler();

@@ -9,7 +9,7 @@ Feature: Spoe tab
     And I am on the admin portal sign in page
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
-    When I click edit next to court with "administrative-court"
+    When I click edit next to court with "cambridge-crown-court"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over opening hours nav element
     When I click spoe tab

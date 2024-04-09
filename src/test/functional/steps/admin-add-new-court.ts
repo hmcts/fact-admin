@@ -14,8 +14,6 @@ When('I click on add new court link', async () => {
   await I.click(selector);
 });
 
-
-
 Then('I am redirected to the add new court {string} page', async (addNewCourt: string) => {
   const selector = '#addNewCourtForm > h1';
   const formTitle = await I.getElementText(await I.getElement(selector));
@@ -55,19 +53,34 @@ Then('The error message displays for a existing court name {string}', async (err
   const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
-  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div >  ul > li';
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li:nth-child(1) > a';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
 
 Then('The error message displays for invalid name {string}', async (errMessage: string) => {
-  const selector = '#newCourtName-error';
+  expect(await I.checkElement('#newCourtName-error')).equal(true);
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li:nth-child(1) > a';
   const eleErrMessage = await I.getElement(selector);
-  expect(await I.getElementText(eleErrMessage)).equal('Error:\n' + errMessage);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
 
 Then('The error message displays for not adding service area {string}', async (errMessage: string) => {
-  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li';
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li:nth-child(4) > a';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
+Then('the error message displays for latitude: {string}', async (errMessage: string) => {
+  expect(await I.checkElement('#lat-error')).equal(true);
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li:nth-child(3) > a';
+  const eleErrMessage = await I.getElement(selector);
+  expect(await I.getElementText(eleErrMessage)).equal(errMessage);
+});
+
+Then('the error message displays for longitude: {string}', async (errMessage: string) => {
+  expect(await I.checkElement('#lon-error')).equal(true);
+  const selector = '#addNewCourtForm > div.govuk-error-summary > div > div > ul > li:nth-child(2) > a';
   const eleErrMessage = await I.getElement(selector);
   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
 });
@@ -78,3 +91,4 @@ Then('I select no for the court be service centre', async () => {
   expect(elementExist).equal(true);
   await I.click(selector);
 });
+

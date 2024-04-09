@@ -2,6 +2,7 @@ import $ from 'jquery';
 import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
+import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
 
@@ -18,6 +19,7 @@ export class FacilitiesController {
   private description = 'description';
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
+  private tab = '#tab_court-facilities';
 
   constructor() {
     this.initialize();
@@ -26,6 +28,7 @@ export class FacilitiesController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getCourtFacilities.bind(this));
         this.getCourtFacilities();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();

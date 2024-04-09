@@ -13,6 +13,7 @@ Given('that I am a logged-in admin or super admin user', async () => {
 });
 
 Then('I am logged out if I am a super admin', async () => {
+
   if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && await I.isElementVisible('#audits', 30000)) {
     console.log('logging out as super user');
     await I.click('#logout');
@@ -20,6 +21,7 @@ Then('I am logged out if I am a super admin', async () => {
 });
 
 Then('I am logged out if I am an admin user', async () => {
+  await new Promise(f => setTimeout(f, 30000));
   if (await I.getPageTitle() !== 'Sign in - HMCTS Access - GOV.UK' && !(await I.isElementVisible('#audits', 30000))) {
     console.log('logging out as an admin user');
     await I.click('#logout');

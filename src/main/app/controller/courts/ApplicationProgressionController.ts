@@ -90,11 +90,12 @@ export class ApplicationProgressionController {
 
     await req.scope.cradle.api.updateApplicationUpdates(req.params.slug, applicationProgressions)
       .then((value: ApplicationProgression[]) => this.get(req, res, true, [], value))
-      .catch((reason: AxiosError) => {
+      .catch(async (reason: AxiosError) => {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        this.get(req, res, false, [error], applicationProgressions); });
+        await this.get(req, res, false, [error], applicationProgressions);
+      });
   }
   /**
    * adds an empty form so view is rendered with one blank form

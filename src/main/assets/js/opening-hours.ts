@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
-
+import {setUpTabClick} from './tab-reset';
 const { initAll } = require('govuk-frontend');
 
 export class OpeningHoursController {
@@ -20,6 +20,7 @@ export class OpeningHoursController {
 
   private moveUpBtnClass = 'move-up';
   private moveDownBtnClass = 'move-down';
+  private tab = '#tab_opening-hours';
 
   constructor() {
     this.initialize();
@@ -28,6 +29,7 @@ export class OpeningHoursController {
   private initialize(): void {
     $(() => {
       if ($(this.tabId).length > 0) {
+        setUpTabClick(this.tab, this.getOpeningHours.bind(this));
         this.getOpeningHours();
         this.setUpSubmitEventHandler();
         this.setUpAddEventHandler();
