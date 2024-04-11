@@ -12,10 +12,10 @@
   summaryText: "Help with dates and times",
   html: "Government standards are available for
   <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#dates'
-    target='_blank' rel='noopener noreferrer'>dates</a>
+    target='_blank' aria-label='Government standards for dates (opens in new tab)' rel='noopener noreferrer'>dates (opens in new tab)</a>
   and
   <a href='https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style#times'
-    target='_blank' rel='noopener noreferrer'>times</a> "})
+    target='_blank' aria-label='Government standards for times (opens in new tab)' rel='noopener noreferrer'>times (opens in new tab)</a> "})
 }}
 
 {% if errors|length %}
@@ -88,7 +88,7 @@
           text: "Remove",
           name: "deleteOpeningHours",
           type: "button",
-          classes: "govuk-button--warning deleteOpeningTime"
+          classes: "govuk-button--secondary deleteOpeningTime"
         }) }}
       {% endif %}
 

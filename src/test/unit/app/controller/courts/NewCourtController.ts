@@ -76,13 +76,10 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': false,
-      'errorMsg': [],
-      'invalidLonOrLat': false,
+      'formErrors': null,
       'latEntered': 0,
       'lonEntered': 0,
       'nameEntered': '',
-      'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': false,
       'allServiceAreas': getAllServiceAreas(),
@@ -96,7 +93,11 @@ describe('NewCourtController', () => {
     const req = mockRequest();
 
     req.body = {
-
+      newCourtName: '',
+      serviceCentre: 'true',
+      lon: '',
+      lat: '',
+      serviceAreaItems: []
     };
     req.scope.cradle.api = mockApi;
 
@@ -105,20 +106,79 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': true,
-      'errorMsg':
-        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
-        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
-      'invalidLonOrLat': true,
-      'latEntered': 0,
-      'lonEntered': 0,
+      'latEntered': '',
+      'lonEntered': '',
       'nameEntered': '',
-      'nameValidationPassed': true,
+      'redirectUrl': '',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': [],
+      'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': 'A latitude value is required'
+        },
+        'longitudeError': {
+          'text': 'A longitude value is required'
+        },
+        'nameError': {
+          'text': 'A new court name value is required'
+        },
+        'serviceAreaError': {
+          'text': 'At least one service area must be selected'
+        }
+      }
+    });
+    expect(mockApi.addCourt).not.toBeCalled();
+
+  });
+
+  test('Should not add new court if required fields are just whitespace', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      newCourtName: ' ',
+      serviceCentre: 'false',
+      lon: '\xa0',
+      lat: '\t',
+      serviceAreaItems: []
+    };
+    req.scope.cradle.api = mockApi;
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': false,
+      'csrfToken': 'validCSRFToken',
+      'latEntered': '\t',
+      'lonEntered': '\xa0',
+      'nameEntered': ' ',
       'redirectUrl': '',
       'serviceAreaChecked': false,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': [],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': 'A latitude value is required'
+        },
+        'longitudeError': {
+          'text': 'A longitude value is required'
+        },
+        'nameError': {
+          'text': 'A new court name value is required'
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -131,8 +191,8 @@ describe('NewCourtController', () => {
     req.body = {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
-      lon: 'abc',
-      lat: 'abc',
+      lon: '98',
+      lat: '1',
       serviceAreaItems: []
     };
     req.scope.cradle.api = mockApi;
@@ -142,20 +202,31 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': true,
-      'errorMsg':
-        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
-        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
-      'invalidLonOrLat': false,
-      'latEntered': 'abc',
-      'lonEntered': 'abc',
+      'latEntered': '1',
+      'lonEntered': '98',
       'nameEntered': 'mosh court',
-      'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': [],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': null
+        },
+        'nameError': {
+          'text': null
+        },
+        'serviceAreaError': {
+          'text': 'At least one service area must be selected'
+        }
+      }
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -169,7 +240,7 @@ describe('NewCourtController', () => {
       newCourtName: 'mosh court',
       serviceCentre: 'true',
       lon: 'abc',
-      lat: '10',
+      lat: '!!',
       serviceAreaItems: ['one', 'two', 'three']
     };
     req.scope.cradle.api = mockApi;
@@ -179,20 +250,31 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': true,
-      'errorMsg':
-        ['One or more mandatory fields are empty or have invalid values, please check allow and try again. '
-        + 'If you are adding a service centre, make sure to ensure at least one service area is selected. '],
-      'invalidLonOrLat': true,
-      'latEntered': '10',
+      'latEntered': '!!',
       'lonEntered': 'abc',
       'nameEntered': 'mosh court',
-      'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': ['one', 'two', 'three'],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': 'The latitude value needs to be a number'
+        },
+        'longitudeError': {
+          'text': 'The longitude value needs to be a number'
+        },
+        'nameError': {
+          'text': null
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
     });
     expect(mockApi.addCourt).not.toBeCalled();
 
@@ -216,19 +298,31 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': false,
-      'errorMsg':
-        ['Invalid court name: please amend and try again.'],
-      'invalidLonOrLat': false,
       'latEntered': '10',
       'lonEntered': '10',
       'nameEntered': 'mosh court @£@!£',
-      'nameValidationPassed': false,
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': ['one', 'two', 'three'],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': null
+        },
+        'nameError': {
+          'text': 'Invalid court name: Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens'
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -252,19 +346,31 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': false,
-      'errorMsg':
-        ['A problem occurred when adding the new court'],
-      'invalidLonOrLat': false,
       'latEntered': '10',
       'lonEntered': '10',
       'nameEntered': 'mosh court',
-      'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': ['one', 'two', 'three'],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': 'A problem occurred when adding the new court.'
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': null
+        },
+        'nameError': {
+          'text': null
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
     });
     expect(mockApi.addCourt).not.toBeCalled();
   });
@@ -290,19 +396,31 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': false,
-      'errorMsg':
-        ['A court already exists for court provided: mosh court'],
-      'invalidLonOrLat': false,
       'latEntered': '10',
       'lonEntered': '10',
       'nameEntered': 'mosh court',
-      'nameValidationPassed': true,
       'redirectUrl': '',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': ['one', 'two', 'three'],
       'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': null
+        },
+        'nameError': {
+          'text': 'A court already exists for court provided: mosh court'
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
       'new_court_name': 'mosh court', 'service_centre': true,
@@ -326,18 +444,90 @@ describe('NewCourtController', () => {
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': true,
       'csrfToken': 'validCSRFToken',
-      'emptyValueFound': false,
-      'errorMsg': [],
-      'invalidLonOrLat': false,
       'latEntered': '10',
       'lonEntered': '10',
       'nameEntered': 'mosh court',
-      'nameValidationPassed': true,
       'redirectUrl': '/courts/mosh-court/edit#general',
       'serviceAreaChecked': true,
       'allServiceAreas': getAllServiceAreas(),
       'serviceAreas': ['one', 'two', 'three'],
       'fatalError': false,
+      'formErrors': null
+    });
+    expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
+      'new_court_name': 'mosh court', 'service_centre': true,
+      'service_areas': ['one', 'two', 'three']});
+  });
+
+  test('Should expect errors that have been fixed to not be present in form errors object', async() => {
+    const res = mockResponse();
+    const req = mockRequest();
+
+    req.body = {
+      newCourtName: 'mosh court @£@!£',
+      serviceCentre: 'true',
+      lon: '@@',
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
+    };
+    req.scope.cradle.api = mockApi;
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': false,
+      'csrfToken': 'validCSRFToken',
+      'latEntered': '10',
+      'lonEntered': '@@',
+      'nameEntered': 'mosh court @£@!£',
+      'redirectUrl': '',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
+      'formErrors': {
+        'addCourtError': {
+          'text': null
+        },
+        'latitudeError': {
+          'text': null
+        },
+        'longitudeError': {
+          'text': 'The longitude value needs to be a number'
+        },
+        'nameError': {
+          'text': 'Invalid court name: Valid characters are: A-Z, a-z, 0-9, apostrophes, brackets and hyphens'
+        },
+        'serviceAreaError': {
+          'text': null
+        }
+      }
+    });
+    expect(mockApi.addCourt).not.toBeCalled();
+
+    //request again with valid inputs
+    req.body = {
+      newCourtName: 'mosh court',
+      serviceCentre: 'true',
+      lon: '10',
+      lat: '10',
+      serviceAreaItems: ['one', 'two', 'three']
+    };
+
+    await controller.addNewCourt(req, res);
+
+    expect(res.render).toBeCalledWith('courts/addNewCourt', {
+      'created': true,
+      'csrfToken': 'validCSRFToken',
+      'latEntered': '10',
+      'lonEntered': '10',
+      'nameEntered': 'mosh court',
+      'redirectUrl': '/courts/mosh-court/edit#general',
+      'serviceAreaChecked': true,
+      'allServiceAreas': getAllServiceAreas(),
+      'serviceAreas': ['one', 'two', 'three'],
+      'fatalError': false,
+      'formErrors': null
     });
     expect(mockApi.addCourt).toBeCalledWith({'lat': '10', 'lon': '10',
       'new_court_name': 'mosh court', 'service_centre': true,

@@ -26,7 +26,7 @@ export class Helmet {
   }
 
   private setContentSecurityPolicy(app: express.Express): void {
-    const scriptSrc = [self, googleAnalyticsDomain, "'unsafe-inline'"];
+    const scriptSrc = [self, googleAnalyticsDomain, "'unsafe-inline'", 'https://*.dynatrace.com'];
 
     //todo: should really only use this in dev
     if (app.locals.ENV === 'development') {
@@ -37,10 +37,10 @@ export class Helmet {
       helmet.contentSecurityPolicy({
         useDefaults: false,
         directives: {
-          connectSrc: [self, azureBlob],
+          connectSrc: [self, azureBlob, 'https://*.dynatrace.com'],
           defaultSrc: ["'none'"],
           fontSrc: [self, 'data:'],
-          imgSrc: [self, 'data:', googleAnalyticsDomain, azureBlob],
+          imgSrc: [self, 'data:', googleAnalyticsDomain, azureBlob, 'https://*.dynatrace.com'],
           objectSrc: [self],
           scriptSrc: scriptSrc,
           styleSrc: [self, "'unsafe-inline'"],
