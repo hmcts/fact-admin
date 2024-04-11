@@ -218,55 +218,47 @@
 
   <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
 
-{% set secondaryAddressAOLItems =  "secondaryAddressAOLItems"+ (loop.index - 1)%}
+  {% set secondaryAddressAOLItems =  "secondaryAddressAOLItems"+ (loop.index - 1)%}
 
-    {%- for items in address.fields_of_law.areas_of_law | slice(2) %}
+      {%- for items in address.fields_of_law.areas_of_law | slice(2) %}
 
-    <div class="govuk-grid-column-one-half">
-        {{ govukCheckboxes({
-          idPrefix: "areas-of-law",
-          name: secondaryAddressAOLItems ,
-          classes: "govuk-checkboxes--small",
-          items: items
-        }) }}
+      <div class="govuk-grid-column-one-half">
+          {{ govukCheckboxes({
+            idPrefix: "areas-of-law",
+            name: secondaryAddressAOLItems ,
+            classes: "govuk-checkboxes--small",
+            items: items
+          }) }}
+      </div>
+
+      {%- endfor %}
+
     </div>
 
-    {%- endfor %}
 
-  </div>
+    <input type="hidden" name={{"secondary[" + (loop.index - 1) +"][secondaryAddressAOLItems]"}} value=''></input>
 
+    {{ govukDetails({
+      summaryText: "Help with court types",
+      html: "Select one or more court types that apply for a given address. An example of this may be where you
+      have a write to address that only applies for Family courts"})
+    }}
 
-  <input type="hidden" name={{"secondary[" + (loop.index - 1) +"][secondaryAddressAOLItems]"}} value=''></input>
+    <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
 
-  {{ govukDetails({
-    summaryText: "Help with court types",
-    html: "Select one or more court types that apply for a given address. An example of this may be where you
-    have a write to address that only applies for Family courts"})
-  }}
-
-  <div class="govuk-grid-row scrollable visible-scrollbar role: scrollbar">
-
-{% set secondaryAddressCourtItems = "secondaryAddressCourtItems"+ (loop.index - 1)%}
-
+  {% set secondaryAddressCourtItems = "secondaryAddressCourtItems"+ (loop.index - 1)%}
     {%- for items in address.fields_of_law.courts | slice(2) %}
-
-    <div class="govuk-grid-column-one-half">
-        {{ govukCheckboxes({
-          idPrefix: "courts",
-          name: secondaryAddressCourtItems,
-          classes: "govuk-checkboxes--small",
-          items: items
-        }) }}
-    </div>
-
+      <div class="govuk-grid-column-one-half">
+          {{ govukCheckboxes({
+            idPrefix: "courts",
+            name: secondaryAddressCourtItems,
+            classes: "govuk-checkboxes--small",
+            items: items
+          }) }}
+      </div>
     {%- endfor %}
-
   </div>
-
-
-
-<input type="hidden" name={{"secondary[" + (loop.index - 1) +"][secondaryAddressCourtItems]"}} value=''></input>
-
+  <input type="hidden" name={{"secondary[" + (loop.index - 1) +"][secondaryAddressCourtItems]"}} value=''></input>
 </div>
 
 

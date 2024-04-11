@@ -1362,8 +1362,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1387,8 +1399,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.dupilcateWelshAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 });

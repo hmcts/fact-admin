@@ -101,15 +101,15 @@ export class AddressController {
     };
 
 
-    addresses.secondary[0].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[0].secondaryFieldsOfLawRadio,
+    addresses.secondary[0].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio0,
       req.body.secondaryAddressAOLItems0, req.body.secondaryAddressCourtItems0 );
-    addresses.secondary[1].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[1].secondaryFieldsOfLawRadio,
+    addresses.secondary[1].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio1,
       req.body.secondaryAddressAOLItems1, req.body.secondaryAddressCourtItems1 );
-    addresses.secondary[2].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[2].secondaryFieldsOfLawRadio,
+    addresses.secondary[2].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio2,
       req.body.secondaryAddressAOLItems2, req.body.secondaryAddressCourtItems2 );
-    addresses.secondary[3].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[3].secondaryFieldsOfLawRadio,
+    addresses.secondary[3].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio3,
       req.body.secondaryAddressAOLItems3, req.body.secondaryAddressCourtItems3 );
-    addresses.secondary[4].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondary[4].secondaryFieldsOfLawRadio,
+    addresses.secondary[4].fields_of_law = this.getAPIFieldsOfLaw(req.body.secondaryFieldsOfLawRadio4,
       req.body.secondaryAddressAOLItems4, req.body.secondaryAddressCourtItems4 );
 
     // Validate token
@@ -789,7 +789,7 @@ export class AddressController {
   }
 
 
-  private checkAddressesAreUnique(addresses: DisplayCourtAddresses): string[]{
+  private checkAddressesAreUnique(addresses: DisplayCourtAddresses): string[] {
     const errors: string[] = [];
     const addressLines: string[] =
       [addresses.primary.address_lines, ...addresses.secondary.map(address => address.address_lines)];
@@ -806,26 +806,26 @@ export class AddressController {
         }
       }
 
-    const primaryAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines.split(/\r?\n/));
-    const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
-    const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
+      const primaryAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines.split(/\r?\n/));
+      const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
+      const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
 
-    if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) &&  addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
-      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
-      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
-      errors.push(this.duplicateAddressError);
+      if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+        || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+        || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
+        errors.push(this.duplicateAddressError);
+      }
+
+      const primaryWelshAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines_cy.split(/\r?\n/));
+      const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
+      const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
+
+      if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+        || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+        || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
+        errors.push(this.dupilcateWelshAddressError);
+      }
+      return errors;
     }
-
-    const primaryWelshAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines_cy.split(/\r?\n/));
-    const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
-    const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
-
-    if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
-      || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
-      || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
-      errors.push(this.dupilcateWelshAddressError);
-    }
-    return errors;
   }
-
 }
