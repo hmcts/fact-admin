@@ -59,7 +59,6 @@ export class AddressesController {
   }
 
   private initialize(): void {
-    console.log(1);
     $(() => {
       if ($(this.tabId).length > 0) {
         setUpTabClick(this.tab, this.getCourtAddresses.bind(this));
@@ -73,13 +72,12 @@ export class AddressesController {
 
   private getCourtAddresses(): void {
     const slug = $('#slug').val();
-    console.log(2);
+
     $.ajax({
       url: `/courts/${slug}/addresses`,
       method: 'get',
       success: async (res) => {
         await this.updateContent(res, this.contentId);
-        console.log('THIS TRASH');
         this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio1, this.secondaryAddressFieldsOfLawContainer1);
         this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio2, this.secondaryAddressFieldsOfLawContainer2);
         this.setUpAddressFOLChangeToggle(this.secondaryAddressFieldsOfLawRadio3, this.secondaryAddressFieldsOfLawContainer3);
@@ -114,9 +112,6 @@ export class AddressesController {
 
   private setUpAddressFOLChangeToggle(radioElement: string, radioContainer: string): void {
     // On page load, hide checkboxes if radio option is set to no
-    console.log('======================');
-    console.log('radioElement: ' + radioElement);
-    console.log('radioContainer: ' + radioContainer);
     if ($(radioElement).filter(':checked').attr('value') === 'no') {
       $(radioContainer).hide();
     }
