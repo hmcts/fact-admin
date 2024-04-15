@@ -700,23 +700,23 @@ export class AddressController {
     if (courtAddresses.primary) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.primary));
     }
-    if (courtAddresses.secondary[0] && courtAddresses.secondary[0].type_id && courtAddresses.secondary[0].address_lines &&
+    if (courtAddresses.secondary[0]?.type_id && courtAddresses.secondary[0].address_lines &&
       courtAddresses.secondary[0].town && courtAddresses.secondary[0].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[0]));
     }
-    if (courtAddresses.secondary[1] && courtAddresses.secondary[1].type_id && courtAddresses.secondary[1].address_lines &&
+    if (courtAddresses.secondary[1]?.type_id && courtAddresses.secondary[1].address_lines &&
       courtAddresses.secondary[1].town && courtAddresses.secondary[1].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[1]));
     }
-    if (courtAddresses.secondary[2] && courtAddresses.secondary[2].type_id && courtAddresses.secondary[2].address_lines &&
+    if (courtAddresses.secondary[2]?.type_id && courtAddresses.secondary[2].address_lines &&
       courtAddresses.secondary[2].town && courtAddresses.secondary[2].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[2]));
     }
-    if (courtAddresses.secondary[3] && courtAddresses.secondary[3].type_id && courtAddresses.secondary[3].address_lines &&
+    if (courtAddresses.secondary[3]?.type_id && courtAddresses.secondary[3].address_lines &&
       courtAddresses.secondary[3].town && courtAddresses.secondary[3].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[3]));
     }
-    if (courtAddresses.secondary[4] && courtAddresses.secondary[4].type_id && courtAddresses.secondary[4].address_lines &&
+    if (courtAddresses.secondary[4]?.type_id && courtAddresses.secondary[4].address_lines &&
       courtAddresses.secondary[4].town && courtAddresses.secondary[4].postcode) {
       apiAddresses.push(this.convertCourtAddressToApiAddressType(courtAddresses.secondary[4]));
     }
