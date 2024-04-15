@@ -28,6 +28,7 @@ export class GeneralInfoController {
     res: Response,
     updated = false,
     error = '',
+    href = '',
     nameFieldErrorMsg = '',
     generalInfo: CourtGeneralInfo = null): Promise<void> {
 
@@ -43,6 +44,7 @@ export class GeneralInfoController {
     const pageData: CourtGeneralInfoData = {
       generalInfo: generalInfo,
       errorMsg: error,
+      errorHref: href,
       updated: updated,
       nameFieldError: nameFieldErrorMsg,
       fatalError: fatalError
@@ -62,26 +64,26 @@ export class GeneralInfoController {
       : slug;
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', generalInfo);
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, '', '', generalInfo);
     }
 
     if (req.appSession.user.isSuperAdmin === true && generalInfo.name.trim() === '') {
-      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.blankNameErrorMsg, generalInfo);
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, 'edit-name', this.blankNameErrorMsg, generalInfo);
     }
 
     if (this.checkNameForInvalidCharacters(generalInfo.name)) {
-      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, this.specialCharacterErrorMsg, generalInfo);
+      return this.get(req, res, false, this.updateGeneralInfoErrorMsg, 'edit-name', this.specialCharacterErrorMsg, generalInfo);
     }
 
     replaceMultipleSpaces(generalInfo);
 
     if (generalInfo.alert.length > 400 || generalInfo.alert_cy.length > 400) {
-      return this.get(req, res, false, this.updateAlertErrorMsg, '', generalInfo);
+      return this.get(req, res, false, this.updateAlertErrorMsg, '', '', generalInfo);
     }
 
     if (((/true/i).test(String(generalInfo.service_centre))) // JavaScript sends boolean as a string...
       && (generalInfo.sc_intro_paragraph.length > 650 || generalInfo.sc_intro_paragraph_cy.length > 650)) {
-      return this.get(req, res, false, this.updateIntroParagraphErrorMsg, '', generalInfo);
+      return this.get(req, res, false, this.updateIntroParagraphErrorMsg, '', '', generalInfo);
     }
 
     generalInfo.open = generalInfo.open ?? false;
@@ -91,7 +93,7 @@ export class GeneralInfoController {
     await req.scope.cradle.api.updateGeneralInfo(slug, generalInfo)
       .then(async (value: CourtGeneralInfo) => {
         if (updatedSlug === slug) {
-          await this.get(req, res, true, '', '', value);
+          await this.get(req, res, true, '', '', '', value);
         } else {
           this.renderRedirect(res, '/courts/' + updatedSlug + '/edit#general');
         }
@@ -101,7 +103,7 @@ export class GeneralInfoController {
         const error = reason.response?.status === 409
           ? this.updateDuplicateGeneralInfoErrorMsg + generalInfo.name
           : this.updateGeneralInfoErrorMsg;
-        await this.get(req, res, false, error, nameFieldErrorMsg, generalInfo);
+        await this.get(req, res, false, error, 'edit-name', nameFieldErrorMsg, generalInfo);
       });
   }
   /**
