@@ -87,8 +87,7 @@ describe('AddressesController', () => {
         'type_id': 100,
         description: 'description',
         'description_cy': 'description_cy,',
-        'address_lines': ['54 Green Street\n' +
-        'Redville House' ],
+        'address_lines': ['54 Green Street', 'Redville House'],
         'address_lines_cy': ['54 Green Street_cy'],
         town: 'Redville',
         'town_cy': 'Redville_cy',
@@ -553,11 +552,6 @@ describe('AddressesController', () => {
   test('Should post court addresses if addresses are valid', async () => {
     const slug = 'central-london-county-court';
     const addresses = getValidDisplayAddresses();
-    addresses.secondary[0].secondaryFieldsOfLawRadio = 'yes';
-    addresses.secondary[1].secondaryFieldsOfLawRadio = 'yes';
-    addresses.secondary[2].secondaryFieldsOfLawRadio = 'no';
-    addresses.secondary[3].secondaryFieldsOfLawRadio = 'no';
-    addresses.secondary[4].secondaryFieldsOfLawRadio = 'no';
 
     req.body = {
       primary: addresses.primary,
@@ -567,6 +561,7 @@ describe('AddressesController', () => {
         JSON.stringify(getAreaOfLaw(3, 'Children'))
       ],
       secondaryAddressCourtItems0: [],
+      secondaryFieldsOfLawRadio0: 'yes',
       secondaryAddressAOLItems1: [
         JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')),
         JSON.stringify(getAreaOfLaw(4, 'Civil Partnership'))
@@ -575,12 +570,16 @@ describe('AddressesController', () => {
         JSON.stringify(getCourtType(1, 'County Court', 456)),
         JSON.stringify(getCourtType(2, 'Crown Court', 789))
       ],
+      secondaryFieldsOfLawRadio1: 'yes',
       secondaryAddressAOLItems2: [],
       secondaryAddressCourtItems2: [],
+      secondaryFieldsOfLawRadio2: 'no',
       secondaryAddressAOLItems3: [],
       secondaryAddressCourtItems3: [],
+      secondaryFieldsOfLawRadio3: 'no',
       secondaryAddressAOLItems4: [],
       secondaryAddressCourtItems4: [],
+      secondaryFieldsOfLawRadio4: 'no',
       writeToUsTypeId: addressTypes[1].id,
       '_csrf': CSRF.create()
     };
@@ -1075,8 +1074,6 @@ describe('AddressesController', () => {
 
   test('Should not post court addresses if secondary addresses have conflicting areas of law or court types', async () => {
     const addresses = getValidDisplayAddresses();
-    addresses.secondary[0].secondaryFieldsOfLawRadio = 'yes';
-    addresses.secondary[1].secondaryFieldsOfLawRadio = 'yes';
     addresses.secondary[0].fields_of_law = {
       areas_of_law: [
         getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
@@ -1117,6 +1114,7 @@ describe('AddressesController', () => {
       secondaryAddressCourtItems0: [
         JSON.stringify(getCourtType(1, 'County Court', 456))
       ],
+      secondaryFieldsOfLawRadio0: 'yes',
       secondaryAddressAOLItems1: [
         JSON.stringify(getAreaOfLaw(1, 'Adoption')),
         JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')),
@@ -1126,6 +1124,7 @@ describe('AddressesController', () => {
         JSON.stringify(getCourtType(1, 'County Court', 456)),
         JSON.stringify(getCourtType(2, 'Crown Court', 789))
       ],
+      secondaryFieldsOfLawRadio1: 'yes',
       writeToUsTypeId: addressTypes[1].id, // Write to us
       '_csrf': CSRF.create()
     };
