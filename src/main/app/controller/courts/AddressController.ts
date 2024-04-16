@@ -821,15 +821,14 @@ export class AddressController {
     const addressLines: string[] =
       [addresses.primary.address_lines, ...addresses.secondary.map(address => address.address_lines)];
     const postcodes: string[] =
-      [addresses.primary.postcode.toUpperCase(), ...addresses.secondary.map(address => address.postcode.toUpperCase())];
+      [addresses.primary.postcode.toUpperCase().replace(' ', ''), ...addresses.secondary.map(
+        address => address.postcode.toUpperCase().replace(' ', ''))];
 
-    for (let i = 0; i < addressLines.length; i++) {
-      if (addressLines[i] !== '' && addressLines[i] !== null && postcodes[i] !== '' && postcodes[i] !== null) {
-        for (let j = i + 1; j < addressLines.length; j++) {
-          if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
-            errors.push(this.duplicateAddressError);
-            break;
-          }
+    loop1: for (let i = 0; i < addressLines.length; i++) {
+      for (let j = i + 1; j < addressLines.length; j++) {
+        if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
+          errors.push(this.duplicateAddressError); //index of duplicate would be J
+          break loop1;
         }
       }
       errors.push(...this.removeSpecialCharactersEN(addresses));
