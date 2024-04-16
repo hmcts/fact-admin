@@ -796,36 +796,45 @@ export class AddressController {
     const postcodes: string[] =
       [addresses.primary.postcode.toUpperCase(), ...addresses.secondary.map(address => address.postcode.toUpperCase())];
 
-    for (let i = 0; i < addressLines.length; i++) {
+    loop1: for (let i = 0; i < addressLines.length; i++) {
       if (addressLines[i] !== '' && addressLines[i] !== null && postcodes[i] !== '' && postcodes[i] !== null) {
         for (let j = i + 1; j < addressLines.length; j++) {
           if (addressLines[i] === addressLines[j] && postcodes[i] === postcodes[j]) {
             errors.push(this.duplicateAddressError);
-            break;
+            break loop1;
           }
         }
       }
 
-      const primaryAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines.split(/\r?\n/));
-      const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
-      const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
-
-      if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
-        || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
-        || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
-        errors.push(this.duplicateAddressError);
+      errors.push(...this.checkENandCYAddressAreUnique(addresses));
+      if (errors) {
+        return errors;
       }
-
-      const primaryWelshAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines_cy.split(/\r?\n/));
-      const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
-      const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
-
-      if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
-        || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
-        || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
-        errors.push(this.dupilcateWelshAddressError);
-      }
-      return errors;
     }
+    return errors;
+  }
+
+  private checkENandCYAddressAreUnique(addresses: DisplayCourtAddresses) {
+    const errors: string[] = [];
+    const primaryAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines.split(/\r?\n/));
+    const secondaryAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines.split(/\r?\n/));
+    const secondaryAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines.split(/\r?\n/));
+
+    if ((compareAddressLines(primaryAddressLines, secondaryAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+      || (!!addresses.secondary[1].address_lines?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryAddressLines, secondaryAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+      || (!!addresses.secondary[0].address_lines?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryAddress1Lines, secondaryAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
+      errors.push(this.duplicateAddressError);
+    }
+
+    const primaryWelshAddressLines: string[] = removeSpecialCharacters(addresses.primary.address_lines_cy.split(/\r?\n/));
+    const secondaryWelshAddress1Lines: string[] = removeSpecialCharacters(addresses.secondary[0].address_lines_cy.split(/\r?\n/));
+    const secondaryWelshAddress2Lines: string[] = removeSpecialCharacters(addresses.secondary[1].address_lines_cy.split(/\r?\n/));
+
+    if (!!addresses.primary.address_lines_cy?.trim() && (compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress1Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[0].postcode.toLowerCase())
+      || (!!addresses.secondary[1].address_lines_cy?.trim() && !!addresses.secondary[1].postcode?.trim() && compareAddressLines(primaryWelshAddressLines, secondaryWelshAddress2Lines) && addresses.primary.postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())
+      || (!!addresses.secondary[0].address_lines_cy?.trim() && !!addresses.secondary[0].postcode?.trim() && compareAddressLines(secondaryWelshAddress1Lines, secondaryWelshAddress2Lines) && addresses.secondary[0].postcode.toLowerCase() === addresses.secondary[1].postcode.toLowerCase())) {
+      errors.push(this.dupilcateWelshAddressError);
+    }
+    return errors;
   }
 }
