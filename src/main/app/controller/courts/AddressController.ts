@@ -831,17 +831,9 @@ export class AddressController {
           break loop1;
         }
       }
-    }
-    if(errors) {
-      return errors;
-    }
-    for (let i = 0; i < addressLines.length; i++) {
       errors.push(...this.removeSpecialCharactersEN(addresses));
       errors.push(...this.removeSpecialCharactersCY(addresses));
-    }
-    if(errors) {
       return errors;
     }
-
   }
 }
