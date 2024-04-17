@@ -157,7 +157,10 @@
     "@azure/core-http": ">=2.3.2",
     "word-wrap": ">=1.2.5",
     "follow-redirects": ">=1.15.6",
-    "express": ">=4.19.2"
+    "express": ">=4.19.2",
+    "jose": ">=2.0.7",
+    "ip": ">=2.0.1",
+    "postcss": ">=8.4.33"
   },
   "packageManager": "yarn@3.6.4"
 }
