@@ -87,7 +87,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.20.0"],\
             ["express", "npm:4.19.2"],\
             ["express-nunjucks", "npm:2.2.5"],\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
@@ -3962,6 +3962,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@opentelemetry-semantic-conventions-npm-1.4.0-ca458407d1-9e8ac93f04.zip/node_modules/@opentelemetry/semantic-conventions/",\
           "packageDependencies": [\
             ["@opentelemetry/semantic-conventions", "npm:1.4.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@panva/asn1.js", [\
+        ["npm:1.0.0", {\
+          "packageLocation": "./.yarn/cache/@panva-asn1.js-npm-1.0.0-2bf51df722-cb6bcc1918.zip/node_modules/@panva/asn1.js/",\
+          "packageDependencies": [\
+            ["@panva/asn1.js", "npm:1.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8938,17 +8947,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["express-openid-connect", [\
-        ["npm:2.13.0", {\
-          "packageLocation": "./.yarn/cache/express-openid-connect-npm-2.13.0-80bd22325a-36f580794a.zip/node_modules/express-openid-connect/",\
+        ["npm:2.17.1", {\
+          "packageLocation": "./.yarn/cache/express-openid-connect-npm-2.17.1-ab6b29f7f6-96c27f8e1a.zip/node_modules/express-openid-connect/",\
           "packageDependencies": [\
-            ["express-openid-connect", "npm:2.13.0"]\
+            ["express-openid-connect", "npm:2.17.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0", {\
-          "packageLocation": "./.yarn/__virtual__/express-openid-connect-virtual-53f09bfe16/0/cache/express-openid-connect-npm-2.13.0-80bd22325a-36f580794a.zip/node_modules/express-openid-connect/",\
+        ["virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1", {\
+          "packageLocation": "./.yarn/__virtual__/express-openid-connect-virtual-7d2aa6e007/0/cache/express-openid-connect-npm-2.17.1-ab6b29f7f6-96c27f8e1a.zip/node_modules/express-openid-connect/",\
           "packageDependencies": [\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
             ["@types/express", "npm:4.17.17"],\
             ["base64url", "npm:3.0.1"],\
             ["clone", "npm:2.1.2"],\
@@ -8958,7 +8967,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["futoin-hkdf", "npm:1.5.2"],\
             ["http-errors", "npm:1.8.1"],\
             ["joi", "npm:17.9.1"],\
-            ["jose", "npm:5.2.4"],\
+            ["jose", "npm:2.0.7"],\
             ["on-headers", "npm:1.0.2"],\
             ["openid-client", "npm:4.9.1"],\
             ["url-join", "npm:4.0.1"]\
@@ -9116,7 +9125,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.20.0"],\
             ["express", "npm:4.19.2"],\
             ["express-nunjucks", "npm:2.2.5"],\
-            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.13.0"],\
+            ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
             ["express-session", "npm:1.17.3"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
@@ -11730,10 +11739,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jose", [\
-        ["npm:5.2.4", {\
-          "packageLocation": "./.yarn/cache/jose-npm-5.2.4-e36f68377d-81e1f4494f.zip/node_modules/jose/",\
+        ["npm:2.0.7", {\
+          "packageLocation": "./.yarn/cache/jose-npm-2.0.7-2ef7d608df-a8820108c0.zip/node_modules/jose/",\
           "packageDependencies": [\
-            ["jose", "npm:5.2.4"]\
+            ["jose", "npm:2.0.7"],\
+            ["@panva/asn1.js", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:4.15.5", {\
+          "packageLocation": "./.yarn/cache/jose-npm-4.15.5-15e487a3a1-7dde76447c.zip/node_modules/jose/",\
+          "packageDependencies": [\
+            ["jose", "npm:4.15.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13267,7 +13284,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["openid-client", "npm:4.9.1"],\
             ["aggregate-error", "npm:3.1.0"],\
             ["got", "npm:11.8.6"],\
-            ["jose", "npm:5.2.4"],\
+            ["jose", "npm:2.0.7"],\
             ["lru-cache", "npm:6.0.0"],\
             ["make-error", "npm:1.3.6"],\
             ["object-hash", "npm:2.2.0"],\
@@ -13279,7 +13296,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/openid-client-npm-5.6.1-dc7fdc5d76-9d939cec57.zip/node_modules/openid-client/",\
           "packageDependencies": [\
             ["openid-client", "npm:5.6.1"],\
-            ["jose", "npm:5.2.4"],\
+            ["jose", "npm:4.15.5"],\
             ["lru-cache", "npm:6.0.0"],\
             ["object-hash", "npm:2.2.0"],\
             ["oidc-token-hash", "npm:5.0.3"]\
