@@ -6479,9 +6479,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-openid-connect@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "express-openid-connect@npm:2.13.0"
+"express-openid-connect@npm:^2.17.1":
+  version: 2.17.1
+  resolution: "express-openid-connect@npm:2.17.1"
   dependencies:
     base64url: ^3.0.1
     clone: ^2.1.2
@@ -6496,7 +6496,7 @@ __metadata:
     url-join: ^4.0.1
   peerDependencies:
     express: ">= 4.17.0"
-  checksum: 36f580794a6267a4be04e1650c73674539da0057be2cd368489871249dd19ba62ae401ce6c978cb5ed93759f6019e14f12f51dd6483bd5ad2ce6f7af45c99c60
+  checksum: 96c27f8e1a4b4d41d311afc709d20a46089db81fccec1a650e3e4ed5cdff13e32e5b03de8ad1e86c19ae1d88f3e88c197858c0772355b70fecf91a84d84d3783
   languageName: node
   linkType: hard
 
@@ -6681,7 +6681,7 @@ __metadata:
     eslint: ^8.20.0
     express: ^4.19.2
     express-nunjucks: ^2.2.5
-    express-openid-connect: ^2.13.0
+    express-openid-connect: ^2.17.1
     express-session: ^1.17.3
     glob-parent: 6.0.2
     govuk-frontend: ^4.8.0
@@ -8001,7 +8001,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ip@npm:^2.0.0":
+"ip@npm:>=2.0.1":
   version: 2.0.1
   resolution: "ip@npm:2.0.1"
   checksum: d765c9fd212b8a99023a4cde6a558a054c298d640fec1020567494d257afd78ca77e37126b1a3ef0e053646ced79a816bf50621d38d5e768cdde0431fa3b0d35
@@ -10858,17 +10858,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.7":
-  version: 8.4.38
-  resolution: "postcss@npm:8.4.38"
-  dependencies:
-    nanoid: ^3.3.7
-    picocolors: ^1.0.0
-    source-map-js: ^1.2.0
-  checksum: 649f9e60a763ca4b5a7bbec446a069edf07f057f6d780a5a0070576b841538d1ecf7dd888f2fbfd1f76200e26c969e405aeeae66332e6927dbdc8bdcb90b9451
-  languageName: node
-  linkType: hard
-
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -12174,13 +12163,6 @@ __metadata:
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
-  languageName: node
-  linkType: hard
-
-"source-map-js@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "source-map-js@npm:1.2.0"
-  checksum: 791a43306d9223792e84293b00458bf102a8946e7188f3db0e4e22d8d530b5f80a4ce468eb5ec0bf585443ad55ebbd630bf379c98db0b1f317fd902500217f97
   languageName: node
   linkType: hard
 
