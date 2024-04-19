@@ -52,7 +52,7 @@ Running the linting with auto fix:
 $ yarn lint --fix
 ```
 
-### Running the tests
+### Running the tests.
 
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:
@@ -134,3 +134,4 @@ e.g. the ones verifying the state of each service it depends on.
 ## License
 
 This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
+

@@ -10,13 +10,14 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def secrets = [
   'fact-${env}': [
+    secret("oauth-client-secret", "OAUTH_CLIENT_SECRET"),
     secret("oauth-user", "OAUTH_USER"),
     secret("user-lock-timeout", "USER_LOCK_TIMEOUT"),
     secret("oauth-viewer-user", "OAUTH_VIEWER_USER"),
     secret("oauth-test-user-no-role", "OAUTH_TEST_USER_NO_ROLE"),
     secret("oauth-user-password", "OAUTH_USER_PASSWORD"),
     secret("oauth-super-user", "OAUTH_SUPER_USER"),
-    secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY")
+    secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY"),
   ]
 ]
 
@@ -30,6 +31,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline(type, product, component) {
+  env.API_URL = 'http://fact-api-aat.service.core-compute-aat.internal'
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
   syncBranchesWithMaster(['demo', 'perftest', 'ithc'])

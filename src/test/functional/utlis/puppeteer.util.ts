@@ -179,6 +179,8 @@ export const selectItem = async (selector: string, value: string) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const countElement = async (selector: string): Promise<number> => {
   try {
     const count = (await scope.page.$$(selector)).length;
