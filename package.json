@@ -171,7 +171,10 @@
     "express": ">=4.19.2",
     "minimist": "1.2.6",
     "postcss": "8.4.31",
-    "axios": "1.6.0"
+    "axios": "1.6.0",
+    "ip": ">=2.0.1",
+    "tar": ">=6.2.1",
+    "jose": ">=2.0.7"
   },
   "packageManager": "yarn@3.6.4"
 }
