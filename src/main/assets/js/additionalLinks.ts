@@ -20,6 +20,7 @@ export class AdditionalLinksController {
   private displayNameCyInputName = 'display_name_cy';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_additional-links';
+  private header = 'header';
 
   constructor() {
     this.initialise();
@@ -102,6 +103,8 @@ export class AdditionalLinksController {
     this.renameInputElement(this.displayNameInputName, this.displayNameInputName);
     this.renameInputElement(this.displayNameCyInputName, this.displayNameCyInputName);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
+    this.renameHeader(this.header, this.header);
+
   }
 
   private renameInputElement(name: string, id: string): void {
@@ -109,6 +112,12 @@ export class AdditionalLinksController {
       .attr('name', idx => this.getInputName(name, idx))
       .attr('id', idx => `${id}-${idx}`)
       .siblings('label').attr('for', idx => `${id}-${idx}`);
+  }
+
+  private renameHeader(name: string, id: string): void {
+    $(`${this.tabId} h3[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .text(idx => `Add New Additional Link ${idx+1}`)
   }
 
   private getInputName(name: string, index: number): string {
