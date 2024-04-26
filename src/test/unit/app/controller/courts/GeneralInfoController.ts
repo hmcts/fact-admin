@@ -137,6 +137,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: '',
+      errorHref: '',
       updated: false,
       nameFieldError: '',
       fatalError: false
@@ -180,6 +181,7 @@ describe('GeneralInfoController', () => {
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
+      errorHref: '',
       updated: false,
       nameFieldError: '',
       fatalError: false
@@ -208,6 +210,7 @@ describe('GeneralInfoController', () => {
         _csrf: CSRF.create()
       },
       errorMsg: controller.updateGeneralInfoErrorMsg,
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.blankNameErrorMsg,
       fatalError: false
@@ -233,6 +236,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: null,
       errorMsg: controller.getGeneralInfoErrorMsg,
+      errorHref: '',
       updated: false,
       nameFieldError: '',
       fatalError: true
@@ -256,6 +260,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateGeneralInfoErrorMsg,
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: '',
       fatalError: false
@@ -279,6 +284,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + 'court name',
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: 'Duplicated name',
       fatalError: false
@@ -299,6 +305,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfoInvalidCharacters,
       errorMsg: controller.updateGeneralInfoErrorMsg,
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.specialCharacterErrorMsg,
       fatalError: false
@@ -319,6 +326,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfoTooManyCharsForIntroParagraph,
       errorMsg: controller.updateIntroParagraphErrorMsg,
+      errorHref: '',
       updated: false,
       nameFieldError: '',
       fatalError: false
@@ -342,6 +350,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfo,
       errorMsg: controller.updateDuplicateGeneralInfoErrorMsg + courtGeneralInfo.name,
+      errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.duplicateNameErrorMsg,
       fatalError: false
@@ -362,6 +371,7 @@ describe('GeneralInfoController', () => {
     const expectedResult: CourtGeneralInfoData = {
       generalInfo: courtGeneralInfoOverCharacterLimit,
       errorMsg: controller.updateAlertErrorMsg,
+      errorHref: '',
       updated: false,
       nameFieldError: '',
       fatalError: false
