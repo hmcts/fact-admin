@@ -117,7 +117,7 @@ export class AdditionalLinksController {
   private renameHeader(name: string, id: string): void {
     $(`${this.tabId} h3[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
-      .text(idx => `Add New Additional Link ${idx+1}`)
+      .text(idx => `Add New Additional Link ${idx+1}`);
   }
 
   private getInputName(name: string, index: number): string {
