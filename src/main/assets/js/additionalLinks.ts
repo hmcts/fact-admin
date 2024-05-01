@@ -115,9 +115,13 @@ export class AdditionalLinksController {
   }
 
   private renameHeader(name: string, id: string): void {
+   // get the current elements Header.
+    const string  = $(`${this.tabId} h3[name$="[${name}]"]`).text()
+
+    // replace the index within the header.
     $(`${this.tabId} h3[name$="[${name}]"]`)
-      .attr('name', idx => this.getInputName(name, idx))
-      .text(idx => `Add New Additional Link ${idx+1}`);
+        .attr('name', idx => this.getInputName(name, idx))
+        .text().replace(string.slice(-1), idx =>`${idx+1}`);
   }
 
   private getInputName(name: string, index: number): string {
