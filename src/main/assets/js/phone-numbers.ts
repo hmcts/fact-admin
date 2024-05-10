@@ -23,6 +23,7 @@ export class PhoneNumbersController {
   private faxInputName = 'fax';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_phone-numbers';
+  private header = 'header';
 
   constructor() {
     this.initialize();
@@ -119,6 +120,7 @@ export class PhoneNumbersController {
     this.renameFormElement('input', this.explanationCyInputName);
     this.renameFormElement('input', this.faxInputName);
     this.renameFormElement('input', this.hiddenNewInputName);
+    this.renameHeader(this.header);
   }
 
   private renameFormElement(elementType: string, name: string): void {
@@ -126,6 +128,13 @@ export class PhoneNumbersController {
       .attr('name', idx => this.getInputName(`${name}`, idx))
       .attr('id', idx => `${name}-${idx}`)
       .siblings('label').attr('for', idx => `${name}-${idx}`);
+  }
+
+  private renameHeader(name: string): void {
+    // replace the index within the header.
+    $(`${this.tabId} h3[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .text(idx => `Add New Phone Number ${idx+1}`);
   }
 
   private updateContent(res: any): void {

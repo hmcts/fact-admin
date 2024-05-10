@@ -6,10 +6,13 @@ import {Contact, ContactPageData} from '../../../types/Contact';
 import {ContactType} from '../../../types/ContactType';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
+import {Error} from "../../../types/Error";
 
 @autobind
 export class ContactsController {
 
+  emptyDescriptionErrorMsg = 'Description is required for phone number ';
+  emptyNumberErrorMsg = 'Number is required for phone number ';
   emptyTypeOrNumberErrorMsg = 'Description and number are required for all phone number entries.';
   updateErrorMsg = 'A problem occurred when saving the phone numbers.';
   getContactsErrorMsg = 'A problem occurred when retrieving the phone numbers.';
@@ -24,7 +27,7 @@ export class ContactsController {
     req: AuthedRequest,
     res: Response,
     updated = false,
-    error = '',
+    errorMessages: Error[] = [],
     contacts: Contact[] = null): Promise<void> {
 
     const slug: string = req.params.slug;
@@ -34,22 +37,27 @@ export class ContactsController {
       // Get contacts from API and set the isNew property to false on each if API call successful.
       await req.scope.cradle.api.getContacts(slug)
         .then((value: Contact[]) => contacts = value.map(c => { c.isNew = false; return c; }))
-        .catch(() => {error += this.getContactsErrorMsg; fatalError= true; });
+        .catch(() => {errorMessages.push({text:this.getContactsErrorMsg}); fatalError= true; });
     }
 
     let types: ContactType[] = [];
     await req.scope.cradle.api.getContactTypes()
       .then((value: ContactType[]) => types = value)
-      .catch(() => {error += this.getContactTypesErrorMsg; fatalError= true;} );
+      .catch(() => {errorMessages.push({text:this.getContactTypesErrorMsg}); fatalError= true;} );
 
     if (!contacts?.some(c => c.isNew === true)) {
       this.addEmptyFormsForNewEntries(contacts);
     }
 
+    const errors: Error[] = [];
+    for (const msg of errorMessages) {
+      errors.push({text: msg.text, href: msg.href});
+    }
+
     const pageData: ContactPageData = {
       contacts: contacts,
       contactTypes: this.getContactTypesForSelect(types),
-      errorMsg: error,
+      errors: errors,
       updated: updated,
       fatalError: fatalError
     };
@@ -68,24 +76,27 @@ export class ContactsController {
     });
 
     if(!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, this.updateErrorMsg, contacts);
+      return this.get(req, res, false, [{text:this.updateErrorMsg}], contacts);
     }
 
     // Remove fully empty entries
     contacts = contacts.filter(c => !this.contactIsEmpty(c));
 
-    if (contacts.some(ot => (!ot.type_id && !ot.fax) || ot.number.trim() === '')) {
-      return this.get(req, res, false, this.emptyTypeOrNumberErrorMsg, contacts);
-    } else {
+    const errorMsg = this.getErrorMessages(contacts);
+    if (errorMsg.length > 0) {
+      return this.get(req, res, false, errorMsg, contacts);
+    }
+    // if (contacts.some(ot => (!ot.type_id && !ot.fax) || ot.number.trim() === '')) {
+    //   return this.get(req, res, false, this.emptyTypeOrNumberErrorMsg, contacts);
+    // } else {
       await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
-        .then((value: Contact[]) => this.get(req, res, true, '', value))
+        .then((value: Contact[]) => this.get(req, res, true, [], value))
         .catch(async (reason: AxiosError) => {
           const error = reason.response?.status === 409
             ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
             : this.updateErrorMsg;
-          await this.get(req, res, false, error, contacts);
+          await this.get(req, res, false, [{text:error}], contacts);
         });
-    }
   }
 
   private getContactTypesForSelect(standardTypes: ContactType[]): SelectItem[] {
@@ -108,4 +119,27 @@ export class ContactsController {
   private contactIsEmpty(contact: Contact): boolean {
     return (!contact.type_id && !contact.number?.trim() && !contact.explanation?.trim() && !contact.explanation_cy?.trim());
   }
+
+  /**
+   * getErrorMessages
+   * @param contacts - array of Contact model
+   * @return string[] - array of error messages
+   */
+  private getErrorMessages(numbers: Contact[]): Error[] {
+    const errorMsg: Error[] = [];
+
+    numbers.forEach((contact, index) => {
+
+      index = index + 1;
+      if (!contact.type_id) {
+        errorMsg.push({text: (this.emptyDescriptionErrorMsg + index + '.'), href: '#contactDescription-' + index});
+      }
+      if (contact.number === '') {
+        errorMsg.push({text: (this.emptyNumberErrorMsg + index + '.'), href: '#contactNumber-' + index});
+      }
+
+    })
+    return errorMsg;
+  }
+
 }

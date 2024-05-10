@@ -16,14 +16,10 @@
     target='_blank' rel='noopener noreferrer'>here</a>"})
 }}
 
-{% if errorMsg != '' %}
+{% if errors|length %}
   {{ govukErrorSummary({
     titleText: "There is a problem",
-    errorList: [
-      {
-        text: errorMsg
-      }
-    ]
+    errorList: errors
   }) }}
 {% endif %}
 
@@ -42,21 +38,25 @@
 
   {% set descriptionError = false %}
   {% if (contact.type_id === '') and (contact.fax === false) %}
-    {% set descriptionError = { text: 'Description is required' } %}
+    {% set descriptionError = { text: 'Description is required for phone number ' + loop.index } %}
   {% endif %}
 
   {% set numberError = false %}
   {% if contact.number === '' %}
-   {% set numberError = { text: 'Number is required' } %}
+   {% set numberError = { text: 'Number is required for phone number ' + loop.index} %}
   {% endif %}
 
   {% call govukFieldset({
     classes: "can-reorder"
   }) %}
 
-  {% if isNew === true %}
-    <h3 class="govuk-heading-s">Add New Phone Number</h3>
-  {% endif %}
+{% if isNew === false %}
+      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading">Phone Number {{loop.index}} </h3>
+    {% endif %}
+
+    {% if isNew === true %}
+      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading">Add New Phone Number {{loop.index}} </h3>
+    {% endif %}
 
   <input type="hidden" name={{"contacts[" + loop.index +"][isNew]"}} value={{contact.isNew}}></input>
 
@@ -169,7 +169,7 @@
   attributes: { id: "newPhoneNumberTemplate", disabled: "disabled", hidden: true }
 }) %}
 
-  <h3 class="govuk-heading-s">Add New Phone Number</h3>
+  <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading">Add New Phone Number {{links.length + 1}} </h3>
 
   <input type="hidden" name={{"contacts[" + contacts.length +"][isNew]"}} value="true"></input>
 
