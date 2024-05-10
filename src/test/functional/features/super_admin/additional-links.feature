@@ -47,16 +47,16 @@ Feature: Additional-links
   Scenario: Prevent blank entries being added
     When When I enter a new Additional Links entry by adding URL "https://www.gov.uk/find-court-tribunal" and leave display name field blank
     And I click save Additional Links
-    Then An error is displayed for additional links with summary "URL and display name are required for all additional links." and display name field message "Display name is required"
+    Then An error is displayed for additional links with summary "Display name is required for additional link 1." and display name field message "Display name is required"
     When I clear additional link fields
     And When I enter a new Additional Links entry by adding english display name "English" and leave URL field blank
     And I click save Additional Links
-    Then An error is displayed for additional links with summary "URL and display name are required for all additional links." and URL field message "URL is required"
+    Then An error is displayed for additional links with summary "URL is required for additional link 1." and URL field message "URL is required"
 
   Scenario: URL format check
     When I enter a new Additional Links entry by adding URL "find-court-tribunal" display name "englishName1" and welsh display name "welshName1"
     And I click save Additional Links
-    Then An error is displayed for additional links with summary "All URLs must be in valid format" and URL field message "Invalid URL format"
+    Then An error is displayed for additional links with summary "URL must be in valid format for additional link 1." and URL field message "Invalid URL format"
 
   Scenario: Prevent duplicated entries being added
     When I enter a new Additional Links entry by adding URL "https://www.gov.uk/find-court-tribunal" display name "englishName1" and welsh display name "welshName1"

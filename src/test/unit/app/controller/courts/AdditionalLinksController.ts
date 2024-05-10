@@ -87,7 +87,7 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyUrl,
       updated: false,
-      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}],
+      errors: [{text: controller.emptyUrlErrorMsg +'1.', href: '#url-1'}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
@@ -113,7 +113,7 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithEmptyDisplayName,
       updated: false,
-      errors: [{text: controller.emptyUrlOrDisplayNameErrorMsg}],
+      errors: [{text: controller.emptyDisplayNameErrorMsg + '1.', href:'#display_name-1'}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
@@ -139,7 +139,7 @@ describe('AdditionalLinksController', () => {
     const expectedResults: AdditionalLinkData = {
       links: linksWithUrlInvalidFormat,
       updated: false,
-      errors: [{text: controller.invalidUrlFormatErrorMsg}],
+      errors: [{text: controller.invalidUrlFormatErrorMsg + '1.', href: '#url-1'}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith(additionalLinksPage, expectedResults);
@@ -223,8 +223,9 @@ describe('AdditionalLinksController', () => {
       links: linksWithMultipleErrors,
       updated: false,
       errors: [
-        {text: controller.emptyUrlOrDisplayNameErrorMsg},
-        {text: controller.invalidUrlFormatErrorMsg},
+        {text: controller.invalidUrlFormatErrorMsg + '3.', href: '#url-3'},
+        {text: controller.emptyUrlErrorMsg +'4.', href:'#url-4'},
+        {text: controller.emptyDisplayNameErrorMsg + '4.', href:'#display_name-4'},
         {text: controller.urlDuplicatedErrorMsg}
       ],
       fatalError: false

@@ -10,10 +10,11 @@ import {AxiosError} from 'axios';
 @autobind
 export class AdditionalLinksController {
 
-  emptyUrlOrDisplayNameErrorMsg = 'URL and display name are required for all additional links.';
+  emptyUrlErrorMsg = 'URL is required for additional link ';
+  emptyDisplayNameErrorMsg = 'Display name is required for additional link ';
   urlDuplicatedErrorMsg = 'All URLs must be unique.';
   displayNameDuplicatedErrorMsg = 'All display names must be unique.';
-  invalidUrlFormatErrorMsg = 'All URLs must be in valid format';
+  invalidUrlFormatErrorMsg = 'URL must be in valid format for additional link ';
   getAdditionalLinksErrorMsg = 'A problem occurred when retrieving the additional links.';
   updateAdditionalLinksErrorMsg = 'A problem occurred when saving the additional links.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
@@ -26,7 +27,7 @@ export class AdditionalLinksController {
     req: AuthedRequest,
     res: Response,
     updated = false,
-    errorMessages: string[] = [],
+    errorMessages: Error[] = [],
     links: AdditionalLink[] = null): Promise<void> {
 
     const slug: string = req.params.slug;
@@ -36,7 +37,7 @@ export class AdditionalLinksController {
       // Retrieve additional links from API and set the isNew property to false on all existing link entries.
       await req.scope.cradle.api.getCourtAdditionalLinks(slug)
         .then((value: AdditionalLink[]) => links = value.map(e => { e.isNew = false; return e; }))
-        .catch(() => {errorMessages.push(this.getAdditionalLinksErrorMsg); fatalError = true;});
+        .catch(() => {errorMessages.push({text:this.getAdditionalLinksErrorMsg}); fatalError = true;});
     }
 
     if (!links?.some(e => e.isNew === true)) {
@@ -45,7 +46,7 @@ export class AdditionalLinksController {
 
     const errors: Error[] = [];
     for (const msg of errorMessages) {
-      errors.push({text: msg});
+      errors.push({text: msg.text, href: msg.href});
     }
 
     const pageData: AdditionalLinkData = {
@@ -65,7 +66,7 @@ export class AdditionalLinksController {
     links.forEach(l => l.isNew = (l.isNew === true) || ((l.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, [this.updateAdditionalLinksErrorMsg], links);
+      return this.get(req, res, false, [{text:this.updateAdditionalLinksErrorMsg}], links);
     }
 
     // Remove fully empty entries
@@ -82,7 +83,7 @@ export class AdditionalLinksController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateAdditionalLinksErrorMsg;
-        await this.get(req, res, false, [error], links);
+        await this.get(req, res, false, [{text:error}], links);
       });
   }
   /**
@@ -119,29 +120,32 @@ export class AdditionalLinksController {
    * @param links - array of AdditionalLink model
    * @return string[] - array of error messages
    */
-  private getErrorMessages(links: AdditionalLink[]): string[] {
-    const errorMsg: string[] = [];
-    if (links.some(link => link.url === '' || link.display_name === '')) {
-      errorMsg.push(this.emptyUrlOrDisplayNameErrorMsg);
-    }
+  private getErrorMessages(links: AdditionalLink[]): Error[] {
+    const errorMsg: Error[] = [];
 
-    let hasInvalidFormat = false;
-    for (const link of links) {
-      if (link.url && !validateUrlFormat(link.url)) {
-        link.isInvalidFormat = true;
-        hasInvalidFormat = true;
+    links.forEach((link, index) => {
+
+      index = index + 1;
+      if (link.url === '')
+      {
+        errorMsg.push({text: (this.emptyUrlErrorMsg +index+'.') , href: '#url-'+ index});
       }
-    }
-    if (hasInvalidFormat) {
-      errorMsg.push(this.invalidUrlFormatErrorMsg);
-    }
+      if (link.display_name === '')
+      {
+        errorMsg.push({text: (this.emptyDisplayNameErrorMsg +index+'.') , href: '#display_name-'+ index });
+      }
+      else if (link.url && !validateUrlFormat(link.url)) {
+        link.isInvalidFormat = true;
+        errorMsg.push({text: (this.invalidUrlFormatErrorMsg +index+'.') , href: '#url-'+ index});
+      }
+    });
 
     if (!validateDuplication(links, this.urlDuplicated)) {
-      errorMsg.push(this.urlDuplicatedErrorMsg);
+      errorMsg.push({text:this.urlDuplicatedErrorMsg});
     }
 
     if (!validateNameDuplication(links, this.displayNameDuplicated)) {
-      errorMsg.push(this.displayNameDuplicatedErrorMsg);
+      errorMsg.push({text:this.displayNameDuplicatedErrorMsg});
     }
     return errorMsg;
   }

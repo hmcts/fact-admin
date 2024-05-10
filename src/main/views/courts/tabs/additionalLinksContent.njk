@@ -26,31 +26,30 @@
 
   {% set isNew = (link.isNew === true) or (link.isNew === "true") %}
 
-  {% set urlError = false %}
-  {% if link.url === '' %}
-    {% set urlError = { text: 'URL is required' } %}
-  {% elif link.isDuplicated === true %}
-    {% set urlError = { text: 'Duplicated URL' } %}
-  {% elif link.isInvalidFormat === true %}
-    {% set urlError = { text: 'Invalid URL format' } %}
-  {% endif %}
 
-  {% set displayNameError = false %}
-  {% if link.display_name === '' %}
-    {% set displayNameError = { text: 'Display name is required' } %}
-  {% elif link.isNameDuplicated === true %}
-    {% set displayNameError = { text: 'Duplicated display name' } %}
-  {% endif %}
 
   {% call govukFieldset({
     classes: "can-reorder"
   }) %}
 
+    {% if isNew === false %}
+      <h3 class="govuk-heading-s" name={{"additionalLinks[" + links.length +"][header]"}} id="heading">Additional Link {{loop.index}} </h3>
+    {% endif %}
+
     {% if isNew === true %}
-      <h3 class="govuk-heading-s">Add New Additional Link</h3>
+      <h3 class="govuk-heading-s" name={{"additionalLinks[" + links.length +"][header]"}} id="heading">Add New Additional Link {{loop.index}} </h3>
     {% endif %}
 
     <input type="hidden" name={{"additionalLinks[" + loop.index +"][isNew]"}} value={{link.isNew}}></input>
+  {% set urlError = false %}
+  {% if link.url === '' %}
+    {% set urlError = { text: 'URL is required' + ' for additional link ' + loop.index } %}
+  {% elif link.isDuplicated === true %}
+    {% set urlError = { text: 'Duplicated URL' } %}
+  {% elif link.isInvalidFormat === true %}
+    {% set urlError = { text: 'Invalid URL format' + ' for additional link ' + loop.index } %}
+  {% endif %}
+
 
     {{ govukInput({
       label: {
@@ -62,6 +61,13 @@
       value: link.url,
       errorMessage: urlError
     }) }}
+
+  {% set displayNameError = false %}
+  {% if link.display_name === '' %}
+    {% set displayNameError = { text: 'Display name is required ' + 'for additional link ' + loop.index   } %}
+  {% elif link.isNameDuplicated === true %}
+    {% set displayNameError = { text: 'Duplicated display name' } %}
+  {% endif %}
 
     {{ govukInput({
       label: {
@@ -135,7 +141,7 @@
 
   <input type="hidden" name={{"additionalLinks[" + links.length +"][isNew]"}} value="true"/>
 
-  <h3 class="govuk-heading-s">Add New Additional Link</h3>
+  <h3 class="govuk-heading-s" name={{"additionalLinks[" + links.length +"][header]"}} id="heading">Add New Additional Link {{links.length + 1}} </h3>
 
   {{ govukInput({
     label: {

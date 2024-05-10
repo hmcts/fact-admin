@@ -46,10 +46,10 @@ Feature: Opening Hours
   Scenario: Prevent blank entries being added
     When I enter an incomplete opening hour description
     And I click save
-    Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and description field message "Description is required"
+    Then An error is displayed for opening hours with summary "Description is required for Opening Hour 1." and description field message "Description is required"
     When I left the opening hours blank and select description at index 6
     And I click save
-    Then An error is displayed for opening hours with summary "Description and hours are required for all opening times." and hours field message "Hours is required"
+    Then An error is displayed for opening hours with summary "Hours are required for Opening Hour 1." and hours field message "Hours is required"
 
   Scenario: Prevent duplicated entries being added
    # When I remove all existing opening hours entries and save

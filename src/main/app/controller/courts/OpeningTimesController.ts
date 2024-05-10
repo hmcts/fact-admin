@@ -12,7 +12,8 @@ import {AxiosError} from 'axios';
 @autobind
 export class OpeningTimesController {
 
-  emptyTypeOrHoursErrorMsg = 'Description and hours are required for all opening times.';
+  emptyDescriptionErrorMsg = 'Description is required for Opening Hour ';
+  emptyHoursErrorMsg = 'Hours are required for Opening Hour ';
   openingTimeDuplicatedErrorMsg = 'All descriptions must be unique.';
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
   getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
@@ -26,7 +27,7 @@ export class OpeningTimesController {
     req: AuthedRequest,
     res: Response,
     updated = false,
-    errorMsg: string[] = [],
+    errorMsg: Error[] = [],
     openingTimes: OpeningTime[] = null): Promise<void> {
     let fatalError = false;
     const slug: string = req.params.slug;
@@ -39,7 +40,7 @@ export class OpeningTimesController {
           return ot;
         }))
         .catch(() => {
-          errorMsg.push(this.getOpeningTimesErrorMsg);
+          errorMsg.push({text:this.getOpeningTimesErrorMsg});
           fatalError = true;
         });
     }
@@ -48,7 +49,7 @@ export class OpeningTimesController {
     await req.scope.cradle.api.getOpeningTimeTypes()
       .then((value: OpeningType[]) => types = value)
       .catch(() => {
-        errorMsg.push(this.getOpeningTypesErrorMsg);
+        errorMsg.push({text:this.getOpeningTypesErrorMsg});
         fatalError = true;
       });
 
@@ -58,7 +59,7 @@ export class OpeningTimesController {
 
     const errors: Error[] = [];
     for (const msg of errorMsg) {
-      errors.push({text: msg});
+      errors.push({text: msg.text, href: msg.href});
     }
 
     const pageData: OpeningTimeData = {
@@ -80,19 +81,28 @@ export class OpeningTimesController {
     openingTimes.forEach(ot => ot.isNew = (ot.isNew === true) || ((ot.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, [this.updateErrorMsg], openingTimes);
+      return this.get(req, res, false, [{text:this.updateErrorMsg}], openingTimes);
     }
 
     // Remove fully empty entries
     openingTimes = openingTimes.filter(ot => !this.openingHoursEntryIsEmpty(ot));
-    const errorMsg: string[] = [];
+    const errorMsg: Error[] = [];
 
-    if (openingTimes.some(ot => !ot.type_id || ot.hours === '')) {
-      errorMsg.push(this.emptyTypeOrHoursErrorMsg);
-    }
+    openingTimes.forEach((ot, index) => {
+
+      index = index + 1;
+      if (!ot.type_id)
+      {
+        errorMsg.push({text: (this.emptyDescriptionErrorMsg +index+'.') , href: '#description-'+ index});
+      }
+      else if (ot.hours === '')
+      {
+        errorMsg.push({text: (this.emptyHoursErrorMsg +index+'.') , href: '#hours-'+ index });
+      }
+    });
 
     if (!validateDuplication(openingTimes, this.openingHoursDuplicated)) {
-      errorMsg.push(this.openingTimeDuplicatedErrorMsg);
+      errorMsg.push({text:this.openingTimeDuplicatedErrorMsg});
     }
 
     if (errorMsg.length > 0) {
@@ -105,7 +115,7 @@ export class OpeningTimesController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        await this.get(req, res, false, [error], openingTimes);
+        await this.get(req, res, false, [{text:error}], openingTimes);
       });
   }
   /**
