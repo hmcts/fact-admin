@@ -43,6 +43,7 @@ Feature: Facilities
     When I enter facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     And An error is displayed for facilities with summary "All facilities must be unique." and field message "Duplicated facility"
+#    This is addressed in ticket FACT-1772 (please remove this line when the ticket is resolved)
 #    When I click clear in the facilities tab
 #    And I click save in the facilities tab
 #    Then a green message is displayed for updated facilities "Court Facilities updated"
