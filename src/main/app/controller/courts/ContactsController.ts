@@ -13,7 +13,6 @@ export class ContactsController {
 
   emptyDescriptionErrorMsg = 'Description is required for phone number ';
   emptyNumberErrorMsg = 'Number is required for phone number ';
-  emptyTypeOrNumberErrorMsg = 'Description and number are required for all phone number entries.';
   updateErrorMsg = 'A problem occurred when saving the phone numbers.';
   getContactsErrorMsg = 'A problem occurred when retrieving the phone numbers.';
   getContactTypesErrorMsg = 'A problem occurred when retrieving the phone number types.';
@@ -88,13 +87,13 @@ export class ContactsController {
     }
 
     await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
-        .then((value: Contact[]) => this.get(req, res, true, [], value))
-        .catch(async (reason: AxiosError) => {
-          const error = reason.response?.status === 409
-            ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
-            : this.updateErrorMsg;
-          await this.get(req, res, false, [{text:error}], contacts);
-        });
+      .then((value: Contact[]) => this.get(req, res, true, [], value))
+      .catch(async (reason: AxiosError) => {
+        const error = reason.response?.status === 409
+          ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
+          : this.updateErrorMsg;
+        await this.get(req, res, false, [{text:error}], contacts);
+      });
   }
 
   private getContactTypesForSelect(standardTypes: ContactType[]): SelectItem[] {
@@ -136,8 +135,8 @@ export class ContactsController {
         errorMsg.push({text: (this.emptyNumberErrorMsg + index + '.'), href: '#contactNumber-' + index});
       }
 
-    })
+    });
     return errorMsg;
-  };
+  }
 
 }
