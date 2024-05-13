@@ -6,7 +6,7 @@ import {Contact, ContactPageData} from '../../../types/Contact';
 import {ContactType} from '../../../types/ContactType';
 import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
-import {Error} from "../../../types/Error";
+import {Error} from '../../../types/Error';
 
 @autobind
 export class ContactsController {
@@ -86,10 +86,8 @@ export class ContactsController {
     if (errorMsg.length > 0) {
       return this.get(req, res, false, errorMsg, contacts);
     }
-    // if (contacts.some(ot => (!ot.type_id && !ot.fax) || ot.number.trim() === '')) {
-    //   return this.get(req, res, false, this.emptyTypeOrNumberErrorMsg, contacts);
-    // } else {
-      await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
+
+    await req.scope.cradle.api.updateContacts(req.params.slug, contacts)
         .then((value: Contact[]) => this.get(req, res, true, [], value))
         .catch(async (reason: AxiosError) => {
           const error = reason.response?.status === 409
@@ -140,6 +138,6 @@ export class ContactsController {
 
     })
     return errorMsg;
-  }
+  };
 
 }
