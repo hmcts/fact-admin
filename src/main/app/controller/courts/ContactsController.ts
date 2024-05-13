@@ -128,7 +128,7 @@ export class ContactsController {
     numbers.forEach((contact, index) => {
 
       index = index + 1;
-      if (!contact.type_id) {
+      if (!contact.type_id && !contact.fax) {
         errorMsg.push({text: (this.emptyDescriptionErrorMsg + index + '.'), href: '#contactDescription-' + index});
       }
       if (contact.number === '') {
