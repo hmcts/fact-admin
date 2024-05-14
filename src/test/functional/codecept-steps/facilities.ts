@@ -4,25 +4,25 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 
 import {I} from '../utlis/codecept-util';
 
-When('I click the facilities tab', async () => {
+When('I click the facilities tab', () => {
   const selector = '#tab_court-facilities';
-  await I.moveCursorTo(selector);
-  await I.click(selector);
-  await I.moveCursorTo('#court-name'); //move away from the tab list
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
 });
 
 When('I remove all existing facility entries and save', async () => {
   const numFacilities = await I.grabNumberOfVisibleElements('//button[@name="deleteFacility"]');
   if(numFacilities > 0) {
-    await I.click('//button[@name="deleteFacility"]');
+    I.click('//button[@name="deleteFacility"]');
     await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'saveFacilities');
   }
 });
 
-Then('a green message is displayed for updated facilities {string}', async (msgUpdated: string) => {
+Then('a green message is displayed for updated facilities {string}', (msgUpdated: string) => {
   const selector = '//*[@id="courtFacilitiesContent"]/div/h1';
-  await I.seeElement(selector);
-  await I.see(msgUpdated, selector);
+  I.seeElement(selector);
+  I.see(msgUpdated, selector);
 });
 
 When('I enter facility {string} and enter description in english {string} and welsh {string}', async (facility: string, englishDescription: string, welshDescription: string) => {
@@ -32,7 +32,7 @@ When('I enter facility {string} and enter description in english {string} and we
   const selectorIndex = entryFormIdx + 1;
 
   const facilityOptionSelector = '//select[@id="name-1"]';
-  await I.seeElement(facilityOptionSelector);
+  I.seeElement(facilityOptionSelector);
   //use grabHTMLFrom to get the innerHTML of the select element
   //then use regex to create an array of all facilites
   //then shift to remove the first one because it is blank
@@ -49,13 +49,11 @@ When('I enter facility {string} and enter description in english {string} and we
   if(entryFormIdx > 0 )
     facilityIdx += 1;
 
-  await I.selectOption('//select[@id="name-'+selectorIndex+'"]', facility);
-  await I.doubleClick('//*[@id="description-'+selectorIndex+'_ifr"]');
-  await I.type(englishDescription);
-  await I.doubleClick('//*[@id="descriptionCy-'+selectorIndex+'_ifr"]');
-  await I.type(welshDescription);
-
-
+  I.selectOption('//select[@id="name-' + selectorIndex + '"]', facility);
+  I.doubleClick('//*[@id="description-' + selectorIndex + '_ifr"]');
+  I.type(englishDescription);
+  I.doubleClick('//*[@id="descriptionCy-'+selectorIndex+'_ifr"]');
+  I.type(welshDescription);
 });
 
 When('I enter description in english {string}', async (englishDescription: string) => {
@@ -67,8 +65,8 @@ When('I enter description in english {string}', async (englishDescription: strin
   // select element doesn't contain an empty entry.
 
   const selectorIndex = entryFormIdx + 1;
-  await I.doubleClick('//*[@id="description-'+selectorIndex+'_ifr"]');
-  await I.type(englishDescription);
+  I.doubleClick('//*[@id="description-'+selectorIndex+'_ifr"]');
+  I.type(englishDescription);
 });
 
 When('I click on add new facility', async () => {
@@ -111,12 +109,12 @@ Then('the facility entry in last position has index {string} description in engl
   const englishDescriptionSelector = '//*[@id="description-' + selectorIndex + '_ifr"]';
   const welshDescriptionSelector = '//*[@id="descriptionCy-' + selectorIndex + '_ifr"]';
 
-  await I.doubleClick(englishDescriptionSelector);
+  I.doubleClick(englishDescriptionSelector);
   within({frame: englishDescriptionSelector}, () => {
     I.seeElement('#tinymce');
     I.see(englishDescription);
   });
-  await I.doubleClick(welshDescriptionSelector);
+  I.doubleClick(welshDescriptionSelector);
   within({frame: welshDescriptionSelector}, () => {
     I.seeElement('#tinymce');
     I.see(welshDescription);
@@ -140,56 +138,56 @@ When('I click the remove button under newly added facility entries', async () =>
   await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
   const numFacilities = await I.grabNumberOfVisibleElements('//button[@name="deleteFacility"]');
   if(numFacilities > 0) {
-    await I.click('//button[@name="deleteFacility"]');
+    I.click('//button[@name="deleteFacility"]');
   }
 });
 
 Then('there are no facility entries', async () => {
-  await I.dontSeeElement('//select[@id="name-2"]');
+  I.dontSeeElement('//select[@id="name-2"]');
 });
 
-When('An error is displayed for facilities with summary {string} and field message {string}', async (summary: string, message: string) => {
+When('An error is displayed for facilities with summary {string} and field message {string}', (summary: string, message: string) => {
   const titleSelector = '//*[@id="courtFacilitiesContent"]/div/div/h2';
-  await I.seeElement(titleSelector);
-  await I.seeTextEquals('There is a problem', titleSelector);
+  I.seeElement(titleSelector);
+  I.seeTextEquals('There is a problem', titleSelector);
 
   const summarySelector = '//*[@id="courtFacilitiesContent"]/div/div/div/ul/li';
-  await I.seeElement(summarySelector);
-  await I.seeTextEquals(summary, summarySelector);
+  I.seeElement(summarySelector);
+  I.seeTextEquals(summary, summarySelector);
 
   const feildErrorSelector = '//*[@id="name-1-error"]';
-  await I.seeElement(feildErrorSelector);
-  await I.see(message, feildErrorSelector);
+  I.seeElement(feildErrorSelector);
+  I.see(message, feildErrorSelector);
   const secondfeildErrorSelector = '//*[@id="name-2-error"]';
-  await I.seeElement(secondfeildErrorSelector);
-  await I.see(message, secondfeildErrorSelector);
+  I.seeElement(secondfeildErrorSelector);
+  I.see(message, secondfeildErrorSelector);
 
 });
 
-When('An error is displayed for facilities with summary {string} and description field message {string}', async (summary: string, message: string) => {
+When('An error is displayed for facilities with summary {string} and description field message {string}', (summary: string, message: string) => {
   const titleSelector = '//*[@id="courtFacilitiesContent"]/div/div/h2';
-  await I.seeElement(titleSelector);
-  await I.seeTextEquals('There is a problem', titleSelector);
+  I.seeElement(titleSelector);
+  I.seeTextEquals('There is a problem', titleSelector);
 
   const summarySelector = '//*[@id="courtFacilitiesContent"]/div/div/div/ul/li';
-  await I.seeElement(summarySelector);
-  await I.seeTextEquals(summary, summarySelector);
+  I.seeElement(summarySelector);
+  I.seeTextEquals(summary, summarySelector);
 
   const feildErrorSelector = '//*[@id="description-1-error"]';
-  await I.seeElement(feildErrorSelector);
-  await I.see(message, feildErrorSelector);
+  I.seeElement(feildErrorSelector);
+  I.see(message, feildErrorSelector);
 });
 
-When('An error is displayed for facilities with summary {string} and name field message {string}', async (summary: string, message: string) => {
+When('An error is displayed for facilities with summary {string} and name field message {string}', (summary: string, message: string) => {
   const titleSelector = '//*[@id="courtFacilitiesContent"]/div/div/h2';
-  await I.seeElement(titleSelector);
-  await I.seeTextEquals('There is a problem', titleSelector);
+  I.seeElement(titleSelector);
+  I.seeTextEquals('There is a problem', titleSelector);
 
   const summarySelector = '//*[@id="courtFacilitiesContent"]/div/div/div/ul/li';
-  await I.seeElement(summarySelector);
-  await I.seeTextEquals(summary, summarySelector);
+  I.seeElement(summarySelector);
+  I.seeTextEquals(summary, summarySelector);
 
   const feildErrorSelector = '//*[@id="name-1-error"]';
-  await I.seeElement(feildErrorSelector);
-  await I.see(message, feildErrorSelector);
+  I.seeElement(feildErrorSelector);
+  I.see(message, feildErrorSelector);
 });
