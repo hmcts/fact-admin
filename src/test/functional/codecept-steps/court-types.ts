@@ -3,17 +3,17 @@ import { I } from '../utlis/codecept-util';
 // import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 
-When('I hover over nav element', async () => {
+When('I hover over nav element', () => {
   const selector = '#nav';
-  await I.seeElement(selector);
-  await I.moveCursorTo(selector);
+  I.seeElement(selector);
+  I.moveCursorTo(selector);
 });
 
-When('I click the types tab', async () => {
+When('I click the types tab', () => {
   const selector = '#tab_court-types';
-  await I.moveCursorTo(selector);
-  await I.click(selector);
-  await I.moveCursorTo('#court-name'); //move away from the tab list
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
 });
 
 //

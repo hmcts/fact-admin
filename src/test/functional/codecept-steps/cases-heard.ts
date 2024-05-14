@@ -4,7 +4,7 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 // import {expect} from 'chai';
 // import {FunctionalTestHelpers} from '../utlis/helpers';
 //
-When('I click the cases heard tab',() => {
+When('I click the cases heard tab', () => {
   const selector = '#tab_cases-heard';
   I.moveCursorTo(selector);
   I.click(selector);
