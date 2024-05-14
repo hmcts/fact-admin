@@ -4,11 +4,11 @@ import {FunctionalTestHelpers} from '../utlis/helpers';
 // import {expect} from 'chai';
 // import {FunctionalTestHelpers} from '../utlis/helpers';
 //
-When('I click the cases heard tab', async () => {
+When('I click the cases heard tab',() => {
   const selector = '#tab_cases-heard';
-  await I.moveCursorTo(selector);
-  await I.click(selector);
-  await I.moveCursorTo('#court-name'); //move away from the tab list
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
 });
 
 When('I will make sure Adoption is selected', async () => {
