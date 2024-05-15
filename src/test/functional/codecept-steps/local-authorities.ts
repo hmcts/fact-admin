@@ -52,6 +52,12 @@ When('I select {string}', async (areaOfLaw: string) => {
   await I.checkOption(selector);
 });
 
+When('I deselect {string}', async (areaOfLaw: string) => {
+  const selector = '//*[@id="397353"]';
+  await I.seeElement(selector);
+  await I.uncheckOption(selector);
+});
+
 When('I click on local authorities save button', async () => {
   await FunctionalTestHelpers.clickButton('#localAuthoritiesTab', 'saveLocalAuthorities');
 });

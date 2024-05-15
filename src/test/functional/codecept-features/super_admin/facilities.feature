@@ -8,7 +8,7 @@ Feature: Facilities
     And I hover over nav element
     And I click the facilities tab
 
-  Scenario: As a user I should be able to add and remove facilities successfully
+  Scenario: As a user I should be able to add and remove facilities successfully @special
     When I enter facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click on add new facility
     When I enter facility "Video facilities" and enter description in english "englishDescription" and welsh "welshDescription"
@@ -23,7 +23,7 @@ Feature: Facilities
     And there are no facility entries
     And the court is cleaned up through the API
 
-  Scenario: As a user I should not be allowed to add duplicate facilities case: when 1 entry exist in the database and 1 new entry
+  Scenario: As a user I should not be allowed to add duplicate facilities case: when 1 entry exist in the database and 1 new entry @special
     When I enter facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click save in the facilities tab
     Then a green message is displayed for updated facilities "Court Facilities updated"
@@ -36,7 +36,7 @@ Feature: Facilities
     And there are no facility entries
     And the court is cleaned up through the API
 
-  Scenario: As a user I should not be allowed to add duplicate facilities case: when both entries are new
+  Scenario: As a user I should not be allowed to add duplicate facilities case: when both entries are new @special
 
     When I enter facility "Parking" and enter description in english "englishDescription" and welsh "welshDescription"
     And I click on add new facility
@@ -49,7 +49,7 @@ Feature: Facilities
 #    Then a green message is displayed for updated facilities "Court Facilities updated"
     And the court is cleaned up through the API
 
-  Scenario: Prevent blank entries being added
+  Scenario: Prevent blank entries being added @special
 
     When I enter facility "Parking" and enter description in english "" and welsh ""
     And I click save in the facilities tab

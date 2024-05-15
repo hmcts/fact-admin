@@ -20,10 +20,13 @@ Feature: Local authorities
     And I hover over nav element
     And I click the local authorities tab
 
-  Scenario Outline: Local authorities updated successfully
+  Scenario Outline: Local authorities updated successfully @special
 
     And I select area of law "<area_of_law>"
     And I select "<local_authority_name>"
+    And I click on local authorities save button
+    Then Success message is displayed for local authorities with summary "Local authorities updated"
+    And I deselect "<local_authority_name>"
     And I click on local authorities save button
     Then Success message is displayed for local authorities with summary "Local authorities updated"
     And the court is cleaned up through the API
@@ -32,7 +35,7 @@ Feature: Local authorities
       | area_of_law | local_authority_name                 |
       | Adoption    | Barking and Dagenham Borough Council |
 
-  Scenario: When there are no area of law selected for the chosen court user should get proper error message when he clicks on local authorities
+  Scenario: When there are no area of law selected for the chosen court user should get proper error message when he clicks on local authorities @special
 
     And I hover over nav element
     And I click the cases heard tab
@@ -43,7 +46,7 @@ Feature: Local authorities
     Then An error is displayed for local authorities with title "There is a problem" and summery "You need to enable relevant family court areas of law"
     And the court is cleaned up through the API
 
-  Scenario: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user
+  Scenario: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user @special
 
     When I hover over nav element
     And I click the types tab
