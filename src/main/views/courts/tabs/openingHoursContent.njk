@@ -40,23 +40,27 @@
 
   {% set descriptionError = false %}
   {% if openingTime.type_id === '' %}
-    {% set descriptionError = { text: 'Description is required' } %}
+    {% set descriptionError = { text: 'Description is required for opening hours ' + loop.index} %}
   {% elif openingTime.isDuplicated === true %}
     {% set descriptionError = { text: 'Duplicated description' } %}
   {% endif %}
 
   {% set hoursError = false %}
   {% if openingTime.hours === '' %}
-   {% set hoursError = { text: 'Hours is required' } %}
+   {% set hoursError = { text: 'Hours is required for opening hours ' + loop.index } %}
   {% endif %}
 
   {% call govukFieldset({
     classes: "can-reorder"
   }) %}
 
-  {% if isNew === true %}
-    <h3 class="govuk-heading-s">Add New Opening Hours</h3>
-  {% endif %}
+      {% if isNew === false %}
+        <h3 class="govuk-heading-s" name={{"opening_times[" + openingTime.length +"][header]"}} id="heading">Opening Hours {{loop.index}} </h3>
+      {% endif %}
+
+      {% if isNew === true %}
+        <h3 class="govuk-heading-s" name={{"opening_times[" + openingTime.length +"][header]"}} id="heading">Add New Opening Hours {{loop.index}} </h3>
+      {% endif %}
 
   <input type="hidden" name={{"opening_times[" + loop.index +"][isNew]"}} value={{openingTime.isNew}}></input>
 
@@ -133,7 +137,7 @@
   attributes: { id: "newOpeningTimeTemplate", disabled: "disabled", hidden: true }
 }) %}
 
-  <h3 class="govuk-heading-s">Add New Opening Hours</h3>
+  <h3 class="govuk-heading-s" name={{"opening_times[" + links.length +"][header]"}} id="heading">Add New Opening Hours {{opening_times.length + 1}} </h3>
 
   <input type="hidden" name={{"opening_times[" + opening_times.length +"][isNew]"}} value="true"></input>
 

@@ -12,8 +12,8 @@ import {AxiosError} from 'axios';
 @autobind
 export class OpeningTimesController {
 
-  emptyDescriptionErrorMsg = 'Description is required for Opening Hour ';
-  emptyHoursErrorMsg = 'Hours are required for Opening Hour ';
+  emptyDescriptionErrorMsg = 'Description is required for Opening Hours ';
+  emptyHoursErrorMsg = 'Hours are required for Opening Hours ';
   openingTimeDuplicatedErrorMsg = 'All descriptions must be unique.';
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
   getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
