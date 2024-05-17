@@ -20,11 +20,11 @@ When('I will make sure Family court type is selected', async () => {
   if(checked == 'false') {
     I.checkOption(selector);
   }
-   I.fillField('#familyCourtCode', '123');
+  I.fillField('#familyCourtCode', '123');
 });
 
 Then('I make sure there is no area of law selected', async () => {
-   I.seeNumberOfVisibleElements('//*[@name="casesHeardItems"]', 23);
+  I.seeNumberOfVisibleElements('//*[@name="casesHeardItems"]', 23);
   const casesHeardIDs = await I.grabAttributeFromAll('//*[@name="casesHeardItems"]', 'id');
   for (let i = 0; i < casesHeardIDs.length; ++i) {
     I.uncheckOption('//*[@id="'+casesHeardIDs[i]+'"]');
@@ -45,8 +45,8 @@ When('I click edit next to court with {string}', async (courtSlug: string) => {
 
 When('I select {string}', async (areaOfLaw: string) => {
   const selector = '//*[@id="397353"]';
-   I.seeElement(selector);
-   I.checkOption(selector);
+  I.seeElement(selector);
+  I.checkOption(selector);
 });
 
 When('I deselect {string}', async (areaOfLaw: string) => {
@@ -67,19 +67,19 @@ Then('Success message is displayed for local authorities with summary {string}',
 
 Then('An error is displayed for local authorities with title {string} and summery {string}', async (errorTitle: string, errorSummary: string) => {
   const titleSelector = '//*[@id="localAuthoritiesContent"]/div/div/h2';
-   I.seeElement(titleSelector);
-   I.seeTextEquals(errorTitle, titleSelector);
+  I.seeElement(titleSelector);
+  I.seeTextEquals(errorTitle, titleSelector);
 
   const summarySelector = '//*[@id="localAuthoritiesContent"]/div/div/div/ul/li';
-   I.seeElement(summarySelector);
-   I.seeTextEquals(errorSummary, summarySelector);
+  I.seeElement(summarySelector);
+  I.seeTextEquals(errorSummary, summarySelector);
 });
 
 When('I will make sure Family court type is not selected', async () => {
   const selector = '#court_types-2';
   const checked = await I.grabAttributeFrom(selector, 'aria-expanded');
   if(checked == 'true') {
-     I.uncheckOption(selector);
+    I.uncheckOption(selector);
   }
 });
 
