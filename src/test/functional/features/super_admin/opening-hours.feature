@@ -49,7 +49,7 @@ Feature: Opening Hours
     Then An error is displayed for opening hours with summary "Description is required for opening hours 1." and description field message "Description is required for opening hours 1"
     When I left the opening hours blank and select description at index 6
     And I click save
-    Then An error is displayed for opening hours with summary "Hours are required for opening hours 1." and hours field message "Hours are required for opening hours 1"
+    Then An error is displayed for opening hours with summary "Hours is required for opening hours 1." and hours field message "Hours is required for opening hours 1"
 
   Scenario: Prevent duplicated entries being added
    # When I remove all existing opening hours entries and save
