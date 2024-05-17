@@ -1,7 +1,5 @@
-// import {Then, When} from 'cucumber';
-//import {expect} from 'chai';
-import {FunctionalTestHelpers} from '../utlis/helpers';
 
+import {FunctionalTestHelpers} from '../utlis/helpers';
 import {I} from '../utlis/codecept-util';
 
 When('I click the facilities tab', () => {
@@ -12,11 +10,7 @@ When('I click the facilities tab', () => {
 });
 
 When('I remove all existing facility entries and save', async () => {
-  const numFacilities = await I.grabNumberOfVisibleElements('//button[@name="deleteFacility"]');
-  if(numFacilities > 0) {
-    I.click('//button[@name="deleteFacility"]');
-    await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'saveFacilities');
-  }
+  await FunctionalTestHelpers.clearFieldsetsAndSave('#courtFacilitiesTab', 'deleteFacility', 'saveFacilities');
 });
 
 Then('a green message is displayed for updated facilities {string}', (msgUpdated: string) => {
@@ -80,26 +74,7 @@ When('I click save in the facilities tab', async () => {
 When('I click clear in the facilities tab', async () => {
   await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
 });
-//
-// Then('the facility entry in second last position has value {string} description in english {string} and welsh {string}', async (value: number, englishDescription: string, welshDescription: string) => {
-//   const fieldsetSelector = '#courtFacilitiesTab fieldset';
-//   const numFacilities = await I.countElement(fieldsetSelector);
-//   const secondLastIndex = numFacilities - 3; // we deduct one each for zero-based index, hidden template fieldset, new facility fieldset and the last entry.
-//   const selectorIndex = secondLastIndex + 1;
-//
-//   const englishDescriptionSelector = '#description-' + selectorIndex + '_ifr';
-//   const welshDescriptionSelector = '#descriptionCy-' + selectorIndex + '_ifr';
-//
-//   const englishDescriptionTxt = await I.getIframeContent(englishDescriptionSelector);
-//   expect(englishDescriptionTxt).equal(englishDescription);
-//
-//   const welshDescriptionTxt = await I.getIframeContent(welshDescriptionSelector);
-//   expect(welshDescriptionTxt).equal(welshDescription);
-//
-//   const facilityValue = await I.getElementValueAtIndex(`${fieldsetSelector} .govuk-select`, secondLastIndex);
-//   expect(facilityValue).equal(value);
-// });
-//
+
 Then('the facility entry in last position has index {string} description in english {string} and welsh {string}', async (value: string, englishDescription: string, welshDescription: string) => {
   const fieldsetSelector = '#courtFacilitiesTab fieldset';
   const numFacilities = await I.grabNumberOfVisibleElements(fieldsetSelector);
@@ -132,14 +107,6 @@ Then('the facility entry in last position has index {string} description in engl
   arrayofcourtFacilities.shift();
   //expect(arrayofcourtFacilities[selectorIndex]).toEqual(value);
 
-});
-
-When('I click the remove button under newly added facility entries', async () => {
-  await FunctionalTestHelpers.clickButton('#courtFacilitiesTab', 'clearFacility');
-  const numFacilities = await I.grabNumberOfVisibleElements('//button[@name="deleteFacility"]');
-  if(numFacilities > 0) {
-    I.click('//button[@name="deleteFacility"]');
-  }
 });
 
 Then('there are no facility entries', async () => {

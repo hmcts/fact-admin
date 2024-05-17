@@ -1,7 +1,7 @@
 
 Feature: Homepage
 
-  Scenario Outline: Navigate to edit a court or tribunal page @special
+  Scenario Outline: Navigate to edit a court or tribunal page
     When I log in as an admin
     When I select Include closed courts
     Then I can view the courts or tribunals in a list format
