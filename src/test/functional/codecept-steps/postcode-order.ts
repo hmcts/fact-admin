@@ -1,14 +1,17 @@
-// import {Then} from 'cucumber';
-// import * as I from '../utlis/puppeteer.util';
-// import {expect} from 'chai';
-//
-// Then ('I can see the court postcodes appear in alpha numeric order', async ()=> {
-//   const selector = '#postcodesList > div > div > div > div > label';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   const courtPostcodes: string[] = await I.getHtmlFromElements(selector);
-//   expect(courtPostcodes.length > 0).equal(true);
-//   const courtPostcodesToSort: string[] = await I.getHtmlFromElements(selector);
-//   const isTheSame =   courtPostcodesToSort.sort().join() === courtPostcodes.join();
-//   expect(isTheSame).equal(true);
-// });
+import {I} from '../utlis/codecept-util';
+import {expect} from 'chai';
+
+Then ('I can see the court postcodes appear in alpha numeric order', async ()=> {
+  const selector = '//*[@id="postcodesList"]';
+  I.seeElement(selector);
+
+  const courtPostcodes = await I.grabHTMLFrom(selector);
+  let arrayOfPostcodes = courtPostcodes.match(/(?<=for=")(.*?)(?=">)/g);
+  if(arrayOfPostcodes == null){
+    arrayOfPostcodes = [];
+  }
+  const arrayOfPostcodesToSort = [...arrayOfPostcodes];
+
+  const isTheSame = arrayOfPostcodesToSort.sort().join() === arrayOfPostcodes.join();
+  expect(isTheSame).equal(true);
+});

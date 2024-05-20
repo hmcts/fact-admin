@@ -1,5 +1,6 @@
 // import {Then, When} from 'cucumber';
 // import {expect} from 'chai';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 import {I} from '../utlis/codecept-util';
 
 When('I click the postcodes tab', async () => {
@@ -7,6 +8,28 @@ When('I click the postcodes tab', async () => {
   I.moveCursorTo(selector);
   I.click(selector);
   I.moveCursorTo('#court-name'); //move away from the tab list
+});
+
+When('I click the types tab', async () => {
+  const selector = '#tab_court-types';
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
+});
+
+Then('I click on save court type', async () => {
+  await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
+});
+
+When('I click the cases heard tab', () => {
+  const selector = '#tab_cases-heard';
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
+});
+
+Then('I click on update on cases heard', async () => {
+  await FunctionalTestHelpers.clickButton('#casesHeardTab', 'updateCasesHeard');
 });
 
 Then('A green message is displayed for the postcodes {string}', async (message: string) => {
@@ -29,28 +52,22 @@ Then('A green message is displayed for the postcodes {string}', async (message: 
 //   await I.click(selector);
 // });
 //
-// When('I add new postcodes {string}', async (postcodes: string) => {
-//   const postcodeInputSelector = '#addNewPostcodes';
-//   const elementExist = await I.checkElement(postcodeInputSelector);
-//   expect(elementExist).equal(true);
-//   await I.setElementValueForInputField(postcodeInputSelector, postcodes);
-// });
-//
-// Then('I click the add postcode button', async () => {
-//   const buttonSelector = 'button[name="addPostcodes"]';
-//   const elementExist = await I.checkElement(buttonSelector);
-//   expect(elementExist).equal(true);
-//   await I.click(buttonSelector);
-// });
-//
-// Then('The error message display for the postcodes {string}', async (errorMessage: string) => {
-//   const errorTitle = await I.checkElement('.govuk-error-summary__title');
-//   expect(errorTitle).equal(true);
-//
-//   const selector = '#postcodesContent > div.govuk-error-summary > div >  div > ul';
-//   const errorList = await I.getElement(selector);
-//   expect(await I.getElementText(errorList)).equal(errorMessage);
-// });
+When('I add new postcodes {string}', async (postcodes: string) => {
+  const postcodeInputSelector = '//*[@id="addNewPostcodes"]';
+  I.seeElement(postcodeInputSelector);
+  await I.clearField(postcodeInputSelector);
+  await I.fillField(postcodeInputSelector, postcodes);
+});
+
+Then('The error message display for the postcodes {string}', async (errorMessage: string) => {
+  const titleSelector = '//*[@id="postcodesContent"]/div[1]/div/h2';
+  I.seeElement(titleSelector);
+  I.seeTextEquals('There is a problem', titleSelector);
+
+  const selector = '//*[@id="postcodesContent"]/div[1]/div/div/ul/li';
+  I.seeElement(selector);
+  I.seeTextEquals(errorMessage, selector);
+});
 //
 // When('I choose the postcodes {string} and {string} to move them from the source court to the destination court', async (firstPostcode: string,secondPostcode: string) => {
 //   const firstPostcodeSelector = '#'+firstPostcode;
@@ -89,20 +106,17 @@ When('I will make sure Money claims is selected', async () => {
   }
 });
 
-Then('I click on add postcode button', async () => {
+Then('I click the add postcode button', async () => {
   const selector = '//*[@id="postcodesContent"]/button';
   await I.click(selector);
 });
 
-// When('I will make sure to delete the existing postcodes', async () => {
-//   const selector = '#postcodes-select-all';
-//   const selectorDelete = 'button[name="deletePostcodes"]';
-//   const elementExist = await I.checkElement(selector);
-//   if (elementExist) {
-//     await I.click(selector);
-//     await I.click(selectorDelete);
-//   }
-// });
+When('I will make sure to delete the existing postcodes', async () => {
+  const selector = '//*[@id="postcodes-select-all"]';
+  const selectorDelete = '//*[@id="postcodesContent"]/button[2]';
+  await I.checkOption(selector);
+  await I.click(selectorDelete);
+});
 //
 // Then('I click the move button', async () => {
 //   const buttonSelector = 'button[name="movePostcodesButton"]';
