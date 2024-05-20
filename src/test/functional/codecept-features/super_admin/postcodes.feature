@@ -21,22 +21,34 @@ Feature: Postcodes
 
   Scenario: Adding and deleting valid postcodes @special
     When I add new postcodes "bd7 2qb,bd3,BD7"
-    Then I click the add postcode button
+    Then I click the add postcode button and wait for success
     Then A green message is displayed for the postcodes "Postcodes updated"
     When I will make sure to delete the existing postcodes
     Then A green message is displayed for the postcodes "Postcodes updated"
+    Then the court is cleaned up through the API
+
+  Scenario: Adding duplicate postcode @special
+    When I add new postcodes "bd1"
+    Then I click the add postcode button and wait for success
+    When I add new postcodes "bd1"
+    Then I click the add postcode button and wait for failure
+    Then The error message display for the postcodes "One or more postcodes provided already exist (your changes have not been saved). If this is not the case please check that the court is not currently locked by another user: BD1"
+    Then the court is cleaned up through the API
+
+  Scenario: Validate that postcodes should appear in alpha numeric order @special
+    When I add new postcodes "E5,E6,E9,E8,E7"
+    Then I click the add postcode button and wait for success
+    Then A green message is displayed for the postcodes "Postcodes updated"
+    Then I can see the court postcodes appear in alpha numeric order
     And the court is cleaned up through the API
 
-  Scenario: Adding invalid and duplicate postcode @special
+  Scenario: Adding invalid postcode @special
+    When I add new postcodes "E1"
+    Then I click the add postcode button and wait for success
     When I add new postcodes "bdx,123,bd1"
-    Then I click the add postcode button
+    Then I click the add postcode button and wait for failure
     Then The error message display for the postcodes "A problem has occurred (your changes have not been saved). The following postcodes are invalid: bdx,123"
-    When I add new postcodes "bd1"
-    Then I click the add postcode button
-    When I add new postcodes "bd1"
-    Then I click the add postcode button
-    Then The error message display for the postcodes "One or more postcodes provided already exist (your changes have not been saved). If this is not the case please check that the court is not currently locked by another user: BD1"
-    And the court is cleaned up through the API
+    Then the court is cleaned up through the API
 
     #THIS IS COMMENTED IN PREVIOUS TESTS SO COMMENTING IT HERE AS WELL (steps need to be converted)
 #  Scenario Outline: Moving postcodes from the source court to the destination court

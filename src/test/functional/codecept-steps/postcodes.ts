@@ -1,5 +1,4 @@
-// import {Then, When} from 'cucumber';
-// import {expect} from 'chai';
+import {expect} from 'chai';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 import {I} from '../utlis/codecept-util';
 
@@ -8,6 +7,9 @@ When('I click the postcodes tab', async () => {
   I.moveCursorTo(selector);
   I.click(selector);
   I.moveCursorTo('#court-name'); //move away from the tab list
+  I.waitForElement('#postcodesTab');
+  I.wait(Math.floor(Math.random() * (20 - 1 + 1) + 1)); //1-20 seconds
+  //wait a random time to avoid the mapit call spam and get blocked
 });
 
 When('I click the types tab', async () => {
@@ -51,11 +53,21 @@ Then('A green message is displayed for the postcodes {string}', async (message: 
 //   expect(elementExist).equal(true);
 //   await I.click(selector);
 // });
-//
-When('I add new postcodes {string}', async (postcodes: string) => {
+Then('I click the add postcode button and wait for success', async () => {
+  await FunctionalTestHelpers.clickButton('#postcodesTab', 'addPostcodes');
+  //warning is wrong, it needs await for mapit call time
+  await I.waitForVisible('//*[@id="postcodesContent"]/h2[2]', 15);
+});
+
+Then('I click the add postcode button and wait for failure', async () => {
+  await FunctionalTestHelpers.clickButton('#postcodesTab', 'addPostcodes');
+  //warning is wrong, it needs await.
+  await I.wait(15);
+});
+
+Then('I add new postcodes {string}', async (postcodes: string) => {
   const postcodeInputSelector = '//*[@id="addNewPostcodes"]';
   I.seeElement(postcodeInputSelector);
-  await I.clearField(postcodeInputSelector);
   await I.fillField(postcodeInputSelector, postcodes);
 });
 
@@ -106,16 +118,26 @@ When('I will make sure Money claims is selected', async () => {
   }
 });
 
-Then('I click the add postcode button', async () => {
-  const selector = '//*[@id="postcodesContent"]/button';
-  await I.click(selector);
-});
-
 When('I will make sure to delete the existing postcodes', async () => {
   const selector = '//*[@id="postcodes-select-all"]';
   const selectorDelete = '//*[@id="postcodesContent"]/button[2]';
   await I.checkOption(selector);
   await I.click(selectorDelete);
+});
+
+Then ('I can see the court postcodes appear in alpha numeric order', async ()=> {
+  const selector = '//*[@id="postcodesList"]';
+  I.seeElement(selector);
+
+  const courtPostcodes = await I.grabHTMLFrom(selector);
+  let arrayOfPostcodes = courtPostcodes.match(/(?<=for=")(.*?)(?=">)/g);
+  if(arrayOfPostcodes == null){
+    arrayOfPostcodes = [];
+  }
+  const arrayOfPostcodesToSort = [...arrayOfPostcodes];
+
+  const isTheSame = arrayOfPostcodesToSort.sort().join() === arrayOfPostcodes.join();
+  expect(isTheSame).equal(true);
 });
 //
 // Then('I click the move button', async () => {
