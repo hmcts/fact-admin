@@ -1,23 +1,21 @@
 // import {Then, When} from 'cucumber';
-// import * as I from '../utlis/puppeteer.util';
+import { I } from '../utlis/codecept-util';
 // import {expect} from 'chai';
-// import {FunctionalTestHelpers} from '../utlis/helpers';
-//
-//
-// When('I hover over types nav element', async () => {
-//   const selector = '#nav';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   await I.hover(selector);
-// });
-//
-//
-// When('I click the types tab', async () => {
-//   const selector = '#tab_court-types';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   await I.click(selector);
-// });
+import {FunctionalTestHelpers} from '../utlis/helpers';
+
+When('I hover over nav element', () => {
+  const selector = '#nav';
+  I.seeElement(selector);
+  I.moveCursorTo(selector);
+});
+
+When('I click the types tab', () => {
+  const selector = '#tab_court-types';
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
+});
+
 //
 // When('I check a court type', async () => {
 //   const selector = '#court_types-3';
@@ -33,9 +31,9 @@
 //   await I.fillField(selector, code);
 // });
 //
-// Then('I click on save court type', async () => {
-//   await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
-// });
+Then('I click on save court type', async () => {
+  await FunctionalTestHelpers.clickButton('#courtTypesTab', 'saveCourtTypes');
+});
 //
 // Then('a green update message is displayed showing Court Types updated', async () => {
 //   const elementExist = await I.checkElement('#courtTypesTab .govuk-panel--confirmation');

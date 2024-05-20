@@ -1,14 +1,27 @@
 // import {Then, When} from 'cucumber';
-// import * as I from '../utlis/puppeteer.util';
+import {I} from '../utlis/codecept-util';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 // import {expect} from 'chai';
 // import {FunctionalTestHelpers} from '../utlis/helpers';
 //
-// When('I click the cases heard tab', async () => {
-//   const selector = '#tab_cases-heard';
-//   const elementExist = await I.checkElement(selector);
-//   expect(elementExist).equal(true);
-//   await I.click(selector);
-// });
+When('I click the cases heard tab', () => {
+  const selector = '#tab_cases-heard';
+  I.moveCursorTo(selector);
+  I.click(selector);
+  I.moveCursorTo('#court-name'); //move away from the tab list
+});
+
+When('I will make sure Adoption is selected', async () => {
+  const selector = '#adoption';
+  const checked = await I.grabAttributeFrom(selector, 'aria-checked');
+  if(checked == 'false') {
+    await I.checkOption(selector);
+  }
+});
+
+Then('I click on update on cases heard', async () => {
+  await FunctionalTestHelpers.clickButton('#casesHeardTab', 'updateCasesHeard');
+});
 //
 // When('I select areas of law {string} and {string}', async (areaOfLaw1: number, areaOfLaw2: number) => {
 //   const selector1 = '#' + areaOfLaw1;
