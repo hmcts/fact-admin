@@ -1,5 +1,5 @@
 @fact-admin-tab-local-authorities
-Feature: Local authorities @special
+Feature: Local authorities
 
   Background:
     Given a court is created through the API
