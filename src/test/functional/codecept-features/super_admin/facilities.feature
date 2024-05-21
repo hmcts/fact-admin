@@ -1,5 +1,5 @@
 @fact-admin-tab-facilities
-Feature: Facilities  @special
+Feature: Facilities
 
   Background:
     Given a court is created through the API
