@@ -80,7 +80,6 @@ Then('An error is displayed for application progression with summary {string}', 
   const errorMsg = await I.grabTextFrom(selector);
   expect(errorMsg.trim()).equal(errorTitle);
 
-  // const numFieldsets = await I.grabNumberOfVisibleElements('#applicationProgressionTab fieldset');
   selector = '.govuk-error-summary__body';
   const errorMessage = await I.grabTextFrom(selector);
   expect(errorMessage.trim()).equal(expErrMessage);
