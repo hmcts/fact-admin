@@ -53,7 +53,18 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 //     await I.click(selectorOpen);
 //   }
 // });
-//
+
+
+When('I select the open checkbox', async () => {
+  const selector = '#open';
+  I.checkOption(selector);
+});
+
+When('I unselect the open checkbox', async () => {
+  const selector = '#open';
+  I.uncheckOption(selector);
+});
+
 // When('I click the close checkbox', async () => {
 //   const selectorOpen = '#generalInfoTab #open';
 //
@@ -65,7 +76,12 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 //     await I.click(selectorOpen);
 //   }
 // });
-//
+
+When('I select the Participates in access scheme checkbox', async () => {
+  const selector = '#access_scheme';
+  I.checkOption(selector);
+});
+
 // When('I click the Participates in access scheme checkbox', async () => {
 //   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
 //
@@ -77,7 +93,12 @@ When('I have added the {string} in the Urgent Notice Welsh field', async (welshM
 //     await I.click(selectorParticipantsAccessSchemeChkbox);
 //   }
 // });
-//
+
+When('I unselect the Participates in access scheme checkbox', async () => {
+  const selector = '#access_scheme';
+  I.uncheckOption(selector);
+});
+
 // When('I unclick the Participates in access scheme checkbox', async () => {
 //   const selectorParticipantsAccessSchemeChkbox = '#generalInfoTab #access_scheme';
 //
