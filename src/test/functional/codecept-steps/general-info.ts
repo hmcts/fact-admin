@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import { I } from '../utlis/codecept-util';
-import {FunctionalTestHelpers} from "../utlis/helpers";
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 
 async function populateField(fieldElement: string, value: string) {

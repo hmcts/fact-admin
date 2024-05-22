@@ -1,6 +1,6 @@
 import { I } from '../utlis/codecept-util';
-import {expect} from "chai";
-import {FunctionalTestHelpers} from "../utlis/helpers";
+import {expect} from 'chai';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 When('I click bulk update', async () => {
   I.click('#bulk-update');
