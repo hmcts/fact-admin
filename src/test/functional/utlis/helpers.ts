@@ -4,6 +4,11 @@ import { I } from '../utlis/codecept-util';
 
 export class FunctionalTestHelpers {
 
+  public static async populateField(fieldElement: string, value: string) {
+    I.seeElement(fieldElement);
+    I.fillField(fieldElement, value);
+  }
+
   public static async clickButtonAndCheckFieldsetAdded(containerId: string, buttonName: string, fieldsetClass = '') {
     const fieldsetSelector = `${containerId} fieldset${fieldsetClass}`;
     const numFieldsets = await I.grabNumberOfVisibleElements(fieldsetSelector);
