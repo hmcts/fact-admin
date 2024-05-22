@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import { I } from '../utlis/codecept-util';
+import {FunctionalTestHelpers} from "../utlis/helpers";
 
 
 async function populateField(fieldElement: string, value: string) {
@@ -16,7 +17,7 @@ When('I hover over general nav element', async () => {
 When('I click the general tab', async () => {
   const selector = '#tab_general';
   I.seeElement(selector);
-  await I.click(selector);
+  I.click(selector);
 });
 
 Then('I can view the urgent notices', async () => {
@@ -53,9 +54,8 @@ Then('I can view the additional information notices', async () => {
 });
 
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
-  const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
-  const successTitleElement = await I.grabTextFrom(selector);
-  expect(successTitleElement.trim()).equal(successMsg);
+  const selector = '#generalInfoContent > div > h1';
+  await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, successMsg);
 });
 
 Given('I click the general info save button', async () => {
@@ -66,6 +66,32 @@ Given('I click the general info save button', async () => {
 Then('I enter {string} in the Name textbox', async (name: string) => {
   const selector = '#edit-name';
   await populateField(selector, name);
+});
+
+When('I click the open checkbox', async () => {
+  const selector = '#open';
+  I.checkOption(selector);
+});
+
+When('I click the Participates in access scheme checkbox', async () => {
+  const selector = '#access_scheme';
+  I.checkOption(selector);
+});
+
+Then('The error summary displays for general info {string}', async (expErrMessage: string) => {
+  const errorTitle = 'There is a problem';
+  let selector = '.govuk-error-summary__title';
+  const errorMsg = await I.grabTextFrom(selector);
+  expect(errorMsg.trim()).equal(errorTitle);
+
+  selector = '.govuk-error-summary__body';
+  const errorMessage = await I.grabTextFrom(selector);
+  expect(errorMessage.trim()).equal(expErrMessage);
+});
+
+Then('The error message {string} displays for the {string} field', async (expErrMessage: string, errorMessageId: string) => {
+  const errorMsg = await I.grabTextFrom(errorMessageId);
+  expect(errorMsg.trim()).equal(expErrMessage);
 });
 
 // Then('The error message displays for general info {string}', async (errMessage: string) => {
@@ -81,8 +107,8 @@ Then('I enter {string} in the Name textbox', async (name: string) => {
 //   await I.click('#redirectBtnId');
 // });
 //
-// Then('I edit common platform checkbox', async () => {
-//   const commonPlatformCheckboxExists = await I.checkElement('#common_platform');
-//   expect(commonPlatformCheckboxExists).equal(true);
-//   await I.click('#common_platform');
-// });
+Then('I edit common platform checkbox', async () => {
+  const selector = '#common_platform';
+  I.seeElement(selector);
+  I.checkOption(selector);
+});
