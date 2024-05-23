@@ -129,10 +129,10 @@ export class ContactsController {
 
       index = index + 1;
       if (!contact.type_id && !contact.fax) {
-        errorMsg.push({text: (this.emptyDescriptionErrorMsg + index + '.'), href: '#contactDescription-' + index});
+        errorMsg.push({text: (this.emptyDescriptionErrorMsg + index + '.'), href: '#heading ' + index});
       }
       if (contact.number === '') {
-        errorMsg.push({text: (this.emptyNumberErrorMsg + index + '.'), href: '#contactNumber-' + index});
+        errorMsg.push({text: (this.emptyNumberErrorMsg + index + '.'), href: '#heading ' + index});
       }
 
     });

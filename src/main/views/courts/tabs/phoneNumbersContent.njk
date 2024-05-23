@@ -51,11 +51,11 @@
   }) %}
 
 {% if isNew === false %}
-      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading">Phone Number {{loop.index}} </h3>
+      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading {{loop.index}}">Phone Number {{loop.index}} </h3>
     {% endif %}
 
     {% if isNew === true %}
-      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading">Add New Phone Number {{loop.index}} </h3>
+      <h3 class="govuk-heading-s" name={{"contacts[" + links.length +"][header]"}} id="heading {{loop.index}}">Add New Phone Number {{loop.index}} </h3>
     {% endif %}
 
   <input type="hidden" name={{"contacts[" + loop.index +"][isNew]"}} value={{contact.isNew}}></input>
