@@ -1,4 +1,4 @@
-@fact-admin-page-bulk-update
+@fact-admin-page-bulk-update @special
 Feature: Bulk update of court info
 
   Background: Log in

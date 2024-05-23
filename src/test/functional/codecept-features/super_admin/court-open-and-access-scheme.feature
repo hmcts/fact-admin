@@ -1,4 +1,4 @@
-@fact-admin-court-open-access
+@fact-admin-court-open-access @special
 Feature: Court-addresses
 
   Background:
@@ -6,7 +6,6 @@ Feature: Court-addresses
     When I select Include closed courts
 
   Scenario Outline: Open
-
     When I click edit next to court with "<view_court_slug>"
     Then I am redirected to the Edit Court page for the chosen court
     When I select the open checkbox

@@ -1,4 +1,4 @@
-@fact-admin-tab-application-progression
+@fact-admin-tab-application-progression @special
 Feature: Application Progression
 
   Background:

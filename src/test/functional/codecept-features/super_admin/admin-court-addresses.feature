@@ -1,4 +1,4 @@
-@fact-admin-tab-addresses
+@fact-admin-tab-addresses @special
 Feature: Court-addresses
 
   Background:
@@ -60,10 +60,3 @@ Feature: Court-addresses
     Then I enter "CF44 0JE" in the secondary address "2" Postcode textbox
     And I click the Save Addresses button
     Then The error message display is "All addresses must be unique."
-
-
-
-
-
-
-
