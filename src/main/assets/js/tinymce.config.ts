@@ -10,5 +10,5 @@ tinymce.init({
   height : 250,
   promotion: false,
   tabfocus_elements : ':prev,:next',
-  link_default_target:'_blank'
+  link_default_target: '_blank'
 });
