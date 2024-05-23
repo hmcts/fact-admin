@@ -1,7 +1,6 @@
 import {I} from '../utlis/codecept-util';
 import {FunctionalTestHelpers} from '../utlis/helpers';
 import {expect} from 'chai';
-// import {expect} from 'chai';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.grabTitle();
