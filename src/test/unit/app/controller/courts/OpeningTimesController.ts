@@ -254,7 +254,7 @@ describe('OpeningTimesController', () => {
       openingTimeTypes: expectedSelectItems,
       updated: false,
       errors: [
-        {text: controller.emptyHoursErrorMsg + '5.', href: '#hours-5'},
+        {text: controller.emptyHoursErrorMsg + '5.', href: '#heading 5'},
         {text: controller.openingTimeDuplicatedErrorMsg}
       ],
       fatalError: false
