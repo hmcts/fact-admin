@@ -1,4 +1,4 @@
-@fact-admin-login-logout @special
+@fact-admin-login-logout
 Feature: Login/Logout
 
   Background:
