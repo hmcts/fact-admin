@@ -112,6 +112,7 @@ export class Utilities {
       help_accessibility: true,
       promotion: false,
       tabfocus_elements : ':prev,:next',
+      link_default_target: '_blank'
     });
 
     await tinymce.init({
@@ -124,6 +125,7 @@ export class Utilities {
       help_accessibility: true,
       promotion: false,
       tabfocus_elements : ':prev,:next',
+      link_default_target: '_blank'
     });
   }
 }
