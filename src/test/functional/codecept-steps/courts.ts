@@ -65,6 +65,8 @@ When('I click edit next to the test court', () => {
 
 Then('the court is cleaned up through the API', async () => {
   const { court } = inject() as any;
+  I.wait(Math.floor(Math.random() * (20 - 1 + 1) + 1)); //1-20 seconds
+  //wait a random time to avoid the db call spam and crash
   await I.deleteCourtThroughApi(court.slug);
 });
 
