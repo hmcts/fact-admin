@@ -3,6 +3,7 @@ import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import { config as testConfig } from '../../config';
 import config from 'config';
 import {NewCourt} from '../../../main/types/NewCourt';
+import {LocalAuthority} from "../../../main/types/LocalAuthority";
 
 class FactApiHelper extends Helper {
   private axiosInstance: AxiosInstance;
@@ -70,7 +71,7 @@ class FactApiHelper extends Helper {
 
   public removeLocalAuthoritiesThroughApi = async (slug: string, areaOfLaw: string) => {
     try {
-      const data = [];
+      const data: LocalAuthority[] = [];
       return await this.axiosInstance.put(this.adminBaseUrl + slug + '/' + areaOfLaw + '/localAuthorities', data);
     } catch (e) {
       throw new Error('Failed to remove local authorities from test court with slug : ' + slug);
