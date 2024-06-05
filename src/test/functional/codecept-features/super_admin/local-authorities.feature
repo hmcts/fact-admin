@@ -23,9 +23,6 @@ Feature: Local authorities
     And I select "<local_authority_name>"
     And I click on local authorities save button
     Then Success message is displayed for local authorities with summary "Local authorities updated"
-#    And I deselect "<local_authority_name>"
-#    And I click on local authorities save button
-#    Then Success message is displayed for local authorities with summary "Local authorities updated"
     Then all the local authorities are removed for area of law "<area_of_law>" through the API
     And the court is cleaned up through the API
 
