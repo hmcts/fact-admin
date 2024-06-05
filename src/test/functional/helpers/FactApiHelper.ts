@@ -69,9 +69,8 @@ class FactApiHelper extends Helper {
   };
 
   public removeLocalAuthoritiesThroughApi = async (slug: string, areaOfLaw: string) => {
-    let data;
     try {
-      data = [];
+      const data = [];
       return await this.axiosInstance.put(this.adminBaseUrl + slug + '/' + areaOfLaw + '/localAuthorities', data);
     } catch (e) {
       throw new Error('Failed to remove local authorities from test court with slug : ' + slug);
