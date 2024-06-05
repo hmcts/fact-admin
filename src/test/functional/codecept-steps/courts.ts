@@ -63,6 +63,19 @@ When('I click edit next to the test court', () => {
   I.click('#edit-' + court.slug);
 });
 
+/**
+ * This step is used to remove all the local authorities for a given area of law for the test court
+ * @param areaOfLaw - the area of law for which the local authorities are to be removed
+ */
+Then('all the local authorities are removed for area of law {string} through the API', async (areaOfLaw: string) => {
+  const { court } = inject() as any;
+  await I.removeLocalAuthoritiesThroughApi(court.slug, areaOfLaw);
+});
+
+/**
+ * This step is used to delete the test court
+ * Note: There is a random wait time added to avoid the db call spam and crash
+ */
 Then('the court is cleaned up through the API', async () => {
   const { court } = inject() as any;
   I.wait(Math.floor(Math.random() * (20 - 1 + 1) + 1)); //1-20 seconds
