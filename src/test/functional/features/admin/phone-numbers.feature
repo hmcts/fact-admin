@@ -46,8 +46,8 @@ Feature: Phone Numbers
   Scenario: Prevent blank entries being added
     When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
     And I click save in the phone number tab
-    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and description field message "Description is required"
+    Then an error message is displayed for phone number tab with summary "Description is required for phone number 1." and description field message "Description is required for phone number 1"
     # blank entry for phone number
     When I left the phone number entry blank and select description at index 4
     And I click save in the phone number tab
-    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Number is required"
+    Then an error message is displayed for phone number tab with summary "Number is required for phone number 1." and number field message "Number is required for phone number 1"

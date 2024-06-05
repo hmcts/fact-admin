@@ -61,7 +61,7 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: '',
+      errors: [],
       fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
@@ -165,7 +165,7 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg,
+      errors: [{text: controller.updateErrorMsg}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
@@ -186,7 +186,7 @@ describe('ContactsController', () => {
       contacts: null,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.getContactsErrorMsg,
+      errors: [{text: controller.getContactsErrorMsg}],
       fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
@@ -207,7 +207,7 @@ describe('ContactsController', () => {
       contacts: getContactsWithEmptyEntry(),
       contactTypes: [],
       updated: false,
-      errorMsg: controller.getContactTypesErrorMsg,
+      errors: [{text: controller.getContactTypesErrorMsg}],
       fatalError: true
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
@@ -238,7 +238,7 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.updateErrorMsg,
+      errors: [{text: controller.updateErrorMsg}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);
@@ -270,7 +270,7 @@ describe('ContactsController', () => {
       contacts: postedContacts,
       contactTypes: expectedSelectItems,
       updated: false,
-      errorMsg: controller.courtLockedExceptionMsg + 'test',
+      errors: [{text: controller.courtLockedExceptionMsg + 'test'}],
       fatalError: false
     };
     expect(res.render).toBeCalledWith('courts/tabs/phoneNumbersContent', expectedResults);

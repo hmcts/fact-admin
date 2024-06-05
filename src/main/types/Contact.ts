@@ -1,5 +1,6 @@
 import {SelectItem} from "./CourtPageData";
 import {Element} from "./Element";
+import {Error} from "./Error";
 
 export interface Contact extends Element {
   type_id: number;
@@ -12,7 +13,7 @@ export interface Contact extends Element {
 export interface ContactPageData {
   contacts: Contact[],
   contactTypes: SelectItem[],
-  errorMsg: string,
+  errors: Error[],
   updated: boolean,
   fatalError: boolean,
 }
