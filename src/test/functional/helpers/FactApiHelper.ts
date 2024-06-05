@@ -6,6 +6,10 @@ import {NewCourt} from '../../../main/types/NewCourt';
 
 class FactApiHelper extends Helper {
   private axiosInstance: AxiosInstance;
+  private readonly baseURL = '/courts/';
+  private readonly adminBaseUrl = '/admin/courts/';
+  // private readonly adminUrl = '/admin/';
+
   constructor(config: object) {
     super(config);
     this.initAxios();
@@ -58,9 +62,19 @@ class FactApiHelper extends Helper {
 
   public deleteCourtThroughApi = async (slug: string) => {
     try {
-      return await this.axiosInstance.delete('/courts/' + slug);
+      return await this.axiosInstance.delete(this.baseURL + slug);
     } catch (e) {
       throw new Error('Failed to delete test court with slug : ' + slug);
+    }
+  };
+
+  public removeLocalAuthoritiesThroughApi = async (slug: string, areaOfLaw: string) => {
+    let data;
+    try {
+      data = [];
+      return await this.axiosInstance.put(this.adminBaseUrl + slug + '/' + areaOfLaw + '/localAuthorities', data);
+    } catch (e) {
+      throw new Error('Failed to remove local authorities from test court with slug : ' + slug);
     }
   };
 }
