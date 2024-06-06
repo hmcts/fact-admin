@@ -12,8 +12,8 @@ import {AxiosError} from 'axios';
 @autobind
 export class OpeningTimesController {
 
-  emptyDescriptionErrorMsg = 'Description is required for Opening Hour ';
-  emptyHoursErrorMsg = 'Hours are required for Opening Hour ';
+  emptyDescriptionErrorMsg = 'Description is required for opening hours ';
+  emptyHoursErrorMsg = 'Hours is required for opening hours ';
   openingTimeDuplicatedErrorMsg = 'All descriptions must be unique.';
   getOpeningTimesErrorMsg = 'A problem occurred when retrieving the opening times.';
   getOpeningTypesErrorMsg = 'A problem occurred when retrieving the opening time descriptions.';
@@ -93,11 +93,11 @@ export class OpeningTimesController {
       index = index + 1;
       if (!ot.type_id)
       {
-        errorMsg.push({text: (this.emptyDescriptionErrorMsg +index+'.') , href: '#description-'+ index});
+        errorMsg.push({text: (this.emptyDescriptionErrorMsg +index+'.') , href: '#heading '+ index});
       }
       else if (ot.hours === '')
       {
-        errorMsg.push({text: (this.emptyHoursErrorMsg +index+'.') , href: '#hours-'+ index });
+        errorMsg.push({text: (this.emptyHoursErrorMsg +index+'.') , href: '#heading '+ index });
       }
     });
 

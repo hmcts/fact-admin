@@ -21,6 +21,7 @@ export class OpeningHoursController {
   private moveUpBtnClass = 'move-up';
   private moveDownBtnClass = 'move-down';
   private tab = '#tab_opening-hours';
+  private header = 'header';
 
   constructor() {
     this.initialize();
@@ -118,5 +119,13 @@ export class OpeningHoursController {
     this.renameFormElement('select', this.typeSelectName, 'description');
     this.renameFormElement('input', this.hoursInputName, this.hoursInputName);
     this.renameFormElement('input', this.hiddenNewInputName, this.hiddenNewInputName);
+    this.renameHeader(this.header);
+  }
+
+  private renameHeader(name: string): void {
+    // replace the index within the header.
+    $(`${this.tabId} h3[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .text(idx => `Add New Opening Hours ${idx+1}`);
   }
 }
