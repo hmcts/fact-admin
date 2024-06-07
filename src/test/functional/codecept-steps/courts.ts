@@ -57,6 +57,18 @@ When('a court is created through the API', async() => {
   await container.share({court}, {local: true});
 });
 
+When('a service centre court is created through the API', async() => {
+  const court = await I.createCourtThroughApi({
+    'new_court_name': generateCourtName(),
+    'service_centre': true,
+    lon: -1.826323,
+    lat: 51.178844,
+    'service_areas': ['Money claims']
+  } as NewCourt);
+
+  await container.share({court}, {local: true});
+});
+
 When('I click edit next to the test court', () => {
   const { court } = inject() as any;
   I.seeElement('#edit-' + court.slug);
