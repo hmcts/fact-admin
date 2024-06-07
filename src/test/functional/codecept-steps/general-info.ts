@@ -107,8 +107,8 @@ Then('The error message {string} displays for the {string} field', async (expErr
 //   await I.click('#redirectBtnId');
 // });
 //
-Then('I edit common platform checkbox', async () => {
+Then('I uncheck common platform checkbox', async () => {
   const selector = '#common_platform';
   I.seeElement(selector);
-  I.checkOption(selector);
+  I.uncheckOption(selector);
 });
