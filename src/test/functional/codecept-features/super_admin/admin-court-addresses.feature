@@ -2,9 +2,8 @@
 Feature: Court-addresses
 
   Background:
-    Given a court is created through the API
     When I log in as a super-admin
-    When I click edit next to the test court
+    When I click edit next to court with "barnsley-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
     Then I click the Addresses tab
@@ -21,7 +20,6 @@ Feature: Court-addresses
     Then I select "50" as the secondary address "1" County
     And I click the Save Addresses button
     Then The error message display is "Primary Address: Address is required." "Secondary Address 1: Town is required." "Secondary Address 1: Postcode is required."
-    And the court is cleaned up through the API
 
     Examples:
       | town     |  postcode | secondary address             |
@@ -44,7 +42,6 @@ Feature: Court-addresses
     Then I enter "CF44 0JE" in the secondary address "2" Postcode textbox
     And I click the Save Addresses button
     Then The error message display is "All addresses must be unique."
-    And the court is cleaned up through the API
 
   Scenario: Adding two identical addresses with one containing abbreviations
     Given I will make sure to remove entries for secondary address "1"
@@ -63,4 +60,3 @@ Feature: Court-addresses
     Then I enter "CF44 0JE" in the secondary address "2" Postcode textbox
     And I click the Save Addresses button
     Then The error message display is "All addresses must be unique."
-    And the court is cleaned up through the API

@@ -68,6 +68,11 @@ Then('I enter {string} in the secondary address {string} Address textbox', async
   await FunctionalTestHelpers.populateField(selector, address);
 });
 
+Then('I enter {string} in the Address textbox', async (address: string) => {
+  const selector = '#primaryAddressLines';
+  await FunctionalTestHelpers.populateField(selector, address);
+});
+
 Then('I enter {string} in the secondary address {string} Town textbox', async (town: string, secondaryAddressNumber: number) => {
   const selector = '#town-' + (secondaryAddressNumber - 1);
   await FunctionalTestHelpers.populateField(selector, town);
