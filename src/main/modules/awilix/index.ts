@@ -8,6 +8,7 @@ import {BulkUpdateController} from '../../app/controller/bulk-update/BulkUpdateC
 import {OpeningTimesController} from '../../app/controller/courts/OpeningTimesController';
 import {GeneralInfoController} from '../../app/controller/courts/GeneralInfoController';
 import {EmailsController} from '../../app/controller/courts/EmailsController';
+import {CourtHistoryController} from '../../app/controller/courts/CourtHistoryController';
 import {ContactsController} from '../../app/controller/courts/ContactsController';
 import {CourtTypesController} from '../../app/controller/courts/CourtTypesController';
 import {ListsController} from '../../app/controller/lists/ListsController';
@@ -53,6 +54,7 @@ export class Container {
       editCourtController: asClass(EditCourtController),
       openingTimesController: asClass(OpeningTimesController),
       emailsController: asClass(EmailsController),
+      courtHistoryController: asClass(CourtHistoryController),
       postcodesController: asClass(PostcodesController),
       generalInfoController: asClass(GeneralInfoController),
       contactsController: asClass(ContactsController),

@@ -24,6 +24,7 @@ import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 import {CourtLock} from '../../types/CourtLock';
 import {Region} from '../../types/Region';
+import {CourtHistory} from "../../types/CourtHistory";
 
 
 export class FactApi extends FactApiBase {
@@ -122,6 +123,14 @@ export class FactApi extends FactApiBase {
 
   public updateEmails(slug: string, body: Email[]): Promise<Email[]> {
     return this.put<Email[], typeof body>(`${this.adminBaseUrl}/${slug}/emails`, body);
+  }
+
+  public getCourtHistory(slug: string): Promise<CourtHistory[]>  {
+    return this.get<CourtHistory[]>(`${this.adminBaseUrl}/${slug}/court-history`);
+  }
+
+  public updateCourtHistory(slug: string, body: CourtHistory[]): Promise<CourtHistory[]> {
+    return this.put<CourtHistory[], typeof body>(`${this.adminBaseUrl}/${slug}/court-history`, body);
   }
 
   public getContactTypes(): Promise<ContactType[]> {
