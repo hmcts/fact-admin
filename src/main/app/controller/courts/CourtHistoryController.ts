@@ -14,7 +14,7 @@ export class CourtHistoryController {
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
 
   /**
-   * GET /courts/:slug/court-history
+   * GET /admin/courts/:slug/history
    * render the view with data from database for court history tab
    */
   public async get(
@@ -24,7 +24,7 @@ export class CourtHistoryController {
     errorMsg: string[] = [],
     courtHistory: CourtHistory[] = null): Promise<void> {
 
-    console.log('CourtHistoryController.get hit!');
+    console.log('CourtHistoryController.get hit! -----------------------------------------------------------------');
     const slug: string = req.params.slug;
     let fatalError = false;
 
@@ -54,7 +54,7 @@ export class CourtHistoryController {
   }
 
   /**
-   * PUT /courts/:slug/court-history
+   * PUT /admin/courts/:slug/history
    * validate input data and update the court history then re-render the view
    */
   public async put(req: AuthedRequest, res: Response): Promise<void> {

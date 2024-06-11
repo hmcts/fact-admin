@@ -126,11 +126,11 @@ export class FactApi extends FactApiBase {
   }
 
   public getCourtHistory(slug: string): Promise<CourtHistory[]>  {
-    return this.get<CourtHistory[]>(`${this.adminBaseUrl}/${slug}/court-history`);
+    return this.get<CourtHistory[]>(`${this.adminBaseUrl}/${slug}/history`);
   }
 
   public updateCourtHistory(slug: string, body: CourtHistory[]): Promise<CourtHistory[]> {
-    return this.put<CourtHistory[], typeof body>(`${this.adminBaseUrl}/${slug}/court-history`, body);
+    return this.put<CourtHistory[], typeof body>(`${this.adminBaseUrl}/${slug}/history`, body);
   }
 
   public getContactTypes(): Promise<ContactType[]> {

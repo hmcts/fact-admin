@@ -46,15 +46,22 @@ export class CourtHistoryController {
 
   private getCourtHistory(): void {
     const slug = $('#slug').val();
+    console.log('slug: ' + slug);
 
     $.ajax({
-      url: `/courts/${slug}/emails`,
+      url: `/courts/${slug}/history`,
       method: 'get',
       success: (res) => {
         $(this.courtHistoryContentId).html(res);
       },
-      error: (jqxhr, errorTextStatus, err) =>
+      error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET court history failed.')
+        console.log('========error getting court history=======');
+        console.log(jqxhr);
+        console.log(errorTextStatus);
+        console.log(err);
+        console.log('==========================================');
+      }
     });
   }
 

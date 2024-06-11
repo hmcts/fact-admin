@@ -47,8 +47,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.put);
   app.get('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.get);
   app.put('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.put);
-  app.get('/courts/:slug/court-history', featureFlags.toggleRoute(FACT_ADMIN_TAB_COURT_HISTORY), app.locals.container.cradle.courtHistoryController.get);
-  app.put('/courts/:slug/court-history', featureFlags.toggleRoute(FACT_ADMIN_TAB_COURT_HISTORY), app.locals.container.cradle.courtHistoryController.put);
+  app.get('/courts/:slug/history', featureFlags.toggleRoute(FACT_ADMIN_TAB_COURT_HISTORY), app.locals.container.cradle.courtHistoryController.get);
+  app.put('/courts/:slug/history', featureFlags.toggleRoute(FACT_ADMIN_TAB_COURT_HISTORY), app.locals.container.cradle.courtHistoryController.put);
   app.get('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.get);
   app.put('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.put);
   app.get('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.get);
