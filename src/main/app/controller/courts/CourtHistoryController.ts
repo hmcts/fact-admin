@@ -24,7 +24,6 @@ export class CourtHistoryController {
     errorMsg: string[] = [],
     courtHistory: CourtHistory[] = null): Promise<void> {
 
-    console.log('CourtHistoryController.get hit! -----------------------------------------------------------------');
     const slug: string = req.params.slug;
     let fatalError = false;
 
