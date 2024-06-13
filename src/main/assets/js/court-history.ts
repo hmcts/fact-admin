@@ -15,8 +15,8 @@ export class CourtHistoryController {
   private moveUpBtnClass = 'move-up';
   private moveDownBtnClass = 'move-down';
 
-  private addressInputName = 'address';
-  //need name ones for the input fields
+  private courtNameInputName = 'court_name';
+  private courtNameCyInputName = 'court_name_cy';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_courtHistory';
 
@@ -67,9 +67,13 @@ export class CourtHistoryController {
 
   // By default this will be used when the save button is pressed
   private setUpSubmitEventHandler(): void {
+    console.log('put hit!');
     $(this.formId).on('submit', e => {
       e.preventDefault();
       const url = $(e.target).attr('action');
+      console.log('url: ' + url);
+      console.log('serialized: ' + $(e.target));
+
       $.ajax({
         url: url,
         method: 'put',
@@ -77,8 +81,11 @@ export class CourtHistoryController {
       }).done(res => {
         $(this.courtHistoryContentId).html(res);
         window.scrollTo(0, 0);
-      }).fail(response =>
-        AjaxErrorHandler.handleError(response, 'PUT court history failed.'));
+      }).fail(response => {
+        console.log('========error putting court history=======');
+        console.log(response);
+        AjaxErrorHandler.handleError(response, 'PUT court history failed.')
+      });
     });
   }
 
@@ -117,7 +124,8 @@ export class CourtHistoryController {
   private renameFormElements(): void {
     // Rename the input fields so that the index values are in order,
     // which affects the order when the form is posted.
-    this.renameInputElement(this.addressInputName, this.addressInputName);
+    this.renameInputElement(this.courtNameInputName, this.courtNameInputName);
+    this.renameInputElement(this.courtNameCyInputName, this.courtNameCyInputName);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
   }
 
