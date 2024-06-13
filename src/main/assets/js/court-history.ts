@@ -25,18 +25,12 @@ export class CourtHistoryController {
   }
 
   private initialize(): void {
-    console.log('initalize hit!');
     $(() => {
       if ($(this.tabId).length > 0) {
-        console.log(1);
         setUpTabClick(this.tab, this.getCourtHistory.bind(this));
-        console.log(2);
         this.getCourtHistory();
-        console.log(3);
         this.setUpSubmitEventHandler();
-        console.log(4);
         this.setUpAddEventHandler();
-        console.log(5);
         this.setUpDeleteEventHandler();
         this.setUpClearEventHandler();
         Utilities.addFieldsetReordering(this.tabId, this.moveUpBtnClass, this.moveDownBtnClass, this.renameFormElements.bind(this));
@@ -46,7 +40,6 @@ export class CourtHistoryController {
 
   private getCourtHistory(): void {
     const slug = $('#slug').val();
-    console.log('slug: ' + slug);
 
     $.ajax({
       url: `/courts/${slug}/history`,
@@ -56,23 +49,15 @@ export class CourtHistoryController {
       },
       error: (jqxhr, errorTextStatus, err) => {
         AjaxErrorHandler.handleError(jqxhr, 'GET court history failed.')
-        console.log('========error getting court history=======');
-        console.log(jqxhr);
-        console.log(errorTextStatus);
-        console.log(err);
-        console.log('==========================================');
       }
     });
   }
 
   // By default this will be used when the save button is pressed
   private setUpSubmitEventHandler(): void {
-    console.log('put hit!');
     $(this.formId).on('submit', e => {
       e.preventDefault();
       const url = $(e.target).attr('action');
-      console.log('url: ' + url);
-      console.log('serialized: ' + $(e.target));
 
       $.ajax({
         url: url,
@@ -82,8 +67,6 @@ export class CourtHistoryController {
         $(this.courtHistoryContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response => {
-        console.log('========error putting court history=======');
-        console.log(response);
         AjaxErrorHandler.handleError(response, 'PUT court history failed.')
       });
     });
