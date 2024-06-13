@@ -58,7 +58,7 @@ export class CourtHistoryController {
    * validate input data and update the court history then re-render the view
    */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    let courtHistory = req.body.emails as CourtHistory[] ?? [];
+    let courtHistory = req.body.courtHistories as CourtHistory[] ?? [];
     courtHistory.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
@@ -89,7 +89,7 @@ export class CourtHistoryController {
   private addEmptyFormsForNewEntries(courtHistory: CourtHistory[], numberOfForms = 1): void {
     if (courtHistory) {
       for (let i = 0; i < numberOfForms; i++) {
-        courtHistory.push({ name: null, nameCy: null, isNew: true });
+        courtHistory.push({ court_name: null, court_name_cy: null, isNew: true });
       }
     }
   }
@@ -97,7 +97,7 @@ export class CourtHistoryController {
    * check if email entry is empty
    */
   private courtHistoryEntryIsEmpty(courtHistory: CourtHistory): boolean {
-    return (!courtHistory.name?.trim() && !courtHistory.nameCy?.trim());
+    return (!courtHistory.court_name?.trim() && !courtHistory.court_name_cy?.trim());
   }
 
   /**

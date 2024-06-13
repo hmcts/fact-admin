@@ -139,7 +139,7 @@
             {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_COURT_HISTORY] or featureFlags.values|length == 0 %}
               {% set courtHistoryTab =
                 {
-                  label: "Historial Names",
+                  label: "Historical Names",
                   id: "courtHistory",
                   panel: {
                     html: courtHistoryHtml

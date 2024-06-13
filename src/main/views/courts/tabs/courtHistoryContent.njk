@@ -5,7 +5,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-<h2 class="govuk-heading-l">Court Historical Names</h2>
+<h2 class="govuk-heading-l">Historical Names</h2>
 
 {% if errors|length %}
   {{ govukErrorSummary({
@@ -20,16 +20,16 @@
   }) }}
 {% endif %}
 
-{% set upArrowHtml = "&#11014" %}
-{% set downArrowHtml = "&#11015" %}
+{# {% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %} #}
 
 {% for courtNameSet in courtHistories %}
 
   {% set isNew = (courtNameSet.isNew === true) or (courtNameSet.isNew === "true") %}
 
-  {# {% set emailsError = false %}
-  {% if courtNameSet.address === '' %}
-    {% set emailsError = { text: 'Address is required' } %}
+  {# {% set nameBlankError = false %}
+  {% if courtNameSet.court_name === '' %}
+    {% set NameBlankError = { text: 'Historical name is required' } %}
   {% endif %} #}
 
   {% call govukFieldset({
@@ -37,29 +37,29 @@
   }) %}
 
   {% if isNew === true %}
-    <h3 class="govuk-heading-s">Add New Historial Name</h3>
+    <h3 class="govuk-heading-s">Add New Historical Name</h3>
   {% endif %}
 
   <input type="hidden" name={{"courtHistories[" + loop.index +"][isNew]"}} value={{courtNameSet.isNew}}></input>
 
   {{ govukInput({
     label: {
-      text: "Historial Name"
+      text: "Historical Name"
     },
     classes: "govuk-input--width-20",
-    id: "HistorialName-" + loop.index,
-    name: "emails[" + loop.index +"][address]",
-    value: email.address
+    id: "historicalName-" + loop.index,
+    name: "courtHistories[" + loop.index +"][court_name]",
+    value: courtNameSet.court_name
   }) }}
 
   {{ govukInput({
     label: {
-      text: "Historial Name (Welsh)"
+      text: "Historical Name (Welsh)"
     },
     classes: "govuk-input--width-20",
-    id: "address-" + loop.index,
-    name: "emails[" + loop.index +"][address]",
-    value: email.address
+    id: "historicalName-" + loop.index,
+    name: "courtHistories[" + loop.index +"][court_name_cy]",
+    value: courtNameSet.court_name_cy
   }) }}
 
 
@@ -68,20 +68,20 @@
     {% if isNew === false %}
       {{ govukButton({
         text: "Remove",
-        name: "deleteCourtNameSet",
+        name: "deleteCourtHistory",
         type: "button",
-        classes: "govuk-button--secondary deleteEmail"
+        classes: "govuk-button--secondary deleteCourtHistory"
       }) }}
     {% else %}
       {{ govukButton({
         text: "Clear",
-        name: "clearCourtNameSet",
+        name: "clearCourtHistory",
         type: "button",
-        classes: "govuk-button--secondary clearEmail"
+        classes: "govuk-button--secondary clearCourtHistory"
       }) }}
     {% endif %}
     </div>
-    <div class="govuk-grid-column-one-quarter govuk-button-group">
+    {# <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
         name: "moveUp",
@@ -97,7 +97,7 @@
         classes: "govuk-button--secondary move-down",
         attributes: { "aria-label": "move down" }
       }) }}
-    </div>
+    </div> #}
   </div>
 
   <hr/>
@@ -106,58 +106,42 @@
 
 {% endfor %}
 
-{# {% call govukFieldset({
+{% call govukFieldset({
     classes: "can-reorder",
-    attributes: { id: "newEmailTemplate", disabled: "disabled", hidden: true }
+    attributes: { id: "newCourtHistoryTemplate", disabled: "disabled", hidden: true }
 }) %}
 
-  <input type="hidden" name={{"emails[" + emails.length +"][isNew]"}} value="true"></input>
+  <input type="hidden" name={{"courtHistories[" + courtHistories.length +"][isNew]"}} value="true"></input>
 
-  <h3 class="govuk-heading-s">Add New Email Address</h3>
+  <h3 class="govuk-heading-s">Add New Historical Name</h3>
 
-  {{ govukSelect({
-    name:  "emails[" + emails.length +"][adminEmailTypeId]",
+  {{ govukInput({
     label: {
-      text: "Type"
+      text: "Historical Name"
     },
-    items: emailTypes | selectFilter('')
+    classes: "govuk-input--width-20",
+    name: "courtHistories[" + courtHistories.length +"][court_name]"
   }) }}
 
   {{ govukInput({
     label: {
-      text: "Address"
+      text: "Historical Name (Welsh)"
     },
     classes: "govuk-input--width-20",
-    name: "emails[" + emails.length +"][address]"
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: "Explanation"
-    },
-    classes: "govuk-input--width-20",
-    name: "emails[" + emails.length +"][explanation]"
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: "Explanation (Welsh)"
-    },
-    classes: "govuk-input--width-20",
-    name: "emails[" + emails.length +"][explanationCy]"
+    name: "courtHistories[" + courtHistories.length +"][court_name_cy]"
   }) }}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
       {{ govukButton({
         text: "Clear",
-        name: "clearOpeningTime",
+        name: "clearCourtHistory",
         type: "button",
-        classes: "govuk-button--secondary clearOpeningTime"
+        classes: "govuk-button--secondary clearCourtHistory"
       }) }}
     </div>
 
-    <div class="govuk-grid-column-one-quarter govuk-button-group">
+    {# <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
         name: "moveUp",
@@ -173,24 +157,23 @@
         classes: "govuk-button--secondary move-down",
         attributes: { "aria-label": "move down" }
       }) }}
-      </div>
+      </div> #}
   </div>
 
-  <hr/>
+<hr/>
 
-{% endcall %} #}
+{% endcall %}
 
 {{ govukButton({
   text: "Save",
-  name: "saveCourtNameSet",
+  name: "saveCourtHistory",
   disabled: fatalError
 }) }}
 
-
 {{ govukButton({
-  text: "Add new historial name",
-  name: "addCourtNameSet",
+  text: "Add new historical name",
+  name: "addCourtHistory",
   type: "button",
-  classes: "govuk-button--secondary addEmail",
+  classes: "govuk-button--secondary addCourtHistory",
   disabled: fatalError
 }) }}

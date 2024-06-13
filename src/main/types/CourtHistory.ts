@@ -2,8 +2,8 @@ import {Element} from "./Element";
 import {Error} from "./Error";
 
 export interface CourtHistory extends Element {
-  name: string,
-  nameCy: string,
+  court_name: string,
+  court_name_cy: string,
 }
 
 export interface CourtHistoryData {
