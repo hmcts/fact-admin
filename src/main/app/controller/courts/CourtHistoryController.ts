@@ -12,6 +12,7 @@ export class CourtHistoryController {
   updateErrorMsg = 'A problem occurred when saving the court history.';
   getCourtHistoryErrorMsg = 'A problem occurred when retrieving the historical court data.';
   courtLockedExceptionMsg = 'A conflict error has occurred: ';
+  emptyCourtNameErrorMsg = 'Historical name is required.';
 
   /**
    * GET /admin/courts/:slug/history
@@ -21,7 +22,7 @@ export class CourtHistoryController {
     req: AuthedRequest,
     res: Response,
     updated = false,
-    errorMsg: string[] = [],
+    errorMsgs: Error[] = [],
     courtHistory: CourtHistory[] = null): Promise<void> {
 
     const slug: string = req.params.slug;
@@ -31,21 +32,19 @@ export class CourtHistoryController {
       // Get emails from API and set the isNew property to false on all email entries.
       await req.scope.cradle.api.getCourtHistory(slug)
         .then((value: CourtHistory[]) => courtHistory = value.map(e => { e.isNew = false; return e; }))
-        .catch(() => {errorMsg.push(this.getCourtHistoryErrorMsg); fatalError = true;});
+        .catch(() => {
+          errorMsgs.push({text: this.getCourtHistoryErrorMsg});
+          fatalError = true;
+        });
     }
 
     if (!courtHistory?.some(e => e.isNew === true)) {
       this.addEmptyFormsForNewEntries(courtHistory);
     }
 
-    const errors: Error[] = [];
-    for (const msg of errorMsg) {
-      errors.push({text: msg});
-    }
-
     const pageData: CourtHistoryData = {
-      courtHistories: courtHistory,
-      errors: errors,
+      courtHistory: courtHistory,
+      errors: errorMsgs,
       updated: updated,
       fatalError: fatalError
     };
@@ -57,19 +56,20 @@ export class CourtHistoryController {
    * validate input data and update the court history then re-render the view
    */
   public async put(req: AuthedRequest, res: Response): Promise<void> {
-    let courtHistory = req.body.courtHistories as CourtHistory[] ?? [];
+    let courtHistory = req.body.courtHistory as CourtHistory[] ?? [];
     courtHistory.forEach(e => e.isNew = (e.isNew === true) || ((e.isNew as any) === 'true'));
 
     if (!CSRF.verify(req.body._csrf)) {
-      return this.get(req, res, false, [this.updateErrorMsg], courtHistory);
+      return this.get(req, res, false,[{text: this.updateErrorMsg}], courtHistory);
     }
 
     // Remove fully empty entries
     courtHistory = courtHistory.filter(e => !this.courtHistoryEntryIsEmpty(e));
 
-    const errorMsg = this.getErrorMessages(courtHistory);
-    if (errorMsg.length > 0) {
-      return this.get(req, res, false, errorMsg, courtHistory);
+    let errorMsgs: Error[] = [];
+    errorMsgs = this.getErrorMessages(courtHistory);
+    if (errorMsgs.length > 0) {
+      return this.get(req, res, false, errorMsgs, courtHistory);
     }
 
     await req.scope.cradle.api.updateCourtHistory(req.params.slug, courtHistory)
@@ -78,7 +78,7 @@ export class CourtHistoryController {
         const error = reason.response?.status === 409
           ? this.courtLockedExceptionMsg + (<any>reason.response).data['message']
           : this.updateErrorMsg;
-        await this.get(req, res, false, [error], courtHistory);
+        await this.get(req, res, false, [{text: error}], courtHistory);
       });
   }
 
@@ -102,12 +102,16 @@ export class CourtHistoryController {
   /**
    * returns the error messages to the view
    */
-  private getErrorMessages(courtHistories: CourtHistory[]): string[] {
-    const errorMsg: string[] = [];
-    // if (courtHistories.some(ot => !ot.name || ot.nameCy === '')) {
-    //   // Retains the posted email data when errors exist
-    //   errorMsg.push(this.emptyTypeOrAddressErrorMsg);
-    // }
-    return errorMsg;
+  private getErrorMessages(courtHistory: CourtHistory[]): Error[] {
+    const errorMsgs: Error[] = [];
+
+    courtHistory.forEach((ch, index) => {
+      index = index + 1
+      if (ch.court_name === '')
+      {
+        errorMsgs.push({text: this.emptyCourtNameErrorMsg, href: '#historicalName-'+index });
+      }
+    });
+    return errorMsgs;
   }
 }

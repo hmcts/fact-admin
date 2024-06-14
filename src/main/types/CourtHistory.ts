@@ -7,7 +7,7 @@ export interface CourtHistory extends Element {
 }
 
 export interface CourtHistoryData {
-  courtHistories: CourtHistory[],
+  courtHistory: CourtHistory[],
   errors: Error[],
   updated: boolean,
   fatalError: boolean,

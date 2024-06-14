@@ -9,28 +9,28 @@
 
 {% if errors|length %}
   {{ govukErrorSummary({
-    titleText: "There is a problem",
+    titleText: "There is a problem.",
     errorList: errors
   }) }}
 {% endif %}
 
 {% if updated === true %}
   {{ govukPanel({
-    titleText: " updated"
+    titleText: "Historical names updated"
   }) }}
 {% endif %}
 
-{# {% set upArrowHtml = "&#11014" %}
-{% set downArrowHtml = "&#11015" %} #}
+{% set upArrowHtml = "&#11014" %}
+{% set downArrowHtml = "&#11015" %}
 
-{% for courtNameSet in courtHistories %}
+{% for courtNameSet in courtHistory %}
 
   {% set isNew = (courtNameSet.isNew === true) or (courtNameSet.isNew === "true") %}
 
-  {# {% set nameBlankError = false %}
+  {% set courtNameError = false %}
   {% if courtNameSet.court_name === '' %}
-    {% set NameBlankError = { text: 'Historical name is required' } %}
-  {% endif %} #}
+    {% set courtNameError = { text: 'Historical name is required.'} %}
+  {% endif %}
 
   {% call govukFieldset({
     classes: "can-reorder"
@@ -40,7 +40,7 @@
     <h3 class="govuk-heading-s">Add New Historical Name</h3>
   {% endif %}
 
-  <input type="hidden" name={{"courtHistories[" + loop.index +"][isNew]"}} value={{courtNameSet.isNew}}></input>
+  <input type="hidden" name={{"courtHistory[" + loop.index +"][isNew]"}} value={{courtNameSet.isNew}}></input>
 
   {{ govukInput({
     label: {
@@ -48,8 +48,9 @@
     },
     classes: "govuk-input--width-20",
     id: "historicalName-" + loop.index,
-    name: "courtHistories[" + loop.index +"][court_name]",
-    value: courtNameSet.court_name
+    name: "courtHistory[" + loop.index +"][court_name]",
+    value: courtNameSet.court_name,
+    errorMessage: courtNameError
   }) }}
 
   {{ govukInput({
@@ -57,8 +58,8 @@
       text: "Historical Name (Welsh)"
     },
     classes: "govuk-input--width-20",
-    id: "historicalName-" + loop.index,
-    name: "courtHistories[" + loop.index +"][court_name_cy]",
+    id: "historicalName-cy-" + loop.index,
+    name: "courtHistory[" + loop.index +"][court_name_cy]",
     value: courtNameSet.court_name_cy
   }) }}
 
@@ -81,7 +82,7 @@
       }) }}
     {% endif %}
     </div>
-    {# <div class="govuk-grid-column-one-quarter govuk-button-group">
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
         name: "moveUp",
@@ -97,7 +98,7 @@
         classes: "govuk-button--secondary move-down",
         attributes: { "aria-label": "move down" }
       }) }}
-    </div> #}
+    </div>
   </div>
 
   <hr/>
@@ -111,7 +112,7 @@
     attributes: { id: "newCourtHistoryTemplate", disabled: "disabled", hidden: true }
 }) %}
 
-  <input type="hidden" name={{"courtHistories[" + courtHistories.length +"][isNew]"}} value="true"></input>
+  <input type="hidden" name={{"courtHistory[" + courtHistory.length +"][isNew]"}} value="true"></input>
 
   <h3 class="govuk-heading-s">Add New Historical Name</h3>
 
@@ -120,7 +121,7 @@
       text: "Historical Name"
     },
     classes: "govuk-input--width-20",
-    name: "courtHistories[" + courtHistories.length +"][court_name]"
+    name: "courtHistory[" + courtHistory.length +"][court_name]"
   }) }}
 
   {{ govukInput({
@@ -128,7 +129,7 @@
       text: "Historical Name (Welsh)"
     },
     classes: "govuk-input--width-20",
-    name: "courtHistories[" + courtHistories.length +"][court_name_cy]"
+    name: "courtHistory[" + courtHistory.length +"][court_name_cy]"
   }) }}
 
   <div class="govuk-grid-row">
@@ -141,7 +142,7 @@
       }) }}
     </div>
 
-    {# <div class="govuk-grid-column-one-quarter govuk-button-group">
+    <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
         name: "moveUp",
@@ -157,7 +158,7 @@
         classes: "govuk-button--secondary move-down",
         attributes: { "aria-label": "move down" }
       }) }}
-      </div> #}
+      </div>
   </div>
 
 <hr/>
