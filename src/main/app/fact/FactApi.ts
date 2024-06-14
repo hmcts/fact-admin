@@ -24,7 +24,7 @@ import {AxiosError, AxiosInstance} from 'axios';
 import {Logger} from '../../types/Logger';
 import {CourtLock} from '../../types/CourtLock';
 import {Region} from '../../types/Region';
-import {CourtHistory} from "../../types/CourtHistory";
+import {CourtHistory} from '../../types/CourtHistory';
 
 
 export class FactApi extends FactApiBase {

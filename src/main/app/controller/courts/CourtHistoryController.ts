@@ -106,7 +106,7 @@ export class CourtHistoryController {
     const errorMsgs: Error[] = [];
 
     courtHistory.forEach((ch, index) => {
-      index = index + 1
+      index = index + 1;
       if (ch.court_name === '')
       {
         errorMsgs.push({text: this.emptyCourtNameErrorMsg, href: '#historicalName-'+index });

@@ -48,7 +48,7 @@ export class CourtHistoryController {
         $(this.courtHistoryContentId).html(res);
       },
       error: (jqxhr, errorTextStatus, err) => {
-        AjaxErrorHandler.handleError(jqxhr, 'GET court history failed.')
+        AjaxErrorHandler.handleError(jqxhr, 'GET court history failed.');
       }
     });
   }
@@ -67,7 +67,7 @@ export class CourtHistoryController {
         $(this.courtHistoryContentId).html(res);
         window.scrollTo(0, 0);
       }).fail(response => {
-        AjaxErrorHandler.handleError(response, 'PUT court history failed.')
+        AjaxErrorHandler.handleError(response, 'PUT court history failed.');
       });
     });
   }

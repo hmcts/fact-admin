@@ -1,7 +1,7 @@
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
 import {CSRF} from '../../../../../main/modules/csrf';
-import {CourtHistory, CourtHistoryData} from "../../../../../main/types/CourtHistory";
+import {CourtHistory, CourtHistoryData} from '../../../../../main/types/CourtHistory';
 import { CourtHistoryController } from '../../../../../main/app/controller/courts/CourtHistoryController';
 
 describe('CourtHistoryController', () => {
@@ -168,8 +168,8 @@ describe('CourtHistoryController', () => {
       'courtHistory': postedCourtHistory,
       updated: false,
       errors: [
-        {text: controller.emptyCourtNameErrorMsg, href: "#historicalName-3"},
-        {text: controller.emptyCourtNameErrorMsg, href: "#historicalName-4"},
+        {text: controller.emptyCourtNameErrorMsg, href: '#historicalName-3'},
+        {text: controller.emptyCourtNameErrorMsg, href: '#historicalName-4'},
       ],
       fatalError: false
     };
