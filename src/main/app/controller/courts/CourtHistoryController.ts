@@ -29,7 +29,7 @@ export class CourtHistoryController {
     let fatalError = false;
 
     if (!courtHistory) {
-      // Get emails from API and set the isNew property to false on all email entries.
+      // Get court history from API and set the isNew property to false on all court history entries.
       await req.scope.cradle.api.getCourtHistory(slug)
         .then((value: CourtHistory[]) => courtHistory = value.map(e => { e.isNew = false; return e; }))
         .catch(() => {
@@ -93,7 +93,7 @@ export class CourtHistoryController {
     }
   }
   /**
-   * check if email entry is empty
+   * check if court history entry is empty
    */
   private courtHistoryEntryIsEmpty(courtHistory: CourtHistory): boolean {
     return (!courtHistory.court_name?.trim() && !courtHistory.court_name_cy?.trim());
