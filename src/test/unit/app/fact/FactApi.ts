@@ -514,6 +514,21 @@ describe('FactApi', () => {
     await expect(api.getCourtHistory('No Slug')).rejects.toEqual(error);
   });
 
+  test('Should return results and log error from updateCourtHistory request', async () => {
+    const mockAxios = {
+      put: async () => {
+        throw mockError;
+      }
+    } as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtHistory('No Slug', [])).rejects.toEqual(mockError);
+  });
+
   test('Should log error and reject promise for failed getOpeningTimeDescriptions request', async () => {
     const mockAxios = {
       get: async () => {
