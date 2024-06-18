@@ -454,6 +454,65 @@ describe('FactApi', () => {
     await expect(api.getEmails('No Slug')).rejects.toEqual(error);
   });
 
+  test('Should return results from getCourtHistory request', async () => {
+    const results = {
+      data: [
+        {
+          court_name: 'test court name', court_name_cy: 'test court name cy',
+        },
+        {
+          court_name: 'test court name 2', court_name_cy: 'test court name cy 2',
+        }
+      ]
+    };
+
+    const mockAxios = {get: async () => results} as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.getCourtHistory('central-london-county-court')).resolves.toEqual(results.data);
+  });
+
+  test('Should update and return results from updateCourtHistory request', async () => {
+    const results = {
+      data: [
+        {
+          court_name: 'some new test court name', court_name_cy: 'some new test court name cy',
+        },
+        {
+          court_name: 'other test court name 2', court_name_cy: 'other test court name cy 2',
+        }
+      ]
+    };
+
+    const mockAxios = {put: async () => results} as never;
+    const mockLogger = {} as never;
+    const api = new FactApi(mockAxios, mockLogger);
+    await expect(api.updateCourtHistory('Plymouth', results.data)).resolves.toEqual(results.data);
+  });
+
+  test('Should return results and log error from getCourtHistory request', async () => {
+
+    const error = new Error('Error') as any;
+    const mockAxios = {
+      get: async () => {
+        error.response = {
+          data: 'something failed',
+          headers: {},
+          status: 403,
+          statusText: 'Failed'
+        };
+        throw error;
+      }
+    } as never;
+
+    const mockLogger = {
+      error: (message: string) => message,
+      info: (message: string) => message
+    } as never;
+    const api = new FactApi(mockAxios, mockLogger);
+
+    await expect(api.getCourtHistory('No Slug')).rejects.toEqual(error);
+  });
 
   test('Should log error and reject promise for failed getOpeningTimeDescriptions request', async () => {
     const mockAxios = {
