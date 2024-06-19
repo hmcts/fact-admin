@@ -6880,7 +6880,7 @@ __metadata:
     sonar-scanner: ^3.1.0
     style-loader: ^3.3.1
     superagent: ^8.1.2
-    tinymce: ^7.0.0
+    tinymce: ^7.2.0
     ts-jest: ^28.0.7
     ts-loader: ^9.3.1
     ts-node: ^10.9.1
@@ -12960,10 +12960,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinymce@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "tinymce@npm:7.0.0"
-  checksum: 1f2dc383c1c6f4efb8d3f4223577a8f2b450f6cc62b2861c80467495d68c2453cbd8b646416a0376282fb0b6341c194c698503149037347133b7b936fb7c717b
+"tinymce@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "tinymce@npm:7.2.0"
+  checksum: 75af9f1e950938e568b252b68b00e4265a395853f984011a9e269e67a044ac06076c3175f70cd44042452eafcc34273d807bcaa558c579024926b1f28dcb2ba8
   languageName: node
   linkType: hard
 
