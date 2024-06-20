@@ -160,7 +160,8 @@
     "follow-redirects": ">=1.15.6",
     "express": ">=4.19.2",
     "ip": ">=2.0.1",
-    "postcss": ">=8.4.33"
+    "postcss": ">=8.4.33",
+    "braces": ">=3.0.3"
   },
   "packageManager": "yarn@3.6.4"
 }
