@@ -94,19 +94,6 @@ Then('The error message {string} displays for the {string} field', async (expErr
   expect(errorMsg.trim()).equal(expErrMessage);
 });
 
-// Then('The error message displays for general info {string}', async (errMessage: string) => {
-//   const errorTitle = await I.checkElement('.govuk-error-summary__title');
-//   expect(errorTitle).equal(true);
-//
-//   const selector = '#generalInfoContent > div.govuk-error-summary > div > div > ul > li';
-//   const eleErrMessage = await I.getElement(selector);
-//   expect(await I.getElementText(eleErrMessage)).equal(errMessage);
-// });
-//
-// Given('I click on continue button', async () => {
-//   await I.click('#redirectBtnId');
-// });
-//
 Then('I uncheck common platform checkbox', async () => {
   const selector = '#common_platform';
   I.seeElement(selector);
