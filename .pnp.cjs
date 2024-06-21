@@ -58,7 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jwt-decode", "npm:3.1.0"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:18.0.6"],\
-            ["@types/nunjucks", "npm:3.2.1"],\
+            ["@types/nunjucks", "npm:3.2.6"],\
             ["@types/puppeteer", "npm:5.4.6"],\
             ["@types/redis", "npm:2.8.31"],\
             ["@types/require-directory", "npm:2.1.2"],\
@@ -4267,10 +4267,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/nunjucks", [\
-        ["npm:3.2.1", {\
-          "packageLocation": "./.yarn/cache/@types-nunjucks-npm-3.2.1-856dc9e81e-40f3dd8968.zip/node_modules/@types/nunjucks/",\
+        ["npm:3.2.6", {\
+          "packageLocation": "./.yarn/cache/@types-nunjucks-npm-3.2.6-5125e5f97e-a139cc51d8.zip/node_modules/@types/nunjucks/",\
           "packageDependencies": [\
-            ["@types/nunjucks", "npm:3.2.1"]\
+            ["@types/nunjucks", "npm:3.2.6"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6164,11 +6164,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["braces", [\
-        ["npm:3.0.2", {\
-          "packageLocation": "./.yarn/cache/braces-npm-3.0.2-782240b28a-e2a8e769a8.zip/node_modules/braces/",\
+        ["npm:3.0.3", {\
+          "packageLocation": "./.yarn/cache/braces-npm-3.0.3-582c14023c-b95aa0b3bd.zip/node_modules/braces/",\
           "packageDependencies": [\
-            ["braces", "npm:3.0.2"],\
-            ["fill-range", "npm:7.0.1"]\
+            ["braces", "npm:3.0.3"],\
+            ["fill-range", "npm:7.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6549,7 +6549,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["chokidar", "npm:3.3.1"],\
             ["anymatch", "npm:3.1.1"],\
-            ["braces", "npm:3.0.2"],\
+            ["braces", "npm:3.0.3"],\
             ["fsevents", "patch:fsevents@npm%3A2.1.3#~builtin<compat/fsevents>::version=2.1.3&hash=31d12a"],\
             ["glob-parent", "npm:5.1.2"],\
             ["is-binary-path", "npm:2.1.0"],\
@@ -6564,7 +6564,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["chokidar", "npm:3.5.3"],\
             ["anymatch", "npm:3.1.3"],\
-            ["braces", "npm:3.0.2"],\
+            ["braces", "npm:3.0.3"],\
             ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
             ["glob-parent", "npm:5.1.2"],\
             ["is-binary-path", "npm:2.1.0"],\
@@ -8943,7 +8943,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jwt-decode", "npm:3.1.0"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:18.0.6"],\
-            ["@types/nunjucks", "npm:3.2.1"],\
+            ["@types/nunjucks", "npm:3.2.6"],\
             ["@types/puppeteer", "npm:5.4.6"],\
             ["@types/redis", "npm:2.8.31"],\
             ["@types/require-directory", "npm:2.1.2"],\
@@ -9186,10 +9186,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["fill-range", [\
-        ["npm:7.0.1", {\
-          "packageLocation": "./.yarn/cache/fill-range-npm-7.0.1-b8b1817caa-cc283f4e65.zip/node_modules/fill-range/",\
+        ["npm:7.1.1", {\
+          "packageLocation": "./.yarn/cache/fill-range-npm-7.1.1-bf491486db-b4abfbca38.zip/node_modules/fill-range/",\
           "packageDependencies": [\
-            ["fill-range", "npm:7.0.1"],\
+            ["fill-range", "npm:7.1.1"],\
             ["to-regex-range", "npm:5.0.1"]\
           ],\
           "linkType": "HARD"\
@@ -12471,7 +12471,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/micromatch-npm-4.0.5-cfab5d7669-02a17b671c.zip/node_modules/micromatch/",\
           "packageDependencies": [\
             ["micromatch", "npm:4.0.5"],\
-            ["braces", "npm:3.0.2"],\
+            ["braces", "npm:3.0.3"],\
             ["picomatch", "npm:2.3.1"]\
           ],\
           "linkType": "HARD"\
