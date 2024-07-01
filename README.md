@@ -1,6 +1,22 @@
 # FACT Admin
 
-FACT administration interface..
+Front end admin interface for the Find a Court or Tribunal Service.
+
+## Table of Contents
+
+* [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Running the application](#running-the-application)
+  * [Running with Docker](#running-with-docker)
+* [Developing](#developing)
+  * [Local environment](#local-environment)
+  * [Code style](#code-style)
+  * [Running the tests](#running-the-tests)
+  * [Security](#security)
+    * [CSRF prevention](#csrf-prevention)
+    * [Helmet](#helmet)
+  * [Healthcheck](#healthcheck)
+* [License](#license)
 
 ## Getting Started
 
