@@ -99,9 +99,10 @@ export class FacilitiesController {
     $(this.tabId).on('click', `button.${this.clearFacilityBtnClass}`, e => {
       $(e.target.closest('fieldset')).find(':input:visible').val('');
 
-      const idIndex = $(tinymce.activeEditor.selection.getNode()).closest('body').data('id').split('-').pop();
-      tinymce.get(this.description + '-' + idIndex).setContent('');
-      tinymce.get(this.descriptionCy + '-' + idIndex).setContent('');
+      // e.target.id is in the form of 'clearFacility-<id>'
+      // so we need to replace 'clearFacility' with 'description' to get the tinymce id to clear it properly
+      tinymce.get(e.target.id.replace(this.clearFacilityBtnClass,this.description)).setContent('');
+      tinymce.get(e.target.id.replace(this.clearFacilityBtnClass,this.descriptionCy)).setContent('');
     });
   }
 
