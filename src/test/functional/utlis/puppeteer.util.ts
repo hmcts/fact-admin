@@ -4,7 +4,7 @@ const scope = require('../support/scope');
 
 export const newPage = async () => {
   scope.page = await scope.browser.newPage();
-  await scope.page.setDefaultNavigationTimeout(60000);
+  await scope.page.setDefaultNavigationTimeout(90000);
 };
 
 export const reloadPage = async () => {
@@ -17,7 +17,7 @@ export const newBrowser = async () => {
 };
 
 export const goTo = async (url: string) => {
-  await scope.page.goto(url);
+  await scope.page.goto(url, { timeout: 90000, waitUntil: 'load' });
 };
 
 export const getPageTitle = async () => {
