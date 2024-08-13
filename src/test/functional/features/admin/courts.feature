@@ -19,8 +19,8 @@ Feature: Homepage
     Then I am redirected to the Edit Court page for the "<edit_court_name>"
 
     Examples:
-      | edit_court_slug                            | edit_court_name         |
-      | shrewsbury-crown-court                     | Shrewsbury Crown Court  |
+      | edit_court_slug                           | edit_court_name         |
+      | brighton-county-court                     | Brighton County Court   |
 
   Scenario Outline: Navigate to view court or tribunal page
     When I click view next to court with "<view_court_slug>"
