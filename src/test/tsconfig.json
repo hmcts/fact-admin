@@ -5,6 +5,8 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": ["es2018", "DOM"],
+    "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "module": "commonjs",
