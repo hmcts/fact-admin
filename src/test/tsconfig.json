@@ -1,0 +1,23 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018", "DOM"],
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strict": true,
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "types": ["node","codeceptjs"]
+  },
+  "include": [
+    "steps.d.ts",
+    "**/*.ts"
+  ]
+}

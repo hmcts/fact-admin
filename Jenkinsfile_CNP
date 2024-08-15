@@ -10,6 +10,7 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def secrets = [
   'fact-${env}': [
+    secret("oauth-client-secret", "OAUTH_CLIENT_SECRET"),
     secret("oauth-user", "OAUTH_USER"),
     secret("user-lock-timeout", "USER_LOCK_TIMEOUT"),
     secret("oauth-viewer-user", "OAUTH_VIEWER_USER"),
@@ -33,6 +34,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX = 'hmctspublic.azurecr.io/imported/'
 
 withPipeline(type, product, component) {
+  env.API_URL = 'http://fact-api-aat.service.core-compute-aat.internal'
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
   syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
