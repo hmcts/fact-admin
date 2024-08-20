@@ -14,6 +14,22 @@ export const config = {
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data',
   helpers: {},
+  plugins: {
+    allure: {
+      enabled: true,
+      require: '@codeceptjs/allure-legacy',
+    },
+    retryFailedStep: {
+      enabled: true,
+    },
+    tryTo: {
+      enabled: true,
+    },
+    screenshotOnFail: {
+      enabled: true,
+      fullPageScreenshots: true,
+    }
+  }
 };
 
 config.helpers = {
@@ -30,5 +46,6 @@ config.helpers = {
   },
   FactApiHelper: {
     require: './helpers/FactApiHelper.ts',
-  }
+  },
+  FileSystem: {},
 };
