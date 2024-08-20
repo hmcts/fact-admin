@@ -13,23 +13,7 @@ export const config = {
   password: process.env.OAUTH_USER_PASSWORD,
   waitForInitialPage: true,
   userDataDir: './src/test/functional/user_data',
-  helpers: {},
-  plugins: {
-    allure: {
-      enabled: true,
-      require: '@codeceptjs/allure-legacy',
-    },
-    retryFailedStep: {
-      enabled: true,
-    },
-    tryTo: {
-      enabled: true,
-    },
-    screenshotOnFail: {
-      enabled: true,
-      fullPageScreenshots: true,
-    }
-  }
+  helpers: {}
 };
 
 config.helpers = {

@@ -20,12 +20,13 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       require: '@codeceptjs/allure-legacy',
     },
-
+    retryFailedStep: {
+      enabled: true,
+    },
     screenshotOnFail: {
       enabled: true,
       fullPageScreenshots: true,
     },
-
     autoLogin: {
       enabled: true,
       saveToFile: true,
