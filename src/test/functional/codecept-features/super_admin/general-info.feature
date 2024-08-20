@@ -1,4 +1,4 @@
-@fact-admin-tab-general-super-admin @special
+@fact-admin-tab-general-super-admin
 Feature: General Info
 
   Background:
