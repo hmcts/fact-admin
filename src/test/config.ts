@@ -24,8 +24,8 @@ config.helpers = {
     windowSize: '1300x800',
     timeout: 70000,
     waitForTimeout: 20000,
-    waitForAction: 2000,
-    waitForNavigation: 'networkidle0',
+    waitForAction: 5000,
+    waitForNavigation: 'load',
     ignoreHTTPSErrors: true,
   },
   FactApiHelper: {
