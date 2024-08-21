@@ -32,4 +32,7 @@ config.helpers = {
     require: './helpers/FactApiHelper.ts',
   },
   FileSystem: {},
+  WebDriver: {
+    waitForTimeout: 10000, // 10 seconds
+  }
 };

@@ -69,6 +69,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/eslint-plugin-tslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
+            ["allure-codeceptjs", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.0.0-beta.10"],\
             ["allure-commandline", "npm:2.30.0"],\
             ["allure-playwright", "npm:2.15.1"],\
             ["applicationinsights", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.3.3"],\
@@ -7079,6 +7080,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["allure-codeceptjs", [\
+        ["npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/cache/allure-codeceptjs-npm-3.0.0-beta.10-9d759f5d7e-8a6166dbba.zip/node_modules/allure-codeceptjs/",\
+          "packageDependencies": [\
+            ["allure-codeceptjs", "npm:3.0.0-beta.10"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/__virtual__/allure-codeceptjs-virtual-e1ff86b963/0/cache/allure-codeceptjs-npm-3.0.0-beta.10-9d759f5d7e-8a6166dbba.zip/node_modules/allure-codeceptjs/",\
+          "packageDependencies": [\
+            ["allure-codeceptjs", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.0.0-beta.10"],\
+            ["@types/codeceptjs", null],\
+            ["allure-js-commons", "virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10"],\
+            ["allure-mocha", "virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10"],\
+            ["codeceptjs", "npm:3.6.5"]\
+          ],\
+          "packagePeers": [\
+            "@types/codeceptjs",\
+            "codeceptjs"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["allure-commandline", [\
         ["npm:2.30.0", {\
           "packageLocation": "./.yarn/unplugged/allure-commandline-npm-2.30.0-47c693bb60/node_modules/allure-commandline/",\
@@ -7109,6 +7134,51 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["md5", "npm:2.3.0"],\
             ["properties", "npm:1.2.1"],\
             ["strip-ansi", "npm:5.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/cache/allure-js-commons-npm-3.0.0-beta.10-1cb4197910-a20ae24822.zip/node_modules/allure-js-commons/",\
+          "packageDependencies": [\
+            ["allure-js-commons", "npm:3.0.0-beta.10"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/__virtual__/allure-js-commons-virtual-1885289c4e/0/cache/allure-js-commons-npm-3.0.0-beta.10-1cb4197910-a20ae24822.zip/node_modules/allure-js-commons/",\
+          "packageDependencies": [\
+            ["allure-js-commons", "virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10"],\
+            ["@types/allure-playwright", null],\
+            ["allure-playwright", null],\
+            ["md5", "npm:2.3.0"],\
+            ["properties", "npm:1.2.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/allure-playwright",\
+            "allure-playwright"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["allure-mocha", [\
+        ["npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/cache/allure-mocha-npm-3.0.0-beta.10-67785ff817-c9216b1fcb.zip/node_modules/allure-mocha/",\
+          "packageDependencies": [\
+            ["allure-mocha", "npm:3.0.0-beta.10"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10", {\
+          "packageLocation": "./.yarn/__virtual__/allure-mocha-virtual-765a246b69/0/cache/allure-mocha-npm-3.0.0-beta.10-67785ff817-c9216b1fcb.zip/node_modules/allure-mocha/",\
+          "packageDependencies": [\
+            ["allure-mocha", "virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10"],\
+            ["@types/mocha", null],\
+            ["allure-js-commons", "virtual:e1ff86b9638c49ec898da049d254cec5e0f0a7e4bcbb8f3490fbf966e0275acf446dbe282ecc3a44ea8bc6e7264e210f724e1b2f91644c021d2bc6645980e7fb#npm:3.0.0-beta.10"],\
+            ["mocha", null]\
+          ],\
+          "packagePeers": [\
+            "@types/mocha",\
+            "mocha"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11880,6 +11950,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/eslint-plugin-tslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
             ["@typescript-eslint/parser", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:5.30.7"],\
+            ["allure-codeceptjs", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.0.0-beta.10"],\
             ["allure-commandline", "npm:2.30.0"],\
             ["allure-playwright", "npm:2.15.1"],\
             ["applicationinsights", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.3.3"],\
