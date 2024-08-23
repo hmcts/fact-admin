@@ -1,6 +1,6 @@
 @fact-admin-tab-types
-#Feature: Court Types
-#
+Feature: Court Types
+
 #  Background:
 #    Given I am on new browser
 #    Given I am on FACT homepage
