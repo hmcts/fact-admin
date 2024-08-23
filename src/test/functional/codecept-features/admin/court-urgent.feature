@@ -1,4 +1,4 @@
-Feature: Court Update Urgent Message @special @ifrsdfd
+Feature: Court Update Urgent Message
 
   Scenario: Adding urgent notice English & Welsh
     Given a court is created through the API
