@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import { I } from '../utlis/codecept-util';
-import {config} from '../../config';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.grabTitle();
