@@ -1,14 +1,12 @@
 @fact-admin-tab-addresses @special
 Feature: Court-addresses
 
-  Background:
+  Scenario Outline: Adding incomplete addresses (leaving primary address, secondary town and secondary postcode blank)
     When I log in as a super-admin
     When I click edit next to court with "barnsley-law-courts"
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
     Then I click the Addresses tab
-
-  Scenario Outline: Adding incomplete addresses (leaving primary address, secondary town and secondary postcode blank)
     Given I will make sure to clear all entries of the primary address
     When I will make sure to clear all entries for secondary addresses
     When I select the Address Type "5880"
@@ -26,6 +24,11 @@ Feature: Court-addresses
       | Aberdare |  CF44 0JE | The Court House, Cwmbach Road |
 
   Scenario: Adding two identical addresses with one containing special characters
+    When I log in as a super-admin
+    When I click edit next to court with "barnsley-law-courts"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over nav element
+    Then I click the Addresses tab
     Given I will make sure to remove entries for secondary address "1"
     Given I will make sure to remove entries for secondary address "2"
     And I click the Save Addresses button
@@ -44,6 +47,11 @@ Feature: Court-addresses
     Then The error message display is "All addresses must be unique."
 
   Scenario: Adding two identical addresses with one containing abbreviations
+    When I log in as a super-admin
+    When I click edit next to court with "barnsley-law-courts"
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over nav element
+    Then I click the Addresses tab
     Given I will make sure to remove entries for secondary address "1"
     Given I will make sure to remove entries for secondary address "2"
     And I click the Save Addresses button
