@@ -1,12 +1,10 @@
 @fact-admin-tab-general-super-admin @special
 Feature: General Info
 
-  Background:
+  Scenario: Cant leave the name blank
     When I log in as an admin
     Then I am logged out if I am an admin user
     And I am on the admin portal sign in page
-
-  Scenario: Cant leave the name blank
     When a court is created through the API
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -20,6 +18,9 @@ Feature: General Info
     Then the court is cleaned up through the API
 
   Scenario: Editing general info with the court name already exist
+    When I log in as an admin
+    Then I am logged out if I am an admin user
+    And I am on the admin portal sign in page
     When a court is created through the API
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -33,6 +34,9 @@ Feature: General Info
     Then the court is cleaned up through the API
 
   Scenario: Adding intro paragraph welsh and English
+    When I log in as an admin
+    Then I am logged out if I am an admin user
+    And I am on the admin portal sign in page
     When a service centre court is created through the API
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
@@ -47,6 +51,9 @@ Feature: General Info
     Then the court is cleaned up through the API
 
   Scenario: Editing common platform checkbox
+    When I log in as an admin
+    Then I am logged out if I am an admin user
+    And I am on the admin portal sign in page
     When a court is created through the API
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
