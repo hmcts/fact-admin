@@ -14,7 +14,6 @@ export const config: CodeceptJS.MainConfig = {
   output: '../../../functional-output/functional/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
-  retry: 3,
   plugins: {
     allure: {
       enabled: true,
@@ -24,9 +23,6 @@ export const config: CodeceptJS.MainConfig = {
       enabled: !testConfig.TestHeadlessBrowser,
     },
     retryFailedStep: {
-      enabled: true,
-    },
-    tryTo: {
       enabled: true,
     },
     screenshotOnFail: {
