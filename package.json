@@ -26,7 +26,7 @@
     "test:codecept": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run-workers 8 parallel --config ./src/test/functional/codecept.conf.js",
     "test:codecept:report": "allure generate functional-output/codecept/reports/ -c -o functional-output/codecept/allure",
     "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
-    "cichecks": "yarn && yarn build && yarn lint && yarn test && yarn test:ally"
+    "cichecks": "yarn && yarn build && yarn lint && yarn test && yarn test:a11y"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.24.0",
