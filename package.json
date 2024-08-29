@@ -176,8 +176,7 @@
     "axios": ">=1.7.4",
     "minimist": ">=1.2.6",
     "ws": ">=8.17.1",
-    "braces": ">=3.0.3",
-    "micromatch": ">=4.0.8"
+    "braces": ">=3.0.3"
   },
   "packageManager": "yarn@3.6.4"
 }
