@@ -11,13 +11,14 @@ export const config: CodeceptJS.MainConfig = {
     features: './codecept-features/**/*.feature',
     steps: './codecept-steps/**/*.ts',
   },
-  output: '../../../functional-output/functional/reports',
+  output: '../../../functional-output/codecept/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
   plugins: {
     allure: {
       enabled: true,
       require: '@codeceptjs/allure-legacy',
+      outputDir: '../../../functional-output/codecept/reports/',
     },
     pauseOnFail: {
       enabled: !testConfig.TestHeadlessBrowser,

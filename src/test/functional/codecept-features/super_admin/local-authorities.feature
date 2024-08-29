@@ -12,7 +12,7 @@ Feature: Local authorities
     And I click on save court type
     And I hover over nav element
 
-  Scenario Outline: Local authorities updated successfully
+  Scenario Outline: Local authorities updated successfully @special
 
     And I click the cases heard tab
     And I will make sure Adoption is selected
