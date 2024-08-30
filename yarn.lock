@@ -4799,7 +4799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"allure-commandline@npm:^2.21.0":
+"allure-commandline@npm:^2.30.0":
   version: 2.30.0
   resolution: "allure-commandline@npm:2.30.0"
   bin:
@@ -8890,7 +8890,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.30.7
     "@typescript-eslint/eslint-plugin-tslint": ^5.30.7
     "@typescript-eslint/parser": ^5.30.7
-    allure-commandline: ^2.21.0
+    allure-commandline: ^2.30.0
     allure-playwright: ^2.1.0
     applicationinsights: ^2.3.3
     autobind-decorator: ^2.4.0
