@@ -130,10 +130,7 @@ Then ('I can see the court postcodes appear in alpha numeric order', async ()=> 
   I.seeElement(selector);
 
   const courtPostcodes = await I.grabHTMLFrom(selector);
-  let arrayOfPostcodes = courtPostcodes.match(/(?<=for=")(.*?)(?=">)/g);
-  if(arrayOfPostcodes == null){
-    arrayOfPostcodes = [];
-  }
+  const arrayOfPostcodes = courtPostcodes.match(/(?<=for=")(.*?)(?=">)/g) ?? [];
   const arrayOfPostcodesToSort = [...arrayOfPostcodes];
 
   const isTheSame = arrayOfPostcodesToSort.sort().join() === arrayOfPostcodes.join();
