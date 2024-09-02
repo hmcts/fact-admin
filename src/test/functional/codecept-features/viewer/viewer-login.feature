@@ -1,5 +1,5 @@
-@fact-admin-login-logout @special
-Feature: Viewer Login
+@fact-admin-login-logout
+Feature: Login/Logout
 
   Scenario Outline: viewer can log in and can see specific tabs for a selected court
     Given a court is created through the API

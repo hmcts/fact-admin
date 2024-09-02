@@ -31,10 +31,7 @@ When('I enter facility {string} and enter description in english {string} and we
   //then use regex to create an array of all facilites
   //then shift to remove the first one because it is blank
   const courtFacilities: string = await I.grabHTMLFrom(facilityOptionSelector);
-  let arrayofcourtFacilities = courtFacilities.match(/(?<=>)(.*?)(?=<)/g);
-  if(arrayofcourtFacilities == null){
-    arrayofcourtFacilities = [];
-  }
+  const arrayofcourtFacilities = courtFacilities.match(/(?<=>)(.*?)(?=<)/g) ?? [];
   arrayofcourtFacilities.shift();
 
   while (arrayofcourtFacilities[facilityIdx] != facility)
@@ -100,10 +97,7 @@ Then('the facility entry in last position has index {string} description in engl
   //then use regex to create an array of all facility values
   //then shift to remove the first one because it is blank
   const courtFacilities: string = await I.grabHTMLFrom(facilityOptionSelector);
-  let arrayofcourtFacilities = courtFacilities.match(/(?<=value=")(.*?)(?=")/g);
-  if(arrayofcourtFacilities == null){
-    arrayofcourtFacilities = [];
-  }
+  const arrayofcourtFacilities = courtFacilities.match(/(?<=value=")(.*?)(?=")/g) ?? [];
   arrayofcourtFacilities.shift();
   //expect(arrayofcourtFacilities[selectorIndex]).toEqual(value);
 
