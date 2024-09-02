@@ -1,4 +1,4 @@
-@fact-admin-tab-addresses @special
+@fact-admin-tab-addresses
 Feature: Court-addresses
 
   Background:

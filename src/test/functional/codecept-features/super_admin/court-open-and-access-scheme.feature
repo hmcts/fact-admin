@@ -1,4 +1,4 @@
-@fact-admin-court-open-access @special
+@fact-admin-court-open-access
 Feature: Court-addresses
 
   Scenario Outline: Open
