@@ -8939,7 +8939,7 @@ __metadata:
     nunjucks: ^3.2.4
     openid-client: ^5.6.5
     pa11y: ^6.2.3
-    playwright: latest
+    playwright: 1.30.0
     puppeteer: 19.6.3
     react-native: ^0.74.5
     redis: ^3.1.2
@@ -14504,6 +14504,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.30.0":
+  version: 1.30.0
+  resolution: "playwright-core@npm:1.30.0"
+  bin:
+    playwright: cli.js
+  checksum: 4c5693f27245a1168f94708ecd8e1eb0d200de435b25cc07cfa25b97a094633818954dc00baf24e0ff551825f672050b83d1309362c1f97213fe8ebd2a147ed9
+  languageName: node
+  linkType: hard
+
 "playwright-core@npm:1.46.0":
   version: 1.46.0
   resolution: "playwright-core@npm:1.46.0"
@@ -14513,12 +14522,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.46.1":
-  version: 1.46.1
-  resolution: "playwright-core@npm:1.46.1"
+"playwright@npm:1.30.0":
+  version: 1.30.0
+  resolution: "playwright@npm:1.30.0"
+  dependencies:
+    playwright-core: 1.30.0
   bin:
-    playwright-core: cli.js
-  checksum: 99a03f97d76af02b0565aa09758eb03427e13497ef7e9e9044fd1184a5f050e7545a517dd7ad8988a68b3ea76e2ba0d411f81e410b1cb29f5ac9161c49689822
+    playwright: cli.js
+  checksum: 1987446ed07e25c0c6dedce8314209b49536eb4c7fa82e57e7fea9bd8128bacd08e49f9e89af30a647839bf2603b8c8321f50e23e334a11c1c29eedb838a81a3
   languageName: node
   linkType: hard
 
@@ -14534,21 +14545,6 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 013d7cd81c4016556245f98bd0b407c95f7dbc6d11d174d33d2e6aeeac1a4c63f646909adf3a926df09e1f0638e408018af3799e2c8e437dd2362f78091182e4
-  languageName: node
-  linkType: hard
-
-"playwright@npm:latest":
-  version: 1.46.1
-  resolution: "playwright@npm:1.46.1"
-  dependencies:
-    fsevents: 2.3.2
-    playwright-core: 1.46.1
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    playwright: cli.js
-  checksum: 9e721cb27f919cd92ea8c7461f4a8e97e32eade9da036baa4747f483549e33a8d77585f51e228d6639a1e28a76b0c1d59ca0a05dbd07aa3cfe427be7aaeb9ec8
   languageName: node
   linkType: hard
 
