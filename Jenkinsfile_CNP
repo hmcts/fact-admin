@@ -42,4 +42,14 @@ withPipeline(type, product, component) {
   afterSuccess('build') {
     yarnBuilder.yarn('build')
   }
+  afterAlways('functionalTest') {
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "functional-output/functional/allure",
+      reportFiles          : "index.html",
+      reportName           : "Functional Test Report"
+    ]
+  }
 }

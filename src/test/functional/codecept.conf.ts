@@ -11,21 +11,24 @@ export const config: CodeceptJS.MainConfig = {
     features: './codecept-features/**/*.feature',
     steps: './codecept-steps/**/*.ts',
   },
-  output: '../../../functional-output/functional/reports',
+  output: '../../../functional-output/codecept/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
-  retry: 3,
   plugins: {
     allure: {
       enabled: true,
-      require: '@codeceptjs/allure-legacy',
+      require: '@codeceptjs/allure-legacy'
     },
-
+    pauseOnFail: {
+      enabled: !testConfig.TestHeadlessBrowser,
+    },
+    retryFailedStep: {
+      enabled: true,
+    },
     screenshotOnFail: {
       enabled: true,
       fullPageScreenshots: true,
     },
-
     autoLogin: {
       enabled: true,
       saveToFile: true,

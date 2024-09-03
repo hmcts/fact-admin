@@ -1,4 +1,4 @@
-@fact-admin-tab-addresses @special
+@fact-admin-tab-addresses
 Feature: Court-addresses
 
   Scenario Outline: Adding incomplete addresses (leaving primary address, secondary town and secondary postcode blank)
