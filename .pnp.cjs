@@ -7741,16 +7741,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["axios", [\
-        ["npm:1.7.2", {\
-          "packageLocation": "./.yarn/cache/axios-npm-1.7.2-c89264f6f7-e457e2b0ab.zip/node_modules/axios/",\
-          "packageDependencies": [\
-            ["axios", "npm:1.7.2"],\
-            ["follow-redirects", "virtual:cc1c89ddbaa2ee6988ad04cd8f48fb510e98268b86b9002d50ceca7bd737255eca4ec5ce4ed954e6ba12356c7138528653644b23c509c9a7726b952c51404b15#npm:1.15.6"],\
-            ["form-data", "npm:4.0.0"],\
-            ["proxy-from-env", "npm:1.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.7.4", {\
           "packageLocation": "./.yarn/cache/axios-npm-1.7.4-cc1c89ddba-0c17039a9a.zip/node_modules/axios/",\
           "packageDependencies": [\
@@ -9318,7 +9308,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@xmldom/xmldom", "npm:0.8.10"],\
             ["acorn", "npm:8.12.1"],\
             ["arrify", "npm:2.0.1"],\
-            ["axios", "npm:1.7.2"],\
+            ["axios", "npm:1.7.4"],\
             ["chai", "npm:5.1.1"],\
             ["chai-deep-match", "virtual:295a75b838bb7184d20f7e739ee281417a8f44920f8bfc78d6a9ff177a9c76257323fb6e5ce3d37b0d86fd8d48495cfe0e55ec91e21d4ba5f85ed93b2151aff5#npm:1.2.1"],\
             ["chai-exclude", "virtual:295a75b838bb7184d20f7e739ee281417a8f44920f8bfc78d6a9ff177a9c76257323fb6e5ce3d37b0d86fd8d48495cfe0e55ec91e21d4ba5f85ed93b2151aff5#npm:2.1.1"],\
