@@ -1,6 +1,9 @@
 nodejs:
   applicationPort: 3300
   aadIdentityName: fact
+  memoryLimits: 2048Mi
+  memoryRequests: 1024Mi
+  cpuRequests: 300m
   keyVaults:
     fact:
       resourceGroup: fact
