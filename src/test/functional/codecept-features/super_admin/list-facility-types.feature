@@ -1,13 +1,11 @@
 Feature: Facility Types List
 
-  Background:
+  Scenario: Add new Facility Type with the name already exist
     When I log in as a super-admin
     When I click on lists link
     Then I am redirected to the "Edit A List" page
     When I hover over the tab title
     And I click on facility types list
-
-  Scenario: Add new Facility Type with the name already exist
     Then I click on Add new facility type
     Then I am redirected to the "Add New Facility Type" facility type form
     Then I enter "Parking" in facility name textbox
@@ -15,6 +13,11 @@ Feature: Facility Types List
     Then The error message displays for facility type "A facility type with the same name already exists."
 
   Scenario: Adding and deleting new Facility Type
+    When I log in as a super-admin
+    When I click on lists link
+    Then I am redirected to the "Edit A List" page
+    When I hover over the tab title
+    And I click on facility types list
     Then I will make sure there is no test entry "Test123" in the list "#facilityTypesListContent"
     Then I click on Add new facility type
     Then I am redirected to the "Add New Facility Type" facility type form
@@ -27,12 +30,22 @@ Feature: Facility Types List
     Then A green message is displayed "Facility Types Updated"
 
   Scenario: Deleting existing Facility type
+    When I log in as a super-admin
+    When I click on lists link
+    Then I am redirected to the "Edit A List" page
+    When I hover over the tab title
+    And I click on facility types list
     When I click delete button for facility type "Parking"
     Then I am redirected to the "Delete Facility Type: Parking" facility type form
     When I click confirm delete button
     Then The error message displays for facility type "You cannot delete this facility type at the moment, as one or more courts are dependent on it. Please remove the facility from the relevant courts first."
 
   Scenario: Edit Facility Type
+    When I log in as a super-admin
+    When I click on lists link
+    Then I am redirected to the "Edit A List" page
+    When I hover over the tab title
+    And I click on facility types list
     Given I click edit facility type "Parking"
     Then I am redirected to the "Edit Facility Type: Parking" facility type form
     Then I will make sure to clear all entries for the facility type
@@ -42,6 +55,11 @@ Feature: Facility Types List
     Then A green message is displayed "Facility Types Updated"
 
   Scenario: Editing Facility Type with the name already exist
+    When I log in as a super-admin
+    When I click on lists link
+    Then I am redirected to the "Edit A List" page
+    When I hover over the tab title
+    And I click on facility types list
     Given I click edit facility type "Lift"
     Then I am redirected to the "Edit Facility Type: Lift" facility type form
     Then I will make sure to clear all entries for the facility type
