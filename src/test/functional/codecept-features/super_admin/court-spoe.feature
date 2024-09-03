@@ -1,4 +1,3 @@
-
 @fact-admin-tab-spoe
 Feature: Spoe tab
 #
