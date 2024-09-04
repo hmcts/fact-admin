@@ -2,7 +2,6 @@ import { config as testConfig } from '../config';
 
 import SupportObject = CodeceptJS.SupportObject;
 const { setHeadlessWhen } = require('@codeceptjs/configure');
-const event = require('codeceptjs').event;
 
 setHeadlessWhen(testConfig.TestHeadlessBrowser);
 
@@ -15,7 +14,7 @@ export const config: CodeceptJS.MainConfig = {
   output: '../../../functional-output/codecept/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
-  retry: 3,
+  retry: 2,
   plugins: {
     allure: {
       enabled: true,
@@ -75,23 +74,3 @@ export const config: CodeceptJS.MainConfig = {
     }
   },
 };
-
-// Custom log output for test progress
-let completedTests = 0;
-let totalTests = 0;
-
-event.dispatcher.on(event.suite.before, (suite) => {
-  totalTests += suite.tests.length;
-});
-
-event.dispatcher.on(event.test.passed, (test) => {
-  completedTests++;
-  console.log(`Test Passed: ${test.title}`);
-  console.log(`Completed: ${completedTests}/${totalTests}`);
-});
-
-event.dispatcher.on(event.test.failed, (test) => {
-  completedTests++;
-  console.log(`Test Failed: ${test.title}`);
-  console.log(`Completed: ${completedTests}/${totalTests}`);
-});
