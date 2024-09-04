@@ -14,7 +14,6 @@ export const config: CodeceptJS.MainConfig = {
   output: '../../../functional-output/codecept/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
-  retry: 2,
   plugins: {
     allure: {
       enabled: true,
@@ -29,6 +28,16 @@ export const config: CodeceptJS.MainConfig = {
     screenshotOnFail: {
       enabled: true,
       fullPageScreenshots: true,
+    },
+    autoDelay: {
+      enabled: true,
+      delayAfter: 1000,
+    },
+    coverage: {
+      enabled: true,
+      debug: true,
+      name: 'CodeceptJS Coverage Report',
+      outputDir: 'functional-output/codecept/reports/coverage'
     },
     autoLogin: {
       enabled: true,
