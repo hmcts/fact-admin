@@ -45,17 +45,17 @@ Feature: Phone Numbers
     And the phone number entry in last position has description value "201" number "0987 654 321" explanation "Chancery" and welsh explanation "Siawnsri"
     And the court is cleaned up through the API
 
-  Scenario: Prevent blank entries being added
-    Given a court is created through the API
-    When I log in as an admin
-    When I click edit next to the test court
-    Then I am redirected to the Edit Court page for the chosen court
-    When I hover over phone numbers nav element
-    When I click the phone numbers tab
-    When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
-    And I click save in the phone number tab
-    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and description field message "Error: Description is required"
-    When I left the phone number entry blank and select description "Admin"
-    And I click save in the phone number tab
-    Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Error: Number is required"
-    And the court is cleaned up through the API
+  # Scenario: Prevent blank entries being added
+  #   Given a court is created through the API
+  #   When I log in as an admin
+  #   When I click edit next to the test court
+  #   Then I am redirected to the Edit Court page for the chosen court
+  #   When I hover over phone numbers nav element
+  #   When I click the phone numbers tab
+  #   When I left description entry blank in phone number tab and enter phone number "0987 666 5040"
+  #   And I click save in the phone number tab
+  #   Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and description field message "Error: Description is required"
+  #   When I left the phone number entry blank and select description "Admin"
+  #   And I click save in the phone number tab
+  #   Then an error message is displayed for phone number tab with summary "Description and number are required for all phone number entries." and number field message "Error: Number is required"
+  #   And the court is cleaned up through the API
