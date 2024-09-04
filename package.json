@@ -25,7 +25,7 @@
     "test:functional": "npm-run-all -scl test:playwright test:codecept test:codecept:report test:pa11y",
     "test:playwright": "yarn playwright install",
     "test:functional:report": "allure generate functional-output/functional/reports/ -c -o functional-output/functional/allure",
-    "test:codecept": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run-workers 10 --steps --config ./src/test/functional/codecept.conf.js",
+    "test:codecept": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run-workers 10 --config ./src/test/functional/codecept.conf.js",
     "test:codecept:report": "allure generate functional-output/codecept/reports/ -c -o functional-output/codecept/allure",
     "stub:api": "ts-node -r tsconfig-paths/register api/fact-api-stubs.ts",
     "cichecks": "yarn && yarn build && yarn lint && yarn test"
