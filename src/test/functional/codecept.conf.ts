@@ -14,6 +14,7 @@ export const config: CodeceptJS.MainConfig = {
   output: '../../../functional-output/codecept/reports',
   helpers: testConfig.helpers,
   tests: './src/test/functional',
+  retry: 3,
   plugins: {
     allure: {
       enabled: true,
