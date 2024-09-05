@@ -9,6 +9,7 @@ services:
   idam:
     authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/o'
     sessionURL: 'https://idam-api.aat.platform.hmcts.net/session'
+    apiURL: 'https://idam-api.aat.platform.hmcts.net'
     clientID: 'fact_admin'
     clientSecret: 'get from AAT vault'
     baseURL: 'http://localhost:3300'
