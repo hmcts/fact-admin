@@ -1,4 +1,3 @@
-
 Feature: Homepage
 
   Scenario Outline: Navigate to edit a court or tribunal page

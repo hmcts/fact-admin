@@ -1,6 +1,6 @@
-Feature: Postcodes
+Feature: Postcodes @postcodessss
 
-  Background:
+  Scenario: Adding and deleting valid postcodes
     Given a court is created through the API
     When I log in as a super-admin
     When I click edit next to the test court
@@ -18,8 +18,6 @@ Feature: Postcodes
 
     And I hover over nav element
     And I click the postcodes tab
-
-  Scenario: Adding and deleting valid postcodes
     When I add new postcodes "bd7 2qb,bd3,BD7"
     Then I click the add postcode button and wait for success
     Then A green message is displayed for the postcodes "Postcodes updated"
@@ -28,6 +26,23 @@ Feature: Postcodes
     Then the court is cleaned up through the API
 
   Scenario: Adding duplicate postcode
+    Given a court is created through the API
+    When I log in as a super-admin
+    When I click edit next to the test court
+    Then I am redirected to the Edit Court page for the chosen court
+
+    And I hover over nav element
+    And I click the types tab
+    And I will make sure County court type is selected
+    And I click on save court type
+
+    And I hover over nav element
+    And I click the cases heard tab
+    And I will make sure Money claims is selected
+    And I click on update on cases heard
+
+    And I hover over nav element
+    And I click the postcodes tab
     When I add new postcodes "bd1"
     Then I click the add postcode button and wait for success
     When I add new postcodes "bd1"
@@ -36,6 +51,23 @@ Feature: Postcodes
     Then the court is cleaned up through the API
 
   Scenario: Validate that postcodes should appear in alpha numeric order
+    Given a court is created through the API
+    When I log in as a super-admin
+    When I click edit next to the test court
+    Then I am redirected to the Edit Court page for the chosen court
+
+    And I hover over nav element
+    And I click the types tab
+    And I will make sure County court type is selected
+    And I click on save court type
+
+    And I hover over nav element
+    And I click the cases heard tab
+    And I will make sure Money claims is selected
+    And I click on update on cases heard
+
+    And I hover over nav element
+    And I click the postcodes tab
     When I add new postcodes "E5,E6,E9,E8,E7"
     Then I click the add postcode button and wait for success
     Then A green message is displayed for the postcodes "Postcodes updated"
@@ -43,6 +75,23 @@ Feature: Postcodes
     And the court is cleaned up through the API
 
   Scenario: Adding invalid postcode
+    Given a court is created through the API
+    When I log in as a super-admin
+    When I click edit next to the test court
+    Then I am redirected to the Edit Court page for the chosen court
+
+    And I hover over nav element
+    And I click the types tab
+    And I will make sure County court type is selected
+    And I click on save court type
+
+    And I hover over nav element
+    And I click the cases heard tab
+    And I will make sure Money claims is selected
+    And I click on update on cases heard
+
+    And I hover over nav element
+    And I click the postcodes tab
     When I add new postcodes "E1"
     Then I click the add postcode button and wait for success
     When I add new postcodes "bdx,123,bd1"

@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import { I } from '../utlis/codecept-util';
-import {config} from '../../config';
 
 Then('I am redirected to the Edit Court page for the chosen court', async () => {
   const pageTitle = await I.grabTitle();
@@ -111,15 +110,3 @@ When('I unselect the Participates in access scheme checkbox', async () => {
 //   }
 // });
 //
-Then('I click the link view court in new tab to validate urgent notice label generated', async () => {
-  const selector = '#view-in-new-window';
-  I.seeElement(selector);
-  await I.click(selector);
-
-  await I.amOnPage(config.FRONTEND_URL + '/courts/administrative-court');
-  const label = 'Urgent Notice';
-  const selectorLabel = '#main-content > div > div > div.govuk-grid-column-two-thirds > div.urgent-message > div:nth-child(2) > strong';
-
-  const labelElement = await I.grabTextFrom(selectorLabel);
-  expect(labelElement).equal(label);
-});

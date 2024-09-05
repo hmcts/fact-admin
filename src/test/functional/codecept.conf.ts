@@ -29,6 +29,16 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       fullPageScreenshots: true,
     },
+    autoDelay: {
+      enabled: true,
+      delayAfter: 1000,
+    },
+    coverage: {
+      enabled: true,
+      debug: true,
+      name: 'CodeceptJS Coverage Report',
+      outputDir: 'functional-output/codecept/reports/coverage'
+    },
     autoLogin: {
       enabled: true,
       saveToFile: true,

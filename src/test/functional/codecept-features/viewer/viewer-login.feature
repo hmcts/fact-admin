@@ -1,15 +1,13 @@
 @fact-admin-login-logout
 Feature: Login/Logout
 
-  Background:
+  Scenario Outline: viewer can log in and can see specific tabs for a selected court
     Given a court is created through the API
     When I log in as a viewer
     And I cannot view super admin content
     When I click edit next to the test court
     Then I am redirected to the Edit Court page for the chosen court
     When I hover over nav element
-
-  Scenario Outline: viewer can log in and can see specific tabs for a selected court
     Then the "<tab>" tab is visible
     And the court is cleaned up through the API
     Examples:
@@ -18,6 +16,12 @@ Feature: Login/Logout
       | #tab_local-authorities       |
 
   Scenario Outline: viewer can log in and cannot see specific tabs for a selected court
+    Given a court is created through the API
+    When I log in as a viewer
+    And I cannot view super admin content
+    When I click edit next to the test court
+    Then I am redirected to the Edit Court page for the chosen court
+    When I hover over nav element
     Then the "<tab>" tab is not visible
     And the court is cleaned up through the API
     Examples:
