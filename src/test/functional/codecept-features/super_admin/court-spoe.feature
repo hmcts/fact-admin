@@ -1,7 +1,8 @@
 @fact-admin-tab-spoe
 Feature: Spoe tab
-#
-#  Background:
+
+#  Scenario Outline: As an super admin user I can update the spoe areas of laws for the court.
+
 #    Given I am on new browser
 #    Given I am on FACT homepage
 #    Then I am logged out if I am an admin user
@@ -12,9 +13,6 @@ Feature: Spoe tab
 #    Then I am redirected to the Edit Court page for the chosen court
 #    When I hover over opening hours nav element
 #    When I click spoe tab
-#
-#  Scenario Outline: As an super admin user I can update the spoe areas of laws for the court.
-#
 #    When I select spoe areas of law "<aolAdoption>" and "<aolChildren>"
 #    And  I click spoe update
 #    Then Success message is displayed for spoe with summary "Single point of entries updated"
@@ -25,7 +23,7 @@ Feature: Spoe tab
 #    Then Success message is displayed for spoe with summary "Single point of entries updated"
 #    When I reload the page
 #    Then spoe areas of law "<aolAdoption>" and "<aolChildren>" should be unselected
-#
+
 #    Examples:
 #      | aolAdoption | aolChildren    |
 #      | adoption1    | children1       |

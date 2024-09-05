@@ -24,4 +24,3 @@ Feature: courts audits
 #    Then I click search audit button
 #    Then I can see the expected audits
 #    And the court is cleaned up through the API
-#
