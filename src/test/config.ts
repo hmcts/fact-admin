@@ -1,6 +1,6 @@
 export const config = {
   TEST_URL: process.env.TEST_URL || 'http://localhost:3300',
-  TestHeadlessBrowser: process.env.TEST_HEADLESS || true,
+  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true
   TestSlowMo: 420,
   IDAM_HEALTH_URL: 'https://idam-api.aat.platform.hmcts.net/health',
   IDAM_USER_DASHBOARD_HEALTH_URL: 'https://idam-user-dashboard.aat.platform.hmcts.net/health',
@@ -21,6 +21,7 @@ config.helpers = {
     show: !config.TestHeadlessBrowser,
     browser: 'chromium',
     windowSize: '1300x800',
+    timeout: 60000,
     waitForTimeout: 30000,
     waitForAction: 4000,
     waitForNavigation: 'domcontentloaded',
