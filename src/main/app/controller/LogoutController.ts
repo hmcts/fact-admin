@@ -8,8 +8,6 @@ export class LogoutController {
    * Handles the logout process, including removing court locks before logout.
    */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
-
-    console.log("OUTPUT: " + req.appSession['user']['jwt']['sub']);
     // Remove the court lock
     await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession['user']['jwt']['sub']);
 
