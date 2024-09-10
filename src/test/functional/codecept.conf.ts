@@ -12,7 +12,6 @@ export const config: CodeceptJS.MainConfig = {
     steps: './codecept-steps/**/*.ts',
   },
   output: '../../../functional-output/codecept/reports',
-  helpers: testConfig.helpers,
   tests: './src/test/functional',
   plugins: {
     allure: {
@@ -43,30 +42,6 @@ export const config: CodeceptJS.MainConfig = {
       enabled: true,
       saveToFile: true,
       users: {
-        viewer: {
-          login: (I: SupportObject['I']) => {
-            I.amOnPage('/');
-            I.fillField('username', testConfig.viewerUsername as string);
-            I.fillField('password', testConfig.password as string);
-            I.click('input[type="submit"][name="save"]');
-          },
-          check: async (I: SupportObject['I']) => {
-            I.amOnPage('/courts');
-            I.seeCookie('appSession');
-          },
-        },
-        admin: {
-          login: (I: SupportObject['I']) => {
-            I.amOnPage('/');
-            I.fillField('username', testConfig.username as string);
-            I.fillField('password', testConfig.password as string);
-            I.click('input[type="submit"][name="save"]');
-          },
-          check: async (I: SupportObject['I']) => {
-            I.amOnPage('/courts');
-            I.seeCookie('appSession');
-          },
-        },
         superAdmin: {
           login: (I: SupportObject['I']) => {
             I.amOnPage('/');
