@@ -112,6 +112,9 @@ export default function(app: Application): void {
   app.get('/audit-data', isSuperAdmin, app.locals.container.cradle.auditController.getAuditData);
   app.get('/audit-data-download', isSuperAdmin, app.locals.container.cradle.auditController.downloadAuditData);
 
+  // logout
+  app.get('/logout', app.locals.container.cradle.logoutController.get);
+
   // General
   app.use(app.locals.container.cradle.errorController.notFound);
   app.use(app.locals.container.cradle.errorController.internalServerError);
