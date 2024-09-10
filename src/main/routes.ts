@@ -17,12 +17,50 @@ import {
   FACT_ADMIN_TAB_SPOE,
   FACT_ADMIN_TAB_APPLICATION_PROGRESSION
 } from './app/feature-flags/flags';
+import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
 
 export default function(app: Application): void {
   const featureFlags: FeatureFlags = app.locals.container.cradle.featureFlags;
 
   const upload = multer();
+
+  /**
+   * Remove a court lock if any of the routes are being loaded that would indicate lock is no longer required.
+   */
+  app.use(async (req, res, next) => {
+    const authedReq = req as AuthedRequest;
+
+    // Routes that when called the lock should be removed
+    const dynamicLockRemovalRoutes = [
+      '/bulk-update',
+      '/courts/add-court',
+      '/users',
+      '/lists',
+      '/lists/local-authorities-list',
+      '/lists/areas-of-law',
+      '/lists/area-of-law',
+      '/lists/contact-types',
+      '/lists/facility-types',
+      '/lists/opening-types',
+      '/audits',
+      '/audit-data',
+      '/audit-data-download'
+    ];
+
+    // Exact match routes so anything after the route doesn't get removed e.g. only /court not /court/test-court/edit
+    const exactMatchLockRemovalRoutes = [
+      '/courts'
+    ];
+
+    // Check if path is part of list of paths (dynamic or exact match), if it is then remove the lock
+    if (exactMatchLockRemovalRoutes.includes(authedReq.path) ||
+      dynamicLockRemovalRoutes.some((route) => authedReq.path.startsWith(route))) {
+      await authedReq.scope.cradle.api.deleteCourtLocksByEmail(authedReq.appSession['user']['jwt']['sub']);
+    }
+
+    next();
+  });
 
   app.get('/',(req, res) => res.redirect('/courts'));
   app.get('/bulk-update', isSuperAdmin, app.locals.container.cradle.bulkUpdateController.get);
@@ -69,15 +107,14 @@ export default function(app: Application): void {
   app.put('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
   app.get('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.get);
   app.put('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.put);
-
-  // Lists
-  app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
   app.get('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.get);
   app.put('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.put);
   app.put('/courts/facilities/add-row', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.addRow);
+
+  // Lists
+  app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);
   app.get('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.get);
   app.put('/lists/local-authorities-list', isSuperAdmin, app.locals.container.cradle.localAuthoritiesListController.put);
-
   app.get('/lists/areas-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAll);
   app.get('/lists/area-of-law/:id', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
   app.get('/lists/area-of-law', isSuperAdmin, app.locals.container.cradle.areasOfLawController.getAreaOfLaw);
@@ -90,7 +127,6 @@ export default function(app: Application): void {
   app.get('/lists/contact-type/delete-confirm/:id', isSuperAdmin, app.locals.container.cradle.contactTypesController.getDeleteConfirmation);
   app.put('/lists/contact-type', isSuperAdmin, app.locals.container.cradle.contactTypesController.put);
   app.delete('/lists/contact-type/:id', isSuperAdmin, app.locals.container.cradle.contactTypesController.delete);
-
   app.get('/lists/facility-types', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getAll);
   app.get('/lists/facility-type/:id', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getFacilityType);
   app.get('/lists/facility-type', isSuperAdmin, app.locals.container.cradle.facilityTypesController.getFacilityType);
