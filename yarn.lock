@@ -8481,10 +8481,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ip@npm:>=2.0.1":
-  version: 2.0.1
-  resolution: "ip@npm:2.0.1"
-  checksum: d765c9fd212b8a99023a4cde6a558a054c298d640fec1020567494d257afd78ca77e37126b1a3ef0e053646ced79a816bf50621d38d5e768cdde0431fa3b0d35
+"ip@https://registry.npmjs.org/neoip/-/neoip-2.1.0.tgz":
+  version: 2.1.0
+  resolution: "ip@https://registry.npmjs.org/neoip/-/neoip-2.1.0.tgz"
+  checksum: 4df913ac85fe7557a260de12e0c3ff68fb7cb87bb9d2ebc5941d763f2a2f93eb5f542822822951035652993da2dbdd9e8d77037ef90938b3a1f85dda8e572403
   languageName: node
   linkType: hard
 
