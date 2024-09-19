@@ -159,7 +159,7 @@
     "word-wrap": ">=1.2.5",
     "follow-redirects": ">=1.15.6",
     "express": ">=4.20.0",
-    "ip": ">=2.0.1",
+    "ip": "https://registry.npmjs.org/neoip/-/neoip-2.1.0.tgz",
     "axios": ">=1.7.4",
     "postcss": ">=8.4.33",
     "braces": ">=3.0.3",
