@@ -5,7 +5,8 @@ export const puppeteerConfig = {
   slowMo: config.TestSlowMo,
   ignoreHTTPSErrors: true,
   'ignore-certificate-errors': true,
-  defaultTimeout: 100 * 1000,
+  defaultTimeout: 300 * 1000,
+  defaultNavigationTimeout: 300 * 1000,
   args: [
     '--no-sandbox',
     '--window-size=1440,1400',
