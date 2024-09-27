@@ -30,6 +30,7 @@ import {NewCourtController} from '../../app/controller/courts/NewCourtController
 import {ApplicationProgressionController} from '../../app/controller/courts/ApplicationProgressionController';
 import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
 import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
+import {LogoutController} from '../../app/controller/LogoutController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -81,7 +82,10 @@ export class Container {
       exposeErrors: asValue(server.locals.env === 'development'),
 
       //User
-      accountController : asClass(UserController)
+      accountController : asClass(UserController),
+
+      // Logout
+      logoutController: asClass(LogoutController)
     });
   }
 }
