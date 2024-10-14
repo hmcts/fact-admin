@@ -241,17 +241,16 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_APPLICATION_PROGRESSION] or featureFlags.values|length == 0 %}
-              {% set applicationProgressionTab =
-                {
-                  label: "Application Progression",
-                  id: "application-progression",
-                  panel: {
-                    html: applicationProgressionHtml
-                  }
+
+            {% set applicationProgressionTab =
+              {
+                label: "Application Progression",
+                id: "application-progression",
+                panel: {
+                  html: applicationProgressionHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% if isViewer %}
               {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}

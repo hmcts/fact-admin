@@ -11,4 +11,3 @@ export const FACT_ADMIN_TAB_ADDRESSES = 'fact-admin-tab-addresses';
 export const FACT_ADMIN_TAB_PHOTO = 'fact-admin-tab-photo';
 export const FACT_ADMIN_TAB_ADDITIONAL_LINKS = 'fact-admin-tab-additional-links';
 export const FACT_ADMIN_TAB_SPOE = 'fact-admin-tab-spoe';
-export const FACT_ADMIN_TAB_APPLICATION_PROGRESSION = 'fact-admin-tab-application-progression';

@@ -14,8 +14,7 @@ import {
   FACT_ADMIN_TAB_ADDRESSES,
   FACT_ADMIN_TAB_PHOTO,
   FACT_ADMIN_TAB_ADDITIONAL_LINKS,
-  FACT_ADMIN_TAB_SPOE,
-  FACT_ADMIN_TAB_APPLICATION_PROGRESSION
+  FACT_ADMIN_TAB_SPOE
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -105,8 +104,8 @@ export default function(app: Application): void {
   app.delete('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.delete);
   app.get('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
   app.put('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
-  app.get('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.get);
-  app.put('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.put);
+  app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
+  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
   app.get('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.get);
   app.put('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.put);
   app.put('/courts/facilities/add-row', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.addRow);

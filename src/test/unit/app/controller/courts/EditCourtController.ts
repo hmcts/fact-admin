@@ -42,7 +42,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -87,7 +86,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -137,7 +135,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -182,7 +179,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -233,7 +229,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -278,7 +273,6 @@ describe('EditCourtController', () => {
     const featureFlags = {
       'fact-admin-tab-additional-links': false,
       'fact-admin-tab-addresses': false,
-      'fact-admin-tab-application-progression': false,
       'fact-admin-tab-cases-heard': false,
       'fact-admin-tab-emails': false,
       'fact-admin-tab-facilities': false,
