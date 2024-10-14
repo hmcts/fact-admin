@@ -28,6 +28,7 @@
 {% set townRequiredError = { text: 'Town is required' } %}
 {% set postcodeRequiredError = { text: 'Postcode is required' } %}
 {% set postcodeInvalidError = { text: 'Postcode is invalid' } %}
+{% set epimInvalidError = { text: 'ePIMS Ref ID is invalid' } %}
 {% set upArrowHtml = "&#11014" %}
 {% set downArrowHtml = "&#11015" %}
 
@@ -110,6 +111,19 @@
   classes: "govuk-input--width-30",
   value: addresses.primary.postcode,
   errorMessage: primaryPostcodeError
+}) }}
+
+{% if primaryEpimInvalid and addresses.primary.epim_id != '' %}
+  {% set primaryEpimError = epimInvalidError %}
+{% endif %}
+
+{{ govukInput({
+  id: "primaryAddressEpimId",
+  name: "primary[epim_id]",
+  label: { text: "ePIMS Ref ID" },
+  classes: "govuk-input--width-30",
+  value: addresses.primary.epim_id,
+  errorMessage: primaryEpimError
 }) }}
 
 <br/>
@@ -312,6 +326,19 @@
   classes: "govuk-input--width-30 clear",
   value: address.postcode,
   errorMessage: secondaryPostcodeError
+}) }}
+
+{% if secondaryEpimInvalid and addresses.secondary[loop.index - 1].epim_id != '' %}
+  {% set secondaryEpimError = epimInvalidError %}
+{% endif %}
+
+{{ govukInput({
+  id: "epim_id-"+ (loop.index - 1),
+  name: "secondary[" + (loop.index - 1) + "][epim_id]",
+  label: { text: "ePIMS Ref ID" },
+  classes: "govuk-input--width-30 clear",
+  value: address.epim_id,
+  errorMessage: secondaryEpimError
 }) }}
 
 <div class="govuk-grid-row">

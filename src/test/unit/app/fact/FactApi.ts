@@ -1218,7 +1218,8 @@ describe('FactApi', () => {
           town: 'Red Town',
           'town_cy': '',
           'county_id': 1,
-          postcode: 'AB1 2CD'
+          postcode: 'AB1 2CD',
+          epim_id: 'AB-12-CD-34'
         },
         {
           'type_id': 200,
@@ -1229,7 +1230,8 @@ describe('FactApi', () => {
           town: 'Red Town',
           'town_cy': '',
           'county_id': 1,
-          postcode: 'AB1 2XZ'
+          postcode: 'AB1 2XZ',
+          epim_id: 'AB-12-CD-34'
         }
       ]
     };
@@ -1265,7 +1267,8 @@ describe('FactApi', () => {
           town: 'Red Town',
           'town_cy': '',
           'county_id': 1,
-          postcode: 'AB1 2CD'
+          postcode: 'AB1 2CD',
+          epim_id: 'AB-12-CD-34'
         },
         {
           'type_id': 200,
@@ -1277,6 +1280,7 @@ describe('FactApi', () => {
           'town_cy': '',
           'county_id': 1,
           postcode: 'AB1 2XZ',
+          epim_id: 'AB-12-CD-34'
         }
       ]
     };

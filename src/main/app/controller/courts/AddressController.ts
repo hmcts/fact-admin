@@ -35,6 +35,7 @@ export class AddressController {
   addressRequiredError = 'Address is required.';
   townRequiredError = 'Town is required.';
   invalidPostcodeError = 'Postcode is invalid.';
+  invalidEpimError = 'ePIMS Ref ID is invalid.';
   postcodeMissingError = 'Postcode is required.';
   postcodeNotFoundError = 'Postcode entered could not be found.';
   writeToUsAddressType = 'Write to us';
@@ -119,7 +120,12 @@ export class AddressController {
           addresses.secondary[0] as unknown as CourtAddress,
           addresses.secondary[1] as unknown as CourtAddress,
         ], areasOfLaw, courtTypes), addressesValid.errors,
-        !addressesValid.primaryPostcodeValid, !addressesValid.secondaryPostcodeValid, !addressesValid.thirdPostcodeValid);
+        !addressesValid.primaryPostcodeValid,
+        !addressesValid.secondaryPostcodeValid,
+        !addressesValid.thirdPostcodeValid,
+        !addressesValid.primaryEpimValid,
+        !addressesValid.secondaryEpimValid,
+        !addressesValid.thirdEpimValid);
       return;
     }
 
@@ -173,7 +179,11 @@ export class AddressController {
     errorMsgs: string[] = [],
     primaryPostcodeInvalid = false,
     secondaryPostcodeInvalid = false,
-    thirdPostcodeInvalid = false) {
+    thirdPostcodeInvalid = false,
+    primaryEpimInvalid = false,
+    secondaryEpimInvalid = false,
+    thirdEpimInvalid = false
+  ) {
 
     const slug: string = req.params.slug;
     let fatalError = false;
@@ -244,6 +254,9 @@ export class AddressController {
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
       thirdPostcodeInvalid: thirdPostcodeInvalid,
+      primaryEpimInvalid: primaryEpimInvalid,
+      secondaryEpimInvalid: secondaryEpimInvalid,
+      thirdEpimInvalid: thirdEpimInvalid,
       updated: updated
     };
 
@@ -299,7 +312,8 @@ export class AddressController {
    * validating court addresses entered
    */
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
-    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean; errors: string[] } {
+    { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean;
+      primaryEpimValid: boolean, secondaryEpimValid: boolean, thirdEpimValid: boolean, errors: string[] } {
 
     const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
     const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true);
@@ -307,13 +321,20 @@ export class AddressController {
     const addressTypeErrors = this.validateNoMoreThanOneVisitAddress([addresses.primary, addresses.secondary[0], addresses.secondary[1]], writeToUsTypeId);
     const fieldsOfLawErrors = this.validateFieldsOfLaw([addresses.secondary[0].fields_of_law, addresses.secondary[1].fields_of_law]);
     const uniqueAddressError = this.checkAddressesAreUnique(addresses);
-    const allErrors = primaryValidationResult.errors.concat(secondaryValidationResult.errors)
-      .concat(addressTypeErrors).concat(thirdValidationResult.errors).concat(fieldsOfLawErrors).concat(uniqueAddressError);
+    const allErrors = primaryValidationResult.errors
+      .concat(secondaryValidationResult.errors)
+      .concat(addressTypeErrors)
+      .concat(thirdValidationResult.errors)
+      .concat(fieldsOfLawErrors)
+      .concat(uniqueAddressError);
 
     return {
       primaryPostcodeValid: primaryValidationResult.postcodeValid,
       secondaryPostcodeValid: secondaryValidationResult.postcodeValid,
       thirdPostcodeValid: thirdValidationResult.postcodeValid,
+      primaryEpimValid: primaryValidationResult.epimValid,
+      secondaryEpimValid: secondaryValidationResult.epimValid,
+      thirdEpimValid: thirdValidationResult.epimValid,
       errors: allErrors
     };
   }
@@ -323,12 +344,18 @@ export class AddressController {
     const countyErrors = this.validateCountyExists(address);
     const addressErrors = this.validateAddressLines(address, isPrimaryAddress);
     const postcodeErrors = this.validatePostcode(address, isPrimaryAddress);
+    const epimErrors = this.validateEPIMId(address);
     const errorPrefix = isPrimaryAddress ? this.primaryAddressPrefix : (isSecondaryAddress ? this.secondaryAddressPrefix : this.thirdAddressPrefix);
 
     return {
       postcodeValid: postcodeErrors.length === 0,
       addressValid: addressErrors.length === 0,
-      errors: typeErrors.concat(countyErrors).concat(addressErrors).concat(postcodeErrors).map(error => errorPrefix + error)
+      epimValid: epimErrors.length === 0,
+      errors: typeErrors.concat(countyErrors)
+        .concat(addressErrors)
+        .concat(postcodeErrors)
+        .concat(epimErrors)
+        .map(error => errorPrefix + error)
     };
   }
 
@@ -397,6 +424,15 @@ export class AddressController {
       errors.push(this.invalidPostcodeError);
     }
 
+    return errors;
+  }
+
+  private validateEPIMId(courtAddress: DisplayAddress): string[] {
+    const errors: string[] = [];
+    const regex = /^[a-zA-Z0-9-]+$/;
+    if (courtAddress.epim_id && !regex.test(courtAddress.epim_id?.trim())) {
+      errors.push(this.invalidEpimError);
+    }
     return errors;
   }
 
@@ -557,6 +593,7 @@ export class AddressController {
       'town_cy': courtAddress.town_cy?.trim(),
       'county_id': courtAddress.county_id,
       postcode: courtAddress.postcode?.trim().toUpperCase(),
+      epim_id: courtAddress.epim_id?.trim().toUpperCase(),
       fields_of_law: courtAddress.fields_of_law
     };
   }
@@ -581,6 +618,7 @@ export class AddressController {
       'town_cy': address.town_cy?.trim(),
       'county_id': address.county_id,
       postcode: address.postcode?.trim().toUpperCase(),
+      epim_id: address.epim_id?.trim().toUpperCase(),
       secondaryFieldsOfLawRadio: address.secondaryFieldsOfLawRadio,
       fields_of_law: {
         areas_of_law: address.fields_of_law?.areas_of_law

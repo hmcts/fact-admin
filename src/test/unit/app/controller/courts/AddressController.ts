@@ -93,7 +93,8 @@ describe('AddressesController', () => {
         town: 'Redville',
         'town_cy': 'Redville_cy',
         'county_id': 1,
-        postcode: 'RR1 2AB'
+        postcode: 'RR1 2AB',
+        epim_id: 'AB-12-CD-34'
       },
       {
         'type_id': 200,
@@ -105,6 +106,7 @@ describe('AddressesController', () => {
         'town_cy': 'Brownville',
         'county_id': 2,
         postcode: 'BB11 1BC',
+        epim_id: 'AB-12-CD-34',
         fields_of_law: {
           areas_of_law: [
             getAreaOfLaw(1, 'Adoption'),
@@ -122,6 +124,7 @@ describe('AddressesController', () => {
         'town_cy': 'Birmingham',
         'county_id': 3,
         postcode: 'B1 1AA',
+        epim_id: 'AB-12-CD-34',
         fields_of_law: {
           areas_of_law: [
             getAreaOfLaw(2, 'Bankruptcy'),
@@ -147,7 +150,7 @@ describe('AddressesController', () => {
         'town_cy': 'Redville_cy',
         'county_id': 1,
         postcode: 'RR1 2AB',
-
+        epim_id: 'AB-12-CD-34'
       },
       {
         'type_id': 200,
@@ -158,7 +161,8 @@ describe('AddressesController', () => {
         town: 'Brownville',
         'town_cy': 'Brownville',
         'county_id': 2,
-        postcode: 'BB11 1BC'
+        postcode: 'BB11 1BC',
+        epim_id: 'AB-12-CD-34'
       },
       {
         'type_id': 200,
@@ -169,7 +173,8 @@ describe('AddressesController', () => {
         town: 'Birmingham',
         'town_cy': 'Birmingham',
         'county_id': 3,
-        postcode: 'B1 1AA'
+        postcode: 'B1 1AA',
+        epim_id: 'AB-12-CD-34'
       }
     ];
   };
@@ -205,6 +210,7 @@ describe('AddressesController', () => {
         'town_cy': primary.town_cy,
         'county_id': 1,
         postcode: primary.postcode,
+        epim_id: primary.epim_id,
         fields_of_law: {
           areas_of_law: [],
           courts: []
@@ -220,6 +226,7 @@ describe('AddressesController', () => {
         'town_cy': secondary[0].town_cy,
         'county_id': 2,
         postcode: secondary[0].postcode,
+        epim_id: secondary[0].epim_id,
         fields_of_law: {
           areas_of_law: [
             getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
@@ -242,6 +249,7 @@ describe('AddressesController', () => {
         'town_cy': secondary[1].town_cy,
         'county_id': 3,
         postcode: secondary[1].postcode,
+        epim_id: secondary[1].epim_id,
         fields_of_law: {
           areas_of_law: [
             getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', false, 'third'),
@@ -306,6 +314,9 @@ describe('AddressesController', () => {
     primaryPostcodeInvalid: boolean,
     secondaryPostcodeInvalid: boolean,
     thirdPostcodeInvalid: boolean,
+    primaryEpimInvalid: boolean,
+    secondaryEpimInvalid: boolean,
+    thirdEpimInvalid: boolean,
     isFatalError: boolean) => {
     return {
       addresses: {primary: primaryAddress, secondary: secondaryAddress},
@@ -318,6 +329,9 @@ describe('AddressesController', () => {
       primaryPostcodeInvalid: primaryPostcodeInvalid,
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
       thirdPostcodeInvalid: thirdPostcodeInvalid,
+      primaryEpimInvalid: primaryEpimInvalid,
+      secondaryEpimInvalid: secondaryEpimInvalid,
+      thirdEpimInvalid: thirdEpimInvalid,
       fatalError: isFatalError
     };
   };
@@ -366,7 +380,20 @@ describe('AddressesController', () => {
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      getExpectedResults(expectedAddresses.primary, expectedAddresses.secondary, [], false, false, false, false);
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          [],
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // When there is no secondary address or third address
@@ -386,7 +413,7 @@ describe('AddressesController', () => {
         areas_of_law: getAllRadioAreasOfLaw('third'),
         courts: getAllRadioCourtTypes('third')
       }
-    }], [], false, false, false, false);
+    }], [], false,false,false,false, false, false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -468,6 +495,9 @@ describe('AddressesController', () => {
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
+      primaryEpimInvalid: false,
+      secondaryEpimInvalid: false,
+      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -497,6 +527,9 @@ describe('AddressesController', () => {
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
+      primaryEpimInvalid: false,
+      secondaryEpimInvalid: false,
+      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -526,6 +559,9 @@ describe('AddressesController', () => {
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
+      primaryEpimInvalid: false,
+      secondaryEpimInvalid: false,
+      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -554,6 +590,9 @@ describe('AddressesController', () => {
       primaryPostcodeInvalid: false,
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
+      primaryEpimInvalid: false,
+      secondaryEpimInvalid: false,
+      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -641,8 +680,20 @@ describe('AddressesController', () => {
 
     ];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -665,8 +716,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        true, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -690,8 +753,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeMissingError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, true, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -718,8 +793,20 @@ describe('AddressesController', () => {
       {text: controller.primaryAddressPrefix + controller.addressRequiredError},
       {text: controller.primaryAddressPrefix + controller.townRequiredError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -746,8 +833,20 @@ describe('AddressesController', () => {
       {text: controller.secondaryAddressPrefix + controller.townRequiredError}
     ];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -769,8 +868,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.primaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        true, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -794,8 +905,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.secondaryAddressPrefix + controller.invalidPostcodeError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, true, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -818,8 +941,20 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     let expectedError = [{text: controller.multipleVisitAddressError}];
     let expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-        expectedError, false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -832,8 +967,20 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     expectedError = [{text: controller.multipleVisitAddressError}];
     expectedResults =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError, false, false, false,
-        false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -899,8 +1046,20 @@ describe('AddressesController', () => {
     expect(mockApi.updateCourtAddresses).not.toBeCalled();
     const expectedError = [{text: controller.fieldsOfLawDuplicateError + '"Adoption, County Court"'}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expectedResults.addresses.secondary[0].fields_of_law = {
       areas_of_law: [getRadioItem(1, JSON.stringify(getAreaOfLaw(1, 'Adoption')), 'Adoption', true, 'secondary'),
         getRadioItem(2, JSON.stringify(getAreaOfLaw(2, 'Bankruptcy')), 'Bankruptcy', false, 'secondary'),
@@ -946,15 +1105,41 @@ describe('AddressesController', () => {
     errorResponse.response.data = {'message': addresses.primary.postcode};
     await controller.put(req, res);
     let expectedError = [{text: controller.primaryAddressPrefix + controller.postcodeNotFoundError}];
-    let expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError, true, false, false, false));
+    let expectedResults =
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Secondary postcode invalid only
     errorResponse.response.data = {'message': addresses.secondary[0].postcode};
     await controller.put(req, res);
     expectedError = [{text: controller.secondaryAddressPrefix + controller.postcodeNotFoundError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-      expectedError, false, true, false, false));
+    expectedResults = setAddressExpectedFieldsOfLaw(
+      getExpectedResults(
+        req.body.primary,
+        req.body.secondary,
+        expectedError,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      )
+    );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Both postcodes invalid and same
@@ -967,16 +1152,40 @@ describe('AddressesController', () => {
     ];
 
     expectedResults =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        true, true, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
     // Bad Request for reasons other than postcodes
     errorResponse.response.data = {'message':null};
     await controller.put(req, res);
     expectedError = [{text: controller.updateAddressError}];
-    expectedResults = setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-      expectedError, false, false, false, false));
+    expectedResults = setAddressExpectedFieldsOfLaw(
+      getExpectedResults(
+        req.body.primary,
+        req.body.secondary,
+        expectedError,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      )
+    );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -999,8 +1208,20 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-        expectedError, false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1024,8 +1245,20 @@ describe('AddressesController', () => {
 
     const expectedError = [{text: controller.courtLockedExceptionMsg + 'test'}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary,
-        expectedError, false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1048,8 +1281,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.updateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
 
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
@@ -1075,8 +1320,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1100,8 +1357,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1126,8 +1395,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.duplicateAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -1151,8 +1432,20 @@ describe('AddressesController', () => {
     // Should render page with error
     const expectedError = [{text: controller.dupilcateWelshAddressError}];
     const expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(getExpectedResults(req.body.primary, req.body.secondary, expectedError,
-        false, false, false, false));
+      setAddressExpectedFieldsOfLaw(
+        getExpectedResults(
+          req.body.primary,
+          req.body.secondary,
+          expectedError,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        )
+      );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 });
