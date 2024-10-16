@@ -51,7 +51,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': true,
       'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -95,7 +94,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': true,
       'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -144,7 +142,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': true,
       'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -188,7 +185,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': true,
       'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
@@ -238,7 +234,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': true,
       'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -282,7 +277,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-phone-numbers': false,
       'fact-admin-tab-photo': false,
       'fact-admin-tab-postcodes': false,
-      'fact-admin-tab-spoe': false,
       'fact-admin-tab-types': false
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);

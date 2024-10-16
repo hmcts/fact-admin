@@ -229,7 +229,6 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_SPOE] or featureFlags.values|length == 0 %}
               {% set spoeTab =
                 {
                   label: "SPoE",
@@ -239,7 +238,6 @@
                   }
                 }
               %}
-            {% endif %}
 
 
             {% set applicationProgressionTab =
@@ -251,6 +249,7 @@
                 }
               }
             %}
+
 
             {% if isViewer %}
               {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}

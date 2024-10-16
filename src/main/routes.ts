@@ -13,8 +13,7 @@ import {
   FACT_ADMIN_TAB_CASES_HEARD,
   FACT_ADMIN_TAB_ADDRESSES,
   FACT_ADMIN_TAB_PHOTO,
-  FACT_ADMIN_TAB_ADDITIONAL_LINKS,
-  FACT_ADMIN_TAB_SPOE
+  FACT_ADMIN_TAB_ADDITIONAL_LINKS
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -73,8 +72,8 @@ export default function(app: Application): void {
   app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
 
   // Edit court
-  app.get('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
-  app.put('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
+  app.get('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
+  app.put('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.get);
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.renderRedirect);
