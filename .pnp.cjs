@@ -78,7 +78,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chokidar", "npm:3.5.3"],\
             ["config", "npm:3.3.7"],\
             ["connect-redis", "npm:6.1.3"],\
-            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie-parser", "npm:1.4.7"],\
             ["copy-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:11.0.0"],\
             ["csrf", "npm:3.1.0"],\
             ["css-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:6.7.1"],\
@@ -88,7 +88,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express", "npm:5.0.0"],\
             ["express-nunjucks", "npm:2.2.5"],\
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
-            ["express-session", "npm:1.18.0"],\
+            ["express-session", "npm:1.18.1"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
@@ -7675,13 +7675,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:0.4.1", {\
-          "packageLocation": "./.yarn/cache/cookie-npm-0.4.1-cc5e2ebb42-bd7c47f5d9.zip/node_modules/cookie/",\
-          "packageDependencies": [\
-            ["cookie", "npm:0.4.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:0.5.0", {\
           "packageLocation": "./.yarn/cache/cookie-npm-0.5.0-e2d58a161a-1f4bd2ca57.zip/node_modules/cookie/",\
           "packageDependencies": [\
@@ -7695,14 +7688,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cookie", "npm:0.6.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:0.7.2", {\
+          "packageLocation": "./.yarn/cache/cookie-npm-0.7.2-6ea9ee4231-9bf8555e33.zip/node_modules/cookie/",\
+          "packageDependencies": [\
+            ["cookie", "npm:0.7.2"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["cookie-parser", [\
-        ["npm:1.4.6", {\
-          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.6-a68f84d02a-1e5a63aa82.zip/node_modules/cookie-parser/",\
+        ["npm:1.4.7", {\
+          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.7-970a70a2fd-243fa13f21.zip/node_modules/cookie-parser/",\
           "packageDependencies": [\
-            ["cookie-parser", "npm:1.4.6"],\
-            ["cookie", "npm:0.4.1"],\
+            ["cookie-parser", "npm:1.4.7"],\
+            ["cookie", "npm:0.7.2"],\
             ["cookie-signature", "npm:1.0.6"]\
           ],\
           "linkType": "HARD"\
@@ -9449,11 +9449,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["express-session", [\
-        ["npm:1.18.0", {\
-          "packageLocation": "./.yarn/cache/express-session-npm-1.18.0-a285922921-56e52e4f5e.zip/node_modules/express-session/",\
+        ["npm:1.18.1", {\
+          "packageLocation": "./.yarn/cache/express-session-npm-1.18.1-b1aa040a8f-e712cb3399.zip/node_modules/express-session/",\
           "packageDependencies": [\
-            ["express-session", "npm:1.18.0"],\
-            ["cookie", "npm:0.6.0"],\
+            ["express-session", "npm:1.18.1"],\
+            ["cookie", "npm:0.7.2"],\
             ["cookie-signature", "npm:1.0.7"],\
             ["debug", "virtual:c9e1a4b59e37cb479517edede3bf2093b28c0ca1a9d0e517f3c345075bd1e468980b94b4957e389116607ee7155441dfd7d09e19a4229d5d09bcf06244401590#npm:4.3.4"],\
             ["depd", "npm:2.0.0"],\
@@ -9585,7 +9585,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chokidar", "npm:3.5.3"],\
             ["config", "npm:3.3.7"],\
             ["connect-redis", "npm:6.1.3"],\
-            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie-parser", "npm:1.4.7"],\
             ["copy-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:11.0.0"],\
             ["csrf", "npm:3.1.0"],\
             ["css-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:6.7.1"],\
@@ -9595,7 +9595,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express", "npm:5.0.0"],\
             ["express-nunjucks", "npm:2.2.5"],\
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
-            ["express-session", "npm:1.18.0"],\
+            ["express-session", "npm:1.18.1"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
