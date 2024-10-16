@@ -24,7 +24,7 @@ Front end admin interface for the Find a Court or Tribunal Service.
 
 Running the application requires the following tools to be installed in your environment:
 
-  * [Node.js](https://nodejs.org/) v12.0.0 or later
+  * [Node.js](https://nodejs.org/) v18.0.0 or later
   * [yarn](https://yarnpkg.com/)
   * [Docker](https://www.docker.com)
 
