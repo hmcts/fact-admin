@@ -9,4 +9,3 @@ export const FACT_ADMIN_TAB_LOCAL_AUTHORITIES = 'fact-admin-tab-local-authoritie
 export const FACT_ADMIN_TAB_CASES_HEARD = 'fact-admin-tab-cases-heard';
 export const FACT_ADMIN_TAB_ADDRESSES = 'fact-admin-tab-addresses';
 export const FACT_ADMIN_TAB_PHOTO = 'fact-admin-tab-photo';
-export const FACT_ADMIN_TAB_ADDITIONAL_LINKS = 'fact-admin-tab-additional-links';

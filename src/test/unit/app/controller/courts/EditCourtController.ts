@@ -40,7 +40,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
@@ -83,7 +82,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
@@ -131,7 +129,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
@@ -174,7 +171,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
@@ -223,7 +219,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
@@ -266,7 +261,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': false,
       'fact-admin-tab-addresses': false,
       'fact-admin-tab-cases-heard': false,
       'fact-admin-tab-emails': false,

@@ -217,17 +217,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDITIONAL_LINKS] or featureFlags.values|length == 0 %}
-              {% set additionalLinksTab =
-                {
-                  label: "Additional Links",
-                  id: "additional-links",
-                  panel: {
-                    html: additionalLinksHtml
-                  }
+            {% set additionalLinksTab =
+              {
+                label: "Additional Links",
+                id: "additional-links",
+                panel: {
+                  html: additionalLinksHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
               {% set spoeTab =
                 {
