@@ -205,17 +205,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_PHOTO] or featureFlags.values|length == 0 %}
-              {% set photoTab =
-                {
-                  label: "Photo",
-                  id: "photo",
-                  panel: {
-                    html: photoHtml
-                  }
+            {% set photoTab =
+              {
+                label: "Photo",
+                id: "photo",
+                panel: {
+                  html: photoHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set additionalLinksTab =
               {

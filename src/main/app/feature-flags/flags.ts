@@ -8,4 +8,3 @@ export const FACT_ADMIN_TAB_POSTCODES = 'fact-admin-tab-postcodes';
 export const FACT_ADMIN_TAB_LOCAL_AUTHORITIES = 'fact-admin-tab-local-authorities';
 export const FACT_ADMIN_TAB_CASES_HEARD = 'fact-admin-tab-cases-heard';
 export const FACT_ADMIN_TAB_ADDRESSES = 'fact-admin-tab-addresses';
-export const FACT_ADMIN_TAB_PHOTO = 'fact-admin-tab-photo';
