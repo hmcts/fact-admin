@@ -40,9 +40,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -50,9 +48,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -85,9 +81,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -95,9 +89,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -135,9 +127,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -145,9 +135,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -180,9 +168,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -190,9 +176,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
@@ -231,9 +215,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': true,
       'fact-admin-tab-addresses': true,
-      'fact-admin-tab-application-progression': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -241,9 +223,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
-      'fact-admin-tab-spoe': true,
       'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -276,9 +256,7 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-additional-links': false,
       'fact-admin-tab-addresses': false,
-      'fact-admin-tab-application-progression': false,
       'fact-admin-tab-cases-heard': false,
       'fact-admin-tab-emails': false,
       'fact-admin-tab-facilities': false,
@@ -286,9 +264,7 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': false,
       'fact-admin-tab-opening-hours': false,
       'fact-admin-tab-phone-numbers': false,
-      'fact-admin-tab-photo': false,
       'fact-admin-tab-postcodes': false,
-      'fact-admin-tab-spoe': false,
       'fact-admin-tab-types': false
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);

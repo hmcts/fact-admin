@@ -11,11 +11,7 @@ import {
   FACT_ADMIN_TAB_POSTCODES,
   FACT_ADMIN_TAB_LOCAL_AUTHORITIES,
   FACT_ADMIN_TAB_CASES_HEARD,
-  FACT_ADMIN_TAB_ADDRESSES,
-  FACT_ADMIN_TAB_PHOTO,
-  FACT_ADMIN_TAB_ADDITIONAL_LINKS,
-  FACT_ADMIN_TAB_SPOE,
-  FACT_ADMIN_TAB_APPLICATION_PROGRESSION
+  FACT_ADMIN_TAB_ADDRESSES
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -74,8 +70,8 @@ export default function(app: Application): void {
   app.get('/users',isSuperAdmin,app.locals.container.cradle.accountController.get);
 
   // Edit court
-  app.get('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
-  app.put('/courts/:slug/spoe', featureFlags.toggleRoute(FACT_ADMIN_TAB_SPOE), isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
+  app.get('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
+  app.put('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.get);
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.renderRedirect);
@@ -99,14 +95,14 @@ export default function(app: Application): void {
   app.put('/courts/:slug/addresses', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDRESSES), app.locals.container.cradle.addressController.put);
   app.get('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.put);
-  app.get('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.get);
-  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.getDeleteConfirmation);
-  app.put('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), upload.single('photo'), app.locals.container.cradle.photoController.put);
-  app.delete('/courts/:slug/photo', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHOTO), app.locals.container.cradle.photoController.delete);
-  app.get('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
-  app.put('/courts/:slug/additionalLinks', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDITIONAL_LINKS), isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
-  app.get('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.get);
-  app.put('/courts/:slug/application-progression', featureFlags.toggleRoute(FACT_ADMIN_TAB_APPLICATION_PROGRESSION), app.locals.container.cradle.applicationProgressionController.put);
+  app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
+  app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', app.locals.container.cradle.photoController.getDeleteConfirmation);
+  app.put('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.put);
+  app.delete('/courts/:slug/photo', app.locals.container.cradle.photoController.delete);
+  app.get('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.get);
+  app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
+  app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
+  app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
   app.get('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.get);
   app.put('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.put);
   app.put('/courts/facilities/add-row', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.addRow);

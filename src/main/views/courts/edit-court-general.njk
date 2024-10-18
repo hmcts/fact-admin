@@ -205,31 +205,26 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_PHOTO] or featureFlags.values|length == 0 %}
-              {% set photoTab =
-                {
-                  label: "Photo",
-                  id: "photo",
-                  panel: {
-                    html: photoHtml
-                  }
+            {% set photoTab =
+              {
+                label: "Photo",
+                id: "photo",
+                panel: {
+                  html: photoHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDITIONAL_LINKS] or featureFlags.values|length == 0 %}
-              {% set additionalLinksTab =
-                {
-                  label: "Additional Links",
-                  id: "additional-links",
-                  panel: {
-                    html: additionalLinksHtml
-                  }
+            {% set additionalLinksTab =
+              {
+                label: "Additional Links",
+                id: "additional-links",
+                panel: {
+                  html: additionalLinksHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_SPOE] or featureFlags.values|length == 0 %}
               {% set spoeTab =
                 {
                   label: "SPoE",
@@ -239,19 +234,18 @@
                   }
                 }
               %}
-            {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_APPLICATION_PROGRESSION] or featureFlags.values|length == 0 %}
-              {% set applicationProgressionTab =
-                {
-                  label: "Application Progression",
-                  id: "application-progression",
-                  panel: {
-                    html: applicationProgressionHtml
-                  }
+
+            {% set applicationProgressionTab =
+              {
+                label: "Application Progression",
+                id: "application-progression",
+                panel: {
+                  html: applicationProgressionHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
+
 
             {% if isViewer %}
               {% set tabItems = (tabItems.push(postcodesTab),tabItems) %}
