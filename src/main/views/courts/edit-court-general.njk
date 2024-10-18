@@ -193,7 +193,6 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_ADDRESSES] or featureFlags.values|length == 0 %}
               {% set addressesTab =
                 {
                   label: "Addresses",
@@ -203,7 +202,6 @@
                   }
                 }
               %}
-            {% endif %}
 
             {% set photoTab =
               {

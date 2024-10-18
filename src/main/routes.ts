@@ -10,8 +10,7 @@ import {
   FACT_ADMIN_TAB_FACILITIES,
   FACT_ADMIN_TAB_POSTCODES,
   FACT_ADMIN_TAB_LOCAL_AUTHORITIES,
-  FACT_ADMIN_TAB_CASES_HEARD,
-  FACT_ADMIN_TAB_ADDRESSES
+  FACT_ADMIN_TAB_CASES_HEARD
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -91,8 +90,8 @@ export default function(app: Application): void {
   app.get('/courts/:slug/local-authorities-areas-of-law', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
   app.get('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
-  app.get('/courts/:slug/addresses', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDRESSES), app.locals.container.cradle.addressController.get);
-  app.put('/courts/:slug/addresses', featureFlags.toggleRoute(FACT_ADMIN_TAB_ADDRESSES), app.locals.container.cradle.addressController.put);
+  app.get('/courts/:slug/addresses', app.locals.container.cradle.addressController.get);
+  app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
   app.get('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.get);
   app.put('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.put);
   app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);

@@ -40,7 +40,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -81,7 +80,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -127,7 +125,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -168,7 +165,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -215,7 +211,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': true,
       'fact-admin-tab-cases-heard': true,
       'fact-admin-tab-emails': true,
       'fact-admin-tab-facilities': true,
@@ -256,7 +251,6 @@ describe('EditCourtController', () => {
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {
-      'fact-admin-tab-addresses': false,
       'fact-admin-tab-cases-heard': false,
       'fact-admin-tab-emails': false,
       'fact-admin-tab-facilities': false,
