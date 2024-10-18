@@ -48,7 +48,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
       'fact-admin-tab-types': true
     };
@@ -90,7 +89,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
       'fact-admin-tab-types': true
     };
@@ -137,7 +135,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
       'fact-admin-tab-types': true
     };
@@ -179,7 +176,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
       'fact-admin-tab-types': true
     };
@@ -227,7 +223,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-photo': true,
       'fact-admin-tab-postcodes': true,
       'fact-admin-tab-types': true
     };
@@ -269,7 +264,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-local-authorities': false,
       'fact-admin-tab-opening-hours': false,
       'fact-admin-tab-phone-numbers': false,
-      'fact-admin-tab-photo': false,
       'fact-admin-tab-postcodes': false,
       'fact-admin-tab-types': false
     };
