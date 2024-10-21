@@ -380,19 +380,17 @@ describe('AddressesController', () => {
     await controller.get(req, res);
     const expectedAddresses = getValidDisplayAddresses();
     let expectedResults: CourtAddressPageData =
-      setAddressExpectedFieldsOfLaw(
-        getExpectedResults(
-          req.body.primary,
-          req.body.secondary,
-          [],
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
-        )
+      getExpectedResults(
+        expectedAddresses.primary,
+        expectedAddresses.secondary,
+        [],
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
       );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
