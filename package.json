@@ -163,7 +163,8 @@
     "axios": ">=1.7.4",
     "postcss": ">=8.4.33",
     "braces": ">=3.0.3",
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "cookie": ">=0.7.0"
   },
   "packageManager": "yarn@3.6.4"
 }
