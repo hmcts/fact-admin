@@ -1,2 +1,1 @@
 export const FACT_ADMIN_TAB_GENERAL = 'fact-admin-tab-general';
-export const FACT_ADMIN_TAB_OPENING_HOURS = 'fact-admin-tab-opening-hours';

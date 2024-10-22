@@ -2,8 +2,7 @@ import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
 import {FeatureFlags} from './app/feature-flags/FeatureFlags';
 import {
-  FACT_ADMIN_TAB_GENERAL,
-  FACT_ADMIN_TAB_OPENING_HOURS
+  FACT_ADMIN_TAB_GENERAL
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -68,8 +67,8 @@ export default function(app: Application): void {
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.get);
   app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.renderRedirect);
   app.put('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.put);
-  app.get('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.get);
-  app.put('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.put);
+  app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
+  app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
   app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);
   app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
   app.get('/courts/:slug/contacts', app.locals.container.cradle.contactsController.get);

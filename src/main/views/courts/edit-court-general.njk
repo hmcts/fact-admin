@@ -97,17 +97,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_OPENING_HOURS] or featureFlags.values|length == 0 %}
-              {% set openingHoursTab =
-                {
-                  label: "Opening Hours",
-                  id: "opening-hours",
-                  panel: {
-                    html: openingHoursHtml
-                  }
+            {% set openingHoursTab =
+              {
+                label: "Opening Hours",
+                id: "opening-hours",
+                panel: {
+                  html: openingHoursHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set phoneNumbersTab =
               {

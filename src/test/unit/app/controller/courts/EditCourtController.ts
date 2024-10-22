@@ -41,7 +41,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': true,
-      'fact-admin-tab-opening-hours': true,
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
@@ -74,7 +73,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': true,
-      'fact-admin-tab-opening-hours': true,
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
@@ -112,7 +110,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': true,
-      'fact-admin-tab-opening-hours': true,
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
@@ -145,7 +142,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': true,
-      'fact-admin-tab-opening-hours': true,
     };
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -184,7 +180,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': true,
-      'fact-admin-tab-opening-hours': true,
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
@@ -217,7 +212,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-general': false,
-      'fact-admin-tab-opening-hours': false,
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
