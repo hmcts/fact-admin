@@ -157,17 +157,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_POSTCODES] or featureFlags.values|length == 0 %}
-              {% set postcodesTab =
-                {
-                  label: "Postcodes",
-                  id: "postcodes",
-                  panel: {
-                    html: postcodesHtml
-                  }
+            {% set postcodesTab =
+              {
+                label: "Postcodes",
+                id: "postcodes",
+                panel: {
+                  html: postcodesHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set localAuthoritiesTab =
               {

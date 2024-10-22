@@ -7,8 +7,7 @@ import {
   FACT_ADMIN_TAB_PHONE_NUMBERS,
   FACT_ADMIN_TAB_EMAILS,
   FACT_ADMIN_TAB_TYPES,
-  FACT_ADMIN_TAB_FACILITIES,
-  FACT_ADMIN_TAB_POSTCODES
+  FACT_ADMIN_TAB_FACILITIES
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -81,10 +80,10 @@ export default function(app: Application): void {
   app.put('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.put);
   app.get('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.get);
   app.put('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.put);
-  app.get('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.get);
-  app.post('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.post);
-  app.delete('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.delete);
-  app.put('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.put);
+  app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
+  app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
+  app.delete('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.delete);
+  app.put('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.put);
   app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
   app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
   app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
