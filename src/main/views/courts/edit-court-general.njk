@@ -85,17 +85,15 @@
 
             {% set tabItems = [] %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_GENERAL] or featureFlags.values|length == 0 %}
-              {% set generalTab =
-                {
-                  label: "General",
-                  id: "general",
-                  panel: {
-                    html: generalHtml
-                  }
+            {% set generalTab =
+              {
+                label: "General",
+                id: "general",
+                panel: {
+                  html: generalHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set openingHoursTab =
               {

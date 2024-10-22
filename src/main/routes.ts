@@ -1,15 +1,9 @@
 import {Application} from 'express';
 import {isSuperAdmin} from './modules/oidc';
-import {FeatureFlags} from './app/feature-flags/FeatureFlags';
-import {
-  FACT_ADMIN_TAB_GENERAL
-} from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
 
 export default function(app: Application): void {
-  const featureFlags: FeatureFlags = app.locals.container.cradle.featureFlags;
-
   const upload = multer();
 
   /**
@@ -64,9 +58,9 @@ export default function(app: Application): void {
   app.get('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.get);
   app.put('/courts/:slug/spoe', isSuperAdmin, app.locals.container.cradle.courtSpoeController.put);
   app.get('/courts/:slug/edit', app.locals.container.cradle.editCourtController.get);
-  app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.get);
-  app.get('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.renderRedirect);
-  app.put('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.put);
+  app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.get);
+  app.get('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.renderRedirect);
+  app.put('/courts/:slug/general-info', app.locals.container.cradle.generalInfoController.put);
   app.get('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.get);
   app.put('/courts/:slug/opening-times', app.locals.container.cradle.openingTimesController.put);
   app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);

@@ -5,7 +5,6 @@ import {CourtPageData} from '../../../../../main/types/CourtPageData';
 import config from 'config';
 import {when} from 'jest-when';
 import Tokens from 'csrf';
-import * as flags from '../../../../../main/app/feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../../../main/utils/error';
 
 describe('EditCourtController', () => {
@@ -39,9 +38,7 @@ describe('EditCourtController', () => {
     //req.appSession.user.email = user;
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': true,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
@@ -58,7 +55,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: featureFlags, flags: flags}
     };
     const res = mockResponse();
 
@@ -71,9 +67,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': true,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
       'id': 1,
@@ -95,7 +89,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: featureFlags, flags: flags}
     };
     const res = mockResponse();
 
@@ -108,9 +101,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': true,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
       'id': 1,
@@ -140,9 +131,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': true,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
@@ -169,7 +158,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: featureFlags, flags: flags}
     };
     expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
   });
@@ -178,9 +166,7 @@ describe('EditCourtController', () => {
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': true,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
@@ -197,7 +183,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: featureFlags, flags: flags}
     };
     const res = mockResponse();
 
@@ -206,13 +191,11 @@ describe('EditCourtController', () => {
     expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
   });
 
-  test('Should get court and render the edit court page with error if flags are all off', async () => {
+  test.skip('Should get court and render the edit court page with error if flags are all off', async () => { //FACT-2015 - Removed all feature flags, disabled for now
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
-    const featureFlags = {
-      'fact-admin-tab-general': false,
-    };
+    const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
     when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
@@ -229,7 +212,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: featureFlags, flags: flags},
       error: {flagsError: {message: ALL_FLAGS_FALSE_ERROR}}
     };
     const res = mockResponse();
@@ -260,7 +242,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-      featureFlags: {values: {}, flags: flags}
     };
     const res = mockResponse();
 

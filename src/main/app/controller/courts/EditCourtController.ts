@@ -6,7 +6,6 @@ import {CourtLock} from '../../../types/CourtLock';
 import {CSRF} from '../../../modules/csrf';
 import config from 'config';
 import {changeDateToUTCDate, getCurrentDatePlusMinutes} from '../../../utils/DateUtils';
-import * as flags from '../../feature-flags/flags';
 import {ALL_FLAGS_FALSE_ERROR} from '../../../utils/error';
 import {TAB_PREFIX} from '../../../utils/flagPrefix';
 
@@ -70,7 +69,6 @@ export class EditCourtController {
       slug: req.params.slug,
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
       csrfToken: CSRF.create(),
-      featureFlags: {values: featureFlags, flags: flags}
     };
     if (Object.values(filteredFlags).every((v) => v === false) && featureFlagsCount > 0) {
       pageData.error = {flagsError: {message: ALL_FLAGS_FALSE_ERROR}};
