@@ -145,17 +145,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_FACILITIES] or featureFlags.values|length == 0 %}
-              {% set courtFacilitiesTab =
-                {
-                  label: "Facilities",
-                  id: "court-facilities",
-                  panel: {
-                    html: courtFacilitiesHtml
-                  }
+            {% set courtFacilitiesTab =
+              {
+                label: "Facilities",
+                id: "court-facilities",
+                panel: {
+                  html: courtFacilitiesHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set postcodesTab =
               {

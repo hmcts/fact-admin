@@ -6,8 +6,7 @@ import {
   FACT_ADMIN_TAB_OPENING_HOURS,
   FACT_ADMIN_TAB_PHONE_NUMBERS,
   FACT_ADMIN_TAB_EMAILS,
-  FACT_ADMIN_TAB_TYPES,
-  FACT_ADMIN_TAB_FACILITIES
+  FACT_ADMIN_TAB_TYPES
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -99,9 +98,9 @@ export default function(app: Application): void {
   app.put('/courts/:slug/additionalLinks', isSuperAdmin, app.locals.container.cradle.additionalLinksController.put);
   app.get('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.get);
   app.put('/courts/:slug/application-progression', app.locals.container.cradle.applicationProgressionController.put);
-  app.get('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.get);
-  app.put('/courts/:slug/facilities', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.put);
-  app.put('/courts/facilities/add-row', featureFlags.toggleRoute(FACT_ADMIN_TAB_FACILITIES), app.locals.container.cradle.courtFacilitiesController.addRow);
+  app.get('/courts/:slug/facilities', app.locals.container.cradle.courtFacilitiesController.get);
+  app.put('/courts/:slug/facilities', app.locals.container.cradle.courtFacilitiesController.put);
+  app.put('/courts/facilities/add-row', app.locals.container.cradle.courtFacilitiesController.addRow);
 
   // Lists
   app.get('/lists', isSuperAdmin, app.locals.container.cradle.listsController.get);

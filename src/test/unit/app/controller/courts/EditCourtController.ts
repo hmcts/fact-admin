@@ -41,7 +41,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': true,
-      'fact-admin-tab-facilities': true,
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
@@ -78,7 +77,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': true,
-      'fact-admin-tab-facilities': true,
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
@@ -120,7 +118,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': true,
-      'fact-admin-tab-facilities': true,
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
@@ -157,7 +154,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': true,
-      'fact-admin-tab-facilities': true,
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
@@ -200,7 +196,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': true,
-      'fact-admin-tab-facilities': true,
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
@@ -237,7 +232,6 @@ describe('EditCourtController', () => {
     const name = 'Royal Courts of Justice';
     const featureFlags = {
       'fact-admin-tab-emails': false,
-      'fact-admin-tab-facilities': false,
       'fact-admin-tab-general': false,
       'fact-admin-tab-opening-hours': false,
       'fact-admin-tab-phone-numbers': false,
