@@ -8,8 +8,7 @@ import {
   FACT_ADMIN_TAB_EMAILS,
   FACT_ADMIN_TAB_TYPES,
   FACT_ADMIN_TAB_FACILITIES,
-  FACT_ADMIN_TAB_POSTCODES,
-  FACT_ADMIN_TAB_LOCAL_AUTHORITIES
+  FACT_ADMIN_TAB_POSTCODES
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -86,9 +85,9 @@ export default function(app: Application): void {
   app.post('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.post);
   app.delete('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.delete);
   app.put('/courts/:slug/postcodes', featureFlags.toggleRoute(FACT_ADMIN_TAB_POSTCODES), app.locals.container.cradle.postcodesController.put);
-  app.get('/courts/:slug/local-authorities-areas-of-law', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
-  app.get('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
-  app.put('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
+  app.get('/courts/:slug/local-authorities-areas-of-law', app.locals.container.cradle.localAuthoritiesController.getAreasOfLaw);
+  app.get('/courts/:slug/:areaOfLaw/local-authorities', app.locals.container.cradle.localAuthoritiesController.getLocalAuthorities);
+  app.put('/courts/:slug/:areaOfLaw/local-authorities', isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
   app.get('/courts/:slug/addresses', app.locals.container.cradle.addressController.get);
   app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
   app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);

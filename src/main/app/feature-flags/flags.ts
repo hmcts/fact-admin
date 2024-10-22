@@ -5,4 +5,3 @@ export const FACT_ADMIN_TAB_EMAILS = 'fact-admin-tab-emails';
 export const FACT_ADMIN_TAB_TYPES = 'fact-admin-tab-types';
 export const FACT_ADMIN_TAB_FACILITIES = 'fact-admin-tab-facilities';
 export const FACT_ADMIN_TAB_POSTCODES = 'fact-admin-tab-postcodes';
-export const FACT_ADMIN_TAB_LOCAL_AUTHORITIES = 'fact-admin-tab-local-authorities';

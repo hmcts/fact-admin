@@ -169,17 +169,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_LOCAL_AUTHORITIES] or featureFlags.values|length == 0 %}
-              {% set localAuthoritiesTab =
-                {
-                  label: "Local Authorities",
-                  id: "local-authorities",
-                  panel: {
-                    html: localAuthoritiesHtml
-                  }
+            {% set localAuthoritiesTab =
+              {
+                label: "Local Authorities",
+                id: "local-authorities",
+                panel: {
+                  html: localAuthoritiesHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
               {% set casesHeardTab =
                 {
