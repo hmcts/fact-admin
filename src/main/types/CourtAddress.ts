@@ -13,6 +13,7 @@ export interface DisplayAddress {
   town_cy?: string;
   county_id?: number;
   postcode?: string;
+  epim_id?: string;
   secondaryFieldsOfLawRadio?: string
   fields_of_law?: FieldsOfLaw;
 }
@@ -28,6 +29,7 @@ export interface CourtAddress {
   town_cy: string;
   county_id: number;
   postcode: string;
+  epim_id: string;
   secondaryFieldsOfLawRadio?: string
   fields_of_law?: FieldsOfLaw;
 }
@@ -46,5 +48,6 @@ export interface AddressType {
 export interface AddressValidationResult {
   addressValid: boolean;
   postcodeValid: boolean;
+  epimValid: boolean;
   errors: string[];
 }
