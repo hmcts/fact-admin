@@ -121,17 +121,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_EMAILS] or featureFlags.values|length == 0 %}
-              {% set emailsTab =
-                {
-                  label: "Emails",
-                  id: "emails",
-                  panel: {
-                    html: emailsHtml
-                  }
+            {% set emailsTab =
+              {
+                label: "Emails",
+                id: "emails",
+                panel: {
+                  html: emailsHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set courtTypesTab =
               {

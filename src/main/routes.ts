@@ -4,8 +4,7 @@ import {FeatureFlags} from './app/feature-flags/FeatureFlags';
 import {
   FACT_ADMIN_TAB_GENERAL,
   FACT_ADMIN_TAB_OPENING_HOURS,
-  FACT_ADMIN_TAB_PHONE_NUMBERS,
-  FACT_ADMIN_TAB_EMAILS
+  FACT_ADMIN_TAB_PHONE_NUMBERS
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -72,8 +71,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/general-info', featureFlags.toggleRoute(FACT_ADMIN_TAB_GENERAL), app.locals.container.cradle.generalInfoController.put);
   app.get('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.get);
   app.put('/courts/:slug/opening-times', featureFlags.toggleRoute(FACT_ADMIN_TAB_OPENING_HOURS), app.locals.container.cradle.openingTimesController.put);
-  app.get('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.get);
-  app.put('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.put);
+  app.get('/courts/:slug/emails', app.locals.container.cradle.emailsController.get);
+  app.put('/courts/:slug/emails', app.locals.container.cradle.emailsController.put);
   app.get('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.get);
   app.put('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.put);
   app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
