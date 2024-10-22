@@ -44,7 +44,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
@@ -80,7 +79,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
@@ -121,7 +119,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
@@ -157,7 +154,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('lock.timeout').mockReturnValue(1);
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
@@ -199,7 +195,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': true,
       'fact-admin-tab-opening-hours': true,
       'fact-admin-tab-phone-numbers': true,
-      'fact-admin-tab-types': true
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
@@ -235,7 +230,6 @@ describe('EditCourtController', () => {
       'fact-admin-tab-general': false,
       'fact-admin-tab-opening-hours': false,
       'fact-admin-tab-phone-numbers': false,
-      'fact-admin-tab-types': false
     };
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
     when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);

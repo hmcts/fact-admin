@@ -133,17 +133,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_TYPES] or featureFlags.values|length == 0 %}
-              {% set courtTypesTab =
-                {
-                  label: "Types",
-                  id: "court-types",
-                  panel: {
-                    html: courtTypesHtml
-                  }
+            {% set courtTypesTab =
+              {
+                label: "Types",
+                id: "court-types",
+                panel: {
+                  html: courtTypesHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set courtFacilitiesTab =
               {

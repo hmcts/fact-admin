@@ -5,8 +5,7 @@ import {
   FACT_ADMIN_TAB_GENERAL,
   FACT_ADMIN_TAB_OPENING_HOURS,
   FACT_ADMIN_TAB_PHONE_NUMBERS,
-  FACT_ADMIN_TAB_EMAILS,
-  FACT_ADMIN_TAB_TYPES
+  FACT_ADMIN_TAB_EMAILS
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -77,8 +76,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/emails', featureFlags.toggleRoute(FACT_ADMIN_TAB_EMAILS), app.locals.container.cradle.emailsController.put);
   app.get('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.get);
   app.put('/courts/:slug/contacts', featureFlags.toggleRoute(FACT_ADMIN_TAB_PHONE_NUMBERS), app.locals.container.cradle.contactsController.put);
-  app.get('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.get);
-  app.put('/courts/:slug/court-types', featureFlags.toggleRoute(FACT_ADMIN_TAB_TYPES), app.locals.container.cradle.courtTypesController.put);
+  app.get('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.get);
+  app.put('/courts/:slug/court-types', app.locals.container.cradle.courtTypesController.put);
   app.get('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.get);
   app.post('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.post);
   app.delete('/courts/:slug/postcodes', app.locals.container.cradle.postcodesController.delete);
