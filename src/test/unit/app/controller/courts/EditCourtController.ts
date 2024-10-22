@@ -5,7 +5,6 @@ import {CourtPageData} from '../../../../../main/types/CourtPageData';
 import config from 'config';
 import {when} from 'jest-when';
 import Tokens from 'csrf';
-import {ALL_FLAGS_FALSE_ERROR} from '../../../../../main/utils/error';
 
 describe('EditCourtController', () => {
   const controller = new EditCourtController();
@@ -183,36 +182,6 @@ describe('EditCourtController', () => {
       slug: slug,
       name: name,
       csrfToken: expect.any(String),
-    };
-    const res = mockResponse();
-
-    await controller.get(req, res);
-
-    expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
-  });
-
-  test.skip('Should get court and render the edit court page with error if flags are all off', async () => { //FACT-2015 - Removed all feature flags, disabled for now
-    const req = mockRequest();
-    const slug = 'royal-courts-of-justice';
-    const name = 'Royal Courts of Justice';
-    const featureFlags = {};
-    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
-    when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
-    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
-    when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
-
-    req.params = {slug: slug};
-    req.query = {name: name};
-    req.appSession.user.isSuperAdmin = false;
-    req.scope.cradle.api = mockApi;
-    req.scope.cradle.featureFlags = mockApi;
-
-    const expectedResults: CourtPageData = {
-      isSuperAdmin: false,
-      slug: slug,
-      name: name,
-      csrfToken: expect.any(String),
-      error: {flagsError: {message: ALL_FLAGS_FALSE_ERROR}}
     };
     const res = mockResponse();
 

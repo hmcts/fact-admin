@@ -6,8 +6,6 @@ import {CourtLock} from '../../../types/CourtLock';
 import {CSRF} from '../../../modules/csrf';
 import config from 'config';
 import {changeDateToUTCDate, getCurrentDatePlusMinutes} from '../../../utils/DateUtils';
-import {ALL_FLAGS_FALSE_ERROR} from '../../../utils/error';
-import {TAB_PREFIX} from '../../../utils/flagPrefix';
 
 @autobind
 export class EditCourtController {
@@ -59,20 +57,12 @@ export class EditCourtController {
 
   private async renderEditPage(featureFlagsClient: any, req: any, res: any) {
 
-    const featureFlags = await featureFlagsClient.getAllFlagValues();
-    const filteredFlags = Object.fromEntries(Object.entries(featureFlags)
-      .filter(([key]) => key.startsWith(TAB_PREFIX)));
-    const featureFlagsCount = Object.keys(featureFlags).length;
-
     const pageData: CourtPageData = {
       isSuperAdmin: req.appSession.user.isSuperAdmin,
       slug: req.params.slug,
       name: (await req.scope.cradle.api.getCourt(req.params.slug)).name,
       csrfToken: CSRF.create(),
     };
-    if (Object.values(filteredFlags).every((v) => v === false) && featureFlagsCount > 0) {
-      pageData.error = {flagsError: {message: ALL_FLAGS_FALSE_ERROR}};
-    }
 
     res.render('courts/edit-court-general', pageData);
   }
