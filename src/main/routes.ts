@@ -9,8 +9,7 @@ import {
   FACT_ADMIN_TAB_TYPES,
   FACT_ADMIN_TAB_FACILITIES,
   FACT_ADMIN_TAB_POSTCODES,
-  FACT_ADMIN_TAB_LOCAL_AUTHORITIES,
-  FACT_ADMIN_TAB_CASES_HEARD
+  FACT_ADMIN_TAB_LOCAL_AUTHORITIES
 } from './app/feature-flags/flags';
 import {AuthedRequest} from './types/AuthedRequest';
 const multer = require('multer');
@@ -92,8 +91,8 @@ export default function(app: Application): void {
   app.put('/courts/:slug/:areaOfLaw/local-authorities', featureFlags.toggleRoute(FACT_ADMIN_TAB_LOCAL_AUTHORITIES), isSuperAdmin, app.locals.container.cradle.localAuthoritiesController.put);
   app.get('/courts/:slug/addresses', app.locals.container.cradle.addressController.get);
   app.put('/courts/:slug/addresses', app.locals.container.cradle.addressController.put);
-  app.get('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.get);
-  app.put('/courts/:slug/cases-heard', featureFlags.toggleRoute(FACT_ADMIN_TAB_CASES_HEARD), app.locals.container.cradle.casesHeardController.put);
+  app.get('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.get);
+  app.put('/courts/:slug/cases-heard', app.locals.container.cradle.casesHeardController.put);
   app.get('/courts/:slug/photo', app.locals.container.cradle.photoController.get);
   app.get('/courts/:slug/photo/:imageToDelete/confirm-delete', app.locals.container.cradle.photoController.getDeleteConfirmation);
   app.put('/courts/:slug/photo', upload.single('photo'), app.locals.container.cradle.photoController.put);
