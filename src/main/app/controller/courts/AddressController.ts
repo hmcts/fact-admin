@@ -429,7 +429,7 @@ export class AddressController {
 
   private validateEPIMId(courtAddress: DisplayAddress): string[] {
     const errors: string[] = [];
-    const regex = /^[a-zA-Z0-9-]+$/;
+    const regex = /^[a-zA-Z0-9-]{0,30}$/;
     if (courtAddress.epim_id && !regex.test(courtAddress.epim_id?.trim())) {
       errors.push(this.invalidEpimError);
     }
