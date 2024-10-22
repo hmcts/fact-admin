@@ -109,17 +109,15 @@
               %}
             {% endif %}
 
-            {% if featureFlags.values[featureFlags.flags.FACT_ADMIN_TAB_PHONE_NUMBERS] or featureFlags.values|length == 0 %}
-              {% set phoneNumbersTab =
-                {
-                  label: "Phone Numbers",
-                  id: "phone-numbers",
-                  panel: {
-                    html: phoneNumbersHtml
-                  }
+            {% set phoneNumbersTab =
+              {
+                label: "Phone Numbers",
+                id: "phone-numbers",
+                panel: {
+                  html: phoneNumbersHtml
                 }
-              %}
-            {% endif %}
+              }
+            %}
 
             {% set emailsTab =
               {
