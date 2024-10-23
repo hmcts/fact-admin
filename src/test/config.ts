@@ -1,3 +1,11 @@
+import path from 'path';
+import process from 'process';
+
+process.on('unhandledRejection', reason => {
+  throw reason;
+});
+
+
 export const config = {
   TEST_URL: process.env.TEST_URL || 'http://localhost:3300',
   TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
@@ -9,10 +17,27 @@ export const config = {
   API_URL:  process.env.API_URL || 'http://fact-api-aat.service.core-compute-aat.internal',
   username: process.env.OAUTH_USER,
   viewerUsername: process.env.OAUTH_VIEWER_USER,
-  superUsername: process.env.OAUTH_SUPER_USER,
-  password: process.env.OAUTH_USER_PASSWORD,
-  userDataDir: './src/test/functional/user_data',
-  helpers: {}
+  SUPER_ADMIN_USERNAME: process.env.OAUTH_SUPER_USER,
+  TEST_PASSWORD: process.env.OAUTH_USER_PASSWORD,
+  TestFunctionalOutputPath: path.join(process.cwd(), 'functional-output'),
+  helpers: {},
+  WaitForTimeout: 20000,
+  plugins: {
+    allure: {
+      enabled: true,
+      require: '@codeceptjs/allure-legacy',
+    },
+    retryFailedStep: {
+      enabled: true,
+    },
+    tryTo: {
+      enabled: true,
+    },
+    screenshotOnFail: {
+      enabled: true,
+      fullPageScreenshots: true,
+    },
+  }
 };
 
 config.helpers = {
@@ -20,15 +45,10 @@ config.helpers = {
     url: config.TEST_URL,
     show: !config.TestHeadlessBrowser,
     browser: 'chromium',
-    windowSize: '1300x800',
-    timeout: 60000,
-    waitForTimeout: 30000,
-    waitForAction: 4000,
+    waitForTimeout: config.WaitForTimeout,
+    waitForAction: 1000,
     waitForNavigation: 'domcontentloaded',
     ignoreHTTPSErrors: true,
-  },
-  FactApiHelper: {
-    require: './helpers/FactApiHelper.ts',
   },
   FileSystem: {},
 };
