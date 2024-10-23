@@ -20,7 +20,6 @@ export class CourtsController {
     if (currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
       courts = await req.scope.cradle.api.getCourts();
       regions = await req.scope.cradle.api.getRegions();
-      await req.scope.cradle.api.deleteCourtLocksByEmail(req.appSession['user']['jwt']['sub']);
     }
     if (!currentRoles.some(i => ALLOWED_ROLES.includes(i))) {
       errors.push({text: NO_MATCHING_ROLES_ERROR});
