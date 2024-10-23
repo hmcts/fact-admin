@@ -40,6 +40,7 @@ export class OidcMiddleware {
       clientAuthMethod: 'client_secret_post',
       idpLogout: true,
       routes: {
+        logout: false,
         callback: 'oauth2/callback'
       },
       authorizationParams: {
