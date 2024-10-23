@@ -7,7 +7,6 @@ declare namespace CodeceptJS {
     current: any
     login: (role: string) => void
   }
-  interface Methods extends Playwright, FactApiHelper {}
   interface I extends WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}
