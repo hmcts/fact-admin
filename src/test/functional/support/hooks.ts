@@ -6,6 +6,8 @@ import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
 const scope = require('./scope');
 
 export const launchBrowser = async () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   scope.browser = await puppeteer.launch(puppeteerConfig);
 };
 
@@ -15,11 +17,11 @@ let allFlags: { [p: string]: boolean } | void;
 setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
 BeforeAll(async () => {
-  puppeteerConfig.username = process.env.OAUTH_USER;
-  puppeteerConfig.viewerUsername = process.env.OAUTH_VIEWER_USER;
-  puppeteerConfig.superUsername = process.env.OAUTH_SUPER_USER;
-  puppeteerConfig.testUsername = process.env.OAUTH_TEST_USER_NO_ROLE;
-  puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
+  // puppeteerConfig.username = process.env.OAUTH_USER;
+  // puppeteerConfig.viewerUsername = process.env.OAUTH_VIEWER_USER;
+  // puppeteerConfig.superUsername = process.env.OAUTH_SUPER_USER;
+  // puppeteerConfig.testUsername = process.env.OAUTH_TEST_USER_NO_ROLE;
+  // puppeteerConfig.password = process.env.OAUTH_USER_PASSWORD;
 
   await launchBrowser();
   await f.init();
