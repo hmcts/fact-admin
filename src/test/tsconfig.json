@@ -5,21 +5,10 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": ["es2018", "DOM"],
-    "strictPropertyInitialization": false,
-    "useUnknownInCatchVariables": false,
-    "noImplicitAny": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "module": "commonjs",
-    "strict": true,
     "strictNullChecks": true,
-    "baseUrl": "./",
-    "paths": {
-      "*": ["node_modules/*"]
-    },
-    "types": ["node","codeceptjs"]
-  },
-  "include": [
-    "steps.d.ts",
-    "**/*.ts"
-  ]
+    "types": ["codeceptjs", "jest"]
+  }
 }

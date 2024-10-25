@@ -1,4 +1,5 @@
 {
+  "exclude": ["src/test/functional/**/*.ts"],
   "compilerOptions": {
     "outDir": "./dist/",
     "module": "commonjs",
