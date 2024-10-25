@@ -1,5 +1,3 @@
-import * as flags from '../../main/app/feature-flags/flags';
-
 export interface CourtPageData {
   isSuperAdmin: boolean,
   slug: string,
@@ -19,7 +17,6 @@ export interface PageFeatureFlags {
   values: {
     [key: string]: boolean;
   };
-  flags: typeof flags;
 }
 
 export interface SelectItem {

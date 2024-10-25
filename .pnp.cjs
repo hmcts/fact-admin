@@ -41,7 +41,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/connect-redis", "npm:0.0.18"],\
             ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/copy-webpack-plugin", "npm:10.1.0"],\
-            ["@types/csurf", "npm:1.11.2"],\
             ["@types/cucumber", "npm:6.0.1"],\
             ["@types/es6-promisify", "npm:6.0.1"],\
             ["@types/express", "npm:4.17.17"],\
@@ -78,17 +77,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chokidar", "npm:3.5.3"],\
             ["config", "npm:3.3.7"],\
             ["connect-redis", "npm:6.1.3"],\
-            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie", "npm:0.7.2"],\
+            ["cookie-parser", "npm:1.4.7"],\
             ["copy-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:11.0.0"],\
             ["csrf", "npm:3.1.0"],\
             ["css-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:6.7.1"],\
-            ["csurf", "npm:1.11.0"],\
             ["cucumber", "npm:6.0.7"],\
             ["eslint", "npm:8.57.0"],\
             ["express", "npm:5.0.0"],\
             ["express-nunjucks", "npm:2.2.5"],\
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
-            ["express-session", "npm:1.18.0"],\
+            ["express-session", "npm:1.18.1"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
@@ -4603,16 +4602,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/csurf", [\
-        ["npm:1.11.2", {\
-          "packageLocation": "./.yarn/cache/@types-csurf-npm-1.11.2-6f7a2c557c-1827f6760d.zip/node_modules/@types/csurf/",\
-          "packageDependencies": [\
-            ["@types/csurf", "npm:1.11.2"],\
-            ["@types/express-serve-static-core", "npm:4.17.24"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/cucumber", [\
         ["npm:6.0.1", {\
           "packageLocation": "./.yarn/cache/@types-cucumber-npm-6.0.1-be54b49dba-85e0d3ab51.zip/node_modules/@types/cucumber/",\
@@ -7677,10 +7666,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["cookie-parser", [\
-        ["npm:1.4.6", {\
-          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.6-a68f84d02a-1e5a63aa82.zip/node_modules/cookie-parser/",\
+        ["npm:1.4.7", {\
+          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.7-970a70a2fd-243fa13f21.zip/node_modules/cookie-parser/",\
           "packageDependencies": [\
-            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie-parser", "npm:1.4.7"],\
             ["cookie", "npm:0.7.2"],\
             ["cookie-signature", "npm:1.0.6"]\
           ],\
@@ -7936,19 +7925,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/cssesc-npm-3.0.0-15ec56f86f-f8c4ababff.zip/node_modules/cssesc/",\
           "packageDependencies": [\
             ["cssesc", "npm:3.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["csurf", [\
-        ["npm:1.11.0", {\
-          "packageLocation": "./.yarn/cache/csurf-npm-1.11.0-c1b9cbb35b-c41a1ec593.zip/node_modules/csurf/",\
-          "packageDependencies": [\
-            ["csurf", "npm:1.11.0"],\
-            ["cookie", "npm:0.7.2"],\
-            ["cookie-signature", "npm:1.0.6"],\
-            ["csrf", "npm:3.1.0"],\
-            ["http-errors", "npm:1.7.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9428,10 +9404,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["express-session", [\
-        ["npm:1.18.0", {\
-          "packageLocation": "./.yarn/cache/express-session-npm-1.18.0-a285922921-56e52e4f5e.zip/node_modules/express-session/",\
+        ["npm:1.18.1", {\
+          "packageLocation": "./.yarn/cache/express-session-npm-1.18.1-b1aa040a8f-e712cb3399.zip/node_modules/express-session/",\
           "packageDependencies": [\
-            ["express-session", "npm:1.18.0"],\
+            ["express-session", "npm:1.18.1"],\
             ["cookie", "npm:0.7.2"],\
             ["cookie-signature", "npm:1.0.7"],\
             ["debug", "virtual:c9e1a4b59e37cb479517edede3bf2093b28c0ca1a9d0e517f3c345075bd1e468980b94b4957e389116607ee7155441dfd7d09e19a4229d5d09bcf06244401590#npm:4.3.4"],\
@@ -9527,7 +9503,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/connect-redis", "npm:0.0.18"],\
             ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/copy-webpack-plugin", "npm:10.1.0"],\
-            ["@types/csurf", "npm:1.11.2"],\
             ["@types/cucumber", "npm:6.0.1"],\
             ["@types/es6-promisify", "npm:6.0.1"],\
             ["@types/express", "npm:4.17.17"],\
@@ -9564,17 +9539,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chokidar", "npm:3.5.3"],\
             ["config", "npm:3.3.7"],\
             ["connect-redis", "npm:6.1.3"],\
-            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie", "npm:0.7.2"],\
+            ["cookie-parser", "npm:1.4.7"],\
             ["copy-webpack-plugin", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:11.0.0"],\
             ["csrf", "npm:3.1.0"],\
             ["css-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:6.7.1"],\
-            ["csurf", "npm:1.11.0"],\
             ["cucumber", "npm:6.0.7"],\
             ["eslint", "npm:8.57.0"],\
             ["express", "npm:5.0.0"],\
             ["express-nunjucks", "npm:2.2.5"],\
             ["express-openid-connect", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:2.17.1"],\
-            ["express-session", "npm:1.18.0"],\
+            ["express-session", "npm:1.18.1"],\
             ["glob-parent", "npm:6.0.2"],\
             ["govuk-frontend", "npm:4.8.0"],\
             ["helmet", "npm:5.0.2"],\
@@ -10733,18 +10708,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["http-errors", [\
-        ["npm:1.7.3", {\
-          "packageLocation": "./.yarn/cache/http-errors-npm-1.7.3-f6dc83b082-a59f359473.zip/node_modules/http-errors/",\
-          "packageDependencies": [\
-            ["http-errors", "npm:1.7.3"],\
-            ["depd", "npm:1.1.2"],\
-            ["inherits", "npm:2.0.4"],\
-            ["setprototypeof", "npm:1.1.1"],\
-            ["statuses", "npm:1.5.0"],\
-            ["toidentifier", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.8.1", {\
           "packageLocation": "./.yarn/cache/http-errors-npm-1.8.1-fb60d9f6ae-d3c7e7e776.zip/node_modules/http-errors/",\
           "packageDependencies": [\
@@ -15617,13 +15580,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["setprototypeof", [\
-        ["npm:1.1.1", {\
-          "packageLocation": "./.yarn/cache/setprototypeof-npm-1.1.1-706b6318ec-a8bee29c1c.zip/node_modules/setprototypeof/",\
-          "packageDependencies": [\
-            ["setprototypeof", "npm:1.1.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.2.0", {\
           "packageLocation": "./.yarn/cache/setprototypeof-npm-1.2.0-0fedbdcd3a-be18cbbf70.zip/node_modules/setprototypeof/",\
           "packageDependencies": [\
@@ -16626,13 +16582,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["toidentifier", [\
-        ["npm:1.0.0", {\
-          "packageLocation": "./.yarn/cache/toidentifier-npm-1.0.0-5dad252f90-199e6bfca1.zip/node_modules/toidentifier/",\
-          "packageDependencies": [\
-            ["toidentifier", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.0.1", {\
           "packageLocation": "./.yarn/cache/toidentifier-npm-1.0.1-f759712599-952c29e2a8.zip/node_modules/toidentifier/",\
           "packageDependencies": [\

@@ -5,6 +5,10 @@ Feature: General Info
     Given I am on new browser
     Given I am on FACT homepage
     And I am on the admin portal sign in page
+    And I fill in the Username and Password fields with my super user authenticated credentials
+    And click the Sign In button
+    And I am logged out if I am a super admin
+    And I am on the admin portal sign in page
 
   Scenario: Admin user can view and update urgent notices and PUAS flag only
     When I fill in the Username and Password fields with my authenticated credentials
