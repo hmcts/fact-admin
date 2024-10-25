@@ -123,9 +123,8 @@ export class AddressController {
         !addressesValid.primaryPostcodeValid,
         !addressesValid.secondaryPostcodeValid,
         !addressesValid.thirdPostcodeValid,
-        !addressesValid.primaryEpimValid,
-        !addressesValid.secondaryEpimValid,
-        !addressesValid.thirdEpimValid);
+        !addressesValid.primaryEpimValid
+      );
       return;
     }
 
@@ -180,9 +179,7 @@ export class AddressController {
     primaryPostcodeInvalid = false,
     secondaryPostcodeInvalid = false,
     thirdPostcodeInvalid = false,
-    primaryEpimInvalid = false,
-    secondaryEpimInvalid = false,
-    thirdEpimInvalid = false
+    primaryEpimInvalid = false
   ) {
 
     const slug: string = req.params.slug;
@@ -255,8 +252,6 @@ export class AddressController {
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
       thirdPostcodeInvalid: thirdPostcodeInvalid,
       primaryEpimInvalid: primaryEpimInvalid,
-      secondaryEpimInvalid: secondaryEpimInvalid,
-      thirdEpimInvalid: thirdEpimInvalid,
       updated: updated
     };
 
@@ -313,7 +308,7 @@ export class AddressController {
    */
   private validateCourtAddresses(addresses: DisplayCourtAddresses, writeToUsTypeId: number):
     { primaryPostcodeValid: boolean; secondaryPostcodeValid: boolean; thirdPostcodeValid: boolean;
-      primaryEpimValid: boolean, secondaryEpimValid: boolean, thirdEpimValid: boolean, errors: string[] } {
+      primaryEpimValid: boolean, errors: string[] } {
 
     const primaryValidationResult = this.validateCourtAddress(addresses.primary, true, false);
     const secondaryValidationResult = this.validateCourtAddress(addresses.secondary[0], false, true);
@@ -333,8 +328,6 @@ export class AddressController {
       secondaryPostcodeValid: secondaryValidationResult.postcodeValid,
       thirdPostcodeValid: thirdValidationResult.postcodeValid,
       primaryEpimValid: primaryValidationResult.epimValid,
-      secondaryEpimValid: secondaryValidationResult.epimValid,
-      thirdEpimValid: thirdValidationResult.epimValid,
       errors: allErrors
     };
   }

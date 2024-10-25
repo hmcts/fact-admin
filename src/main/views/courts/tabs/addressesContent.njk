@@ -328,19 +328,6 @@
   errorMessage: secondaryPostcodeError
 }) }}
 
-{% if secondaryEpimInvalid and addresses.secondary[loop.index - 1].epim_id != '' %}
-  {% set secondaryEpimError = epimInvalidError %}
-{% endif %}
-
-{{ govukInput({
-  id: "epim_id-"+ (loop.index - 1),
-  name: "secondary[" + (loop.index - 1) + "][epim_id]",
-  label: { text: "ePIMS Ref ID" },
-  classes: "govuk-input--width-30 clear",
-  value: address.epim_id,
-  errorMessage: secondaryEpimError
-}) }}
-
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-three-quarters">
 {{ govukButton({

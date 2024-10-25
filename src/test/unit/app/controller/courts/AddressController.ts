@@ -315,8 +315,6 @@ describe('AddressesController', () => {
     secondaryPostcodeInvalid: boolean,
     thirdPostcodeInvalid: boolean,
     primaryEpimInvalid: boolean,
-    secondaryEpimInvalid: boolean,
-    thirdEpimInvalid: boolean,
     isFatalError: boolean) => {
     return {
       addresses: {primary: primaryAddress, secondary: secondaryAddress},
@@ -330,8 +328,6 @@ describe('AddressesController', () => {
       secondaryPostcodeInvalid: secondaryPostcodeInvalid,
       thirdPostcodeInvalid: thirdPostcodeInvalid,
       primaryEpimInvalid: primaryEpimInvalid,
-      secondaryEpimInvalid: secondaryEpimInvalid,
-      thirdEpimInvalid: thirdEpimInvalid,
       fatalError: isFatalError
     };
   };
@@ -389,8 +385,6 @@ describe('AddressesController', () => {
         false,
         false,
         false,
-        false,
-        false,
       );
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
 
@@ -411,7 +405,7 @@ describe('AddressesController', () => {
         areas_of_law: getAllRadioAreasOfLaw('third'),
         courts: getAllRadioCourtTypes('third')
       }
-    }], [], false,false,false,false, false, false, false);
+    }], [], false,false,false,false, false);
     expect(res.render).toBeCalledWith('courts/tabs/addressesContent', expectedResults);
   });
 
@@ -494,8 +488,6 @@ describe('AddressesController', () => {
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
       primaryEpimInvalid: false,
-      secondaryEpimInvalid: false,
-      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -526,8 +518,6 @@ describe('AddressesController', () => {
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
       primaryEpimInvalid: false,
-      secondaryEpimInvalid: false,
-      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -558,8 +548,6 @@ describe('AddressesController', () => {
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
       primaryEpimInvalid: false,
-      secondaryEpimInvalid: false,
-      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -589,8 +577,6 @@ describe('AddressesController', () => {
       secondaryPostcodeInvalid: false,
       thirdPostcodeInvalid: false,
       primaryEpimInvalid: false,
-      secondaryEpimInvalid: false,
-      thirdEpimInvalid: false,
       fatalError: true
     };
 
@@ -687,8 +673,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -720,8 +704,6 @@ describe('AddressesController', () => {
           req.body.secondary,
           expectedError,
           true,
-          false,
-          false,
           false,
           false,
           false,
@@ -760,8 +742,6 @@ describe('AddressesController', () => {
           true,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -796,8 +776,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
@@ -840,8 +818,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -872,8 +848,6 @@ describe('AddressesController', () => {
           req.body.secondary,
           expectedError,
           true,
-          false,
-          false,
           false,
           false,
           false,
@@ -912,8 +886,6 @@ describe('AddressesController', () => {
           true,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -948,8 +920,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -970,8 +940,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
@@ -1053,8 +1021,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1113,8 +1079,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1131,8 +1095,6 @@ describe('AddressesController', () => {
         expectedError,
         false,
         true,
-        false,
-        false,
         false,
         false,
         false
@@ -1159,8 +1121,6 @@ describe('AddressesController', () => {
           true,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1175,8 +1135,6 @@ describe('AddressesController', () => {
         req.body.primary,
         req.body.secondary,
         expectedError,
-        false,
-        false,
         false,
         false,
         false,
@@ -1211,8 +1169,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
@@ -1252,8 +1208,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1284,8 +1238,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
@@ -1327,8 +1279,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1360,8 +1310,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
@@ -1402,8 +1350,6 @@ describe('AddressesController', () => {
           false,
           false,
           false,
-          false,
-          false,
           false
         )
       );
@@ -1435,8 +1381,6 @@ describe('AddressesController', () => {
           req.body.primary,
           req.body.secondary,
           expectedError,
-          false,
-          false,
           false,
           false,
           false,
