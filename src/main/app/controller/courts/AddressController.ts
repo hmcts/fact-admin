@@ -35,7 +35,8 @@ export class AddressController {
   addressRequiredError = 'Address is required.';
   townRequiredError = 'Town is required.';
   invalidPostcodeError = 'Postcode is invalid.';
-  invalidEpimError = 'ePIMS Ref ID is invalid.';
+  invalidEpimError = 'ePIMS Ref ID is invalid. Must contain alphanumeric and/or '
+    + 'dashes (-) and length should be 30 characters or less.';
   postcodeMissingError = 'Postcode is required.';
   postcodeNotFoundError = 'Postcode entered could not be found.';
   writeToUsAddressType = 'Write to us';
