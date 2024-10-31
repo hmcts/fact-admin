@@ -66,24 +66,13 @@ Then('I enter {string} in the Address Welsh textbox', async (welshAddress: strin
 
 });
 
-Then('I enter {string} in the Town textbox', async (town: string) => {
-  const selector = '#primaryAddressTown';
-  await populateField(selector, town);
-});
-
 Then('I enter {string} in the town Welsh textbox', async (welshTown: string) => {
   const selector = '#primaryAddressTownWelsh';
   await populateField(selector, welshTown);
 });
 
-Then('I enter {string} in the postcode textbox', async (postcode: string) => {
-  const selector = '#primaryAddressPostcode';
-  await populateField(selector, postcode);
-});
-
-Then('I enter {string} in the primary epim id textbox', async (badepim: string) => {
-  const selector = '#primaryAddressEpimId';
-  await populateField(selector, badepim);
+Then('I enter {string} in the {selector} textbox', async (toType: string, selector: string) => {
+  await populateField(selector, toType);
 });
 
 Then('I click the Save Addresses button', async () => {
