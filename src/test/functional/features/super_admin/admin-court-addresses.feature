@@ -77,7 +77,7 @@ Feature: Court-addresses
     Then I enter "<town>" in the Town textbox
     Then I select the primary County "50"
     Then I enter "<postcode>" in the postcode textbox
-    Then I enter "<badepim>" in the primary epim id textbox
+    Then I enter value "<badepim>" in the "primaryAddressEpimId" textbox
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I select the secondary County "50"

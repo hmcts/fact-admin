@@ -81,9 +81,9 @@ Then('I enter {string} in the postcode textbox', async (postcode: string) => {
   await populateField(selector, postcode);
 });
 
-Then('I enter {string} in the primary epim id textbox', async (badepim: string) => {
-  const selector = '#primaryAddressEpimId';
-  await populateField(selector, badepim);
+Then('I enter value {string} in the {string} textbox', async (value: string, selectorId: string) => {
+  const selector = '#' + selectorId;
+  await populateField(selector, value);
 });
 
 Then('I click the Save Addresses button', async () => {
