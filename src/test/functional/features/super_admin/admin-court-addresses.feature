@@ -74,10 +74,10 @@ Feature: Court-addresses
     Given I will make sure to clear all entries of the primary address
     When I will make sure to clear all entries for secondary address
     When I select the Address Type "5880"
-    Then I enter "<town>" in the "#primaryAddressTown" textbox
+    Then I enter "<town>" in the Town textbox
     Then I select the primary County "50"
-    Then I enter "<postcode>" in the "#primaryAddressPostcode" textbox
-    Then I enter "<badepim>" in the "#primaryAddressEpimId" textbox
+    Then I enter "<postcode>" in the postcode textbox
+    Then I enter "<badepim>" in the primary epim id textbox
     Then I select the secondary address type as "5881"
     Then I enter the secondary court address "<secondary address>" in the Address textbox
     Then I select the secondary County "50"
