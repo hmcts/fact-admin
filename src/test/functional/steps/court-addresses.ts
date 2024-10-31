@@ -71,7 +71,7 @@ Then('I enter {string} in the town Welsh textbox', async (welshTown: string) => 
   await populateField(selector, welshTown);
 });
 
-Then('I enter {string} in the {selector} textbox', async (toType: string, selector: string) => {
+Then('I enter {string} in the {string} textbox', async (toType: string, selector: string) => {
   await populateField(selector, toType);
 });
 
