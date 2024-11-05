@@ -53,7 +53,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/json2csv", "npm:5.0.7"],\
             ["@types/jwt-decode", "npm:3.1.0"],\
             ["@types/lodash", "npm:4.17.13"],\
-            ["@types/node", "npm:22.9.0"],\
+            ["@types/node", "npm:18.19.64"],\
             ["@types/nunjucks", "npm:3.2.6"],\
             ["@types/puppeteer", "npm:7.0.4"],\
             ["@types/redis", "npm:2.8.31"],\
@@ -6208,6 +6208,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
+        ["npm:18.19.64", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-18.19.64-2bf88f0be4-e7680215b0.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:18.19.64"],\
+            ["undici-types", "npm:5.26.5"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:22.9.0", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-22.9.0-643fcf7450-c014eb3b8a.zip/node_modules/@types/node/",\
           "packageDependencies": [\
@@ -11165,7 +11173,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/json2csv", "npm:5.0.7"],\
             ["@types/jwt-decode", "npm:3.1.0"],\
             ["@types/lodash", "npm:4.17.13"],\
-            ["@types/node", "npm:22.9.0"],\
+            ["@types/node", "npm:18.19.64"],\
             ["@types/nunjucks", "npm:3.2.6"],\
             ["@types/puppeteer", "npm:7.0.4"],\
             ["@types/redis", "npm:2.8.31"],\
@@ -19225,7 +19233,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node12", "npm:1.0.9"],\
             ["@tsconfig/node14", "npm:1.0.1"],\
             ["@tsconfig/node16", "npm:1.0.3"],\
-            ["@types/node", "npm:22.9.0"],\
+            ["@types/node", "npm:18.19.64"],\
             ["@types/swc__core", null],\
             ["@types/swc__wasm", null],\
             ["@types/typescript", null],\
@@ -19578,6 +19586,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["undici-types", [\
+        ["npm:5.26.5", {\
+          "packageLocation": "./.yarn/cache/undici-types-npm-5.26.5-de4f7c7bb9-3192ef6f3f.zip/node_modules/undici-types/",\
+          "packageDependencies": [\
+            ["undici-types", "npm:5.26.5"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:6.19.8", {\
           "packageLocation": "./.yarn/cache/undici-types-npm-6.19.8-9f12285b7a-de51f1b447.zip/node_modules/undici-types/",\
           "packageDependencies": [\
