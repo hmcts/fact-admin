@@ -72,7 +72,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-eslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.1.0"],\
             ["babel-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.2.1"],\
             ["body-parser", "npm:1.20.3"],\
-            ["chai", "npm:5.1.2"],\
+            ["chai", "npm:4.5.0"],\
             ["chai-as-promised", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:8.0.0"],\
             ["chokidar", "npm:4.0.1"],\
             ["config", "npm:3.3.12"],\
@@ -7515,10 +7515,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["assertion-error", [\
-        ["npm:2.0.1", {\
-          "packageLocation": "./.yarn/cache/assertion-error-npm-2.0.1-8169d136f2-a0789dd882.zip/node_modules/assertion-error/",\
+        ["npm:1.1.0", {\
+          "packageLocation": "./.yarn/cache/assertion-error-npm-1.1.0-66b893015e-fd9429d3a3.zip/node_modules/assertion-error/",\
           "packageDependencies": [\
-            ["assertion-error", "npm:2.0.1"]\
+            ["assertion-error", "npm:1.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8460,15 +8460,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["chai", [\
-        ["npm:5.1.2", {\
-          "packageLocation": "./.yarn/cache/chai-npm-5.1.2-6b92587dbf-f2341967ab.zip/node_modules/chai/",\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/chai-npm-4.5.0-428447e206-70e5a8418a.zip/node_modules/chai/",\
           "packageDependencies": [\
-            ["chai", "npm:5.1.2"],\
-            ["assertion-error", "npm:2.0.1"],\
-            ["check-error", "npm:2.1.1"],\
-            ["deep-eql", "npm:5.0.2"],\
-            ["loupe", "npm:3.1.2"],\
-            ["pathval", "npm:2.0.0"]\
+            ["chai", "npm:4.5.0"],\
+            ["assertion-error", "npm:1.1.0"],\
+            ["check-error", "npm:1.0.3"],\
+            ["deep-eql", "npm:4.1.4"],\
+            ["get-func-name", "npm:2.0.2"],\
+            ["loupe", "npm:2.3.7"],\
+            ["pathval", "npm:1.1.1"],\
+            ["type-detect", "npm:4.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8486,7 +8488,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["chai-as-promised", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:8.0.0"],\
             ["@types/chai", null],\
-            ["chai", "npm:5.1.2"],\
+            ["chai", "npm:4.5.0"],\
             ["check-error", "npm:2.1.1"]\
           ],\
           "packagePeers": [\
@@ -8539,6 +8541,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["check-error", [\
+        ["npm:1.0.3", {\
+          "packageLocation": "./.yarn/cache/check-error-npm-1.0.3-137994eabc-e2131025cf.zip/node_modules/check-error/",\
+          "packageDependencies": [\
+            ["check-error", "npm:1.0.3"],\
+            ["get-func-name", "npm:2.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:2.1.1", {\
           "packageLocation": "./.yarn/cache/check-error-npm-2.1.1-34e4ef357e-d785ed17b1.zip/node_modules/check-error/",\
           "packageDependencies": [\
@@ -9640,10 +9650,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["deep-eql", [\
-        ["npm:5.0.2", {\
-          "packageLocation": "./.yarn/cache/deep-eql-npm-5.0.2-3bce58289f-6aaaadb4c1.zip/node_modules/deep-eql/",\
+        ["npm:4.1.4", {\
+          "packageLocation": "./.yarn/cache/deep-eql-npm-4.1.4-bc4d39c2ca-01c3ca78ff.zip/node_modules/deep-eql/",\
           "packageDependencies": [\
-            ["deep-eql", "npm:5.0.2"]\
+            ["deep-eql", "npm:4.1.4"],\
+            ["type-detect", "npm:4.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11022,7 +11033,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-eslint", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:10.1.0"],\
             ["babel-loader", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:9.2.1"],\
             ["body-parser", "npm:1.20.3"],\
-            ["chai", "npm:5.1.2"],\
+            ["chai", "npm:4.5.0"],\
             ["chai-as-promised", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:8.0.0"],\
             ["chokidar", "npm:4.0.1"],\
             ["config", "npm:3.3.12"],\
@@ -11675,6 +11686,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/get-caller-file-npm-2.0.5-80e8a86305-b9769a836d.zip/node_modules/get-caller-file/",\
           "packageDependencies": [\
             ["get-caller-file", "npm:2.0.5"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["get-func-name", [\
+        ["npm:2.0.2", {\
+          "packageLocation": "./.yarn/cache/get-func-name-npm-2.0.2-409dbe3703-3f62f4c236.zip/node_modules/get-func-name/",\
+          "packageDependencies": [\
+            ["get-func-name", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14543,10 +14563,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["loupe", [\
-        ["npm:3.1.2", {\
-          "packageLocation": "./.yarn/cache/loupe-npm-3.1.2-58c9dbcc10-4a75bbe887.zip/node_modules/loupe/",\
+        ["npm:2.3.7", {\
+          "packageLocation": "./.yarn/cache/loupe-npm-2.3.7-f294c2ef33-96c058ec71.zip/node_modules/loupe/",\
           "packageDependencies": [\
-            ["loupe", "npm:3.1.2"]\
+            ["loupe", "npm:2.3.7"],\
+            ["get-func-name", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -16092,10 +16113,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["pathval", [\
-        ["npm:2.0.0", {\
-          "packageLocation": "./.yarn/cache/pathval-npm-2.0.0-e9fc9a6282-682b6a6289.zip/node_modules/pathval/",\
+        ["npm:1.1.1", {\
+          "packageLocation": "./.yarn/cache/pathval-npm-1.1.1-ce0311d7e0-090e314771.zip/node_modules/pathval/",\
           "packageDependencies": [\
-            ["pathval", "npm:2.0.0"]\
+            ["pathval", "npm:1.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -17942,7 +17963,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sinon-chai", "virtual:3fec5a2bedec5b15fa69ad9d4af211ea18e288ca942bbe738ca2b95bcbfda252a4a42972045184e3d946affa09b1d8d0dae23a5ecec949de213a48708f3b0dff#npm:3.7.0"],\
             ["@types/chai", null],\
             ["@types/sinon", null],\
-            ["chai", "npm:5.1.2"],\
+            ["chai", "npm:4.5.0"],\
             ["sinon", "npm:14.0.0"]\
           ],\
           "packagePeers": [\
@@ -19276,6 +19297,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/type-detect-npm-4.0.8-8d8127b901-62b5628bff.zip/node_modules/type-detect/",\
           "packageDependencies": [\
             ["type-detect", "npm:4.0.8"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:4.1.0", {\
+          "packageLocation": "./.yarn/cache/type-detect-npm-4.1.0-171d011a73-3b32f873cd.zip/node_modules/type-detect/",\
+          "packageDependencies": [\
+            ["type-detect", "npm:4.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
