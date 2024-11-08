@@ -81,6 +81,11 @@ Then('I enter {string} in the postcode textbox', async (postcode: string) => {
   await populateField(selector, postcode);
 });
 
+Then('I enter value {string} in the {string} textbox', async (value: string, selectorId: string) => {
+  const selector = '#' + selectorId;
+  await populateField(selector, value);
+});
+
 Then('I click the Save Addresses button', async () => {
   const selector = 'button[name="saveAddresses"]';
   const elementExist = await I.checkElement(selector);
@@ -131,7 +136,8 @@ Then('I enter the secondary address postcode {string}', async (postcode: string)
   await populateField(selector, postcode);
 });
 
-Then('The error message display is {string} {string} {string}', async (errPrimaryAdd: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
+Then('The error message display is {string} {string} {string} {string}', async (
+  errPrimaryAdd: string, errPrimaryEpim: string, errSecondaryTown: string, errSecondaryPostcode: string) => {
   const errorTitle = await I.checkElement('.govuk-error-summary__title');
   expect(errorTitle).equal(true);
 
