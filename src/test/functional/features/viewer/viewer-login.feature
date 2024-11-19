@@ -31,3 +31,7 @@ Feature: Login/Logout
       | #tab_postcodes               | true            |
       | #tab_local-authorities       | true            |
 
+
+  Scenario: Logout
+    When I click the Logout link
+    Then the system will log me out
