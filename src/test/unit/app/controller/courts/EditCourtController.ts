@@ -56,10 +56,11 @@ describe('EditCourtController', () => {
       csrfToken: expect.any(String),
     };
     const res = mockResponse();
-
+    res.locals.isViewer = false;
     await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
+    expect(mockApi.addCourtLock).toHaveBeenCalled();
   });
 
   test('Should get court and render the edit court page as super admin if lock user the same', async () => {
@@ -217,6 +218,89 @@ describe('EditCourtController', () => {
     await controller.get(req, res);
 
     expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
+  });
+
+  test('Should get court and render for viewer but not try to add a court lock', async () => {
+    const newMockApi = {
+      getCourts: () => {
+      },
+      getCourt: () => {
+      },
+      getAllFlagValues: () => {
+      },
+      getCourtLocks: () => {
+      },
+      addCourtLock: (slug: string, email: string) => {
+      },
+      deleteCourtLocks: (slug: string, email: string) => {
+      }
+    };
+
+    newMockApi.getCourts = jest.fn();
+    newMockApi.getCourt = jest.fn();
+    newMockApi.getAllFlagValues = jest.fn();
+    newMockApi.getCourtLocks = jest.fn();
+    newMockApi.addCourtLock = jest.fn();
+
+    const req = mockRequest();
+    const slug = 'royal-courts-of-justice';
+    const name = 'Royal Courts of Justice';
+    const featureFlags = {};
+    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(newMockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
+    when(newMockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([]);
+    when(newMockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
+
+    req.params = {slug: slug};
+    req.query = {name: name};
+    req.appSession.user.isSuperAdmin = false;
+    req.scope.cradle.api = newMockApi;
+    req.scope.cradle.featureFlags = newMockApi;
+
+
+    const expectedResults: CourtPageData = {
+      isSuperAdmin: false,
+      slug: slug,
+      name: name,
+      csrfToken: expect.any(String),
+    };
+    const res = mockResponse();
+    res.locals.isViewer = true;
+    await controller.get(req, res);
+
+
+    expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
+    expect(newMockApi.addCourtLock).not.toHaveBeenCalled();
+  });
+
+  test('Should return error if user is viewer, there is a court lock and time condition not met', async () => {
+    const req = mockRequest();
+    const slug = 'royal-courts-of-justice';
+    const name = 'Royal Courts of Justice';
+    const featureFlags = {};
+    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
+      'id': 1,
+      'lock_acquired': '2129-11-14 15:54:34.242539',
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
+    }]);
+    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
+    when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
+
+    req.params = {slug: slug};
+    req.query = {name: name};
+    req.appSession.user.isSuperAdmin = false;
+    req.scope.cradle.api = mockApi;
+    req.scope.cradle.featureFlags = mockApi;
+
+    const res = mockResponse();
+    res.locals.isViewer = true;
+    await controller.get(req, res);
+
+    expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
+      'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
+          + 'Please contact them to finish their changes, or try again later.'}]});
   });
 
 });

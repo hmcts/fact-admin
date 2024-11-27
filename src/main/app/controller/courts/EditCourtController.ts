@@ -18,12 +18,15 @@ export class EditCourtController {
     // Check if the court is currently in use by any other user
     const courtLocks = await req.scope.cradle.api.getCourtLocks(req.params.slug);
     const currentUserEmail = req.appSession.user.sub;
+    const isViewer = res.locals.isViewer;
     const court_name = (req.params.slug).replace(/-/g, ' ').replace(/(\b[a-z](?!\s))/g, (c) => c.toUpperCase());
     if (courtLocks.length == 0) {
       // If there are no locks, assign the current user to the court
-      await req.scope.cradle.api.addCourtLock(req.params.slug, {
-        court_slug: req.params.slug, user_email: currentUserEmail
-      } as CourtLock);
+      if(!isViewer) {
+        await req.scope.cradle.api.addCourtLock(req.params.slug, {
+          court_slug: req.params.slug, user_email: currentUserEmail
+        } as CourtLock);
+      }
     } else {
       // At the moment, the limit is one lock; but this may be extended in the future.
       // So for now we can check the first user only
@@ -32,11 +35,13 @@ export class EditCourtController {
           config.get('lock.timeout') as number)) {
           // If the time of their last action would require the lock to be deleted,
           // then remove and transition over to this user instead.
-          await req.scope.cradle.api.deleteCourtLocks(req.params.slug, courtLocks[0]['user_email']);
-          await req.scope.cradle.api.addCourtLock(req.params.slug, {
-            court_slug: req.params.slug,
-            user_email: currentUserEmail
-          } as CourtLock);
+          if(!isViewer) {
+            await req.scope.cradle.api.deleteCourtLocks(req.params.slug, courtLocks[0]['user_email']);
+            await req.scope.cradle.api.addCourtLock(req.params.slug, {
+              court_slug: req.params.slug,
+              user_email: currentUserEmail
+            } as CourtLock);
+          }
         } else {
           // Otherwise redirect back to the courts page and display an error
 
