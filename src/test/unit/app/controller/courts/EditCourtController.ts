@@ -273,38 +273,8 @@ describe('EditCourtController', () => {
     expect(newMockApi.addCourtLock).not.toHaveBeenCalled();
   });
 
-  test('Should return error if user is viewer, there is a court lock and time condition not met', async () => {
-    const req = mockRequest();
-    const slug = 'royal-courts-of-justice';
-    const name = 'Royal Courts of Justice';
-    const featureFlags = {};
-    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
-    when(mockApi.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
-      'id': 1,
-      'lock_acquired': '2129-11-14 15:54:34.242539',
-      'user_email': 'moshuser2',
-      'court_slug': 'royal-courts-of-justice'
-    }]);
-    when(mockApi.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
-    when(mockApi.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
-
-    req.params = {slug: slug};
-    req.query = {name: name};
-    req.appSession.user.isSuperAdmin = false;
-    req.scope.cradle.api = mockApi;
-    req.scope.cradle.featureFlags = mockApi;
-
-    const res = mockResponse();
-    res.locals.isViewer = true;
-    await controller.get(req, res);
-
-    expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
-      'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
-          + 'Please contact them to finish their changes, or try again later.'}]});
-  });
-
-  test('Should not add a court lock for viewer when existing court lock has expired', async () => {
-    const newMockApi2 = {
+  test('Should render page for viewer user when there is a court lock and time condition not met', async () => {
+    const mockApi2 = {
       getCourts: () => {
       },
       getCourt: () => {
@@ -319,40 +289,104 @@ describe('EditCourtController', () => {
       }
     };
 
-    newMockApi2.getCourts = jest.fn();
-    newMockApi2.getCourt = jest.fn();
-    newMockApi2.getAllFlagValues = jest.fn();
-    newMockApi2.getCourtLocks = jest.fn();
-    newMockApi2.addCourtLock = jest.fn();
+    mockApi2.getCourts = jest.fn();
+    mockApi2.getCourt = jest.fn();
+    mockApi2.getAllFlagValues = jest.fn();
+    mockApi2.getCourtLocks = jest.fn();
+    mockApi2.addCourtLock = jest.fn();
+    mockApi2.deleteCourtLocks = jest.fn();
 
     const req = mockRequest();
     const slug = 'royal-courts-of-justice';
     const name = 'Royal Courts of Justice';
     const featureFlags = {};
     when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
-    when(newMockApi2.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
-    when(newMockApi2.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
+    when(mockApi2.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
       'id': 1,
-      'lock_acquired': '2000-11-14 15:54:34.242539',
+      'lock_acquired': '2129-11-14 15:54:34.242539',
       'user_email': 'moshuser2',
       'court_slug': 'royal-courts-of-justice'
     }]);
-    when(newMockApi2.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
+    when(mockApi2.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
+    when(mockApi2.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
 
     req.params = {slug: slug};
     req.query = {name: name};
     req.appSession.user.isSuperAdmin = false;
-    req.scope.cradle.api = newMockApi2;
-    req.scope.cradle.featureFlags = newMockApi2;
+    req.scope.cradle.api = mockApi2;
+    req.scope.cradle.featureFlags = mockApi2;
+
+    const expectedResults: CourtPageData = {
+      isSuperAdmin: false,
+      slug: slug,
+      name: name,
+      csrfToken: expect.any(String),
+    };
 
     const res = mockResponse();
     res.locals.isViewer = true;
     await controller.get(req, res);
 
+    expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
+    expect(mockApi2.addCourtLock).not.toHaveBeenCalled();
+  });
 
-    expect(res.render).toBeCalledWith('courts/courts', {'courts': undefined,
-      'errors': [{'text': 'Royal Courts Of Justice is currently in use by moshuser2. '
-          + 'Please contact them to finish their changes, or try again later.'}]});
-    expect(newMockApi2.addCourtLock).not.toHaveBeenCalled();
+  test('Should not add a court lock for viewer when existing court lock has expired', async () => {
+    const mockApi3 = {
+      getCourts: () => {
+      },
+      getCourt: () => {
+      },
+      getAllFlagValues: () => {
+      },
+      getCourtLocks: () => {
+      },
+      addCourtLock: (slug: string, email: string) => {
+      },
+      deleteCourtLocks: (slug: string, email: string) => {
+      }
+    };
+
+    mockApi3.getCourts = jest.fn();
+    mockApi3.getCourt = jest.fn();
+    mockApi3.getAllFlagValues = jest.fn();
+    mockApi3.getCourtLocks = jest.fn();
+    mockApi3.addCourtLock = jest.fn();
+    mockApi3.deleteCourtLocks = jest.fn();
+
+    const req = mockRequest();
+    const slug = 'royal-courts-of-justice';
+    const name = 'Royal Courts of Justice';
+    const featureFlags = {};
+    when(config.get as jest.Mock).calledWith('csrf.tokenSecret').mockReturnValue(csrfToken);
+    when(mockApi3.getCourt as jest.Mock).calledWith(slug).mockReturnValue({name: name});
+    when(mockApi3.getCourtLocks as jest.Mock).calledWith(slug).mockReturnValue([{
+      'id': 1,
+      'lock_acquired': '2000-11-14 15:54:34.242539',
+      'user_email': 'moshuser2',
+      'court_slug': 'royal-courts-of-justice'
+    }]);
+    when(mockApi3.getAllFlagValues as jest.Mock).mockReturnValue(featureFlags);
+
+    req.params = {slug: slug};
+    req.query = {name: name};
+    req.appSession.user.isSuperAdmin = false;
+    req.scope.cradle.api = mockApi3;
+    req.scope.cradle.featureFlags = mockApi3;
+
+    const expectedResults: CourtPageData = {
+      isSuperAdmin: false,
+      slug: slug,
+      name: name,
+      csrfToken: expect.any(String),
+    };
+
+    const res = mockResponse();
+    res.locals.isViewer = true;
+    await controller.get(req, res);
+
+    expect(res.render).toBeCalledWith('courts/edit-court-general', expectedResults);
+    expect(mockApi3.addCourtLock).not.toHaveBeenCalled();
+    expect(mockApi3.deleteCourtLocks).not.toHaveBeenCalled();
   });
 });
