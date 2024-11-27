@@ -53,7 +53,7 @@ export class EditCourtController {
         }
       }
     }
-    // If the user is the same, do nothing. Or continue once the delete and add has been applied if the
+    // If the user is the same or a viewer, do nothing. Or continue once the delete and add has been applied if the
     // condition of time is met
     return await this.renderEditPage(req.scope.cradle.featureFlags, req, res);
   }
