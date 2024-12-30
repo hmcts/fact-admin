@@ -3,8 +3,11 @@ import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
 
+let loginCount = 0;
 
 async function fillInUsernameAndPassword(username: string, password: string) {
+  loginCount++; // Increment the count
+  console.log(`Login attempt #${loginCount} for username: ${username}`);
   const usernameEl = await I.checkElement('#username');
   expect(usernameEl).equal(true);
   await I.setElementValueForInputField('#username', username);
@@ -100,4 +103,6 @@ Then('an error message is shown {string}', async (errmsg: string) => {
   expect(errmsg).equal(await I.getElementText(elementErr));
 });
 
-
+AfterAll(() => {
+    console.log(`Total login attempts in this CI run: ${loginCount}`);
+});
