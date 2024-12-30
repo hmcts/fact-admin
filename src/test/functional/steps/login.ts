@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Given, Then, When} from 'cucumber';
+import {Given, Then, When, AfterAll} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
 
@@ -103,6 +103,6 @@ Then('an error message is shown {string}', async (errmsg: string) => {
   expect(errmsg).equal(await I.getElementText(elementErr));
 });
 
-afterAll(() => {
+AfterAll(() => {
   console.log(`Total login attempts in this CI run: ${loginCount}`);
 });
