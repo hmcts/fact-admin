@@ -103,6 +103,6 @@ Then('an error message is shown {string}', async (errmsg: string) => {
   expect(errmsg).equal(await I.getElementText(elementErr));
 });
 
-AfterAll(() => {
+afterAll(() => {
   console.log(`Total login attempts in this CI run: ${loginCount}`);
 });
