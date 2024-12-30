@@ -6,7 +6,7 @@ import {puppeteerConfig} from '../puppeteer.config';
 let loginCount = 0;
 
 async function fillInUsernameAndPassword(username: string, password: string) {
-  loginCount++; // Increment the count
+  loginCount++;
   console.log(`Login attempt #${loginCount} for username: ${username}`);
   const usernameEl = await I.checkElement('#username');
   expect(usernameEl).equal(true);
