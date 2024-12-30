@@ -104,5 +104,5 @@ Then('an error message is shown {string}', async (errmsg: string) => {
 });
 
 AfterAll(() => {
-    console.log(`Total login attempts in this CI run: ${loginCount}`);
+  console.log(`Total login attempts in this CI run: ${loginCount}`);
 });
