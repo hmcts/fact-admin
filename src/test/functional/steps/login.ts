@@ -6,21 +6,21 @@ import {puppeteerConfig} from '../puppeteer.config';
 const loginLogFile = path.resolve(__dirname, './login-log.txt');
 
 BeforeAll(() => {
-    fs.writeFileSync(loginLogFile, '', { flag: 'w' });
+  fs.writeFileSync(loginLogFile, '', { flag: 'w' });
 });
 
 async function fillInUsernameAndPassword(username: string, password: string) {
-    const usernameEl = await I.checkElement('#username');
-    expect(usernameEl).equal(true);
-    await I.setElementValueForInputField('#username', username);
+  const usernameEl = await I.checkElement('#username');
+  expect(usernameEl).equal(true);
+  await I.setElementValueForInputField('#username', username);
 
-    const passwordEl = await I.checkElement('#password');
-    expect(passwordEl).equal(true);
-    await I.setElementValueForInputField('#password', password);
+  const passwordEl = await I.checkElement('#password');
+  expect(passwordEl).equal(true);
+  await I.setElementValueForInputField('#password', password);
 
-    const logMessage = `Login attempt with username: ${username}\n`;
-    fs.appendFileSync(loginLogFile, logMessage, { flag: 'a' });
-    console.log(logMessage.trim()); }
+  const logMessage = `Login attempt with username: ${username}\n`;
+  fs.appendFileSync(loginLogFile, logMessage, { flag: 'a' });
+  console.log(logMessage.trim()); }
 
 Given('that I am a logged-out admin or super admin user', async () => {
   const element = await I.checkElement('#login');
@@ -108,8 +108,7 @@ Then('an error message is shown {string}', async (errmsg: string) => {
 });
 
 AfterAll(() => {
-    const fileContents = fs.readFileSync(loginLogFile, 'utf-8');
-    const loginCount = fileContents.split('\n').filter(line => line.trim() !== '').length;
-
-    console.log(`Total login attempts in this CI run: ${loginCount}`);
+  const fileContents = fs.readFileSync(loginLogFile, 'utf-8');
+  const loginCount = fileContents.split('\n').filter(line => line.trim() !== '').length;
+  console.log(`Total login attempts in this CI run: ${loginCount}`);
 });
