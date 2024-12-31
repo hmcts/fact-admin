@@ -1,8 +1,14 @@
 import {expect} from 'chai';
-import {Given, Then, When} from 'cucumber';
+import {Given, Then, When, AfterAll, BeforeAll} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
+import * as fs from 'fs';
+import * as path from 'path';
+const loginLogFile = path.resolve(__dirname, './login-log.txt');
 
+BeforeAll(() => {
+  fs.writeFileSync(loginLogFile, '', { flag: 'w' });
+});
 
 async function fillInUsernameAndPassword(username: string, password: string) {
   const usernameEl = await I.checkElement('#username');
@@ -11,9 +17,11 @@ async function fillInUsernameAndPassword(username: string, password: string) {
 
   const passwordEl = await I.checkElement('#password');
   expect(passwordEl).equal(true);
-
   await I.setElementValueForInputField('#password', password);
-}
+
+  const logMessage = `Login attempt with username: ${username}\n`;
+  fs.appendFileSync(loginLogFile, logMessage, { flag: 'a' });
+  console.log(logMessage.trim()); }
 
 Given('that I am a logged-out admin or super admin user', async () => {
   const element = await I.checkElement('#login');
@@ -100,4 +108,8 @@ Then('an error message is shown {string}', async (errmsg: string) => {
   expect(errmsg).equal(await I.getElementText(elementErr));
 });
 
-
+AfterAll(() => {
+  const fileContents = fs.readFileSync(loginLogFile, 'utf-8');
+  const loginCount = fileContents.split('\n').filter(line => line.trim() !== '').length;
+  console.log(`Total login attempts in this CI run: ${loginCount}`);
+});
