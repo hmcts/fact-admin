@@ -1,8 +1,9 @@
 import {expect} from 'chai';
-import {Given, Then, When, AfterAll} from 'cucumber';
+import {Given, Then, When, AfterAll, BeforeAll} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
-
+import * as fs from 'fs';
+import * as path from 'path';
 const loginLogFile = path.resolve(__dirname, './login-log.txt');
 
 BeforeAll(() => {
