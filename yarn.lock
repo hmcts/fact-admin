@@ -3023,12 +3023,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-parser@npm:^1.4.7":
-  version: 1.4.7
-  resolution: "@types/cookie-parser@npm:1.4.7"
-  dependencies:
-    "@types/express": "npm:*"
-  checksum: 10/7b87c59420598e686a57e240be6e0db53967c3c8814be9326bf86609ee2fc39c4b3b9f2263e1deba43526090121d1df88684b64c19f7b494a80a4437caf3d40b
+"@types/cookie-parser@npm:^1.4.8":
+  version: 1.4.8
+  resolution: "@types/cookie-parser@npm:1.4.8"
+  peerDependencies:
+    "@types/express": "*"
+  checksum: 10/b26ace5560adce1a746c059a75f18227ee3e3614a49c70dd29b8af204696079ced22eaa9d6cb084e3433ec433bff845cb47ffb890ae9af96a4aab2ff85e40da7
   languageName: node
   linkType: hard
 
@@ -3133,15 +3133,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.13":
-  version: 4.17.17
-  resolution: "@types/express@npm:4.17.17"
+"@types/express@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "@types/express@npm:4.17.21"
   dependencies:
     "@types/body-parser": "npm:*"
     "@types/express-serve-static-core": "npm:^4.17.33"
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
-  checksum: 10/e2959a5fecdc53f8a524891a16e66dfc330ee0519e89c2579893179db686e10cfa6079a68e0fb8fd00eedbcaf3eabfd10916461939f3bc02ef671d848532c37e
+  checksum: 10/7a6d26cf6f43d3151caf4fec66ea11c9d23166e4f3102edfe45a94170654a54ea08cf3103d26b3928d7ebcc24162c90488e33986b7e3a5f8941225edd5eb18c7
   languageName: node
   linkType: hard
 
@@ -3344,7 +3344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nunjucks@npm:^3.2.1":
+"@types/nunjucks@npm:^3.2.6":
   version: 3.2.6
   resolution: "@types/nunjucks@npm:3.2.6"
   checksum: 10/6b77fd2e5e3a63f82149779ae83e6ade7f70779c63b9bdab9fdd52c388db4b442c8b5993f62917a9564fc5e5690784ea5558513c629bee5b8cf6b8e6d8eeac38
@@ -3381,16 +3381,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/redis@npm:2.8.31":
-  version: 2.8.31
-  resolution: "@types/redis@npm:2.8.31"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/54b51d2af8c428d3c2792115a92032a0abf4a8825d85c2bdd6587e9b3a06bcffc3cd0e2a6e587a503fefbd032866536033458376d78f22f254923f1ce94c30a3
-  languageName: node
-  linkType: hard
-
-"@types/redis@npm:^2.8.0":
+"@types/redis@npm:2.8.32, @types/redis@npm:^2.8.0":
   version: 2.8.32
   resolution: "@types/redis@npm:2.8.32"
   dependencies:
@@ -3433,7 +3424,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/serve-favicon@npm:^2.5.3":
+"@types/serve-favicon@npm:^2.5.7":
   version: 2.5.7
   resolution: "@types/serve-favicon@npm:2.5.7"
   dependencies:
@@ -4748,7 +4739,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.3, body-parser@npm:^1.20.2":
+"body-parser@npm:1.20.3, body-parser@npm:^1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -6906,7 +6897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.57.0":
+"eslint@npm:^8.57.1":
   version: 8.57.1
   resolution: "eslint@npm:8.57.1"
   dependencies:
@@ -7295,11 +7286,11 @@ __metadata:
     "@types/chai-as-promised": "npm:^8.0.1"
     "@types/config": "npm:^3.3.5"
     "@types/connect-redis": "npm:^0.0.23"
-    "@types/cookie-parser": "npm:^1.4.7"
+    "@types/cookie-parser": "npm:^1.4.8"
     "@types/copy-webpack-plugin": "npm:^10.1.3"
     "@types/cucumber": "npm:^6.0.1"
     "@types/es6-promisify": "npm:^6.0.4"
-    "@types/express": "npm:^4.17.13"
+    "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.17.0"
     "@types/glob": "npm:^7.2.0"
     "@types/helmet": "npm:^4.0.0"
@@ -7310,12 +7301,12 @@ __metadata:
     "@types/jwt-decode": "npm:^3.1.0"
     "@types/lodash": "npm:^4.14.182"
     "@types/node": "npm:^18.0.6"
-    "@types/nunjucks": "npm:^3.2.1"
+    "@types/nunjucks": "npm:^3.2.6"
     "@types/puppeteer": "npm:^7.0.4"
-    "@types/redis": "npm:2.8.31"
+    "@types/redis": "npm:2.8.32"
     "@types/require-directory": "npm:^2.1.2"
     "@types/sanitize-html": "npm:^2.6.2"
-    "@types/serve-favicon": "npm:^2.5.3"
+    "@types/serve-favicon": "npm:^2.5.7"
     "@types/session-file-store": "npm:^1.2.2"
     "@types/tinymce": "npm:^4.6.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.7"
@@ -7324,22 +7315,22 @@ __metadata:
     applicationinsights: "npm:^2.3.3"
     autobind-decorator: "npm:^2.4.0"
     awilix: "npm:^7.0.3"
-    axios: "npm:1.7.7"
+    axios: "npm:1.7.9"
     babel-eslint: "npm:^10.1.0"
     babel-loader: "npm:^9.1.2"
-    body-parser: "npm:^1.20.2"
+    body-parser: "npm:^1.20.3"
     chai: "npm:^4.5.0"
     chai-as-promised: "npm:^7.1.2"
     chokidar: "npm:^3.5.3"
     config: "npm:^3.3.7"
     connect-redis: "npm:^6.1.3"
-    cookie: "npm:^0.7.0"
+    cookie: "npm:^0.7.2"
     cookie-parser: "npm:^1.4.7"
     copy-webpack-plugin: "npm:^11.0.0"
     csrf: "npm:^3.1.0"
     css-loader: "npm:^6.7.1"
     cucumber: "npm:^6.0.7"
-    eslint: "npm:^8.57.0"
+    eslint: "npm:^8.57.1"
     express: "npm:^4.20.0"
     express-nunjucks: "npm:^2.2.5"
     express-openid-connect: "npm:^2.17.1"
@@ -7384,11 +7375,11 @@ __metadata:
     tinymce: "npm:^7.2.1"
     ts-jest: "npm:^29.2.5"
     ts-loader: "npm:^9.3.1"
-    ts-node: "npm:^10.9.1"
+    ts-node: "npm:^10.9.2"
     tsconfig-paths: "npm:^4.2.0"
     tslint: "npm:6.1.3"
     typescript: "npm:^4.7.4"
-    url: "npm:^0.11.3"
+    url: "npm:^0.11.4"
     webpack: "npm:^5.75.0"
     webpack-cli: "npm:^4.10.0"
     webpack-dev-middleware: "npm:^5.3.3"
@@ -14347,9 +14338,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.9.1":
-  version: 10.9.1
-  resolution: "ts-node@npm:10.9.1"
+"ts-node@npm:^10.9.2":
+  version: 10.9.2
+  resolution: "ts-node@npm:10.9.2"
   dependencies:
     "@cspotcode/source-map-support": "npm:^0.8.0"
     "@tsconfig/node10": "npm:^1.0.7"
@@ -14381,7 +14372,7 @@ __metadata:
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: 10/bee56d4dc96ccbafc99dfab7b73fbabc62abab2562af53cdea91c874a301b9d11e42bc33c0a032a6ed6d813dbdc9295ec73dde7b73ea4ebde02b0e22006f7e04
+  checksum: 10/a91a15b3c9f76ac462f006fa88b6bfa528130dcfb849dd7ef7f9d640832ab681e235b8a2bc58ecde42f72851cc1d5d4e22c901b0c11aa51001ea1d395074b794
   languageName: node
   linkType: hard
 
@@ -14836,13 +14827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url@npm:^0.11.3":
-  version: 0.11.3
-  resolution: "url@npm:0.11.3"
+"url@npm:^0.11.4":
+  version: 0.11.4
+  resolution: "url@npm:0.11.4"
   dependencies:
     punycode: "npm:^1.4.1"
-    qs: "npm:^6.11.2"
-  checksum: 10/a3a5ba64d8afb4dda111355d94073a9754b88b1de4035554c398b75f3e4d4244d5e7ae9e4554f0d91be72efd416aedbb646fbb1f3dd4cacecca45ed6c9b75145
+    qs: "npm:^6.12.3"
+  checksum: 10/e787d070f0756518b982a4653ef6cdf4d9030d8691eee2d483344faf2b530b71d302287fa63b292299455fea5075c502a5ad5f920cb790e95605847f957a65e4
   languageName: node
   linkType: hard
 
