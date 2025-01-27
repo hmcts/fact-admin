@@ -3164,15 +3164,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/helmet@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@types/helmet@npm:4.0.0"
-  dependencies:
-    helmet: "npm:*"
-  checksum: 10/ded60d8d9960edbae4d10603511dca9b9c50a9937f49e0d2b14bc096302e85a038acd443889a132dab60bc950bfd0e47337bdca485d75bbb7b6224f74fc50ab7
-  languageName: node
-  linkType: hard
-
 "@types/html-minifier-terser@npm:^6.0.0":
   version: 6.1.0
   resolution: "@types/html-minifier-terser@npm:6.1.0"
@@ -3286,15 +3277,6 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10/8b354f11f8efa1a8af6f7ca9d5ef091409ade121df790c7f97ba556c47b60cb9d7ae732876a9405c827132ee5d38ba351d4fb6c56693a31482e727ece07ed349
-  languageName: node
-  linkType: hard
-
-"@types/jwt-decode@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@types/jwt-decode@npm:3.1.0"
-  dependencies:
-    jwt-decode: "npm:*"
-  checksum: 10/82ff0b3826e5d9da48be1f11e16fec96e56dd946995edaa100682202b9b7beb30fb04a353cbabd378d3b13a24241b48a0b662a4f181bae7f758147d92368d930
   languageName: node
   linkType: hard
 
@@ -7293,12 +7275,10 @@ __metadata:
     "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.17.0"
     "@types/glob": "npm:^7.2.0"
-    "@types/helmet": "npm:^4.0.0"
     "@types/jest": "npm:^29.5.14"
     "@types/jest-when": "npm:^3.5.5"
     "@types/jquery": "npm:^3.5.32"
     "@types/json2csv": "npm:^5.0.7"
-    "@types/jwt-decode": "npm:^3.1.0"
     "@types/lodash": "npm:^4.14.182"
     "@types/node": "npm:^18.0.6"
     "@types/nunjucks": "npm:^3.2.6"
@@ -8378,13 +8358,6 @@ __metadata:
   bin:
     he: bin/he
   checksum: 10/d09b2243da4e23f53336e8de3093e5c43d2c39f8d0d18817abfa32ce3e9355391b2edb4bb5edc376aea5d4b0b59d6a0482aab4c52bc02ef95751e4b818e847f1
-  languageName: node
-  linkType: hard
-
-"helmet@npm:*":
-  version: 4.6.0
-  resolution: "helmet@npm:4.6.0"
-  checksum: 10/47129c540dc815a30274b687699738e7dd9acdeeaa5eb4682cba8d364a381fb502b140c7fef5b8d5f9a01d9d17ed8a17ef62c884816bd9e4535d750ce3a9a6be
   languageName: node
   linkType: hard
 
@@ -10171,7 +10144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwt-decode@npm:*, jwt-decode@npm:^3.1.2":
+"jwt-decode@npm:^3.1.2":
   version: 3.1.2
   resolution: "jwt-decode@npm:3.1.2"
   checksum: 10/20a4b072d44ce3479f42d0d2c8d3dabeb353081ba4982e40b83a779f2459a70be26441be6c160bfc8c3c6eadf9f6380a036fbb06ac5406b5674e35d8c4205eeb

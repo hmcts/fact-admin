@@ -45,12 +45,10 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/express-session", "npm:1.17.0"],\
           ["@types/glob", "npm:7.2.0"],\
-          ["@types/helmet", "npm:4.0.0"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/jest-when", "npm:3.5.5"],\
           ["@types/jquery", "npm:3.5.32"],\
           ["@types/json2csv", "npm:5.0.7"],\
-          ["@types/jwt-decode", "npm:3.1.0"],\
           ["@types/lodash", "npm:4.17.13"],\
           ["@types/node", "npm:18.19.64"],\
           ["@types/nunjucks", "npm:3.2.6"],\
@@ -4736,16 +4734,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@types/helmet", [\
-      ["npm:4.0.0", {\
-        "packageLocation": "./.yarn/cache/@types-helmet-npm-4.0.0-48d8baa6ce-ded60d8d99.zip/node_modules/@types/helmet/",\
-        "packageDependencies": [\
-          ["@types/helmet", "npm:4.0.0"],\
-          ["helmet", "npm:4.6.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@types/html-minifier-terser", [\
       ["npm:6.1.0", {\
         "packageLocation": "./.yarn/cache/@types-html-minifier-terser-npm-6.1.0-707ea07fcb-06bb3e1e8e.zip/node_modules/@types/html-minifier-terser/",\
@@ -4870,16 +4858,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/json2csv", "npm:5.0.7"],\
           ["@types/node", "npm:15.12.5"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/jwt-decode", [\
-      ["npm:3.1.0", {\
-        "packageLocation": "./.yarn/cache/@types-jwt-decode-npm-3.1.0-7f93d5cb7a-82ff0b3826.zip/node_modules/@types/jwt-decode/",\
-        "packageDependencies": [\
-          ["@types/jwt-decode", "npm:3.1.0"],\
-          ["jwt-decode", "npm:3.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9749,12 +9727,10 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/express-session", "npm:1.17.0"],\
           ["@types/glob", "npm:7.2.0"],\
-          ["@types/helmet", "npm:4.0.0"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/jest-when", "npm:3.5.5"],\
           ["@types/jquery", "npm:3.5.32"],\
           ["@types/json2csv", "npm:5.0.7"],\
-          ["@types/jwt-decode", "npm:3.1.0"],\
           ["@types/lodash", "npm:4.17.13"],\
           ["@types/node", "npm:18.19.64"],\
           ["@types/nunjucks", "npm:3.2.6"],\
@@ -10902,13 +10878,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["helmet", [\
-      ["npm:4.6.0", {\
-        "packageLocation": "./.yarn/cache/helmet-npm-4.6.0-f244fd965c-47129c540d.zip/node_modules/helmet/",\
-        "packageDependencies": [\
-          ["helmet", "npm:4.6.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:5.0.2", {\
         "packageLocation": "./.yarn/cache/helmet-npm-5.0.2-350a1b4b4b-bfdbbd677b.zip/node_modules/helmet/",\
         "packageDependencies": [\
