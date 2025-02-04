@@ -1,5 +1,4 @@
 # FACT Admin
-
 Front end admin interface for the Find a Court or Tribunal Service.
 
 ## Table of Contents
