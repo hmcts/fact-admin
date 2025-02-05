@@ -7943,25 +7943,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cross-spawn", [\
-      ["npm:6.0.5", {\
-        "packageLocation": "./.yarn/cache/cross-spawn-npm-6.0.5-2deab6c280-f07e643b48.zip/node_modules/cross-spawn/",\
+      ["npm:6.0.6", {\
+        "packageLocation": "./.yarn/cache/cross-spawn-npm-6.0.6-a983639a0d-7abf6137b2.zip/node_modules/cross-spawn/",\
         "packageDependencies": [\
-          ["cross-spawn", "npm:6.0.5"],\
+          ["cross-spawn", "npm:6.0.6"],\
           ["nice-try", "npm:1.0.5"],\
           ["path-key", "npm:2.0.1"],\
           ["semver", "npm:7.6.3"],\
           ["shebang-command", "npm:1.2.0"],\
           ["which", "npm:1.3.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:7.0.3", {\
-        "packageLocation": "./.yarn/cache/cross-spawn-npm-7.0.3-e4ff3e65b3-e1a13869d2.zip/node_modules/cross-spawn/",\
-        "packageDependencies": [\
-          ["cross-spawn", "npm:7.0.3"],\
-          ["path-key", "npm:3.1.1"],\
-          ["shebang-command", "npm:2.0.0"],\
-          ["which", "npm:2.0.2"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -9268,7 +9258,7 @@ const RAW_RUNTIME_STATE =
           ["@ungap/structured-clone", "npm:1.2.0"],\
           ["ajv", "npm:6.12.6"],\
           ["chalk", "npm:4.1.1"],\
-          ["cross-spawn", "npm:7.0.3"],\
+          ["cross-spawn", "npm:7.0.6"],\
           ["debug", "virtual:c9e1a4b59e37cb479517edede3bf2093b28c0ca1a9d0e517f3c345075bd1e468980b94b4957e389116607ee7155441dfd7d09e19a4229d5d09bcf06244401590#npm:4.3.4"],\
           ["doctrine", "npm:3.0.0"],\
           ["escape-string-regexp", "npm:4.0.0"],\
@@ -9472,7 +9462,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/execa-npm-5.1.1-191347acf5-8ada91f2d7.zip/node_modules/execa/",\
         "packageDependencies": [\
           ["execa", "npm:5.1.1"],\
-          ["cross-spawn", "npm:7.0.3"],\
+          ["cross-spawn", "npm:7.0.6"],\
           ["get-stream", "npm:6.0.1"],\
           ["human-signals", "npm:2.1.0"],\
           ["is-stream", "npm:2.0.0"],\
@@ -14109,7 +14099,7 @@ const RAW_RUNTIME_STATE =
           ["npm-run-all", "npm:4.1.5"],\
           ["ansi-styles", "npm:3.2.1"],\
           ["chalk", "npm:2.4.2"],\
-          ["cross-spawn", "npm:6.0.5"],\
+          ["cross-spawn", "npm:6.0.6"],\
           ["memorystream", "npm:0.3.1"],\
           ["minimatch", "npm:3.1.2"],\
           ["pidtree", "npm:0.3.1"],\
@@ -18369,7 +18359,7 @@ const RAW_RUNTIME_STATE =
           ["@webpack-cli/serve", "virtual:fc40f3f615edea87e423f82c2a8fe49d5163e052e9ff9573a7eeea6aa2169cf96b187ff6ab13f07f045568e3eacc226297f423d468064b26582f55fe17d8ab2f#npm:1.7.0"],\
           ["colorette", "npm:2.0.16"],\
           ["commander", "npm:7.2.0"],\
-          ["cross-spawn", "npm:7.0.3"],\
+          ["cross-spawn", "npm:7.0.6"],\
           ["fastest-levenshtein", "npm:1.0.12"],\
           ["import-local", "npm:3.0.2"],\
           ["interpret", "npm:2.2.0"],\
