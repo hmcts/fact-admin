@@ -17,5 +17,10 @@ RUN PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true yarn install && \
 # ---- Runtime image ----
 FROM base as runtime
 
+# Copy node_modules from build stage
+COPY --from=build $WORKDIR/node_modules ./node_modules
+COPY --from=build $WORKDIR/.yarn ./yarn
+COPY --from=build $WORKDIR/.yarnrc.yml ./yarnrc.yml
+
 COPY --from=build $WORKDIR/src/main ./src/main
 EXPOSE 3300
