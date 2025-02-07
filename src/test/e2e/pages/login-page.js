@@ -11,19 +11,16 @@ class LoginPage extends BasePage {
   async login(username, password) {
     console.log('Starting login with username:', username);
 
-    // Try filling username with explicit wait
     await this.page.waitForSelector(this.usernameInput);
     console.log('Username field found');
     await this.page.fill(this.usernameInput, username);
     console.log('Username filled');
 
-    // Try filling password with explicit wait
     await this.page.waitForSelector(this.passwordInput);
     console.log('Password field found');
     await this.page.fill(this.passwordInput, password);
     console.log('Password filled');
 
-    // Debug step - let's see what values ended up in the fields
     const usernameValue = await this.page.$eval(this.usernameInput, el => el.value);
     const passwordValue = await this.page.$eval(this.passwordInput, el => el.value);
     console.log('Final field values - username:', usernameValue, 'password length:', passwordValue.length);
