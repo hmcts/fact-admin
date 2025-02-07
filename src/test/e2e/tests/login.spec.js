@@ -23,7 +23,8 @@ test('should login successfully', async ({ page }) => {
 
   console.log('Login attempted, checking redirect...');
 
-  // Verify we got redirected back to the application
-
-  await expect(page).toHaveURL(process.env.TEST_URL || 'localhost:3300');
+  // Verify we got redirected back to the application and are no longer on IDAM
+  const baseUrl = process.env.TEST_URL || 'localhost:3300';
+  await expect(page.url()).not.toContain('idam-web-public.aat.platform.hmcts.net');
+  await expect(page.url()).toContain(baseUrl);
 });
