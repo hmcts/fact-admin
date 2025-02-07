@@ -17,8 +17,8 @@ test('should login successfully', async ({ page }) => {
 
   // Perform login
   await loginPage.login(
-    process.env.FACT_SUPERADMIN_USERNAME,
-    process.env.FACT_SUPERADMIN_PASSWORD
+    process.env.OAUTH_USER,
+    process.env.OAUTH_USER_PASSWORD
   );
 
   console.log('Login attempted, checking redirect...');
