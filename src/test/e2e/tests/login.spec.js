@@ -24,5 +24,6 @@ test('should login successfully', async ({ page }) => {
   console.log('Login attempted, checking redirect...');
 
   // Verify we got redirected back to the application
-  await expect(page).toHaveURL(/localhost:3300/);
+
+  await expect(page).toHaveURL(process.env.TEST_URL || 'localhost:3300');
 });
