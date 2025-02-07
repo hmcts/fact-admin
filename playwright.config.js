@@ -11,7 +11,7 @@ module.exports = defineConfig({
   reporter: 'html',
 
   use: {
-    baseURL: 'http://localhost:3300',
+    baseURL: process.env.CI ? process.env.TEST_URL : 'http://localhost:3300',
     trace: 'on-first-retry',
     actionTimeout: 10000,
     navigationTimeout: 10000,
