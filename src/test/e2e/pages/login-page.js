@@ -8,6 +8,7 @@ class LoginPage extends BasePage {
     this.signInButton = 'input.button[type="submit"][name="save"]';
   }
 
+  // IMPORTANT NOTE - IF YOU ARE LOOKING AT THIS PAGE IT'S HIGHLY LIKELY YOU ARE MISSING AN ENVIRONMENT VARIABLE
   async login(username, password) {
     console.log('Starting login with username:', username);
 

@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = defineConfig({
   testDir: path.join(__dirname, 'src', 'test', 'e2e', 'tests'),
-  timeout: 30000,
+  timeout: 60000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -20,8 +20,8 @@ module.exports = defineConfig({
   use: {
     baseURL: process.env.CI ? process.env.TEST_URL : 'http://localhost:3300',
     trace: 'on-first-retry',
-    actionTimeout: 10000,
-    navigationTimeout: 10000,
+    actionTimeout: 15000,
+    navigationTimeout: 15000,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
 

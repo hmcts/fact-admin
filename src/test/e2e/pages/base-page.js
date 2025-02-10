@@ -7,6 +7,9 @@ class BasePage {
     await this.page.goto('/');
   }
 
+  async logout() {
+    await this.page.click('#logout');
+  }
   async waitForLoad() {
     await this.page.waitForLoadState('domcontentloaded');
   }
