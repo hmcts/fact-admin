@@ -10,21 +10,17 @@ class LoginPage extends BasePage {
 
   // IMPORTANT NOTE - IF YOU ARE LOOKING AT THIS PAGE IT'S HIGHLY LIKELY YOU ARE MISSING AN ENVIRONMENT VARIABLE
   async login(username, password) {
-    console.log('Starting login with username:', username);
+    console.log('Starting login');
 
     await this.page.waitForSelector(this.usernameInput);
-    console.log('Username field found');
     await this.page.fill(this.usernameInput, username);
     console.log('Username filled');
 
     await this.page.waitForSelector(this.passwordInput);
-    console.log('Password field found');
     await this.page.fill(this.passwordInput, password);
     console.log('Password filled');
 
-    const usernameValue = await this.page.$eval(this.usernameInput, el => el.value);
-    const passwordValue = await this.page.$eval(this.passwordInput, el => el.value);
-    console.log('Final field values - username:', usernameValue, 'password length:', passwordValue.length);
+    console.log('Pushing sign in button');
 
     await Promise.all([
       this.page.waitForNavigation({

@@ -8,8 +8,12 @@ class BasePage {
   }
 
   async logout() {
-    await this.page.click('#logout');
+    const logoutButton = await this.page.$('#logout');
+    if (logoutButton) {
+      await this.page.click('#logout');
+    }
   }
+
   async waitForLoad() {
     await this.page.waitForLoadState('domcontentloaded');
   }
