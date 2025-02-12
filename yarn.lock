@@ -4573,6 +4573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "chalk@npm:5.4.1"
+  checksum: 10/29df3ffcdf25656fed6e95962e2ef86d14dfe03cd50e7074b06bad9ffbbf6089adbb40f75c00744d843685c8d008adaf3aed31476780312553caf07fa86e5bc7
+  languageName: node
+  linkType: hard
+
 "char-regex@npm:^1.0.2":
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
@@ -6628,6 +6635,7 @@ __metadata:
     body-parser: "npm:^1.20.3"
     chai: "npm:^4.5.0"
     chai-as-promised: "npm:^7.1.2"
+    chalk: "npm:^5.4.1"
     chokidar: "npm:^3.5.3"
     config: "npm:^3.3.7"
     connect-redis: "npm:6.1.3"

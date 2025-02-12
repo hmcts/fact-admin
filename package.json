@@ -103,6 +103,7 @@
     "babel-loader": "^9.1.2",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
+    "chalk": "^5.4.1",
     "chokidar": "^3.5.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
