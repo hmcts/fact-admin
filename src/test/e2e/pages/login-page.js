@@ -10,17 +10,15 @@ class LoginPage extends BasePage {
 
   // IMPORTANT NOTE - IF YOU ARE LOOKING AT THIS PAGE IT'S HIGHLY LIKELY YOU ARE MISSING AN ENVIRONMENT VARIABLE
   async login(username, password) {
-    console.log('Starting login');
+
 
     await this.page.waitForSelector(this.usernameInput);
     await this.page.fill(this.usernameInput, username);
-    console.log('Username filled');
+
 
     await this.page.waitForSelector(this.passwordInput);
     await this.page.fill(this.passwordInput, password);
-    console.log('Password filled');
 
-    console.log('Pushing sign in button');
 
     await Promise.all([
       this.page.waitForNavigation({
@@ -29,6 +27,7 @@ class LoginPage extends BasePage {
       }),
       this.page.click(this.signInButton)
     ]);
+
   }
 
   async isOnLoginPage() {

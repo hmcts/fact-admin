@@ -80,21 +80,18 @@ class EditCourtPage extends BasePage {
     const addNewSelector = `${this.applicationProgressionSection} button[name="addNewUpdate"]`;
 
     // Replicate checkElement behavior
-    console.log('Waiting for "Add new application progression" button...'); // Logging
+
     await this.page.mouse.move(1000, 40); // Ensure element is in viewport
     await this.page.waitForSelector(addNewSelector);
-    console.log('"Add new application progression" button found.'); // Logging
 
-    // Get the initial count of fieldsets
+
+
     const initialCount = await this.getFieldsetCount();
 
-    // Replicate click behavior
-    console.log('Clicking "Add new application progression" button...'); // Logging
-    await this.page.$eval(addNewSelector, (elem) => elem.click());
-    console.log('"Add new application progression" button clicked.'); // Logging
 
-    // Wait for the number of fieldsets to increase
-    console.log('Waiting for new fieldset to be added...'); // Logging
+    await this.page.$eval(addNewSelector, (elem) => elem.click());
+
+
     await this.page.waitForFunction((initialCount) => {
       return document.querySelectorAll('#applicationProgressionTab fieldset').length > initialCount;
     }, initialCount);
@@ -113,7 +110,6 @@ class EditCourtPage extends BasePage {
   async getSecondLastEmail() {
     const fieldsetSelector = '#applicationProgressionTab fieldset';
     const numEmail = await this.getFieldsetCount();
-    // Correct the index calculation
     const secondLastIndex = numEmail - 3;
 
     const emailSelector = `${fieldsetSelector} input[name$="[email]"]`;

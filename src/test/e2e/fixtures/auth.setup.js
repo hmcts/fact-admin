@@ -1,5 +1,29 @@
 const { test: base, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login-page');
+const fs = require('fs');
+const path = require('path');
+
+const countsFilePath = path.join(__dirname, '..', 'loginCounts.json');
+
+function readCounts() {
+  try {
+    if (fs.existsSync(countsFilePath)) {
+      const data = fs.readFileSync(countsFilePath, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error("Error reading login counts file:", error);
+  }
+  return {};
+}
+
+function writeCounts(counts) {
+  try {
+    fs.writeFileSync(countsFilePath, JSON.stringify(counts, null, 2), 'utf8');
+  } catch (error) {
+    console.error("Error writing login counts file:", error);
+  }
+}
 
 const roleCredentials = {
   admin: {
@@ -21,30 +45,42 @@ const roleCredentials = {
 };
 
 exports.test = base.extend({
-  adminPage: async ({ page }, use) => {
-    await loginWithRole(page, 'admin');
+  adminPage: async ({ page }, use, testInfo) => { // Corrected parameter order
+    await loginWithRole(page, 'admin', testInfo); // Pass testInfo
     await use(page);
   },
 
-  viewerPage: async ({ page }, use) => {
-    await loginWithRole(page, 'viewer');
+  viewerPage: async ({ page }, use, testInfo) => { // Corrected parameter order
+    await loginWithRole(page, 'viewer', testInfo); // Pass testInfo
     await use(page);
   },
 
-  superAdminPage: async ({ page }, use) => {
-    await loginWithRole(page, 'superAdmin');
+  superAdminPage: async ({ page }, use, testInfo) => { // Corrected parameter order
+    await loginWithRole(page, 'superAdmin', testInfo); // Pass testInfo
     await use(page);
   },
 
-  noRolePage: async ({ page }, use) => {
-    await loginWithRole(page, 'noRole');
+  noRolePage: async ({ page }, use, testInfo) => { // Corrected parameter order
+    await loginWithRole(page, 'noRole', testInfo); // Pass testInfo
+    await use(page);
+  },
+
+  page: async ({ page }, use) => {
     await use(page);
   }
 });
 
-async function loginWithRole(page, role) {
+async function loginWithRole(page, role, testInfo) { // Accept testInfo
   const loginPage = new LoginPage(page);
   const credentials = roleCredentials[role];
+
+  const testFilePath = testInfo.file; // Use testInfo directly
+
+  const loginCounts = readCounts();
+
+  if (!loginCounts[testFilePath]) {
+    loginCounts[testFilePath] = 0;
+  }
 
   await loginPage.goto();
 
@@ -54,6 +90,9 @@ async function loginWithRole(page, role) {
   }).toPass();
 
   await loginPage.login(credentials.username, credentials.password);
+  loginCounts[testFilePath]++;
+
+  writeCounts(loginCounts);
 
   const baseUrl = process.env.CI ? process.env.TEST_URL : 'localhost:3300';
   await expect(page.url()).not.toContain('idam-web-public.aat.platform.hmcts.net');

@@ -1,4 +1,3 @@
-// playwright.config.js
 const { defineConfig } = require('@playwright/test');
 const path = require('path');
 
@@ -8,7 +7,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-
+  globalTeardown: require.resolve('./src/test/e2e/global-teardown-config.js'),
   // Increase workers in CI - adjust based on your Jenkins node capacity
   workers: process.env.CI ? 4 : 3,
 
