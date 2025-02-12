@@ -1,4 +1,3 @@
-// global-teardown.js
 const fs = require('fs');
 const path = require('path');
 
@@ -9,7 +8,6 @@ module.exports = async () => {
   let totalLogins = 0;
 
   try {
-    // Check if the file exists *before* trying to read it.
     if (fs.existsSync(countsFilePath)) {
       const data = fs.readFileSync(countsFilePath, 'utf8');
       const loginCounts = JSON.parse(data);
@@ -17,8 +15,7 @@ module.exports = async () => {
 
       console.log(chalk.bold('\n=== Login Counts Per File ==='));
       for (const file in loginCounts) {
-        // Use hasOwnProperty to avoid iterating over inherited properties
-        if (loginCounts.hasOwnProperty(file)) {
+        if (Object.prototype.hasOwnProperty.call(loginCounts, file)) { // Use .call()
           const baseFilename = path.basename(file);
           const colorIndex = stringHash(baseFilename) % colors.length;
           const color = colors[colorIndex];
@@ -30,7 +27,6 @@ module.exports = async () => {
       console.log(chalk.bold('\n=== Total Logins Across All Test Files ==='));
       console.log(chalk.green(`  Total Logins: ${totalLogins}`));
 
-      // Delete the file *after* printing, and *inside* the try block.
       try {
         fs.unlinkSync(countsFilePath);
         console.log(chalk.gray('loginCounts.json deleted successfully.'));
