@@ -35,14 +35,14 @@ module.exports = async () => {
         fs.unlinkSync(countsFilePath);
         console.log(chalk.gray('loginCounts.json deleted successfully.'));
       } catch (deleteError) {
-        console.error(chalk.red("Error deleting loginCounts.json:", deleteError));
+        console.error(chalk.red('Error deleting loginCounts.json:', deleteError));
       }
 
     } else {
-      console.log(chalk.yellow("loginCounts.json not found. No logins to report."));
+      console.log(chalk.yellow('loginCounts.json not found. No logins to report.'));
     }
   } catch (error) {
-    console.error(chalk.red("Error during global teardown:", error));
+    console.error(chalk.red('Error during global teardown:', error));
   }
 };
 

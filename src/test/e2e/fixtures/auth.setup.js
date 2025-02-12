@@ -26,7 +26,7 @@ async function updateCounts(testFilePath) {
           loginCounts = JSON.parse(fs.readFileSync(countsFilePath, 'utf8'));
         }
       } catch (readError) {
-        console.error("Error reading or parsing loginCounts.json:", readError);
+        console.error('Error reading or parsing loginCounts.json:', readError);
         // If there's an error reading, we still try to proceed with an empty object.
       }
 
@@ -38,7 +38,7 @@ async function updateCounts(testFilePath) {
       try {
         fs.writeFileSync(countsFilePath, JSON.stringify(loginCounts, null, 2), 'utf8');
       } catch (writeError) {
-        console.error("Error writing loginCounts.json:", writeError);
+        console.error('Error writing loginCounts.json:', writeError);
         // If we fail to write, we should *not* release the lock yet; retry.
         continue;
       }
@@ -54,7 +54,7 @@ async function updateCounts(testFilePath) {
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       } else {
         // Some other error.
-        console.error("Error acquiring or releasing lock:", error);
+        console.error('Error acquiring or releasing lock:', error);
         throw error; // Re-throw to prevent test continuation
       }
     }
