@@ -134,6 +134,12 @@ class EditCourtPage extends BasePage {
     return await this.page.textContent(selector);
   }
 
+  async getErrorSummaryMessage() {
+    const selector = '.govuk-error-summary__list > li'; // Corrected selector
+    await this.page.waitForSelector(selector);
+    return await this.page.textContent(selector);
+  }
+
   async getSecondLastEmail() {
     const fieldsetSelector = '#applicationProgressionTab fieldset';
     const numEmail = await this.getFieldsetCount();
