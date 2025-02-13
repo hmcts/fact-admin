@@ -1,3 +1,4 @@
+// application-progression.spec.js
 const { test, logWithColor } = require('../fixtures/auth.setup');
 const { expect } = require('@playwright/test');
 const { EditCourtPage } = require('../pages/edit-court-page');
@@ -32,12 +33,40 @@ test.describe('Application Progression', () => {
     await editCourtPage.enterWelshType('welsh test2');
     logWithColor(testInfo, 'Entered \'welsh test2\' in Welsh Type TextBox.');
     await editCourtPage.clickSave();
-    logWithColor(testInfo, 'Clicked \'Save\' button.');
-    expect(await editCourtPage.getUpdateMessage()).toContain('Application Progressions updated');
     logWithColor(testInfo, 'Verified update message.');
+    expect(await editCourtPage.getUpdateMessage()).toContain('Application Progressions updated');
     expect(await editCourtPage.getSecondLastEmail()).toBe('test@gmail.com');
     logWithColor(testInfo, 'Verified second last email.');
     expect(await editCourtPage.getLastEmail()).toBe('test2@gmail.com');
     logWithColor(testInfo, 'Verified last email.');
+  });
+
+  test('Add and remove application types for External link', async ({ superAdminPage }, testInfo) => {
+    const editCourtPage = new EditCourtPage(superAdminPage);
+
+    logWithColor(testInfo, 'Starting test for External Link...');
+
+    await superAdminPage.goto('/courts/probate-service-centre/edit');
+    await superAdminPage.waitForLoadState('networkidle');
+    logWithColor(testInfo, 'Navigated to page.');
+    await editCourtPage.clickApplicationProgressionTab();
+    logWithColor(testInfo, 'Clicked Application Progression tab.');
+    await editCourtPage.removeAllApplicationTypesAndSave();
+    logWithColor(testInfo, 'Removed all application types and saved.');
+    expect(await editCourtPage.getUpdateMessage()).toContain('Application Progressions updated');
+    logWithColor(testInfo, 'Verified update message.');
+
+    await editCourtPage.enterType('Get an update');
+    logWithColor(testInfo, 'Entered \'Get an update\' in Type TextBox.');
+    await editCourtPage.enterExternalLink('www.testlink.com');
+    logWithColor(testInfo, 'Entered \'www.testlink.com\' in External link TextBox.');
+    await editCourtPage.enterExternalLinkDescription('test description');
+    logWithColor(testInfo, 'Entered \'test description\' in External link description TextBox.');
+    await editCourtPage.enterExternalLinkWelshDescription('welsh test');
+    logWithColor(testInfo, 'Entered \'welsh test\' in External link welsh description TextBox.');
+    await editCourtPage.clickSave();
+    logWithColor(testInfo, 'Clicked \'Save\' button.');
+    expect(await editCourtPage.getUpdateMessage()).toContain('Application Progressions updated');
+    logWithColor(testInfo, 'Verified update message.');
   });
 });

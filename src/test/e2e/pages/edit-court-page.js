@@ -1,3 +1,4 @@
+// edit-court-page.js
 const { BasePage } = require('./base-page');
 
 class EditCourtPage extends BasePage {
@@ -74,6 +75,32 @@ class EditCourtPage extends BasePage {
     } else {
       console.warn('Welsh type input field not found. Skipping.');
     }
+  }
+
+  async enterExternalLink(link) {
+    const numFieldsets = await this.getFieldsetCount();
+    const entryFormIdx = numFieldsets - 2;
+
+    const linkSelector = '#applicationProgressionTab input[name$="[external_link]"]';
+    const inputs = await this.page.locator(linkSelector).all();
+    await inputs[entryFormIdx].fill(link);
+  }
+
+  async enterExternalLinkDescription(description) {
+    const numFieldsets = await this.getFieldsetCount();
+    const entryFormIdx = numFieldsets - 2;
+
+    const descriptionSelector = '#applicationProgressionTab input[name$="[external_link_description]"]';
+    const inputs = await this.page.locator(descriptionSelector).all();
+    await inputs[entryFormIdx].fill(description);
+  }
+
+  async enterExternalLinkWelshDescription(welshDescription) {
+    const numFieldsets = await this.getFieldsetCount();
+    const entryFormIdx = numFieldsets - 2;
+    const welshDescriptionSelector = '#applicationProgressionTab input[name$="[external_link_description_cy]"]'; //Welsh
+    const inputs = await this.page.locator(welshDescriptionSelector).all();
+    await inputs[entryFormIdx].fill(welshDescription);
   }
 
   async clickAddNew() {

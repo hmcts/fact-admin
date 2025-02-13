@@ -45,7 +45,7 @@ async function updateCounts(testFilePath) {
 
       // Successfully read, updated, and wrote.  Release the lock.
       fs.rmdirSync(lockDirPath);
-      return; // Exit the function successfully
+      return;
 
     } catch (error) {
       // If mkdirSync fails, another process has the lock (or there's a different error).
@@ -55,7 +55,7 @@ async function updateCounts(testFilePath) {
       } else {
         // Some other error.
         console.error('Error acquiring or releasing lock:', error);
-        throw error; // Re-throw to prevent test continuation
+        throw error;
       }
     }
   }
@@ -119,7 +119,7 @@ async function loginWithRole(page, role, testInfo) {
     }).toPass();
     await loginPage.login(credentials.username, credentials.password);
     await updateCounts(testFilePath); // Update counts - only if we haven't logged in yet
-    hasLoggedIn[loginKey] = true; // Mark as logged in.
+    hasLoggedIn[loginKey] = true;
   }
 
   const baseUrl = process.env.CI ? process.env.TEST_URL : 'localhost:3300';
@@ -127,13 +127,12 @@ async function loginWithRole(page, role, testInfo) {
   await expect(page.url()).toContain(baseUrl);
 }
 
-// Helper function to log with color (per TEST) - NO COUNT LOGIC
 async function logWithColor(testInfo, message) {
   const chalk = (await import('chalk')).default;
   const colors =  ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
   const colorIndex = stringHash(testInfo.title) % colors.length;  // Hash the title!
   const color = colors[colorIndex];
-  console.log(chalk[color](`[${testInfo.title}] ${message}`)); // Simple log
+  console.log(chalk[color](`[${testInfo.title}] ${message}`));
 }
 
 //Gets a consistent, unique colour
