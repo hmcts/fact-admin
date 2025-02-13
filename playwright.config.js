@@ -9,7 +9,7 @@ module.exports = defineConfig({
   retries: process.env.CI ? 2 : 0,
   globalTeardown: require.resolve('./src/test/e2e/global-teardown.js'),
   // Increase workers in CI - adjust based on your Jenkins node capacity
-  workers: process.env.CI ? 4 : 2,
+  workers: process.env.CI ? 4 : 4,
 
   reporter: [
     ['html'],

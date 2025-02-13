@@ -1,4 +1,4 @@
-// auth.setup.js
+// auth.setup.js (Complete, with file locking and login counts)
 const { test: base, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login-page');
 const fs = require('fs');
@@ -17,7 +17,7 @@ async function updateCounts(testFilePath) {
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      // Attempt to create the lock directory.  This will fail if it exists.
+      // Attempt to create the lock directory. This will fail if it exists.
       fs.mkdirSync(lockDirPath);
 
       // If we get here, we have the lock.
@@ -28,7 +28,7 @@ async function updateCounts(testFilePath) {
         }
       } catch (readError) {
         console.error('Error reading or parsing loginCounts.json:', readError);
-        // If there's an error reading, we still try to proceed with an empty object.
+        // Proceed with an empty object.
       }
 
       if (!loginCounts[testFilePath]) {
@@ -40,21 +40,19 @@ async function updateCounts(testFilePath) {
         fs.writeFileSync(countsFilePath, JSON.stringify(loginCounts, null, 2), 'utf8');
       } catch (writeError) {
         console.error('Error writing loginCounts.json:', writeError);
-        // If we fail to write, we should *not* release the lock yet; retry.
+        // Retry.
         continue;
       }
 
-      // Successfully read, updated, and wrote.  Release the lock.
+      // Release the lock.
       fs.rmdirSync(lockDirPath);
       return;
 
     } catch (error) {
-      // If mkdirSync fails, another process has the lock (or there's a different error).
       if (error.code === 'EEXIST') {
         // Wait and retry.
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       } else {
-        // Some other error.
         console.error('Error acquiring or releasing lock:', error);
         throw error;
       }
@@ -63,7 +61,6 @@ async function updateCounts(testFilePath) {
   console.error(`Failed to acquire lock after ${maxRetries} attempts.`);
   throw new Error(`Failed to acquire lock after ${maxRetries} attempts.`);
 }
-
 const roleCredentials = {
   admin: {
     username: process.env.OAUTH_USER,
@@ -77,10 +74,7 @@ const roleCredentials = {
     username: process.env.OAUTH_SUPER_USER,
     password: process.env.OAUTH_USER_PASSWORD
   },
-  noRole: {
-    username: process.env.OAUTH_TEST_USER_NO_ROLE,
-    password: process.env.OAUTH_USER_PASSWORD
-  }
+  noRole: { username: process.env.OAUTH_TEST_USER_NO_ROLE, password: process.env.OAUTH_USER_PASSWORD }
 };
 
 exports.test = base.extend({
@@ -109,38 +103,35 @@ async function loginWithRole(page, role, testInfo) {
   const loginPage = new LoginPage(page);
   const credentials = roleCredentials[role];
   const testFilePath = testInfo.file;
-  const loginKey = `${testFilePath}-${role}`; // Unique key per file and role
+  const loginKey = `${testFilePath}-${role}`;
 
-  // Check if we've already logged in for this role and file.
   if (!hasLoggedIn[loginKey]) {
     await loginPage.goto();
     await expect(page).toHaveURL(/.*idam-web-public.*/);
     await loginPage.login(credentials.username, credentials.password);
-    await updateCounts(testFilePath); // Update counts - only if we haven't logged in yet
+    await updateCounts(testFilePath); // Update counts
     hasLoggedIn[loginKey] = true;
   }
 
-  // Wait for a more reliable indicator of successful login.
   await page.waitForSelector('#logout', { timeout: 20000 });
 }
 
 async function logWithColor(testInfo, message) {
   const chalk = (await import('chalk')).default;
-  const colors =  ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
-  const colorIndex = stringHash(testInfo.title) % colors.length;  // Hash the title!
+  const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
+  const colorIndex = stringHash(testInfo.title) % colors.length;
   const color = colors[colorIndex];
   console.log(chalk[color](`[${testInfo.title}] ${message}`));
 }
 
-//Gets a consistent, unique colour
 function stringHash(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = (hash << 5) - hash + char;
-    hash |= 0; // Convert to a 32-bit integer
+    hash |= 0;
   }
-  return Math.abs(hash); // Ensure the hash is positive
+  return Math.abs(hash);
 }
 
 module.exports.logWithColor = logWithColor;

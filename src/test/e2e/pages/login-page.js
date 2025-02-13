@@ -1,3 +1,4 @@
+// login-page.js
 const { BasePage } = require('./base-page');
 
 class LoginPage extends BasePage {
@@ -8,7 +9,6 @@ class LoginPage extends BasePage {
     this.signInButton = 'input.button[type="submit"][name="save"]';
   }
 
-  // IMPORTANT NOTE - IF YOU ARE LOOKING AT THIS PAGE IT'S HIGHLY LIKELY YOU ARE MISSING AN ENVIRONMENT VARIABLE
   async login(username, password) {
     await this.page.waitForSelector(this.usernameInput);
     await this.page.fill(this.usernameInput, username);
@@ -19,7 +19,8 @@ class LoginPage extends BasePage {
   }
 
   async isOnLoginPage() {
-    return this.page.url().includes('idam-web-public.aat.platform.hmcts.net/login');
+    await this.page.waitForURL(/.*idam-web-public.*/);
+    return await this.page.url().includes('idam-web-public.aat.platform.hmcts.net/login');
   }
 }
 

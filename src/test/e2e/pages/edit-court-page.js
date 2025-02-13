@@ -13,26 +13,38 @@ class EditCourtPage extends BasePage {
   async clickApplicationProgressionTab() {
     await this.page.waitForLoadState('networkidle');
     await this.page.hover(this.generalDropdown);
-    await this.page.waitForTimeout(500); // Keep this for stability
-    await this.page.click(this.applicationProgressionLink);
-    await this.page.waitForSelector('#applicationProgressionTab fieldset'); // Wait for at least one fieldset
+    await this.page.click(this.applicationProgressionLink, { force: true });
+    // Wait for a *specific* element INSIDE the visible tab content.
+    await this.page.waitForSelector('#application-progression button[name="addNewUpdate"]', { state: 'visible', timeout: 15000 });
   }
 
   async removeAllApplicationTypesAndSave() {
-    // Get all "deleteUpdate" buttons *before* clicking any.
-    const deleteButtons = await this.page.$$('#application-progression button[name="deleteUpdate"]');
+    // Use a while loop and continuously check for delete buttons.
+    while (true) {
+      const deleteButton = await this.page.$('#application-progression button[name="deleteUpdate"]');
+      if (!deleteButton) {
+        break; // No more delete buttons, exit the loop
+      }
 
-    // Iterate and wait for each element to be *detached* from the DOM.
-    for (const button of deleteButtons) {
-      const fieldset = await button.evaluateHandle(el => el.closest('fieldset')); // Get the parent fieldset
-      await button.click();
-      await fieldset.waitForElementState('hidden'); // Wait for the fieldset to be detached/hidden
+      await deleteButton.evaluate(button => {
+        const fieldset = button.closest('fieldset');
+        if (fieldset) {
+          fieldset.remove(); // Remove the fieldset directly from the DOM.
+        }
+      });
+      // Short wait after removing
+      await this.page.waitForTimeout(250);
     }
     const saveButton = await this.page.locator(`${this.applicationProgressionSection} button[name="saveUpdate"]`);
     await saveButton.click();
-    //Wait for page update
-    const selector = '#applicationProgressionContent > div > h1';
-    await this.page.waitForSelector(selector, { timeout: 20000 });
+    //Wait for page update and specific message
+    await this.page.waitForFunction(() => {
+        const selector = '#applicationProgressionContent > div > h1';
+        const element = document.querySelector(selector)
+        return element && element.textContent.includes('Application Progressions updated')
+      },
+      { timeout: 20000 }
+    );
   }
 
   async getFieldsetCount() {
@@ -42,26 +54,26 @@ class EditCourtPage extends BasePage {
   }
 
   async enterType(text) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type]"]:visible:last-of-type').fill(text);
+    await this.page.locator('#applicationProgressionTab input[name$="[type]"]:visible').last().fill(text);
   }
 
   async enterEmail(email) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[email]"]:visible:last-of-type').fill(email);
+    await this.page.locator('#applicationProgressionTab input[name$="[email]"]:visible').last().fill(email);
   }
   async enterWelshType(text) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type_cy]"]:visible:last-of-type').fill(text);
+    await this.page.locator('#applicationProgressionTab input[name$="[type_cy]"]:visible').last().fill(text);
   }
 
   async enterExternalLink(link) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link]"]:visible:last-of-type').fill(link);
+    await this.page.locator('#applicationProgressionTab input[name$="[external_link]"]:visible').last().fill(link);
   }
 
   async enterExternalLinkDescription(description) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description]"]:visible:last-of-type').fill(description);
+    await this.page.locator('#applicationProgressionTab input[name$="[external_link_description]"]:visible').last().fill(description);
   }
 
   async enterExternalLinkWelshDescription(welshDescription) {
-    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description_cy]"]:visible:last-of-type').fill(welshDescription);
+    await this.page.locator('#applicationProgressionTab input[name$="[external_link_description_cy]"]:visible').last().fill(welshDescription);
   }
 
   async clickAddNew() {
@@ -74,9 +86,14 @@ class EditCourtPage extends BasePage {
     const saveButtonSelector = `${this.applicationProgressionSection} button[name="saveUpdate"]`;
     await this.page.waitForSelector(saveButtonSelector, { state: 'visible' });
     await this.page.click(saveButtonSelector);
-    //Wait for page update
-    const selector = '#applicationProgressionContent > div > h1';
-    await this.page.waitForSelector(selector, { timeout: 20000 });
+    // Wait for page update and specific message
+    await this.page.waitForFunction(() => {
+        const selector = '#applicationProgressionContent > div > h1';
+        const element = document.querySelector(selector)
+        return element && element.textContent.includes('Application Progressions updated')
+      },
+      { timeout: 20000 }
+    );
   }
 
   async getUpdateMessage() {
