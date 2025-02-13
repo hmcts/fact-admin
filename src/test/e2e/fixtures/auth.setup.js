@@ -1,3 +1,4 @@
+// auth.setup.js
 const { test: base, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login-page');
 const fs = require('fs');
@@ -113,18 +114,14 @@ async function loginWithRole(page, role, testInfo) {
   // Check if we've already logged in for this role and file.
   if (!hasLoggedIn[loginKey]) {
     await loginPage.goto();
-    await expect(async () => {
-      const onLoginPage = await loginPage.isOnLoginPage();
-      expect(onLoginPage).toBeTruthy();
-    }).toPass();
+    await expect(page).toHaveURL(/.*idam-web-public.*/);
     await loginPage.login(credentials.username, credentials.password);
     await updateCounts(testFilePath); // Update counts - only if we haven't logged in yet
     hasLoggedIn[loginKey] = true;
   }
 
-  const baseUrl = process.env.CI ? process.env.TEST_URL : 'localhost:3300';
-  await expect(page.url()).not.toContain('idam-web-public.aat.platform.hmcts.net');
-  await expect(page.url()).toContain(baseUrl);
+  // Wait for a more reliable indicator of successful login.
+  await page.waitForSelector('#logout', { timeout: 20000 });
 }
 
 async function logWithColor(testInfo, message) {

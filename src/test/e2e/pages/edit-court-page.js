@@ -13,33 +13,26 @@ class EditCourtPage extends BasePage {
   async clickApplicationProgressionTab() {
     await this.page.waitForLoadState('networkidle');
     await this.page.hover(this.generalDropdown);
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(500); // Keep this for stability
     await this.page.click(this.applicationProgressionLink);
-
-    await this.page.waitForFunction(() => {
-      return document.querySelectorAll('#applicationProgressionTab fieldset').length >= 2;
-    });
+    await this.page.waitForSelector('#applicationProgressionTab fieldset'); // Wait for at least one fieldset
   }
 
   async removeAllApplicationTypesAndSave() {
-    // Click the "deleteUpdate" buttons first using page.evaluate
-    await this.page.evaluate(() => {
-      const deleteButtons = document.querySelectorAll('#application-progression button[name="deleteUpdate"][data-module="govuk-button"].govuk-button.govuk-button--secondary.deleteUpdate');
-      deleteButtons.forEach((button) => {
-        button.click();
-      });
-    });
+    // Get all "deleteUpdate" buttons *before* clicking any.
+    const deleteButtons = await this.page.$$('#application-progression button[name="deleteUpdate"]');
 
-    // Click the "clearUpdate" buttons using the same page.evaluate approach
-    await this.page.evaluate(() => {
-      const clearButtons = document.querySelectorAll('#application-progression button[name="clearUpdate"]');
-      clearButtons.forEach((button) => {
-        button.click();
-      });
-    });
-
+    // Iterate and wait for each element to be *detached* from the DOM.
+    for (const button of deleteButtons) {
+      const fieldset = await button.evaluateHandle(el => el.closest('fieldset')); // Get the parent fieldset
+      await button.click();
+      await fieldset.waitForElementState('hidden'); // Wait for the fieldset to be detached/hidden
+    }
     const saveButton = await this.page.locator(`${this.applicationProgressionSection} button[name="saveUpdate"]`);
     await saveButton.click();
+    //Wait for page update
+    const selector = '#applicationProgressionContent > div > h1';
+    await this.page.waitForSelector(selector, { timeout: 20000 });
   }
 
   async getFieldsetCount() {
@@ -49,115 +42,53 @@ class EditCourtPage extends BasePage {
   }
 
   async enterType(text) {
-    const numFieldsets = await this.getFieldsetCount();
-    const entryFormIdx = numFieldsets - 2;
-
-    const typeSelector = '#applicationProgressionTab input[name$="[type]"]';
-    const inputs = await this.page.locator(typeSelector).all();
-    await inputs[entryFormIdx].fill(text);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type]"]:visible:last-of-type').fill(text);
   }
 
   async enterEmail(email) {
-    const numFieldsets = await this.getFieldsetCount();
-    const entryFormIdx = numFieldsets - 2;
-
-    const emailSelector = '#applicationProgressionTab input[name$="[email]"]';
-    const inputs = await this.page.locator(emailSelector).all();
-    await inputs[entryFormIdx].fill(email);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[email]"]:visible:last-of-type').fill(email);
   }
-
   async enterWelshType(text) {
-    // Check if the Welsh type input field exists
-    const welshInputExists = await this.page.locator('#type_cy-1').count() > 0;
-
-    if (welshInputExists) {
-      await this.page.locator('#type_cy-1').fill(text);
-    } else {
-      console.warn('Welsh type input field not found. Skipping.');
-    }
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type_cy]"]:visible:last-of-type').fill(text);
   }
 
   async enterExternalLink(link) {
-    const numFieldsets = await this.getFieldsetCount();
-    const entryFormIdx = numFieldsets - 2;
-
-    const linkSelector = '#applicationProgressionTab input[name$="[external_link]"]';
-    const inputs = await this.page.locator(linkSelector).all();
-    await inputs[entryFormIdx].fill(link);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link]"]:visible:last-of-type').fill(link);
   }
 
   async enterExternalLinkDescription(description) {
-    const numFieldsets = await this.getFieldsetCount();
-    const entryFormIdx = numFieldsets - 2;
-
-    const descriptionSelector = '#applicationProgressionTab input[name$="[external_link_description]"]';
-    const inputs = await this.page.locator(descriptionSelector).all();
-    await inputs[entryFormIdx].fill(description);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description]"]:visible:last-of-type').fill(description);
   }
 
   async enterExternalLinkWelshDescription(welshDescription) {
-    const numFieldsets = await this.getFieldsetCount();
-    const entryFormIdx = numFieldsets - 2;
-    const welshDescriptionSelector = '#applicationProgressionTab input[name$="[external_link_description_cy]"]'; //Welsh
-    const inputs = await this.page.locator(welshDescriptionSelector).all();
-    await inputs[entryFormIdx].fill(welshDescription);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description_cy]"]:visible:last-of-type').fill(welshDescription);
   }
 
   async clickAddNew() {
     const addNewSelector = `${this.applicationProgressionSection} button[name="addNewUpdate"]`;
-
-    // Replicate checkElement behavior
-
-    await this.page.mouse.move(1000, 40); // Ensure element is in viewport
     await this.page.waitForSelector(addNewSelector);
-
-
-
-    const initialCount = await this.getFieldsetCount();
-
-
     await this.page.$eval(addNewSelector, (elem) => elem.click());
-
-
-    await this.page.waitForFunction((initialCount) => {
-      return document.querySelectorAll('#applicationProgressionTab fieldset').length > initialCount;
-    }, initialCount);
-    console.log('New fieldset added.'); // Logging
   }
 
   async clickSave() {
-    await this.page.click(`${this.applicationProgressionSection} button[name="saveUpdate"]`);
+    const saveButtonSelector = `${this.applicationProgressionSection} button[name="saveUpdate"]`;
+    await this.page.waitForSelector(saveButtonSelector, { state: 'visible' });
+    await this.page.click(saveButtonSelector);
+    //Wait for page update
+    const selector = '#applicationProgressionContent > div > h1';
+    await this.page.waitForSelector(selector, { timeout: 20000 });
   }
 
   async getUpdateMessage() {
     const selector = '#applicationProgressionContent > div > h1';
-    return await this.page.textContent(selector);
-  }
-
-  async getErrorSummaryMessage() {
-    const selector = '.govuk-error-summary__list > li'; // Corrected selector
     await this.page.waitForSelector(selector);
     return await this.page.textContent(selector);
   }
 
-  async getSecondLastEmail() {
-    const fieldsetSelector = '#applicationProgressionTab fieldset';
-    const numEmail = await this.getFieldsetCount();
-    const secondLastIndex = numEmail - 3;
-
-    const emailSelector = `${fieldsetSelector} input[name$="[email]"]`;
-    const inputs = await this.page.locator(emailSelector).all();
-    return await inputs[secondLastIndex].inputValue();
-  }
-
-  async getLastEmail() {
-    const fieldsetSelector = '#applicationProgressionTab fieldset';
-    const numEmail = await this.getFieldsetCount();
-    const lastIndex = numEmail - 2;
-
-    const emailSelector = `${fieldsetSelector} input[name$="[email]"]`;
-    const inputs = await this.page.locator(emailSelector).all();
-    return await inputs[lastIndex].inputValue();
+  async getErrorSummaryMessage() {
+    const selector = '.govuk-error-summary__list li';
+    await this.page.waitForSelector(selector);
+    return await this.page.textContent(selector);
   }
 }
 

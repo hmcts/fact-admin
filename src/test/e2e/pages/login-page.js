@@ -10,24 +10,12 @@ class LoginPage extends BasePage {
 
   // IMPORTANT NOTE - IF YOU ARE LOOKING AT THIS PAGE IT'S HIGHLY LIKELY YOU ARE MISSING AN ENVIRONMENT VARIABLE
   async login(username, password) {
-
-
     await this.page.waitForSelector(this.usernameInput);
     await this.page.fill(this.usernameInput, username);
-
-
     await this.page.waitForSelector(this.passwordInput);
     await this.page.fill(this.passwordInput, password);
-
-
-    await Promise.all([
-      this.page.waitForNavigation({
-        timeout: 10000,
-        waitUntil: 'domcontentloaded'
-      }),
-      this.page.click(this.signInButton)
-    ]);
-
+    // Remove waitForNavigation and rely on the waitForSelector in auth.setup.js
+    await this.page.click(this.signInButton);
   }
 
   async isOnLoginPage() {
