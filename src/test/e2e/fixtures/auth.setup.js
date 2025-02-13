@@ -130,7 +130,7 @@ async function loginWithRole(page, role, testInfo) {
 // Helper function to log with color (per TEST) - NO COUNT LOGIC
 async function logWithColor(testInfo, message) {
   const chalk = (await import('chalk')).default;
-  const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+  const colors =  ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
   const colorIndex = stringHash(testInfo.title) % colors.length;  // Hash the title!
   const color = colors[colorIndex];
   console.log(chalk[color](`[${testInfo.title}] ${message}`)); // Simple log

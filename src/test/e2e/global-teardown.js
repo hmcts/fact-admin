@@ -11,7 +11,7 @@ module.exports = async () => {
     if (fs.existsSync(countsFilePath)) {
       const data = fs.readFileSync(countsFilePath, 'utf8');
       const loginCounts = JSON.parse(data);
-      const colors =  ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+      const colors =  ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
 
       console.log(chalk.bold('\n=== Login Counts Per File ==='));
       for (const file in loginCounts) {
