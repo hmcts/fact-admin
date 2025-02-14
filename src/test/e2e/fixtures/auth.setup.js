@@ -1,4 +1,3 @@
-// auth.setup.js (Complete, with file locking and login counts)
 const { test: base, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login-page');
 const fs = require('fs');
@@ -20,7 +19,6 @@ async function updateCounts(testFilePath) {
       // Attempt to create the lock directory. This will fail if it exists.
       fs.mkdirSync(lockDirPath);
 
-      // If we get here, we have the lock.
       let loginCounts = {};
       try {
         if (fs.existsSync(countsFilePath)) {

@@ -1,4 +1,3 @@
-// application-progression.spec.js
 const { test, logWithColor } = require('../fixtures/auth.setup');
 const { expect } = require('@playwright/test');
 const { EditCourtPage } = require('../pages/edit-court-page');

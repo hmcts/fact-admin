@@ -26,6 +26,7 @@ class EditCourtPage extends BasePage {
   async removeAllApplicationTypesAndSave() {
     console.log('Entering removeAllApplicationTypesAndSave');
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const deleteButton = await this.page.$('#application-progression button[name="deleteUpdate"]');
       if (!deleteButton) {
@@ -33,7 +34,7 @@ class EditCourtPage extends BasePage {
         break; // No more delete buttons, exit the loop
       }
 
-      // Instead of relying on IDs, we'll use evaluate to remove the *entire fieldset*
+      // Instead of relying on IDs, using evaluate to remove the *entire fieldset*
       // that contains the button.  This is MUCH more reliable.
       await deleteButton.evaluate(button => {
         const fieldset = button.closest('fieldset');
@@ -43,8 +44,6 @@ class EditCourtPage extends BasePage {
       });
       console.log('Clicked delete and removed fieldset.');
 
-      // Wait for the DOM to update.  A short timeout is OK here *after* the
-      // element has been removed.  We're just giving the browser a chance to breathe.
       await this.page.waitForTimeout(250); // Short timeout
     }
     const saveButton = await this.page.locator(`${this.applicationProgressionSection} button[name="saveUpdate"]`);
