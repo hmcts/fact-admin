@@ -105,7 +105,6 @@ test.describe('Application Progression', () => {
     await editCourtPage.clickSave();
     logWithColor(testInfo, 'Clicked \'Save\' button.');
 
-    // THIS IS THE KEY CHANGE: Wait for the *correct* error message.
     await editCourtPage.page.waitForFunction(
       () => {
         const element = document.querySelector('.govuk-error-summary__list li');

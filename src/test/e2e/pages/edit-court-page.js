@@ -1,5 +1,4 @@
-// edit-court-page.js
-const { BasePage } = require('./base-page');
+const {BasePage} = require('./base-page');
 
 class EditCourtPage extends BasePage {
   constructor(page) {
@@ -13,38 +12,52 @@ class EditCourtPage extends BasePage {
   async clickApplicationProgressionTab() {
     await this.page.waitForLoadState('networkidle');
     await this.page.hover(this.generalDropdown);
-    await this.page.click(this.applicationProgressionLink, { force: true });
+    console.log('Clicking Application Progression Tab');
+    await this.page.click(this.applicationProgressionLink, {force: true});
+    console.log('Waiting for \'Add New\' button');
     // Wait for a *specific* element INSIDE the visible tab content.
-    await this.page.waitForSelector('#application-progression button[name="addNewUpdate"]', { state: 'visible', timeout: 15000 });
+    await this.page.waitForSelector('#application-progression button[name="addNewUpdate"]', {
+      state: 'visible',
+      timeout: 15000
+    });
+    console.log('Tab content loaded.');
   }
 
   async removeAllApplicationTypesAndSave() {
-    // Use a while loop and continuously check for delete buttons.
+    console.log('Entering removeAllApplicationTypesAndSave');
+
     while (true) {
       const deleteButton = await this.page.$('#application-progression button[name="deleteUpdate"]');
       if (!deleteButton) {
+        console.log('No more delete buttons found. Exiting loop.');
         break; // No more delete buttons, exit the loop
       }
 
+      // Instead of relying on IDs, we'll use evaluate to remove the *entire fieldset*
+      // that contains the button.  This is MUCH more reliable.
       await deleteButton.evaluate(button => {
         const fieldset = button.closest('fieldset');
         if (fieldset) {
           fieldset.remove(); // Remove the fieldset directly from the DOM.
         }
       });
-      // Short wait after removing
-      await this.page.waitForTimeout(250);
+      console.log('Clicked delete and removed fieldset.');
+
+      // Wait for the DOM to update.  A short timeout is OK here *after* the
+      // element has been removed.  We're just giving the browser a chance to breathe.
+      await this.page.waitForTimeout(250); // Short timeout
     }
     const saveButton = await this.page.locator(`${this.applicationProgressionSection} button[name="saveUpdate"]`);
     await saveButton.click();
     //Wait for page update and specific message
     await this.page.waitForFunction(() => {
-        const selector = '#applicationProgressionContent > div > h1';
-        const element = document.querySelector(selector)
-        return element && element.textContent.includes('Application Progressions updated')
-      },
-      { timeout: 20000 }
+      const selector = '#applicationProgressionContent > div > h1';
+      const element = document.querySelector(selector);
+      return element && element.textContent.includes('Application Progressions updated');
+    },
+    {timeout: 20000}
     );
+    console.log('Exiting removeAllApplicationTypesAndSave');
   }
 
   async getFieldsetCount() {
@@ -54,26 +67,27 @@ class EditCourtPage extends BasePage {
   }
 
   async enterType(text) {
-    await this.page.locator('#applicationProgressionTab input[name$="[type]"]:visible').last().fill(text);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type]"]:visible:last-of-type').fill(text);
   }
 
   async enterEmail(email) {
-    await this.page.locator('#applicationProgressionTab input[name$="[email]"]:visible').last().fill(email);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[email]"]:visible:last-of-type').fill(email);
   }
+
   async enterWelshType(text) {
-    await this.page.locator('#applicationProgressionTab input[name$="[type_cy]"]:visible').last().fill(text);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[type_cy]"]:visible:last-of-type').fill(text);
   }
 
   async enterExternalLink(link) {
-    await this.page.locator('#applicationProgressionTab input[name$="[external_link]"]:visible').last().fill(link);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link]"]:visible:last-of-type').fill(link);
   }
 
   async enterExternalLinkDescription(description) {
-    await this.page.locator('#applicationProgressionTab input[name$="[external_link_description]"]:visible').last().fill(description);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description]"]:visible:last-of-type').fill(description);
   }
 
   async enterExternalLinkWelshDescription(welshDescription) {
-    await this.page.locator('#applicationProgressionTab input[name$="[external_link_description_cy]"]:visible').last().fill(welshDescription);
+    await this.page.locator('#applicationProgressionTab input[type="text"][name*="[external_link_description_cy]"]:visible:last-of-type').fill(welshDescription);
   }
 
   async clickAddNew() {
@@ -84,15 +98,15 @@ class EditCourtPage extends BasePage {
 
   async clickSave() {
     const saveButtonSelector = `${this.applicationProgressionSection} button[name="saveUpdate"]`;
-    await this.page.waitForSelector(saveButtonSelector, { state: 'visible' });
+    await this.page.waitForSelector(saveButtonSelector, {state: 'visible'});
     await this.page.click(saveButtonSelector);
     // Wait for page update and specific message
     await this.page.waitForFunction(() => {
-        const selector = '#applicationProgressionContent > div > h1';
-        const element = document.querySelector(selector)
-        return element && element.textContent.includes('Application Progressions updated')
-      },
-      { timeout: 20000 }
+      const selector = '#applicationProgressionContent > div > h1';
+      const element = document.querySelector(selector);
+      return element && element.textContent.includes('Application Progressions updated');
+    },
+    {timeout: 20000}
     );
   }
 
@@ -109,4 +123,4 @@ class EditCourtPage extends BasePage {
   }
 }
 
-module.exports = { EditCourtPage };
+module.exports = {EditCourtPage};
