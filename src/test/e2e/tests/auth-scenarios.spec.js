@@ -6,6 +6,8 @@ const { HomePage } = require('../pages/home-page');
 test.describe('Auth Scenarios', () => {
   test('verify correct role permissions - super admin', async ({ superAdminPage }, testInfo) => { // Add testInfo
     logWithColor(testInfo, 'Starting test...');
+    // Explicitly navigate to the home page *after* the fixture has run.
+    await superAdminPage.goto('/', { waitUntil: 'domcontentloaded' });
     const homePage = new HomePage(superAdminPage);
     await expect(homePage.isSuperAdmin()).resolves.toBeTruthy();
     logWithColor(testInfo, 'Verified super admin permissions.');
@@ -15,6 +17,8 @@ test.describe('Auth Scenarios', () => {
 
   test('verify correct role permissions - admin', async ({ adminPage }, testInfo) => { // Add testInfo
     logWithColor(testInfo, 'Starting test...');
+    // Explicitly navigate to the home page *after* the fixture has run.
+    await adminPage.goto('/', { waitUntil: 'domcontentloaded' });
     const homePage = new HomePage(adminPage);
     await expect(homePage.isAdmin()).resolves.toBeTruthy();
     logWithColor(testInfo, 'Verified admin permissions.');
@@ -24,6 +28,8 @@ test.describe('Auth Scenarios', () => {
 
   test('verify correct role permissions - viewer', async ({ viewerPage }, testInfo) => { // Add testInfo
     logWithColor(testInfo, 'Starting test...');
+    // Explicitly navigate to the home page *after* the fixture has run.
+    await viewerPage.goto('/', { waitUntil: 'domcontentloaded' });
     const homePage = new HomePage(viewerPage);
     await expect(homePage.isViewer()).resolves.toBeTruthy();
     logWithColor(testInfo, 'Verified viewer permissions.');
