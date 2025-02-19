@@ -6,7 +6,7 @@ const path = require('path');
 const countsFilePath = path.join(__dirname, '..', 'loginCounts.json');
 const lockDirPath = path.join(__dirname, '..', 'loginCounts.lock'); // Directory for locking
 
-// Tracks whether a login has occurred for a given role+file.
+// Tracks whether a login has occurred for a given role.
 const hasLoggedIn = {};
 
 // Atomic read-modify-write with directory locking
@@ -16,7 +16,6 @@ async function updateCounts(testFilePath) {
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      // Attempt to create the lock directory. This will fail if it exists.
       fs.mkdirSync(lockDirPath);
 
       let loginCounts = {};
@@ -25,8 +24,7 @@ async function updateCounts(testFilePath) {
           loginCounts = JSON.parse(fs.readFileSync(countsFilePath, 'utf8'));
         }
       } catch (readError) {
-        console.error('Error reading or parsing loginCounts.json:', readError);
-        // Proceed with an empty object.
+        console.error("Error reading or parsing loginCounts.json:", readError);
       }
 
       if (!loginCounts[testFilePath]) {
@@ -37,21 +35,18 @@ async function updateCounts(testFilePath) {
       try {
         fs.writeFileSync(countsFilePath, JSON.stringify(loginCounts, null, 2), 'utf8');
       } catch (writeError) {
-        console.error('Error writing loginCounts.json:', writeError);
-        // Retry.
-        continue;
+        console.error("Error writing loginCounts.json:", writeError);
+        continue; // Retry
       }
 
-      // Release the lock.
       fs.rmdirSync(lockDirPath);
-      return;
+      return; // Success
 
     } catch (error) {
       if (error.code === 'EEXIST') {
-        // Wait and retry.
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       } else {
-        console.error('Error acquiring or releasing lock:', error);
+        console.error("Error acquiring or releasing lock:", error);
         throw error;
       }
     }
@@ -59,6 +54,7 @@ async function updateCounts(testFilePath) {
   console.error(`Failed to acquire lock after ${maxRetries} attempts.`);
   throw new Error(`Failed to acquire lock after ${maxRetries} attempts.`);
 }
+
 const roleCredentials = {
   admin: {
     username: process.env.OAUTH_USER,
@@ -101,17 +97,39 @@ async function loginWithRole(page, role, testInfo) {
   const loginPage = new LoginPage(page);
   const credentials = roleCredentials[role];
   const testFilePath = testInfo.file;
-  const loginKey = `${testFilePath}-${role}`;
+  const loginKey = role;
 
   if (!hasLoggedIn[loginKey]) {
     await loginPage.goto();
     await expect(page).toHaveURL(/.*idam-web-public.*/);
+    console.log(`Attempting login for role: ${role}, user: ${credentials.username}`);
+    // Log cookies *before* login attempt:
     await loginPage.login(credentials.username, credentials.password);
-    await updateCounts(testFilePath); // Update counts
-    hasLoggedIn[loginKey] = true;
-  }
 
-  await page.waitForSelector('#logout', { timeout: 20000 });
+    // Check for login errors:
+    const errorLocator = page.locator('.error-summary');
+    if (await errorLocator.isVisible()) {
+      const errorMessage = await errorLocator.textContent();
+      console.error(`Login failed for role ${role}: ${errorMessage}`);
+      throw new Error(`Login failed for role ${role}: ${errorMessage}`);
+    }
+    console.log(`Login successful for role: ${role}`);
+    // Log cookies *after* login:
+
+    await updateCounts(testFilePath);
+    hasLoggedIn[loginKey] = true;
+    await page.waitForTimeout(500);
+  } else {
+    console.log(`Already logged in for role: ${role} in file: ${testFilePath}`);
+    // CRITICAL: Navigate to the base URL *only* if we skip login.
+    await page.goto(process.env.CI ? process.env.TEST_URL : 'http://localhost:3300');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(500);
+  }
+  // Do *NOT* log out.
+
+  console.log("Current URL after login attempt:", page.url()); // Keep this
+
 }
 
 async function logWithColor(testInfo, message) {
