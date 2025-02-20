@@ -24,7 +24,7 @@ async function updateCounts(testFilePath) {
           loginCounts = JSON.parse(fs.readFileSync(countsFilePath, 'utf8'));
         }
       } catch (readError) {
-        console.error("Error reading or parsing loginCounts.json:", readError);
+        console.error('Error reading or parsing loginCounts.json:', readError);
       }
 
       if (!loginCounts[testFilePath]) {
@@ -35,7 +35,7 @@ async function updateCounts(testFilePath) {
       try {
         fs.writeFileSync(countsFilePath, JSON.stringify(loginCounts, null, 2), 'utf8');
       } catch (writeError) {
-        console.error("Error writing loginCounts.json:", writeError);
+        console.error('Error writing loginCounts.json:', writeError);
         continue; // Retry
       }
 
@@ -46,7 +46,7 @@ async function updateCounts(testFilePath) {
       if (error.code === 'EEXIST') {
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       } else {
-        console.error("Error acquiring or releasing lock:", error);
+        console.error('Error acquiring or releasing lock:', error);
         throw error;
       }
     }
@@ -103,10 +103,8 @@ async function loginWithRole(page, role, testInfo) {
     await loginPage.goto();
     await expect(page).toHaveURL(/.*idam-web-public.*/);
     console.log(`Attempting login for role: ${role}, user: ${credentials.username}`);
-    // Log cookies *before* login attempt:
     await loginPage.login(credentials.username, credentials.password);
 
-    // Check for login errors:
     const errorLocator = page.locator('.error-summary');
     if (await errorLocator.isVisible()) {
       const errorMessage = await errorLocator.textContent();
@@ -114,7 +112,6 @@ async function loginWithRole(page, role, testInfo) {
       throw new Error(`Login failed for role ${role}: ${errorMessage}`);
     }
     console.log(`Login successful for role: ${role}`);
-    // Log cookies *after* login:
 
     await updateCounts(testFilePath);
     hasLoggedIn[loginKey] = true;
@@ -128,7 +125,7 @@ async function loginWithRole(page, role, testInfo) {
   }
   // Do *NOT* log out.
 
-  console.log("Current URL after login attempt:", page.url()); // Keep this
+  console.log('Current URL after login attempt:', page.url()); // Keep this
 
 }
 
