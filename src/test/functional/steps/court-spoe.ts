@@ -31,7 +31,7 @@ When('I click spoe update', async () => {
 });
 
 Then('Success message is displayed for spoe with summary {string}', async (successMsg: string) => {
-  const selector = '#spoeContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#spoeContent > div.govuk-panel.govuk-panel--confirmation > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

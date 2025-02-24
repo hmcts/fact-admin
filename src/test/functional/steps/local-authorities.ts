@@ -68,7 +68,7 @@ When('I click on local authorities save button', async () => {
 });
 
 Then('Success message is displayed for local authorities with summary {string}', async (successMsg: string) => {
-  const selector = '#localAuthoritiesContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#localAuthoritiesContent > div.govuk-panel.govuk-panel--confirmation > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

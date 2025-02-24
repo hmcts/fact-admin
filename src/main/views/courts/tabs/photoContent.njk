@@ -16,7 +16,8 @@
   {% set updateMessage = "Photo deleted" if not courtPhotoFileURL else "Photo updated" %}
   {% if updated === true %}
     {{ govukPanel({
-      titleText: updateMessage
+      titleText: updateMessage,
+      headingLevel: 2
     }) }}
   {% endif %}
 

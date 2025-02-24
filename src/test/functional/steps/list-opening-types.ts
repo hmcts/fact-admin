@@ -56,7 +56,7 @@ When('I click Opening Type save button', async () => {
 });
 
 Then('A green message is displayed for the updated Opening Type {string}', async (message: string) => {
-  const selector = '#openingTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#openingTypesListContent > div.govuk-panel.govuk-panel--confirmation > h2';
   expect(await I.checkElement(selector)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
