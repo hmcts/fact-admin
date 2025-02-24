@@ -76,7 +76,7 @@ Then('I click delete button for facility type {string}',async (facilityType: str
 });
 
 Then('A green message is displayed {string}', async (message: string) => {
-  const selector = '#facilityTypesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#facilityTypesListContent > div.govuk-panel.govuk-panel--confirmation > h2';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 

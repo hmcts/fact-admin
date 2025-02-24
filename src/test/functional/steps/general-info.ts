@@ -62,7 +62,7 @@ Then('I can view the additional information notices', async () => {
 });
 
 Then('a success message is displayed on the general info tab {string}', async (successMsg: string) => {
-  const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#generalInfoContent > div.govuk-panel.govuk-panel--confirmation > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
