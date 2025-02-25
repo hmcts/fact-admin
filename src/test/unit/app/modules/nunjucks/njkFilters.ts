@@ -39,7 +39,7 @@ describe('njkFilters', () => {
   });
 
   describe('Test the filter that creates web page titles (from a string)', () => {
-    test('should convert an array of strings into a descriptive title', () => {
+    test('should convert a string into a descriptive title', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = 'Bulk Edit';
       const expectedOutput
@@ -48,7 +48,7 @@ describe('njkFilters', () => {
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
 
-    test('should not add empty strings to the title', () => {
+    test('should not an empty string to the title', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = '';
       const expectedOutput
@@ -63,6 +63,24 @@ describe('njkFilters', () => {
         = 'Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(testCase)).toEqual(expectedOutput);
+    });
+
+    test('should not have empty space wrapping the title', () => {
+      const titleEnhanceFilter = env.getFilter('titleEnhancer');
+      const input = ' Edit A List ';
+      const expectedOutput
+        = 'Edit A List - Find a Court or Tribunal Admin Service – GOV.UK';
+
+      expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
+    });
+
+    test('should add string to title even if it has dashes', () => {
+      const titleEnhanceFilter = env.getFilter('titleEnhancer');
+      const input = 'I - have - dash';
+      const expectedOutput
+        = 'I - have - dash - Find a Court or Tribunal Admin Service – GOV.UK';
+
+      expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
   });
 });
