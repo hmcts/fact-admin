@@ -4,6 +4,7 @@ import * as nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
 import {CSRF} from '../csrf';
 import config from 'config';
+import createFilters from './njkFilters';
 
 export class Nunjucks {
   constructor(public developmentMode: boolean) {
@@ -37,6 +38,8 @@ export class Nunjucks {
       return (!(regExp.test(string) || isNaN(string)) );
 
     });
+
+    createFilters(env);
 
     env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
 

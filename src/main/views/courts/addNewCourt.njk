@@ -8,7 +8,7 @@
 {% from "macros/csrf.njk" import csrfProtection %}
 
 {% extends "template.njk" %}
-{% block pageTitle %}Add new court{% endblock %}
+{% block pageTitle %}{{ 'Add new court' | titleEnhancer }}{% endblock %}
 
 {% block content %}
   {% if created === true %}
@@ -156,7 +156,7 @@
             {% set serviceAreaErrorDesc = formErrors.serviceAreaError.text %}
             <div class="govuk-form-group govuk-form-group--error">
               {{ govukErrorMessage({
-                  text: serviceAreaErrorDesc}) 
+                  text: serviceAreaErrorDesc})
               }}
           {% else %}
             <div class="govuk-form-group">
@@ -164,15 +164,15 @@
               {% for items in allServiceAreasItems|sort(false, true, 'text') | slice(2) %}
                 <div class="govuk-grid-column-one-half">
                   <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                    {% for item in items %}       
+                    {% for item in items %}
                         <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" data-inputType="cases-heard" aria-checked={{ item.checked }} data-id 
+                          <input class="govuk-checkboxes__input" data-inputType="cases-heard" aria-checked={{ item.checked }} data-id
                            id="cases-heard-checkbox-{{ index.id }}" name="serviceAreaItems" type="checkbox" value='{{ item.value }}' {{ "checked" if item.checked }}>
                           <label class="govuk-label govuk-checkboxes__label" for="serviceAreaItems">
                             {{ item.text }}
                           </label>
-                        </div>                     
-                    {% endfor %}  
+                        </div>
+                    {% endfor %}
                   </div>
                 </div>
               {% endfor %}

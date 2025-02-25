@@ -6,7 +6,7 @@
 {% extends "template.njk" %}
 
 {% block pageTitle %}
-  Edit Court
+  {{['Edit Court', name ] | titleEnhancer}}
 {% endblock %}
 
 {% block content %}
