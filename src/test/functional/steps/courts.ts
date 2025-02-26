@@ -1,7 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
-import {FunctionalTestHelpers} from "../utlis/helpers";
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 Then('I can view the courts or tribunals in a list format', async () => {
   const elementExist = await I.checkElement('#courts');

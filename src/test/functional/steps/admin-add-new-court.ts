@@ -1,7 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
-import {FunctionalTestHelpers} from "../utlis/helpers";
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function populateField(fieldElement: string, value: string) {
   expect(await I.checkElement(fieldElement)).equal(true);
