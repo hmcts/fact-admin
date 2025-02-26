@@ -24,6 +24,7 @@ Feature: courts audits
     Then I check action end time
     Then I click on courts link
     When I click on audits link
+    Then I am on the "Audits" page
     Then I select "havant-justice-centre" from courts
     Then I enter between and end date
     Then I click search audit button

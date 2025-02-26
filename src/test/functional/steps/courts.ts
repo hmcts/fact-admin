@@ -1,6 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import {expect} from 'chai';
 import * as I from '../utlis/puppeteer.util';
+import {FunctionalTestHelpers} from "../utlis/helpers";
 
 Then('I can view the courts or tribunals in a list format', async () => {
   const elementExist = await I.checkElement('#courts');
@@ -23,7 +24,7 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
   const editCourtHeadingText = await I.getElementText(editCourtHeading);
-  expect(pageTitle).equal('Edit Court');
+  expect(pageTitle).equal('Edit Court - ' + courtName + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
   expect(editCourtHeadingText).equal('Editing - ' + courtName);
   await I.checkElementIsAnchor('#courts');
   await I.checkElementIsAnchor('#my-account');
