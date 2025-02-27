@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks';
+import {SelectItem} from '../../types/CourtPageData';
 
 const DEPARTMENT_SERVICE = 'Find a Court or Tribunal Admin Service – GOV.UK';
 const DASH = '-';
@@ -44,6 +45,29 @@ function createFilters(env: nunjucks.Environment): void {
     return (!(regExp.test(string) || isNaN(string)) );
 
   });
+
+  env.addFilter('selectFilter', selectFilter);
+}
+
+function selectFilter(arr: SelectItem[], selectedId: string) {
+  // Set selected property on selected item
+  let itemSelected = false;
+  arr.forEach(si => {
+    if (si.value?.toString() === selectedId?.toString()) {
+      si.selected = true;
+      itemSelected = true;
+    } else {
+      si.selected = false;
+    }
+  });
+
+  // If we don't have a selected item, add an empty item and select this.
+  // This means the select control will show an empty value if there is no selection or
+  // if the selected item doesn't exist in the array of items in the select.
+  if (!itemSelected) {
+    arr.splice(0, 0, {value: '', text: '', selected: true});
+  }
+  return arr;
 }
 
 export default createFilters;
