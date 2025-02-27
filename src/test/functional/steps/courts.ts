@@ -33,6 +33,19 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   await I.checkElementIsAnchor('#general');
 });
 
+Then('I am redirected to the Details page for the {string}', async (courtName: string) => {
+  const pageTitle = await I.getPageTitle();
+  const editCourtHeading = await I.getElement('#court-name');
+  const editCourtHeadingText = await I.getElementText(editCourtHeading);
+  expect(pageTitle).equal('Details - ' + courtName + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(editCourtHeadingText).equal('Details - ' + courtName);
+  await I.checkElementIsAnchor('#courts');
+  await I.checkElementIsAnchor('#my-account');
+  await I.checkElementIsAnchor('#logout');
+  await I.checkElementIsAnchor('#view-in-new-window');
+  await I.checkElementIsAnchor('#general');
+});
+
 When('I click view next to court with {string}', async (courtSlug: string) => {
   const selector = '#view-' + courtSlug;
   const elementExist = await I.checkElement(selector);

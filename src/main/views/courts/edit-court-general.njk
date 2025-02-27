@@ -6,7 +6,11 @@
 {% extends "template.njk" %}
 
 {% block pageTitle %}
-  {{['Edit Court', name ] | titleEnhancer}}
+  {% if isViewer %}
+    {{['Details', name ] | titleEnhancer}}
+   {% else %}
+    {{['Edit Court', name ] | titleEnhancer}}
+   {% endif %}
 {% endblock %}
 
 {% block content %}
