@@ -22,7 +22,7 @@ When('I remove all existing Additional Links entries and save', async () => {
 });
 
 Then('a green update message is displayed in the Additional Links tab {string}', async (successMsg: string) => {
-  const selector = '#additionalLinksContent > div > h1';
+  const selector = '#additionalLinksContent > div > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
