@@ -13,7 +13,7 @@ Feature: Local authorities
   Scenario Outline: Local authorities updated successfully
 
     When I click edit next to court with "<view_court_slug>"
-    And I am redirected to the Edit Court page for the chosen court
+    And I am redirected to the Edit Court page for the "<view_court_name>"
     And I hover over types nav element
     And I click the types tab
     When I check code errors
@@ -27,13 +27,13 @@ Feature: Local authorities
     Then Success message is displayed for local authorities with summary "Local authorities updated"
 
     Examples:
-      | view_court_slug                            |
-      | birmingham-civil-and-family-justice-centre |
+      | view_court_slug                            | view_court_name                            |
+      | birmingham-civil-and-family-justice-centre | Birmingham Civil and Family Justice Centre |
 
   Scenario Outline: When there are no area of law selected for the chosen court user should get proper error message when he clicks on local authorities
 
     When I click edit next to court with "<view_court_slug>"
-    And I am redirected to the Edit Court page for the chosen court
+    And I am redirected to the Edit Court page for the "<view_court_name>"
     And I hover over types nav element
     And I click the types tab
     When I check code errors
@@ -48,13 +48,13 @@ Feature: Local authorities
     Then An error is displayed for local authorities with title "There is a problem" and summery "You need to enable relevant family court areas of law"
 
     Examples:
-      | view_court_slug      |
-      | administrative-court |
+      | view_court_slug      | view_court_name      |
+      | administrative-court | Administrative Court |
 
     Scenario Outline: When Family court type is not selected for the chosen court local authorities tab should be disabled for the user.
 
       When I click edit next to court with "<view_court_slug>"
-      Then I am redirected to the Edit Court page for the chosen court
+      Then I am redirected to the Edit Court page for the "<view_court_name>"
       And I hover over types nav element
       And I click the types tab
       When I check code errors
@@ -64,5 +64,5 @@ Feature: Local authorities
       Then The local authorities tab should be disabled
 
       Examples:
-        | view_court_slug          |
-        | administrative-court     |
+        | view_court_slug      | view_court_name      |
+        | administrative-court | Administrative Court |

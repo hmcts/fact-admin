@@ -12,7 +12,7 @@ Feature: Court Open and Access Scheme flags
   Scenario Outline: Open
 
     When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "<view_court_name>"
     When I click the open checkbox
     And I click the general info save button
     Then a success message is displayed on the general info tab "General Information updated"
@@ -21,12 +21,12 @@ Feature: Court Open and Access Scheme flags
     Then a success message is displayed on the general info tab "General Information updated"
 
     Examples:
-      | view_court_slug                            |
-      | birmingham-district-probate-registry       |
+      | view_court_slug                            | view_court_name                      |
+      | birmingham-district-probate-registry       | Birmingham District Probate Registry |
 
   Scenario Outline: Access scheme
     When I click edit next to court with "<view_court_slug>"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "<view_court_name>"
     When I click the Participates in access scheme checkbox
     And I click the general info save button
     Then a success message is displayed on the general info tab "General Information updated"
@@ -35,5 +35,5 @@ Feature: Court Open and Access Scheme flags
     Then a success message is displayed on the general info tab "General Information updated"
 
     Examples:
-      | view_court_slug                            |
-      | birmingham-district-probate-registry       |
+      | view_court_slug                            | view_court_name                      |
+      | birmingham-district-probate-registry       | Birmingham District Probate Registry |

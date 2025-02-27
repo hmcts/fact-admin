@@ -15,7 +15,7 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "stafford-combined-court-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Stafford Combined Court Centre"
     When I hover over general nav element
     When I click the general tab
     Then I can view the urgent notices
