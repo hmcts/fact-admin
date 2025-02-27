@@ -94,7 +94,7 @@ Then('I click the Save Addresses button', async () => {
 });
 
 Then('A green message is displayed for the updated address {string}', async (message: string) => {
-  const selector = '#addressesContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#addressesContent > div.govuk-panel.govuk-panel--confirmation > h2';
   expect(await I.checkElement(selector)).equal(true);
   const messageUpdate = await I.getElement(selector);
   expect(await I.getElementText(messageUpdate)).equal(message);
