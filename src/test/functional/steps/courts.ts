@@ -33,6 +33,7 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   await I.checkElementIsAnchor('#general');
 });
 
+// This step checks how the 'Edit Court' page should look for those with the viewer role.
 Then('I am redirected to the Details page for the {string}', async (courtName: string) => {
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
