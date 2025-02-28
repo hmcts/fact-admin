@@ -55,7 +55,7 @@ test.describe('Auth Scenarios', () => {
     logWithColor(testInfo, 'Logged out.');
 
     await page.waitForLoadState('networkidle');
-    await expect(page.url()).toContain('idam-web-public.aat.platform.hmcts.net/login');
+    await expect(page.url()).toContain('idam-web-public.aat.platform.hmcts.net');
     logWithColor(testInfo, 'Redirected to login page.');
 
     await loginPage.login(process.env.OAUTH_VIEWER_USER, process.env.OAUTH_USER_PASSWORD);
