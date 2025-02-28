@@ -5,10 +5,10 @@ const DEPARTMENT_SERVICE = 'Find a Court or Tribunal Admin Service – GOV.UK';
 const DASH = '-';
 
 function createFilters(env: nunjucks.Environment): void {
-  // Takes a string or an array of strings and joins them together with dashes.
-  // Also appends information about the service. To be used in nunjucks filters to make titles more descriptive
-  // Note: If an empty list or string is given as an input then the department/service will be returned.
   env.addFilter('titleEnhancer', function (titleParts: string | string[]) {
+    // Takes a string or an array of strings and joins them together with dashes.
+    // Also appends information about the service. To be used in nunjucks templates to make titles more descriptive
+    // Note: If an empty list or string is given as an input then the department/service will be returned.
     if (typeof titleParts === 'string') {
 
       const trimmedPart = titleParts.trim();
