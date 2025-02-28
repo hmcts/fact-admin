@@ -55,9 +55,9 @@
         'id': postcode, 'checked': true, 'disabled': true}), postcodesCheckboxItems) %}
     {% endfor %}
 
-    <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
-      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(2) %}
-        <div class="govuk-grid-column-one-half">
+    <div id="postcodesList" class="govuk-grid-row">
+      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(3) %}
+        <div class="govuk-grid-column-one-third">
             {{ govukCheckboxes({
               idPrefix: "postcodes-checkbox",
               name: "postcodesCheckboxItems",
@@ -128,9 +128,9 @@
       }) }}
     </div>
 
-    <div id="postcodesList" class="govuk-grid-row visible-scrollbar scrollable", role="scrollbar">
-      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(2) %}
-        <div class="govuk-grid-column-one-half">
+    <div id="postcodesList" class="govuk-grid-row">
+      {%- for items in postcodesCheckboxItems | sort(false,true,'text') | slice(3) %}
+        <div class="govuk-grid-column-one-third">
             {{ govukCheckboxes({
               idPrefix: "postcodes-checkbox",
               name: "postcodesCheckboxItems",
