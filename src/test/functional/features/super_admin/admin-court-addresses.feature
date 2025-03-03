@@ -9,7 +9,7 @@ Feature: Court-addresses
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "barnsley-law-courts"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Barnsley Law Courts"
     And I hover over types nav element
     Then I click the Addresses tab
 #

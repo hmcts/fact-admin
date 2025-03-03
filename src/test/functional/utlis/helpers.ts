@@ -3,6 +3,8 @@ import {expect} from 'chai';
 
 export class FunctionalTestHelpers {
 
+  public static DEPARTMENT_SERVICE = 'Find a Court or Tribunal Admin Service – GOV.UK';
+
   public static async clickButtonAndCheckFieldsetAdded(containerId: string, buttonName: string, fieldsetClass = '') {
     const fieldsetSelector = `${containerId} fieldset${fieldsetClass}`;
     const numFieldsets = await I.countElement(fieldsetSelector);

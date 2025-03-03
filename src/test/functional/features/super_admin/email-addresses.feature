@@ -9,7 +9,7 @@ Feature: Email-addresses
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "barnet-civil-and-family-courts-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Barnet Civil and Family Courts Centre"
     When I hover over emails nav element
     Then I click the Emails tab
 
