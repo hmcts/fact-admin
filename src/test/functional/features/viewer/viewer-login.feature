@@ -10,7 +10,7 @@ Feature: Login/Logout
     Then the system will sign me in
     And I cannot view super admin content
     When I click edit next to court with "bexley-magistrates-court"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Details page for the "Bexley Magistrates' Court"
 
   Scenario Outline: viewer can log in and only see specific tabs for a selected court
     And It is "<shouldBeVisible>" that the "<tab>" tab is visible

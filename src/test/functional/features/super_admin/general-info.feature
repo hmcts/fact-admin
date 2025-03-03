@@ -12,7 +12,7 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "amersham-law-courts"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Amersham Law Courts"
     When I hover over general nav element
     When I click the general tab
     Then I enter "" in the Name textbox
@@ -24,7 +24,7 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "bankruptcy-court-high-court"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Bankruptcy Court (High Court)"
     When I hover over general nav element
     When I click the general tab
     Then I enter "Amersham Law Courts" in the Name textbox
@@ -36,7 +36,7 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "north-west-regional-divorce-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "North West Regional Divorce Centre"
     When I hover over general nav element
     When I click the general tab
     When I add an "intro paragraph test" in the rich editor field provided "#sc_intro_paragraph"
@@ -49,7 +49,7 @@ Feature: General Info
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "amersham-law-courts"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Amersham Law Courts"
     When I hover over general nav element
     When I click the general tab
     Then I edit common platform checkbox

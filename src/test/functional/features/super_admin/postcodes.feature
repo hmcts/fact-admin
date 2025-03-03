@@ -10,7 +10,7 @@ Feature: Postcodes
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "county-court-money-claims-centre-ccmcc"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "County Court Money Claims Centre (CCMCC)"
     And I hover over types nav element
     When I click the types tab
     And I will make sure County court type is selected

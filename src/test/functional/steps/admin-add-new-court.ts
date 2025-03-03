@@ -1,6 +1,7 @@
 import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {expect} from 'chai';
+import {FunctionalTestHelpers} from '../utlis/helpers';
 
 async function populateField(fieldElement: string, value: string) {
   expect(await I.checkElement(fieldElement)).equal(true);
@@ -18,6 +19,8 @@ Then('I am redirected to the add new court {string} page', async (addNewCourt: s
   const selector = '#addNewCourtForm > h1';
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(addNewCourt);
+  const pageTitle = await I.getPageTitle();
+  expect(pageTitle).equal(formTitle + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
 });
 
 Given('I entered the new court name as {string} in the name text box', async (name: string) => {

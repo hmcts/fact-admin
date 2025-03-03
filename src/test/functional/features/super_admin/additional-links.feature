@@ -10,7 +10,7 @@ Feature: Additional-links
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "aberystwyth-justice-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Aberystwyth Justice Centre"
     When I hover over Additional Links nav element
     Then I click the Additional Links tab
     When I remove all existing Additional Links entries and save
