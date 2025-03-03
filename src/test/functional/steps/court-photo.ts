@@ -51,6 +51,6 @@ When('I click update photo button', async () => {
 });
 
 Then('A green message is displayed for {string}', async (message: string) => {
-  const selector = '#photoContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#photoContent > div.govuk-panel.govuk-panel--confirmation > h2';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });

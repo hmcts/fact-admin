@@ -8,7 +8,7 @@ Feature: Phone Numbers
     When I fill in the Username and Password fields with my authenticated credentials
     And click the Sign In button
     When I click edit next to court with "stafford-combined-court-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Stafford Combined Court Centre"
     When I hover over phone numbers nav element
     When I click the phone numbers tab
     When I remove all existing phone number entries and save

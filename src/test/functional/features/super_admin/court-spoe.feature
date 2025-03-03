@@ -10,7 +10,7 @@ Feature: Spoe tab
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "cambridge-crown-court"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Cambridge Crown Court"
     When I hover over opening hours nav element
     When I click spoe tab
 

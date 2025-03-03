@@ -12,8 +12,10 @@ When('I click on lists link', async () => {
 
 Then('I am redirected to the {string} page', async (editListTitle: string) => {
   const selector = '#main-content > h1';
-  const pageTitleElement = await I.getElement(selector);
-  expect(await I.getElementText(pageTitleElement)).equal(editListTitle);
+  const pageHeaderElement = await I.getElement(selector);
+  expect(await I.getElementText(pageHeaderElement)).equal(editListTitle);
+  const pageTitle = await I.getPageTitle();
+  expect(pageTitle).equal(editListTitle + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
 });
 
 When('I hover over the tab title', async () => {
@@ -58,7 +60,7 @@ When('I click on save local authority list', async () => {
 });
 
 Then('Success message is displayed for local authorities list with summary {string}', async (successMsg: string) => {
-  const selector = '#localAuthoritiesListContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#localAuthoritiesListContent > div.govuk-panel.govuk-panel--confirmation > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });
