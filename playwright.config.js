@@ -23,6 +23,7 @@ module.exports = defineConfig({
     navigationTimeout: 15000,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
+    slowMo: 250,
 
     // Add screenshot capture for failures
     screenshot: 'only-on-failure',

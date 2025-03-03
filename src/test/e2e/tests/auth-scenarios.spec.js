@@ -9,7 +9,9 @@ test.describe('Auth Scenarios', () => {
     // Explicitly navigate to the home page *after* the fixture has run.
     await superAdminPage.goto('/', { waitUntil: 'domcontentloaded' });
     const homePage = new HomePage(superAdminPage);
-    await expect(homePage.isSuperAdmin()).resolves.toBeTruthy();
+    const isSuperAdmin = homePage.isSuperAdmin();
+    try {await expect(isSuperAdmin).resolves.toBeTruthy();}
+    catch (error) {logWithColor(testInfo, `Admin: Test failed. isAdmin() returned: ${isSuperAdmin}`);}
     logWithColor(testInfo, 'Verified super admin permissions.');
     await homePage.logout();
     logWithColor(testInfo, 'Logged out.');

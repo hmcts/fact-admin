@@ -124,7 +124,7 @@ class EditCourtPage extends BasePage {
   }
 
   async getUpdateMessage() {
-    const selector = '#applicationProgressionContent > div > h1';
+    const selector = '#applicationProgressionContent > div > h2';
     await this.page.waitForSelector(selector);
     return await this.page.textContent(selector);
   }

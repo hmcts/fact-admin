@@ -120,7 +120,7 @@ async function loginWithRole(page, role, testInfo) {
     console.log(`Already logged in for role: ${role} in file: ${testFilePath}`);
     // CRITICAL: Navigate to the base URL *only* if we skip login.
     await page.goto(process.env.CI ? process.env.TEST_URL : 'http://localhost:3300');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
   }
   // Do *NOT* log out.
