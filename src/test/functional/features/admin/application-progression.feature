@@ -9,7 +9,7 @@ Feature: Application Progression
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "probate-service-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Probate Service Centre"
     When I hover over nav element
     When I click the application progression tab
 

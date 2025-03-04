@@ -23,7 +23,7 @@ When('I remove all existing application types entries and save', async () => {
 });
 
 Then('a green update message Application progression updated {string}', async (message: string) => {
-  const selector = '#applicationProgressionContent > div > h1';
+  const selector = '#applicationProgressionContent > div > h2';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
@@ -68,7 +68,7 @@ Then('I click on add new application progression',async () => {
 });
 
 Then('a green update message showing Application progression updated', async (message: string) =>  {
-  const selector = '#applicationProgressionContent > div > h1';
+  const selector = '#applicationProgressionContent > div > h2';
   await  FunctionalTestHelpers.checkGreenMessageSuccess(selector, message);
 });
 
