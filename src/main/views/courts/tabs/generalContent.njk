@@ -150,6 +150,7 @@
     </h2>
     <textarea class="govuk-textarea rich-editor" id="info" name="info"
               rows="3">{{ generalInfo.info }}</textarea>
+    {{ tinyMCEAttribution() }}
   </div>
 
   <div class="govuk-form-group">
@@ -160,6 +161,7 @@
     </h2>
     <textarea class="govuk-textarea rich-editor" id="info_cy" name="info_cy"
               rows="3">{{ generalInfo.info_cy }}</textarea>
+    {{ tinyMCEAttribution() }}
   </div>
 {% endif %}
 
