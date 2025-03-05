@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../macros/_tiny-attribution.njk" import tinyMCEAttribution %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 <h2 class="govuk-heading-l">General</h2>
@@ -97,7 +98,9 @@
     </span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
               rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph }}</textarea>
+    {{ tinyMCEAttribution() }}
   </div>
+
 
   <div class="govuk-form-group">
     <h2 class="govuk-label-wrapper">
@@ -107,6 +110,7 @@
     </h2>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
               rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
+    {{ tinyMCEAttribution() }}
   </div>
 
 {% endif %}
@@ -123,6 +127,7 @@
   </span>
   <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice" name="alert"
             rows="2" maxlength="250">{{ generalInfo.alert }}</textarea>
+    {{ tinyMCEAttribution() }}
 </div>
 
 <div class="govuk-form-group">
@@ -133,6 +138,7 @@
   </h2>
   <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice-welsh" name="alert_cy"
             rows="2" maxlength="250">{{ generalInfo.alert_cy }}</textarea>
+    {{ tinyMCEAttribution() }}
 </div>
 
 {% if isSuperAdmin %}
