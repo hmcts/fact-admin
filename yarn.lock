@@ -6610,7 +6610,7 @@ __metadata:
     applicationinsights: "npm:^2.3.3"
     autobind-decorator: "npm:^2.4.0"
     awilix: "npm:^7.0.3"
-    axios: "npm:1.7.9"
+    axios: "npm:1.8.2"
     babel-eslint: "npm:^10.1.0"
     babel-loader: "npm:^9.1.2"
     body-parser: "npm:^1.20.3"
