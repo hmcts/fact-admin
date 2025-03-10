@@ -37,7 +37,7 @@ test.describe('General Info', () => {
     await generalInfoPage.setCommonPlatformFlag(true);
 
     //Crucially, wait for the POST request to complete.
-    const [response] = await Promise.all([
+    const [,] = await Promise.all([
       adminPage.waitForResponse(resp => resp.url().includes('/general-info') && resp.status() === 200),
       generalInfoPage.clickSave() //This needs to be second
     ]);
@@ -53,7 +53,7 @@ test.describe('General Info', () => {
     await generalInfoPage.setPUASFlag(false);
     await generalInfoPage.setCommonPlatformFlag(false);
     //Crucially, wait for the POST request to complete.
-    const [response2] = await Promise.all([
+    const [,] = await Promise.all([
       adminPage.waitForResponse(resp => resp.url().includes('/general-info') && resp.status() === 200),
       generalInfoPage.clickSave() //This needs to be second
     ]);
