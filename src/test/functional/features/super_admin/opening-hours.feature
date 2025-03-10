@@ -9,7 +9,7 @@ Feature: Opening Hours
     When I fill in the Username and Password fields with my super user authenticated credentials
     And click the Sign In button
     When I click edit next to court with "basingstoke-county-court-and-family-court"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Basingstoke County Court and Family Court"
     When I hover over opening hours nav element
     When I click the opening hours tab
     When I remove all existing opening hours entries and save

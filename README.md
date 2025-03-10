@@ -3,7 +3,6 @@
 Front end admin interface for the Find a Court or Tribunal Service.
 
 ## Table of Contents
-
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Running the application](#running-the-application)

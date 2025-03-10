@@ -32,7 +32,7 @@ When('And I click on update cases heard', async () => {
 });
 
 Then('Success message is displayed for cases heard with summary {string}', async (successMsg: string) => {
-  const selector = '#casesHeardContent > div.govuk-panel.govuk-panel--confirmation > h1';
+  const selector = '#casesHeardContent > div.govuk-panel.govuk-panel--confirmation > h2';
   const successTitleElement = await I.getElement(selector);
   expect(await I.getElementText(successTitleElement)).equal(successMsg);
 });

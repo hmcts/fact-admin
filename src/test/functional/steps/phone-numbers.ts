@@ -79,10 +79,10 @@ Then('the phone number entry in last position has description at index {int} num
 });
 
 Then('a green message is displayed for updated entries {string}', async (message: string) => {
-  const selector = '#phoneNumbersContent > div > h1';
+  const selector = '#phoneNumbersContent > div > h2';
   expect(await I.checkElement(selector)).equal(true);
 
-  const messageUpdate = await I.getElement('#phoneNumbersContent > div > h1');
+  const messageUpdate = await I.getElement('#phoneNumbersContent > div > h2');
   expect(await I.getElementText(messageUpdate)).equal(message);
 });
 

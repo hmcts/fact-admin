@@ -12,7 +12,7 @@ Feature: courts audits
 
   Scenario: view audits for super admin user
     When I click edit next to court with "havant-justice-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Havant Justice Centre"
     When I hover over opening hours nav element
     When I click the opening hours tab
     Then I check action start time
@@ -24,6 +24,7 @@ Feature: courts audits
     Then I check action end time
     Then I click on courts link
     When I click on audits link
+    Then I am on the "Audits" page
     Then I select "havant-justice-centre" from courts
     Then I enter between and end date
     Then I click search audit button

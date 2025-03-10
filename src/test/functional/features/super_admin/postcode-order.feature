@@ -10,7 +10,7 @@ Feature: Postcodes order
     And click the Sign In button
     When I select Include closed courts
     When I click edit next to court with "birmingham-civil-and-family-justice-centre"
-    Then I am redirected to the Edit Court page for the chosen court
+    Then I am redirected to the Edit Court page for the "Birmingham Civil and Family Justice Centre"
     And I hover over types nav element
     When I click the types tab
     And I will make sure County court type is selected
