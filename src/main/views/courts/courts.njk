@@ -138,7 +138,9 @@
           text: 'Name',
           attributes: {
             id: 'tableCourtsName',
-            tabIndex: 0
+            role: 'button',
+            'aria-sort': 'none',
+            'aria-label': 'Sort by name'
           },
           classes: 'govuk-!-width-one-half courts-table-header courts-table-header-inactive'
         },
@@ -147,7 +149,9 @@
           text: "Last updated",
           attributes: {
             id: 'tableCourtsUpdated',
-            tabIndex: 0
+            role: 'button',
+            'aria-sort': 'none',
+            'aria-label': 'Sort by last updated date'
           },
           classes: 'courts-table-header courts-table-header-inactive'
         },
