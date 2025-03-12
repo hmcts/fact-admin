@@ -43,3 +43,6 @@ coverage/
  !.yarn/unplugged
  !.yarn/plugins
  .yarn/cache
+
+ # for local func tests
+ .env
