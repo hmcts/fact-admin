@@ -158,7 +158,7 @@
     "follow-redirects": "^1.15.6",
     "express": "^4.20.0",
     "ip": "https://registry.npmjs.org/neoip/-/neoip-2.1.0.tgz",
-    "axios": "^1.7.4",
+    "axios": "^1.8.3",
     "postcss": "^8.4.33",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
