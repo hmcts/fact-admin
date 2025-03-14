@@ -22,7 +22,7 @@ class PallyIssue {
   typeCode: number;
 }
 
-function loginPally(): Pa11yResult {
+function loginPally(): Promise<Pa11yResult> {
   return pa11y(config.TEST_URL + '/login', {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
     actions: [
@@ -34,9 +34,8 @@ function loginPally(): Pa11yResult {
   });
 }
 
-beforeAll((done /* call it or remove it*/) => {
-  loginPally();
-  done(); // calling it
+beforeAll(async () => {
+  await loginPally();
 });
 
 function ensurePageCallWillSucceed(url: string): Promise<void> {
