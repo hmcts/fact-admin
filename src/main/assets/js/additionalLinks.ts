@@ -104,7 +104,9 @@ export class AdditionalLinksController {
     this.renameInputElement(this.displayNameCyInputName, this.displayNameCyInputName);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
     this.renameHeader(this.header);
-
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnAdditionalLink');
   }
 
   private renameInputElement(name: string, id: string): void {
@@ -119,6 +121,30 @@ export class AdditionalLinksController {
     $(`${this.tabId} h3[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
       .text(idx => `Add New Additional Link ${idx+1}`);
+  }
+
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.tabId} button[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} opening hour ${idx+1}`);
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.tabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear additional link ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove additional link ${idx+1}`;
+      } else {
+        newAriaLabel = `action additional link ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
   }
 
   private getInputName(name: string, index: number): string {
