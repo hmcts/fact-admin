@@ -121,6 +121,9 @@ export class PhoneNumbersController {
     this.renameFormElement('input', this.faxInputName);
     this.renameFormElement('input', this.hiddenNewInputName);
     this.renameHeader(this.header);
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnPhoneNumbers');
   }
 
   private renameFormElement(elementType: string, name: string): void {
@@ -135,6 +138,31 @@ export class PhoneNumbersController {
     $(`${this.tabId} h3[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
       .text(idx => `Add New Phone Number ${idx+1}`);
+  }
+
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.tabId} button[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} contact number ${idx+1}`);
+
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.tabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear contact number ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove contact number ${idx+1}`;
+      } else {
+        newAriaLabel = `action contact number ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
   }
 
   private updateContent(res: any): void {

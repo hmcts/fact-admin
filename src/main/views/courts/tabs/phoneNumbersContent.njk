@@ -126,14 +126,14 @@
     {% if isNew === false %}
       {{ govukButton({
         text: "Remove",
-        name: "deletePhoneNumber",
+        name: "contacts[" + links.length +"][actionOnPhoneNumbers]",
         type: "button",
         classes: "govuk-button--secondary deletePhoneNumber"
       }) }}
     {% else %}
       {{ govukButton({
         text: "Clear",
-        name: "clearPhoneNumber",
+        name: "contacts[" + links.length +"][actionOnPhoneNumbers]",
         type: "button",
         classes: "govuk-button--secondary clearPhoneNumber"
       }) }}
@@ -143,18 +143,18 @@
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "contacts[" + links.length +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up contact number " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "contacts[" + links.length +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down contact number " + loop.index }
       }) }}
     </div>
   </div>
@@ -231,7 +231,7 @@
     <div class="govuk-grid-column-three-quarters">
       {{ govukButton({
         text: "Clear",
-        name: "clearPhoneNumber",
+        name: "contacts[" + links.length +"][actionOnPhoneNumbers]",
         type: "button",
         classes: "govuk-button--secondary clearPhoneNumber"
       }) }}
@@ -239,18 +239,18 @@
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "contacts[" + links.length +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up phone number " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "contacts[" + links.length +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down phone number " + loop.index }
       }) }}
     </div>
   </div>
