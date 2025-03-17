@@ -106,34 +106,36 @@
     {% if isNew === false %}
       {{ govukButton({
         text: "Remove",
-        name: "deleteEmail",
+        name: "emails[" + loop.index +"][actionOnEmailAddress]",
         type: "button",
-        classes: "govuk-button--secondary deleteEmail"
+        classes: "govuk-button--secondary deleteEmail",
+        attributes: { "aria-label": "remove email address " + loop.index }
       }) }}
     {% else %}
       {{ govukButton({
         text: "Clear",
-        name: "clearEmail",
+        name: "emails[" + loop.index +"][actionOnEmailAddress]",
         type: "button",
-        classes: "govuk-button--secondary clearEmail"
+        classes: "govuk-button--secondary clearEmail",
+        attributes: { "aria-label": "clear email address " + loop.index }
       }) }}
     {% endif %}
     </div>
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "emails[" + loop.index +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up email address " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "emails[" + loop.index +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down email address " + loop.index }
       }) }}
     </div>
   </div>
@@ -189,27 +191,28 @@
     <div class="govuk-grid-column-three-quarters">
       {{ govukButton({
         text: "Clear",
-        name: "clearOpeningTime",
+        name: "emails[" + loop.index +"][actionOnEmailAddress]",
         type: "button",
-        classes: "govuk-button--secondary clearOpeningTime"
+        classes: "govuk-button--secondary clearOpeningTime",
+        attributes: { "aria-label": "clear email address " + loop.index }
       }) }}
     </div>
 
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "emails[" + loop.index +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up email address " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "emails[" + loop.index +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down email address " + loop.index }
       }) }}
       </div>
   </div>

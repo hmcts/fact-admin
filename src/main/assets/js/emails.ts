@@ -112,6 +112,9 @@ export class EmailsController {
     this.renameInputElement(this.explanationInputName, this.explanationInputName);
     this.renameInputElement(this.explanationCyInputName, this.explanationCyInputId);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnEmailAddress');
   }
 
   private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
@@ -126,5 +129,29 @@ export class EmailsController {
       .attr('name', idx => EmailsController.getInputName(attributeInputName, idx))
       .attr('id', idx => `${attributeInputId}-${idx}`)
       .siblings('label').attr('for', idx => `${attributeInputId}-${idx}`);
+  }
+
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.tabId} button[name$="[${name}]"]`)
+      .attr('name', idx => EmailsController.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} email address ${idx+1}`);
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.tabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear email address ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove email address ${idx+1}`;
+      } else {
+        newAriaLabel = `action email address ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
   }
 }
