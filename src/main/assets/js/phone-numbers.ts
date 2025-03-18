@@ -123,7 +123,7 @@ export class PhoneNumbersController {
     this.renameHeader(this.header);
     this.renameButtonAriaLabel('moveUp', 'move up');
     this.renameButtonAriaLabel('moveDown', 'move down');
-    this.renameActionButtonAriaLabel('actionOnPhoneNumbers');
+    this.renameActionButtonAriaLabel('actionOnPhoneNumber');
   }
 
   private renameFormElement(elementType: string, name: string): void {
@@ -144,7 +144,7 @@ export class PhoneNumbersController {
     // replace the index within the aria label.
     $(`${this.tabId} button[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
-      .attr('aria-label', idx => `${labelText} contact number ${idx+1}`);
+      .attr('aria-label', idx => `${labelText} phone number ${idx+1}`);
 
   }
 
@@ -155,11 +155,11 @@ export class PhoneNumbersController {
       let newAriaLabel;
 
       if(buttonText.includes('clear')) {
-        newAriaLabel = `clear contact number ${idx+1}`;
+        newAriaLabel = `clear phone number ${idx+1}`;
       } else if (buttonText.includes('remove')) {
-        newAriaLabel = `remove contact number ${idx+1}`;
+        newAriaLabel = `remove phone number ${idx+1}`;
       } else {
-        newAriaLabel = `action contact number ${idx+1}`;
+        newAriaLabel = `action phone number ${idx+1}`;
       }
       $(this).attr('aria-label', newAriaLabel);
     });
