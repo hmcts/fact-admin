@@ -134,7 +134,7 @@ export class CourtTypesController {
     // replace the index within the aria label.
     $(`${this.tabId} button[name$="[${name}]"]`)
       .attr('name', idx => this.getInputName(name, idx))
-      .attr('aria-label', idx => `${labelText} court type ${idx+1}`);
+      .attr('aria-label', idx => `${labelText} dx code ${idx+1}`);
   }
 
   private renameActionButtonAriaLabel(name: string): void {

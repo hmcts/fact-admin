@@ -246,7 +246,7 @@
           name: "dxCodes[" + loop.index +"][actionOnCourtType]",
           type: "button",
           classes: "govuk-button--secondary deleteDxCode",
-          attributes: { "aria-label": "remove court type " + loop.index }
+          attributes: { "aria-label": "remove dx code " + loop.index }
         }) }}
         {% endif %}
 
@@ -256,7 +256,7 @@
              name: "dxCodes[" + loop.index +"][actionOnCourtType]",
              type: "button",
              classes: "govuk-button--secondary clearDxCode",
-             attributes: { "aria-label": "clear court type " + loop.index }
+             attributes: { "aria-label": "clear dx code " + loop.index }
            }) }}
       {% endif %}
 
@@ -305,20 +305,12 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
-
-          {{ govukButton({
-            text: "Remove",
-            name: "dxCodes[" + loop.index +"][actionOnCourtType]",
-            type: "button",
-            classes: "govuk-button--secondary deleteDxCode",
-            attributes: { "aria-label": "remove court type " + loop.index }
-          }) }}
-
           {{ govukButton({
             text: "Clear",
             name: "dxCodes[" + loop.index +"][actionOnCourtType]",
             type: "button",
-            classes: "govuk-button--secondary clearDxCode"
+            classes: "govuk-button--secondary clearDxCode",
+            attributes: { "aria-label": "clear dx code " + loop.index }
           }) }}
       </div>
     </div>
