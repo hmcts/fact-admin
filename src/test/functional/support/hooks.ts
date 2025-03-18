@@ -1,26 +1,20 @@
-import {
-  After,
-  AfterAll,
-  Before,
-  BeforeAll,
-  setDefaultTimeout,
-} from 'cucumber';
+import {After, AfterAll, Before, BeforeAll, setDefaultTimeout} from 'cucumber';
 import puppeteer from 'puppeteer';
-import { puppeteerConfig } from '../puppeteer.config';
-import { FeatureFlagHelper } from '../utlis/feature-flag-helper';
-import os from 'os';
+import {puppeteerConfig} from '../puppeteer.config';
+import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
+import fs from 'fs';
 import path from 'path';
 
 const scope = require('./scope');
 
 export const launchBrowser = async () => {
-  const uniqueUserDataDir = path.join(
-    os.tmpdir(),
-    `puppeteer_profile_${Date.now()}`
-  );
+  const userDataDir = path.join(process.cwd(), 'src', 'test', 'functional', 'user_data');
+  if (fs.existsSync(userDataDir)) {
+    fs.rmSync(userDataDir, { recursive: true, force: true });
+  }
   scope.browser = await puppeteer.launch({
     ...puppeteerConfig,
-    userDataDir: uniqueUserDataDir,
+    userDataDir
   });
 };
 
@@ -38,7 +32,6 @@ BeforeAll(async () => {
 
   await launchBrowser();
   await f.init();
-  // Ensure allFlags is always an object
   allFlags = f.getAllFlags() || {};
 });
 
