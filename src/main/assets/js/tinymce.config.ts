@@ -9,6 +9,7 @@ tinymce.init({
   help_accessibility: true,
   height : 250,
   promotion: false,
+  branding: false,
   tabfocus_elements : ':prev,:next',
   link_default_target: '_blank'
 });

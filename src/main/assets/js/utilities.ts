@@ -111,6 +111,7 @@ export class Utilities {
       height: 180,
       help_accessibility: true,
       promotion: false,
+      branding: false,
       tabfocus_elements : ':prev,:next',
       link_default_target: '_blank'
     });
@@ -123,6 +124,7 @@ export class Utilities {
       toolbar: 'link bold italic underline',
       height: 180,
       help_accessibility: true,
+      branding: false,
       promotion: false,
       tabfocus_elements : ':prev,:next',
       link_default_target: '_blank'
