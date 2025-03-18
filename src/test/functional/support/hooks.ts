@@ -4,14 +4,14 @@ import {
   Before,
   BeforeAll,
   setDefaultTimeout,
-} from 'cucumber';
-import puppeteer from 'puppeteer';
-import { puppeteerConfig } from '../puppeteer.config';
-import { FeatureFlagHelper } from '../utlis/feature-flag-helper';
-import os from 'os';
-import path from 'path';
+} from "cucumber";
+import puppeteer from "puppeteer";
+import { puppeteerConfig } from "../puppeteer.config";
+import { FeatureFlagHelper } from "../utlis/feature-flag-helper";
+import os from "os";
+import path from "path";
 
-const scope = require('./scope');
+const scope = require("./scope");
 
 export const launchBrowser = async () => {
   const uniqueUserDataDir = path.join(
@@ -25,7 +25,7 @@ export const launchBrowser = async () => {
 };
 
 const f = new FeatureFlagHelper();
-let allFlags: { [p: string]: boolean } | void;
+let allFlags: { [p: string]: boolean } = {};
 
 setDefaultTimeout(puppeteerConfig.defaultTimeout);
 
@@ -38,7 +38,8 @@ BeforeAll(async () => {
 
   await launchBrowser();
   await f.init();
-  allFlags = f.getAllFlags();
+  // Ensure allFlags is always an object
+  allFlags = f.getAllFlags() || {};
 });
 
 After(async () => {
@@ -57,7 +58,7 @@ Before(async (scenario) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const falseTagValues = scenario.pickle.tags.filter(
-    (item) => !allFlags[item.name.replace('@', '')]
+    (item) => !allFlags[item.name.replace("@", "")]
   );
-  return falseTagValues.length > 0 ? 'skipped' : 'run';
+  return falseTagValues.length > 0 ? "skipped" : "run";
 });
