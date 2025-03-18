@@ -49,3 +49,4 @@ Before(async (scenario) => {
   // @ts-ignore
   const falseTagValues = scenario.pickle.tags.filter(item => !allFlags[item.name.replace('@', '')]);
   return falseTagValues.length > 0 ? 'skipped' : 'run';
+  });
