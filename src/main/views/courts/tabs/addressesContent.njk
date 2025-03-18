@@ -333,28 +333,28 @@
 <div class="govuk-grid-column-three-quarters">
 {{ govukButton({
    text: "Remove",
-   name: "removeSecondaryAddress"+ (loop.index),
+   name: "secondary[" + (loop.index - 1) + "][actionOnAddress]",
    type: "button",
    classes: "govuk-button--secondary clearAddress",
-   attributes: { id: "removeSecondAddressBtn"+ (loop.index) },
+   attributes: { id: "removeSecondAddressBtn"+ (loop.index), "aria-label": "remove secondary address " + loop.index },
    disabled: true if fatalError
  }) }}
  </div>
   <div class="govuk-grid-column-one-quarter govuk-button-group">
        {{ govukButton({
          html: upArrowHtml,
-         name: "moveUp",
+         name: "secondary[" + (loop.index - 1) + "][moveUp]",
          type: "button",
          classes: "govuk-button--secondary move-up",
-         attributes: { "aria-label": "move up" }
+         attributes: { "aria-label": "move up secondary address " + loop.index }
        }) }}
 
        {{ govukButton({
          html: downArrowHtml,
-         name: "moveDown",
+         name: "secondary[" + (loop.index - 1) + "][moveDown]",
          type: "button",
          classes: "govuk-button--secondary move-down",
-         attributes: { "aria-label": "move down" }
+         attributes: { "aria-label": "move down secondary address " + loop.index }
        }) }}
        </div>
 

@@ -129,6 +129,9 @@ export class AddressesController {
     this.renameSelectElement(this.countySelectName, this.countySelectName);
     this.renameInputElement(this.postcodeInputName, this.postcodeInputName);
     this.setUpCourtTypesAndAOLItems(this.aolItems1, this.aolItems2, this.courtTypesItems1, this.courtTypesItems2);
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnAddress');
   }
 
   private renameSelectElement(attributeInputName: string, attributeInputId: string): void {
@@ -179,6 +182,29 @@ export class AddressesController {
     addressHeadingName2.text('Secondary Address '+(Number(aOLItemsName2.match(regex)[0])+ 1));
   }
 
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.tabId} button[name$="[${name}]"]`)
+      .attr('name', idx => AddressesController.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} opening hour ${idx+1}`);
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.tabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear secondary address ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove secondary address ${idx+1}`;
+      } else {
+        newAriaLabel = `action secondary address ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
+  }
 
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearAddressBtnClass}`, e => {
