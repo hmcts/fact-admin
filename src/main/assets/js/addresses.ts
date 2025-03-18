@@ -186,7 +186,7 @@ export class AddressesController {
     // replace the index within the aria label.
     $(`${this.tabId} button[name$="[${name}]"]`)
       .attr('name', idx => AddressesController.getInputName(name, idx))
-      .attr('aria-label', idx => `${labelText} opening hour ${idx+1}`);
+      .attr('aria-label', idx => `${labelText} secondary address ${idx+1}`);
   }
 
   private renameActionButtonAriaLabel(name: string): void {
