@@ -117,7 +117,7 @@
     "npm-run-all": "^4.1.5",
     "openid-client": "^5.6.5",
     "pa11y": "^8.0.0",
-    "puppeteer": "^20.0.0",
+    "puppeteer": "19.6.3",
     "request": "^2.88.2",
     "sass": "^1.69.3",
     "sass-lint": "^1.13.1",
@@ -165,8 +165,7 @@
     "cookie": "^0.7.2",
     "jest": "^28.0.0",
     "cacache": "^19.0.1",
-    "node-gyp": "^11.0.0",
-    "puppeteer": "^20.0.0"
+    "node-gyp": "^11.0.0"
   },
   "packageManager": "yarn@4.6.0"
 }
