@@ -8,7 +8,8 @@ import path from 'path';
 const scope = require('./scope');
 
 export const launchBrowser = async () => {
-  const userDataDir = path.join(process.cwd(), 'src', 'test', 'functional', 'user_data');
+  // Use a userDataDir unique to each process to avoid conflicts.
+  const userDataDir = path.join(process.cwd(), 'src', 'test', 'functional', `user_data_${process.pid}`);
   if (fs.existsSync(userDataDir)) {
     fs.rmSync(userDataDir, { recursive: true, force: true });
   }
