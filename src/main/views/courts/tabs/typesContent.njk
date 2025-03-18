@@ -243,18 +243,20 @@
       {% if not dxCode.isNew %}
         {{ govukButton({
           text: "Remove",
-          name: "deleteDxCode",
+          name: "dxCodes[" + loop.index +"][actionOnCourtType]",
           type: "button",
-          classes: "govuk-button--secondary deleteDxCode"
+          classes: "govuk-button--secondary deleteDxCode",
+          attributes: { "aria-label": "remove court type " + loop.index }
         }) }}
         {% endif %}
 
       {% if dxCode.isNew %}
            {{ govukButton({
              text: "Clear",
-             name: "clearDxCode",
+             name: "dxCodes[" + loop.index +"][actionOnCourtType]",
              type: "button",
-             classes: "govuk-button--secondary clearDxCode"
+             classes: "govuk-button--secondary clearDxCode",
+             attributes: { "aria-label": "clear court type " + loop.index }
            }) }}
       {% endif %}
 
@@ -306,14 +308,15 @@
 
           {{ govukButton({
             text: "Remove",
-            name: "deleteDxCode",
+            name: "dxCodes[" + loop.index +"][actionOnCourtType]",
             type: "button",
-            classes: "govuk-button--secondary deleteDxCode"
+            classes: "govuk-button--secondary deleteDxCode",
+            attributes: { "aria-label": "remove court type " + loop.index }
           }) }}
 
           {{ govukButton({
             text: "Clear",
-            name: "clearDxCode",
+            name: "dxCodes[" + loop.index +"][actionOnCourtType]",
             type: "button",
             classes: "govuk-button--secondary clearDxCode"
           }) }}
