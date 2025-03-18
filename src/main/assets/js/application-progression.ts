@@ -114,6 +114,9 @@ export class ApplicationProgressionController {
     this.renameInputElement(this.externalLinkDescriptionInputName, this.externalLinkDescriptionInputName);
     this.renameInputElement(this.externalLinkDescriptionCyInputName, this.externalLinkDescriptionCyInputName);
     this.renameInputElement(this.hiddenNewInputName, this.hiddenNewInputName);
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnApplicationUpdate');
   }
 
   private renameInputElement(attributeInputName: string, attributeInputId: string): void {
@@ -126,6 +129,30 @@ export class ApplicationProgressionController {
 
   private static getInputName(name: string, index: number): string {
     return `progression[${index}][${name}]`;
+  }
+
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.applicationProgressionTabId} button[name$="[${name}]"]`)
+      .attr('name', idx => ApplicationProgressionController.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} application update ${idx+1}`);
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.applicationProgressionTabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear application update ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove application update ${idx+1}`;
+      } else {
+        newAriaLabel = `action application update ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
   }
 
   private updateContent(res: any): void {
