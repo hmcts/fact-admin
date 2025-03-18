@@ -1,21 +1,26 @@
 import {After, AfterAll, Before, BeforeAll, setDefaultTimeout} from 'cucumber';
 import puppeteer from 'puppeteer';
-import {puppeteerConfig} from '../puppeteer.config';
+import {puppeteerConfig as originalPuppeteerConfig} from '../puppeteer.config';
 import {FeatureFlagHelper} from '../utlis/feature-flag-helper';
-import fs from 'fs';
+import os from 'os';
 import path from 'path';
+import fs from 'fs';
 
 const scope = require('./scope');
 
+const { userDataDir, args, ...puppeteerConfig } = originalPuppeteerConfig;
+const uniqueUserDataDir = path.join(os.tmpdir(), `puppeteer_profile_${process.pid}_${Date.now()}`);
+
 export const launchBrowser = async () => {
-  // Use a userDataDir unique to each process to avoid conflicts.
-  const userDataDir = path.join(process.cwd(), 'src', 'test', 'functional', `user_data_${process.pid}`);
-  if (fs.existsSync(userDataDir)) {
-    fs.rmSync(userDataDir, { recursive: true, force: true });
+  // Ensure the unique directory is clean.
+  if (fs.existsSync(uniqueUserDataDir)) {
+    fs.rmSync(uniqueUserDataDir, { recursive: true, force: true });
   }
   scope.browser = await puppeteer.launch({
     ...puppeteerConfig,
-    userDataDir
+    userDataDir: uniqueUserDataDir,
+    // These flags help in CI environments.
+    args: [...(args || []), '--no-sandbox', '--disable-setuid-sandbox']
   });
 };
 
@@ -38,7 +43,7 @@ BeforeAll(async () => {
 
 After(async () => {
   if (scope.page && scope.page.currentPage) {
-    scope.page.currentPage.close();
+    await scope.page.currentPage.close();
   }
 });
 
