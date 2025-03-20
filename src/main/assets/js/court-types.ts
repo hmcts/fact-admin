@@ -125,6 +125,33 @@ export class CourtTypesController {
     this.renameFormElement('input', this.codeInputName, this.codeInputName);
     this.renameFormElement('input', this.explanationInputName, this.explanationInputName);
     this.renameFormElement('input', this.explanationCyInputName, this.explanationCyInputName);
+    this.renameButtonAriaLabel('moveUp', 'move up');
+    this.renameButtonAriaLabel('moveDown', 'move down');
+    this.renameActionButtonAriaLabel('actionOnCourtType');
+  }
+
+  private renameButtonAriaLabel(name: string, labelText: string): void {
+    // replace the index within the aria label.
+    $(`${this.tabId} button[name$="[${name}]"]`)
+      .attr('name', idx => this.getInputName(name, idx))
+      .attr('aria-label', idx => `${labelText} dx code ${idx+1}`);
+  }
+
+  private renameActionButtonAriaLabel(name: string): void {
+    // replace the index within the aria label for remove and clear buttons.
+    $(`${this.tabId} button[name$="[${name}]"]`).each(function (idx) {
+      const buttonText = $(this).text().toLowerCase();
+      let newAriaLabel;
+
+      if(buttonText.includes('clear')) {
+        newAriaLabel = `clear court type ${idx+1}`;
+      } else if (buttonText.includes('remove')) {
+        newAriaLabel = `remove court type ${idx+1}`;
+      } else {
+        newAriaLabel = `action court type ${idx+1}`;
+      }
+      $(this).attr('aria-label', newAriaLabel);
+    });
   }
 
   //added below methods to make sure local authorities tabs is enabled and disabled when family court type is updated.

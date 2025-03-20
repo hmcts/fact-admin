@@ -96,16 +96,18 @@
         {% if isNew === false %}
           {{ govukButton({
             text: "Remove",
-            name: "deleteAdditionalLink",
+            name: "additionalLinks[" + links.length +"][actionOnAdditionalLink]",
             type: "button",
-            classes: "govuk-button--secondary deleteAdditionalLink"
+            classes: "govuk-button--secondary deleteAdditionalLink",
+            attributes: { "aria-label": "remove additional link " + loop.index }
           }) }}
         {% else %}
           {{ govukButton({
             text: "Clear",
-            name: "clearAdditionalLink",
+            name: "additionalLinks[" + links.length +"][actionOnAdditionalLink]",
             type: "button",
-            classes: "govuk-button--secondary clearAdditionalLink"
+            classes: "govuk-button--secondary clearAdditionalLink",
+            attributes: { "aria-label": "clear additional link " + loop.index }
           }) }}
         {% endif %}
       </div>
@@ -113,18 +115,18 @@
       <div class="govuk-grid-column-one-quarter govuk-button-group">
         {{ govukButton({
           html: upArrowHtml,
-          name: "moveUp",
+          name: "additionalLinks[" + links.length +"][moveUp]",
           type: "button",
           classes: "govuk-button--secondary move-up",
-          attributes: { "aria-label": "move up" }
+          attributes: { "aria-label": "move up additional link " + loop.index }
         }) }}
 
         {{ govukButton({
           html: downArrowHtml,
-          name: "moveDown",
+          name: "additionalLinks[" + links.length +"][moveDown]",
           type: "button",
           classes: "govuk-button--secondary move-down",
-          attributes: { "aria-label": "move down" }
+          attributes: { "aria-label": "move down additional link " + loop.index }
         }) }}
       </div>
     </div>
@@ -175,27 +177,28 @@
     <div class="govuk-grid-column-three-quarters">
       {{ govukButton({
         text: "Clear",
-        name: "clearAdditionalLink",
+        name: "additionalLinks[" + links.length +"][actionOnAdditionalLink]",
         type: "button",
-        classes: "govuk-button--secondary clearAdditionalLink"
+        classes: "govuk-button--secondary clearAdditionalLink",
+        attributes: { "aria-label": "clear additional link " + loop.index }
       }) }}
     </div>
 
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "additionalLinks[" + links.length +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up additional link " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "additionalLinks[" + links.length +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down additional link " + loop.index }
       }) }}
     </div>
   </div>

@@ -143,16 +143,18 @@
       {% if isNew === false %}
         {{ govukButton({
           text: "Remove",
-          name: "deleteUpdate",
+          name: "progression[" + loop.index +"][actionOnApplicationUpdate]",
           type: "button",
-          classes: "govuk-button--secondary deleteUpdate"
+          classes: "govuk-button--secondary deleteUpdate",
+          attributes: { "aria-label": "remove application update " + loop.index }
         }) }}
       {% else %}
         {{ govukButton({
           text: "Clear",
-          name: "clearUpdate",
+          name: "progression[" + loop.index +"][actionOnApplicationUpdate]",
           type: "button",
-          classes: "govuk-button--secondary clearUpdate"
+          classes: "govuk-button--secondary clearUpdate",
+          attributes: { "aria-label": "clear application update " + loop.index }
         }) }}
       {% endif %}
     </div>
@@ -160,17 +162,17 @@
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "progression[" + loop.index +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up application update " + loop.index }
       }) }}
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "progression[" + loop.index +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down application update " + loop.index }
       }) }}
     </div>
   </div>
@@ -236,7 +238,7 @@
     <div class="govuk-grid-column-three-quarters">
       {{ govukButton({
           text: "Clear",
-          name: "clearUpdate",
+          name: "progression[" + loop.index +"][actionOnApplicationUpdate]",
           type: "button",
           classes: "govuk-button--secondary clearUpdate"
         }) }}
@@ -245,18 +247,18 @@
     <div class="govuk-grid-column-one-quarter govuk-button-group">
       {{ govukButton({
         html: upArrowHtml,
-        name: "moveUp",
+        name: "progression[" + loop.index +"][moveUp]",
         type: "button",
         classes: "govuk-button--secondary move-up",
-        attributes: { "aria-label": "move up" }
+        attributes: { "aria-label": "move up application update " + loop.index }
       }) }}
 
       {{ govukButton({
         html: downArrowHtml,
-        name: "moveDown",
+        name: "progression[" + loop.index +"][moveDown]",
         type: "button",
         classes: "govuk-button--secondary move-down",
-        attributes: { "aria-label": "move down" }
+        attributes: { "aria-label": "move down application update " + loop.index }
       }) }}
       </div>
   </div>
