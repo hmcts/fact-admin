@@ -239,7 +239,7 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: null,
       requiresValidation: true,
-      fatalError: false,
+      fatalError: true,
       mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     await controller.get(req, res);
@@ -266,7 +266,7 @@ describe('FacilitiesController', () => {
       facilitiesTypes: [],
       courtFacilities: expectedCourtFacilities,
       requiresValidation: true,
-      fatalError: false,
+      fatalError: true,
       mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
