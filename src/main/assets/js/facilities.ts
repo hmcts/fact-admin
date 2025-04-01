@@ -3,6 +3,7 @@ import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
+import TinyMCEAccessabilityHelper from '../../utils/TinyMCEAccessabilityHelper';
 
 const { initAll } = require('govuk-frontend');
 
@@ -20,6 +21,7 @@ export class FacilitiesController {
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_court-facilities';
+  private mceAccessabilityMessage = new TinyMCEAccessabilityHelper();
 
   constructor() {
     this.initialize();
@@ -39,6 +41,11 @@ export class FacilitiesController {
   }
 
   private async updateContent(content: any): Promise<void> {
+
+    console.log('CONTENT');
+    console.log(content);
+    console.log('MESSAGE');
+    console.log(this.mceAccessabilityMessage.getMessage());
     $(this.facilitiesContentId).html(content);
 
     await Utilities.setUpTinymce();
@@ -53,6 +60,8 @@ export class FacilitiesController {
       url: `/courts/${slug}/facilities`,
       method: 'get',
       success: async (res) => {
+        console.log(res);
+        console.log(res);
         await this.updateContent(res);
         window.scrollTo(0, 0);
       },

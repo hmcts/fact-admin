@@ -4,6 +4,7 @@ import {CourtFacilitiesController} from '../../../../../main/app/controller/cour
 import {SelectItem} from '../../../../../main/types/CourtPageData';
 import {CSRF} from '../../../../../main/modules/csrf';
 import {Facility, FacilityPageData, FacilityType} from '../../../../../main/types/Facility';
+import TinyMCEAccessabilityHelper from '../../../../../main/utils/TinyMCEAccessabilityHelper';
 
 describe('FacilitiesController', () => {
 
@@ -75,7 +76,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedCourtFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -212,7 +214,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: postedFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     await controller.put(req, res);
@@ -236,7 +239,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: null,
       requiresValidation: true,
-      fatalError: true
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     await controller.get(req, res);
 
@@ -262,7 +266,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: [],
       courtFacilities: expectedCourtFacilities,
       requiresValidation: true,
-      fatalError : true
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -287,7 +292,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: postedFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -314,7 +320,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: postedFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -349,7 +356,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
@@ -389,7 +397,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedFacilities,
       requiresValidation: true,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
@@ -416,7 +425,8 @@ describe('FacilitiesController', () => {
       facilitiesTypes: expectedSelectItems,
       courtFacilities: expectedCourtFacilities,
       requiresValidation: false,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
     expect(res.render).toBeCalledWith('courts/tabs/facilitiesContent', expectedResults);
   });
