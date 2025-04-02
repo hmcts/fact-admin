@@ -7,7 +7,6 @@ class OSDetector {
 
   private detectOS(): string {
     if (typeof process !== 'undefined' && process.platform) {
-      // Running in a Node.js environment
       switch (process.platform) {
         case 'win32':
           return 'Windows';
@@ -19,7 +18,6 @@ class OSDetector {
           return 'Unknown';
       }
     } else if (typeof navigator !== 'undefined' && navigator.userAgent) {
-      // Running in a browser environment
       const userAgent = navigator.userAgent;
       if (/Windows/i.test(userAgent)) return 'Windows';
       if (/Macintosh|Mac OS X/i.test(userAgent)) return 'Mac';
