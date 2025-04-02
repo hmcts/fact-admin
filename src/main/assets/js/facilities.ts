@@ -3,7 +3,6 @@ import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
 import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
-import TinyMCEAccessabilityHelper from '../../utils/TinyMCEAccessabilityHelper';
 
 const { initAll } = require('govuk-frontend');
 
@@ -21,8 +20,6 @@ export class FacilitiesController {
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_court-facilities';
-  private mceAccessabilityMessage = new TinyMCEAccessabilityHelper();
-
   constructor() {
     this.initialize();
   }
