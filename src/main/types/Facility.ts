@@ -25,4 +25,5 @@ export interface FacilityPageData {
   courtFacilities: Facility[],
   requiresValidation: boolean,
   fatalError: boolean,
+  mceMsg: string
 }
