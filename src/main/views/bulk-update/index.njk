@@ -42,6 +42,7 @@
         Additional information
       </label>
       </h2>
+      <span class="govuk-visually-hidden">{{mceMsg}}</span>
       <textarea class="govuk-textarea rich-editor" id="info_message" name="info" tabindex=0>{{ court['info'] }}</textarea>
 {{ tinyMCEAttribution() }}
     </div>
@@ -51,6 +52,7 @@
         Additional information (Welsh)
       </label>
       </h2>
+      <span class="govuk-visually-hidden">{{mceMsg}}</span>
       <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
 {{ tinyMCEAttribution() }}
     </div>
