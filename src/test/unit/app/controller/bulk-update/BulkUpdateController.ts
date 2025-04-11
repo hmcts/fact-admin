@@ -1,6 +1,7 @@
 import { mockRequest } from '../../../utils/mockRequest';
 import { mockResponse } from '../../../utils/mockResponse';
 import { BulkUpdateController } from '../../../../../main/app/controller/bulk-update/BulkUpdateController';
+import TinyMCEAccessabilityHelper from '../../../../../main/utils/TinyMCEAccessabilityHelper';
 
 describe('BulkUpdateController', () => {
   const court: any = {
@@ -12,13 +13,15 @@ describe('BulkUpdateController', () => {
     getCourts: async (): Promise<any[]> => [court],
     updateCourtsInfo: async (): Promise<void> => {}
   };
+  const mceMsg =  new TinyMCEAccessabilityHelper().getMessage()
 
   test('Should get court and render the bulk update page as super admin', async () => {
     const req = mockRequest();
     req.scope.cradle.api = mockApi;
 
     const expectedResults = {
-      courts: [court]
+      courts: [court],
+      mceMsg: mceMsg
     };
     const res = mockResponse();
     await controller.get(req, res);
@@ -36,7 +39,7 @@ describe('BulkUpdateController', () => {
 
     const res = mockResponse();
     await controller.post(req, res);
-    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: '', updated: true });
+    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], mceMsg: mceMsg, error: '', updated: true });
   });
 
   test('Should show an error if no courts are selected', async () => {
@@ -46,7 +49,7 @@ describe('BulkUpdateController', () => {
 
     const res = mockResponse();
     await controller.post(req, res);
-    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: 'Please select one or more courts to update.', updated: false });
+    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], mceMsg: mceMsg, error: 'Please select one or more courts to update.', updated: false });
   });
 
   test('Should show an error if there are no courts are selected', async () => {
@@ -56,7 +59,7 @@ describe('BulkUpdateController', () => {
 
     const res = mockResponse();
     await controller.post(req, res);
-    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: 'Please select one or more courts to update.', updated: false });
+    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], mceMsg: mceMsg, error: 'Please select one or more courts to update.', updated: false });
   });
 
   test('Should show an error if the API call fails', async () => {
@@ -71,7 +74,7 @@ describe('BulkUpdateController', () => {
 
     const res = mockResponse();
     await controller.post(req, res);
-    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], error: 'There was an error updating the court information.', updated: false });
+    expect(res.render).toBeCalledWith('bulk-update/index', { courts: [court], mceMsg: mceMsg, error: 'There was an error updating the court information.', updated: false });
   });
 
 });

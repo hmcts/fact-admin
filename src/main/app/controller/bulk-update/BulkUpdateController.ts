@@ -5,14 +5,15 @@ import TinyMCEAccessabilityHelper from '../../../utils/TinyMCEAccessabilityHelpe
 
 export class BulkUpdateController {
 
+  mceMsg: string = new TinyMCEAccessabilityHelper().getMessage();
+
   /**
    * GET /bulk-update
    */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const courts = await req.scope.cradle.api.getCourts();
-    const mceMsg = new TinyMCEAccessabilityHelper().getMessage();
 
-    res.render('bulk-update/index', { courts, mceMsg });
+    res.render('bulk-update/index', { courts, mceMsg: this.mceMsg });
   }
 
   /**
@@ -38,6 +39,6 @@ export class BulkUpdateController {
 
     const courts = await req.scope.cradle.api.getCourts();
 
-    res.render('bulk-update/index', { courts, error, updated: !error });
+    res.render('bulk-update/index', { courts, mceMsg: this.mceMsg, error, updated: !error });
   }
 }
