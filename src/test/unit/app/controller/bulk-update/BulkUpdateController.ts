@@ -13,7 +13,7 @@ describe('BulkUpdateController', () => {
     getCourts: async (): Promise<any[]> => [court],
     updateCourtsInfo: async (): Promise<void> => {}
   };
-  const mceMsg =  new TinyMCEAccessabilityHelper().getMessage()
+  const mceMsg =  new TinyMCEAccessabilityHelper().getMessage();
 
   test('Should get court and render the bulk update page as super admin', async () => {
     const req = mockRequest();
