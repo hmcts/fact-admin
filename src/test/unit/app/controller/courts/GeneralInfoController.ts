@@ -3,6 +3,7 @@ import {mockResponse} from '../../../utils/mockResponse';
 import {CourtGeneralInfo, CourtGeneralInfoData} from '../../../../../main/types/CourtGeneralInfo';
 import {GeneralInfoController} from '../../../../../main/app/controller/courts/GeneralInfoController';
 import {CSRF} from '../../../../../main/modules/csrf';
+import TinyMCEAccessabilityHelper from '../../../../../main/utils/TinyMCEAccessabilityHelper';
 
 describe('GeneralInfoController', () => {
 
@@ -140,7 +141,8 @@ describe('GeneralInfoController', () => {
       errorHref: '',
       updated: false,
       nameFieldError: '',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -184,7 +186,8 @@ describe('GeneralInfoController', () => {
       errorHref: '',
       updated: false,
       nameFieldError: '',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -213,7 +216,8 @@ describe('GeneralInfoController', () => {
       errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.blankNameErrorMsg,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     } as CourtGeneralInfoData;
     await controller.put(req, res);
 
@@ -239,7 +243,8 @@ describe('GeneralInfoController', () => {
       errorHref: '',
       updated: false,
       nameFieldError: '',
-      fatalError: true
+      fatalError: true,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -263,7 +268,8 @@ describe('GeneralInfoController', () => {
       errorHref: 'edit-name',
       updated: false,
       nameFieldError: '',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -287,7 +293,8 @@ describe('GeneralInfoController', () => {
       errorHref: 'edit-name',
       updated: false,
       nameFieldError: 'Duplicated name',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -308,7 +315,8 @@ describe('GeneralInfoController', () => {
       errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.specialCharacterErrorMsg,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -329,7 +337,8 @@ describe('GeneralInfoController', () => {
       errorHref: '',
       updated: false,
       nameFieldError: '',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -353,7 +362,8 @@ describe('GeneralInfoController', () => {
       errorHref: 'edit-name',
       updated: false,
       nameFieldError: controller.duplicateNameErrorMsg,
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);
@@ -374,7 +384,8 @@ describe('GeneralInfoController', () => {
       errorHref: '',
       updated: false,
       nameFieldError: '',
-      fatalError: false
+      fatalError: false,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     expect(res.render).toBeCalledWith('courts/tabs/generalContent', expectedResult);

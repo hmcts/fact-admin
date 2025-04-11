@@ -96,6 +96,7 @@
       Use this field to overwrite the default text for the first paragraph found on service centres through
       the public facing service. This is limited to 400 characters including spaces.
     </span>
+    <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
               rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph }}</textarea>
     {{ tinyMCEAttribution() }}
@@ -108,6 +109,7 @@
             Intro Paragraph (Welsh)
         </label>
     </h2>
+    <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
               rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
     {{ tinyMCEAttribution() }}
@@ -125,6 +127,7 @@
     Use this field to display a temporary notice of building closure or temporary disruption to court
     services. This is limited to 250 characters including spaces.
   </span>
+  <span class="govuk-visually-hidden">{{mceMsg}}</span>
   <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice" name="alert"
             rows="2" maxlength="250">{{ generalInfo.alert }}</textarea>
     {{ tinyMCEAttribution() }}
@@ -136,6 +139,7 @@
           Urgent notice (Welsh)
       </label>
   </h2>
+  <span class="govuk-visually-hidden">{{mceMsg}}</span>
   <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice-welsh" name="alert_cy"
             rows="2" maxlength="250">{{ generalInfo.alert_cy }}</textarea>
     {{ tinyMCEAttribution() }}
@@ -148,6 +152,7 @@
         Additional Information Update
       </label>
     </h2>
+    <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="info" name="info"
               rows="3">{{ generalInfo.info }}</textarea>
     {{ tinyMCEAttribution() }}
@@ -159,6 +164,7 @@
         Additional Information Update (Welsh)
       </label>
     </h2>
+    <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="info_cy" name="info_cy"
               rows="3">{{ generalInfo.info_cy }}</textarea>
     {{ tinyMCEAttribution() }}
