@@ -6,7 +6,7 @@ const path = require('path');
 const countsFilePath = path.join(__dirname, '..', 'loginCounts.json');
 const lockDirPath = path.join(__dirname, '..', 'loginCounts.lock'); // Directory for locking
 
-// Tracks whether a login has occurred for a given role.
+// Tracks whether a login has occurred for a given role. Scoped per worker.
 const hasLoggedIn = {};
 
 // Atomic read-modify-write with directory locking
@@ -36,6 +36,8 @@ async function updateCounts(testFilePath) {
         fs.writeFileSync(countsFilePath, JSON.stringify(loginCounts, null, 2), 'utf8');
       } catch (writeError) {
         console.error('Error writing loginCounts.json:', writeError);
+        // Release lock before retrying or failing
+        try { fs.rmdirSync(lockDirPath); } catch (e) { /* ignore */ }
         continue; // Retry
       }
 
@@ -47,6 +49,8 @@ async function updateCounts(testFilePath) {
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       } else {
         console.error('Error acquiring or releasing lock:', error);
+        // Ensure lock is released on other errors too
+        try { fs.rmdirSync(lockDirPath); } catch (e) { /* ignore */ }
         throw error;
       }
     }
@@ -89,6 +93,7 @@ exports.test = base.extend({
     await use(page);
   },
   page: async ({ page }, use) => {
+    // Default page fixture if needed without auto-login
     await use(page);
   }
 });
@@ -97,44 +102,50 @@ async function loginWithRole(page, role, testInfo) {
   const loginPage = new LoginPage(page);
   const credentials = roleCredentials[role];
   const testFilePath = testInfo.file;
+  // Use just role if you want login once per role for the entire worker execution (typical for serial).
   const loginKey = role;
 
   if (!hasLoggedIn[loginKey]) {
-    await loginPage.goto();
+    await loginPage.goto(); // Go to login page if not logged in
     await expect(page).toHaveURL(/.*idam-web-public.*/);
     console.log(`Attempting login for role: ${role}, user: ${credentials.username}`);
     await loginPage.login(credentials.username, credentials.password);
 
     const errorLocator = page.locator('.error-summary');
-    if (await errorLocator.isVisible()) {
+    // Use a short timeout to check for login errors quickly
+    if (await errorLocator.isVisible({ timeout: 2000 })) {
       const errorMessage = await errorLocator.textContent();
       console.error(`Login failed for role ${role}: ${errorMessage}`);
       throw new Error(`Login failed for role ${role}: ${errorMessage}`);
     }
     console.log(`Login successful for role: ${role}`);
+    // Wait for navigation *after* successful login, back to the app's base URL or dashboard
+    await page.waitForURL(/.*localhost:3300.*/, { timeout: 10000 }); // Wait to be redirected back to your app
 
     await updateCounts(testFilePath);
     hasLoggedIn[loginKey] = true;
-    await page.waitForTimeout(500);
   } else {
     console.log(`Already logged in for role: ${role} in file: ${testFilePath}`);
-    // CRITICAL: Navigate to the base URL *only* if we skip login.
-    await page.goto(process.env.CI ? process.env.TEST_URL : 'http://localhost:3300');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(500);
+    // ***** FIX: Do NOT navigate here. Let the test's beforeEach handle navigation *****
+    console.log(`Skipping navigation, assuming session for ${role} is still valid.`);
   }
   // Do *NOT* log out.
-
-  console.log('Current URL after login attempt:', page.url()); // Keep this
-
+  console.log('Current URL after login/skip attempt:', page.url()); // Log URL before test starts its own navigation
 }
 
+
 async function logWithColor(testInfo, message) {
-  const chalk = (await import('chalk')).default;
-  const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
-  const colorIndex = stringHash(testInfo.title) % colors.length;
-  const color = colors[colorIndex];
-  console.log(chalk[color](`[${testInfo.title}] ${message}`));
+  // Dynamically import chalk only if needed and available
+  try {
+    const chalk = (await import('chalk')).default;
+    const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'cyanBright', 'magentaBright', 'redBright'];
+    const colorIndex = stringHash(testInfo.title) % colors.length;
+    const color = colors[colorIndex];
+    console.log(chalk[color](`[${testInfo.title}] ${message}`));
+  } catch (e) {
+    // Fallback to standard console.log if chalk is not available
+    console.log(`[${testInfo.title}] ${message}`);
+  }
 }
 
 function stringHash(str) {
@@ -142,7 +153,7 @@ function stringHash(str) {
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = (hash << 5) - hash + char;
-    hash |= 0;
+    hash |= 0; // Convert to 32bit integer
   }
   return Math.abs(hash);
 }
