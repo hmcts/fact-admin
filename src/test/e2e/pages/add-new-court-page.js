@@ -7,7 +7,7 @@ class AddNewCourtPage extends BasePage {
     super(page);
 
     // Page locators
-    this.pageTitle = 'h1:has-text("Add New Court")'; // More specific title check
+    this.pageTitle = 'h1:has-text("Add new court")'; // Corrected case
     this.form = '#addNewCourtForm';
     this.courtNameInput = '#newCourtName';
     this.longitudeInput = '#lon';
@@ -15,7 +15,8 @@ class AddNewCourtPage extends BasePage {
     this.serviceCentreYesRadio = '#serviceCentre';
     this.serviceCentreNoRadio = '#serviceCentre-2';
     this.serviceAreasContainer = '#serviceAreasContainer';
-    this.serviceAreaCheckboxes = `${this.serviceAreasContainer} .govuk-checkboxes__item input[type="checkbox"]`; // General checkbox selector within container
+    // Use a selector targeting the item container to then find label and input
+    this.serviceAreaItem = `${this.serviceAreasContainer} .govuk-checkboxes__item`;
     this.saveButton = '#saveNewCourtBtn'; // The button that triggers the save/redirect
 
     // Error locators
@@ -74,23 +75,28 @@ class AddNewCourtPage extends BasePage {
   }
 
   async selectServiceAreaByIndex(index) {
-    const checkbox = this.page.locator(this.serviceAreaCheckboxes).nth(index);
+    // Selecting by index might still be useful sometimes, kept for completeness
+    // Ensure the container is visible first if selecting by index
+    await expect(this.page.locator(this.serviceAreasContainer)).toBeVisible();
+    const checkbox = this.page.locator(`${this.serviceAreaItem} input[type="checkbox"]`).nth(index);
     await checkbox.check();
   }
 
   async selectServiceAreaByName(name) {
-    // Find the label with the matching text, then find its associated input
-    const label = this.page.locator(`${this.serviceAreasContainer} .govuk-checkboxes__label:has-text("${name}")`);
-    // Checkbox might be before or after label, find input sibling/parent relationship
-    // Assuming input is sibling: label.locator('preceding-sibling::input[type="checkbox"]')
-    // Or more robustly using ID/for:
-    const checkboxId = await label.getAttribute('for');
-    if (checkboxId) {
-      await this.page.locator(`#${checkboxId}`).check();
-    } else {
-      // Fallback if 'for' attribute isn't used (less ideal)
-      await label.locator('xpath=./preceding-sibling::input[@type="checkbox"]').check();
-    }
+    // *** REVISED STRATEGY ***
+    // 1. Ensure the container holding the checkboxes is visible.
+    await expect(this.page.locator(this.serviceAreasContainer)).toBeVisible({ timeout: 10000 });
+
+    // 2. Locate the specific checkbox item container that contains the label with the desired text.
+    //    This assumes the structure <div class="govuk-checkboxes__item"> <input> <label>Text</label> </div>
+    const itemContainer = this.page.locator(this.serviceAreaItem)
+      .filter({ has: this.page.locator(`label:has-text("${name}")`) });
+
+    // 3. Within that container, find the input checkbox.
+    const checkbox = itemContainer.locator('input[type="checkbox"]');
+
+    // 4. Check the checkbox. Use a reasonable timeout.
+    await checkbox.check({ timeout: 10000 }); // Added timeout to check itself
   }
 
   async clickSave() {
@@ -120,11 +126,16 @@ class AddNewCourtPage extends BasePage {
     const cleanedActualErrors = actualErrors.map(e => e.trim()).filter(Boolean);
 
     if (exactMatch) {
-      expect(cleanedActualErrors).toEqual(expectedErrors.sort());
+      // Sort both arrays for exact comparison
+      expect(cleanedActualErrors.sort()).toEqual(expectedErrors.sort());
     } else {
+      // Check if actualErrors contains all expectedErrors
       expect(cleanedActualErrors).toEqual(expect.arrayContaining(expectedErrors));
+      // Optionally, check if the lengths are also equal if no extra errors are allowed
+      // expect(cleanedActualErrors.length).toEqual(expectedErrors.length);
     }
   }
+
 
   async checkFieldError(fieldErrorLocator, expectedError) {
     const actualError = await this.getFieldErrorText(fieldErrorLocator);

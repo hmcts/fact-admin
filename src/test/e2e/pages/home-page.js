@@ -1,5 +1,6 @@
 // src/test/e2e/pages/home-page.js
 const { BasePage } = require('./base-page');
+// REMOVE: const { expect } = require('@playwright/test'); - Not needed here
 
 class HomePage extends BasePage {
   constructor(page) {
@@ -105,7 +106,7 @@ class HomePage extends BasePage {
 
   // Click Add New Court Nav Link
   async clickAddCourtNav() {
-    await expect(this.page.locator(this.addCourtNavLink)).toBeVisible();
+    // REMOVED: await expect(this.page.locator(this.addCourtNavLink)).toBeVisible();
     await this.page.locator(this.addCourtNavLink).click();
   }
 }
