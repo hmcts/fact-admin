@@ -1,3 +1,4 @@
+// src/test/e2e/pages/home-page.js
 const { BasePage } = require('./base-page');
 
 class HomePage extends BasePage {
@@ -11,23 +12,32 @@ class HomePage extends BasePage {
     this.regionSelector = '#regionSelector';
     this.includeClosedCourtsCheckbox = '#toggle-closed-courts-display';
     this.courtListContainer = '#courtResults';
+
+    // Add New Court Link (Visible to Super Admin)
+    this.addCourtNavLink = '#add-court-nav';
   }
 
   async isSuperAdmin() {
-    return await this.page.isVisible(this.auditsSelector);
+    // Check for both audits and add court link for robustness
+    const hasAudits = await this.page.isVisible(this.auditsSelector);
+    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
+    return hasAudits && hasAddCourt;
   }
 
   async isAdmin() {
     const hasEditLink = await this.page.isVisible(this.exampleCourtEditSelector);
     const hasAudits = await this.page.isVisible(this.auditsSelector);
-    return hasEditLink && !hasAudits;
+    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
+    return hasEditLink && !hasAudits && !hasAddCourt; // Admins shouldn't see Add Court
   }
 
   async isViewer() {
     const detailsLink = await this.page.$(this.exampleCourtEditSelector);
     if (!detailsLink) return false;
     const text = await detailsLink.innerText();
-    return text.trim() === 'details';
+    // Viewers shouldn't see Add Court either
+    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
+    return text.trim() === 'details' && !hasAddCourt;
   }
 
   async logout() {
@@ -78,8 +88,10 @@ class HomePage extends BasePage {
 
   async isCourtVisible(courtSlug) {
     const courtSelector = `#edit-${courtSlug}`;
-    await this.page.waitForSelector(courtSelector, { timeout: 15000 });
-    return await this.page.isVisible(courtSelector);
+    // Increase timeout slightly for potentially longer lists
+    await this.page.waitForSelector(this.courtListContainer, { timeout: 10000 });
+    // Check visibility within the container
+    return await this.page.locator(this.courtListContainer).locator(courtSelector).isVisible({ timeout: 5000 });
   }
 
   // Helper method to check multiple courts at once
@@ -89,6 +101,12 @@ class HomePage extends BasePage {
       results[slug] = await this.isCourtVisible(slug);
     }
     return results;
+  }
+
+  // Click Add New Court Nav Link
+  async clickAddCourtNav() {
+    await expect(this.page.locator(this.addCourtNavLink)).toBeVisible();
+    await this.page.locator(this.addCourtNavLink).click();
   }
 }
 
