@@ -1,6 +1,7 @@
 // src/test/e2e/pages/home-page.js
+// src/test/e2e/pages/home-page.js
 const { BasePage } = require('./base-page');
-// REMOVE: const { expect } = require('@playwright/test'); - Not needed here
+const { expect } = require('@playwright/test'); // expect is needed here for assertions within methods
 
 class HomePage extends BasePage {
   constructor(page) {
@@ -16,99 +17,132 @@ class HomePage extends BasePage {
 
     // Add New Court Link (Visible to Super Admin)
     this.addCourtNavLink = '#add-court-nav';
+
+    // Bulk Update Link (Visible to Super Admin) - Added
+    this.bulkUpdateLink = '#bulk-update';
   }
 
   async isSuperAdmin() {
     // Check for both audits and add court link for robustness
-    const hasAudits = await this.page.isVisible(this.auditsSelector);
-    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
-    return hasAudits && hasAddCourt;
+    const hasAudits = await this.page.locator(this.auditsSelector).isVisible();
+    const hasAddCourt = await this.page.locator(this.addCourtNavLink).isVisible();
+    // Also check for bulk update link
+    const hasBulkUpdate = await this.page.locator(this.bulkUpdateLink).isVisible();
+    return hasAudits && hasAddCourt && hasBulkUpdate;
   }
 
   async isAdmin() {
-    const hasEditLink = await this.page.isVisible(this.exampleCourtEditSelector);
-    const hasAudits = await this.page.isVisible(this.auditsSelector);
-    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
-    return hasEditLink && !hasAudits && !hasAddCourt; // Admins shouldn't see Add Court
+    const hasEditLink = await this.page.locator(this.exampleCourtEditSelector).isVisible();
+    const hasAudits = await this.page.locator(this.auditsSelector).isVisible();
+    const hasAddCourt = await this.page.locator(this.addCourtNavLink).isVisible();
+    const hasBulkUpdate = await this.page.locator(this.bulkUpdateLink).isVisible();
+    // Admins shouldn't see Add Court or Bulk Update
+    return hasEditLink && !hasAudits && !hasAddCourt && !hasBulkUpdate;
   }
 
   async isViewer() {
-    const detailsLink = await this.page.$(this.exampleCourtEditSelector);
-    if (!detailsLink) return false;
+    // Use locator instead of $ for Playwright best practices
+    const detailsLink = this.page.locator(this.exampleCourtEditSelector);
+    if (!(await detailsLink.isVisible())) return false; // Check visibility directly
     const text = await detailsLink.innerText();
-    // Viewers shouldn't see Add Court either
-    const hasAddCourt = await this.page.isVisible(this.addCourtNavLink);
-    return text.trim() === 'details' && !hasAddCourt;
+    // Viewers shouldn't see Add Court or Bulk Update either
+    const hasAddCourt = await this.page.locator(this.addCourtNavLink).isVisible();
+    const hasBulkUpdate = await this.page.locator(this.bulkUpdateLink).isVisible();
+    return text.trim().toLowerCase() === 'details' && !hasAddCourt && !hasBulkUpdate;
   }
 
   async logout() {
     try {
-      const logoutButton = await this.page.$('#logout');
-      if (logoutButton) {
+      const logoutButton = this.page.locator('#logout');
+      if (await logoutButton.isVisible()) {
         await logoutButton.click();
         // Just wait a bit without expecting navigation
         await this.page.waitForTimeout(2000);
       }
     } catch (error) {
       console.error('Error during logout:', error);
+      // Don't fail the test if logout fails, just log it.
     }
   }
 
   // Court region functionality methods
   async selectIncludeClosedCourts() {
     await this.page.waitForLoadState('domcontentloaded');
-    const checkbox = await this.page.locator(this.includeClosedCourtsCheckbox);
+    const checkbox = this.page.locator(this.includeClosedCourtsCheckbox);
 
-    // Check if checkbox exists
-    if (await checkbox.count() > 0) {
-      // Only click if not already checked
-      const isChecked = await checkbox.isChecked();
-      if (!isChecked) {
-        await checkbox.click();
-        // Wait for potential AJAX updates after checkbox click
-        await this.page.waitForTimeout(500);
-      }
+    // Use Playwright's built-in checks
+    await expect(checkbox).toBeVisible({ timeout: 10000 }); // Ensure it's visible first
+
+    // Only click if not already checked
+    if (!(await checkbox.isChecked())) {
+      await checkbox.check(); // Use check() for clarity
+      // Wait for potential AJAX updates after checkbox click - networkidle is more reliable here
+      await this.page.waitForLoadState('networkidle', { timeout: 10000 });
     } else {
-      console.log('Include closed courts checkbox not found.');
+      console.log('Include closed courts checkbox was already checked.');
     }
   }
 
   async isRegionSelectorVisible() {
-    await this.page.waitForSelector(this.regionSelector, { timeout: 10000 });
-    return await this.page.isVisible(this.regionSelector);
+    const selector = this.page.locator(this.regionSelector);
+    await expect(selector).toBeVisible({ timeout: 10000 });
+    return true; // If expect passes, it's visible
   }
 
   async selectRegion(regionValue) {
-    await this.page.waitForSelector(this.regionSelector, { state: 'visible' });
-    await this.page.selectOption(this.regionSelector, regionValue);
+    const selector = this.page.locator(this.regionSelector);
+    await expect(selector).toBeVisible({ timeout: 5000 });
+    await selector.selectOption(regionValue);
 
     // Wait for AJAX to complete after region selection
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(500); // Additional safety timeout
+    await this.page.waitForLoadState('networkidle', { timeout: 15000 }); // Wait for network activity to cease
   }
 
   async isCourtVisible(courtSlug) {
     const courtSelector = `#edit-${courtSlug}`;
-    // Increase timeout slightly for potentially longer lists
-    await this.page.waitForSelector(this.courtListContainer, { timeout: 10000 });
+    const courtList = this.page.locator(this.courtListContainer);
+    await expect(courtList).toBeVisible({ timeout: 10000 }); // Ensure container is loaded
     // Check visibility within the container
-    return await this.page.locator(this.courtListContainer).locator(courtSelector).isVisible({ timeout: 5000 });
+    return await courtList.locator(courtSelector).isVisible({ timeout: 5000 });
   }
 
-  // Helper method to check multiple courts at once
+  // Helper method to check multiple courts at once for performance
   async areMultipleCourtsVisible(courtSlugs) {
     const results = {};
+    const courtList = this.page.locator(this.courtListContainer);
+    await expect(courtList).toBeVisible({ timeout: 10000 }); // Wait for container once
+
     for (const slug of courtSlugs) {
-      results[slug] = await this.isCourtVisible(slug);
+      const courtSelector = `#edit-${slug}`;
+      // Use shorter timeout per check as container is already loaded
+      results[slug] = await courtList.locator(courtSelector).isVisible({ timeout: 2000 });
     }
     return results;
   }
 
   // Click Add New Court Nav Link
   async clickAddCourtNav() {
-    // REMOVED: await expect(this.page.locator(this.addCourtNavLink)).toBeVisible();
-    await this.page.locator(this.addCourtNavLink).click();
+    const link = this.page.locator(this.addCourtNavLink);
+    await expect(link).toBeVisible();
+    await link.click();
   }
+
+  // --- Added for Bulk Update ---
+  /**
+   * Clicks the Bulk Update link and waits for navigation.
+   * Assumes this navigates to the bulk update page.
+   */
+  async clickBulkUpdate() {
+    const link = this.page.locator(this.bulkUpdateLink);
+    await expect(link).toBeVisible();
+    // Click and wait for the navigation to the bulk update page to start and finish
+    await Promise.all([
+      this.page.waitForNavigation({ url: '**/bulk-update', timeout: 15000, waitUntil: 'domcontentloaded' }), // Wait for navigation to bulk update page
+      link.click()
+    ]);
+  }
+  // --- End Added for Bulk Update ---
 }
 
+// Make sure BasePage is also exported if it wasn't already assumed
 module.exports = { BasePage, HomePage };
