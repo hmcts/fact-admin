@@ -26,7 +26,11 @@ module.exports = defineConfig({
     slowMo: 250,
 
     // Add screenshot capture for failures
-    screenshot: 'only-on-failure',
+    screenshot: {
+      mode: 'only-on-failure',
+      fullPage: true
+    },
+    video: 'retain-on-failure',
   },
 
   projects: [
