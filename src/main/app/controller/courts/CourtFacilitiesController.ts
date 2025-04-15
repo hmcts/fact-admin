@@ -7,6 +7,7 @@ import {SelectItem} from '../../../types/CourtPageData';
 import {validateDuplication} from '../../../utils/validation';
 import {Error} from '../../../types/Error';
 import {AxiosError} from 'axios';
+import TinyMCEAccessabilityHelper from '../../../utils/TinyMCEAccessabilityHelper';
 
 @autobind
 export class CourtFacilitiesController {
@@ -58,7 +59,8 @@ export class CourtFacilitiesController {
       facilitiesTypes: CourtFacilitiesController.getFacilityTypesForSelect(allFacilitiesTypes),
       courtFacilities: courtFacilities,
       requiresValidation: requiresValidation,
-      fatalError: fatalError
+      fatalError: fatalError,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     res.render('courts/tabs/facilitiesContent', pageData);

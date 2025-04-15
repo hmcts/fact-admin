@@ -20,7 +20,6 @@ export class FacilitiesController {
   private descriptionCy = 'descriptionCy';
   private hiddenNewInputName = 'isNew';
   private tab = '#tab_court-facilities';
-
   constructor() {
     this.initialize();
   }
@@ -39,6 +38,7 @@ export class FacilitiesController {
   }
 
   private async updateContent(content: any): Promise<void> {
+
     $(this.facilitiesContentId).html(content);
 
     await Utilities.setUpTinymce();

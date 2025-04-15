@@ -6,6 +6,7 @@ import {CSRF} from '../../../modules/csrf';
 import {AxiosError} from 'axios';
 import {CourtGeneralInfoRedirect} from '../../../types/CourtGeneralInfoRedirect';
 import {replaceMultipleSpaces} from '../../../utils/validation';
+import TinyMCEAccessabilityHelper from '../../../utils/TinyMCEAccessabilityHelper';
 
 @autobind
 export class GeneralInfoController {
@@ -47,7 +48,8 @@ export class GeneralInfoController {
       errorHref: href,
       updated: updated,
       nameFieldError: nameFieldErrorMsg,
-      fatalError: fatalError
+      fatalError: fatalError,
+      mceMsg: new TinyMCEAccessabilityHelper().getMessage()
     };
 
     res.render('courts/tabs/generalContent', pageData);

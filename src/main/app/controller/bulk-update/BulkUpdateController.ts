@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthedRequest } from '../../../types/AuthedRequest';
 import {filterSlugs} from '../../../utils/validation';
+import TinyMCEAccessabilityHelper from '../../../utils/TinyMCEAccessabilityHelper';
 
 export class BulkUpdateController {
 
@@ -9,8 +10,9 @@ export class BulkUpdateController {
    */
   public async get(req: AuthedRequest, res: Response): Promise<void> {
     const courts = await req.scope.cradle.api.getCourts();
+    const mceMsg = new TinyMCEAccessabilityHelper().getMessage();
 
-    res.render('bulk-update/index', { courts });
+    res.render('bulk-update/index', { courts, mceMsg: mceMsg });
   }
 
   /**
@@ -35,7 +37,8 @@ export class BulkUpdateController {
     }
 
     const courts = await req.scope.cradle.api.getCourts();
+    const mceMsg = new TinyMCEAccessabilityHelper().getMessage();
 
-    res.render('bulk-update/index', { courts, error, updated: !error });
+    res.render('bulk-update/index', { courts, mceMsg: mceMsg, error, updated: !error });
   }
 }
