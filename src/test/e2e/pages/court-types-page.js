@@ -19,13 +19,12 @@ class CourtTypesPage extends BasePage {
     // --- Court Type Checkboxes and Code Inputs ---
     // Function to get a specific court type checkbox by its value attribute (which is JSON string)
     this.courtTypeCheckboxByValue = (valueJson) => `${this.typesForm} input[name="types"][value='${valueJson}']`;
-    // Example: Checkbox for Tribunal (ID 3 in Gherkin - needs mapping or inspection)
-    // Assuming 'Tribunal' has ID 3 based on Gherkin '#court_types-3'
-    this.tribunalCheckboxSelector = '#court_types-3'; // Keeping original Gherkin selector for direct mapping
-    // Assuming 'Family Court' has ID 2 based on Gherkin '#court_types-2'
-    this.familyCourtCheckboxSelector = '#court_types-2';
-    // Generic checkbox for types requiring code (e.g., Magistrate, County) - Use a more specific one if possible
-    this.courtTypeRequiringCodeCheckbox = '#court_types'; // Gherkin '#court_types' - likely first code-requiring type
+    // Specific checkbox selectors based on Gherkin/HTML inspection (adjust IDs if needed)
+    this.magistratesCourtCheckboxSelector = '#court_types';   // Verified selector
+    this.familyCourtCheckboxSelector = '#court_types-2';      // From Gherkin '#court_types-2'
+    this.tribunalCheckboxSelector = '#court_types-3';         // From Gherkin '#court_types-3'
+    this.countyCourtCheckboxSelector = '#court_types-4';      // Assuming ID 4
+    this.crownCourtCheckboxSelector = '#court_types-5';       // Assuming ID 5
 
     // Specific code inputs (based on Gherkin and controller logic)
     this.magistratesCourtCodeInput = '#magistratesCourtCode';
@@ -51,7 +50,7 @@ class CourtTypesPage extends BasePage {
     this.dxCodeInput = 'input[name$="[code]"]'; // Ends with '[code]'
     this.dxExplanationInput = 'input[name$="[explanation]"]'; // Ends with '[explanation]'
     this.dxExplanationCyInput = 'input[name$="[explanationCy]"]'; // Ends with '[explanationCy]'
-    this.removeDxCodeButton = 'button[name$="[deleteDxCode]"]:visible'; // Visible remove button
+    this.removeDxCodeButton = 'button.deleteDxCode:visible'; // Corrected class selector
     this.clearDxCodeButton = 'button[name$="[clearDxCode]"]:visible'; // Visible clear button
 
     // --- Action Buttons ---
@@ -132,7 +131,8 @@ class CourtTypesPage extends BasePage {
    */
   async fillCourtCode(inputSelector, code) {
     const inputLocator = this.page.locator(inputSelector);
-    await expect(inputLocator).toBeVisible();
+    // Ensure the input is visible before filling - crucial if it depends on checkbox state
+    await expect(inputLocator).toBeVisible({ timeout: 5000 });
     await inputLocator.fill(code);
   }
 
@@ -149,39 +149,67 @@ class CourtTypesPage extends BasePage {
 
   /**
    * Removes all existing DX code entries by clicking their respective 'Remove' buttons, then clicks Save.
-   * Waits for the update confirmation message.
+   * Waits for the update confirmation message. **Crucially, this assumes any required code fields are already valid.**
+   * Note: This method is used WITHIN tests, not recommended for beforeEach due to potential timing issues.
    * @param {string} courtSlug - The slug of the court being edited (needed for waitForSaveResponse).
    */
   async removeAllDxCodesAndSave(courtSlug) {
     await expect(this.page.locator(this.addDxCodeButton)).toBeVisible();
 
     const fieldsetsLocator = this.page.locator(this.visibleDxFieldsets);
+    // Ensure initialCount is definitely defined and awaited correctly in this scope
     const initialCount = await fieldsetsLocator.count();
     let changed = false;
 
     if (initialCount > 1) { // Only remove if there's more than the template
-      for (let i = initialCount - 2; i >= 0; i--) { // Iterate backwards from the last *real* entry
+      console.log(`removeAllDxCodesAndSave: Found ${initialCount - 1} entries to remove.`); // Added log
+      // FIX: Calculate startIndex separately to ensure 'initialCount' is resolved before loop use
+      const startIndex = initialCount - 2;
+      for (let i = startIndex; i >= 0; i--) { // Iterate backwards from the last *real* entry
         const fieldset = fieldsetsLocator.nth(i);
-        const removeButton = fieldset.locator(this.removeDxCodeButton);
-        if (await removeButton.isVisible()) {
+        const removeButton = fieldset.locator(this.removeDxCodeButton); // Uses the corrected selector now
+        if (await removeButton.isVisible({ timeout: 1000 })) { // Short timeout check
+          console.log(`removeAllDxCodesAndSave: Clicking remove button for entry ${i}.`); // Added log
           await removeButton.click();
           changed = true;
+          await this.page.waitForTimeout(50); // Tiny pause for DOM reaction
+        } else {
+          console.log(`removeAllDxCodesAndSave: Remove button for entry ${i} not visible.`); // Added log
         }
       }
     }
 
     if (changed) {
-      await expect(fieldsetsLocator).toHaveCount(1, { timeout: 5000 }); // Should be only the template row left
+      // Check client-side count reduction immediately after clicking remove buttons
+      await expect(fieldsetsLocator).toHaveCount(1, { timeout: 5000 });
+      console.log('removeAllDxCodesAndSave: Client-side count is 1. Saving...'); // Added log
+      // Now attempt to save
       await this.clickSave();
+      // Wait for the save to complete successfully *before* checking server state
       await this.waitForSaveResponse(courtSlug);
-      await this.waitForSuccessMessage('Court Types updated');
+      await this.waitForSuccessMessage('Court Types and Codes updated'); // Use correct message
+      console.log('removeAllDxCodesAndSave: Save confirmed.'); // Added log
+
+      // Add explicit polling wait for the fieldset count to stabilize at 1 AFTER success message
+      await expect(async () => {
+        const currentCount = await this.page.locator(this.visibleDxFieldsets).count();
+        // console.log(`Polling DX count: ${currentCount}`); // Debug log
+        expect(currentCount).toBe(1);
+      }).toPass({
+        timeout: 10_000,
+        intervals: [500, 1000]
+      });
+      console.log('removeAllDxCodesAndSave: Polling confirmed DX fieldset count is 1 after save.'); // Log confirmation
+
     } else {
-      // If only the template existed initially, still might need a save if other fields changed.
-      // Consider if a save is always needed after potential removal. For now, only save if removed.
-      console.log('No DX Codes to remove, or only template existed.');
+      // If only the template existed initially, no save is strictly needed *for DX removal*.
+      console.log('removeAllDxCodesAndSave: No DX Codes found to remove, or only template existed.');
     }
-    // Final check: Ensure only one fieldset (the template) remains after potential save
-    await expect(fieldsetsLocator).toHaveCount(1);
+    // Final check: Ensure only one fieldset (the template) remains *after* potential successful save.
+    const finalFieldsetsLocator = this.page.locator(this.visibleDxFieldsets);
+    // Keep a final check, timeout can likely be reduced now due to polling
+    await expect(finalFieldsetsLocator).toHaveCount(1, { timeout: 3000 });
+    console.log('removeAllDxCodesAndSave: Final fieldset count verified as 1.'); // Added log
   }
 
   /**
@@ -250,6 +278,7 @@ class CourtTypesPage extends BasePage {
    */
   async waitForSaveResponse(courtSlug, options = { timeout: 15000 }) {
     const updateUrlPattern = `/courts/${courtSlug}/court-types`;
+    // Ensure we wait for the specific PUT request related to the save button click
     return this.page.waitForResponse(
       response =>
         response.url().includes(updateUrlPattern) &&
@@ -284,9 +313,12 @@ class CourtTypesPage extends BasePage {
    */
   async waitForSuccessMessage(expectedMessage, options = { timeout: 10000 }) {
     const messageLocator = this.page.locator(this.successMessageTitle);
+    // Wait for the container first to ensure it's part of the DOM after update
     await expect(this.page.locator(this.successMessageContainer)).toBeVisible(options);
+    // Then verify the text content
     await expect(messageLocator).toContainText(expectedMessage, { timeout: options.timeout });
-    await expect(messageLocator).toBeVisible(options); // Check message title itself
+    // Finally, ensure the title element itself is visible
+    await expect(messageLocator).toBeVisible(options);
   }
 
   /**
@@ -305,6 +337,7 @@ class CourtTypesPage extends BasePage {
   async getErrorSummaryMessages() {
     await this.waitForErrorSummary();
     const items = this.page.locator(this.errorSummaryItems);
+    // Ensure at least one item is rendered before getting all texts
     await items.first().waitFor({ state: 'visible', timeout: 3000 });
     const texts = await items.allTextContents();
     return texts.map(text => text.trim()).filter(Boolean);
@@ -322,12 +355,12 @@ class CourtTypesPage extends BasePage {
 
   /**
    * Gets the field-level error message associated with a specific input element.
-   * Assumes the error message is a sibling <p> or within the parent form group.
+   * Assumes the error message is a <p class="govuk-error-message"> within the parent govuk-form-group--error.
    * @param {import('@playwright/test').Locator} inputLocator - The Playwright locator for the input element.
    * @returns {Promise<string>} The trimmed error message text.
    */
   async getFieldError(inputLocator) {
-    // Find the containing form group (adjust if structure differs)
+    // Find the containing form group, then the error message within it
     const formGroup = inputLocator.locator('xpath=ancestor::div[contains(@class, "govuk-form-group--error")]');
     const errorLocator = formGroup.locator(this.fieldError);
     await expect(errorLocator).toBeVisible({ timeout: 5000 }); // Ensure error message exists
