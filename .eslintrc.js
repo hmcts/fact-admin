@@ -9,11 +9,12 @@ module.exports = {
     'semi': ['error', 'always']
   },
   'parserOptions': {
-    'sourceType': 'module'
+    'sourceType': 'module',
+    'ecmaVersion': 2018
   },
   'overrides': [
     {
-      'files': ['**/*.ts', '**/*.tsx'],
+      'files': ['**/*.ts', '**/*.tsx', 'src/test/e2e/global-teardown.js', 'src/test/e2e/fixtures/auth.setup.js'],
       'env': { 'browser': true, 'es6': true, 'node': true },
       'extends': [
         'eslint:recommended',
