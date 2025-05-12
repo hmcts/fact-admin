@@ -1,10 +1,12 @@
-require('govuk-frontend/govuk/vendor/polyfills/Function/prototype/bind');
-require('govuk-frontend/govuk/vendor/polyfills/Element/prototype/classList');
-require('govuk-frontend/govuk/vendor/polyfills/Element/prototype/nextElementSibling');
-require('govuk-frontend/govuk/vendor/polyfills/Element/prototype/previousElementSibling');
-require('govuk-frontend/govuk/vendor/polyfills/Event');
-const { nodeListForEach } = require('govuk-frontend/govuk/common');
-
+function nodeListForEach(nodes, callback) {
+  if (window.NodeList.prototype.forEach) {
+    nodes.forEach(callback);
+  } else {
+    for (let i = 0; i < nodes.length; i++) {
+      callback.call(window, nodes[i], i, nodes);
+    }
+  }
+}
 
 function FactTabs ($module) {
   this.$module = $module;
