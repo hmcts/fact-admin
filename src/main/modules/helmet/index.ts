@@ -39,6 +39,7 @@ export class Helmet {
         directives: {
           connectSrc: [self, azureBlob, 'https://*.dynatrace.com'],
           defaultSrc: ["'none'"],
+          manifestSrc: [self],
           fontSrc: [self, 'data:'],
           imgSrc: [self, 'data:', googleAnalyticsDomain, azureBlob, 'https://*.dynatrace.com'],
           objectSrc: [self],
