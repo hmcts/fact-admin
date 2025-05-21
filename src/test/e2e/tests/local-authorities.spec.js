@@ -390,14 +390,9 @@ test.describe.serial('Local Authorities Functionality', () => {
     await localAuthoritiesPage.page.locator(localAuthoritiesPage.navContainer).hover();
     await superAdminPage.waitForTimeout(250); // Brief pause after hover
 
-    // Assert based on the *actual* observed state
-    // Since the prerequisite save likely failed, the server state (and thus the JS logic)
-    // will likely keep the tab ENABLED. Assert that it's FALSE (not disabled).
-    await expect(localAuthoritiesPage.isTabDisabled()).resolves.toBe(false);
-    await logWithColor(testInfo, 'Verified Local Authorities tab is ENABLED (as prerequisite save likely failed).');
+    await expect(localAuthoritiesPage.isTabDisabled()).resolves.toBe(true);
+    await logWithColor(testInfo, 'Verified Local Authorities tab is DISABLED.');
 
-    // Cleanup: Revert court type changes if they were made during setup
-    // (Cleanup logic remains the same, but will run after the reload)
     if (stateChanged) {
       await logWithColor(testInfo, 'Cleanup: Reverting court type changes...');
       await courtTypesPage.clickTypesTab(); // Includes hover
