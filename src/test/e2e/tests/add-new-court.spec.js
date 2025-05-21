@@ -47,6 +47,8 @@ async function setupNavigationAndLogin(page, testInfo) {
     }
   }
 
+  await page.pause()
+
   await expect(page).toHaveTitle('Courts and tribunals - Find a Court or Tribunal Admin Service – GOV.UK');
   logWithColor(testInfo, 'On Admin Portal homepage.');
   await expect(page.locator(homePage.addCourtNavLink)).toBeVisible();
