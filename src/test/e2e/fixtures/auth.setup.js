@@ -126,7 +126,7 @@ async function loginWithRole(page, role, testInfo) {
   const testFilePath = testInfo.file;
   const loginKey = role; // Login once per role per worker process
 
-  const targetAppUrlPattern = process.env.CI ? process.env.TEST_URL : /.*localhost:3300.*/; // App base URL pattern after login
+  const targetAppUrlPattern = process.env.CI ? new RegExp(`.*${process.env.TEST_URL}.*`)   : /.*localhost:3300.*/; // App base URL pattern after login
   const loginUrlPattern = /.*idam-web-public.*/; // Login page URL pattern
 
   let needsLogin = !hasLoggedIn[loginKey]; // Assume login needed if never logged in this worker
@@ -134,7 +134,7 @@ async function loginWithRole(page, role, testInfo) {
   if (hasLoggedIn[loginKey]) {
     // If we think we are logged in, quickly verify by checking if we can access a protected page without redirect
     console.log(`Verifying existing session for role: ${role}...`);
-    const checkUrl = process.env.ci ? process.env.TEST_URL + "/courts" : 'http://localhost:3300/courts';
+    const checkUrl = process.env.ci ? new RegExp(`.*${process.env.TEST_URL}.*`)   : /.*localhost:3300.*/;
     console.log(`   Navigating briefly to ${checkUrl} to check session...`);
     try {
         // Go to the check page and wait for it to roughly load

@@ -40,7 +40,12 @@ async function setupNavigationAndLogin(page, testInfo) {
       throw new Error('Super admin credentials not found in env vars.');
     }
     await loginPage.login(username, password);
-    await page.waitForURL(/.*localhost:3300.*/, { timeout: 15000, waitUntil: 'domcontentloaded' });
+    await page.waitForURL(
+      process.env.CI
+        ? /.*platform\.hmcts\.net.*/  // In CI environment
+        : /.*localhost:3300.*/,       // Locally
+      { timeout: 15000, waitUntil: 'domcontentloaded' }
+    );
     logWithColor(testInfo, 'Re-login successful. Current URL: ' + page.url());
     if (!page.url().endsWith(':3300/')) {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
