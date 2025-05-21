@@ -14,7 +14,7 @@ module.exports = {
   },
   'overrides': [
     {
-      'files': ['**/*.ts', '**/*.tsx', 'src/test/e2e'],
+      'files': ['**/*.ts', '**/*.tsx'],
       'env': { 'browser': true, 'es6': true, 'node': true },
       'extends': [
         'eslint:recommended',

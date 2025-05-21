@@ -10,3 +10,4 @@ coverage/*
 /src/main/types/
 jest.*config.js
 .pnp.*
+/src/test/e2e/
