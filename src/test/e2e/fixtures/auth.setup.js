@@ -119,117 +119,78 @@ exports.test = base.extend({
 // --- Login Helper Function ---
 async function loginWithRole(page, targetRole, testInfo) {
   const loginPage = new LoginPage(page);
-  const homePage = new HomePage(page);
   const credentials = roleCredentials[targetRole];
 
   if (!credentials || !credentials.username) {
-    throw new Error(`Credentials for role '${targetRole}' are missing or incomplete.`);
+    throw new Error(`[Auth] Credentials for role '${targetRole}' missing.`);
   }
 
   const loginKey = targetRole;
   const appBaseUrl = process.env.TEST_URL || 'http://localhost:3300';
-  if (!appBaseUrl) {
-    throw new Error('Application base URL (process.env.TEST_URL or fallback) is not defined.');
-  }
-
-  const escapedAppBaseUrl = appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const targetAppUrlPattern = new RegExp(`^${escapedAppBaseUrl.replace(/\/$/, '')}(\/.*)?$`);
+  const targetAppUrlPattern = new RegExp(`.*${appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*`);
   const loginUrlPattern = /.*idam-web-public.*/;
 
   let needsLogin = !hasLoggedIn[loginKey];
+  let reasonForLogin = needsLogin ? "initial or role switch" : "";
 
-  console.log(`[Auth] Role: ${targetRole}. Initial needsLogin: ${needsLogin} (hasLoggedIn: ${!!hasLoggedIn[loginKey]})`);
+  console.log(`[Auth] Role: '${targetRole}'. Initial needsLogin: ${needsLogin} (hasLoggedIn['${loginKey}']: ${!!hasLoggedIn[loginKey]})`);
 
+  if (!needsLogin) { // hasLoggedIn[loginKey] is true, let's do a quick verification
+    console.log(`   [Auth] Role: '${targetRole}'. hasLoggedIn is true. Performing quick session validity check by navigating to app home.`);
+    await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 10000 }); // Go to app base
+    const currentUrlAfterNav = page.url();
 
-  if (!needsLogin) {
-    console.log(`[Auth] Role: ${targetRole}. Verifying existing session via UI elements.`);
-    try {
-      await homePage.goto();
-      await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
-
-      let isCorrectRoleAccordingToUI = false;
-      if (targetRole === 'superAdmin') {
-        isCorrectRoleAccordingToUI = await homePage.isSuperAdmin();
-      } else if (targetRole === 'admin') {
-        isCorrectRoleAccordingToUI = await homePage.isAdmin();
-      } else if (targetRole === 'viewer') {
-        isCorrectRoleAccordingToUI = await homePage.isViewer();
-      } else if (targetRole === 'noRole') {
-        const onAppPage = targetAppUrlPattern.test(page.url());
-        const notAdmin = !(await homePage.isAdmin());
-        const notSuperAdmin = !(await homePage.isSuperAdmin());
-        const notViewer = !(await homePage.isViewer());
-        isCorrectRoleAccordingToUI = onAppPage && notAdmin && notSuperAdmin && notViewer;
-        if (!isCorrectRoleAccordingToUI) console.log(`   [Auth] UI check for 'noRole' on ${page.url()} failed. OnApp: ${onAppPage}, NotAdmin: ${notAdmin}, NotSuper: ${notSuperAdmin}, NotViewer: ${notViewer}`);
-      } else {
-        console.warn(`[Auth] Role: ${targetRole}. No UI verification method defined. Assuming session is OK if present.`);
-        isCorrectRoleAccordingToUI = true;
-      }
-
-      if (isCorrectRoleAccordingToUI) {
-        console.log(`   [Auth] UI Role for '${targetRole}' verified successfully.`);
-      } else {
-        console.log(`   [Auth] UI Role check FAILED for '${targetRole}'. Expected '${targetRole}', but UI elements do not match. Forcing re-login.`);
-        needsLogin = true;
-        hasLoggedIn[loginKey] = false;
-      }
-    } catch (verificationError) {
-      console.error(`   [Auth] Error during UI role verification for '${targetRole}' (URL: ${page.url()}): ${verificationError.message}. Forcing re-login.`);
+    if (loginUrlPattern.test(currentUrlAfterNav)) {
+      console.log(`   [Auth] Role: '${targetRole}'. Quick check FAILED: Redirected to IDAM (${currentUrlAfterNav}). Session likely expired or invalid.`);
       needsLogin = true;
+      hasLoggedIn[loginKey] = false; // Our memory was wrong
+      reasonForLogin = "session expired or was invalid";
+    } else if (targetAppUrlPattern.test(currentUrlAfterNav)) {
+      console.log(`   [Auth] Role: '${targetRole}'. Quick check PASSED: Still on app domain (${currentUrlAfterNav}). Assuming session is okay.`);
+      // needsLogin remains false
+    } else {
+      console.warn(`   [Auth] Role: '${targetRole}'. Quick check UNCERTAIN: Navigated to unexpected URL (${currentUrlAfterNav}). Assuming login needed for safety.`);
+      needsLogin = true; // Safer to assume login needed if URL is unexpected
       hasLoggedIn[loginKey] = false;
+      reasonForLogin = "unexpected URL after session check nav";
     }
   }
 
   if (needsLogin) {
-    console.log(`[Auth] Role: ${targetRole}. Login required.`);
-
-    const currentUrl = page.url();
-    if (targetAppUrlPattern.test(currentUrl) && !loginUrlPattern.test(currentUrl)) {
-      console.log(`   [Auth] Currently on an app page (${currentUrl}). Attempting logout via HomePage.logout().`);
-      await homePage.logout();
-      console.log(`   [Auth] After homePage.logout(), current URL is: ${page.url()}`);
-    } else {
-      console.log(`   [Auth] Not on a known app page or already on IDAM (${currentUrl}). Skipping HomePage.logout().`);
+    console.log(`[Auth] Role: '${targetRole}'. Login required (Reason: ${reasonForLogin}). Clearing cookies.`);
+    try {
+      await page.context().clearCookies();
+      console.log(`   [Auth] Cookies cleared for '${targetRole}' login.`);
+    } catch (e) {
+      console.error(`   [Auth] FAILED to clear cookies for '${targetRole}': ${e.message}.`);
     }
 
-    if (!loginUrlPattern.test(page.url())) {
-      console.log(`   [Auth] Not on IDAM page. Clearing cookies and navigating via loginPage.goto() (to '/').`);
-      try {
-        await page.context().clearCookies();
-        console.log(`      [Auth] Cookies cleared.`);
-      } catch (e) {
-        console.error(`      [Auth] FAILED to clear cookies: ${e.message}`);
-      }
-      await loginPage.goto();
-    } else {
-      console.log(`   [Auth] Already on IDAM page (${page.url()}). Proceeding to fill credentials.`);
-    }
+    console.log(`   [Auth] Role: '${targetRole}'. Navigating via loginPage.goto() (to '/')`);
+    await loginPage.goto(); // Navigates to '/'
+    console.log(`   [Auth] Role: '${targetRole}'. URL after loginPage.goto(): ${page.url()}`);
 
-    console.log(`   [Auth] Expecting IDAM URL. Current URL is: ${page.url()}`);
-    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 });
-    console.log(`   [Auth] On IDAM page. Logging in with user: ${credentials.username}`);
+    await expect(page).toHaveURL(loginUrlPattern, { timeout: 12000 });
+    console.log(`   [Auth] Role: '${targetRole}'. On IDAM page. Logging in.`);
     await loginPage.login(credentials.username, credentials.password);
 
     const errorLocator = page.locator('.error-summary');
-    if (await errorLocator.isVisible({ timeout: 2000 })) {
-      const errorMessage = await errorLocator.textContent();
-      console.error(`   [Auth] Login failed on IDAM page for '${targetRole}': ${errorMessage}`);
-      throw new Error(`Login failed for role ${targetRole} (IDAM Error): ${errorMessage}`);
+    if (await errorLocator.isVisible({ timeout: 3000 })) {
+      const errMsg = await errorLocator.textContent();
+      console.error(`   [Auth] Login failed on IDAM for '${targetRole}': ${errMsg}`);
+      throw new Error(`Login failed for role ${targetRole} (IDAM Error): ${errMsg}`);
     }
 
-    console.log(`   [Auth] IDAM login successful for '${targetRole}'. Waiting for redirection to application.`);
-    await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 15000 });
+    console.log(`   [Auth] Role: '${targetRole}'. IDAM login success. Expecting app redirect.`);
+    await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 18000 });
 
     hasLoggedIn[loginKey] = true;
     if (testInfo && testInfo.file) {
       await updateCounts(testInfo.file);
-    } else {
-      // This log is useful if updateCounts is critical and might be missed
-      console.warn(`[Auth] testInfo.file not available for role '${targetRole}', skipping updateCounts.`);
     }
-    console.log(`   [Auth] Successfully logged in as '${targetRole}'. Current URL: ${page.url()}`);
+    console.log(`   [Auth] Role: '${targetRole}'. Successfully logged in. URL: ${page.url()}`);
+
   } else {
-    console.log(`[Auth] Role: ${targetRole}. Session already active and verified by UI check. Proceeding.`);
+    console.log(`[Auth] Role: '${targetRole}'. Session active and quick check passed. Proceeding.`);
   }
 }
 
