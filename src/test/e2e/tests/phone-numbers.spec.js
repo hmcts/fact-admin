@@ -1,5 +1,5 @@
 // tests/phone-numbers.spec.js
-const { test } = require('../fixtures/auth.setup'); // Assuming auth.setup provides logged-in 'adminPage'
+const { test } = require('../fixtures/auth.setup');
 const { expect } = require('@playwright/test');
 const { PhoneNumbersPage } = require('../pages/phone-numbers-page');
 
@@ -21,8 +21,6 @@ test.describe.serial('Phone Numbers', () => {
     console.log('[BEFORE EACH] Pre-test cleanup finished.');
   });
 
-  // *** REMOVED afterAll hook ***
-  // test.afterAll(async ({ adminPage }) => { ... });
 
   test('Add and verify phone numbers', async ({ adminPage }) => {
     console.log('Starting test: Add and verify phone numbers');
@@ -34,11 +32,6 @@ test.describe.serial('Phone Numbers', () => {
     console.log('   Clicking "Add new phone number" button...');
     await phoneNumbersPage.page.locator(phoneNumbersPage.addPhoneNumBtn).click();
 
-    // *** REMOVED flawed assertion ***
-    // console.log('   Waiting for first data row (can-reorder) to appear...');
-    // await expect(phoneNumbersPage.page.locator(phoneNumbersPage.dataFieldsetLocatorString)).toHaveCount(1, { timeout: 10000 });
-    // console.log('   First data row appeared.');
-    // Add a brief pause or a more specific wait if needed for the *next* form to be ready
     await phoneNumbersPage.page.waitForTimeout(200); // Small static wait as placeholder
 
     console.log('   Filling second phone number form...');
@@ -69,10 +62,6 @@ test.describe.serial('Phone Numbers', () => {
     console.log('   Clicking "Add new phone number" button...');
     await phoneNumbersPage.page.locator(phoneNumbersPage.addPhoneNumBtn).click();
 
-    // *** REMOVED flawed assertion ***
-    // console.log('   Waiting for first data row (can-reorder) to appear...');
-    // await expect(phoneNumbersPage.page.locator(phoneNumbersPage.dataFieldsetLocatorString)).toHaveCount(1, { timeout: 10000 });
-    // console.log('   First data row appeared.');
     await phoneNumbersPage.page.waitForTimeout(200); // Small static wait as placeholder
 
 

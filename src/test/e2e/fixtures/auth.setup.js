@@ -135,41 +135,53 @@ async function loginWithRole(page, targetRole, testInfo) {
 
   console.log(`[Auth] Role: '${targetRole}'. Initial needsLogin: ${needsLogin} (hasLoggedIn['${loginKey}']: ${!!hasLoggedIn[loginKey]})`);
 
-  if (!needsLogin) { // hasLoggedIn[loginKey] is true, let's do a quick verification
+  if (!needsLogin) {
     console.log(`   [Auth] Role: '${targetRole}'. hasLoggedIn is true. Performing quick session validity check by navigating to app home.`);
-    await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 10000 }); // Go to app base
+    // BasePage.goto() navigates to '/'
+    await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
     const currentUrlAfterNav = page.url();
 
     if (loginUrlPattern.test(currentUrlAfterNav)) {
       console.log(`   [Auth] Role: '${targetRole}'. Quick check FAILED: Redirected to IDAM (${currentUrlAfterNav}). Session likely expired or invalid.`);
       needsLogin = true;
-      hasLoggedIn[loginKey] = false; // Our memory was wrong
-      reasonForLogin = "session expired or was invalid";
+      hasLoggedIn[loginKey] = false;
+      reasonForLogin = "session expired or was invalid after quick check";
     } else if (targetAppUrlPattern.test(currentUrlAfterNav)) {
       console.log(`   [Auth] Role: '${targetRole}'. Quick check PASSED: Still on app domain (${currentUrlAfterNav}). Assuming session is okay.`);
-      // needsLogin remains false
     } else {
       console.warn(`   [Auth] Role: '${targetRole}'. Quick check UNCERTAIN: Navigated to unexpected URL (${currentUrlAfterNav}). Assuming login needed for safety.`);
-      needsLogin = true; // Safer to assume login needed if URL is unexpected
+      needsLogin = true;
       hasLoggedIn[loginKey] = false;
       reasonForLogin = "unexpected URL after session check nav";
     }
   }
 
   if (needsLogin) {
-    console.log(`[Auth] Role: '${targetRole}'. Login required (Reason: ${reasonForLogin}). Clearing cookies.`);
+    console.log(`[Auth] Role: '${targetRole}'. Login required (Reason: ${reasonForLogin}). Aggressively clearing client state.`);
     try {
       await page.context().clearCookies();
       console.log(`   [Auth] Cookies cleared for '${targetRole}' login.`);
+      await page.evaluate(() => localStorage.clear());
+      console.log(`   [Auth] localStorage cleared for '${targetRole}' login.`);
+      await page.evaluate(() => sessionStorage.clear());
+      console.log(`   [Auth] sessionStorage cleared for '${targetRole}' login.`);
     } catch (e) {
-      console.error(`   [Auth] FAILED to clear cookies for '${targetRole}': ${e.message}.`);
+      console.error(`   [Auth] FAILED to clear client state for '${targetRole}': ${e.message}.`);
     }
 
-    console.log(`   [Auth] Role: '${targetRole}'. Navigating via loginPage.goto() (to '/')`);
-    await loginPage.goto(); // Navigates to '/'
-    console.log(`   [Auth] Role: '${targetRole}'. URL after loginPage.goto(): ${page.url()}`);
+    console.log(`   [Auth] Role: '${targetRole}'. Navigating via loginPage.goto() (to '/') with 'domcontentloaded'.`);
 
+    await page.goto(appBaseUrl + '/', { waitUntil: 'domcontentloaded', timeout: 10000 });
+
+    const urlAfterGoto = page.url();
+    console.log(`   [Auth] Role: '${targetRole}'. URL after loginPage.goto('/'): ${urlAfterGoto}`);
+
+    console.log(`   [Auth] Role: '${targetRole}'. Adding short pre-expect delay.`);
+    await page.waitForTimeout(500); // Brief pause before assertion
+
+    console.log(`   [Auth] Role: '${targetRole}'. Expecting IDAM URL. Current URL is: ${page.url()}`);
     await expect(page).toHaveURL(loginUrlPattern, { timeout: 12000 });
+
     console.log(`   [Auth] Role: '${targetRole}'. On IDAM page. Logging in.`);
     await loginPage.login(credentials.username, credentials.password);
 
