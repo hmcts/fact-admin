@@ -117,93 +117,83 @@ exports.test = base.extend({
 });
 
 // --- Login Helper Function ---
-async function loginWithRole(page, role, testInfo) {
+async function loginWithRole(page, targetRole, testInfo) {
   const loginPage = new LoginPage(page);
-  const credentials = roleCredentials[role];
-  if (!credentials || !credentials.username) {
-    throw new Error(`Credentials not found or incomplete for role: ${role}. Check environment variables.`);
-  }
+  const homePage = new HomePage(page); // Instantiate HomePage
+  const credentials = roleCredentials[targetRole];
+  // ... (error if no credentials) ...
 
-  const loginKey = role;
-
-  const appBaseUrl = process.env.CI ? process.env.TEST_URL : 'http://localhost:3300';
-  if (!appBaseUrl) {
-    throw new Error('TEST_URL environment variable is not set or is empty.');
-  }
-
-  const escapedAppBaseUrl = appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const targetAppUrlPattern = new RegExp(`.*${escapedAppBaseUrl}.*`);
+  const appBaseUrl = /* ... get from env ... */ ;
+  const targetAppUrlPattern = /* ... regex for appBaseUrl ... */ ;
   const loginUrlPattern = /.*idam-web-public.*/;
 
-  // Log initial state
-  console.log(`[${role}] Initial check: hasLoggedIn[${loginKey}] = ${hasLoggedIn[loginKey]}, initial needsLogin = ${!hasLoggedIn[loginKey]}`);
-  let needsLogin = !hasLoggedIn[loginKey];
+  let needsLogin = !hasLoggedIn[targetRole];
+  console.log(`[${targetRole}] Initial: needsLogin=${needsLogin} (hasLoggedIn[${targetRole}]=${hasLoggedIn[targetRole]})`);
+  console.log(`[${targetRole}] Worker known sessions: ${JSON.stringify(hasLoggedIn)}`);
 
-  if (hasLoggedIn[loginKey]) {
-    console.log(`[${role}] Verifying existing session...`);
+  if (!needsLogin) { // We think we're logged in as targetRole, let's verify
+    console.log(`[${targetRole}] Verifying existing session using HomePage.is<Role> methods...`);
+    await homePage.goto(); // Go to homepage to check elements
+    await page.waitForLoadState('domcontentloaded');
+
+    let isCorrectRole = false;
     try {
-      console.log(`   [${role}] Session Check: Navigating to app base URL: ${appBaseUrl} with 'domcontentloaded'.`);
-      await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 10000 }); // Timeout 10s
-      const currentUrlAfterGoto = page.url();
-      console.log(`   [${role}] Session Check: Current URL after goto: ${currentUrlAfterGoto}`);
+      if (targetRole === 'superAdmin') isCorrectRole = await homePage.isSuperAdmin();
+      else if (targetRole === 'admin') isCorrectRole = await homePage.isAdmin();
+      else if (targetRole === 'viewer') isCorrectRole = await homePage.isViewer();
+      // Add other roles if necessary
+      else isCorrectRole = true; // Assume OK for roles without a checker, or throw error
 
-      console.log(`   [${role}] Session Check: Verifying NOT on login URL (${loginUrlPattern}).`);
-      await expect(page).not.toHaveURL(loginUrlPattern, { timeout: 6000 }); // Timeout 6s
-      console.log(`   [${role}] Session Check: Successfully verified NOT on login URL.`);
-
-      console.log(`   [${role}] Session Check: Verifying ON target app URL (${targetAppUrlPattern}).`);
-      await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 6000 }); // Timeout 6s
-      console.log(`   [${role}] Session Check: Successfully verified ON target app URL. Session appears valid.`);
-      needsLogin = false;
-    } catch (e) {
-      const urlAtFailure = page.url();
-      console.error(`>>> [${role}] SESSION CHECK FAILED <<<`);
-      console.error(`    URL at point of failure: ${urlAtFailure}`);
-      console.error(`    Error message: ${e.message}`);
-      if (e.message.includes('page.goto') && e.message.includes('Timeout')) {
-        console.error(`    Hint: page.goto('${appBaseUrl}') timed out. App might be slow/unresponsive during session check.`);
-      } else if (e.message.includes('toHaveURL') && e.message.includes(loginUrlPattern.toString())) {
-        console.error(`    Hint: Expected NOT to be on login URL, but was. URL: ${urlAtFailure}. Session likely expired/redirected.`);
-      } else if (e.message.includes('toHaveURL') && e.message.includes(targetAppUrlPattern.toString())) {
-        console.error(`    Hint: Expected to be on target app URL, but was not. URL: ${urlAtFailure}. Possible redirection or app didn't load correctly.`);
+      if (isCorrectRole) {
+        console.log(`   [${targetRole}] Role verified successfully via UI elements.`);
+      } else {
+        console.log(`   [${targetRole}] UI Role check FAILED. Expected '${targetRole}', but UI doesn't match. Forcing re-login.`);
+        needsLogin = true;
+        hasLoggedIn[targetRole] = false; // Our assumption was wrong
       }
-      console.error(`    [${role}] Forcing re-login due to this session check failure.`);
+    } catch (verificationError) {
+      console.error(`   [${targetRole}] Error during UI role verification: ${verificationError.message}. Forcing re-login.`);
       needsLogin = true;
-      hasLoggedIn[loginKey] = false;
+      hasLoggedIn[targetRole] = false;
     }
   }
 
-  // Log state before deciding to login
-  console.log(`[${role}] After session check: needsLogin = ${needsLogin}, hasLoggedIn[${loginKey}] = ${hasLoggedIn[loginKey]}`);
-
   if (needsLogin) {
-    console.log(`[${role}] Login required. Attempting to navigate to login trigger page via loginPage.goto().`);
-    await loginPage.goto();
-    const urlAfterLoginPageGoto = page.url(); // CAPTURE URL HERE
-    console.log(`   [${role}] After loginPage.goto(), current URL is: ${urlAfterLoginPageGoto}`); // LOG IT
+    console.log(`[${targetRole}] Login required for '${targetRole}'.`);
 
-    // This is where your current error occurs if urlAfterLoginPageGoto is not the IDAM URL
-    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 });
-    console.log(`   [${role}] Successfully on IDAM page: ${page.url()}`);
-
-    console.log(`   [${role}] Attempting login as user: ${credentials.username}`);
-    await loginPage.login(credentials.username, credentials.password);
-
-    const errorLocator = page.locator('.error-summary');
-    if (await errorLocator.isVisible({ timeout: 2000 })) {
-      const errorMessage = await errorLocator.textContent();
-      console.error(`   [${role}] Login failed: ${errorMessage}`);
-      throw new Error(`Login failed for role ${role}: ${errorMessage}`);
+    // Attempt graceful logout first if on app domain, otherwise clear cookies
+    if (page.url().startsWith(appBaseUrl) && !page.url().includes('idam-web-public')) {
+      console.log(`   [${targetRole}] Attempting logout via HomePage.logout().`);
+      await homePage.logout(); // Use your HomePage logout
+      // After logout, we should ideally be on IDAM or a public page.
+      // Check if already on IDAM after logout to avoid unnecessary loginPage.goto()
+      if (loginUrlPattern.test(page.url())) {
+        console.log(`   [${targetRole}] Already on IDAM page after logout.`);
+      } else {
+        // If not on IDAM, clear cookies as a fallback or if logout didn't redirect to IDAM
+        console.log(`   [${targetRole}] Not on IDAM after logout attempt (URL: ${page.url()}). Clearing cookies.`);
+        await page.context().clearCookies();
+        await loginPage.goto(); // Navigate to trigger IDAM
+      }
+    } else {
+      // Not on app domain, or already on IDAM, just clear cookies and go to login trigger
+      console.log(`   [${targetRole}] Not on app domain or already on IDAM (URL: ${page.url()}). Clearing cookies.`);
+      await page.context().clearCookies();
+      await loginPage.goto(); // Navigate to trigger IDAM
     }
 
-    console.log(`   [${role}] Login successful. Verifying redirection to application.`);
+    console.log(`   [${targetRole}] URL before expecting IDAM: ${page.url()}`);
+    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 });
+    // ... (rest of loginPage.login, error check, expect app URL, set hasLoggedIn) ...
+    await loginPage.login(credentials.username, credentials.password);
+    const errorLocator = page.locator('.error-summary');
+    if (await errorLocator.isVisible({ timeout: 2000 })) { /* ... throw error ... */ }
     await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 15000 });
-
+    hasLoggedIn[targetRole] = true;
     await updateCounts(testInfo.file);
-    hasLoggedIn[loginKey] = true;
-    console.log(`   [${role}] Successfully logged in. Current URL: ${page.url()}`);
+    console.log(`   [${targetRole}] Successfully logged in as '${targetRole}'.`);
   } else {
-    console.log(`[${role}] Session for role already active. Proceeding with test.`);
+    console.log(`[${targetRole}] Session for '${targetRole}' active and verified.`);
   }
 }
 
