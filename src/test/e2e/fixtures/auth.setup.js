@@ -124,14 +124,13 @@ async function loginWithRole(page, role, testInfo) {
     throw new Error(`Credentials not found or incomplete for role: ${role}. Check environment variables.`);
   }
 
-  const loginKey = role; // Used to track login state per role within this worker process.
+  const loginKey = role;
 
   const appBaseUrl = process.env.CI ? process.env.TEST_URL : 'http://localhost:3300';
   if (!appBaseUrl) {
     throw new Error('TEST_URL environment variable is not set or is empty.');
   }
 
-  // Escape special regex characters if appBaseUrl is used to construct a RegExp.
   const escapedAppBaseUrl = appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const targetAppUrlPattern = new RegExp(`.*${escapedAppBaseUrl}.*`);
   const loginUrlPattern = /.*idam-web-public.*/;
@@ -141,53 +140,65 @@ async function loginWithRole(page, role, testInfo) {
   if (hasLoggedIn[loginKey]) {
     console.log(`Verifying existing session for role: ${role}...`);
     try {
-      // Navigate to the application's base URL to check current session status.
-      // Crucially, page.goto() requires a string URL, not a RegExp.
-      await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 7000 });
+      console.log(`   Session Check: Navigating to app base URL: ${appBaseUrl} with 'networkidle'.`);
+      // Increased timeout and using 'networkidle' for more stability on CI
+      await page.goto(appBaseUrl, { waitUntil: 'networkidle', timeout: 12000 }); // Increased from 7000ms
+      const currentUrlAfterGoto = page.url();
+      console.log(`   Session Check: Current URL after goto: ${currentUrlAfterGoto}`);
 
-      // If not redirected to login, and we are on the target app URL, the session is considered valid.
-      await expect(page).not.toHaveURL(loginUrlPattern, { timeout: 3000 });
-      await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 3000 });
-      console.log(`   Session appears valid for role ${role}. Current URL: ${page.url()}`);
+      console.log(`   Session Check: Verifying NOT on login URL (${loginUrlPattern}).`);
+      // Increased timeout for assertions
+      await expect(page).not.toHaveURL(loginUrlPattern, { timeout: 6000 }); // Increased from 3000ms
+      console.log(`   Session Check: Successfully verified NOT on login URL.`);
+
+      console.log(`   Session Check: Verifying ON target app URL (${targetAppUrlPattern}).`);
+      await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 6000 }); // Increased from 3000ms
+      console.log(`   Session Check: Successfully verified ON target app URL. Session appears valid for role ${role}.`);
       needsLogin = false;
     } catch (e) {
-      // Failure in navigation or URL assertions indicates an invalid or expired session.
-      console.log(`   Session check failed for role ${role} (e.g., redirected to login, page unresponsive, or URL mismatch). Error: ${e.message}. Forcing re-login.`);
+      const urlAtFailure = page.url(); // Capture URL at the point of failure
+      console.error(`>>> SESSION CHECK FAILED for role ${role} <<<`);
+      console.error(`    URL at point of failure: ${urlAtFailure}`);
+      console.error(`    Error message: ${e.message}`);
+      // Provide more context based on error type
+      if (e.message.includes('page.goto') && e.message.includes('Timeout')) {
+        console.error(`    Hint: page.goto('${appBaseUrl}') timed out. The application might be slow or unresponsive.`);
+      } else if (e.message.includes('toHaveURL') && e.message.includes(loginUrlPattern.toString())) {
+        console.error(`    Hint: Expected NOT to be on login URL, but was. Page URL: ${urlAtFailure}. Session likely expired.`);
+      } else if (e.message.includes('toHaveURL') && e.message.includes(targetAppUrlPattern.toString())) {
+        console.error(`    Hint: Expected to be on target app URL, but was not. Page URL: ${urlAtFailure}. Possible redirection to an unexpected page.`);
+      }
+      console.error(`    Forcing re-login due to this session check failure.`);
       needsLogin = true;
-      hasLoggedIn[loginKey] = false; // Mark session as invalid for this worker/role.
+      hasLoggedIn[loginKey] = false; // Mark session as untrusted/invalid
     }
   }
 
   if (needsLogin) {
     console.log(`Login required for role: ${role}.`);
-    // This assumes loginPage.goto() navigates to a page that will
-    // automatically redirect to the IDAM login page if unauthenticated.
     await loginPage.goto();
-    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 }); // Assert redirection to IDAM page.
-
+    // This is where your current error occurs
+    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 });
     console.log(`Attempting login for role: ${role}, user: ${credentials.username}`);
     await loginPage.login(credentials.username, credentials.password);
 
-    // Check for any visible error messages on the login page post-submission.
-    const errorLocator = page.locator('.error-summary'); // Adjust if your error summary selector differs.
-    if (await errorLocator.isVisible({ timeout: 2000 })) { // Quick check for login error summary.
+    const errorLocator = page.locator('.error-summary');
+    if (await errorLocator.isVisible({ timeout: 2000 })) {
       const errorMessage = await errorLocator.textContent();
       console.error(`Login failed for role ${role}: ${errorMessage}`);
       throw new Error(`Login failed for role ${role}: ${errorMessage}`);
     }
 
     console.log(`Login successful for role: ${role}. Verifying redirection to application.`);
-    // Assert successful redirection back to the target application.
     await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 15000 });
 
-    await updateCounts(testInfo.file); // Assuming updateCounts is defined elsewhere.
+    await updateCounts(testInfo.file);
     hasLoggedIn[loginKey] = true;
     console.log(`   Successfully logged in as ${role}. Current URL: ${page.url()}`);
   } else {
     console.log(`Session for role ${role} already active. Proceeding with test.`);
   }
 }
-
 
 // --- Utility Functions (Unchanged) ---
 async function logWithColor(testInfo, message) {
