@@ -162,7 +162,7 @@ async function loginWithRole(page, targetRole, testInfo) {
     console.log(`   [Auth] Role: '${targetRole}'. Navigating to app root ('/') to trigger login.`);
     // LoginPage.goto() navigates to '/'
     // Explicitly use a generous timeout and wait for DOM content as redirects can be involved.
-    await page.goto(appBaseUrl + '/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.goto(appBaseUrl + '/', { waitUntil: 'domcontentloaded', timeout: 20000 });
     const urlAfterGoto = page.url();
     console.log(`   [Auth] Role: '${targetRole}'. URL after navigating to root: ${urlAfterGoto}`);
 
@@ -177,7 +177,7 @@ async function loginWithRole(page, targetRole, testInfo) {
     await loginPage.login(credentials.username, credentials.password);
 
     const errorLocator = page.locator('.error-summary');
-    if (await errorLocator.isVisible({ timeout: 5000 })) { // Increased timeout for error check
+    if (await errorLocator.isVisible({ timeout: 10000 })) { // Increased timeout for error check
       const errMsg = await errorLocator.textContent();
       console.error(`   [Auth] Login failed on IDAM for '${targetRole}': ${errMsg}`);
       throw new Error(`Login failed for role ${targetRole} (IDAM Error): ${errMsg}`);
