@@ -134,7 +134,7 @@ async function loginWithRole(page, role, testInfo) {
   if (hasLoggedIn[loginKey]) {
     // If we think we are logged in, quickly verify by checking if we can access a protected page without redirect
     console.log(`Verifying existing session for role: ${role}...`);
-    const checkUrl = process.env.ci ? new RegExp(`.*${process.env.TEST_URL}.*`)   : /.*localhost:3300.*/;
+    const checkUrl = process.env.CI ? new RegExp(`.*${process.env.TEST_URL}.*`)   : /.*localhost:3300.*/;
     console.log(`   Navigating briefly to ${checkUrl} to check session...`);
     try {
         // Go to the check page and wait for it to roughly load
