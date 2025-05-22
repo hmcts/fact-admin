@@ -117,96 +117,72 @@ exports.test = base.extend({
 });
 
 // --- Login Helper Function ---
-async function loginWithRole(page, targetRole, testInfo) {
+async function loginWithRole(page, role, testInfo) {
   const loginPage = new LoginPage(page);
-  const credentials = roleCredentials[targetRole];
-
+  const credentials = roleCredentials[role];
   if (!credentials || !credentials.username) {
-    throw new Error(`[Auth] Credentials for role '${targetRole}' missing.`);
+    throw new Error(`Credentials not found or incomplete for role: ${role}. Check environment variables.`);
   }
 
-  const loginKey = targetRole;
-  const appBaseUrl = process.env.TEST_URL || 'http://localhost:3300';
-  const targetAppUrlPattern = new RegExp(`.*${appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*`);
+  const loginKey = role; // Used to track login state per role within this worker process.
+
+  const appBaseUrl = process.env.CI ? process.env.TEST_URL : 'http://localhost:3300';
+  if (!appBaseUrl) {
+    throw new Error('TEST_URL environment variable is not set or is empty.');
+  }
+
+  // Escape special regex characters if appBaseUrl is used to construct a RegExp.
+  const escapedAppBaseUrl = appBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const targetAppUrlPattern = new RegExp(`.*${escapedAppBaseUrl}.*`);
   const loginUrlPattern = /.*idam-web-public.*/;
 
   let needsLogin = !hasLoggedIn[loginKey];
-  let reasonForLogin = needsLogin ? "initial or role switch" : "";
 
-  console.log(`[Auth] Role: '${targetRole}'. Initial needsLogin: ${needsLogin} (hasLoggedIn['${loginKey}']: ${!!hasLoggedIn[loginKey]})`);
+  if (hasLoggedIn[loginKey]) {
+    console.log(`Verifying existing session for role: ${role}...`);
+    try {
+      // Navigate to the application's base URL to check current session status.
+      // Crucially, page.goto() requires a string URL, not a RegExp.
+      await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 7000 });
 
-  if (!needsLogin) {
-    console.log(`   [Auth] Role: '${targetRole}'. hasLoggedIn is true. Performing quick session validity check by navigating to app home.`);
-    // BasePage.goto() navigates to '/'
-    await page.goto(appBaseUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
-    const currentUrlAfterNav = page.url();
-
-    if (loginUrlPattern.test(currentUrlAfterNav)) {
-      console.log(`   [Auth] Role: '${targetRole}'. Quick check FAILED: Redirected to IDAM (${currentUrlAfterNav}). Session likely expired or invalid.`);
+      // If not redirected to login, and we are on the target app URL, the session is considered valid.
+      await expect(page).not.toHaveURL(loginUrlPattern, { timeout: 3000 });
+      await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 3000 });
+      console.log(`   Session appears valid for role ${role}. Current URL: ${page.url()}`);
+      needsLogin = false;
+    } catch (e) {
+      // Failure in navigation or URL assertions indicates an invalid or expired session.
+      console.log(`   Session check failed for role ${role} (e.g., redirected to login, page unresponsive, or URL mismatch). Error: ${e.message}. Forcing re-login.`);
       needsLogin = true;
-      hasLoggedIn[loginKey] = false;
-      reasonForLogin = "session expired or was invalid after quick check";
-    } else if (targetAppUrlPattern.test(currentUrlAfterNav)) {
-      console.log(`   [Auth] Role: '${targetRole}'. Quick check PASSED: Still on app domain (${currentUrlAfterNav}). Assuming session is okay.`);
-    } else {
-      console.warn(`   [Auth] Role: '${targetRole}'. Quick check UNCERTAIN: Navigated to unexpected URL (${currentUrlAfterNav}). Assuming login needed for safety.`);
-      needsLogin = true;
-      hasLoggedIn[loginKey] = false;
-      reasonForLogin = "unexpected URL after session check nav";
+      hasLoggedIn[loginKey] = false; // Mark session as invalid for this worker/role.
     }
   }
 
   if (needsLogin) {
-    console.log(`[Auth] Role: '${targetRole}'. Login required (Reason: ${reasonForLogin}). Aggressively clearing client state.`);
-    try {
-      await page.context().clearCookies();
-      console.log(`   [Auth] Cookies cleared for '${targetRole}' login.`);
-      await page.evaluate(() => localStorage.clear());
-      console.log(`   [Auth] localStorage cleared for '${targetRole}' login.`);
-      await page.evaluate(() => sessionStorage.clear());
-      console.log(`   [Auth] sessionStorage cleared for '${targetRole}' login.`);
-    } catch (e) {
-      console.error(`   [Auth] FAILED to clear client state for '${targetRole}': ${e.message}.`);
-    }
+    console.log(`Login required for role: ${role}.`);
+    await loginPage.goto();
+    await expect(page).toHaveURL(loginUrlPattern, { timeout: 10000 }); // Assert redirection to IDAM page.
 
-    console.log(`   [Auth] Role: '${targetRole}'. Navigating via loginPage.goto() (to '/') with 'domcontentloaded'.`);
-
-    await page.goto(appBaseUrl + '/', { waitUntil: 'domcontentloaded', timeout: 10000 });
-
-    const urlAfterGoto = page.url();
-    console.log(`   [Auth] Role: '${targetRole}'. URL after loginPage.goto('/'): ${urlAfterGoto}`);
-
-    console.log(`   [Auth] Role: '${targetRole}'. Adding short pre-expect delay.`);
-    await page.waitForTimeout(500); // Brief pause before assertion
-
-    console.log(`   [Auth] Role: '${targetRole}'. Expecting IDAM URL. Current URL is: ${page.url()}`);
-    await expect(page).toHaveURL(loginUrlPattern, { timeout: 12000 });
-
-    console.log(`   [Auth] Role: '${targetRole}'. On IDAM page. Logging in.`);
+    console.log(`Attempting login for role: ${role}, user: ${credentials.username}`);
     await loginPage.login(credentials.username, credentials.password);
-
     const errorLocator = page.locator('.error-summary');
-    if (await errorLocator.isVisible({ timeout: 3000 })) {
-      const errMsg = await errorLocator.textContent();
-      console.error(`   [Auth] Login failed on IDAM for '${targetRole}': ${errMsg}`);
-      throw new Error(`Login failed for role ${targetRole} (IDAM Error): ${errMsg}`);
+    if (await errorLocator.isVisible({ timeout: 2000 })) { // Quick check for login error summary.
+      const errorMessage = await errorLocator.textContent();
+      console.error(`Login failed for role ${role}: ${errorMessage}`);
+      throw new Error(`Login failed for role ${role}: ${errorMessage}`);
     }
 
-    console.log(`   [Auth] Role: '${targetRole}'. IDAM login success. Expecting app redirect.`);
-    await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 18000 });
+    console.log(`Login successful for role: ${role}. Verifying redirection to application.`);
+    await expect(page).toHaveURL(targetAppUrlPattern, { timeout: 15000 });
 
+    await updateCounts(testInfo.file);
     hasLoggedIn[loginKey] = true;
-    if (testInfo && testInfo.file) {
-      await updateCounts(testInfo.file);
-    }
-    console.log(`   [Auth] Role: '${targetRole}'. Successfully logged in. URL: ${page.url()}`);
-
+    console.log(`   Successfully logged in as ${role}. Current URL: ${page.url()}`);
   } else {
-    console.log(`[Auth] Role: '${targetRole}'. Session active and quick check passed. Proceeding.`);
+    console.log(`Session for role ${role} already active. Proceeding with test.`);
   }
 }
 
-// --- Utility Functions (Unchanged) ---
 async function logWithColor(testInfo, message) {
   // Dynamically import chalk only if needed and available
   try {
