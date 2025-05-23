@@ -28,6 +28,8 @@ export class Nunjucks {
 
     env.addGlobal('csrf', CSRF.create());
 
+    env.addGlobal('govukRebrand', true);
+
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
       next();
