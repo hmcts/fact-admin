@@ -31,6 +31,24 @@ export class OidcMiddleware {
     const issuerBaseURL: string = config.get('services.idam.authorizationURL');
     const baseURL: string = config.get('services.idam.baseURL');
 
+    const sessionStore = this.getStore(app);
+    app.use(session({
+      secret,
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: config.get('session.secure-flag')
+      }
+    }));
+
+    app.use((req, res, next) => {
+      console.log('Session before OIDC:', req.session);
+      next();
+    });
+
     app.use(auth({
       issuerBaseURL: issuerBaseURL,
       baseURL: baseURL,
@@ -44,7 +62,7 @@ export class OidcMiddleware {
         callback: 'oauth2/callback'
       },
       authorizationParams: {
-        'response_type': 'code',
+        response_type: 'code',
         scope: 'openid profile roles manage-user search-user create-user',
       },
       session: {
@@ -54,8 +72,7 @@ export class OidcMiddleware {
           sameSite: 'Lax',
           secure:  config.get('session.secure-flag')
         },
-        rolling: true,
-        store: this.getStore(app)
+        rolling: true
       },
       afterCallback: (req: Request, res: Response, session: Session) => {
         const user = jwt_decode(session.access_token) as User;
@@ -65,13 +82,13 @@ export class OidcMiddleware {
     }));
 
     app.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
+      console.log('App session after OIDC:', req.appSession);
 
       if (req.appSession.user) {
         const sharedKeyCredential = new StorageSharedKeyCredential(
           config.get('services.image-store.account-name'),
           config.get('services.image-store.account-key'));
         const pipeline = newPipeline(sharedKeyCredential);
-
         const blobServiceClient = new BlobServiceClient(
           `https://${config.get('services.image-store.account-name')}.blob.core.windows.net`,
           pipeline
@@ -95,11 +112,21 @@ export class OidcMiddleware {
         res.locals.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
 
-        return next();
+        //see if session is saving successfully
+        req.session.save((err) => {
+          if (err) {
+            console.error('Failed to save session:', err);
+            return next(err);
+          }
+          console.log('Session saved successfully:', req.session);
+          return next();
+        });
 
       } else if (req.xhr) {
-        res.status(302).send({url: '/login'});
-      } else return res.redirect('/login');
+        res.status(302).send({ url: '/login' });
+      } else {
+        return res.redirect('/login');
+      }
     });
   }
 
@@ -134,4 +161,3 @@ export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFuncti
     res.redirect('/courts');
   }
 };
-
