@@ -35,7 +35,7 @@ export class OidcMiddleware {
     app.use(session({
       secret,
       store: sessionStore,
-      resave: false,
+      resave: true,
       saveUninitialized: true,
       cookie: {
         httpOnly: true,
