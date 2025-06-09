@@ -31,19 +31,6 @@ export class OidcMiddleware {
     const issuerBaseURL: string = config.get('services.idam.authorizationURL');
     const baseURL: string = config.get('services.idam.baseURL');
 
-    const sessionStore = this.getStore(app);
-    app.use(session({
-      secret,
-      store: sessionStore,
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: config.get('session.secure-flag')
-      }
-    }));
-
     app.use((req, res, next) => {
       console.log('Session before OIDC:', req.session);
       next();
@@ -72,7 +59,8 @@ export class OidcMiddleware {
           sameSite: 'Lax',
           secure:  config.get('session.secure-flag')
         },
-        rolling: true
+        rolling: true,
+        store: this.getStore(app)
       },
       afterCallback: (req: Request, res: Response, session: Session) => {
         const user = jwt_decode(session.access_token) as User;
