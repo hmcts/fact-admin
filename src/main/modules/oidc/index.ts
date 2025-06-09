@@ -128,6 +128,11 @@ export class OidcMiddleware {
         tls: true
       });
 
+      client.on('error', (err) => this.logger.error('redis client error: ' + err));
+      client.on('ready', () => {
+        this.logger.info('redis client connected and ready');
+      });
+
       app.locals.redisClient = client;
       return new redisStore({ client });
     }
