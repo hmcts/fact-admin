@@ -105,6 +105,8 @@ export class OidcMiddleware {
         res.locals.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
 
+        return next();
+
       } else if (req.xhr) {
         res.status(302).send({url: '/login'});
       } else return res.redirect('/login');
