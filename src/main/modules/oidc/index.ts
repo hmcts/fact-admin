@@ -121,6 +121,7 @@ export class OidcMiddleware {
     const redisPass: string = config.get('session.redis.key');
 
     if (redisHost && redisPass) {
+      this.logger.info('Using Redis for session store');
       const client = createClient({
         host: redisHost,
         password: redisPass,
@@ -137,6 +138,7 @@ export class OidcMiddleware {
       return new redisStore({ client });
     }
 
+    this.logger.info('using session-file-store for session store');
     return new fileStore({ path: '/tmp' });
   }
 }
