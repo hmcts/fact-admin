@@ -106,10 +106,8 @@ export class OidcMiddleware {
         res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
 
       } else if (req.xhr) {
-        res.status(302).send({ url: '/login' });
-      } else {
-        return res.redirect('/login');
-      }
+        res.status(302).send({url: '/login'});
+      } else return res.redirect('/login');
     });
   }
 
