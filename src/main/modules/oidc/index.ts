@@ -69,6 +69,11 @@ export class OidcMiddleware {
       }
     }));
 
+    app.use('/oauth2/callback', (req, res, next) => {
+      console.log('In /oauth2/callback session:', req.session);
+      next();
+    });
+
     app.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
       console.log('App session after OIDC:', req.appSession);
 
@@ -99,16 +104,6 @@ export class OidcMiddleware {
         req.appSession.user.isSuperAdmin = req.appSession.user.jwt.roles.includes('fact-super-admin');
         res.locals.isViewer = req.appSession.user.jwt.roles.includes('fact-viewer');
         res.locals.isSuperAdmin = req.appSession.user.isSuperAdmin;
-
-        //see if session is saving successfully
-        req.session.save((err) => {
-          if (err) {
-            console.error('Failed to save session:', err);
-            return next(err);
-          }
-          console.log('Session saved successfully:', req.session);
-          return next();
-        });
 
       } else if (req.xhr) {
         res.status(302).send({ url: '/login' });
