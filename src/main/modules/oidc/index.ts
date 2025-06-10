@@ -33,6 +33,7 @@ export class OidcMiddleware {
 
     app.use((req, res, next) => {
       console.log('Session before OIDC:', req.session);
+      console.log('session.secure-flag: ' + config.get('session.secure-flag'));
       next();
     });
 
