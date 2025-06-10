@@ -21,7 +21,7 @@ const server = express();
 
 server.locals.ENV = env;
 if (!developmentMode) {
-  server.set('trust proxy', false);
+  server.set('trust proxy', 1);
 }
 server.use(Express.accessLogger());
 server.use(cookieParser());
