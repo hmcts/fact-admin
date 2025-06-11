@@ -166,7 +166,8 @@
     "jest": "^29.0.0",
     "cacache": "^19.0.1",
     "node-gyp": "^11.0.0",
-    "formidable": "3.5.4"
+    "formidable": "3.5.4",
+    "brace-expansion": "4.0.1"
   },
   "packageManager": "yarn@4.9.1"
 }
