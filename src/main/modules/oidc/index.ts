@@ -31,6 +31,12 @@ export class OidcMiddleware {
     const issuerBaseURL: string = config.get('services.idam.authorizationURL');
     const baseURL: string = config.get('services.idam.baseURL');
 
+    app.use((req, res, next) => {
+      console.log('Session before OIDC:', req.session);
+      console.log('session.secure-flag: ' + config.get('session.secure-flag'));
+      next();
+    });
+
     app.use(auth({
       issuerBaseURL: issuerBaseURL,
       baseURL: baseURL,
@@ -44,7 +50,7 @@ export class OidcMiddleware {
         callback: 'oauth2/callback'
       },
       authorizationParams: {
-        'response_type': 'code',
+        response_type: 'code',
         scope: 'openid profile roles manage-user search-user create-user',
       },
       session: {
@@ -64,14 +70,19 @@ export class OidcMiddleware {
       }
     }));
 
+    app.use('/oauth2/callback', (req, res, next) => {
+      console.log('In /oauth2/callback session:', req.session);
+      next();
+    });
+
     app.use(async (req: AuthedRequest, res: Response, next: NextFunction) => {
+      console.log('App session after OIDC:', req.appSession);
 
       if (req.appSession.user) {
         const sharedKeyCredential = new StorageSharedKeyCredential(
           config.get('services.image-store.account-name'),
           config.get('services.image-store.account-key'));
         const pipeline = newPipeline(sharedKeyCredential);
-
         const blobServiceClient = new BlobServiceClient(
           `https://${config.get('services.image-store.account-name')}.blob.core.windows.net`,
           pipeline
@@ -111,6 +122,7 @@ export class OidcMiddleware {
     const redisPass: string = config.get('session.redis.key');
 
     if (redisHost && redisPass) {
+      this.logger.info('Using Redis for session store');
       const client = createClient({
         host: redisHost,
         password: redisPass,
@@ -118,10 +130,16 @@ export class OidcMiddleware {
         tls: true
       });
 
+      client.on('error', (err) => this.logger.error('redis client error: ' + err));
+      client.on('ready', () => {
+        this.logger.info('redis client connected and ready');
+      });
+
       app.locals.redisClient = client;
       return new redisStore({ client });
     }
 
+    this.logger.info('using session-file-store for session store');
     return new fileStore({ path: '/tmp' });
   }
 }
@@ -134,4 +152,3 @@ export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFuncti
     res.redirect('/courts');
   }
 };
-
