@@ -36,8 +36,25 @@ server.use((req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+  console.log('Protocol:', req.protocol);
+  console.log('X-Forwarded-Proto:', req.headers['x-forwarded-proto']);
+  console.log('req.secure:', req.secure);
+  console.log('Cookies:', req.headers.cookie || 'No cookies');
   next();
 });
+
+server.use((req, res, next) => {
+  const writeHead = res.writeHead;
+  res.writeHead = function (...args) {
+    const setCookie = res.getHeader('Set-Cookie');
+    if (setCookie) {
+      console.log('Set-Cookie header:', setCookie);
+    }
+    return writeHead.apply(res, args);
+  };
+  next();
+});
+
 
 setupDev(server,developmentMode);
 
