@@ -92,11 +92,9 @@ export class FacilitiesController {
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearFacilityBtnClass}`, e => {
       $(e.target.closest('fieldset')).find(':input:visible').val('');
-
-      // Replace 'clearFacility' with 'description' and 'descriptionCy' to get the corresponding textarea IDs
-      const idSuffix = e.target.id.replace(this.clearFacilityBtnClass, '');
-      $(`#description${idSuffix}`).val('');
-      $(`#descriptionCy${idSuffix}`).val('');
+      
+      $(`#description${e.target.id.replace(this.clearFacilityBtnClass, '')}`).val('');
+      $(`#descriptionCy${e.target.id.replace(this.clearFacilityBtnClass, '')}`).val('');
     });
   }
 
