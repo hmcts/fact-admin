@@ -29,7 +29,6 @@ server.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.static(path.join(__dirname, 'public')));
-server.use('/tinymce', express.static(path.join(__dirname, '..', '..', 'node_modules', 'tinymce')));
 
 server.use((req, res, next) => {
   res.setHeader(
