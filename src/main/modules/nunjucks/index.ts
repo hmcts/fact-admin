@@ -25,6 +25,7 @@ export class Nunjucks {
     createFilters(env);
 
     env.addGlobal('factFrontendURL', config.get('services.frontend.url'));
+    env.addGlobal('govukRebrand', true);
 
     env.addGlobal('csrf', CSRF.create());
 
