@@ -1,24 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>hmcts/.github//renovate/automerge-all",
-    "local>hmcts/.github:renovate-config"
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-all"
   ],
-  "automerge": true,
-  "groupName": "all dependencies",
-  "separateMajorMinor": false,
-  "groupSlug": "all",
-  "packageRules": [
-    {
-      "matchPackagePatterns": [
-        "*"
-      ],
-      "groupName": "all dependencies",
-      "groupSlug": "all"
-    }
-  ],
-  "lockFileMaintenance": {
-    "enabled": false
-  }
-
+  "automerge": true
 }
