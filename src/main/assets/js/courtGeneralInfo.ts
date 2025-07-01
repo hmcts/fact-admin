@@ -1,7 +1,5 @@
 import $ from 'jquery';
-import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
-import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
 const { initAll } = require('govuk-frontend');
 
@@ -30,7 +28,6 @@ export class CourtGeneralInfoController {
 
   private async updateContent(content: any): Promise<void> {
     $(this.generalTabContentId).html(content);
-    await Utilities.setUpTinymce();
     initAll({ scope: document.getElementById('generalInfoTab') });
     window.scrollTo(0, 0);
   }
@@ -52,8 +49,6 @@ export class CourtGeneralInfoController {
   private setUpSubmitEventHandler() {
     $(this.generalFormId).on('submit', e => {
       e.preventDefault();
-
-      tinymce.triggerSave();
 
       const url = $(e.target).attr('action');
 

@@ -4,7 +4,6 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "../../macros/_tiny-attribution.njk" import tinyMCEAttribution %}
 
 <h2 class="govuk-heading-l">Facilities</h2>
 
@@ -70,7 +69,6 @@
     value: facility.description,
     errorMessage: descriptionError
   }) }}
-{{ tinyMCEAttribution() }}
 
   <span class="govuk-visually-hidden">{{mceMsg}}</span>
   {{ govukTextarea ({
@@ -82,7 +80,6 @@
     name: "courtFacilities[" + loop.index +"][descriptionCy]",
     value: facility.descriptionCy
   }) }}
-{{ tinyMCEAttribution() }}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
