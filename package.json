@@ -136,7 +136,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
-    "@types/express": "4.17.21",
+    "@types/express": "4.17.23",
     "sass-lint/merge": "^2.1.1",
     "uglifyjs-webpack-plugin/serialize-javascript": "^3.1.0",
     "@hmcts/nodejs-logging/moment": "^2.29.4",
