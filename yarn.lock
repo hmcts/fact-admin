@@ -4377,14 +4377,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "axios@npm:1.8.3"
+"axios@npm:1.10.0":
+  version: 1.10.0
+  resolution: "axios@npm:1.10.0"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10/050f911cadd6d47a38ddbf91d2f8da2c34661dda8077e7ad6546e8178701125366fddbba07211a648b6815cf6c2c3c91c0a65d8b968e3d1a6054a21141ff9c01
+  checksum: 10/d43c80316a45611fd395743e15d16ea69a95f2b7f7095f2bb12cb78f9ca0a905194a02e52a3bf4e0db9f85fd1186d6c690410644c10ecd8bb0a468e57c2040e4
   languageName: node
   linkType: hard
 
@@ -7012,7 +7012,7 @@ __metadata:
     applicationinsights: "npm:^2.9.7"
     autobind-decorator: "npm:^2.4.0"
     awilix: "npm:^7.0.3"
-    axios: "npm:1.9.0"
+    axios: "npm:1.10.0"
     babel-loader: "npm:^9.2.1"
     body-parser: "npm:^1.20.3"
     chai: "npm:^4.5.0"
