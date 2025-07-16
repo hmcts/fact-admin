@@ -117,7 +117,7 @@
     "npm-run-all2": "^5.0.0",
     "openid-client": "^5.7.1",
     "pa11y": "^8.0.0",
-    "puppeteer": "19.11.1",
+    "puppeteer": "24.14.0",
     "request": "^2.88.2",
     "sass": "^1.89.2",
     "sass-lint": "^1.13.1",
