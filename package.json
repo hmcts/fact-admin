@@ -53,7 +53,7 @@
     "applicationinsights": "^2.9.7",
     "autobind-decorator": "^2.4.0",
     "awilix": "^7.0.3",
-    "axios": "1.10.0",
+    "axios": "1.11.0",
     "body-parser": "^1.20.3",
     "config": "^3.3.12",
     "connect-redis": "6.1.3",
@@ -74,7 +74,7 @@
     "jwt-decode": "^3.1.2",
     "launchdarkly-node-server-sdk": "^6.4.3",
     "lodash": "^4.17.21",
-    "multer": "^2.0.1",
+    "multer": "2.0.2",
     "nunjucks": "^3.2.4",
     "redis": "3.1.2",
     "require-directory": "^2.1.1",
@@ -89,6 +89,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
+    "@babel/eslint-parser": "^7.11.0",
     "@babel/preset-env": "^7.27.2",
     "@types/chai-as-promised": "^8.0.2",
     "@types/copy-webpack-plugin": "^10.1.3",
@@ -98,7 +99,6 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "@babel/eslint-parser": "^7.11.0",
     "babel-loader": "^9.2.1",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
@@ -158,7 +158,7 @@
     "follow-redirects": "^1.15.6",
     "express": "^4.20.0",
     "ip": "https://registry.npmjs.org/neoip/-/neoip-2.1.0.tgz",
-    "axios": "1.10.0",
+    "axios": "1.11.0",
     "postcss": "^8.4.33",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
@@ -168,7 +168,9 @@
     "node-gyp": "^11.0.0",
     "formidable": "3.5.4",
     "brace-expansion": "4.0.1",
-    "superagent": "10.2.2"
+    "superagent": "10.2.2",
+    "form-data": ">=4.0.4",
+    "on-headers": "1.1.0"
   },
   "packageManager": "yarn@4.9.1"
 }
