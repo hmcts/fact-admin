@@ -5880,7 +5880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.1.0, debug@npm:^3.2.7":
+"debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -5889,7 +5889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.3.7":
+"debug@npm:^4.0.0, debug@npm:^4.3.7":
   version: 4.4.1
   resolution: "debug@npm:4.4.1"
   dependencies:
