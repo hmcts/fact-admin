@@ -3350,7 +3350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jquery@npm:*, @types/jquery@npm:^3.5.32":
+"@types/jquery@npm:^3.5.32":
   version: 3.5.32
   resolution: "@types/jquery@npm:3.5.32"
   dependencies:
@@ -3555,12 +3555,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tinymce@npm:^4.6.9":
-  version: 4.6.9
-  resolution: "@types/tinymce@npm:4.6.9"
+"@types/tinymce@npm:^5.0.0":
+  version: 5.5.0
+  resolution: "@types/tinymce@npm:5.5.0"
   dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10/ab578ddb86c2c6f18083facb05fa272290fcdff4bdc9b8ffb060e80c957849f19aaee93d50f78e43646ae7dbdfd922b4c21d7f93bb4e50ddcfed605eb7b1baa4
+    tinymce: "npm:*"
+  checksum: 10/e26500675a1b57ec4a63375c5114a98fce726009f6a669623f8ea8f7fb36d3e548550a465400db6fd4000126e00d1257c9439c4935fa5709725d81295004a0da
   languageName: node
   linkType: hard
 
@@ -7099,7 +7099,7 @@ __metadata:
     "@types/sanitize-html": "npm:^2.16.0"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/session-file-store": "npm:^1.2.5"
-    "@types/tinymce": "npm:^4.6.9"
+    "@types/tinymce": "npm:^5.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.62.0"
     "@typescript-eslint/eslint-plugin-tslint": "npm:^5.62.0"
     "@typescript-eslint/parser": "npm:^5.62.0"
@@ -13008,6 +13008,13 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: 10/5da78346f70139a7d213b65a0106f3c398d6bc5301f9248b5275f420abc2c4b1e77c2abc72d218dedc28c41efb2e7c312cb76a7730d04f9c2d37d247da3f4198
+  languageName: node
+  linkType: hard
+
+"tinymce@npm:*":
+  version: 8.0.1
+  resolution: "tinymce@npm:8.0.1"
+  checksum: 10/a8bb656b1ab41cfb745ae6286e4233c26a3cc22dc88831938700c5c7f32bede922ae8a811862e8b78c82dffd4e619602701c619555946449f22dffffbedb8910
   languageName: node
   linkType: hard
 
