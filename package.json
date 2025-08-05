@@ -99,7 +99,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "babel-loader": "^9.2.1",
+    "babel-loader": "^10.0.0",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chokidar": "^3.6.0",
