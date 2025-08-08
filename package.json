@@ -43,7 +43,7 @@
     "@types/jquery": "^3.5.32",
     "@types/json2csv": "^5.0.7",
     "@types/lodash": "^4.17.17",
-    "@types/node": "^18.19.111",
+    "@types/node": "^22.0.0",
     "@types/nunjucks": "^3.2.6",
     "@types/require-directory": "^2.1.6",
     "@types/sanitize-html": "^2.16.0",
