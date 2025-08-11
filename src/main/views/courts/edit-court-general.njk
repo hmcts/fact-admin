@@ -9,7 +9,7 @@
   {% if isViewer %}
     {{['Details', name ] | titleEnhancer}}
    {% else %}
-    {{['Edit Court', name ] | titleEnhancer}}
+    {{'Edit ' + name  | titleEnhancer}}
    {% endif %}
 {% endblock %}
 
