@@ -15,7 +15,7 @@ describe('njkFilters', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = ['Editing', 'Aberystwyth Justice Centre'];
       const expectedOutput
-        = 'Editing - Aberystwyth Justice Centre - Find a Court or Tribunal Admin Service – GOV.UK';
+        = 'Editing – Aberystwyth Justice Centre – Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
@@ -24,7 +24,7 @@ describe('njkFilters', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = ['Editing', '', 'Aberystwyth Justice Centre', '  '];
       const expectedOutput
-        = 'Editing - Aberystwyth Justice Centre - Find a Court or Tribunal Admin Service – GOV.UK';
+        = 'Editing – Aberystwyth Justice Centre – Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
@@ -43,7 +43,7 @@ describe('njkFilters', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = 'Bulk Edit';
       const expectedOutput
-        = 'Bulk Edit - Find a Court or Tribunal Admin Service – GOV.UK';
+        = 'Bulk Edit – Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
@@ -69,16 +69,16 @@ describe('njkFilters', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
       const input = ' Edit A List ';
       const expectedOutput
-        = 'Edit A List - Find a Court or Tribunal Admin Service – GOV.UK';
+        = 'Edit A List – Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
 
     test('should add string to title even if it has dashes', () => {
       const titleEnhanceFilter = env.getFilter('titleEnhancer');
-      const input = 'I - have - dash';
+      const input = 'I – have – dash';
       const expectedOutput
-        = 'I - have - dash - Find a Court or Tribunal Admin Service – GOV.UK';
+        = 'I – have – dash – Find a Court or Tribunal Admin Service – GOV.UK';
 
       expect(titleEnhanceFilter(input)).toEqual(expectedOutput);
     });
