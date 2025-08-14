@@ -3452,12 +3452,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.19.111":
-  version: 18.19.111
-  resolution: "@types/node@npm:18.19.111"
+"@types/node@npm:^22.0.0":
+  version: 22.17.1
+  resolution: "@types/node@npm:22.17.1"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/6b6044d80ac66c1f59282704488dba70baa774a39df4e508ec2cabea23199a353c75ad7c4496c9df54557bb31b30c6bb738db2f94f646a121ed11001d104ef12
+    undici-types: "npm:~6.21.0"
+  checksum: 10/775d3996693ce2e717267c810669a8122308676487130c91590022ded38a999fef63fd63b4631fdbbceeea9470f0ecf6a2333a3abbc4f917f40b404bbb57e9bc
   languageName: node
   linkType: hard
 
@@ -7130,7 +7130,7 @@ __metadata:
     "@types/jquery": "npm:^3.5.32"
     "@types/json2csv": "npm:^5.0.7"
     "@types/lodash": "npm:^4.17.17"
-    "@types/node": "npm:^18.19.111"
+    "@types/node": "npm:^22.0.0"
     "@types/nunjucks": "npm:^3.2.6"
     "@types/redis": "npm:2.8.32"
     "@types/require-directory": "npm:^2.1.6"
@@ -13494,17 +13494,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~5.26.4":
-  version: 5.26.5
-  resolution: "undici-types@npm:5.26.5"
-  checksum: 10/0097779d94bc0fd26f0418b3a05472410408877279141ded2bd449167be1aed7ea5b76f756562cb3586a07f251b90799bab22d9019ceba49c037c76445f7cddd
-  languageName: node
-  linkType: hard
-
 "undici-types@npm:~6.20.0":
   version: 6.20.0
   resolution: "undici-types@npm:6.20.0"
   checksum: 10/583ac7bbf4ff69931d3985f4762cde2690bb607844c16a5e2fbb92ed312fe4fa1b365e953032d469fa28ba8b224e88a595f0b10a449332f83fa77c695e567dbe
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
   languageName: node
   linkType: hard
 
