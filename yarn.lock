@@ -4454,13 +4454,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"awilix@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "awilix@npm:7.0.3"
+"awilix@npm:^12.0.0":
+  version: 12.0.5
+  resolution: "awilix@npm:12.0.5"
   dependencies:
     camel-case: "npm:^4.1.2"
-    fast-glob: "npm:^3.2.11"
-  checksum: 10/cba2fe0d4a504e74d4665e8a82000a5b2eecd1408dcc7f044780bd69b2fe7287ed247764710c39d57e3ae731a1adad0d07c604ee17830828e77bbe8643d3420c
+    fast-glob: "npm:^3.3.3"
+  checksum: 10/ba85c7fffb1e3a0ba100d8428a17013d35b3273842d34829e02b93b6613de6cfb421de6643ffeaeb36cd77eaebec84061edb6f6213869c50d8116607bf602bea
   languageName: node
   linkType: hard
 
@@ -7143,7 +7143,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.62.0"
     applicationinsights: "npm:^2.9.7"
     autobind-decorator: "npm:^2.4.0"
-    awilix: "npm:^7.0.3"
+    awilix: "npm:^12.0.0"
     axios: "npm:1.11.0"
     babel-loader: "npm:^9.2.1"
     body-parser: "npm:^1.20.3"
@@ -7229,7 +7229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.2, fast-glob@npm:^3.3.3":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
