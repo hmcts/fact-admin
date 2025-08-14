@@ -15,7 +15,7 @@ Then('I am redirected to the {string} page', async (editListTitle: string) => {
   const pageHeaderElement = await I.getElement(selector);
   expect(await I.getElementText(pageHeaderElement)).equal(editListTitle);
   const pageTitle = await I.getPageTitle();
-  expect(pageTitle).equal(editListTitle + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(pageTitle).equal(editListTitle + ' – ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
 });
 
 When('I hover over the tab title', async () => {
