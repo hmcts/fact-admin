@@ -13,7 +13,7 @@ Then('I am on the {string} page', async (title: string) => {
   const pageHeading = await I.getElementText(el);
   const pageTitle = await I.getPageTitle();
   expect(pageHeading).equal(title);
-  expect(pageTitle).equal(title + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(pageTitle).equal(title + ' – ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
 });
 
 When('I select court {string}', async (court: string) => {
