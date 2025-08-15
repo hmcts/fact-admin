@@ -101,7 +101,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "babel-loader": "^10.0.0",
     "chai": "^4.5.0",
-    "chai-as-promised": "^7.1.2",
+    "chai-as-promised": "^8.0.0",
     "chokidar": "^3.6.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.11.0",
