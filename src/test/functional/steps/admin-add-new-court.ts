@@ -20,7 +20,7 @@ Then('I am redirected to the add new court {string} page', async (addNewCourt: s
   const formTitle = await I.getElementText(await I.getElement(selector));
   expect(formTitle).equal(addNewCourt);
   const pageTitle = await I.getPageTitle();
-  expect(pageTitle).equal(formTitle + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(pageTitle).equal(formTitle + ' – ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
 });
 
 Given('I entered the new court name as {string} in the name text box', async (name: string) => {
