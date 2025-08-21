@@ -24,7 +24,7 @@ Then('I am redirected to the Edit Court page for the {string}', async (courtName
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
   const editCourtHeadingText = await I.getElementText(editCourtHeading);
-  expect(pageTitle).equal('Edit Court - ' + courtName + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(pageTitle).equal('Edit ' + courtName + ' – ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
   expect(editCourtHeadingText).equal('Editing - ' + courtName);
   await I.checkElementIsAnchor('#courts');
   await I.checkElementIsAnchor('#my-account');
@@ -38,7 +38,7 @@ Then('I am redirected to the Details page for the {string}', async (courtName: s
   const pageTitle = await I.getPageTitle();
   const editCourtHeading = await I.getElement('#court-name');
   const editCourtHeadingText = await I.getElementText(editCourtHeading);
-  expect(pageTitle).equal('Details - ' + courtName + ' - ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
+  expect(pageTitle).equal('Details – ' + courtName + ' – ' + FunctionalTestHelpers.DEPARTMENT_SERVICE);
   expect(editCourtHeadingText).equal('Details - ' + courtName);
   await I.checkElementIsAnchor('#courts');
   await I.checkElementIsAnchor('#my-account');
