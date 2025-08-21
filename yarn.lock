@@ -7103,7 +7103,7 @@ __metadata:
     govuk-frontend: "npm:5.11.1"
     helmet: "npm:5.1.1"
     html-webpack-plugin: "npm:^5.6.3"
-    into-stream: "npm:^7.0.0"
+    into-stream: "npm:^8.0.0"
     jest: "npm:^29.0.0"
     jest-when: "npm:^3.7.0"
     jquery: "npm:^3.7.1"
@@ -7461,16 +7461,6 @@ __metadata:
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 10/64c88e489b5d08e2f29664eb3c79c705ff9a8eb15d3e597198ef76546d4ade295897a44abb0abd2700e7ef784b2e3cbf1161e4fbf16f59129193fd1030d16da1
-  languageName: node
-  linkType: hard
-
-"from2@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "from2@npm:2.3.0"
-  dependencies:
-    inherits: "npm:^2.0.1"
-    readable-stream: "npm:^2.0.0"
-  checksum: 10/9164fbe5bbf9a48864bb8960296ccd1173c570ba1301a1c20de453b06eee39b52332f72279f2393948789afe938d8e951d50fea01064ba69fb5674b909f102b6
   languageName: node
   linkType: hard
 
@@ -8300,13 +8290,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"into-stream@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "into-stream@npm:7.0.0"
-  dependencies:
-    from2: "npm:^2.3.0"
-    p-is-promise: "npm:^3.0.0"
-  checksum: 10/10c259101237622b2f90a3a30388f2e997f7c4cb16d7236da0380f2e5691b8f9ce32ea2614ae5d1d3b5ad4eba89e2adac0e3d3d24f8494bff69de145432c2d94
+"into-stream@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "into-stream@npm:8.0.1"
+  checksum: 10/a39dcc71ffdfc4befb40eb0ba9f0244c9bc72ddc577599456f9b2bc7b724ddff5c2703b70e369a280650f8b8ed95f42b0d6c6fc4d0863bf3a071521f8c31db6e
   languageName: node
   linkType: hard
 
@@ -10690,13 +10677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-is-promise@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "p-is-promise@npm:3.0.0"
-  checksum: 10/161e526ce5ba4f053afce094110fdf6cae250d28002b874b30d5f7525d1abb18911ae040d7f0ed3d202af6df87c84acb04109f39e34d7072af6088b3fc6a27fa
-  languageName: node
-  linkType: hard
-
 "p-limit@npm:^2.2.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
@@ -11402,7 +11382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.0, readable-stream@npm:^2.2.2":
+"readable-stream@npm:^2.2.2":
   version: 2.3.8
   resolution: "readable-stream@npm:2.3.8"
   dependencies:
