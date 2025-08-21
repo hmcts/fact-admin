@@ -43,3 +43,5 @@ coverage/
  !.yarn/unplugged
  !.yarn/plugins
  .yarn/cache
+
+node_modules/*

@@ -2,7 +2,7 @@ import nunjucks from 'nunjucks';
 import {SelectItem} from '../../types/CourtPageData';
 
 const DEPARTMENT_SERVICE = 'Find a Court or Tribunal Admin Service – GOV.UK';
-const DASH = '-';
+const DASH = '–';
 
 function createFilters(env: nunjucks.Environment): void {
   env.addFilter('titleEnhancer', function (titleParts: string | string[]) {

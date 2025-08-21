@@ -5704,9 +5704,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.11.0":
-  version: 6.11.0
-  resolution: "css-loader@npm:6.11.0"
+"css-loader@npm:^7.0.0":
+  version: 7.1.2
+  resolution: "css-loader@npm:7.1.2"
   dependencies:
     icss-utils: "npm:^5.1.0"
     postcss: "npm:^8.4.33"
@@ -5718,13 +5718,13 @@ __metadata:
     semver: "npm:^7.5.4"
   peerDependencies:
     "@rspack/core": 0.x || 1.x
-    webpack: ^5.0.0
+    webpack: ^5.27.0
   peerDependenciesMeta:
     "@rspack/core":
       optional: true
     webpack:
       optional: true
-  checksum: 10/9e3665509f6786d46683de5c5f5c4bdd4aa62396b4017b41dbbb41ea5ada4012c80ee1e3302b79b504bc24da7fa69e3552d99006cecc953e0d9eef4a3053b929
+  checksum: 10/ddde22fb103888320f60a1414a6a04638d2e9760a532a52d03c45e6e2830b32dd76c734aeef426f78dd95b2d15f77eeec3854ac53061aff02569732dc6e6801c
   languageName: node
   linkType: hard
 
@@ -7092,7 +7092,7 @@ __metadata:
     cookie-parser: "npm:^1.4.7"
     copy-webpack-plugin: "npm:^13.0.0"
     csrf: "npm:^3.1.0"
-    css-loader: "npm:^6.11.0"
+    css-loader: "npm:^7.0.0"
     cucumber: "npm:^6.0.7"
     eslint: "npm:^8.57.1"
     express: "npm:^5.0.0"
@@ -7136,7 +7136,7 @@ __metadata:
     sonar-scanner: "npm:^3.1.0"
     style-loader: "npm:^3.3.4"
     superagent: "npm:10.2.3"
-    tinymce: "npm:^8.0.0"
+    tinymce: "npm:7.9.1"
     ts-jest: "npm:^29.4.0"
     ts-loader: "npm:^9.5.2"
     ts-node: "npm:10.9.2"
@@ -12953,10 +12953,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinymce@npm:^8.0.0":
-  version: 8.0.2
-  resolution: "tinymce@npm:8.0.2"
-  checksum: 10/f29730693e0f098ea8f7421f0586546b866004681d865684a00eeedb02c4279b0cd244ec0f85069023558ead6e968e57e6d3a833d94932381cdc73682026c416
+"tinymce@npm:7.9.1":
+  version: 7.9.1
+  resolution: "tinymce@npm:7.9.1"
+  checksum: 10/30efbf03ed9976be36d71dc762e7780860d7098b1dd8ad3942a6b920ee3431db5491493d67d7aceb0701ae7d97c69c5a386e758e62962c847f6f23eeabaeb8ca
   languageName: node
   linkType: hard
 
