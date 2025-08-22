@@ -5909,7 +5909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4, debug@npm:^4.0.0, debug@npm:^4.3.7, debug@npm:^4.4.0":
+"debug@npm:^4, debug@npm:^4.0.0, debug@npm:^4.3.7, debug@npm:^4.4.0, debug@npm:^4.4.1":
   version: 4.4.1
   resolution: "debug@npm:4.4.1"
   dependencies:
@@ -6935,24 +6935,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-openid-connect@npm:^2.18.1":
-  version: 2.18.1
-  resolution: "express-openid-connect@npm:2.18.1"
+"express-openid-connect@npm:^2.19.2":
+  version: 2.19.2
+  resolution: "express-openid-connect@npm:2.19.2"
   dependencies:
     base64url: "npm:^3.0.1"
     clone: "npm:^2.1.2"
-    cookie: "npm:^0.7.1"
-    debug: "npm:^4.3.4"
-    futoin-hkdf: "npm:^1.5.1"
+    cookie: "npm:^0.7.2"
+    debug: "npm:^4.4.1"
+    futoin-hkdf: "npm:^1.5.3"
     http-errors: "npm:^1.8.1"
-    joi: "npm:^17.7.0"
+    joi: "npm:^17.13.3"
     jose: "npm:^2.0.7"
-    on-headers: "npm:^1.0.2"
+    on-headers: "npm:^1.1.0"
     openid-client: "npm:^4.9.1"
     url-join: "npm:^4.0.1"
   peerDependencies:
     express: ">= 4.17.0"
-  checksum: 10/3140b0f238f910e846a766b5b48e647d24fb6fed74d44285ea64633836a3ac0c69b914e91601da105ddcf7aed3a76b6675d7141c6c1d24d601b4c0abdb5bd6ee
+  checksum: 10/0e217167963b0fab288ea12f71877cf71502f5ce5e490b520f78c73d5f842424df5cf1fbc14977301775d0824830061abe1018cb8f7e76aae693a3540b040090
   languageName: node
   linkType: hard
 
@@ -7120,7 +7120,7 @@ __metadata:
     eslint: "npm:^8.57.1"
     express: "npm:^5.0.0"
     express-nunjucks: "npm:^3.0.0"
-    express-openid-connect: "npm:^2.18.1"
+    express-openid-connect: "npm:^2.19.2"
     express-session: "npm:1.18.2"
     glob-parent: "npm:6.0.2"
     govuk-frontend: "npm:5.11.1"
@@ -7567,7 +7567,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"futoin-hkdf@npm:^1.5.1":
+"futoin-hkdf@npm:^1.5.3":
   version: 1.5.3
   resolution: "futoin-hkdf@npm:1.5.3"
   checksum: 10/aa64b93b4fdca77e6e9c7f045c539dd912f10077bc31d933e219eb5784e88e90a6d830b5d34431da840cc7477c0ed5f2d504dec49718b9f57941de5f23c20471
@@ -9142,7 +9142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi@npm:^17.7.0":
+"joi@npm:^17.13.3":
   version: 17.13.3
   resolution: "joi@npm:17.13.3"
   dependencies:
