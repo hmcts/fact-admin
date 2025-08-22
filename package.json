@@ -123,7 +123,7 @@
     "sass-lint": "^1.13.1",
     "sass-loader": "^16.0.0",
     "sinon": "^21.0.0",
-    "sinon-chai": "^3.7.0",
+    "sinon-chai": "^4.0.0",
     "sonar-scanner": "^3.1.0",
     "style-loader": "^4.0.0",
     "superagent": "10.2.3",
