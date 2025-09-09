@@ -33,15 +33,15 @@ coverage/
 !.yarn/versions
 
 # yarn v2
- .yarn/*
- .yarn/build-state.yml
- .yarn/install-state.gz
- .pnp.*
+.yarn/*
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
- # yarn v2 zero-install
- !.pnp.cjs
- !.yarn/unplugged
- !.yarn/plugins
- .yarn/cache
+# yarn v2 zero-install
+!.pnp.cjs
+!.yarn/unplugged
+!.yarn/plugins
+.yarn/cache
 
 node_modules/*
