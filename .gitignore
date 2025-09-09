@@ -42,6 +42,7 @@ coverage/
  !.pnp.cjs
  !.yarn/unplugged
  !.yarn/plugins
- .yarn/cache
+ .yarn/cache/
+ .yarn/install-state.gz
 
 node_modules/*
