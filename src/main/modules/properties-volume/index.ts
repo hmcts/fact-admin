@@ -19,7 +19,7 @@ export class PropertiesVolume {
       this.setSecret('secrets.fact.storage-account-name', 'services.image-store.account-name');
       this.setSecret('secrets.fact.storage-account-primary-key', 'services.image-store.account-key');
     } else {
-      this.setLocalSecret('AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+      this.setLocalSecret('AppInsightsInstrumentationKey-ai', 'appInsights.instrumentationKey');
       this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
       this.setLocalSecret('storage-account-name', 'services.image-store.account-name');
