@@ -12,7 +12,7 @@ export class PropertiesVolume {
       this.setSecret('secrets.fact.oauth-client-secret', 'services.idam.clientSecret');
       this.setSecret('secrets.fact.redis-access-key', 'session.secret');
       this.setSecret('secrets.fact.redis-access-key', 'session.redis.key');
-      this.setSecret('secrets.fact.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+      this.setSecret('secrets.fact.AppInsightsInstrumentationKey-ai', 'appInsights.instrumentationKey');
       this.setSecret('secrets.fact.csrf-token-secret', 'csrf.tokenSecret');
       this.setSecret('secrets.fact.user-lock-timeout', 'lock.timeout');
       this.setSecret('secrets.fact.launchdarkly-sdk-key', 'launchDarkly.sdkKey');
