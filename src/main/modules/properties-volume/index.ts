@@ -12,14 +12,14 @@ export class PropertiesVolume {
       this.setSecret('secrets.fact.oauth-client-secret', 'services.idam.clientSecret');
       this.setSecret('secrets.fact.redis-access-key', 'session.secret');
       this.setSecret('secrets.fact.redis-access-key', 'session.redis.key');
-      this.setSecret('secrets.fact.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+      this.setSecret('secrets.fact.AppInsightsInstrumentationKey-ai', 'appInsights.instrumentationKey');
       this.setSecret('secrets.fact.csrf-token-secret', 'csrf.tokenSecret');
       this.setSecret('secrets.fact.user-lock-timeout', 'lock.timeout');
       this.setSecret('secrets.fact.launchdarkly-sdk-key', 'launchDarkly.sdkKey');
       this.setSecret('secrets.fact.storage-account-name', 'services.image-store.account-name');
       this.setSecret('secrets.fact.storage-account-primary-key', 'services.image-store.account-key');
     } else {
-      this.setLocalSecret('AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+      this.setLocalSecret('AppInsightsInstrumentationKey-ai', 'appInsights.instrumentationKey');
       this.setLocalSecret('launchdarkly-sdk-key', 'launchDarkly.sdkKey');
       this.setLocalSecret('oauth-client-secret', 'services.idam.clientSecret');
       this.setLocalSecret('storage-account-name', 'services.image-store.account-name');
