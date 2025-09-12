@@ -11,7 +11,7 @@ nodejs:
         - user-lock-timeout
         - oauth-client-secret
         - redis-access-key
-        - AppInsightsInstrumentationKey
+        - AppInsightsInstrumentationKey-ai
         - csrf-token-secret
         - launchdarkly-sdk-key
         - storage-account-connection-string
