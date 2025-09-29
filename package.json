@@ -170,7 +170,10 @@
     "brace-expansion": "4.0.1",
     "superagent": "10.2.3",
     "form-data": ">=4.0.4",
-    "on-headers": "1.1.0"
+    "on-headers": "1.1.0",
+    "@azure/keyvault-secrets": "4.10.0",
+    "@azure/keyvault-common": "2.0.0",
+    "@azure/storage-common": "12.0.0"
   },
   "packageManager": "yarn@4.9.2"
 }
