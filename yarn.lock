@@ -6141,7 +6141,6 @@ __metadata:
     jwt-decode: "npm:^3.1.2"
     launchdarkly-node-server-sdk: "npm:^7.0.4"
     lodash: "npm:^4.17.21"
-    merge: "npm:>=2.1.1"
     mini-css-extract-plugin: "npm:^2.9.4"
     multer: "npm:2.0.2"
     nock: "npm:^14.0.10"
@@ -9175,13 +9174,6 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 10/7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
-  languageName: node
-  linkType: hard
-
-"merge@npm:>=2.1.1":
-  version: 2.1.1
-  resolution: "merge@npm:2.1.1"
-  checksum: 10/1875521a8e429ba8d82c6d24bf3f229b4b64a348873c41a1245851b422c0caa7fbeb958118c24fbfcbb71e416a29924b3b1c4518911529db175f49eb5bcb5e62
   languageName: node
   linkType: hard
 
