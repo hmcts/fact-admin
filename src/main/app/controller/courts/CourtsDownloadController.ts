@@ -18,7 +18,7 @@ export class CourtsDownloadController {
       ...item,
       url: frontEndUrl + '/courts/' + item.slug
     });
-    const transforms =  [ createUrl ];
+    const transforms = [createUrl] as [typeof createUrl];
     const fields = [
       {
         label: 'name',
