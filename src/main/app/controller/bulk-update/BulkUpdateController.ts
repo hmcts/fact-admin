@@ -12,7 +12,7 @@ export class BulkUpdateController {
     const courts = await req.scope.cradle.api.getCourts();
     const mceMsg = new TinyMCEAccessabilityHelper().getMessage();
 
-    res.render('bulk-update/index', { courts, mceMsg: mceMsg });
+    res.render('bulk-update/index', { courts, mceMsg: mceMsg, activeBulkUpdatePage: true });
   }
 
   /**

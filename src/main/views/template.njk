@@ -1,60 +1,64 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
 {% block head %}
   {% include "webpack/css.njk" %}
-  {% endblock %}
+{% endblock %}
 
 {% block header %}
   {{ govukHeader({
-     useTudorCrown: true
+    useTudorCrown: true
   }) }}
+
+  {% if isLoggedIn %}
+    {{ govukServiceNavigation({
+      serviceName: "FaCT Admin",
+      serviceUrl: "/",
+      navigation: [
+        {
+          href: "/courts",
+          text: "courts",
+          active: true if activeCourtPage else false
+        },
+        {
+          href: "/lists",
+          text: "lists",
+          active: true if activeListsPage else false
+        } if isSuperAdmin,
+        {
+          href: "/courts/download",
+          text: "download csv"
+        } if errors|length == 0,
+        {
+          href: "/courts/add-court",
+          text: "add new court",
+          active: true if activeAddNewCourtPage else false
+        } if isSuperAdmin,
+        {
+          href: "/bulk-update",
+          text: "bulk update",
+          active: true if activeBulkUpdatePage else false
+        } if isSuperAdmin,
+        {
+          href: "/audits",
+          text: "audits",
+          active: true if activeAuditPage else false
+        } if isSuperAdmin,
+        {
+          href: "/users",
+          text: "users"
+        } if isSuperAdmin,
+        {
+          href: "/logout",
+          text: "log out"
+        }
+      ]
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block beforeContent %}
-  {% if isLoggedIn %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-three-quarters">
-
-        <a id="courts" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts">
-          courts
-        </a>
-
-        {% if isSuperAdmin %}
-          <a id="lists" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/lists">
-            lists
-          </a>
-        {% endif %}
-
-        {% if errors|length == 0 %}
-          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
-            download csv
-          </a>
-        {% endif %}
-
-        {% if isSuperAdmin %}
-          <a id="add-court-nav" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/add-court">
-            add new court
-          </a>
-          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/bulk-update">
-            bulk update
-          </a>
-          <a id="audits" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/audits">
-            audits
-          </a>
-           <a id="users" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/users">
-                      users
-            </a>
-        {% endif %}
-      </div>
-
-      <div class="govuk-grid-column-one_quarters">
-        <a id="logout" class="govuk-link govuk-link--no-visited-state govuk-!-padding-left-9 govuk-!-margin-9" href="/logout">
-          log out
-        </a>
-      </div>
-    </div>
-  {% endif %}
 {% endblock %}
 
 {% block pageTitle %}

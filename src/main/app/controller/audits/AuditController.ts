@@ -19,7 +19,9 @@ export class AuditController {
   // which includes the table of audits
   public async get(req: AuthedRequest,
     res: Response): Promise<void> {
-    res.render('audits/index');
+    res.render('audits/index', {
+      activeAuditPage: true
+    });
   }
 
   public async getAuditData(

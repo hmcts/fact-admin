@@ -26,6 +26,9 @@ export class CourtsController {
     } else if (courts.length == 0) {
       errors.push({text: GET_COURTS_ERROR});
     }
-    res.render('courts/courts', {courts, regions, errors});
+    res.render('courts/courts', {
+      courts, regions, errors,
+      activeCourtPage: true,
+    });
   }
 }
