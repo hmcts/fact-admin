@@ -54,7 +54,8 @@ describe('CourtsController', () => {
           'name': 'North West',
           'country': 'England',
         }],
-      errors: []
+      errors: [],
+      activeCourtPage: true
     });
   });
 
@@ -69,7 +70,8 @@ describe('CourtsController', () => {
     expect(res.render).toBeCalledWith('courts/courts', {
       courts: [],
       regions: [],
-      errors: [{text: GET_COURTS_ERROR}]
+      errors: [{text: GET_COURTS_ERROR}],
+      activeCourtPage: true
     });
   });
 
@@ -84,7 +86,8 @@ describe('CourtsController', () => {
     expect(res.render).toBeCalledWith('courts/courts', {
       courts: [],
       regions: [],
-      errors: [{text: NO_MATCHING_ROLES_ERROR}]
+      errors: [{text: NO_MATCHING_ROLES_ERROR}],
+      activeCourtPage: true
     });
   });
 

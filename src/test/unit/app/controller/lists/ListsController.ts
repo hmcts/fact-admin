@@ -10,6 +10,8 @@ describe('ListsController', () => {
 
     const res = mockResponse();
     await controller.get(req, res);
-    expect(res.render).toBeCalledWith('lists/index');
+    expect(res.render).toBeCalledWith('lists/index', {
+      activeListsPage: true,
+    });
   });
 });

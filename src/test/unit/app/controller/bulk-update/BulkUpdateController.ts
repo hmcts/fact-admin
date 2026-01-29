@@ -21,7 +21,8 @@ describe('BulkUpdateController', () => {
 
     const expectedResults = {
       courts: [court],
-      mceMsg: mceMsg
+      mceMsg: mceMsg,
+      activeBulkUpdatePage: true
     };
     const res = mockResponse();
     await controller.get(req, res);

@@ -32,7 +32,9 @@ describe ( 'AuditController', () => {
   test('Should get audits view and render the page', async () => {
     const res = mockResponse();
     await controller.get(mockRequest(), res);
-    expect(res.render).toBeCalledWith('audits/index');
+    expect(res.render).toBeCalledWith('audits/index', {
+      activeAuditPage: true
+    });
   });
 
   test('Should get audit data', async () => {

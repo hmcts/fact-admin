@@ -75,6 +75,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'formErrors': null,
       'latEntered': 0,
@@ -105,6 +106,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '',
       'lonEntered': '',
@@ -153,6 +155,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '\t',
       'lonEntered': '\xa0',
@@ -201,6 +204,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '1',
       'lonEntered': '98',
@@ -249,6 +253,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '!!',
       'lonEntered': 'abc',
@@ -297,6 +302,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '10',
@@ -345,6 +351,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '10',
@@ -395,6 +402,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '10',
@@ -443,6 +451,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': true,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '10',
@@ -476,6 +485,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': false,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '@@',
@@ -518,6 +528,7 @@ describe('NewCourtController', () => {
 
     expect(res.render).toBeCalledWith('courts/addNewCourt', {
       'created': true,
+      'activeAddNewCourtPage': true,
       'csrfToken': 'validCSRFToken',
       'latEntered': '10',
       'lonEntered': '10',
