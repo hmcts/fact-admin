@@ -7,23 +7,24 @@
 {% endblock %}
 
 {% block header %}
-  {{ govukHeader({
-    useTudorCrown: true
-  }) }}
+  {{ govukHeader() }}
 
   {% if isLoggedIn %}
     {{ govukServiceNavigation({
       classes: 'pub-navigation',
+      serviceName: "Find a Court or Tribunal Admin",
       serviceUrl: "/",
       navigation: [
         {
           href: "/courts",
           text: "courts",
+          attributes: { id: "court" },
           active: true if activeCourtPage else false
         },
         {
           href: "/lists",
           text: "lists",
+          attributes: { id: "lists" },
           active: true if activeListsPage else false
         } if isSuperAdmin,
         {
@@ -33,25 +34,30 @@
         {
           href: "/courts/add-court",
           text: "add new court",
+          attributes: { id: "add-court-nav" },
           active: true if activeAddNewCourtPage else false
         } if isSuperAdmin,
         {
           href: "/bulk-update",
           text: "bulk update",
+          attributes: { id: "bulk-update" },
           active: true if activeBulkUpdatePage else false
         } if isSuperAdmin,
         {
           href: "/audits",
           text: "audits",
+          attributes: { id: "audits"},
           active: true if activeAuditPage else false
         } if isSuperAdmin,
         {
           href: "/users",
-          text: "users"
+          text: "users",
+          attributes: { id: "users" }
         } if isSuperAdmin,
         {
           href: "/logout",
-          text: "log out"
+          text: "log out",
+          attributes: { id: "audits"}
         }
       ]
     }) }}
