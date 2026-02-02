@@ -10,10 +10,8 @@
   {{ govukHeader() }}
 
   {% if isLoggedIn %}
-    {{ govukServiceNavigation({
-      classes: 'pub-navigation',
-      serviceUrl: "/",
-      navigation: [
+    {% if isSuperAdmin %}
+      {% set listItems = [
         {
           href: "/courts",
           text: "courts",
@@ -25,7 +23,7 @@
           text: "lists",
           attributes: { id: "lists" },
           active: true if activeListsPage else false
-        } if isSuperAdmin,
+        },
         {
           href: "/courts/download",
           text: "download csv"
@@ -35,32 +33,57 @@
           text: "add new court",
           attributes: { id: "add-court-nav" },
           active: true if activeAddNewCourtPage else false
-        } if isSuperAdmin,
+        },
         {
           href: "/bulk-update",
           text: "bulk update",
           attributes: { id: "bulk-update" },
           active: true if activeBulkUpdatePage else false
-        } if isSuperAdmin,
+        },
         {
           href: "/audits",
           text: "audits",
           attributes: { id: "audits" },
           active: true if activeAuditPage else false
-        } if isSuperAdmin,
+        },
         {
           href: "/users",
           text: "users",
           attributes: { id: "users" }
-        } if isSuperAdmin,
+        },
         {
           href: "/logout",
           text: "log out",
           attributes: { id: "logout" }
         }
-      ]
-    }) }}
-  {% endif %}
+      ] %}
+      {% else %}
+        {% set listItems = [
+          {
+            href: "/courts",
+            text: "courts",
+            attributes: { id: "courts" },
+            active: true if activeCourtPage else false
+          },
+          {
+            href: "/courts/download",
+            text: "download csv"
+          } if errors|length == 0,
+          {
+            href: "/logout",
+            text: "log out",
+            attributes: { id: "logout" }
+          }
+        ] %}
+      {% endif %}
+
+    {{ govukServiceNavigation({
+      classes: 'pub-navigation',
+      serviceUrl: "/",
+      navigation: listItems
+      }) }}
+
+    {% endif %}
 {% endblock %}
 
 {% block pageTitle %}
