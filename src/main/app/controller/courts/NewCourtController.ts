@@ -54,6 +54,7 @@ export class NewCourtController {
 
     res.render('courts/addNewCourt', {
       created: created,
+      activeAddNewCourtPage: true,
       redirectUrl: redirectUrl,
       nameEntered: nameEntered,
       lonEntered: lonEntered,

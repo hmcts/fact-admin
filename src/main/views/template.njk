@@ -1,60 +1,89 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
 {% block head %}
   {% include "webpack/css.njk" %}
-  {% endblock %}
-
-{% block header %}
-  {{ govukHeader({
-     useTudorCrown: true
-  }) }}
 {% endblock %}
 
-{% block beforeContent %}
+{% block header %}
+  {{ govukHeader() }}
+
   {% if isLoggedIn %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-three-quarters">
+    {% if isSuperAdmin %}
+      {% set listItems = [
+        {
+          href: "/courts",
+          text: "courts",
+          attributes: { id: "courts" },
+          active: true if activeCourtPage else false
+        },
+        {
+          href: "/lists",
+          text: "lists",
+          attributes: { id: "lists" },
+          active: true if activeListsPage else false
+        },
+        {
+          href: "/courts/download",
+          text: "download csv"
+        } if errors|length == 0,
+        {
+          href: "/courts/add-court",
+          text: "add new court",
+          attributes: { id: "add-court-nav" },
+          active: true if activeAddNewCourtPage else false
+        },
+        {
+          href: "/bulk-update",
+          text: "bulk update",
+          attributes: { id: "bulk-update" },
+          active: true if activeBulkUpdatePage else false
+        },
+        {
+          href: "/audits",
+          text: "audits",
+          attributes: { id: "audits" },
+          active: true if activeAuditPage else false
+        },
+        {
+          href: "/users",
+          text: "users",
+          attributes: { id: "users" }
+        },
+        {
+          href: "/logout",
+          text: "log out",
+          attributes: { id: "logout" }
+        }
+      ] %}
+      {% else %}
+        {% set listItems = [
+          {
+            href: "/courts",
+            text: "courts",
+            attributes: { id: "courts" },
+            active: true if activeCourtPage else false
+          },
+          {
+            href: "/courts/download",
+            text: "download csv"
+          } if errors|length == 0,
+          {
+            href: "/logout",
+            text: "log out",
+            attributes: { id: "logout" }
+          }
+        ] %}
+      {% endif %}
 
-        <a id="courts" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts">
-          courts
-        </a>
+    {{ govukServiceNavigation({
+      classes: 'pub-navigation',
+      serviceUrl: "/",
+      navigation: listItems
+      }) }}
 
-        {% if isSuperAdmin %}
-          <a id="lists" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/lists">
-            lists
-          </a>
-        {% endif %}
-
-        {% if errors|length == 0 %}
-          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/download">
-            download csv
-          </a>
-        {% endif %}
-
-        {% if isSuperAdmin %}
-          <a id="add-court-nav" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/courts/add-court">
-            add new court
-          </a>
-          <a id="bulk-update" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/bulk-update">
-            bulk update
-          </a>
-          <a id="audits" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/audits">
-            audits
-          </a>
-           <a id="users" class="govuk-link govuk-link--no-visited-state govuk-!-padding-right-3" href="/users">
-                      users
-            </a>
-        {% endif %}
-      </div>
-
-      <div class="govuk-grid-column-one_quarters">
-        <a id="logout" class="govuk-link govuk-link--no-visited-state govuk-!-padding-left-9 govuk-!-margin-9" href="/logout">
-          log out
-        </a>
-      </div>
-    </div>
-  {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block pageTitle %}
