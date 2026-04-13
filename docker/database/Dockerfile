@@ -1,2 +1,2 @@
-FROM hmctspublic.azurecr.io/imported/postgres:16.3-alpine
+FROM hmctsprod.azurecr.io/imported/postgres:16.3-alpine
 COPY create-multiple-postgresql-databases.sh /docker-entrypoint-initdb.d/
