@@ -1376,23 +1376,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-sdk-common@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@launchdarkly/js-sdk-common@npm:1.1.0"
-  checksum: 10/daa959039970ceb860746da9cb7c4dea975dcac71ed8c1bad42ff29e558ea0f85f58f72b801f578cef073cc98f5195ef1e72cab6bee9ca99c1dd56551e472c68
-  languageName: node
-  linkType: hard
-
-"@launchdarkly/js-server-sdk-common@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@launchdarkly/js-server-sdk-common@npm:1.2.3"
-  dependencies:
-    "@launchdarkly/js-sdk-common": "npm:1.1.0"
-    semver: "npm:7.5.4"
-  checksum: 10/448509777e2de954c0d58852f7b81adb21e6b1120aa59917bdea62a3d9cdf5cd68259bd5a79c24aeae4d557d0fa2b18b8bed056c54b107cae560da95641ca3dd
-  languageName: node
-  linkType: hard
-
 "@microsoft/applicationinsights-web-snippet@npm:1.0.1":
   version: 1.0.1
   resolution: "@microsoft/applicationinsights-web-snippet@npm:1.0.1"
@@ -3328,6 +3311,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async@npm:^3.2.4":
+  version: 3.2.6
+  resolution: "async@npm:3.2.6"
+  checksum: 10/cb6e0561a3c01c4b56a799cc8bab6ea5fef45f069ab32500b6e19508db270ef2dffa55e5aed5865c5526e9907b1f8be61b27530823b411ffafb5e1538c86c368
+  languageName: node
+  linkType: hard
+
 "asynckit@npm:^0.4.0":
   version: 0.4.0
   resolution: "asynckit@npm:0.4.0"
@@ -4229,7 +4219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clone@npm:^2.1.2":
+"clone@npm:2.x, clone@npm:^2.1.2":
   version: 2.1.2
   resolution: "clone@npm:2.1.2"
   checksum: 10/d9c79efba655f0bf601ab299c57eb54cbaa9860fb011aee9d89ed5ac0d12df1660ab7642fddaabb9a26b7eff0e117d4520512cb70798319ff5d30a111b5310c2
@@ -6163,7 +6153,7 @@ __metadata:
     js-yaml: "npm:^3.14.2"
     json2csv: "npm:@json2csv/plainjs@^7.0.6"
     jwt-decode: "npm:^3.1.2"
-    launchdarkly-node-server-sdk: "npm:@launchdarkly/node-server-sdk@8.2.6"
+    launchdarkly-node-server-sdk: "npm:^7.0.4"
     lodash: "npm:^4.18.1"
     merge: "npm:>=2.1.1"
     mini-css-extract-plugin: "npm:^2.9.4"
@@ -7268,7 +7258,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:5.0.1, https-proxy-agent@npm:^5.0.1":
+"https-proxy-agent@npm:5.0.1":
   version: 5.0.1
   resolution: "https-proxy-agent@npm:5.0.1"
   dependencies:
@@ -8874,21 +8864,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"launchdarkly-eventsource@npm:2.0.1":
-  version: 2.0.1
-  resolution: "launchdarkly-eventsource@npm:2.0.1"
-  checksum: 10/fbeec348a52b8fa9a37bcd1a32f597422250e87b80617dc5c3859255b441c4b7b8949d632d8cc10392f96917bd5f870bccdc7b0338279daba37a96d9ab311154
+"launchdarkly-eventsource@npm:1.4.4":
+  version: 1.4.4
+  resolution: "launchdarkly-eventsource@npm:1.4.4"
+  checksum: 10/ed27acd89abc2546dbcd0f51c184171f21387315039055914211691cf02060ebf8ebc74ed51d4c8e816f3c73aa881e2c6fb17ea334a3c9b9877b46032ee297c9
   languageName: node
   linkType: hard
 
-"launchdarkly-node-server-sdk@npm:@launchdarkly/node-server-sdk@8.2.6":
-  version: 8.2.6
-  resolution: "@launchdarkly/node-server-sdk@npm:8.2.6"
+"launchdarkly-node-server-sdk@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "launchdarkly-node-server-sdk@npm:7.0.4"
   dependencies:
-    "@launchdarkly/js-server-sdk-common": "npm:1.2.3"
-    https-proxy-agent: "npm:^5.0.1"
-    launchdarkly-eventsource: "npm:2.0.1"
-  checksum: 10/682c2828d8512710a7d6803a72b47a6d543925067d9cfed911bb818944df1332f179692b73eaacbb3aea56fc1273b4b081c5dc2d1ea5639a95fd6d034a9b6041
+    async: "npm:^3.2.4"
+    launchdarkly-eventsource: "npm:1.4.4"
+    lru-cache: "npm:^6.0.0"
+    node-cache: "npm:^5.1.0"
+    semver: "npm:^7.5.4"
+    tunnel: "npm:0.0.6"
+    uuid: "npm:^8.3.2"
+  checksum: 10/52a524002b5ff645135b2e20c2a7bd8812f3c430c834e9fd39bd1dcf58355e216aacd6a2f5103a8eb82bac0f275c55bebc4c2594868b903b1c740d5a5fe762a5
   languageName: node
   linkType: hard
 
@@ -9658,6 +9652,15 @@ __metadata:
   dependencies:
     node-gyp: "npm:latest"
   checksum: 10/ee1e1ed6284a2f8cd1d59ac6175ecbabf8978dcf570345e9a8095a9d0a2b9ced591074ae77f9009287b00c402352b38aa9322a34f2199cdc9f567b842a636b94
+  languageName: node
+  linkType: hard
+
+"node-cache@npm:^5.1.0":
+  version: 5.1.2
+  resolution: "node-cache@npm:5.1.2"
+  dependencies:
+    clone: "npm:2.x"
+  checksum: 10/6ac71a9e65fdd8940883c3c188de4888ff592f5bf52e4d42436c49e2a575d635e7327acea490c49fa7c01d5fa81f7b6e060fd35cf6f6ec401fbd5f77a3ebeecf
   languageName: node
   linkType: hard
 
@@ -11363,17 +11366,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.5.4":
-  version: 7.5.4
-  resolution: "semver@npm:7.5.4"
-  dependencies:
-    lru-cache: "npm:^6.0.0"
-  bin:
-    semver: bin/semver.js
-  checksum: 10/985dec0d372370229a262c737063860fabd4a1c730662c1ea3200a2f649117761a42184c96df62a0e885e76fbd5dace41087d6c1ac0351b13c0df5d6bcb1b5ac
-  languageName: node
-  linkType: hard
-
 "semver@npm:^6.3.0, semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -12674,6 +12666,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tunnel@npm:0.0.6":
+  version: 0.0.6
+  resolution: "tunnel@npm:0.0.6"
+  checksum: 10/cf1ffed5e67159b901a924dbf94c989f20b2b3b65649cfbbe4b6abb35955ce2cf7433b23498bdb2c5530ab185b82190fce531597b3b4a649f06a907fc8702405
+  languageName: node
+  linkType: hard
+
 "tweetnacl@npm:^0.14.3, tweetnacl@npm:~0.14.0":
   version: 0.14.5
   resolution: "tweetnacl@npm:0.14.5"
@@ -13090,7 +13089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0":
+"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
