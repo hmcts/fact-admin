@@ -1,23 +1,23 @@
 import {LaunchDarkly} from '../../../../main/app/feature-flags/LaunchDarklyClient';
-import launchDarkly, {LDUser} from 'launchdarkly-node-server-sdk';
+import * as launchDarkly from '@launchdarkly/node-server-sdk';
+import {LDClient, LDUser} from '@launchdarkly/node-server-sdk';
 import config from 'config';
 import {when} from 'jest-when';
+
+jest.mock('@launchdarkly/node-server-sdk', () => ({
+  init: jest.fn()
+}));
 
 describe('LaunchDarkly', function () {
 
   const testFlag = 'test-flag';
   const multipleFlags = {'test-flag':true, 'test-flag2':true};
   jest.mock('config');
-  jest.mock('launchdarkly-node-server-sdk');
 
   config.get = jest.fn();
-  launchDarkly.init = jest.fn();
+  const mockedInit = jest.mocked(launchDarkly.init);
 
-  let mockLdClient: {
-    waitForInitialization: () => Promise<any>;
-    variation: (flag: string, ldUser: LDUser) => Promise<any>;
-    allFlagsState: (ldUser: LDUser) => Promise<any>;
-  };
+  let mockLdClient: Pick<LDClient, 'waitForInitialization' | 'variation' | 'allFlagsState'>;
 
   beforeEach(() => {
     mockLdClient = {
@@ -37,12 +37,12 @@ describe('LaunchDarkly', function () {
       .mockReturnValue('fact-admin');
     when(config.get as jest.Mock).calledWith('launchDarkly.sdkKey')
       .mockReturnValue('sometestkey');
-    when(launchDarkly.init as jest.Mock)
-      .mockReturnValue(mockLdClient);
+    when(mockedInit)
+      .mockReturnValue(mockLdClient as LDClient);
 
     const featureFlags = new LaunchDarkly();
     expect(featureFlags['ldUser'].key).toEqual('fact-admin');
-    expect(featureFlags['client']).toEqual(launchDarkly.init('sometestkey'));
+    expect(featureFlags['client']).toEqual(mockedInit('sometestkey'));
   });
 
   test('Should get a flag value', async function () {
@@ -50,8 +50,8 @@ describe('LaunchDarkly', function () {
       .mockReturnValue('fact-admin');
     when(config.get as jest.Mock).calledWith('launchDarkly.sdkKey')
       .mockReturnValue('sometestkey');
-    when(launchDarkly.init as jest.Mock)
-      .mockReturnValue(mockLdClient);
+    when(mockedInit)
+      .mockReturnValue(mockLdClient as LDClient);
 
     expect(await new LaunchDarkly().getFlagValue(testFlag, false)).toEqual({testFlag: true});
   });
@@ -61,8 +61,8 @@ describe('LaunchDarkly', function () {
       .mockReturnValue('fact-admin');
     when(config.get as jest.Mock).calledWith('launchDarkly.sdkKey')
       .mockReturnValue('sometestkey');
-    when(launchDarkly.init as jest.Mock)
-      .mockReturnValue(mockLdClient);
+    when(mockedInit)
+      .mockReturnValue(mockLdClient as LDClient);
 
     expect(await new LaunchDarkly().getAllFlagValues(false)).toEqual(multipleFlags);
   });

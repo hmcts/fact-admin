@@ -1,5 +1,6 @@
 import config from 'config';
-import launchDarkly, {LDClient, LDUser} from 'launchdarkly-node-server-sdk';
+import * as launchDarkly from '@launchdarkly/node-server-sdk';
+import {LDClient, LDUser} from '@launchdarkly/node-server-sdk';
 import {FeatureFlagClient} from './FeatureFlags';
 
 export class LaunchDarkly implements FeatureFlagClient {
