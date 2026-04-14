@@ -18,7 +18,7 @@ nodejs:
         - storage-account-name
         - storage-account-primary-key
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
-  image: 'hmctspublic.azurecr.io/fact/admin:latest'
+  image: 'hmctsprod.azurecr.io/fact/admin:latest'
   environment:
     FACT_API_URL: "http://fact-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"

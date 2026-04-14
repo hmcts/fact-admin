@@ -15,7 +15,7 @@ services:
       - 5050:5432
 
   fact-api:
-    image: "hmctspublic.azurecr.io/fact/api:latest"
+    image: "hmctsprod.azurecr.io/fact/api:latest"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://fact-database:5432/fact
       - MAPIT_KEY=
