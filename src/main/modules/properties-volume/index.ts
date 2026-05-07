@@ -39,8 +39,13 @@ export class PropertiesVolume {
   }
 
   private setLocalSecret(secret: string, toPath: string): void {
-    // Load a secret from the AAT vault using azure cli
-    const result = spawnSync('az', ['keyvault', 'secret', 'show', '--vault-name', 'fact-aat', '-o', 'tsv', '--query', 'value', '--name', secret], {encoding: 'utf8'});
+    let keyVault = 'fact-aat';
+    // allow a local override of the keyvault env used here (only used in dev)
+    if(process.env.LOCAL_DEV_ENV && process.env.LOCAL_DEV_ENV.toLowerCase() !== 'aat') {
+      keyVault = `fact-${process.env.LOCAL_DEV_ENV.toLowerCase()}`;
+    }
+    // Load a secret from the relevant vault using azure cli
+    const result = spawnSync('az', ['keyvault', 'secret', 'show', '--vault-name', keyVault, '-o', 'tsv', '--query', 'value', '--name', secret], {encoding: 'utf8'});
     set(config, toPath, encodeURI(result.stdout.replace('\n', '')));
   }
 }

@@ -25,6 +25,9 @@ public/
 coverage/
 /functional-output/
 
+# local environment files
+.env
+
 /src/test/functional/user_data
 
 !.yarn/patches
