@@ -37,14 +37,6 @@ Given('I click the Login link', async () => {
   await I.click('#login');
 });
 
-// Given('I am on the admin portal sign in page', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     const element = await I.getElement('h1');
-//     const text = await I.getElementText(element);
-//     expect(text).equal('Sign in');
-//   }
-// });
-
 Given('I am on the admin portal sign in page', async () => {
   const title = await I.getPageTitle();
   if (title == 'Enter your email address - HMCTS Access') {
@@ -54,13 +46,19 @@ Given('I am on the admin portal sign in page', async () => {
   }
 });
 
-// When('I fill in the Username and Password fields with my authenticated credentials', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     const username = puppeteerConfig.username;
-//     const password = puppeteerConfig.password;
-//     await fillInUsernameAndPassword(username, password);
-//   }
-// });
+When('I fill in the Username and Password fields with my authenticated credentials', async () => {
+  let title = await I.getPageTitle();
+  if (title == 'Enter your email address - HMCTS Access') {
+    const username = puppeteerConfig.username;
+    await fillInEmail(username);
+    await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+  }
+  title = await I.getPageTitle();
+  if (title == 'Enter your password - HMCTS Access') {
+    const password = puppeteerConfig.password;
+    await fillInPassword(password);
+  }
+});
 
 When('I fill in the email field with my authenticated username', async () => {
   const title = await I.getPageTitle();
@@ -78,13 +76,19 @@ When('I fill in the password field', async () => {
   }
 });
 
-// When('I fill in the Username and Password fields with test user credentials with no role', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     const username = puppeteerConfig.testUsername;
-//     const password = puppeteerConfig.password;
-//     await fillInUsernameAndPassword(username, password);
-//   }
-// });
+When('I fill in the Username and Password fields with test user credentials with no role', async () => {
+  let title = await I.getPageTitle();
+  if (title == 'Enter your email address - HMCTS Access') {
+    const username = puppeteerConfig.testUsername;
+    await fillInEmail(username);
+    await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+  }
+  title = await I.getPageTitle();
+  if (title == 'Enter your password - HMCTS Access') {
+    const password = puppeteerConfig.password;
+    await fillInPassword(password);
+  }
+});
 
 When('I fill in the email field with my test user email with no role', async () => {
   const title = await I.getPageTitle();
@@ -94,13 +98,19 @@ When('I fill in the email field with my test user email with no role', async () 
   }
 });
 
-// When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     const username = puppeteerConfig.superUsername;
-//     const password = puppeteerConfig.password;
-//     await fillInUsernameAndPassword(username, password);
-//   }
-// });
+When('I fill in the Username and Password fields with my super user authenticated credentials', async () => {
+  let title = await I.getPageTitle();
+  if (title == 'Enter your email address - HMCTS Access') {
+    const username = puppeteerConfig.superUsername;
+    await fillInEmail(username);
+    await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+  }
+  title = await I.getPageTitle();
+  if (title == 'Enter your password - HMCTS Access') {
+    const password = puppeteerConfig.password;
+    await fillInPassword(password);
+  }
+});
 
 When('I fill in the email field with my super user authenticated username', async () => {
   const title = await I.getPageTitle();
@@ -110,13 +120,19 @@ When('I fill in the email field with my super user authenticated username', asyn
   }
 });
 
-// When('I fill in the Username and Password fields with my viewer authenticated credentials', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     const username = puppeteerConfig.viewerUsername;
-//     const password = puppeteerConfig.password;
-//     await fillInUsernameAndPassword(username, password);
-//   }
-// });
+When('I fill in the Username and Password fields with my viewer authenticated credentials', async () => {
+  let title = await I.getPageTitle();
+  if (title == 'Enter your email address - HMCTS Access') {
+    const username = puppeteerConfig.viewerUsername;
+    await fillInEmail(username);
+    await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+  }
+  title = await I.getPageTitle();
+  if (title == 'Enter your password - HMCTS Access') {
+    const password = puppeteerConfig.password;
+    await fillInPassword(password);
+  }
+});
 
 When('I fill in the email field with my viewer authenticated username', async () => {
   const title = await I.getPageTitle();
@@ -126,12 +142,18 @@ When('I fill in the email field with my viewer authenticated username', async ()
   }
 });
 
-// When('I fill in the Username and Password fields with my incorrect authenticated credentials {string} {string}',
-//   async (username: string, password: string) => {
-//     if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//       await fillInUsernameAndPassword(username, password);
-//     }
-//   });
+When('I fill in the Username and Password fields with my incorrect authenticated credentials {string} {string}',
+  async (username: string, password: string) => {
+    let title = await I.getPageTitle();
+    if (title == 'Enter your email address - HMCTS Access') {
+      await fillInEmail(username);
+      await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+    }
+    title = await I.getPageTitle();
+    if (title == 'Enter your password - HMCTS Access') {
+      await fillInPassword(password);
+    }
+  });
 
 When('I fill in the email field with my incorrect authenticated credentials {string}', async (username: string) => {
   const title = await I.getPageTitle();
@@ -147,19 +169,19 @@ When('I fill in the password field with my incorrect authenticated password {str
   }
 });
 
-
-// Given('click the Sign In button', async () => {
-//   if (await I.getPageTitle() == 'Sign in - HMCTS Access - GOV.UK') {
-//     await I.click('.button');
-//   }
-// });
-
-Given('click the Submit button', async () => {
+Given('click the Sign In button', async () => {
   const title = await I.getPageTitle();
   if (title == 'Enter your email address - HMCTS Access' || title == 'Enter your password - HMCTS Access' ) {
     await I.click('#main-content > div > div > form > div.govuk-button-group > button');
   }
 });
+
+// Given('click the Submit button', async () => {
+//   const title = await I.getPageTitle();
+//   if (title == 'Enter your email address - HMCTS Access' || title == 'Enter your password - HMCTS Access' ) {
+//     await I.click('#main-content > div > div > form > div.govuk-button-group > button');
+//   }
+// });
 
 Then('the system will sign me in', async () => {
   const title = await I.getPageTitle();

@@ -6,9 +6,9 @@ Feature: Login/Logout
     And I am logged out if I am a super admin
     And I am on the admin portal sign in page
     When I fill in the email field with my viewer authenticated username
-    And click the Submit button
+    And click the Sign In button
     Then I fill in the password field
-    And click the Submit button
+    And click the Sign In button
     Then the system will sign me in
     And I cannot view super admin content
     When I click edit next to court with "bexley-magistrates-court"
