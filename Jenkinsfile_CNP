@@ -9,9 +9,7 @@ def component = "admin"
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def secrets = [
-// TEMPORARY: Run functional tests against ITHC environment
-//  'fact-${env}': [
-  'fact-ithc': [
+  'fact-${env}': [
     secret("oauth-user", "OAUTH_USER"),
     secret("user-lock-timeout", "USER_LOCK_TIMEOUT"),
     secret("oauth-viewer-user", "OAUTH_VIEWER_USER"),
@@ -21,12 +19,6 @@ def secrets = [
     secret("launchdarkly-sdk-key", "LAUNCHDARKLY_SDK_KEY")
   ]
 ]
-
-// TEMPORARY: Run functional tests against ITHC environment
-env.FRONTEND_URL = 'https://fact.ithc.platform.hmcts.net/'
-env.IDAM_HEALTH_URL = 'https://idam-api.ithc.platform.hmcts.net/health'
-env.IDAM_USER_DASHBOARD_HEALTH_URL = 'https://idam-user-dashboard.ithc.platform.hmcts.net/health'
-env.TEST_URL = 'https://fact-admin.ithc.platform.hmcts.net'
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [$class     : 'AzureKeyVaultSecret',
