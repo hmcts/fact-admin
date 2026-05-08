@@ -22,15 +22,6 @@ Then('I am logged out if I am a super admin', async () => {
   }
 });
 
-Then('I am logged out', async () => {
-  const title = await I.getPageTitle();
-  if (title !== 'Enter your email address - HMCTS Access' && await I.isElementVisible('#logout', 30000)) {
-    //console.log('logging out as super user');
-    await I.click('#logout');
-    await I.goTo(config.TEST_URL);
-  }
-});
-
 Then('I am logged out if I am an admin user', async () => {
   await new Promise(f => setTimeout(f, 30000));
   if (await I.getPageTitle() !== 'Enter your email address - HMCTS Access' && !(await I.isElementVisible('#audits', 30000))) {

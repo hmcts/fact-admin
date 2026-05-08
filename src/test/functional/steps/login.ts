@@ -3,18 +3,6 @@ import {Given, Then, When} from 'cucumber';
 import * as I from '../utlis/puppeteer.util';
 import {puppeteerConfig} from '../puppeteer.config';
 
-
-// async function fillInUsernameAndPassword(username: string, password: string) {
-//   const usernameEl = await I.checkElement('#username');
-//   expect(usernameEl).equal(true);
-//   await I.setElementValueForInputField('#username', username);
-//
-//   const passwordEl = await I.checkElement('#password');
-//   expect(passwordEl).equal(true);
-//
-//   await I.setElementValueForInputField('#password', password);
-// }
-
 async function fillInEmail(email: string) {
   const usernameEl = await I.checkElement('#email');
   expect(usernameEl).equal(true);
@@ -175,13 +163,6 @@ Given('click the Sign In button', async () => {
     await I.click('#main-content > div > div > form > div.govuk-button-group > button');
   }
 });
-
-// Given('click the Submit button', async () => {
-//   const title = await I.getPageTitle();
-//   if (title == 'Enter your email address - HMCTS Access' || title == 'Enter your password - HMCTS Access' ) {
-//     await I.click('#main-content > div > div > form > div.govuk-button-group > button');
-//   }
-// });
 
 Then('the system will sign me in', async () => {
   const title = await I.getPageTitle();
