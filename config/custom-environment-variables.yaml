@@ -10,6 +10,7 @@ services:
     clientSecret: OAUTH_CLIENT_SECRET
     baseURL: OAUTH_CLIENT_REDIRECT
     idamUserDashboardURL : IDAM_USER_DASHBOARD_URL
+    hmctsAccessURL: HMCTS_ACCESS_URL
   image-store:
     url: IMAGE_BASE_URL
     account-name: STORAGE_ACCOUNT_NAME
