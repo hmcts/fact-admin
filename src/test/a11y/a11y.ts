@@ -26,9 +26,11 @@ function loginPally(): Promise<Pa11yResult> {
   return pa11y(config.TEST_URL + '/login', {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
     actions: [
-      'set field #username to hmcts.fact@gmail.com',
+      'set field #email to hmcts.fact@gmail.com',
+      'click element #main-content > div > div > form > div.govuk-button-group > button',
+      'wait for path to be /enter-password',
       'set field #password to Pa55word11',
-      'click element .button',
+      'click element #main-content > div > div > form > div.govuk-button-group > button',
       'wait for path to be /courts'
     ]
   });

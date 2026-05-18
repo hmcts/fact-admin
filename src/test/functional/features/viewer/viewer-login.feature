@@ -3,9 +3,11 @@ Feature: Login/Logout
   Background:
     Given I am on new browser
     And I am on FACT homepage
-    Then I am logged out if I am a super admin
+    And I am logged out if I am a super admin
     And I am on the admin portal sign in page
-    When I fill in the Username and Password fields with my viewer authenticated credentials
+    When I fill in the email field with my viewer authenticated username
+    And click the Sign In button
+    Then I fill in the password field
     And click the Sign In button
     Then the system will sign me in
     And I cannot view super admin content

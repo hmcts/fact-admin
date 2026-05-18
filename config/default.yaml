@@ -13,6 +13,7 @@ services:
     clientSecret: 'get from AAT vault'
     baseURL: 'http://localhost:3300'
     idamUserDashboardURL : 'https://idam-user-dashboard.aat.platform.hmcts.net'
+    hmctsAccessURL: 'https://hmcts-access.aat.platform.hmcts.net'
   image-store:
     url: 'https://factaat.blob.core.windows.net/images'
     account-name:

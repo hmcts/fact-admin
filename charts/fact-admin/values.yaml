@@ -28,6 +28,7 @@ nodejs:
     FRONTEND_URL: "https://fact.{{ .Values.global.environment }}.platform.hmcts.net"
     IMAGE_BASE_URL: "https://fact{{ .Values.global.environment }}.blob.core.windows.net/images"
     IDAM_USER_DASHBOARD_URL: "https://idam-user-dashboard.{{ .Values.global.environment }}.platform.hmcts.net"
+    HMCTS_ACCESS_URL: 'https://hmcts-access.{{ .Values.global.environment }}.platform.hmcts.net'
     SECURE_FLAG : true
 idam-pr:
   enabled: false
