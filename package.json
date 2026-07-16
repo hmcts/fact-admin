@@ -8,7 +8,7 @@
   "scripts": {
     "start": "NODE_ENV=production ts-node -r tsconfig-paths/register src/main/server.ts",
     "start:dev": "nodemon --config nodemon.json",
-    "lint": "sass-lint -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "npx if-env CI=true && exit 0 || jest",
@@ -80,6 +80,7 @@
     "sanitize-html": "2.17.4",
     "serve-favicon": "^2.5.1",
     "session-file-store": "^1.5.0",
+    "stylelint": "17.14.0",
     "tinymce": "7.9.3",
     "ts-node": "10.9.2",
     "tsconfig-paths": "^4.2.0",
