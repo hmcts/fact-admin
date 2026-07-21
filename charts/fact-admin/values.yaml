@@ -20,6 +20,7 @@ nodejs:
   ingressHost: fact-admin.{{ .Values.global.environment }}.platform.hmcts.net
   image: 'hmctsprod.azurecr.io/fact/admin:latest'
   environment:
+    NEW_ADMIN_URL: "https://fact-admin-frontend.{{ .Values.global.environment }}.platform.hmcts.net"
     FACT_API_URL: "http://fact-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"
     IDAM_SESSION_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session"

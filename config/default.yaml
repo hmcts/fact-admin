@@ -2,6 +2,8 @@ security:
   referrerPolicy: 'origin'
 port: 3300
 services:
+  newAdmin:
+    url: 'https://fact-admin-frontend.aat.platform.hmcts.net'
   frontend:
     url: 'http://localhost:3100'
   api:

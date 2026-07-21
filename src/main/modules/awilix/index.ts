@@ -31,6 +31,7 @@ import {ApplicationProgressionController} from '../../app/controller/courts/Appl
 import {FeatureFlags} from '../../app/feature-flags/FeatureFlags';
 import {LaunchDarkly} from '../../app/feature-flags/LaunchDarklyClient';
 import {LogoutController} from '../../app/controller/LogoutController';
+import {ServiceUnavailableController} from '../../app/controller/ServiceUnavailableController';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('app');
@@ -85,7 +86,10 @@ export class Container {
       accountController : asClass(UserController),
 
       // Logout
-      logoutController: asClass(LogoutController)
+      logoutController: asClass(LogoutController),
+
+      // Retired service
+      serviceUnavailableController: asClass(ServiceUnavailableController)
     });
   }
 }
