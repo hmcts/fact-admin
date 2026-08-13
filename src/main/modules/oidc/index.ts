@@ -101,6 +101,8 @@ export class OidcMiddleware {
         res.status(302).send({url: '/login'});
       } else return res.redirect('/login');
     });
+
+    app.use(restrictRetiredServiceAccess);
   }
 
   private getStore(app: Application): any {
@@ -125,6 +127,17 @@ export class OidcMiddleware {
     return new fileStore({ path: '/tmp' });
   }
 }
+
+
+export const restrictRetiredServiceAccess = (req: Request, res: Response, next: NextFunction): void => {
+  const permittedPaths = ['/use-new-service', '/logout'];
+
+  if (res.locals.isSuperAdmin || permittedPaths.includes(req.path)) {
+    next();
+  } else {
+    res.redirect('/use-new-service');
+  }
+};
 
 
 export const isSuperAdmin = (req: AuthedRequest, res: Response, next: NextFunction) => {

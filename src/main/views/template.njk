@@ -10,7 +10,15 @@
   {{ govukHeader() }}
 
   {% if isLoggedIn %}
-    {% if isSuperAdmin %}
+    {% if retiredServicePage %}
+      {% set listItems = [
+        {
+          href: "/logout",
+          text: "log out",
+          attributes: { id: "logout" }
+        }
+      ] %}
+    {% elif isSuperAdmin %}
       {% set listItems = [
         {
           href: "/courts",
