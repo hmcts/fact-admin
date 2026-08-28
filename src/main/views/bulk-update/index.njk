@@ -5,7 +5,6 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-{% from "../macros/_tiny-attribution.njk" import tinyMCEAttribution %}
 
 {% extends "template.njk" %}
 {% block pageTitle %}{{ 'Bulk edit of additional information' | titleEnhancer}}{% endblock %}
@@ -43,8 +42,7 @@
       </label>
       </h2>
       <span class="govuk-visually-hidden">{{mceMsg}}</span>
-      <textarea class="govuk-textarea rich-editor" id="info_message" name="info" tabindex=0>{{ court['info'] }}</textarea>
-{{ tinyMCEAttribution() }}
+      <textarea class="govuk-textarea rich-editor" id="info_message" name="info" rows="5" tabindex=0>{{ court['info'] }}</textarea>
     </div>
 
     <div  class="govuk-form-group">
@@ -53,8 +51,7 @@
       </label>
       </h2>
       <span class="govuk-visually-hidden">{{mceMsg}}</span>
-      <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="3">{{ court['info_cy'] }}</textarea>
-{{ tinyMCEAttribution() }}
+      <textarea class="govuk-textarea rich-editor" id="info_message_cy" name="info_cy" rows="5">{{ court['info_cy'] }}</textarea>
     </div>
 
     {{ govukButton({
