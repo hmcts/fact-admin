@@ -1,6 +1,12 @@
 import {Action, Audit, AuditPageData} from '../../../../../main/types/Audit';
 import {mockRequest} from '../../../utils/mockRequest';
 import {mockResponse} from '../../../utils/mockResponse';
+
+jest.mock('sanitize-html', () => ({
+  __esModule: true,
+  default: (input: string) => input
+}));
+
 import {AuditController} from '../../../../../main/app/controller/audits/AuditController';
 
 describe ( 'AuditController', () => {
