@@ -67,7 +67,7 @@ Running the linting with auto fix:
 $ yarn lint --fix
 ```
 
-### Running the tests
+### Running the test
 
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:
