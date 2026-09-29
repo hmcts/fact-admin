@@ -18,7 +18,7 @@ export class GeneralInfoController {
   duplicateNameErrorMsg = 'Duplicated name';
   blankNameErrorMsg = 'Name is required';
   specialCharacterErrorMsg = 'Valid characters are: A-Z, a-z, 0-9, \' and -';
-  updateAlertErrorMsg = 'Urgent notices are limited to 250 characters including spaces.';
+  updateAlertErrorMsg = 'Urgent notices are limited to 1000 characters including spaces.';
   updateIntroParagraphErrorMsg = 'Intro paragraphs for service centres are limited to 400 characters including spaces.';
   /**
    * GET /courts/:slug/general-info
@@ -79,7 +79,7 @@ export class GeneralInfoController {
 
     replaceMultipleSpaces(generalInfo);
 
-    if (generalInfo.alert.length > 400 || generalInfo.alert_cy.length > 400) {
+    if (generalInfo.alert?.length > 1000 || generalInfo.alert_cy?.length > 1000) {
       return this.get(req, res, false, this.updateAlertErrorMsg, '', '', generalInfo);
     }
 
