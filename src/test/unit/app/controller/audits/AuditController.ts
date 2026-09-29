@@ -4,7 +4,10 @@ import {mockResponse} from '../../../utils/mockResponse';
 
 jest.mock('sanitize-html', () => ({
   __esModule: true,
-  default: (input: string) => input
+  default: (input: string) =>
+    (input || '')
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<[^>]*>/g, '')
 }));
 
 import {AuditController} from '../../../../../main/app/controller/audits/AuditController';
