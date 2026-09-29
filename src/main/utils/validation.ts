@@ -102,7 +102,6 @@ export function replaceMultipleSpaces(data: any): any {
  */
 export function filterSlugs(req: AuthedRequest): any {
   const toRemove = 'type="checkbox"';
-  console.log(typeof req.body.courts);
   if (typeof req.body.courts === 'string' && req.body.courts == toRemove) {
     req.body.courts = '';
   }
