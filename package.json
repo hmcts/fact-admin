@@ -76,7 +76,7 @@
     "nunjucks": "^3.2.4",
     "redis": "3.1.2",
     "require-directory": "^2.1.1",
-    "sanitize-html": "2.17.5",
+    "sanitize-html": "2.17.7",
     "serve-favicon": "^2.5.1",
     "session-file-store": "^1.5.0",
     "tinymce": "7.9.3",
