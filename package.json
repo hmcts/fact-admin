@@ -137,7 +137,7 @@
     "bn.js@npm:^4.0.0": "4.12.3",
     "brace-expansion@npm:^1.1.7": "1.1.18",
     "brace-expansion@npm:^5.0.5": "5.0.9",
-    "follow-redirects@npm:^1.15.11": "1.16.0",
+    "follow-redirects@npm:^1.15.11": "1.16.1",
     "form-data": "4.0.6",
     "glob@npm:^13.0.0": "13.0.6",
     "joi": "17.13.4",
