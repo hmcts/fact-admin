@@ -1,7 +1,5 @@
 import $ from 'jquery';
-import tinymce from 'tinymce';
 import {AjaxErrorHandler} from './ajaxErrorHandler';
-import {Utilities} from './utilities';
 import {setUpTabClick} from './tab-reset';
 
 const { initAll } = require('govuk-frontend');
@@ -41,8 +39,6 @@ export class FacilitiesController {
 
     $(this.facilitiesContentId).html(content);
 
-    await Utilities.setUpTinymce();
-
     initAll({ scope: document.getElementById('courtFacilitiesTab') });
   }
 
@@ -64,7 +60,6 @@ export class FacilitiesController {
   private setUpSubmitEventHandler(): void {
     $(this.formId).on('submit', e => {
       e.preventDefault();
-      tinymce.triggerSave();
       const url = $(e.target).attr('action');
       $.ajax({
         url: url,
@@ -81,7 +76,6 @@ export class FacilitiesController {
   private setUpAddEventHandler(): void {
     $(this.tabId).on('click', `button.${this.addFacilityBtnClass}`, e => {
       e.preventDefault();
-      tinymce.triggerSave();
 
       // Call the service to re-create the view with a new empty row
       $.ajax({
@@ -98,11 +92,9 @@ export class FacilitiesController {
   private setUpClearEventHandler(): void {
     $(this.tabId).on('click', `button.${this.clearFacilityBtnClass}`, e => {
       $(e.target.closest('fieldset')).find(':input:visible').val('');
-
-      // e.target.id is in the form of 'clearFacility-<id>'
-      // so we need to replace 'clearFacility' with 'description' to get the tinymce id to clear it properly
-      tinymce.get(e.target.id.replace(this.clearFacilityBtnClass,this.description)).setContent('');
-      tinymce.get(e.target.id.replace(this.clearFacilityBtnClass,this.descriptionCy)).setContent('');
+      
+      $(`#description${e.target.id.replace(this.clearFacilityBtnClass, '')}`).val('');
+      $(`#descriptionCy${e.target.id.replace(this.clearFacilityBtnClass, '')}`).val('');
     });
   }
 
