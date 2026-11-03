@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import tinymce from 'tinymce';
 
 export class Utilities {
 
@@ -97,37 +96,5 @@ export class Utilities {
       $(tabId).removeClass('disable-tab');
       $(tabId).removeAttr('disabled') ;
     }
-  }
-
-  public static async setUpTinymce() {
-    tinymce.remove();
-
-    await tinymce.init({
-      selector: '.urgent-notice-rich-editor',
-      plugins: 'autolink link paste help tabfocus',
-      base_url: '/assets/tinymce', // Point to the new location of TinyMCE assets
-      menubar: '',
-      toolbar: 'link',
-      height: 180,
-      help_accessibility: true,
-      promotion: false,
-      branding: false,
-      tabfocus_elements : ':prev,:next',
-      link_default_target: '_blank'
-    });
-
-    await tinymce.init({
-      selector: '.rich-editor',
-      plugins: 'autolink link paste help tabfocus',
-      base_url: '/assets/tinymce', // Point to the new location of TinyMCE assets
-      menubar: '',
-      toolbar: 'link bold italic underline',
-      height: 180,
-      help_accessibility: true,
-      branding: false,
-      promotion: false,
-      tabfocus_elements : ':prev,:next',
-      link_default_target: '_blank'
-    });
   }
 }

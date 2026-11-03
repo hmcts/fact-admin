@@ -3,7 +3,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "../../macros/_tiny-attribution.njk" import tinyMCEAttribution %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 <h2 class="govuk-heading-l">General</h2>
@@ -98,8 +97,7 @@
     </span>
     <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph" name="sc_intro_paragraph"
-              rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph }}</textarea>
-    {{ tinyMCEAttribution() }}
+              rows="5" maxlength="400">{{ generalInfo.sc_intro_paragraph }}</textarea>
   </div>
 
 
@@ -111,8 +109,7 @@
     </h2>
     <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="sc_intro_paragraph_cy" name="sc_intro_paragraph_cy"
-              rows="2" maxlength="400">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
-    {{ tinyMCEAttribution() }}
+              rows="5" maxlength="400">{{ generalInfo.sc_intro_paragraph_cy }}</textarea>
   </div>
 
 {% endif %}
@@ -128,9 +125,8 @@
     services. This is limited to 250 characters including spaces.
   </span>
   <span class="govuk-visually-hidden">{{mceMsg}}</span>
-  <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice" name="alert"
-            rows="2" maxlength="250">{{ generalInfo.alert }}</textarea>
-    {{ tinyMCEAttribution() }}
+  <textarea class="govuk-textarea" id="urgent-notice" name="alert"
+            rows="5" maxlength="250">{{ generalInfo.alert }}</textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -140,9 +136,8 @@
       </label>
   </h2>
   <span class="govuk-visually-hidden">{{mceMsg}}</span>
-  <textarea class="govuk-textarea urgent-notice-rich-editor" id="urgent-notice-welsh" name="alert_cy"
-            rows="2" maxlength="250">{{ generalInfo.alert_cy }}</textarea>
-    {{ tinyMCEAttribution() }}
+  <textarea class="govuk-textarea" id="urgent-notice-welsh" name="alert_cy"
+            rows="5" maxlength="250">{{ generalInfo.alert_cy }}</textarea>
 </div>
 
 {% if isSuperAdmin %}
@@ -154,8 +149,7 @@
     </h2>
     <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="info" name="info"
-              rows="3">{{ generalInfo.info }}</textarea>
-    {{ tinyMCEAttribution() }}
+              rows="5">{{ generalInfo.info }}</textarea>
   </div>
 
   <div class="govuk-form-group">
@@ -166,8 +160,7 @@
     </h2>
     <span class="govuk-visually-hidden">{{mceMsg}}</span>
     <textarea class="govuk-textarea rich-editor" id="info_cy" name="info_cy"
-              rows="3">{{ generalInfo.info_cy }}</textarea>
-    {{ tinyMCEAttribution() }}
+              rows="5">{{ generalInfo.info_cy }}</textarea>
   </div>
 {% endif %}
 

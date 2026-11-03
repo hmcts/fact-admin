@@ -1,5 +1,4 @@
 import '../scss/main.scss';
-import './tinymce.config';
 import './opening-hours';
 import './facilities';
 import './emails';
